@@ -20,9 +20,6 @@ import com.echothree.control.user.core.common.form.DeleteEntityLongAttributeForm
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityLongAttribute;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -70,20 +67,20 @@ public class DeleteEntityLongAttributeCommand
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
 
             if(!hasExecutionErrors()) {
-                String entityAttributeName = form.getEntityAttributeName();
-                String entityAttributeUlid = form.getEntityAttributeUlid();
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttributeUlid = form.getEntityAttributeUlid();
                 
                 parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
                 
                 if(parameterCount == 1) {
-                    EntityAttribute entityAttribute = entityAttributeName == null ?
+                    var entityAttribute = entityAttributeName == null ?
                             EntityAttributeLogic.getInstance().getEntityAttributeByUlid(this, entityAttributeUlid) :
                             EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
                             var coreControl = getCoreControl();
-                            EntityLongAttribute entityLongAttribute = coreControl.getEntityLongAttributeForUpdate(entityAttribute, entityInstance);
+                            var entityLongAttribute = coreControl.getEntityLongAttributeForUpdate(entityAttribute, entityInstance);
 
                             if(entityLongAttribute != null) {
                                 coreControl.deleteEntityLongAttribute(entityLongAttribute, getPartyPK());

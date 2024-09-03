@@ -17,7 +17,6 @@
 package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.GetPaymentProcessorTransactionForm;
-import com.echothree.control.user.payment.common.result.GetPaymentProcessorTransactionResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -69,7 +68,7 @@ public class GetPaymentProcessorTransactionCommand
     
     @Override
     protected PaymentProcessorTransaction getEntity() {
-        PaymentProcessorTransaction paymentProcessorTransaction = PaymentProcessorTransactionLogic.getInstance().getPaymentProcessorTransactionByUniversalSpec(this, form);
+        var paymentProcessorTransaction = PaymentProcessorTransactionLogic.getInstance().getPaymentProcessorTransactionByUniversalSpec(this, form);
 
         if(paymentProcessorTransaction != null) {
             sendEvent(paymentProcessorTransaction.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -81,7 +80,7 @@ public class GetPaymentProcessorTransactionCommand
     @Override
     protected BaseResult getResult(PaymentProcessorTransaction paymentProcessorTransaction) {
         var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
-        GetPaymentProcessorTransactionResult result = PaymentResultFactory.getGetPaymentProcessorTransactionResult();
+        var result = PaymentResultFactory.getGetPaymentProcessorTransactionResult();
 
         if(paymentProcessorTransaction != null) {
             result.setPaymentProcessorTransaction(paymentProcessorTransactionControl.getPaymentProcessorTransactionTransfer(getUserVisit(), paymentProcessorTransaction));

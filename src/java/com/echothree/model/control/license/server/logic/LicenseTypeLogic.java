@@ -41,7 +41,7 @@ public class LicenseTypeLogic
     
     public LicenseType getLicenseTypeByName(final ExecutionErrorAccumulator eea, final String licenseTypeName) {
         var licenseControl = Session.getModelController(LicenseControl.class);
-        LicenseType licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
+        var licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
 
         if(licenseType == null) {
             handleExecutionError(UnknownLicenseTypeNameException.class, eea, ExecutionErrors.UnknownLicenseTypeName.name(), licenseTypeName);

@@ -22,9 +22,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKindDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,16 +64,16 @@ public class DeleteCancellationKindDescriptionCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                CancellationKindDescription cancellationKindDescription = cancellationPolicyControl.getCancellationKindDescriptionForUpdate(cancellationKind, language);
+                var cancellationKindDescription = cancellationPolicyControl.getCancellationKindDescriptionForUpdate(cancellationKind, language);
                 
                 if(cancellationKindDescription != null) {
                     cancellationPolicyControl.deleteCancellationKindDescription(cancellationKindDescription, getPartyPK());

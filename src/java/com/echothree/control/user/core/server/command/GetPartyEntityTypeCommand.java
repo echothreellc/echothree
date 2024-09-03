@@ -18,15 +18,10 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetPartyEntityTypeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetPartyEntityTypeResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.PartyEntityType;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -70,21 +65,21 @@ public class GetPartyEntityTypeCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyEntityTypeResult result = CoreResultFactory.getGetPartyEntityTypeResult();
-        String partyName = form.getPartyName();
-        Party party = partyName == null? getParty(): partyControl.getPartyByName(partyName);
+        var result = CoreResultFactory.getGetPartyEntityTypeResult();
+        var partyName = form.getPartyName();
+        var party = partyName == null? getParty(): partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var coreControl = getCoreControl();
-            String componentVendorName = form.getComponentVendorName();
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendorName = form.getComponentVendorName();
+            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
             if(componentVendor != null) {
-                String entityTypeName = form.getEntityTypeName();
-                EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityTypeName = form.getEntityTypeName();
+                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType != null) {
-                    PartyEntityType partyEntityType = coreControl.getPartyEntityType(party, entityType);
+                    var partyEntityType = coreControl.getPartyEntityType(party, entityType);
                     
                     if(partyEntityType == null) {
                         if(partyName == null) {

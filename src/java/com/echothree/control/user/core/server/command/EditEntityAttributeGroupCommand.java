@@ -26,10 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
-import com.echothree.model.data.core.server.entity.EntityAttributeGroupDescription;
-import com.echothree.model.data.core.server.entity.EntityAttributeGroupDetail;
-import com.echothree.model.data.core.server.value.EntityAttributeGroupDescriptionValue;
-import com.echothree.model.data.core.server.value.EntityAttributeGroupDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -88,8 +84,8 @@ public class EditEntityAttributeGroupCommand
     @Override
     public EntityAttributeGroup getEntity(EditEntityAttributeGroupResult result) {
         var coreControl = getCoreControl();
-        EntityAttributeGroup entityAttributeGroup = null;
-        String entityAttributeGroupName = spec.getEntityAttributeGroupName();
+        EntityAttributeGroup entityAttributeGroup;
+        var entityAttributeGroupName = spec.getEntityAttributeGroupName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
@@ -119,8 +115,8 @@ public class EditEntityAttributeGroupCommand
     @Override
     public void doLock(EntityAttributeGroupEdit edit, EntityAttributeGroup entityAttributeGroup) {
         var coreControl = getCoreControl();
-        EntityAttributeGroupDescription entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescription(entityAttributeGroup, getPreferredLanguage());
-        EntityAttributeGroupDetail entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
+        var entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescription(entityAttributeGroup, getPreferredLanguage());
+        var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
 
         edit.setEntityAttributeGroupName(entityAttributeGroupDetail.getEntityAttributeGroupName());
         edit.setIsDefault(entityAttributeGroupDetail.getIsDefault().toString());
@@ -134,8 +130,8 @@ public class EditEntityAttributeGroupCommand
     @Override
     public void canUpdate(EntityAttributeGroup entityAttributeGroup) {
         var coreControl = getCoreControl();
-        String entityAttributeGroupName = edit.getEntityAttributeGroupName();
-        EntityAttributeGroup duplicateEntityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
+        var entityAttributeGroupName = edit.getEntityAttributeGroupName();
+        var duplicateEntityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
 
         if(duplicateEntityAttributeGroup != null && !entityAttributeGroup.equals(duplicateEntityAttributeGroup)) {
             addExecutionError(ExecutionErrors.DuplicateEntityAttributeGroupName.name(), entityAttributeGroupName);
@@ -146,9 +142,9 @@ public class EditEntityAttributeGroupCommand
     public void doUpdate(EntityAttributeGroup entityAttributeGroup) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        EntityAttributeGroupDetailValue entityAttributeGroupDetailValue = coreControl.getEntityAttributeGroupDetailValueForUpdate(entityAttributeGroup);
-        EntityAttributeGroupDescription entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescriptionForUpdate(entityAttributeGroup, getPreferredLanguage());
-        String description = edit.getDescription();
+        var entityAttributeGroupDetailValue = coreControl.getEntityAttributeGroupDetailValueForUpdate(entityAttributeGroup);
+        var entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescriptionForUpdate(entityAttributeGroup, getPreferredLanguage());
+        var description = edit.getDescription();
 
         entityAttributeGroupDetailValue.setEntityAttributeGroupName(edit.getEntityAttributeGroupName());
         entityAttributeGroupDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -161,7 +157,7 @@ public class EditEntityAttributeGroupCommand
         } else if(entityAttributeGroupDescription != null && description == null) {
             coreControl.deleteEntityAttributeGroupDescription(entityAttributeGroupDescription, partyPK);
         } else if(entityAttributeGroupDescription != null && description != null) {
-            EntityAttributeGroupDescriptionValue entityAttributeGroupDescriptionValue = coreControl.getEntityAttributeGroupDescriptionValue(entityAttributeGroupDescription);
+            var entityAttributeGroupDescriptionValue = coreControl.getEntityAttributeGroupDescriptionValue(entityAttributeGroupDescription);
 
             entityAttributeGroupDescriptionValue.setDescription(description);
             coreControl.updateEntityAttributeGroupDescriptionFromValue(entityAttributeGroupDescriptionValue, partyPK);

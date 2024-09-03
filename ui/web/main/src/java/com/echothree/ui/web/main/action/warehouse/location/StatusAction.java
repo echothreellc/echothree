@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.warehouse.location;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.SetLocationStatusForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,12 +54,12 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
         
         try {
-            StatusActionForm actionForm = (StatusActionForm)form;
-            SetLocationStatusForm commandForm = WarehouseUtil.getHome().getSetLocationStatusForm();
+            var actionForm = (StatusActionForm)form;
+            var commandForm = WarehouseUtil.getHome().getSetLocationStatusForm();
             
             if(warehouseName == null)
                 warehouseName = actionForm.getWarehouseName();
@@ -72,8 +70,8 @@ public class StatusAction
                 commandForm.setWarehouseName(warehouseName);
                 commandForm.setLocationName(locationName);
                 commandForm.setLocationStatusChoice(actionForm.getLocationStatusChoice());
-                
-                CommandResult commandResult = WarehouseUtil.getHome().setLocationStatus(getUserVisitPK(request), commandForm);
+
+                var commandResult = WarehouseUtil.getHome().setLocationStatus(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);
@@ -90,8 +88,8 @@ public class StatusAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WAREHOUSE_NAME, warehouseName);
             request.setAttribute(AttributeConstants.LOCATION_NAME, locationName);

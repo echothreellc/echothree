@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.core.entityclobattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.edit.EntityClobAttributeEdit;
-import com.echothree.control.user.core.common.form.EditEntityClobAttributeForm;
 import com.echothree.control.user.core.common.result.EditEntityClobAttributeResult;
-import com.echothree.control.user.core.common.spec.EntityClobAttributeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -57,17 +52,17 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
         
         try {
-            String entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
-            String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-            String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+            var entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
+            var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+            var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
             
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditEntityClobAttributeForm commandForm = CoreUtil.getHome().getEditEntityClobAttributeForm();
-                EntityClobAttributeSpec spec = CoreUtil.getHome().getEntityClobAttributeSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = CoreUtil.getHome().getEditEntityClobAttributeForm();
+                var spec = CoreUtil.getHome().getEntityClobAttributeSpec();
                 
                 if(entityRef == null)
                     entityRef = actionForm.getEntityRef();
@@ -84,21 +79,21 @@ public class EditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    EntityClobAttributeEdit edit = CoreUtil.getHome().getEntityClobAttributeEdit();
+                    var edit = CoreUtil.getHome().getEntityClobAttributeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     
                     edit.setMimeTypeName(actionForm.getMimeTypeChoice());
                     edit.setClobAttribute(actionForm.getClobAttribute());
-                    
-                    CommandResult commandResult = CoreUtil.getHome().editEntityClobAttribute(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CoreUtil.getHome().editEntityClobAttribute(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditEntityClobAttributeResult result = (EditEntityClobAttributeResult)executionResult.getResult();
+                            var result = (EditEntityClobAttributeResult)executionResult.getResult();
                             
                             if(result != null) {
                                 request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
@@ -111,13 +106,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CoreUtil.getHome().editEntityClobAttribute(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditEntityClobAttributeResult result = (EditEntityClobAttributeResult)executionResult.getResult();
+
+                    var commandResult = CoreUtil.getHome().editEntityClobAttribute(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditEntityClobAttributeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        EntityClobAttributeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setEntityRef(entityRef);

@@ -18,8 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.SetDefaultPersonalTitleForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.common.pk.PersonalTitlePK;
-import com.echothree.model.data.party.server.value.PersonalTitleDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,11 +48,11 @@ public class SetDefaultPersonalTitleCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String personalTitleId = form.getPersonalTitleId();
-        PersonalTitlePK personalTitlePK = partyControl.convertPersonalTitleIdToPK(personalTitleId);
+        var personalTitleId = form.getPersonalTitleId();
+        var personalTitlePK = partyControl.convertPersonalTitleIdToPK(personalTitleId);
         
         if(personalTitlePK != null) {
-             PersonalTitleDetailValue personalTitleDetailValue = partyControl.getPersonalTitleDetailValueByPKForUpdate(personalTitlePK);
+            var personalTitleDetailValue = partyControl.getPersonalTitleDetailValueByPKForUpdate(personalTitlePK);
              
              personalTitleDetailValue.setIsDefault(Boolean.TRUE);
              partyControl.updatePersonalTitleFromValue(personalTitleDetailValue, getPartyPK());

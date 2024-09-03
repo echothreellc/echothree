@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.partytrainingclass;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.form.GetPartyTrainingClassForm;
 import com.echothree.control.user.training.common.result.GetPartyTrainingClassResult;
 import com.echothree.model.control.training.common.TrainingOptions;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassTransfer;
@@ -26,8 +25,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import static com.echothree.view.client.web.struts.BaseAction.getUserVisitPK;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -58,7 +55,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetPartyTrainingClassForm commandForm = TrainingUtil.getHome().getGetPartyTrainingClassForm();
+        var commandForm = TrainingUtil.getHome().getGetPartyTrainingClassForm();
 
         commandForm.setPartyTrainingClassName(request.getParameter(ParameterConstants.PARTY_TRAINING_CLASS_NAME));
         
@@ -66,12 +63,12 @@ public class ReviewAction
         options.add(TrainingOptions.PartyTrainingClassIncludePartyTrainingClassSessions);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = TrainingUtil.getHome().getPartyTrainingClass(getUserVisitPK(request), commandForm);
+        var commandResult = TrainingUtil.getHome().getPartyTrainingClass(getUserVisitPK(request), commandForm);
         PartyTrainingClassTransfer partyTrainingClass = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyTrainingClassResult result = (GetPartyTrainingClassResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyTrainingClassResult)executionResult.getResult();
             
             partyTrainingClass = result.getPartyTrainingClass();
         }

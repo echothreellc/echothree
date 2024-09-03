@@ -32,10 +32,6 @@ import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.logic.ItemPurchasingCategoryLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
-import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategoryDescription;
-import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategoryDetail;
-import com.echothree.model.data.vendor.server.value.ItemPurchasingCategoryDescriptionValue;
-import com.echothree.model.data.vendor.server.value.ItemPurchasingCategoryDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -99,7 +95,7 @@ public class EditItemPurchasingCategoryCommand
     public ItemPurchasingCategory getEntity(EditItemPurchasingCategoryResult result) {
         var vendorControl = Session.getModelController(VendorControl.class);
         ItemPurchasingCategory itemPurchasingCategory = null;
-        String itemPurchasingCategoryName = spec.getItemPurchasingCategoryName();
+        var itemPurchasingCategoryName = spec.getItemPurchasingCategoryName();
         var parameterCount = (itemPurchasingCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
@@ -141,8 +137,8 @@ public class EditItemPurchasingCategoryCommand
     @Override
     public void doLock(ItemPurchasingCategoryEdit edit, ItemPurchasingCategory itemPurchasingCategory) {
         var vendorControl = Session.getModelController(VendorControl.class);
-        ItemPurchasingCategoryDescription itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescription(itemPurchasingCategory, getPreferredLanguage());
-        ItemPurchasingCategoryDetail itemPurchasingCategoryDetail = itemPurchasingCategory.getLastDetail();
+        var itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescription(itemPurchasingCategory, getPreferredLanguage());
+        var itemPurchasingCategoryDetail = itemPurchasingCategory.getLastDetail();
 
         parentItemPurchasingCategory = itemPurchasingCategoryDetail.getParentItemPurchasingCategory();
 
@@ -159,11 +155,11 @@ public class EditItemPurchasingCategoryCommand
     @Override
     public void canUpdate(ItemPurchasingCategory itemPurchasingCategory) {
         var vendorControl = Session.getModelController(VendorControl.class);
-        String itemPurchasingCategoryName = edit.getItemPurchasingCategoryName();
-        ItemPurchasingCategory duplicateItemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
+        var itemPurchasingCategoryName = edit.getItemPurchasingCategoryName();
+        var duplicateItemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
 
         if(duplicateItemPurchasingCategory == null || itemPurchasingCategory.equals(duplicateItemPurchasingCategory)) {
-            String parentItemPurchasingCategoryName = edit.getParentItemPurchasingCategoryName();
+            var parentItemPurchasingCategoryName = edit.getParentItemPurchasingCategoryName();
 
             parentItemPurchasingCategory = parentItemPurchasingCategoryName == null? null: vendorControl.getItemPurchasingCategoryByName(parentItemPurchasingCategoryName);
 
@@ -185,9 +181,9 @@ public class EditItemPurchasingCategoryCommand
     public void doUpdate(ItemPurchasingCategory itemPurchasingCategory) {
         var vendorControl = Session.getModelController(VendorControl.class);
         var partyPK = getPartyPK();
-        ItemPurchasingCategoryDetailValue itemPurchasingCategoryDetailValue = vendorControl.getItemPurchasingCategoryDetailValueForUpdate(itemPurchasingCategory);
-        ItemPurchasingCategoryDescription itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescriptionForUpdate(itemPurchasingCategory, getPreferredLanguage());
-        String description = edit.getDescription();
+        var itemPurchasingCategoryDetailValue = vendorControl.getItemPurchasingCategoryDetailValueForUpdate(itemPurchasingCategory);
+        var itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescriptionForUpdate(itemPurchasingCategory, getPreferredLanguage());
+        var description = edit.getDescription();
 
         itemPurchasingCategoryDetailValue.setItemPurchasingCategoryName(edit.getItemPurchasingCategoryName());
         itemPurchasingCategoryDetailValue.setParentItemPurchasingCategoryPK(parentItemPurchasingCategory == null? null: parentItemPurchasingCategory.getPrimaryKey());
@@ -201,7 +197,7 @@ public class EditItemPurchasingCategoryCommand
         } else if(itemPurchasingCategoryDescription != null && description == null) {
             vendorControl.deleteItemPurchasingCategoryDescription(itemPurchasingCategoryDescription, partyPK);
         } else if(itemPurchasingCategoryDescription != null && description != null) {
-            ItemPurchasingCategoryDescriptionValue itemPurchasingCategoryDescriptionValue = vendorControl.getItemPurchasingCategoryDescriptionValue(itemPurchasingCategoryDescription);
+            var itemPurchasingCategoryDescriptionValue = vendorControl.getItemPurchasingCategoryDescriptionValue(itemPurchasingCategoryDescription);
 
             itemPurchasingCategoryDescriptionValue.setDescription(description);
             vendorControl.updateItemPurchasingCategoryDescriptionFromValue(itemPurchasingCategoryDescriptionValue, partyPK);

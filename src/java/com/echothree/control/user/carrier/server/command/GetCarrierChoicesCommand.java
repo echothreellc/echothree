@@ -18,7 +18,6 @@ package com.echothree.control.user.carrier.server.command;
 
 import com.echothree.control.user.carrier.common.form.GetCarrierChoicesForm;
 import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
-import com.echothree.control.user.carrier.common.result.GetCarrierChoicesResult;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetCarrierChoicesCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        GetCarrierChoicesResult result = CarrierResultFactory.getGetCarrierChoicesResult();
-        String defaultCarrierChoice = form.getDefaultCarrierChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CarrierResultFactory.getGetCarrierChoicesResult();
+        var defaultCarrierChoice = form.getDefaultCarrierChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setCarrierChoices(carrierControl.getCarrierChoices(defaultCarrierChoice, getPreferredLanguage(), allowNullChoice));
         

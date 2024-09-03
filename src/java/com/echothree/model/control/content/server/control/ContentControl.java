@@ -46,27 +46,7 @@ import com.echothree.model.control.content.common.transfer.ContentSectionTransfe
 import com.echothree.model.control.content.common.transfer.ContentWebAddressDescriptionTransfer;
 import com.echothree.model.control.content.common.transfer.ContentWebAddressTransfer;
 import com.echothree.model.control.content.server.logic.ContentLogic;
-import com.echothree.model.control.content.server.transfer.ContentCatalogDescriptionTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentCatalogItemTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentCatalogTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentCategoryDescriptionTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentCategoryItemTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentCategoryTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentCollectionDescriptionTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentCollectionTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentForumTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentPageAreaTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentPageAreaTypeTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentPageDescriptionTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentPageLayoutAreaTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentPageLayoutDescriptionTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentPageLayoutTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentPageTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentSectionDescriptionTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentSectionTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentTransferCaches;
-import com.echothree.model.control.content.server.transfer.ContentWebAddressDescriptionTransferCache;
-import com.echothree.model.control.content.server.transfer.ContentWebAddressTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -76,29 +56,19 @@ import com.echothree.model.data.content.common.pk.ContentCatalogItemVariablePric
 import com.echothree.model.data.content.common.pk.ContentCatalogPK;
 import com.echothree.model.data.content.common.pk.ContentCategoryPK;
 import com.echothree.model.data.content.common.pk.ContentCollectionPK;
-import com.echothree.model.data.content.common.pk.ContentForumPK;
-import com.echothree.model.data.content.common.pk.ContentPageAreaPK;
 import com.echothree.model.data.content.common.pk.ContentPageAreaTypePK;
-import com.echothree.model.data.content.common.pk.ContentPageLayoutAreaPK;
 import com.echothree.model.data.content.common.pk.ContentPageLayoutPK;
-import com.echothree.model.data.content.common.pk.ContentPagePK;
-import com.echothree.model.data.content.common.pk.ContentSectionPK;
-import com.echothree.model.data.content.common.pk.ContentWebAddressPK;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogDescription;
-import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
 import com.echothree.model.data.content.server.entity.ContentCatalogItemFixedPrice;
 import com.echothree.model.data.content.server.entity.ContentCatalogItemVariablePrice;
 import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCategoryDescription;
-import com.echothree.model.data.content.server.entity.ContentCategoryDetail;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentCollectionDescription;
-import com.echothree.model.data.content.server.entity.ContentCollectionDetail;
 import com.echothree.model.data.content.server.entity.ContentForum;
-import com.echothree.model.data.content.server.entity.ContentForumDetail;
 import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.content.server.entity.ContentPageArea;
 import com.echothree.model.data.content.server.entity.ContentPageAreaBlob;
@@ -109,18 +79,14 @@ import com.echothree.model.data.content.server.entity.ContentPageAreaType;
 import com.echothree.model.data.content.server.entity.ContentPageAreaTypeDescription;
 import com.echothree.model.data.content.server.entity.ContentPageAreaUrl;
 import com.echothree.model.data.content.server.entity.ContentPageDescription;
-import com.echothree.model.data.content.server.entity.ContentPageDetail;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutAreaDescription;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutDescription;
-import com.echothree.model.data.content.server.entity.ContentPageLayoutDetail;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentSectionDescription;
-import com.echothree.model.data.content.server.entity.ContentSectionDetail;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.content.server.entity.ContentWebAddressDescription;
-import com.echothree.model.data.content.server.entity.ContentWebAddressDetail;
 import com.echothree.model.data.content.server.entity.ContentWebAddressServer;
 import com.echothree.model.data.content.server.factory.ContentCatalogDescriptionFactory;
 import com.echothree.model.data.content.server.factory.ContentCatalogDetailFactory;
@@ -179,19 +145,14 @@ import com.echothree.model.data.content.server.value.ContentSectionDescriptionVa
 import com.echothree.model.data.content.server.value.ContentSectionDetailValue;
 import com.echothree.model.data.content.server.value.ContentWebAddressDescriptionValue;
 import com.echothree.model.data.content.server.value.ContentWebAddressDetailValue;
-import com.echothree.model.data.core.common.pk.MimeTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.Server;
-import com.echothree.model.data.forum.common.pk.ForumPK;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.offer.common.pk.OfferUsePK;
 import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.selector.common.pk.SelectorPK;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -201,14 +162,12 @@ import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -241,7 +200,7 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     
     public ContentPageAreaType createContentPageAreaType(String contentPageAreaTypeName, BasePK createdBy) {
-        ContentPageAreaType contentPageAreaType = ContentPageAreaTypeFactory.getInstance().create(contentPageAreaTypeName);
+        var contentPageAreaType = ContentPageAreaTypeFactory.getInstance().create(contentPageAreaTypeName);
         
         sendEvent(contentPageAreaType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -327,7 +286,7 @@ public class ContentControl
     
     public List<ContentPageAreaTypeTransfer> getContentPageAreaTypeTransfers(UserVisit userVisit, Collection<ContentPageAreaType> contentPageAreaTypes) {
         List<ContentPageAreaTypeTransfer> contentPageAreaTypeTransfers = new ArrayList<>(contentPageAreaTypes.size());
-        ContentPageAreaTypeTransferCache contentPageAreaTypeTransferCache = getContentTransferCaches(userVisit).getContentPageAreaTypeTransferCache();
+        var contentPageAreaTypeTransferCache = getContentTransferCaches(userVisit).getContentPageAreaTypeTransferCache();
         
         contentPageAreaTypes.forEach((contentPageAreaType) ->
                 contentPageAreaTypeTransfers.add(contentPageAreaTypeTransferCache.getTransfer(contentPageAreaType))
@@ -342,7 +301,7 @@ public class ContentControl
     
     public ContentPageAreaTypeChoicesBean getContentPageAreaTypeChoices(String defaultContentPageAreaTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<ContentPageAreaType> contentPageAreaTypes = getContentPageAreaTypes();
+        var contentPageAreaTypes = getContentPageAreaTypes();
         var size = contentPageAreaTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -379,7 +338,7 @@ public class ContentControl
     
     public ContentPageAreaTypeDescription createContentPageAreaTypeDescription(ContentPageAreaType contentPageAreaType, Language language,
             String description, BasePK createdBy) {
-        ContentPageAreaTypeDescription contentPageAreaTypeDescription = ContentPageAreaTypeDescriptionFactory.getInstance().create(contentPageAreaType,
+        var contentPageAreaTypeDescription = ContentPageAreaTypeDescriptionFactory.getInstance().create(contentPageAreaType,
                 language, description);
         
         sendEvent(contentPageAreaType.getPrimaryKey(), EventTypes.MODIFY, contentPageAreaTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -391,7 +350,7 @@ public class ContentControl
         ContentPageAreaTypeDescription contentPageAreaTypeDescription;
         
         try {
-            PreparedStatement ps = ContentPageAreaTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = ContentPageAreaTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM contentpageareatypedescriptions " +
                     "WHERE cntpatd_cntpat_contentpageareatypeid = ? AND cntpatd_lang_languageid = ?");
@@ -409,7 +368,7 @@ public class ContentControl
     
     public String getBestContentPageAreaTypeDescription(ContentPageAreaType contentPageAreaType, Language language) {
         String description;
-        ContentPageAreaTypeDescription contentPageAreaTypeDescription = getContentPageAreaTypeDescription(contentPageAreaType, language);
+        var contentPageAreaTypeDescription = getContentPageAreaTypeDescription(contentPageAreaType, language);
         
         if(contentPageAreaTypeDescription == null && !language.getIsDefault()) {
             contentPageAreaTypeDescription = getContentPageAreaTypeDescription(contentPageAreaType, getPartyControl().getDefaultLanguage());
@@ -429,20 +388,20 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     
     public ContentPageLayout createContentPageLayout(String contentPageLayoutName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ContentPageLayout defaultContentPageLayout = getDefaultContentPageLayout();
-        boolean defaultFound = defaultContentPageLayout != null;
+        var defaultContentPageLayout = getDefaultContentPageLayout();
+        var defaultFound = defaultContentPageLayout != null;
         
         if(defaultFound && isDefault) {
-            ContentPageLayoutDetailValue defaultContentPageLayoutDetailValue = getDefaultContentPageLayoutDetailValueForUpdate();
+            var defaultContentPageLayoutDetailValue = getDefaultContentPageLayoutDetailValueForUpdate();
             
             defaultContentPageLayoutDetailValue.setIsDefault(Boolean.FALSE);
             updateContentPageLayoutFromValue(defaultContentPageLayoutDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ContentPageLayout contentPageLayout = ContentPageLayoutFactory.getInstance().create();
-        ContentPageLayoutDetail contentPageLayoutDetail = ContentPageLayoutDetailFactory.getInstance().create(session,
+
+        var contentPageLayout = ContentPageLayoutFactory.getInstance().create();
+        var contentPageLayoutDetail = ContentPageLayoutDetailFactory.getInstance().create(session,
                 contentPageLayout, contentPageLayoutName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -580,7 +539,7 @@ public class ContentControl
     
     public List<ContentPageLayoutTransfer> getContentPageLayoutTransfers(UserVisit userVisit, Collection<ContentPageLayout> contentPageLayouts) {
         List<ContentPageLayoutTransfer> contentPageLayoutTransfers = new ArrayList<>(contentPageLayouts.size());
-        ContentPageLayoutTransferCache contentPageLayoutTransferCache = getContentTransferCaches(userVisit).getContentPageLayoutTransferCache();
+        var contentPageLayoutTransferCache = getContentTransferCaches(userVisit).getContentPageLayoutTransferCache();
         
         contentPageLayouts.forEach((contentPageLayout) ->
                 contentPageLayoutTransfers.add(contentPageLayoutTransferCache.getTransfer(contentPageLayout))
@@ -595,7 +554,7 @@ public class ContentControl
     
     public ContentPageLayoutChoicesBean getContentPageLayoutChoices(String defaultContentPageLayoutChoice, Language language,
             boolean allowNullChoice) {
-        List<ContentPageLayout> contentPageLayouts = getContentPageLayouts();
+        var contentPageLayouts = getContentPageLayouts();
         var size = contentPageLayouts.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -611,7 +570,7 @@ public class ContentControl
         }
         
         for(var contentPageLayout : contentPageLayouts) {
-            ContentPageLayoutDetail contentPageLayoutDetail = contentPageLayout.getLastDetail();
+            var contentPageLayoutDetail = contentPageLayout.getLastDetail();
             
             var label = getBestContentPageLayoutDescription(contentPageLayout, language);
             var value = contentPageLayoutDetail.getContentPageLayoutName();
@@ -631,25 +590,25 @@ public class ContentControl
     private void updateContentPageLayoutFromValue(ContentPageLayoutDetailValue contentPageLayoutDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(contentPageLayoutDetailValue.hasBeenModified()) {
-            ContentPageLayout contentPageLayout = ContentPageLayoutFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contentPageLayout = ContentPageLayoutFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      contentPageLayoutDetailValue.getContentPageLayoutPK());
-            ContentPageLayoutDetail contentPageLayoutDetail = contentPageLayout.getActiveDetailForUpdate();
+            var contentPageLayoutDetail = contentPageLayout.getActiveDetailForUpdate();
             
             contentPageLayoutDetail.setThruTime(session.START_TIME_LONG);
             contentPageLayoutDetail.store();
-            
-            ContentPageLayoutPK contentPageLayoutPK = contentPageLayoutDetail.getContentPageLayoutPK();
-            String contentPageLayoutName = contentPageLayoutDetailValue.getContentPageLayoutName();
-            Boolean isDefault = contentPageLayoutDetailValue.getIsDefault();
-            Integer sortOrder = contentPageLayoutDetailValue.getSortOrder();
+
+            var contentPageLayoutPK = contentPageLayoutDetail.getContentPageLayoutPK();
+            var contentPageLayoutName = contentPageLayoutDetailValue.getContentPageLayoutName();
+            var isDefault = contentPageLayoutDetailValue.getIsDefault();
+            var sortOrder = contentPageLayoutDetailValue.getSortOrder();
             
             if(checkDefault) {
-                ContentPageLayout defaultContentPageLayout = getDefaultContentPageLayout();
-                boolean defaultFound = defaultContentPageLayout != null && !defaultContentPageLayout.equals(contentPageLayout);
+                var defaultContentPageLayout = getDefaultContentPageLayout();
+                var defaultFound = defaultContentPageLayout != null && !defaultContentPageLayout.equals(contentPageLayout);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ContentPageLayoutDetailValue defaultContentPageLayoutDetailValue = getDefaultContentPageLayoutDetailValueForUpdate();
+                    var defaultContentPageLayoutDetailValue = getDefaultContentPageLayoutDetailValueForUpdate();
                     
                     defaultContentPageLayoutDetailValue.setIsDefault(Boolean.FALSE);
                     updateContentPageLayoutFromValue(defaultContentPageLayoutDetailValue, false, updatedBy);
@@ -676,23 +635,23 @@ public class ContentControl
     public void deleteContentPageLayout(ContentPageLayout contentPageLayout, BasePK deletedBy) {
         deleteContentPagesByContentPageLayout(contentPageLayout, deletedBy);
         deleteContentPageLayoutDescriptionsByContentPageLayout(contentPageLayout, deletedBy);
-        
-        ContentPageLayoutDetail contentPageLayoutDetail = contentPageLayout.getLastDetailForUpdate();
+
+        var contentPageLayoutDetail = contentPageLayout.getLastDetailForUpdate();
         contentPageLayoutDetail.setThruTime(session.START_TIME_LONG);
         contentPageLayoutDetail.store();
         contentPageLayout.setActiveDetail(null);
         
         // Check for default, and pick one if necessary
-        ContentPageLayout defaultContentPageLayout = getDefaultContentPageLayout();
+        var defaultContentPageLayout = getDefaultContentPageLayout();
         if(defaultContentPageLayout == null) {
-            List<ContentPageLayout> contentPageLayouts = getContentPageLayoutsForUpdate();
+            var contentPageLayouts = getContentPageLayoutsForUpdate();
             
             if(!contentPageLayouts.isEmpty()) {
-                Iterator<ContentPageLayout> iter = contentPageLayouts.iterator();
+                var iter = contentPageLayouts.iterator();
                 if(iter.hasNext()) {
                     defaultContentPageLayout = iter.next();
                 }
-                ContentPageLayoutDetailValue contentPageLayoutDetailValue = Objects.requireNonNull(defaultContentPageLayout).getLastDetailForUpdate().getContentPageLayoutDetailValue().clone();
+                var contentPageLayoutDetailValue = Objects.requireNonNull(defaultContentPageLayout).getLastDetailForUpdate().getContentPageLayoutDetailValue().clone();
                 
                 contentPageLayoutDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentPageLayoutFromValue(contentPageLayoutDetailValue, false, deletedBy);
@@ -707,7 +666,7 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     
     public ContentPageLayoutDescription createContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language, String description, BasePK createdBy) {
-        ContentPageLayoutDescription contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().create(contentPageLayout, language, description, session.START_TIME_LONG,
+        var contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().create(contentPageLayout, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(contentPageLayout.getPrimaryKey(), EventTypes.MODIFY, contentPageLayoutDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -731,8 +690,8 @@ public class ContentControl
                         "WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_lang_languageid = ? AND cntpld_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentPageLayoutDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentPageLayoutDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -779,8 +738,8 @@ public class ContentControl
                         "WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentPageLayoutDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentPageLayoutDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -803,7 +762,7 @@ public class ContentControl
     
     public String getBestContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language) {
         String description;
-        ContentPageLayoutDescription contentPageLayoutDescription = getContentPageLayoutDescription(contentPageLayout, language);
+        var contentPageLayoutDescription = getContentPageLayoutDescription(contentPageLayout, language);
         
         if(contentPageLayoutDescription == null && !language.getIsDefault()) {
             contentPageLayoutDescription = getContentPageLayoutDescription(contentPageLayout, getPartyControl().getDefaultLanguage());
@@ -823,9 +782,9 @@ public class ContentControl
     }
     
     public List<ContentPageLayoutDescriptionTransfer> getContentPageLayoutDescriptionTransfersByContentPageLayout(UserVisit userVisit, ContentPageLayout contentPageLayout) {
-        List<ContentPageLayoutDescription> contentPageLayoutDescriptions = getContentPageLayoutDescriptionsByContentPageLayout(contentPageLayout);
+        var contentPageLayoutDescriptions = getContentPageLayoutDescriptionsByContentPageLayout(contentPageLayout);
         List<ContentPageLayoutDescriptionTransfer> contentPageLayoutDescriptionTransfers = new ArrayList<>(contentPageLayoutDescriptions.size());
-        ContentPageLayoutDescriptionTransferCache contentPageLayoutDescriptionTransferCache = getContentTransferCaches(userVisit).getContentPageLayoutDescriptionTransferCache();
+        var contentPageLayoutDescriptionTransferCache = getContentTransferCaches(userVisit).getContentPageLayoutDescriptionTransferCache();
         
         contentPageLayoutDescriptions.forEach((contentPageLayoutDescription) ->
                 contentPageLayoutDescriptionTransfers.add(contentPageLayoutDescriptionTransferCache.getTransfer(contentPageLayoutDescription))
@@ -836,14 +795,14 @@ public class ContentControl
     
     public void updateContentPageLayoutDescriptionFromValue(ContentPageLayoutDescriptionValue contentPageLayoutDescriptionValue, BasePK updatedBy) {
         if(contentPageLayoutDescriptionValue.hasBeenModified()) {
-            ContentPageLayoutDescription contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageLayoutDescriptionValue.getPrimaryKey());
+            var contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageLayoutDescriptionValue.getPrimaryKey());
             
             contentPageLayoutDescription.setThruTime(session.START_TIME_LONG);
             contentPageLayoutDescription.store();
-            
-            ContentPageLayout contentPageLayout = contentPageLayoutDescription.getContentPageLayout();
-            Language language = contentPageLayoutDescription.getLanguage();
-            String description = contentPageLayoutDescriptionValue.getDescription();
+
+            var contentPageLayout = contentPageLayoutDescription.getContentPageLayout();
+            var language = contentPageLayoutDescription.getLanguage();
+            var description = contentPageLayoutDescriptionValue.getDescription();
             
             contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().create(contentPageLayout, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -860,7 +819,7 @@ public class ContentControl
     }
     
     public void deleteContentPageLayoutDescriptionsByContentPageLayout(ContentPageLayout contentPageLayout, BasePK deletedBy) {
-        List<ContentPageLayoutDescription> contentPageLayoutDescriptions = getContentPageLayoutDescriptionsByContentPageLayoutForUpdate(contentPageLayout);
+        var contentPageLayoutDescriptions = getContentPageLayoutDescriptionsByContentPageLayoutForUpdate(contentPageLayout);
         
         contentPageLayoutDescriptions.forEach((contentPageLayoutDescription) -> 
                 deleteContentPageLayoutDescription(contentPageLayoutDescription, deletedBy)
@@ -887,7 +846,7 @@ public class ContentControl
         ContentPageLayoutArea contentPageLayoutArea;
         
         try {
-            PreparedStatement ps = ContentPageLayoutAreaFactory.getInstance().prepareStatement(
+            var ps = ContentPageLayoutAreaFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM contentpagelayoutareas " +
                     "WHERE cntpla_cntpl_contentpagelayoutid = ? AND cntpla_sortorder = ?");
@@ -907,7 +866,7 @@ public class ContentControl
         List<ContentPageLayoutArea> contentPageLayoutAreas;
         
         try {
-            PreparedStatement ps = ContentPageLayoutAreaFactory.getInstance().prepareStatement(
+            var ps = ContentPageLayoutAreaFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM contentpagelayoutareas " +
                     "WHERE cntpla_cntpl_contentpagelayoutid = ? " +
@@ -925,7 +884,7 @@ public class ContentControl
     
     public List<ContentPageLayoutAreaTransfer> getContentPageLayoutAreaTransfers(UserVisit userVisit, Collection<ContentPageLayoutArea> contentPageLayoutAreas) {
         List<ContentPageLayoutAreaTransfer> contentPageLayoutAreaTransfers = new ArrayList<>(contentPageLayoutAreas.size());
-        ContentPageLayoutAreaTransferCache contentPageLayoutAreaTransferCache = getContentTransferCaches(userVisit).getContentPageLayoutAreaTransferCache();
+        var contentPageLayoutAreaTransferCache = getContentTransferCaches(userVisit).getContentPageLayoutAreaTransferCache();
         
         contentPageLayoutAreas.forEach((contentPageLayoutArea) ->
                 contentPageLayoutAreaTransfers.add(contentPageLayoutAreaTransferCache.getContentPageLayoutAreaTransfer(contentPageLayoutArea))
@@ -954,7 +913,7 @@ public class ContentControl
         ContentPageLayoutAreaDescription contentPageLayoutAreaDescription;
         
         try {
-            PreparedStatement ps = ContentPageLayoutAreaDescriptionFactory.getInstance().prepareStatement(
+            var ps = ContentPageLayoutAreaDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM contentpagelayoutareadescriptions " +
                     "WHERE cntplad_cntpla_contentpagelayoutareaid = ? AND cntplad_lang_languageid = ?");
@@ -972,7 +931,7 @@ public class ContentControl
     
     public String getBestContentPageLayoutAreaDescription(ContentPageLayoutArea contentPageLayoutArea, Language language) {
         String description;
-        ContentPageLayoutAreaDescription contentPageLayoutAreaDescription = getContentPageLayoutAreaDescription(contentPageLayoutArea, language);
+        var contentPageLayoutAreaDescription = getContentPageLayoutAreaDescription(contentPageLayoutArea, language);
         
         if(contentPageLayoutAreaDescription == null && !language.getIsDefault()) {
             contentPageLayoutAreaDescription = getContentPageLayoutAreaDescription(contentPageLayoutArea, getPartyControl().getDefaultLanguage());
@@ -992,8 +951,8 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     
     public ContentCollection createContentCollection(String contentCollectionName, OfferUse defaultOfferUse, BasePK createdBy) {
-        ContentCollection contentCollection = ContentCollectionFactory.getInstance().create();
-        ContentCollectionDetail contentCollectionDetail = ContentCollectionDetailFactory.getInstance().create(session,
+        var contentCollection = ContentCollectionFactory.getInstance().create();
+        var contentCollectionDetail = ContentCollectionDetailFactory.getInstance().create(session,
                 contentCollection, contentCollectionName, defaultOfferUse, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1034,7 +993,7 @@ public class ContentControl
         List<ContentCollection> contentCollections;
         
         try {
-            PreparedStatement ps = ContentCollectionFactory.getInstance().prepareStatement(
+            var ps = ContentCollectionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM contentcollections, contentcollectiondetails " +
                     "WHERE cntc_contentcollectionid = cntcdt_cntc_contentcollectionid AND cntcdt_thrutime = ? " +
@@ -1066,8 +1025,8 @@ public class ContentControl
                         "WHERE cntc_contentcollectionid = cntcdt_cntc_contentcollectionid AND cntcdt_contentcollectionname = ? AND cntcdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCollectionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCollectionFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, contentCollectionName);
             ps.setLong(2, Session.MAX_TIME);
@@ -1097,7 +1056,7 @@ public class ContentControl
     }
     
     public ContentCollectionChoicesBean getContentCollectionChoices(String defaultContentCollectionChoice, Language language) {
-        List<ContentCollection> contentCollections = getContentCollections();
+        var contentCollections = getContentCollections();
         var size = contentCollections.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1124,7 +1083,7 @@ public class ContentControl
     
     public List<ContentCollectionTransfer> getContentCollectionTransfers(UserVisit userVisit, Collection<ContentCollection> contentCollections) {
         List<ContentCollectionTransfer> contentCollectionTransfers = new ArrayList<>(contentCollections.size());
-        ContentCollectionTransferCache contentCollectionTransferCache = getContentTransferCaches(userVisit).getContentCollectionTransferCache();
+        var contentCollectionTransferCache = getContentTransferCaches(userVisit).getContentCollectionTransferCache();
         
         contentCollections.forEach((contentCollection) ->
                 contentCollectionTransfers.add(contentCollectionTransferCache.getContentCollectionTransfer(contentCollection))
@@ -1139,16 +1098,16 @@ public class ContentControl
     
     public void updateContentCollectionFromValue(ContentCollectionDetailValue contentCollectionDetailValue, BasePK updatedBy) {
         if(contentCollectionDetailValue.hasBeenModified()) {
-            ContentCollection contentCollection = ContentCollectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contentCollection = ContentCollectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      contentCollectionDetailValue.getContentCollectionPK());
-            ContentCollectionDetail contentCollectionDetail = contentCollection.getActiveDetailForUpdate();
+            var contentCollectionDetail = contentCollection.getActiveDetailForUpdate();
 
             contentCollectionDetail.setThruTime(session.START_TIME_LONG);
             contentCollectionDetail.store();
 
-            ContentCollectionPK contentCollectionPK = contentCollectionDetail.getContentCollectionPK();
-            String contentCollectionName = contentCollectionDetailValue.getContentCollectionName();
-            OfferUsePK defaultOfferUsePK = contentCollectionDetailValue.getDefaultOfferUsePK();
+            var contentCollectionPK = contentCollectionDetail.getContentCollectionPK();
+            var contentCollectionName = contentCollectionDetailValue.getContentCollectionName();
+            var defaultOfferUsePK = contentCollectionDetailValue.getDefaultOfferUsePK();
 
             contentCollectionDetail = ContentCollectionDetailFactory.getInstance().create(contentCollectionPK,
                     contentCollectionName, defaultOfferUsePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1178,8 +1137,8 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     
     public ContentCollectionDescription createContentCollectionDescription(ContentCollection contentCollection, Language language, String description, BasePK createdBy) {
-        
-        ContentCollectionDescription contentCollectionDescription = ContentCollectionDescriptionFactory.getInstance().create(contentCollection, language, description, session.START_TIME_LONG,
+
+        var contentCollectionDescription = ContentCollectionDescriptionFactory.getInstance().create(contentCollection, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(contentCollection.getPrimaryKey(), EventTypes.MODIFY, contentCollectionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1203,8 +1162,8 @@ public class ContentControl
                         "WHERE cntcd_cntc_contentcollectionid = ? AND cntcd_lang_languageid = ? AND cntcd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCollectionDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCollectionDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1252,8 +1211,8 @@ public class ContentControl
                         "WHERE cntcd_cntc_contentcollectionid = ? AND cntcd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCollectionDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCollectionDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1276,7 +1235,7 @@ public class ContentControl
     
     public String getBestContentCollectionDescription(ContentCollection contentCollection, Language language) {
         String description;
-        ContentCollectionDescription contentCollectionDescription = getContentCollectionDescription(contentCollection, language);
+        var contentCollectionDescription = getContentCollectionDescription(contentCollection, language);
         
         if(contentCollectionDescription == null && !language.getIsDefault()) {
             contentCollectionDescription = getContentCollectionDescription(contentCollection, getPartyControl().getDefaultLanguage());
@@ -1296,9 +1255,9 @@ public class ContentControl
     }
     
     public List<ContentCollectionDescriptionTransfer> getContentCollectionDescriptionTransfers(UserVisit userVisit, ContentCollection contentCollection) {
-        List<ContentCollectionDescription> contentCollectionDescriptions = getContentCollectionDescriptionsByContentCollection(contentCollection);
+        var contentCollectionDescriptions = getContentCollectionDescriptionsByContentCollection(contentCollection);
         List<ContentCollectionDescriptionTransfer> contentCollectionDescriptionTransfers = new ArrayList<>(contentCollectionDescriptions.size());
-        ContentCollectionDescriptionTransferCache contentCollectionDescriptionTransferCache = getContentTransferCaches(userVisit).getContentCollectionDescriptionTransferCache();
+        var contentCollectionDescriptionTransferCache = getContentTransferCaches(userVisit).getContentCollectionDescriptionTransferCache();
         
         for(var contentCollectionDescription : contentCollectionDescriptions) {
             contentCollectionDescriptionTransfers.add(contentCollectionDescriptionTransferCache.getContentCollectionDescriptionTransfer(contentCollectionDescription));
@@ -1309,14 +1268,14 @@ public class ContentControl
     
     public void updateContentCollectionDescriptionFromValue(ContentCollectionDescriptionValue contentCollectionDescriptionValue, BasePK updatedBy) {
         if(contentCollectionDescriptionValue.hasBeenModified()) {
-            ContentCollectionDescription contentCollectionDescription = ContentCollectionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCollectionDescriptionValue.getPrimaryKey());
+            var contentCollectionDescription = ContentCollectionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCollectionDescriptionValue.getPrimaryKey());
             
             contentCollectionDescription.setThruTime(session.START_TIME_LONG);
             contentCollectionDescription.store();
-            
-            ContentCollection contentCollection = contentCollectionDescription.getContentCollection();
-            Language language = contentCollectionDescription.getLanguage();
-            String description = contentCollectionDescriptionValue.getDescription();
+
+            var contentCollection = contentCollectionDescription.getContentCollection();
+            var language = contentCollectionDescription.getLanguage();
+            var description = contentCollectionDescriptionValue.getDescription();
             
             contentCollectionDescription = ContentCollectionDescriptionFactory.getInstance().create(contentCollection, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -1332,7 +1291,7 @@ public class ContentControl
     }
     
     public void deleteContentCollectionDescriptionsByContentCollection(ContentCollection contentCollection, BasePK deletedBy) {
-        List<ContentCollectionDescription> contentCollectionDescriptions = getContentCollectionDescriptionsByContentCollectionForUpdate(contentCollection);
+        var contentCollectionDescriptions = getContentCollectionDescriptionsByContentCollectionForUpdate(contentCollection);
         
         contentCollectionDescriptions.forEach((contentCollectionDescription) -> 
                 deleteContentCollectionDescription(contentCollectionDescription, deletedBy)
@@ -1345,8 +1304,8 @@ public class ContentControl
     
     public ContentSection createContentSection(ContentCollection contentCollection, String contentSectionName, ContentSection parentContentSection, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        ContentSection defaultContentSection = getDefaultContentSection(contentCollection);
-        boolean defaultFound = defaultContentSection != null;
+        var defaultContentSection = getDefaultContentSection(contentCollection);
+        var defaultFound = defaultContentSection != null;
         
         if(defaultFound) {
             if(defaultContentSection.getLastDetail().getContentSectionName().equals(ContentSections.ROOT.toString())) {
@@ -1355,16 +1314,16 @@ public class ContentControl
         }
         
         if(defaultFound && isDefault) {
-            ContentSectionDetailValue defaultContentSectionDetailValue = getDefaultContentSectionDetailValueForUpdate(contentCollection);
+            var defaultContentSectionDetailValue = getDefaultContentSectionDetailValueForUpdate(contentCollection);
             
             defaultContentSectionDetailValue.setIsDefault(Boolean.FALSE);
             updateContentSectionFromValue(defaultContentSectionDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ContentSection contentSection = ContentSectionFactory.getInstance().create();
-        ContentSectionDetail contentSectionDetail = ContentSectionDetailFactory.getInstance().create(contentSection, contentCollection, contentSectionName, parentContentSection, isDefault,
+
+        var contentSection = ContentSectionFactory.getInstance().create();
+        var contentSectionDetail = ContentSectionDetailFactory.getInstance().create(contentSection, contentCollection, contentSectionName, parentContentSection, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1405,8 +1364,8 @@ public class ContentControl
                         "ORDER BY cntsdt_sortorder, cntsdt_contentsectionname " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentSectionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentSectionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1446,8 +1405,8 @@ public class ContentControl
                         "ORDER BY cntsdt_sortorder, cntsdt_contentsectionname " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentSectionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentSectionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, parentContentSection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1484,8 +1443,8 @@ public class ContentControl
                         "WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_contentsectionname = ? AND cntsdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentSectionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentSectionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setString(2, contentSectionName);
@@ -1531,8 +1490,8 @@ public class ContentControl
                         "WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_isdefault = 1 AND cntsdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentSectionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentSectionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1554,7 +1513,7 @@ public class ContentControl
     }
     
     public ContentSectionChoicesBean getContentSectionChoices(ContentCollection contentCollection, String defaultContentSectionChoice, Language language, boolean allowNullChoice) {
-        List<ContentSection> contentSections = getContentSections(contentCollection);
+        var contentSections = getContentSections(contentCollection);
         var size = contentSections.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1570,7 +1529,7 @@ public class ContentControl
         }
         
         for(var contentSection : contentSections) {
-            ContentSectionDetail contentSectionDetail = contentSection.getLastDetail();
+            var contentSectionDetail = contentSection.getLastDetail();
             var value = contentSectionDetail.getContentSectionName();
             
             if(!value.equals(ContentSections.ROOT.toString())) {
@@ -1595,7 +1554,7 @@ public class ContentControl
     
     public List<ContentSectionTransfer> getContentSectionTransfers(UserVisit userVisit, Collection<ContentSection> contentSections) {
         List<ContentSectionTransfer> contentSectionTransfers = new ArrayList<>(contentSections.size());
-        ContentSectionTransferCache contentSectionTransferCache = getContentTransferCaches(userVisit).getContentSectionTransferCache();
+        var contentSectionTransferCache = getContentTransferCaches(userVisit).getContentSectionTransferCache();
         
         contentSections.forEach((contentSection) ->
                 contentSectionTransfers.add(contentSectionTransferCache.getContentSectionTransfer(contentSection))
@@ -1613,7 +1572,7 @@ public class ContentControl
     }
     
     public boolean isParentContentSectionSafe(ContentSection contentSection, ContentSection parentContentSection) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentContentSection != null) {
             Set<ContentSection> parentItemPurchasingCategories = new HashSet<>();
@@ -1635,27 +1594,27 @@ public class ContentControl
     
     private void updateContentSectionFromValue(ContentSectionDetailValue contentSectionDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(contentSectionDetailValue.hasBeenModified()) {
-            ContentSection contentSection = ContentSectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentSectionDetailValue.getContentSectionPK());
-            ContentSectionDetail contentSectionDetail = contentSection.getActiveDetailForUpdate();
+            var contentSection = ContentSectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentSectionDetailValue.getContentSectionPK());
+            var contentSectionDetail = contentSection.getActiveDetailForUpdate();
 
             contentSectionDetail.setThruTime(session.START_TIME_LONG);
             contentSectionDetail.store();
 
-            ContentSectionPK contentSectionPK = contentSectionDetail.getContentSectionPK();
-            ContentCollection contentCollection = contentSectionDetail.getContentCollection();
-            ContentCollectionPK contentCollectionPK = contentSectionDetail.getContentCollectionPK();
-            String contentSectionName = contentSectionDetailValue.getContentSectionName();
-            ContentSectionPK parentContentSectionPK = contentSectionDetailValue.getParentContentSectionPK();
-            Boolean isDefault = contentSectionDetailValue.getIsDefault();
-            Integer sortOrder = contentSectionDetailValue.getSortOrder();
+            var contentSectionPK = contentSectionDetail.getContentSectionPK();
+            var contentCollection = contentSectionDetail.getContentCollection();
+            var contentCollectionPK = contentSectionDetail.getContentCollectionPK();
+            var contentSectionName = contentSectionDetailValue.getContentSectionName();
+            var parentContentSectionPK = contentSectionDetailValue.getParentContentSectionPK();
+            var isDefault = contentSectionDetailValue.getIsDefault();
+            var sortOrder = contentSectionDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ContentSection defaultContentSection = getDefaultContentSection(contentCollection);
-                boolean defaultFound = defaultContentSection != null && !defaultContentSection.equals(contentSection);
+                var defaultContentSection = getDefaultContentSection(contentCollection);
+                var defaultFound = defaultContentSection != null && !defaultContentSection.equals(contentSection);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ContentSectionDetailValue defaultContentSectionDetailValue = getDefaultContentSectionDetailValueForUpdate(contentCollection);
+                    var defaultContentSectionDetailValue = getDefaultContentSectionDetailValueForUpdate(contentCollection);
 
                     defaultContentSectionDetailValue.setIsDefault(Boolean.FALSE);
                     updateContentSectionFromValue(defaultContentSectionDetailValue, false, updatedBy);
@@ -1682,7 +1641,7 @@ public class ContentControl
     
     private void deleteContentSection(ContentSection contentSection, BasePK deletedBy, boolean recursive) {
         if(recursive) {
-            List<ContentSection> subContentSections = getContentSectionsByParentContentSectionForUpdate(contentSection);
+            var subContentSections = getContentSectionsByParentContentSectionForUpdate(contentSection);
             
             subContentSections.forEach((subContentSection) -> {
                 deleteContentSection(subContentSection, deletedBy, true);
@@ -1691,19 +1650,19 @@ public class ContentControl
         
         deleteContentPagesByContentSection(contentSection, deletedBy);
         deleteContentSectionDescriptionsByContentSection(contentSection, deletedBy);
-        
-        ContentSectionDetail contentSectionDetail = contentSection.getLastDetailForUpdate();
+
+        var contentSectionDetail = contentSection.getLastDetailForUpdate();
         contentSectionDetail.setThruTime(session.START_TIME_LONG);
         contentSectionDetail.store();
         contentSection.setActiveDetail(null);
         
         // Check for default, and pick one if necessary
-        ContentCollection contentCollection = contentSectionDetail.getContentCollection();
-        ContentSection defaultContentSection = getDefaultContentSection(contentCollection);
+        var contentCollection = contentSectionDetail.getContentCollection();
+        var defaultContentSection = getDefaultContentSection(contentCollection);
         if(defaultContentSection == null) {
             // Try and find a new default from sections on the same level as the one that was deleted
-            ContentSection parentContentSection = contentSectionDetail.getParentContentSection();
-            List<ContentSection> contentSections = parentContentSection == null? null: getContentSectionsByParentContentSectionForUpdate(parentContentSection);
+            var parentContentSection = contentSectionDetail.getParentContentSection();
+            var contentSections = parentContentSection == null? null: getContentSectionsByParentContentSectionForUpdate(parentContentSection);
             
             // If that failed, pick one from the current collection
             if(contentSections == null || contentSections.isEmpty()) {
@@ -1711,13 +1670,13 @@ public class ContentControl
             }
             
             if(!contentSections.isEmpty()) {
-                for(Iterator<ContentSection> iter = contentSections.iterator(); iter.hasNext();) {
+                for(var iter = contentSections.iterator(); iter.hasNext();) {
                     defaultContentSection = iter.next();
                     if(!defaultContentSection.getLastDetail().getContentSectionName().equals(ContentSections.ROOT.toString())) {
                         break;
                     }
                 }
-                ContentSectionDetailValue contentSectionDetailValue = Objects.requireNonNull(defaultContentSection).getLastDetailForUpdate().getContentSectionDetailValue().clone();
+                var contentSectionDetailValue = Objects.requireNonNull(defaultContentSection).getLastDetailForUpdate().getContentSectionDetailValue().clone();
                 
                 contentSectionDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentSectionFromValue(contentSectionDetailValue, false, deletedBy);
@@ -1732,7 +1691,7 @@ public class ContentControl
     }
     
     public void deleteContentSectionsByContentCollection(ContentCollection contentCollection, BasePK deletedBy) {
-        List<ContentSection> contentSections = getContentSectionsForUpdate(contentCollection);
+        var contentSections = getContentSectionsForUpdate(contentCollection);
         
         contentSections.forEach((contentSection) -> {
             deleteContentSection(contentSection, deletedBy, false);
@@ -1744,8 +1703,8 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     
     public ContentSectionDescription createContentSectionDescription(ContentSection contentSection, Language language, String description, BasePK createdBy) {
-        
-        ContentSectionDescription contentSectionDescription = ContentSectionDescriptionFactory.getInstance().create(contentSection, language, description, session.START_TIME_LONG,
+
+        var contentSectionDescription = ContentSectionDescriptionFactory.getInstance().create(contentSection, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(contentSection.getPrimaryKey(), EventTypes.MODIFY, contentSectionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1769,8 +1728,8 @@ public class ContentControl
                         "WHERE cntsd_cnts_contentsectionid = ? AND cntsd_lang_languageid = ? AND cntsd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentSectionDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentSectionDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentSection.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1818,8 +1777,8 @@ public class ContentControl
                         "WHERE cntsd_cnts_contentsectionid = ? AND cntsd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentSectionDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentSectionDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentSection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1842,7 +1801,7 @@ public class ContentControl
     
     public String getBestContentSectionDescription(ContentSection contentSection, Language language) {
         String description;
-        ContentSectionDescription contentSectionDescription = getContentSectionDescription(contentSection, language);
+        var contentSectionDescription = getContentSectionDescription(contentSection, language);
         
         if(contentSectionDescription == null && !language.getIsDefault()) {
             contentSectionDescription = getContentSectionDescription(contentSection, getPartyControl().getDefaultLanguage());
@@ -1862,9 +1821,9 @@ public class ContentControl
     }
     
     public List<ContentSectionDescriptionTransfer> getContentSectionDescriptionTransfers(UserVisit userVisit, ContentSection contentSection) {
-        List<ContentSectionDescription> contentSectionDescriptions = getContentSectionDescriptionsByContentSection(contentSection);
+        var contentSectionDescriptions = getContentSectionDescriptionsByContentSection(contentSection);
         List<ContentSectionDescriptionTransfer> contentSectionDescriptionTransfers = new ArrayList<>(contentSectionDescriptions.size());
-        ContentSectionDescriptionTransferCache contentSectionDescriptionTransferCache = getContentTransferCaches(userVisit).getContentSectionDescriptionTransferCache();
+        var contentSectionDescriptionTransferCache = getContentTransferCaches(userVisit).getContentSectionDescriptionTransferCache();
             
         contentSectionDescriptions.forEach((contentSectionDescription) ->
                 contentSectionDescriptionTransfers.add(contentSectionDescriptionTransferCache.getContentSectionDescriptionTransfer(contentSectionDescription))
@@ -1875,14 +1834,14 @@ public class ContentControl
     
     public void updateContentSectionDescriptionFromValue(ContentSectionDescriptionValue contentSectionDescriptionValue, BasePK updatedBy) {
         if(contentSectionDescriptionValue.hasBeenModified()) {
-            ContentSectionDescription contentSectionDescription = ContentSectionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentSectionDescriptionValue.getPrimaryKey());
+            var contentSectionDescription = ContentSectionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentSectionDescriptionValue.getPrimaryKey());
             
             contentSectionDescription.setThruTime(session.START_TIME_LONG);
             contentSectionDescription.store();
-            
-            ContentSection contentSection = contentSectionDescription.getContentSection();
-            Language language = contentSectionDescription.getLanguage();
-            String description = contentSectionDescriptionValue.getDescription();
+
+            var contentSection = contentSectionDescription.getContentSection();
+            var language = contentSectionDescription.getLanguage();
+            var description = contentSectionDescriptionValue.getDescription();
             
             contentSectionDescription = ContentSectionDescriptionFactory.getInstance().create(contentSection, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -1909,19 +1868,19 @@ public class ContentControl
     
     public ContentPage createContentPage(ContentSection contentSection, String contentPageName, ContentPageLayout contentPageLayout, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        boolean defaultFound = getDefaultContentPage(contentSection) != null;
+        var defaultFound = getDefaultContentPage(contentSection) != null;
         
         if(defaultFound && isDefault) {
-            ContentPageDetailValue defaultContentPageDetailValue = getDefaultContentPageDetailValueForUpdate(contentSection);
+            var defaultContentPageDetailValue = getDefaultContentPageDetailValueForUpdate(contentSection);
             
             defaultContentPageDetailValue.setIsDefault(Boolean.FALSE);
             updateContentPageFromValue(defaultContentPageDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ContentPage contentPage = ContentPageFactory.getInstance().create();
-        ContentPageDetail contentPageDetail = ContentPageDetailFactory.getInstance().create(contentPage, contentSection, contentPageName, contentPageLayout, isDefault, sortOrder,
+
+        var contentPage = ContentPageFactory.getInstance().create();
+        var contentPageDetail = ContentPageDetailFactory.getInstance().create(contentPage, contentSection, contentPageName, contentPageLayout, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1962,8 +1921,8 @@ public class ContentControl
                         "ORDER BY cntpdt_sortorder, cntpdt_contentpagename " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentPageFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentPageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentSection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2004,8 +1963,8 @@ public class ContentControl
                         "ORDER BY cntpdt_sortorder, cntpdt_contentpagename " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentPageFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentPageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
 
@@ -2041,8 +2000,8 @@ public class ContentControl
                         "WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_contentpagename = ? AND cntpdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentPageFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentPageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentSection.getPrimaryKey().getEntityId());
             ps.setString(2, contentPageName);
@@ -2088,8 +2047,8 @@ public class ContentControl
                         "WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_isdefault = 1 AND cntpdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentPageFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentPageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentSection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2116,7 +2075,7 @@ public class ContentControl
     
     public List<ContentPageTransfer> getContentPageTransfers(UserVisit userVisit, Collection<ContentPage> contentPages) {
         List<ContentPageTransfer> contentPageTransfers = new ArrayList<>(contentPages.size());
-        ContentPageTransferCache contentPageTransferCache = getContentTransferCaches(userVisit).getContentPageTransferCache();
+        var contentPageTransferCache = getContentTransferCaches(userVisit).getContentPageTransferCache();
             
         contentPages.forEach((contentPage) ->
                 contentPageTransfers.add(contentPageTransferCache.getContentPageTransfer(contentPage))
@@ -2131,27 +2090,27 @@ public class ContentControl
     
     private void updateContentPageFromValue(ContentPageDetailValue contentPageDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(contentPageDetailValue.hasBeenModified()) {
-            ContentPage contentPage = ContentPageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageDetailValue.getContentPagePK());
-            ContentPageDetail contentPageDetail = contentPage.getActiveDetailForUpdate();
+            var contentPage = ContentPageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageDetailValue.getContentPagePK());
+            var contentPageDetail = contentPage.getActiveDetailForUpdate();
 
             contentPageDetail.setThruTime(session.START_TIME_LONG);
             contentPageDetail.store();
 
-            ContentPagePK contentPagePK = contentPage.getPrimaryKey();
-            ContentSection contentSection = contentPageDetail.getContentSection();
-            ContentSectionPK contentSectionPK = contentSection.getPrimaryKey();
-            String contentPageName = contentPageDetailValue.getContentPageName();
-            ContentPageLayoutPK contentPageLayoutPK = contentPageDetailValue.getContentPageLayoutPK();
-            Boolean isDefault = contentPageDetailValue.getIsDefault();
-            Integer sortOrder = contentPageDetailValue.getSortOrder();
+            var contentPagePK = contentPage.getPrimaryKey();
+            var contentSection = contentPageDetail.getContentSection();
+            var contentSectionPK = contentSection.getPrimaryKey();
+            var contentPageName = contentPageDetailValue.getContentPageName();
+            var contentPageLayoutPK = contentPageDetailValue.getContentPageLayoutPK();
+            var isDefault = contentPageDetailValue.getIsDefault();
+            var sortOrder = contentPageDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ContentPage defaultContentPage = getDefaultContentPage(contentSection);
-                boolean defaultFound = defaultContentPage != null && !defaultContentPage.equals(contentPage);
+                var defaultContentPage = getDefaultContentPage(contentSection);
+                var defaultFound = defaultContentPage != null && !defaultContentPage.equals(contentPage);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ContentPageDetailValue defaultContentPageDetailValue = getDefaultContentPageDetailValueForUpdate(contentSection);
+                    var defaultContentPageDetailValue = getDefaultContentPageDetailValueForUpdate(contentSection);
 
                     defaultContentPageDetailValue.setIsDefault(Boolean.FALSE);
                     updateContentPageFromValue(defaultContentPageDetailValue, false, updatedBy);
@@ -2185,20 +2144,20 @@ public class ContentControl
     public void deleteContentPage(ContentPage contentPage, BasePK deletedBy) {
         deleteContentPageAreasByContentPage(contentPage, deletedBy);
         deleteContentPageDescriptionsByContentPage(contentPage, deletedBy);
-        
-        ContentPageDetail contentPageDetail = contentPage.getLastDetailForUpdate();
+
+        var contentPageDetail = contentPage.getLastDetailForUpdate();
         contentPageDetail.setThruTime(session.START_TIME_LONG);
         contentPageDetail.store();
         contentPage.setActiveDetail(null);
-        
-        ContentSection contentSection = contentPageDetail.getContentSection();
-        ContentPage defaultContentPage = getDefaultContentPage(contentSection);
+
+        var contentSection = contentPageDetail.getContentSection();
+        var defaultContentPage = getDefaultContentPage(contentSection);
         if(defaultContentPage == null) {
-            List<ContentPage> contentPages = getContentPagesByContentSectionForUpdate(contentSection);
+            var contentPages = getContentPagesByContentSectionForUpdate(contentSection);
             
             if(!contentPages.isEmpty()) {
                 defaultContentPage = contentPages.iterator().next();
-                ContentPageDetailValue contentPageDetailValue = Objects.requireNonNull(defaultContentPage).getLastDetailForUpdate().getContentPageDetailValue().clone();
+                var contentPageDetailValue = Objects.requireNonNull(defaultContentPage).getLastDetailForUpdate().getContentPageDetailValue().clone();
                 
                 contentPageDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentPageFromValue(contentPageDetailValue, false, deletedBy);
@@ -2225,7 +2184,7 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     
     public ContentPageDescription createContentPageDescription(ContentPage contentPage, Language language, String description, BasePK createdBy) {
-        ContentPageDescription contentPageDescription = ContentPageDescriptionFactory.getInstance().create(contentPage, language, description, session.START_TIME_LONG,
+        var contentPageDescription = ContentPageDescriptionFactory.getInstance().create(contentPage, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(contentPage.getPrimaryKey(), EventTypes.MODIFY, contentPageDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2249,8 +2208,8 @@ public class ContentControl
                         "WHERE cntpd_cntp_contentpageid = ? AND cntpd_lang_languageid = ? AND cntpd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentPageDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentPageDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentPage.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2298,8 +2257,8 @@ public class ContentControl
                         "WHERE cntpd_cntp_contentpageid = ? AND cntpd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentPageDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentPageDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentPage.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2322,7 +2281,7 @@ public class ContentControl
     
     public String getBestContentPageDescription(ContentPage contentPage, Language language) {
         String description;
-        ContentPageDescription contentPageDescription = getContentPageDescription(contentPage, language);
+        var contentPageDescription = getContentPageDescription(contentPage, language);
         
         if(contentPageDescription == null && !language.getIsDefault()) {
             contentPageDescription = getContentPageDescription(contentPage, getPartyControl().getDefaultLanguage());
@@ -2342,9 +2301,9 @@ public class ContentControl
     }
     
     public List<ContentPageDescriptionTransfer> getContentPageDescriptionTransfers(UserVisit userVisit, ContentPage contentPage) {
-        List<ContentPageDescription> contentPageDescriptions = getContentPageDescriptionsByContentPage(contentPage);
+        var contentPageDescriptions = getContentPageDescriptionsByContentPage(contentPage);
         List<ContentPageDescriptionTransfer> contentPageDescriptionTransfers = new ArrayList<>(contentPageDescriptions.size());
-        ContentPageDescriptionTransferCache contentPageDescriptionTransferCache = getContentTransferCaches(userVisit).getContentPageDescriptionTransferCache();
+        var contentPageDescriptionTransferCache = getContentTransferCaches(userVisit).getContentPageDescriptionTransferCache();
         
         contentPageDescriptions.forEach((contentPageDescription) ->
                 contentPageDescriptionTransfers.add(contentPageDescriptionTransferCache.getContentPageDescriptionTransfer(contentPageDescription))
@@ -2355,14 +2314,14 @@ public class ContentControl
     
     public void updateContentPageDescriptionFromValue(ContentPageDescriptionValue contentPageDescriptionValue, BasePK updatedBy) {
         if(contentPageDescriptionValue.hasBeenModified()) {
-            ContentPageDescription contentPageDescription = ContentPageDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageDescriptionValue.getPrimaryKey());
+            var contentPageDescription = ContentPageDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageDescriptionValue.getPrimaryKey());
             
             contentPageDescription.setThruTime(session.START_TIME_LONG);
             contentPageDescription.store();
-            
-            ContentPage contentPage = contentPageDescription.getContentPage();
-            Language language = contentPageDescription.getLanguage();
-            String description = contentPageDescriptionValue.getDescription();
+
+            var contentPage = contentPageDescription.getContentPage();
+            var language = contentPageDescription.getLanguage();
+            var description = contentPageDescriptionValue.getDescription();
             
             contentPageDescription = ContentPageDescriptionFactory.getInstance().create(contentPage, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -2388,8 +2347,8 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     
     public ContentPageArea createContentPageArea(ContentPage contentPage, ContentPageLayoutArea contentPageLayoutArea, Language language, MimeType mimeType, BasePK createdBy) {
-        ContentPageArea contentPageArea = ContentPageAreaFactory.getInstance().create();
-        ContentPageAreaDetail contentPageAreaDetail = ContentPageAreaDetailFactory.getInstance().create(contentPageArea, contentPage, contentPageLayoutArea,
+        var contentPageArea = ContentPageAreaFactory.getInstance().create();
+        var contentPageAreaDetail = ContentPageAreaDetailFactory.getInstance().create(contentPageArea, contentPage, contentPageLayoutArea,
                 language, mimeType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -2421,8 +2380,8 @@ public class ContentControl
                         "WHERE cntpa_contentpageareaid = cntpad_cntpa_contentpageareaid AND cntpad_cntp_contentpageid = ? AND cntpad_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentPageAreaFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentPageAreaFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentPage.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2493,8 +2452,8 @@ public class ContentControl
                         + "AND cntpad_cntp_contentpageid = ? AND cntpad_cntpla_contentpagelayoutareaid = ? AND cntpad_lang_languageid = ? "
                         + "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentPageAreaFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentPageAreaFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentPage.getPrimaryKey().getEntityId());
             ps.setLong(2, contentPageLayoutArea.getPrimaryKey().getEntityId());
@@ -2525,7 +2484,7 @@ public class ContentControl
     }
     
     public ContentPageArea getBestContentPageArea(ContentPage contentPage, ContentPageLayoutArea contentPageLayoutArea, Language language) {
-        ContentPageArea contentPageArea = getContentPageArea(contentPage, contentPageLayoutArea, language);
+        var contentPageArea = getContentPageArea(contentPage, contentPageLayoutArea, language);
         
         if(contentPageArea == null && !language.getIsDefault()) {
             contentPageArea = getContentPageArea(contentPage, contentPageLayoutArea, getPartyControl().getDefaultLanguage());
@@ -2540,7 +2499,7 @@ public class ContentControl
     
     public List<ContentPageAreaTransfer> getContentPageAreaTransfers(UserVisit userVisit, Collection<ContentPageArea> contentPageAreas) {
         List<ContentPageAreaTransfer> contentPageAreaTransfers = new ArrayList<>(contentPageAreas.size());
-        ContentPageAreaTransferCache contentPageAreaTransferCache = getContentTransferCaches(userVisit).getContentPageAreaTransferCache();
+        var contentPageAreaTransferCache = getContentTransferCaches(userVisit).getContentPageAreaTransferCache();
 
         contentPageAreas.forEach((contentPageArea) -> {
             contentPageAreaTransfers.add(contentPageAreaTransferCache.getContentPageAreaTransfer(contentPageArea));
@@ -2559,22 +2518,22 @@ public class ContentControl
     }
     
     public ContentPageAreaDetail updateContentPageAreaFromValue(ContentPageAreaDetailValue contentPageAreaDetailValue, boolean forceUpdate, BasePK updatedBy) {
-        ContentPageAreaDetail contentPageAreaDetail = ContentPageAreaDetailFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageAreaDetailValue.getPrimaryKey());
+        var contentPageAreaDetail = ContentPageAreaDetailFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageAreaDetailValue.getPrimaryKey());
         
         if(forceUpdate || contentPageAreaDetailValue.hasBeenModified()) {
             contentPageAreaDetail.setThruTime(session.START_TIME_LONG);
             contentPageAreaDetail.store();
-            
-            ContentPageAreaPK contentPageAreaPK = contentPageAreaDetail.getContentPageAreaPK();
-            ContentPagePK contentPagePK = contentPageAreaDetail.getContentPagePK();
-            ContentPageLayoutAreaPK contentPageLayoutAreaPK = contentPageAreaDetail.getContentPageLayoutAreaPK();
-            LanguagePK languagePK = contentPageAreaDetail.getLanguagePK();
-            MimeTypePK mimeTypePK = contentPageAreaDetailValue.getMimeTypePK();
+
+            var contentPageAreaPK = contentPageAreaDetail.getContentPageAreaPK();
+            var contentPagePK = contentPageAreaDetail.getContentPagePK();
+            var contentPageLayoutAreaPK = contentPageAreaDetail.getContentPageLayoutAreaPK();
+            var languagePK = contentPageAreaDetail.getLanguagePK();
+            var mimeTypePK = contentPageAreaDetailValue.getMimeTypePK();
             
             contentPageAreaDetail = ContentPageAreaDetailFactory.getInstance().create(contentPageAreaPK, contentPagePK, contentPageLayoutAreaPK,
                     languagePK, mimeTypePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
-            
-            ContentPageArea contentPageArea = ContentPageAreaFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageAreaPK);
+
+            var contentPageArea = ContentPageAreaFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageAreaPK);
             contentPageArea.setActiveDetail(contentPageAreaDetail);
             contentPageArea.setLastDetail(contentPageAreaDetail);
             
@@ -2585,7 +2544,7 @@ public class ContentControl
     }
     
     public void deleteContentPageArea(ContentPageArea contentPageArea, BasePK deletedBy) {
-        ContentPageAreaDetail contentPageAreaDetail = contentPageArea.getLastDetailForUpdate();
+        var contentPageAreaDetail = contentPageArea.getLastDetailForUpdate();
         
         contentPageAreaDetail.setThruTime(session.START_TIME_LONG);
         contentPageArea.setActiveDetail(null);
@@ -2611,7 +2570,7 @@ public class ContentControl
         ContentPageAreaBlob contentPageAreaBlob;
         
         try {
-            PreparedStatement ps = ContentPageAreaBlobFactory.getInstance().prepareStatement(
+            var ps = ContentPageAreaBlobFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM contentpageareablobs " +
                     "WHERE cntpab_cntpad_contentpageareadetailid = ?");
@@ -2638,7 +2597,7 @@ public class ContentControl
         ContentPageAreaClob contentPageAreaClob;
         
         try {
-            PreparedStatement ps = ContentPageAreaClobFactory.getInstance().prepareStatement(
+            var ps = ContentPageAreaClobFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM contentpageareaclobs " +
                     "WHERE cntpac_cntpad_contentpageareadetailid = ?");
@@ -2665,7 +2624,7 @@ public class ContentControl
         ContentPageAreaString contentPageAreaString;
         
         try {
-            PreparedStatement ps = ContentPageAreaStringFactory.getInstance().prepareStatement(
+            var ps = ContentPageAreaStringFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM contentpageareastrings " +
                     "WHERE cntpas_cntpad_contentpageareadetailid = ?");
@@ -2692,7 +2651,7 @@ public class ContentControl
         ContentPageAreaUrl contentPageAreaUrl;
         
         try {
-            PreparedStatement ps = ContentPageAreaUrlFactory.getInstance().prepareStatement(
+            var ps = ContentPageAreaUrlFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM contentpageareaurls " +
                     "WHERE cntpau_cntpad_contentpageareadetailid = ?");
@@ -2713,19 +2672,19 @@ public class ContentControl
     
     public ContentCatalog createContentCatalog(ContentCollection contentCollection, String contentCatalogName,
             OfferUse defaultOfferUse, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        boolean defaultFound = getDefaultContentCatalog(contentCollection) != null;
+        var defaultFound = getDefaultContentCatalog(contentCollection) != null;
         
         if(defaultFound && isDefault) {
-            ContentCatalogDetailValue defaultContentCatalogDetailValue = getDefaultContentCatalogDetailValueForUpdate(contentCollection);
+            var defaultContentCatalogDetailValue = getDefaultContentCatalogDetailValueForUpdate(contentCollection);
             
             defaultContentCatalogDetailValue.setIsDefault(Boolean.FALSE);
             updateContentCatalogFromValue(defaultContentCatalogDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ContentCatalog contentCatalog = ContentCatalogFactory.getInstance().create();
-        ContentCatalogDetail contentCatalogDetail = ContentCatalogDetailFactory.getInstance().create(contentCatalog,
+
+        var contentCatalog = ContentCatalogFactory.getInstance().create();
+        var contentCatalogDetail = ContentCatalogDetailFactory.getInstance().create(contentCatalog,
                 contentCollection, contentCatalogName, defaultOfferUse, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -2790,8 +2749,8 @@ public class ContentControl
                         "ORDER BY cntctdt_sortorder, cntctdt_contentcatalogname " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCatalogFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCatalogFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2830,8 +2789,8 @@ public class ContentControl
                         "AND cntctdt_contentcatalogname = ? AND cntctdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCatalogFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCatalogFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setString(2, contentCatalogName);
@@ -2879,8 +2838,8 @@ public class ContentControl
                         "AND cntctdt_isdefault = 1 AND cntctdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCatalogFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCatalogFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2902,14 +2861,14 @@ public class ContentControl
     }
     
     public ContentCatalogChoicesBean getContentCatalogChoices(ContentCollection contentCollection, String defaultContentCatalogChoice, Language language) {
-        List<ContentCatalog> contentCatalogs = getContentCatalogs(contentCollection);
+        var contentCatalogs = getContentCatalogs(contentCollection);
         var size = contentCatalogs.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         for(var contentCatalog : contentCatalogs) {
-            ContentCatalogDetail contentCatalogDetail = contentCatalog.getLastDetail();
+            var contentCatalogDetail = contentCatalog.getLastDetail();
             
             var label = getBestContentCatalogDescription(contentCatalog, language);
             var value = contentCatalogDetail.getContentCatalogName();
@@ -2931,7 +2890,7 @@ public class ContentControl
     
     public List<ContentCatalogTransfer> getContentCatalogTransfers(UserVisit userVisit, Collection<ContentCatalog> contentCatalogs) {
         List<ContentCatalogTransfer> contentCatalogTransfers = new ArrayList<>(contentCatalogs.size());
-        ContentCatalogTransferCache contentCatalogTransferCache = getContentTransferCaches(userVisit).getContentCatalogTransferCache();
+        var contentCatalogTransferCache = getContentTransferCaches(userVisit).getContentCatalogTransferCache();
 
         contentCatalogs.forEach((contentCatalog) ->
                 contentCatalogTransfers.add(contentCatalogTransferCache.getContentCatalogTransfer(contentCatalog))
@@ -2946,27 +2905,27 @@ public class ContentControl
     
     private void updateContentCatalogFromValue(ContentCatalogDetailValue contentCatalogDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(contentCatalogDetailValue.hasBeenModified()) {
-            ContentCatalog contentCatalog = ContentCatalogFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCatalogDetailValue.getContentCatalogPK());
-            ContentCatalogDetail contentCatalogDetail = contentCatalog.getActiveDetailForUpdate();
+            var contentCatalog = ContentCatalogFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCatalogDetailValue.getContentCatalogPK());
+            var contentCatalogDetail = contentCatalog.getActiveDetailForUpdate();
 
             contentCatalogDetail.setThruTime(session.START_TIME_LONG);
             contentCatalogDetail.store();
 
-            ContentCatalogPK contentCatalogPK = contentCatalogDetail.getContentCatalogPK();
-            ContentCollection contentCollection = contentCatalogDetail.getContentCollection();
-            ContentCollectionPK contentCollectionPK = contentCollection.getPrimaryKey();
-            String contentCatalogName = contentCatalogDetailValue.getContentCatalogName();
-            OfferUsePK defaultOfferUsePK = contentCatalogDetailValue.getDefaultOfferUsePK();
-            Boolean isDefault = contentCatalogDetailValue.getIsDefault();
-            Integer sortOrder = contentCatalogDetailValue.getSortOrder();
+            var contentCatalogPK = contentCatalogDetail.getContentCatalogPK();
+            var contentCollection = contentCatalogDetail.getContentCollection();
+            var contentCollectionPK = contentCollection.getPrimaryKey();
+            var contentCatalogName = contentCatalogDetailValue.getContentCatalogName();
+            var defaultOfferUsePK = contentCatalogDetailValue.getDefaultOfferUsePK();
+            var isDefault = contentCatalogDetailValue.getIsDefault();
+            var sortOrder = contentCatalogDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ContentCatalog defaultContentCatalog = getDefaultContentCatalog(contentCollection);
-                boolean defaultFound = defaultContentCatalog != null && !defaultContentCatalog.equals(contentCatalog);
+                var defaultContentCatalog = getDefaultContentCatalog(contentCollection);
+                var defaultFound = defaultContentCatalog != null && !defaultContentCatalog.equals(contentCatalog);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ContentCatalogDetailValue defaultContentCatalogDetailValue = getDefaultContentCatalogDetailValueForUpdate(contentCollection);
+                    var defaultContentCatalogDetailValue = getDefaultContentCatalogDetailValueForUpdate(contentCollection);
 
                     defaultContentCatalogDetailValue.setIsDefault(Boolean.FALSE);
                     updateContentCatalogFromValue(defaultContentCatalogDetailValue, false, updatedBy);
@@ -2998,20 +2957,20 @@ public class ContentControl
         deleteContentCatalogItemsByContentCatalog(contentCatalog, deletedBy);
         deleteContentCategoriesByContentCatalog(contentCatalog, deletedBy);
         deleteContentCatalogDescriptionsByContentCatalog(contentCatalog, deletedBy);
-        
-        ContentCatalogDetail contentCatalogDetail = contentCatalog.getLastDetailForUpdate();
+
+        var contentCatalogDetail = contentCatalog.getLastDetailForUpdate();
         contentCatalogDetail.setThruTime(session.START_TIME_LONG);
         contentCatalogDetail.store();
         contentCatalog.setActiveDetail(null);
-        
-        ContentCollection contentCollection = contentCatalogDetail.getContentCollection();
-        ContentCatalog defaultContentCatalog = getDefaultContentCatalog(contentCollection);
+
+        var contentCollection = contentCatalogDetail.getContentCollection();
+        var defaultContentCatalog = getDefaultContentCatalog(contentCollection);
         if(defaultContentCatalog == null) {
-            List<ContentCatalog> contentCatalogs = getContentCatalogsForUpdate(contentCollection);
+            var contentCatalogs = getContentCatalogsForUpdate(contentCollection);
             
             if(!contentCatalogs.isEmpty()) {
                 defaultContentCatalog = contentCatalogs.iterator().next();
-                ContentCatalogDetailValue contentCatalogDetailValue = Objects.requireNonNull(defaultContentCatalog).getLastDetailForUpdate().getContentCatalogDetailValue().clone();
+                var contentCatalogDetailValue = Objects.requireNonNull(defaultContentCatalog).getLastDetailForUpdate().getContentCatalogDetailValue().clone();
                 
                 contentCatalogDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentCatalogFromValue(contentCatalogDetailValue, false, deletedBy);
@@ -3032,8 +2991,8 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     
     public ContentCatalogDescription createContentCatalogDescription(ContentCatalog contentCatalog, Language language, String description, BasePK createdBy) {
-        
-        ContentCatalogDescription contentCatalogDescription = ContentCatalogDescriptionFactory.getInstance().create(contentCatalog, language, description, session.START_TIME_LONG,
+
+        var contentCatalogDescription = ContentCatalogDescriptionFactory.getInstance().create(contentCatalog, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(contentCatalog.getPrimaryKey(), EventTypes.MODIFY, contentCatalogDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3057,8 +3016,8 @@ public class ContentControl
                         "WHERE cntctd_cntct_contentcatalogid = ? AND cntctd_lang_languageid = ? AND cntctd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCatalogDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCatalogDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -3106,8 +3065,8 @@ public class ContentControl
                         "WHERE cntctd_cntct_contentcatalogid = ? AND cntctd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCatalogDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCatalogDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3130,7 +3089,7 @@ public class ContentControl
     
     public String getBestContentCatalogDescription(ContentCatalog contentCatalog, Language language) {
         String description;
-        ContentCatalogDescription contentCatalogDescription = getContentCatalogDescription(contentCatalog, language);
+        var contentCatalogDescription = getContentCatalogDescription(contentCatalog, language);
         
         if(contentCatalogDescription == null && !language.getIsDefault()) {
             contentCatalogDescription = getContentCatalogDescription(contentCatalog, getPartyControl().getDefaultLanguage());
@@ -3150,9 +3109,9 @@ public class ContentControl
     }
     
     public List<ContentCatalogDescriptionTransfer> getContentCatalogDescriptionTransfers(UserVisit userVisit, ContentCatalog contentCatalog) {
-        List<ContentCatalogDescription> contentCatalogDescriptions = getContentCatalogDescriptionsByContentCatalog(contentCatalog);
+        var contentCatalogDescriptions = getContentCatalogDescriptionsByContentCatalog(contentCatalog);
         List<ContentCatalogDescriptionTransfer> contentCatalogDescriptionTransfers = new ArrayList<>(contentCatalogDescriptions.size());
-        ContentCatalogDescriptionTransferCache contentCatalogDescriptionTransferCache = getContentTransferCaches(userVisit).getContentCatalogDescriptionTransferCache();
+        var contentCatalogDescriptionTransferCache = getContentTransferCaches(userVisit).getContentCatalogDescriptionTransferCache();
 
         contentCatalogDescriptions.forEach((contentCatalogDescription) ->
                 contentCatalogDescriptionTransfers.add(contentCatalogDescriptionTransferCache.getContentCatalogDescriptionTransfer(contentCatalogDescription))
@@ -3163,14 +3122,14 @@ public class ContentControl
     
     public void updateContentCatalogDescriptionFromValue(ContentCatalogDescriptionValue contentCatalogDescriptionValue, BasePK updatedBy) {
         if(contentCatalogDescriptionValue.hasBeenModified()) {
-            ContentCatalogDescription contentCatalogDescription = ContentCatalogDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCatalogDescriptionValue.getPrimaryKey());
+            var contentCatalogDescription = ContentCatalogDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCatalogDescriptionValue.getPrimaryKey());
             
             contentCatalogDescription.setThruTime(session.START_TIME_LONG);
             contentCatalogDescription.store();
-            
-            ContentCatalog contentCatalog = contentCatalogDescription.getContentCatalog();
-            Language language = contentCatalogDescription.getLanguage();
-            String description = contentCatalogDescriptionValue.getDescription();
+
+            var contentCatalog = contentCatalogDescription.getContentCatalog();
+            var language = contentCatalogDescription.getLanguage();
+            var description = contentCatalogDescriptionValue.getDescription();
             
             contentCatalogDescription = ContentCatalogDescriptionFactory.getInstance().create(contentCatalog, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -3197,7 +3156,7 @@ public class ContentControl
     
     public ContentCatalogItem createContentCatalogItem(ContentCatalog contentCatalog, Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, Currency currency, BasePK createdBy) {
-        ContentCatalogItem contentCatalogItem = ContentCatalogItemFactory.getInstance().create(contentCatalog, item,
+        var contentCatalogItem = ContentCatalogItemFactory.getInstance().create(contentCatalog, item,
                 inventoryCondition, unitOfMeasureType, currency, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
@@ -3229,7 +3188,7 @@ public class ContentControl
     }
 
     private List<ContentCatalogItem> getContentCatalogItemsByContentCatalog(ContentCatalog contentCatalog, EntityPermission entityPermission) {
-        List<ContentCatalogItem> contentCatalogItems = null;
+        List<ContentCatalogItem> contentCatalogItems;
 
         try {
             String query = null;
@@ -3252,7 +3211,7 @@ public class ContentControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
+            var ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3275,7 +3234,7 @@ public class ContentControl
 
     private List<ContentCatalogItem> getContentCatalogItemsByContentCatalogAndItem(ContentCatalog contentCatalog, Item item,
             EntityPermission entityPermission) {
-        List<ContentCatalogItem> contentCatalogItems = null;
+        List<ContentCatalogItem> contentCatalogItems;
 
         try {
             String query = null;
@@ -3296,7 +3255,7 @@ public class ContentControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
+            var ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
             ps.setLong(2, item.getPrimaryKey().getEntityId());
@@ -3343,8 +3302,8 @@ public class ContentControl
                         "WHERE cntcti_itm_itemid = ? AND cntcti_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3390,8 +3349,8 @@ public class ContentControl
                         "WHERE cntcti_invcon_inventoryconditionid = ? AND cntcti_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3437,8 +3396,8 @@ public class ContentControl
                         "WHERE cntcti_uomt_unitofmeasuretypeid = ? AND cntcti_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3478,8 +3437,8 @@ public class ContentControl
                         "AND cntcti_cur_currencyid = ? AND cntcti_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
             ps.setLong(2, item.getPrimaryKey().getEntityId());
@@ -3508,7 +3467,7 @@ public class ContentControl
     
     public List<ContentCatalogItemTransfer> getContentCatalogItemTransfers(UserVisit userVisit, Collection<ContentCatalogItem> contentCatalogItems) {
         List<ContentCatalogItemTransfer> contentCatalogItemTransfers = new ArrayList<>(contentCatalogItems.size());
-        ContentCatalogItemTransferCache contentCatalogItemTransferCache = getContentTransferCaches(userVisit).getContentCatalogItemTransferCache();
+        var contentCatalogItemTransferCache = getContentTransferCaches(userVisit).getContentCatalogItemTransferCache();
 
         contentCatalogItems.forEach((contentCatalogItem) ->
                 contentCatalogItemTransfers.add(contentCatalogItemTransferCache.getContentCatalogItemTransfer(contentCatalogItem))
@@ -3526,19 +3485,19 @@ public class ContentControl
     }
     
     public void deleteContentCatalogItem(ContentCatalogItem contentCatalogItem, BasePK deletedBy) {
-        Item item = contentCatalogItem.getItem();
-        String itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
+        var item = contentCatalogItem.getItem();
+        var itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
 
         deleteContentCategoryItemsByContentCatalogItem(contentCatalogItem, deletedBy);
 
         if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
-            ContentCatalogItemFixedPrice contentCatalogItemFixedPrice = getContentCatalogItemFixedPriceForUpdate(contentCatalogItem);
+            var contentCatalogItemFixedPrice = getContentCatalogItemFixedPriceForUpdate(contentCatalogItem);
             
             if(contentCatalogItemFixedPrice != null) {
                 deleteContentCatalogItemFixedPrice(contentCatalogItemFixedPrice, deletedBy);
             }
         } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
-            ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = getContentCatalogItemVariablePriceForUpdate(contentCatalogItem);
+            var contentCatalogItemVariablePrice = getContentCatalogItemVariablePriceForUpdate(contentCatalogItem);
 
             if(contentCatalogItemVariablePrice != null) {
                 deleteContentCatalogItemVariablePrice(contentCatalogItemVariablePrice, deletedBy);
@@ -3579,7 +3538,7 @@ public class ContentControl
 
     public ContentCatalogItemFixedPrice createContentCatalogItemFixedPrice(ContentCatalogItem contentCatalogItem, Long unitPrice,
             BasePK createdBy) {
-        ContentCatalogItemFixedPrice contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().create(session,
+        var contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().create(session,
                 contentCatalogItem, unitPrice, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.MODIFY, contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3593,7 +3552,7 @@ public class ContentControl
     }
 
     private ContentCatalogItemFixedPrice getContentCatalogItemFixedPrice(ContentCatalogItem contentCatalogItem, EntityPermission entityPermission) {
-        ContentCatalogItemFixedPrice contentCatalogItemFixedPrice = null;
+        ContentCatalogItemFixedPrice contentCatalogItemFixedPrice;
 
         try {
             String query = null;
@@ -3609,7 +3568,7 @@ public class ContentControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ContentCatalogItemFixedPriceFactory.getInstance().prepareStatement(query);
+            var ps = ContentCatalogItemFixedPriceFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, contentCatalogItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3640,14 +3599,14 @@ public class ContentControl
 
     public void updateContentCatalogItemFixedPriceFromValue(ContentCatalogItemFixedPriceValue contentCatalogItemFixedPriceValue, BasePK updatedBy) {
         if(contentCatalogItemFixedPriceValue.hasBeenModified()) {
-            ContentCatalogItemFixedPrice contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      contentCatalogItemFixedPriceValue.getPrimaryKey());
 
             contentCatalogItemFixedPrice.setThruTime(session.START_TIME_LONG);
             contentCatalogItemFixedPrice.store();
 
-            ContentCatalogItemPK contentCatalogItemPK = contentCatalogItemFixedPrice.getContentCatalogItemPK();
-            Long unitPrice = contentCatalogItemFixedPriceValue.getUnitPrice();
+            var contentCatalogItemPK = contentCatalogItemFixedPrice.getContentCatalogItemPK();
+            var unitPrice = contentCatalogItemFixedPriceValue.getUnitPrice();
 
             contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().create(contentCatalogItemPK,
                     unitPrice, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3669,7 +3628,7 @@ public class ContentControl
 
     public ContentCatalogItemVariablePrice createContentCatalogItemVariablePrice(ContentCatalogItem contentCatalogItem, Long minimumUnitPrice,
             Long maximumUnitPrice, Long unitPriceIncrement, BasePK createdBy) {
-        ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().create(session,
+        var contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().create(session,
                 contentCatalogItem, minimumUnitPrice, maximumUnitPrice, unitPriceIncrement, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.MODIFY, contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3683,7 +3642,7 @@ public class ContentControl
     }
 
     private ContentCatalogItemVariablePrice getContentCatalogItemVariablePrice(ContentCatalogItem contentCatalogItem, EntityPermission entityPermission) {
-        ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = null;
+        ContentCatalogItemVariablePrice contentCatalogItemVariablePrice;
 
         try {
             String query = null;
@@ -3699,7 +3658,7 @@ public class ContentControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ContentCatalogItemVariablePriceFactory.getInstance().prepareStatement(query);
+            var ps = ContentCatalogItemVariablePriceFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, contentCatalogItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3730,16 +3689,16 @@ public class ContentControl
 
     public void updateContentCatalogItemVariablePriceFromValue(ContentCatalogItemVariablePriceValue contentCatalogItemVariablePriceValue, BasePK updatedBy) {
         if(contentCatalogItemVariablePriceValue.hasBeenModified()) {
-            ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      contentCatalogItemVariablePriceValue.getPrimaryKey());
 
             contentCatalogItemVariablePrice.setThruTime(session.START_TIME_LONG);
             contentCatalogItemVariablePrice.store();
 
-            ContentCatalogItemPK contentCatalogItemPK = contentCatalogItemVariablePrice.getContentCatalogItemPK();
-            Long maximumUnitPrice = contentCatalogItemVariablePriceValue.getMaximumUnitPrice();
-            Long minimumUnitPrice = contentCatalogItemVariablePriceValue.getMinimumUnitPrice();
-            Long unitPriceIncrement = contentCatalogItemVariablePriceValue.getUnitPriceIncrement();
+            var contentCatalogItemPK = contentCatalogItemVariablePrice.getContentCatalogItemPK();
+            var maximumUnitPrice = contentCatalogItemVariablePriceValue.getMaximumUnitPrice();
+            var minimumUnitPrice = contentCatalogItemVariablePriceValue.getMinimumUnitPrice();
+            var unitPriceIncrement = contentCatalogItemVariablePriceValue.getUnitPriceIncrement();
 
             contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().create(contentCatalogItemPK, maximumUnitPrice,
                     minimumUnitPrice, unitPriceIncrement, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -3762,8 +3721,8 @@ public class ContentControl
     public ContentCategory createContentCategory(ContentCatalog contentCatalog, String contentCategoryName,
             ContentCategory parentContentCategory, OfferUse defaultOfferUse, Selector itemSelector, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        ContentCategory defaultContentCategory = getDefaultContentCategory(contentCatalog);
-        boolean defaultFound = defaultContentCategory != null;
+        var defaultContentCategory = getDefaultContentCategory(contentCatalog);
+        var defaultFound = defaultContentCategory != null;
         
         if(defaultFound) {
             if(defaultContentCategory.getLastDetail().getContentCategoryName().equals(ContentCategories.ROOT.toString()))
@@ -3771,16 +3730,16 @@ public class ContentControl
         }
         
         if(defaultFound && isDefault) {
-            ContentCategoryDetailValue defaultContentCategoryDetailValue = getDefaultContentCategoryDetailValueForUpdate(contentCatalog);
+            var defaultContentCategoryDetailValue = getDefaultContentCategoryDetailValueForUpdate(contentCatalog);
             
             defaultContentCategoryDetailValue.setIsDefault(Boolean.FALSE);
             updateContentCategoryFromValue(defaultContentCategoryDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ContentCategory contentCategory = ContentCategoryFactory.getInstance().create();
-        ContentCategoryDetail contentCategoryDetail = ContentCategoryDetailFactory.getInstance().create(contentCategory,
+
+        var contentCategory = ContentCategoryFactory.getInstance().create();
+        var contentCategoryDetail = ContentCategoryDetailFactory.getInstance().create(contentCategory,
                 contentCatalog, contentCategoryName, parentContentCategory, defaultOfferUse, itemSelector, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -3860,8 +3819,8 @@ public class ContentControl
                         "ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCategoryFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCategoryFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
             
@@ -3882,7 +3841,7 @@ public class ContentControl
     }
     
     private List<ContentCategory> getContentCategoriesByParentContentCategory(ContentCategory parentContentCategory, EntityPermission entityPermission) {
-        List<ContentCategory> contentCategories = null;
+        List<ContentCategory> contentCategories;
 
         try {
             String query = null;
@@ -3901,7 +3860,7 @@ public class ContentControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = ContentCategoryFactory.getInstance().prepareStatement(query);
+            var ps = ContentCategoryFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, parentContentCategory.getPrimaryKey().getEntityId());
 
@@ -4007,8 +3966,8 @@ public class ContentControl
                         "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ? AND cntcgdt_contentcategoryname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCategoryFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCategoryFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
             ps.setString(2, contentCategoryName);
@@ -4053,8 +4012,8 @@ public class ContentControl
                         "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ? AND cntcgdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCategoryFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCategoryFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
             
@@ -4075,7 +4034,7 @@ public class ContentControl
     }
     
     public ContentCategoryChoicesBean getContentCategoryChoices(ContentCatalog contentCatalog, String defaultContentCategoryChoice, Language language, boolean allowNullChoice) {
-        List<ContentCategory> contentCategorys = getContentCategories(contentCatalog);
+        var contentCategorys = getContentCategories(contentCatalog);
         var size = contentCategorys.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -4091,7 +4050,7 @@ public class ContentControl
         }
         
         for(var contentCategory : contentCategorys) {
-            ContentCategoryDetail contentCategoryDetail = contentCategory.getLastDetail();
+            var contentCategoryDetail = contentCategory.getLastDetail();
             var value = contentCategoryDetail.getContentCategoryName();
             
             if(!value.equals(ContentCategories.ROOT.toString())) {
@@ -4112,7 +4071,7 @@ public class ContentControl
     
     public List<ContentCategoryTransfer> getContentCategoryTransfers(UserVisit userVisit, Collection<ContentCategory> contentCategories) {
         List<ContentCategoryTransfer> contentCategoryTransfers = new ArrayList<>(contentCategories.size());
-        ContentCategoryTransferCache contentCategoryTransferCache = getContentTransferCaches(userVisit).getContentCategoryTransferCache();
+        var contentCategoryTransferCache = getContentTransferCaches(userVisit).getContentCategoryTransferCache();
 
         contentCategories.forEach((contentCategory) ->
                 contentCategoryTransfers.add(contentCategoryTransferCache.getContentCategoryTransfer(contentCategory))
@@ -4134,7 +4093,7 @@ public class ContentControl
     }
     
     public boolean isParentContentCategorySafe(ContentCategory contentCategory, ContentCategory parentContentCategory) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentContentCategory != null) {
             Set<ContentCategory> parentItemPurchasingCategories = new HashSet<>();
@@ -4156,29 +4115,29 @@ public class ContentControl
     
     private void updateContentCategoryFromValue(ContentCategoryDetailValue contentCategoryDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(contentCategoryDetailValue.hasBeenModified()) {
-            ContentCategory contentCategory = ContentCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCategoryDetailValue.getContentCategoryPK());
-            ContentCategoryDetail contentCategoryDetail = contentCategory.getActiveDetailForUpdate();
+            var contentCategory = ContentCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCategoryDetailValue.getContentCategoryPK());
+            var contentCategoryDetail = contentCategory.getActiveDetailForUpdate();
 
             contentCategoryDetail.setThruTime(session.START_TIME_LONG);
             contentCategoryDetail.store();
 
-            ContentCategoryPK contentCategoryPK = contentCategoryDetail.getContentCategoryPK();
-            ContentCatalogPK contentCatalogPK = contentCategoryDetail.getContentCatalogPK();
-            String contentCategoryName = contentCategoryDetailValue.getContentCategoryName();
-            ContentCategoryPK parentContentCategoryPK = contentCategoryDetailValue.getParentContentCategoryPK();
-            OfferUsePK defaultOfferUsePK = contentCategoryDetailValue.getDefaultOfferUsePK();
-            SelectorPK itemSelectorPK = contentCategoryDetailValue.getContentCategoryItemSelectorPK();
-            Boolean isDefault = contentCategoryDetailValue.getIsDefault();
-            Integer sortOrder = contentCategoryDetailValue.getSortOrder();
+            var contentCategoryPK = contentCategoryDetail.getContentCategoryPK();
+            var contentCatalogPK = contentCategoryDetail.getContentCatalogPK();
+            var contentCategoryName = contentCategoryDetailValue.getContentCategoryName();
+            var parentContentCategoryPK = contentCategoryDetailValue.getParentContentCategoryPK();
+            var defaultOfferUsePK = contentCategoryDetailValue.getDefaultOfferUsePK();
+            var itemSelectorPK = contentCategoryDetailValue.getContentCategoryItemSelectorPK();
+            var isDefault = contentCategoryDetailValue.getIsDefault();
+            var sortOrder = contentCategoryDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ContentCatalog contentCatalog = contentCategoryDetail.getContentCatalog();
-                ContentCategory defaultContentCategory = getDefaultContentCategory(contentCatalog);
-                boolean defaultFound = defaultContentCategory != null && !defaultContentCategory.equals(contentCategory);
+                var contentCatalog = contentCategoryDetail.getContentCatalog();
+                var defaultContentCategory = getDefaultContentCategory(contentCatalog);
+                var defaultFound = defaultContentCategory != null && !defaultContentCategory.equals(contentCategory);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ContentCategoryDetailValue defaultContentCategoryDetailValue = getDefaultContentCategoryDetailValueForUpdate(contentCatalog);
+                    var defaultContentCategoryDetailValue = getDefaultContentCategoryDetailValueForUpdate(contentCatalog);
 
                     defaultContentCategoryDetailValue.setIsDefault(Boolean.FALSE);
                     updateContentCategoryFromValue(defaultContentCategoryDetailValue, false, updatedBy);
@@ -4217,19 +4176,19 @@ public class ContentControl
         
         deleteContentCategoryItemsByContentCategory(contentCategory, deletedBy);
         deleteContentCategoryDescriptionsByContentCategory(contentCategory, deletedBy);
-        
-        ContentCategoryDetail contentCategoryDetail = contentCategory.getLastDetailForUpdate();
+
+        var contentCategoryDetail = contentCategory.getLastDetailForUpdate();
         contentCategoryDetail.setThruTime(session.START_TIME_LONG);
         contentCategory.setActiveDetail(null);
         contentCategory.store();
         
         // Check for default, and pick one if necessary
-        ContentCatalog contentCatalog = contentCategoryDetail.getContentCatalog();
-        ContentCategory defaultContentCategory = getDefaultContentCategory(contentCatalog);
+        var contentCatalog = contentCategoryDetail.getContentCatalog();
+        var defaultContentCategory = getDefaultContentCategory(contentCatalog);
         if(defaultContentCategory == null) {
             // Try and find a new default from sections on the same level as the one that was deleted
-            ContentCategory parentContentCategory = contentCategoryDetail.getParentContentCategory();
-            List<ContentCategory> contentCategories = parentContentCategory == null? null: getContentCategoriesByParentContentCategoryForUpdate(parentContentCategory);
+            var parentContentCategory = contentCategoryDetail.getParentContentCategory();
+            var contentCategories = parentContentCategory == null? null: getContentCategoriesByParentContentCategoryForUpdate(parentContentCategory);
             
             // If that failed, pick one from the current collection
             if(contentCategories == null || contentCategories.isEmpty()) {
@@ -4237,12 +4196,12 @@ public class ContentControl
             }
             
             if(!contentCategories.isEmpty()) {
-                for(Iterator<ContentCategory> iter = contentCategories.iterator(); iter.hasNext();) {
+                for(var iter = contentCategories.iterator(); iter.hasNext();) {
                     defaultContentCategory = iter.next();
                     if(!defaultContentCategory.getLastDetail().getContentCategoryName().equals(ContentCategories.ROOT.toString()))
                         break;
                 }
-                ContentCategoryDetailValue contentCategoryDetailValue = Objects.requireNonNull(defaultContentCategory).getLastDetailForUpdate().getContentCategoryDetailValue().clone();
+                var contentCategoryDetailValue = Objects.requireNonNull(defaultContentCategory).getLastDetailForUpdate().getContentCategoryDetailValue().clone();
                 
                 contentCategoryDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentCategoryFromValue(contentCategoryDetailValue, false, deletedBy);
@@ -4268,8 +4227,8 @@ public class ContentControl
     
     public ContentCategoryDescription createContentCategoryDescription(ContentCategory contentCategory, Language language,
             String description, BasePK createdBy) {
-        
-        ContentCategoryDescription contentCategoryDescription = ContentCategoryDescriptionFactory.getInstance().create(session,
+
+        var contentCategoryDescription = ContentCategoryDescriptionFactory.getInstance().create(session,
                 contentCategory, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -4295,8 +4254,8 @@ public class ContentControl
                         "WHERE cntcgd_cntcg_contentcategoryid = ? AND cntcgd_lang_languageid = ? AND cntcgd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCategoryDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCategoryDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -4344,8 +4303,8 @@ public class ContentControl
                         "WHERE cntcgd_cntcg_contentcategoryid = ? AND cntcgd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCategoryDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCategoryDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4368,7 +4327,7 @@ public class ContentControl
     
     public String getBestContentCategoryDescription(ContentCategory contentCategory, Language language) {
         String description;
-        ContentCategoryDescription contentCategoryDescription = getContentCategoryDescription(contentCategory, language);
+        var contentCategoryDescription = getContentCategoryDescription(contentCategory, language);
         
         if(contentCategoryDescription == null && !language.getIsDefault()) {
             contentCategoryDescription = getContentCategoryDescription(contentCategory, getPartyControl().getDefaultLanguage());
@@ -4388,9 +4347,9 @@ public class ContentControl
     }
     
     public List<ContentCategoryDescriptionTransfer> getContentCategoryDescriptionTransfers(UserVisit userVisit, ContentCategory contentCategory) {
-        List<ContentCategoryDescription> contentCategoryDescriptions = getContentCategoryDescriptionsByContentCategory(contentCategory);
+        var contentCategoryDescriptions = getContentCategoryDescriptionsByContentCategory(contentCategory);
         List<ContentCategoryDescriptionTransfer> contentCategoryDescriptionTransfers = new ArrayList<>(contentCategoryDescriptions.size());
-        ContentCategoryDescriptionTransferCache contentCategoryDescriptionTransferCache = getContentTransferCaches(userVisit).getContentCategoryDescriptionTransferCache();
+        var contentCategoryDescriptionTransferCache = getContentTransferCaches(userVisit).getContentCategoryDescriptionTransferCache();
 
         contentCategoryDescriptions.forEach((contentCategoryDescription) ->
                 contentCategoryDescriptionTransfers.add(contentCategoryDescriptionTransferCache.getContentCategoryDescriptionTransfer(contentCategoryDescription))
@@ -4401,14 +4360,14 @@ public class ContentControl
     
     public void updateContentCategoryDescriptionFromValue(ContentCategoryDescriptionValue contentCategoryDescriptionValue, BasePK updatedBy) {
         if(contentCategoryDescriptionValue.hasBeenModified()) {
-            ContentCategoryDescription contentCategoryDescription = ContentCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCategoryDescriptionValue.getPrimaryKey());
+            var contentCategoryDescription = ContentCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCategoryDescriptionValue.getPrimaryKey());
             
             contentCategoryDescription.setThruTime(session.START_TIME_LONG);
             contentCategoryDescription.store();
-            
-            ContentCategory contentCategory = contentCategoryDescription.getContentCategory();
-            Language language = contentCategoryDescription.getLanguage();
-            String description = contentCategoryDescriptionValue.getDescription();
+
+            var contentCategory = contentCategoryDescription.getContentCategory();
+            var language = contentCategoryDescription.getLanguage();
+            var description = contentCategoryDescriptionValue.getDescription();
             
             contentCategoryDescription = ContentCategoryDescriptionFactory.getInstance().create(contentCategory, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -4436,19 +4395,19 @@ public class ContentControl
     /** Use the function in ContentLogic instead. */
     public ContentCategoryItem createContentCategoryItem(ContentCategory contentCategory, ContentCatalogItem contentCatalogItem,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ContentCategoryItem defaultContentCategoryItem = getDefaultContentCategoryItem(contentCatalogItem);
-        boolean defaultFound = defaultContentCategoryItem != null;
+        var defaultContentCategoryItem = getDefaultContentCategoryItem(contentCatalogItem);
+        var defaultFound = defaultContentCategoryItem != null;
         
         if(defaultFound && isDefault) {
-            ContentCategoryItemValue defaultContentCategoryItemValue = getDefaultContentCategoryItemValueForUpdate(contentCatalogItem);
+            var defaultContentCategoryItemValue = getDefaultContentCategoryItemValueForUpdate(contentCatalogItem);
             
             defaultContentCategoryItemValue.setIsDefault(Boolean.FALSE);
             updateContentCategoryItemFromValue(defaultContentCategoryItemValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ContentCategoryItem contentCategoryItem = ContentCategoryItemFactory.getInstance().create(session,
+
+        var contentCategoryItem = ContentCategoryItemFactory.getInstance().create(session,
                 contentCategory, contentCatalogItem, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -4482,8 +4441,8 @@ public class ContentControl
                         "WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCategoryItemFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCategoryItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, contentCatalogItem.getPrimaryKey().getEntityId());
@@ -4529,8 +4488,8 @@ public class ContentControl
                         "WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_isdefault = 1 AND cntcgi_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCategoryItemFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCategoryItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCatalogItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4552,7 +4511,7 @@ public class ContentControl
     }
     
     public ContentCategoryItemValue getDefaultContentCategoryItemValueForUpdate(ContentCatalogItem contentCatalogItem) {
-        ContentCategoryItem contentCategoryItem = getDefaultContentCategoryItemForUpdate(contentCatalogItem);
+        var contentCategoryItem = getDefaultContentCategoryItemForUpdate(contentCatalogItem);
         
         return contentCategoryItem == null? null: contentCategoryItem.getContentCategoryItemValue().clone();
     }
@@ -4582,8 +4541,8 @@ public class ContentControl
                         "WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCategoryItemFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCategoryItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4623,8 +4582,8 @@ public class ContentControl
                         "WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentCategoryItemFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentCategoryItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCatalogItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4651,7 +4610,7 @@ public class ContentControl
     
     public List<ContentCategoryItemTransfer> getContentCategoryItemTransfers(UserVisit userVisit, Collection<ContentCategoryItem> contentCategoryItems) {
         List<ContentCategoryItemTransfer> contentCategoryItemTransfers = new ArrayList<>(contentCategoryItems.size());
-        ContentCategoryItemTransferCache contentCategoryItemTransferCache = getContentTransferCaches(userVisit).getContentCategoryItemTransferCache();
+        var contentCategoryItemTransferCache = getContentTransferCaches(userVisit).getContentCategoryItemTransferCache();
         
         contentCategoryItems.forEach((contentCategoryItem) ->
                 contentCategoryItemTransfers.add(contentCategoryItemTransferCache.getContentCategoryItemTransfer(contentCategoryItem))
@@ -4674,25 +4633,25 @@ public class ContentControl
 
     private void updateContentCategoryItemFromValue(ContentCategoryItemValue contentCategoryItemValue, boolean checkDefault, BasePK updatedBy) {
         if(contentCategoryItemValue.hasBeenModified()) {
-            ContentCategoryItem contentCategoryItem = ContentCategoryItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contentCategoryItem = ContentCategoryItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      contentCategoryItemValue.getPrimaryKey());
             
             contentCategoryItem.setThruTime(session.START_TIME_LONG);
             contentCategoryItem.store();
-            
-            ContentCategoryPK contentCategoryPK = contentCategoryItem.getContentCategoryPK(); // Not Updated
-            ContentCatalogItem contentCatalogItem = contentCategoryItem.getContentCatalogItem(); // Not Updated
-            ContentCatalogItemPK contentCatalogItemPK = contentCategoryItem.getContentCatalogItemPK(); // Not Updated
-            Boolean isDefault = contentCategoryItemValue.getIsDefault();
-            Integer sortOrder = contentCategoryItemValue.getSortOrder();
+
+            var contentCategoryPK = contentCategoryItem.getContentCategoryPK(); // Not Updated
+            var contentCatalogItem = contentCategoryItem.getContentCatalogItem(); // Not Updated
+            var contentCatalogItemPK = contentCategoryItem.getContentCatalogItemPK(); // Not Updated
+            var isDefault = contentCategoryItemValue.getIsDefault();
+            var sortOrder = contentCategoryItemValue.getSortOrder();
             
             if(checkDefault) {
-                ContentCategoryItem defaultContentCategoryItem = getDefaultContentCategoryItem(contentCatalogItem);
-                boolean defaultFound = defaultContentCategoryItem != null && !defaultContentCategoryItem.equals(contentCategoryItem);
+                var defaultContentCategoryItem = getDefaultContentCategoryItem(contentCatalogItem);
+                var defaultFound = defaultContentCategoryItem != null && !defaultContentCategoryItem.equals(contentCategoryItem);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ContentCategoryItemValue defaultContentCategoryItemValue = getDefaultContentCategoryItemValueForUpdate(contentCatalogItem);
+                    var defaultContentCategoryItemValue = getDefaultContentCategoryItemValueForUpdate(contentCatalogItem);
                     
                     defaultContentCategoryItemValue.setIsDefault(Boolean.FALSE);
                     updateContentCategoryItemFromValue(defaultContentCategoryItemValue, false, updatedBy);
@@ -4716,23 +4675,23 @@ public class ContentControl
     
     /** Use the function in ContentLogic instead. */
     private void deleteContentCategoryItem(ContentCategoryItem contentCategoryItem, boolean checkDefault, BasePK deletedBy) {
-        ContentCatalogItem contentCatalogItem = contentCategoryItem.getContentCatalogItemForUpdate();
+        var contentCatalogItem = contentCategoryItem.getContentCatalogItemForUpdate();
         
         contentCategoryItem.setThruTime(session.START_TIME_LONG);
         contentCategoryItem.store();
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            ContentCategoryItem defaultContentCategoryItem = getDefaultContentCategoryItem(contentCatalogItem);
+            var defaultContentCategoryItem = getDefaultContentCategoryItem(contentCatalogItem);
             if(defaultContentCategoryItem == null) {
-                List<ContentCategoryItem> contentCategoryItems = getContentCategoryItemsByContentCatalogItemForUpdate(contentCatalogItem);
+                var contentCategoryItems = getContentCategoryItemsByContentCatalogItemForUpdate(contentCatalogItem);
 
                 if(!contentCategoryItems.isEmpty()) {
-                    Iterator<ContentCategoryItem> iter = contentCategoryItems.iterator();
+                    var iter = contentCategoryItems.iterator();
                     if(iter.hasNext()) {
                         defaultContentCategoryItem = iter.next();
                     }
-                    ContentCategoryItemValue contentCategoryItemValue = defaultContentCategoryItem.getContentCategoryItemValue().clone();
+                    var contentCategoryItemValue = defaultContentCategoryItem.getContentCategoryItemValue().clone();
 
                     contentCategoryItemValue.setIsDefault(Boolean.TRUE);
                     updateContentCategoryItemFromValue(contentCategoryItemValue, false, deletedBy);
@@ -4764,20 +4723,20 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     
     public ContentForum createContentForum(ContentCollection contentCollection, Forum forum, Boolean isDefault, BasePK createdBy) {
-        ContentForum defaultContentForum = getDefaultContentForum(contentCollection);
-        boolean defaultFound = defaultContentForum != null;
+        var defaultContentForum = getDefaultContentForum(contentCollection);
+        var defaultFound = defaultContentForum != null;
         
         if(defaultFound && isDefault) {
-            ContentForumDetailValue defaultContentForumDetailValue = getDefaultContentForumDetailValueForUpdate(contentCollection);
+            var defaultContentForumDetailValue = getDefaultContentForumDetailValueForUpdate(contentCollection);
             
             defaultContentForumDetailValue.setIsDefault(Boolean.FALSE);
             updateContentForumFromValue(defaultContentForumDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ContentForum contentForum = ContentForumFactory.getInstance().create();
-        ContentForumDetail contentForumDetail = ContentForumDetailFactory.getInstance().create(contentForum, contentCollection, forum, isDefault,
+
+        var contentForum = ContentForumFactory.getInstance().create();
+        var contentForumDetail = ContentForumDetailFactory.getInstance().create(contentForum, contentCollection, forum, isDefault,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -4810,8 +4769,8 @@ public class ContentControl
                         "WHERE cntfrm_activedetailid = cntfrmdt_contentforumdetailid AND cntfrmdt_cntc_contentcollectionid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentForumFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentForumFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             
@@ -4849,8 +4808,8 @@ public class ContentControl
                         "AND cntfrmdt_frm_forumid = ? AND cntfrmdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentForumFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentForumFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, forum.getPrimaryKey().getEntityId());
@@ -4873,7 +4832,7 @@ public class ContentControl
     }
     
     public ContentForumDetailValue getContentForumDetailValueForUpdate(ContentCollection contentCollection, Forum forum) {
-        ContentForum contentForum = getContentForumForUpdate(contentCollection, forum);
+        var contentForum = getContentForumForUpdate(contentCollection, forum);
         
         return contentForum == null? null: contentForum.getLastDetailForUpdate().getContentForumDetailValue().clone();
     }
@@ -4896,8 +4855,8 @@ public class ContentControl
                         "AND cntfrmdt_isdefault = 1 AND cntfrmdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentForumFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentForumFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4924,7 +4883,7 @@ public class ContentControl
     
     public List<ContentForumTransfer> getContentForumTransfers(UserVisit userVisit, Collection<ContentForum> contentForums) {
         List<ContentForumTransfer> contentForumTransfers = new ArrayList<>(contentForums.size());
-        ContentForumTransferCache contentForumTransferCache = getContentTransferCaches(userVisit).getContentForumTransferCache();
+        var contentForumTransferCache = getContentTransferCaches(userVisit).getContentForumTransferCache();
 
         contentForums.forEach((contentForum) ->
                 contentForumTransfers.add(contentForumTransferCache.getContentForumTransfer(contentForum))
@@ -4939,26 +4898,26 @@ public class ContentControl
     
     private void updateContentForumFromValue(ContentForumDetailValue contentForumDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(contentForumDetailValue.hasBeenModified()) {
-            ContentForum contentForum = ContentForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contentForum = ContentForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     contentForumDetailValue.getContentForumPK());
-            ContentForumDetail contentForumDetail = contentForum.getActiveDetailForUpdate();
+            var contentForumDetail = contentForum.getActiveDetailForUpdate();
 
             contentForumDetail.setThruTime(session.START_TIME_LONG);
             contentForumDetail.store();
 
-            ContentForumPK contentForumPK = contentForumDetail.getContentForumPK();
-            ContentCollection contentCollection = contentForumDetail.getContentCollection();
-            ContentCollectionPK contentCollectionPK = contentForumDetail.getContentCollectionPK();
-            ForumPK forumPK = contentForumDetail.getForumPK();
-            Boolean isDefault = contentForumDetailValue.getIsDefault();
+            var contentForumPK = contentForumDetail.getContentForumPK();
+            var contentCollection = contentForumDetail.getContentCollection();
+            var contentCollectionPK = contentForumDetail.getContentCollectionPK();
+            var forumPK = contentForumDetail.getForumPK();
+            var isDefault = contentForumDetailValue.getIsDefault();
 
             if(checkDefault) {
-                ContentForum defaultContentForum = getDefaultContentForum(contentCollection);
-                boolean defaultFound = defaultContentForum != null && !defaultContentForum.equals(contentForum);
+                var defaultContentForum = getDefaultContentForum(contentCollection);
+                var defaultFound = defaultContentForum != null && !defaultContentForum.equals(contentForum);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ContentForumDetailValue defaultContentForumDetailValue = getDefaultContentForumDetailValueForUpdate(contentCollection);
+                    var defaultContentForumDetailValue = getDefaultContentForumDetailValueForUpdate(contentCollection);
 
                     defaultContentForumDetailValue.setIsDefault(Boolean.FALSE);
                     updateContentForumFromValue(defaultContentForumDetailValue, false, updatedBy);
@@ -4984,23 +4943,23 @@ public class ContentControl
     }
     
     public void deleteContentForum(ContentForum contentForum, BasePK deletedBy) {
-        ContentForumDetail contentForumDetail = contentForum.getLastDetailForUpdate();
+        var contentForumDetail = contentForum.getLastDetailForUpdate();
         contentForumDetail.setThruTime(session.START_TIME_LONG);
         contentForumDetail.store();
         contentForum.setActiveDetail(null);
         
         // Check for default, and pick one if necessary
-        ContentCollection contentCollection = contentForumDetail.getContentCollection();
-        ContentForum defaultContentForum = getDefaultContentForum(contentCollection);
+        var contentCollection = contentForumDetail.getContentCollection();
+        var defaultContentForum = getDefaultContentForum(contentCollection);
         if(defaultContentForum == null) {
-            List<ContentForum> contentForums = getContentForumsForUpdate(contentCollection);
+            var contentForums = getContentForumsForUpdate(contentCollection);
             
             if(!contentForums.isEmpty()) {
-                for(Iterator<ContentForum> iter = contentForums.iterator(); iter.hasNext();) {
+                for(var iter = contentForums.iterator(); iter.hasNext();) {
                     defaultContentForum = iter.next();
                     break;
                 }
-                ContentForumDetailValue contentForumDetailValue = Objects.requireNonNull(defaultContentForum).getLastDetailForUpdate().getContentForumDetailValue().clone();
+                var contentForumDetailValue = Objects.requireNonNull(defaultContentForum).getLastDetailForUpdate().getContentForumDetailValue().clone();
                 
                 contentForumDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentForumFromValue(contentForumDetailValue, false, deletedBy);
@@ -5021,8 +4980,8 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     
     public ContentWebAddress createContentWebAddress(String contentWebAddressName, ContentCollection contentCollection, BasePK createdBy) {
-        ContentWebAddress contentWebAddress = ContentWebAddressFactory.getInstance().create();
-        ContentWebAddressDetail contentWebAddressDetail = ContentWebAddressDetailFactory.getInstance().create(contentWebAddress, contentWebAddressName, contentCollection, session.START_TIME_LONG,
+        var contentWebAddress = ContentWebAddressFactory.getInstance().create();
+        var contentWebAddressDetail = ContentWebAddressDetailFactory.getInstance().create(contentWebAddress, contentWebAddressName, contentCollection, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -5062,8 +5021,8 @@ public class ContentControl
                         "WHERE cntwadt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentWebAddressFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentWebAddressFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -5099,8 +5058,8 @@ public class ContentControl
                         "WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_contentwebaddressname = ? AND cntwadt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentWebAddressFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentWebAddressFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, contentWebAddressName);
             ps.setLong(2, Session.MAX_TIME);
@@ -5146,8 +5105,8 @@ public class ContentControl
                         "WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_cntc_contentcollectionid = ? AND cntwadt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentWebAddressFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentWebAddressFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5169,7 +5128,7 @@ public class ContentControl
     }
     
     public ContentWebAddressChoicesBean getContentWebAddressChoices(String defaultContentWebAddressChoice, Language language) {
-        List<ContentWebAddress> contentWebAddresses = getContentWebAddresses();
+        var contentWebAddresses = getContentWebAddresses();
         var size = contentWebAddresses.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -5192,7 +5151,7 @@ public class ContentControl
     
     public List<ContentWebAddressTransfer> getContentWebAddressTransfers(UserVisit userVisit, Collection<ContentWebAddress> contentWebAddresses) {
         List<ContentWebAddressTransfer> contentWebAddressTransfers = new ArrayList<>(contentWebAddresses.size());
-        ContentWebAddressTransferCache contentWebAddressTransferCache = getContentTransferCaches(userVisit).getContentWebAddressTransferCache();
+        var contentWebAddressTransferCache = getContentTransferCaches(userVisit).getContentWebAddressTransferCache();
 
         contentWebAddresses.forEach((contentWebAddress) ->
                 contentWebAddressTransfers.add(contentWebAddressTransferCache.getContentWebAddressTransfer(contentWebAddress))
@@ -5211,16 +5170,16 @@ public class ContentControl
     
     public void updateContentWebAddressFromValue(ContentWebAddressDetailValue contentWebAddressDetailValue, BasePK updatedBy) {
         if(contentWebAddressDetailValue.hasBeenModified()) {
-            ContentWebAddress contentWebAddress = ContentWebAddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contentWebAddress = ContentWebAddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     contentWebAddressDetailValue.getContentWebAddressPK());
-            ContentWebAddressDetail contentWebAddressDetail = contentWebAddress.getActiveDetailForUpdate();
+            var contentWebAddressDetail = contentWebAddress.getActiveDetailForUpdate();
             
             contentWebAddressDetail.setThruTime(session.START_TIME_LONG);
             contentWebAddressDetail.store();
-            
-            ContentWebAddressPK contentWebAddressPK = contentWebAddressDetail.getContentWebAddressPK();
-            String contentWebAddressName = contentWebAddressDetailValue.getContentWebAddressName();
-            ContentCollectionPK contentCollectionPK = contentWebAddressDetailValue.getContentCollectionPK();
+
+            var contentWebAddressPK = contentWebAddressDetail.getContentWebAddressPK();
+            var contentWebAddressName = contentWebAddressDetailValue.getContentWebAddressName();
+            var contentCollectionPK = contentWebAddressDetailValue.getContentCollectionPK();
             
             contentWebAddressDetail = ContentWebAddressDetailFactory.getInstance().create(contentWebAddressPK, contentWebAddressName, contentCollectionPK, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -5252,8 +5211,8 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     
     public ContentWebAddressDescription createContentWebAddressDescription(ContentWebAddress contentWebAddress, Language language, String description, BasePK createdBy) {
-        
-        ContentWebAddressDescription contentWebAddressDescription = ContentWebAddressDescriptionFactory.getInstance().create(contentWebAddress, language, description, session.START_TIME_LONG,
+
+        var contentWebAddressDescription = ContentWebAddressDescriptionFactory.getInstance().create(contentWebAddress, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(contentWebAddress.getPrimaryKey(), EventTypes.MODIFY, contentWebAddressDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5277,8 +5236,8 @@ public class ContentControl
                         "WHERE cntwad_cntwa_contentwebaddressid = ? AND cntwad_lang_languageid = ? AND cntwad_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentWebAddressDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentWebAddressDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentWebAddress.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -5326,8 +5285,8 @@ public class ContentControl
                         "WHERE cntwad_cntwa_contentwebaddressid = ? AND cntwad_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentWebAddressDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentWebAddressDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentWebAddress.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5350,7 +5309,7 @@ public class ContentControl
     
     public String getBestContentWebAddressDescription(ContentWebAddress contentWebAddress, Language language) {
         String description;
-        ContentWebAddressDescription contentWebAddressDescription = getContentWebAddressDescription(contentWebAddress, language);
+        var contentWebAddressDescription = getContentWebAddressDescription(contentWebAddress, language);
         
         if(contentWebAddressDescription == null && !language.getIsDefault()) {
             contentWebAddressDescription = getContentWebAddressDescription(contentWebAddress, getPartyControl().getDefaultLanguage());
@@ -5370,9 +5329,9 @@ public class ContentControl
     }
     
     public List<ContentWebAddressDescriptionTransfer> getContentWebAddressDescriptionTransfers(UserVisit userVisit, ContentWebAddress contentWebAddress) {
-        List<ContentWebAddressDescription> contentWebAddressDescriptions = getContentWebAddressDescriptionsByContentWebAddress(contentWebAddress);
+        var contentWebAddressDescriptions = getContentWebAddressDescriptionsByContentWebAddress(contentWebAddress);
         List<ContentWebAddressDescriptionTransfer> contentWebAddressDescriptionTransfers = new ArrayList<>(contentWebAddressDescriptions.size());
-        ContentWebAddressDescriptionTransferCache contentWebAddressDescriptionTransferCache = getContentTransferCaches(userVisit).getContentWebAddressDescriptionTransferCache();
+        var contentWebAddressDescriptionTransferCache = getContentTransferCaches(userVisit).getContentWebAddressDescriptionTransferCache();
 
         contentWebAddressDescriptions.forEach((contentWebAddressDescription) ->
                 contentWebAddressDescriptionTransfers.add(contentWebAddressDescriptionTransferCache.getContentWebAddressDescriptionTransfer(contentWebAddressDescription))
@@ -5383,14 +5342,14 @@ public class ContentControl
     
     public void updateContentWebAddressDescriptionFromValue(ContentWebAddressDescriptionValue contentWebAddressDescriptionValue, BasePK updatedBy) {
         if(contentWebAddressDescriptionValue.hasBeenModified()) {
-            ContentWebAddressDescription contentWebAddressDescription = ContentWebAddressDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentWebAddressDescriptionValue.getPrimaryKey());
+            var contentWebAddressDescription = ContentWebAddressDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentWebAddressDescriptionValue.getPrimaryKey());
             
             contentWebAddressDescription.setThruTime(session.START_TIME_LONG);
             contentWebAddressDescription.store();
-            
-            ContentWebAddress contentWebAddress = contentWebAddressDescription.getContentWebAddress();
-            Language language = contentWebAddressDescription.getLanguage();
-            String description = contentWebAddressDescriptionValue.getDescription();
+
+            var contentWebAddress = contentWebAddressDescription.getContentWebAddress();
+            var language = contentWebAddressDescription.getLanguage();
+            var description = contentWebAddressDescriptionValue.getDescription();
             
             contentWebAddressDescription = ContentWebAddressDescriptionFactory.getInstance().create(contentWebAddress, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -5416,8 +5375,8 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     
     public ContentWebAddressServer createContentWebAddressServer(ContentWebAddress contentWebAddress, Server server, BasePK createdBy) {
-        
-        ContentWebAddressServer contentWebAddressServer = ContentWebAddressServerFactory.getInstance().create(contentWebAddress, server,  session.START_TIME_LONG,
+
+        var contentWebAddressServer = ContentWebAddressServerFactory.getInstance().create(contentWebAddress, server,  session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(contentWebAddress.getPrimaryKey(), EventTypes.MODIFY, contentWebAddressServer.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5441,8 +5400,8 @@ public class ContentControl
                         "WHERE cntwaserv_cntwa_contentwebaddressid = ? AND cntwaserv_serv_serverid = ? AND cntwaserv_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentWebAddressServerFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentWebAddressServerFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentWebAddress.getPrimaryKey().getEntityId());
             ps.setLong(2, server.getPrimaryKey().getEntityId());
@@ -5482,8 +5441,8 @@ public class ContentControl
                         "WHERE cntwaserv_cntwa_contentwebaddressid = ? AND cntwaserv_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ContentWebAddressServerFactory.getInstance().prepareStatement(query);
+
+            var ps = ContentWebAddressServerFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentWebAddress.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);

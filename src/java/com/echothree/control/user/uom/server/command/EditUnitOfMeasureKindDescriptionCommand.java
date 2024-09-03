@@ -19,15 +19,10 @@ package com.echothree.control.user.uom.server.command;
 import com.echothree.control.user.uom.common.edit.UnitOfMeasureKindDescriptionEdit;
 import com.echothree.control.user.uom.common.edit.UomEditFactory;
 import com.echothree.control.user.uom.common.form.EditUnitOfMeasureKindDescriptionForm;
-import com.echothree.control.user.uom.common.result.EditUnitOfMeasureKindDescriptionResult;
 import com.echothree.control.user.uom.common.result.UomResultFactory;
 import com.echothree.control.user.uom.common.spec.UnitOfMeasureKindDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindDescription;
-import com.echothree.model.data.uom.server.value.UnitOfMeasureKindDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,24 +60,24 @@ public class EditUnitOfMeasureKindDescriptionCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        EditUnitOfMeasureKindDescriptionResult result = UomResultFactory.getEditUnitOfMeasureKindDescriptionResult();
-        String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
-        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+        var result = UomResultFactory.getEditUnitOfMeasureKindDescriptionResult();
+        var unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    UnitOfMeasureKindDescription unitOfMeasureKindDescription = uomControl.getUnitOfMeasureKindDescription(unitOfMeasureKind, language);
+                    var unitOfMeasureKindDescription = uomControl.getUnitOfMeasureKindDescription(unitOfMeasureKind, language);
                     
                     if(unitOfMeasureKindDescription != null) {
                         result.setUnitOfMeasureKindDescription(uomControl.getUnitOfMeasureKindDescriptionTransfer(getUserVisit(), unitOfMeasureKindDescription));
                         
                         if(lockEntity(unitOfMeasureKind)) {
-                            UnitOfMeasureKindDescriptionEdit edit = UomEditFactory.getUnitOfMeasureKindDescriptionEdit();
+                            var edit = UomEditFactory.getUnitOfMeasureKindDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(unitOfMeasureKindDescription.getDescription());
@@ -95,12 +90,12 @@ public class EditUnitOfMeasureKindDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    UnitOfMeasureKindDescriptionValue unitOfMeasureKindDescriptionValue = uomControl.getUnitOfMeasureKindDescriptionValueForUpdate(unitOfMeasureKind, language);
+                    var unitOfMeasureKindDescriptionValue = uomControl.getUnitOfMeasureKindDescriptionValueForUpdate(unitOfMeasureKind, language);
                     
                     if(unitOfMeasureKindDescriptionValue != null) {
                         if(lockEntityForUpdate(unitOfMeasureKind)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 unitOfMeasureKindDescriptionValue.setDescription(description);
                                 

@@ -29,19 +29,9 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.common.workflow.VendorItemStatusConstants;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemAlias;
-import com.echothree.model.data.item.server.entity.ItemAliasType;
-import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -55,7 +45,6 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public class CreateVendorItemCommand
@@ -93,31 +82,31 @@ public class CreateVendorItemCommand
         var result = VendorResultFactory.getCreateVendorItemResult();
         VendorItem vendorItem = null;
         var vendorControl = Session.getModelController(VendorControl.class);
-        String vendorName = form.getVendorName();
-        Vendor vendor = vendorControl.getVendorByName(vendorName);
+        var vendorName = form.getVendorName();
+        var vendor = vendorControl.getVendorByName(vendorName);
         
         if(vendor != null) {
             var itemControl = Session.getModelController(ItemControl.class);
-            String itemName = form.getItemName();
-            Item item = itemControl.getItemByNameThenAlias(itemName);
+            var itemName = form.getItemName();
+            var item = itemControl.getItemByNameThenAlias(itemName);
             
             if(item != null) {
-                String vendorItemName = form.getVendorItemName();
+                var vendorItemName = form.getVendorItemName();
                 
                 if(vendorItemName == null) {
-                    ItemAliasType defaultItemAliasType = vendor.getDefaultItemAliasType();
+                    var defaultItemAliasType = vendor.getDefaultItemAliasType();
                     
                     if(defaultItemAliasType == null) {
                         addExecutionError(ExecutionErrors.UnknownDefaultItemAliasType.name());
                     } else {
-                        ItemUnitOfMeasureType itemUnitOfMeasureType = itemControl.getDefaultItemUnitOfMeasureType(item);
+                        var itemUnitOfMeasureType = itemControl.getDefaultItemUnitOfMeasureType(item);
                         
                         if(itemUnitOfMeasureType == null) {
                             addExecutionError(ExecutionErrors.UnknownDefaultItemUnitOfMeasureType.name());
                         } else {
-                            UnitOfMeasureType unitOfMeasureType = itemUnitOfMeasureType.getUnitOfMeasureType();
-                            List<ItemAlias> itemAliases = itemControl.getItemAliases(item, unitOfMeasureType, defaultItemAliasType);
-                            Iterator<ItemAlias> iter = itemAliases.iterator();
+                            var unitOfMeasureType = itemUnitOfMeasureType.getUnitOfMeasureType();
+                            var itemAliases = itemControl.getItemAliases(item, unitOfMeasureType, defaultItemAliasType);
+                            var iter = itemAliases.iterator();
                             
                             if(iter.hasNext()) {
                                 vendorItemName = iter.next().getAlias();
@@ -131,28 +120,28 @@ public class CreateVendorItemCommand
                 }
                 
                 if(!hasExecutionErrors()) {
-                    Party vendorParty = vendor.getParty();
+                    var vendorParty = vendor.getParty();
                     
                     vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
                     
                     if(vendorItem == null) {
-                        String cancellationPolicyName = form.getCancellationPolicyName();
+                        var cancellationPolicyName = form.getCancellationPolicyName();
                         CancellationPolicy cancellationPolicy = null;
                         
                         if(cancellationPolicyName != null) {
                             var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-                            CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
+                            var cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
                             
                             cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
                         }
                         
                         if(cancellationPolicyName == null || cancellationPolicy != null) {
-                            String returnPolicyName = form.getReturnPolicyName();
+                            var returnPolicyName = form.getReturnPolicyName();
                             ReturnPolicy returnPolicy = null;
                             
                             if(returnPolicyName != null) {
                                 var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-                                ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
+                                var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
                                 
                                 returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                             }
@@ -161,13 +150,13 @@ public class CreateVendorItemCommand
                                 var coreControl = getCoreControl();
                                 var workflowControl = Session.getModelController(WorkflowControl.class);
                                 var description = form.getDescription();
-                                Integer priority = Integer.valueOf(form.getPriority());
+                                var priority = Integer.valueOf(form.getPriority());
                                 BasePK createdBy = getPartyPK();
                                 
                                 vendorItem = vendorControl.createVendorItem(item, vendorParty, vendorItemName, description, priority, cancellationPolicy,
                                         returnPolicy, createdBy);
 
-                                EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(vendorItem.getPrimaryKey());
+                                var entityInstance = coreControl.getEntityInstanceByBasePK(vendorItem.getPrimaryKey());
                                 workflowControl.addEntityToWorkflowUsingNames(null, VendorItemStatusConstants.Workflow_VENDOR_ITEM_STATUS,
                                         VendorItemStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
                             } else {

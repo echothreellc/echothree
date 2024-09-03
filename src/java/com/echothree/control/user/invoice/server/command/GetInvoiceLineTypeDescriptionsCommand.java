@@ -17,14 +17,11 @@
 package com.echothree.control.user.invoice.server.command;
 
 import com.echothree.control.user.invoice.common.form.GetInvoiceLineTypeDescriptionsForm;
-import com.echothree.control.user.invoice.common.result.GetInvoiceLineTypeDescriptionsResult;
 import com.echothree.control.user.invoice.common.result.InvoiceResultFactory;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.invoice.server.entity.InvoiceLineType;
-import com.echothree.model.data.invoice.server.entity.InvoiceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,13 +64,13 @@ public class GetInvoiceLineTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        GetInvoiceLineTypeDescriptionsResult result = InvoiceResultFactory.getGetInvoiceLineTypeDescriptionsResult();
-        String invoiceTypeName = form.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var result = InvoiceResultFactory.getGetInvoiceLineTypeDescriptionsResult();
+        var invoiceTypeName = form.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
         
         if(invoiceType != null) {
-            String invoiceLineTypeName = form.getInvoiceLineTypeName();
-            InvoiceLineType invoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceLineTypeName);
+            var invoiceLineTypeName = form.getInvoiceLineTypeName();
+            var invoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceLineTypeName);
             
             if(invoiceLineType != null) {
                 result.setInvoiceLineType(invoiceControl.getInvoiceLineTypeTransfer(getUserVisit(), invoiceLineType));

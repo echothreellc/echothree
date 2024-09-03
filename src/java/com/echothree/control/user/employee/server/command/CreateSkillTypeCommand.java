@@ -18,8 +18,6 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.CreateSkillTypeForm;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.data.employee.server.entity.SkillType;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,11 +51,11 @@ public class CreateSkillTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String skillTypeName = form.getSkillTypeName();
-        SkillType skillType = employeeControl.getSkillTypeByName(skillTypeName);
+        var skillTypeName = form.getSkillTypeName();
+        var skillType = employeeControl.getSkillTypeByName(skillTypeName);
         
         if(skillType == null) {
-            PartyPK createdBy = getPartyPK();
+            var createdBy = getPartyPK();
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

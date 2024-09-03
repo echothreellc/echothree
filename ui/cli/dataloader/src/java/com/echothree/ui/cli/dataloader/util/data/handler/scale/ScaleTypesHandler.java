@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.scale;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
 import com.echothree.control.user.scale.common.ScaleService;
-import com.echothree.control.user.scale.common.form.CreateScaleTypeForm;
 import com.echothree.control.user.scale.common.form.ScaleFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -47,7 +46,7 @@ public class ScaleTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("scaleType")) {
-            CreateScaleTypeForm commandForm = ScaleFormFactory.getCreateScaleTypeForm();
+            var commandForm = ScaleFormFactory.getCreateScaleTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

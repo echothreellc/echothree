@@ -21,7 +21,6 @@ import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contactlist.server.value.ContactListFrequencyDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultContactListFrequencyCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListFrequencyName = form.getContactListFrequencyName();
-        ContactListFrequencyDetailValue contactListFrequencyDetailValue = contactListControl.getContactListFrequencyDetailValueByNameForUpdate(contactListFrequencyName);
+        var contactListFrequencyName = form.getContactListFrequencyName();
+        var contactListFrequencyDetailValue = contactListControl.getContactListFrequencyDetailValueByNameForUpdate(contactListFrequencyName);
         
         if(contactListFrequencyDetailValue != null) {
             contactListFrequencyDetailValue.setIsDefault(Boolean.TRUE);

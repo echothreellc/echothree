@@ -31,12 +31,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.entity.GeoCodeDetail;
 import com.echothree.model.data.tax.server.entity.TaxClassification;
-import com.echothree.model.data.tax.server.entity.TaxClassificationDetail;
-import com.echothree.model.data.tax.server.entity.TaxClassificationTranslation;
-import com.echothree.model.data.tax.server.value.TaxClassificationDetailValue;
-import com.echothree.model.data.tax.server.value.TaxClassificationTranslationValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -102,13 +97,13 @@ public class EditTaxClassificationCommand
     public TaxClassification getEntity(EditTaxClassificationResult result) {
         var geoControl = Session.getModelController(GeoControl.class);
         TaxClassification taxClassification = null;
-        String countryName = spec.getCountryName();
+        var countryName = spec.getCountryName();
 
         countryGeoCode = geoControl.getCountryByAlias(countryName);
 
         if(countryGeoCode != null) {
             var taxControl = Session.getModelController(TaxControl.class);
-            String taxClassificationName = spec.getTaxClassificationName();
+            var taxClassificationName = spec.getTaxClassificationName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 taxClassification = taxControl.getTaxClassificationByName(countryGeoCode, taxClassificationName);
@@ -143,8 +138,8 @@ public class EditTaxClassificationCommand
     @Override
     public void doLock(TaxClassificationEdit edit, TaxClassification taxClassification) {
         var taxControl = Session.getModelController(TaxControl.class);
-        TaxClassificationTranslation taxClassificationTranslation = taxControl.getTaxClassificationTranslation(taxClassification, getPreferredLanguage());
-        TaxClassificationDetail taxClassificationDetail = taxClassification.getLastDetail();
+        var taxClassificationTranslation = taxControl.getTaxClassificationTranslation(taxClassification, getPreferredLanguage());
+        var taxClassificationDetail = taxClassification.getLastDetail();
 
         edit.setTaxClassificationName(taxClassificationDetail.getTaxClassificationName());
         edit.setIsDefault(taxClassificationDetail.getIsDefault().toString());
@@ -162,15 +157,15 @@ public class EditTaxClassificationCommand
     @Override
     public void canUpdate(TaxClassification taxClassification) {
         var taxControl = Session.getModelController(TaxControl.class);
-        GeoCodeDetail geoCodeDetail = countryGeoCode.getLastDetail();
-        String taxClassificationName = edit.getTaxClassificationName();
-        TaxClassification duplicateTaxClassification = taxControl.getTaxClassificationByName(countryGeoCode, taxClassificationName);
+        var geoCodeDetail = countryGeoCode.getLastDetail();
+        var taxClassificationName = edit.getTaxClassificationName();
+        var duplicateTaxClassification = taxControl.getTaxClassificationByName(countryGeoCode, taxClassificationName);
 
         if(duplicateTaxClassification != null && !taxClassification.equals(duplicateTaxClassification)) {
             addExecutionError(ExecutionErrors.DuplicateTaxClassificationName.name(), geoCodeDetail.getGeoCodeName(), taxClassificationName);
         } else {
-            String overviewMimeTypeName = edit.getOverviewMimeTypeName();
-            String overview = edit.getOverview();
+            var overviewMimeTypeName = edit.getOverviewMimeTypeName();
+            var overview = edit.getOverview();
 
             overviewMimeType = MimeTypeLogic.getInstance().checkMimeType(this, overviewMimeTypeName, overview, MimeTypeUsageTypes.TEXT.name(),
                     ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),
@@ -182,10 +177,10 @@ public class EditTaxClassificationCommand
     public void doUpdate(TaxClassification taxClassification) {
         var taxControl = Session.getModelController(TaxControl.class);
         var partyPK = getPartyPK();
-        TaxClassificationDetailValue taxClassificationDetailValue = taxControl.getTaxClassificationDetailValueForUpdate(taxClassification);
-        TaxClassificationTranslation taxClassificationTranslation = taxControl.getTaxClassificationTranslationForUpdate(taxClassification, getPreferredLanguage());
-        String description = edit.getDescription();
-        String overview = edit.getOverview();
+        var taxClassificationDetailValue = taxControl.getTaxClassificationDetailValueForUpdate(taxClassification);
+        var taxClassificationTranslation = taxControl.getTaxClassificationTranslationForUpdate(taxClassification, getPreferredLanguage());
+        var description = edit.getDescription();
+        var overview = edit.getOverview();
 
         taxClassificationDetailValue.setTaxClassificationName(edit.getTaxClassificationName());
         taxClassificationDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -198,7 +193,7 @@ public class EditTaxClassificationCommand
         } else if(taxClassificationTranslation != null && (description == null && overview == null)) {
             taxControl.deleteTaxClassificationTranslation(taxClassificationTranslation, partyPK);
         } else if(taxClassificationTranslation != null && (description != null || overview != null)) {
-            TaxClassificationTranslationValue taxClassificationTranslationValue = taxControl.getTaxClassificationTranslationValue(taxClassificationTranslation);
+            var taxClassificationTranslationValue = taxControl.getTaxClassificationTranslationValue(taxClassificationTranslation);
 
             taxClassificationTranslationValue.setDescription(description);
             taxClassificationTranslationValue.setOverviewMimeTypePK(overviewMimeType == null? null: overviewMimeType.getPrimaryKey());

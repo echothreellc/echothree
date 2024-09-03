@@ -18,7 +18,6 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.GetContactMechanismTypeChoicesForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
-import com.echothree.control.user.contact.common.result.GetContactMechanismTypeChoicesResult;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,9 +49,9 @@ public class GetContactMechanismTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        GetContactMechanismTypeChoicesResult result = ContactResultFactory.getGetContactMechanismTypeChoicesResult();
-        String defaultContactMechanismTypeChoice = form.getDefaultContactMechanismTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ContactResultFactory.getGetContactMechanismTypeChoicesResult();
+        var defaultContactMechanismTypeChoice = form.getDefaultContactMechanismTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setContactMechanismTypeChoices(contactControl.getContactMechanismTypeChoices(defaultContactMechanismTypeChoice, getPreferredLanguage(), allowNullChoice));
         

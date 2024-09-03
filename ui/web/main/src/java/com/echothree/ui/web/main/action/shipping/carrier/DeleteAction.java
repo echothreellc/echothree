@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.shipping.carrier;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.form.DeleteCarrierForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteCarrierForm commandForm = CarrierUtil.getHome().getDeleteCarrierForm();
-            String carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
+            var commandForm = CarrierUtil.getHome().getDeleteCarrierForm();
+            var carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
             
             commandForm.setCarrierName(carrierName);
             

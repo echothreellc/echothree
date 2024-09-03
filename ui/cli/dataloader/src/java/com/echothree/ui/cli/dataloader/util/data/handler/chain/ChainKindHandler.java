@@ -19,9 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.chain;
 import com.echothree.control.user.chain.common.ChainUtil;
 import com.echothree.control.user.chain.common.ChainService;
 import com.echothree.control.user.chain.common.form.ChainFormFactory;
-import com.echothree.control.user.chain.common.form.CreateChainActionTypeUseForm;
-import com.echothree.control.user.chain.common.form.CreateChainKindDescriptionForm;
-import com.echothree.control.user.chain.common.form.CreateChainTypeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -52,21 +49,21 @@ public class ChainKindHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("chainKindDescription")) {
-            CreateChainKindDescriptionForm commandForm = ChainFormFactory.getCreateChainKindDescriptionForm();
+            var commandForm = ChainFormFactory.getCreateChainKindDescriptionForm();
 
             commandForm.setChainKindName(chainKindName);
             commandForm.set(getAttrsMap(attrs));
 
             chainService.createChainKindDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("chainActionTypeUse")) {
-            CreateChainActionTypeUseForm commandForm = ChainFormFactory.getCreateChainActionTypeUseForm();
+            var commandForm = ChainFormFactory.getCreateChainActionTypeUseForm();
 
             commandForm.setChainKindName(chainKindName);
             commandForm.set(getAttrsMap(attrs));
 
             chainService.createChainActionTypeUse(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("chainType")) {
-            CreateChainTypeForm commandForm = ChainFormFactory.getCreateChainTypeForm();
+            var commandForm = ChainFormFactory.getCreateChainTypeForm();
 
             commandForm.setChainKindName(chainKindName);
             commandForm.set(getAttrsMap(attrs));

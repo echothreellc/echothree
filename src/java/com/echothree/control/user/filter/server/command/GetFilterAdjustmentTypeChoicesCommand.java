@@ -18,7 +18,6 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterAdjustmentTypeChoicesForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.control.user.filter.common.result.GetFilterAdjustmentTypeChoicesResult;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,8 +62,8 @@ public class GetFilterAdjustmentTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        GetFilterAdjustmentTypeChoicesResult result = FilterResultFactory.getGetFilterAdjustmentTypeChoicesResult();
-        String defaultFilterAdjustmentTypeChoice = form.getDefaultFilterAdjustmentTypeChoice();
+        var result = FilterResultFactory.getGetFilterAdjustmentTypeChoicesResult();
+        var defaultFilterAdjustmentTypeChoice = form.getDefaultFilterAdjustmentTypeChoice();
         
         result.setFilterAdjustmentTypeChoices(filterControl.getFilterAdjustmentTypeChoices(defaultFilterAdjustmentTypeChoice, getPreferredLanguage()));
         

@@ -17,10 +17,8 @@
 package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.GetPrinterGroupStatusChoicesForm;
-import com.echothree.control.user.printer.common.result.GetPrinterGroupStatusChoicesResult;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.printer.server.control.PrinterControl;
-import com.echothree.model.data.printer.server.entity.PrinterGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,12 +50,12 @@ public class GetPrinterGroupStatusChoicesCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        GetPrinterGroupStatusChoicesResult result = PrinterResultFactory.getGetPrinterGroupStatusChoicesResult();
-        String printerGroupName = form.getPrinterGroupName();
-        PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
+       var result = PrinterResultFactory.getGetPrinterGroupStatusChoicesResult();
+       var printerGroupName = form.getPrinterGroupName();
+       var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
         
         if(printerGroup != null) {
-            String defaultPrinterGroupStatusChoice = form.getDefaultPrinterGroupStatusChoice();
+            var defaultPrinterGroupStatusChoice = form.getDefaultPrinterGroupStatusChoice();
             
             result.setPrinterGroupStatusChoices(printerControl.getPrinterGroupStatusChoices(defaultPrinterGroupStatusChoice, getPreferredLanguage(),
                     printerGroup, getPartyPK()));

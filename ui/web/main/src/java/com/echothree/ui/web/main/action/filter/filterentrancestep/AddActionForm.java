@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.filter.filterentrancestep;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.form.GetFilterStepChoicesForm;
 import com.echothree.control.user.filter.common.result.GetFilterStepChoicesResult;
 import com.echothree.model.control.filter.common.choice.FilterStepChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -42,7 +39,7 @@ public class AddActionForm
     private void setupFilterStepChoices()
             throws NamingException {
         if(filterStepChoices == null) {
-            GetFilterStepChoicesForm form = FilterUtil.getHome().getGetFilterStepChoicesForm();
+            var form = FilterUtil.getHome().getGetFilterStepChoicesForm();
 
             form.setFilterKindName(filterKindName);
             form.setFilterTypeName(filterTypeName);
@@ -50,9 +47,9 @@ public class AddActionForm
             form.setDefaultFilterStepChoice(filterStepChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = FilterUtil.getHome().getFilterStepChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterStepChoicesResult result = (GetFilterStepChoicesResult)executionResult.getResult();
+            var commandResult = FilterUtil.getHome().getFilterStepChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetFilterStepChoicesResult)executionResult.getResult();
             filterStepChoices = result.getFilterStepChoices();
 
             if(filterStepChoice == null)

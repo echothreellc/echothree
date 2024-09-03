@@ -22,9 +22,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.customer.server.entity.CustomerTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,16 +64,16 @@ public class DeleteCustomerTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                CustomerTypeDescription customerTypeDescription = customerControl.getCustomerTypeDescriptionForUpdate(customerType, language);
+                var customerTypeDescription = customerControl.getCustomerTypeDescriptionForUpdate(customerType, language);
                 
                 if(customerTypeDescription != null) {
                     customerControl.deleteCustomerTypeDescription(customerTypeDescription, getPartyPK());

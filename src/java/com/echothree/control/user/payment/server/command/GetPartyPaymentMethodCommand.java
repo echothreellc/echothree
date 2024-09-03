@@ -17,15 +17,12 @@
 package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.GetPartyPaymentMethodForm;
-import com.echothree.control.user.payment.common.result.GetPartyPaymentMethodResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -68,13 +65,13 @@ public class GetPartyPaymentMethodCommand
     @Override
     protected BaseResult execute() {
         var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-        GetPartyPaymentMethodResult result = PaymentResultFactory.getGetPartyPaymentMethodResult();
-        String partyPaymentMethodName = form.getPartyPaymentMethodName();
-        PartyPaymentMethod partyPaymentMethod = partyPaymentMethodControl.getPartyPaymentMethodByName(partyPaymentMethodName);
+        var result = PaymentResultFactory.getGetPartyPaymentMethodResult();
+        var partyPaymentMethodName = form.getPartyPaymentMethodName();
+        var partyPaymentMethod = partyPaymentMethodControl.getPartyPaymentMethodByName(partyPaymentMethodName);
         
         if(partyPaymentMethod != null) {
-            Party party = getParty();
-            String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
+            var party = getParty();
+            var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
 
             // If the executing Party is a CUSTOMER, and the PartyPaymentMethod isn't for the executing Party,
             // return a UnknownPartyPaymentMethodName error.

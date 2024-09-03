@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.document.server.transfer;
 
-import com.echothree.model.control.document.common.transfer.DocumentTypeUsageTypeTransfer;
 import com.echothree.model.control.document.common.transfer.PartyTypeDocumentTypeUsageTypeTransfer;
 import com.echothree.model.control.document.server.control.DocumentControl;
-import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.document.server.entity.PartyTypeDocumentTypeUsageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,13 +34,13 @@ public class PartyTypeDocumentTypeUsageTypeTransferCache
     }
     
     public PartyTypeDocumentTypeUsageTypeTransfer getPartyTypeDocumentTypeUsageTypeTransfer(PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType) {
-        PartyTypeDocumentTypeUsageTypeTransfer partyTypeDocumentTypeUsageTypeTransfer = get(partyTypeDocumentTypeUsageType);
+        var partyTypeDocumentTypeUsageTypeTransfer = get(partyTypeDocumentTypeUsageType);
         
         if(partyTypeDocumentTypeUsageTypeTransfer == null) {
-            PartyTypeTransfer partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyTypeDocumentTypeUsageType.getPartyType());
-            DocumentTypeUsageTypeTransfer documentTypeUsageTypeTransfer = documentControl.getDocumentTypeUsageTypeTransfer(userVisit, partyTypeDocumentTypeUsageType.getDocumentTypeUsageType());
-            Boolean isDefault = partyTypeDocumentTypeUsageType.getIsDefault();
-            Integer sortOrder = partyTypeDocumentTypeUsageType.getSortOrder();
+            var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyTypeDocumentTypeUsageType.getPartyType());
+            var documentTypeUsageTypeTransfer = documentControl.getDocumentTypeUsageTypeTransfer(userVisit, partyTypeDocumentTypeUsageType.getDocumentTypeUsageType());
+            var isDefault = partyTypeDocumentTypeUsageType.getIsDefault();
+            var sortOrder = partyTypeDocumentTypeUsageType.getSortOrder();
             
             partyTypeDocumentTypeUsageTypeTransfer = new PartyTypeDocumentTypeUsageTypeTransfer(partyTypeTransfer, documentTypeUsageTypeTransfer, isDefault, sortOrder);
             put(partyTypeDocumentTypeUsageType, partyTypeDocumentTypeUsageTypeTransfer);

@@ -21,7 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tag.server.control.TagControl;
-import com.echothree.model.data.tag.server.value.TagScopeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultTagScopeCommand
     @Override
     protected BaseResult execute() {
         var tagControl = Session.getModelController(TagControl.class);
-        String tagScopeName = form.getTagScopeName();
-        TagScopeDetailValue tagScopeDetailValue = tagControl.getTagScopeDetailValueByNameForUpdate(tagScopeName);
+        var tagScopeName = form.getTagScopeName();
+        var tagScopeDetailValue = tagControl.getTagScopeDetailValueByNameForUpdate(tagScopeName);
         
         if(tagScopeDetailValue != null) {
             tagScopeDetailValue.setIsDefault(Boolean.TRUE);

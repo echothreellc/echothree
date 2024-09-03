@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected ItemImageTypeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ItemImageTypeDescriptionSpec spec = ItemUtil.getHome().getItemImageTypeDescriptionSpec();
+        var spec = ItemUtil.getHome().getItemImageTypeDescriptionSpec();
         
         spec.setItemImageTypeName(findParameter(request, ParameterConstants.ITEM_IMAGE_TYPE_NAME, actionForm.getItemImageTypeName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected ItemImageTypeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ItemImageTypeDescriptionEdit edit = ItemUtil.getHome().getItemImageTypeDescriptionEdit();
+        var edit = ItemUtil.getHome().getItemImageTypeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

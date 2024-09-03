@@ -18,7 +18,6 @@ package com.echothree.control.user.communication.server.server;
 
 import com.echothree.control.user.communication.common.form.SetDefaultCommunicationEventPurposeForm;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.data.communication.server.value.CommunicationEventPurposeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class SetDefaultCommunicationEventPurposeCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        String communicationEventPurposeName = form.getCommunicationEventPurposeName();
-        CommunicationEventPurposeDetailValue communicationEventPurposeDetailValue = communicationControl.getCommunicationEventPurposeDetailValueByNameForUpdate(communicationEventPurposeName);
+        var communicationEventPurposeName = form.getCommunicationEventPurposeName();
+        var communicationEventPurposeDetailValue = communicationControl.getCommunicationEventPurposeDetailValueByNameForUpdate(communicationEventPurposeName);
         
         if(communicationEventPurposeDetailValue != null) {
             communicationEventPurposeDetailValue.setIsDefault(Boolean.TRUE);

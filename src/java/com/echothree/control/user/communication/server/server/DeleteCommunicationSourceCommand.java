@@ -18,7 +18,6 @@ package com.echothree.control.user.communication.server.server;
 
 import com.echothree.control.user.communication.common.form.DeleteCommunicationSourceForm;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.data.communication.server.entity.CommunicationSource;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class DeleteCommunicationSourceCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        String communicationSourceName = form.getCommunicationSourceName();
-        CommunicationSource communicationSource = communicationControl.getCommunicationSourceByNameForUpdate(communicationSourceName);
+        var communicationSourceName = form.getCommunicationSourceName();
+        var communicationSource = communicationControl.getCommunicationSourceByNameForUpdate(communicationSourceName);
         
         if(communicationSource != null) {
             communicationControl.deleteCommunicationSource(communicationSource, getPartyPK());

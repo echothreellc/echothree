@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.partyaliastype;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.CreatePartyAliasTypeDescriptionForm;
-import com.echothree.control.user.party.common.form.GetPartyAliasTypeForm;
 import com.echothree.control.user.party.common.result.GetPartyAliasTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -57,15 +54,15 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartyAliasTypeForm commandForm = PartyUtil.getHome().getGetPartyAliasTypeForm();
+        var commandForm = PartyUtil.getHome().getGetPartyAliasTypeForm();
 
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());
         commandForm.setPartyAliasTypeName(actionForm.getPartyAliasTypeName());
-        
-        CommandResult commandResult = PartyUtil.getHome().getPartyAliasType(getUserVisitPK(request), commandForm);
+
+        var commandResult = PartyUtil.getHome().getPartyAliasType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyAliasTypeResult result = (GetPartyAliasTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyAliasTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PARTY_ALIAS_TYPE, result.getPartyAliasType());
         }
@@ -74,7 +71,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyAliasTypeDescriptionForm commandForm = PartyUtil.getHome().getCreatePartyAliasTypeDescriptionForm();
+        var commandForm = PartyUtil.getHome().getCreatePartyAliasTypeDescriptionForm();
 
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());
         commandForm.setPartyAliasTypeName( actionForm.getPartyAliasTypeName());

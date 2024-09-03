@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.core.tagscope;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.form.GetTagScopeForm;
 import com.echothree.control.user.tag.common.result.GetTagScopeResult;
 import com.echothree.model.control.tag.common.TagOptions;
 import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
-import com.echothree.model.control.tag.common.transfer.TagTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,8 +52,8 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetTagScopeForm commandForm = TagUtil.getHome().getGetTagScopeForm();
+        String forwardKey;
+        var commandForm = TagUtil.getHome().getGetTagScopeForm();
 
         Set<String> options = new HashSet<>();
         options.add(TagOptions.TagScopeIncludeTags);
@@ -65,13 +61,13 @@ public class ReviewAction
         commandForm.setOptions(options);
 
         commandForm.setTagScopeName(request.getParameter(ParameterConstants.TAG_SCOPE_NAME));
-        
-        CommandResult commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
+
+        var commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
         TagScopeTransfer tagScope = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTagScopeResult result = (GetTagScopeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTagScopeResult)executionResult.getResult();
             
             tagScope = result.getTagScope();
         }
@@ -79,10 +75,10 @@ public class ReviewAction
         if(tagScope == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
-            long minimumUsageCount = Long.MAX_VALUE;
+            var minimumUsageCount = Long.MAX_VALUE;
             long maximumUsageCount = 0;
 
-            for(TagTransfer tag : tagScope.getTags().getList()) {
+            for(var tag : tagScope.getTags().getList()) {
                 long usageCount = tag.getUsageCount();
 
                 if(usageCount < minimumUsageCount) {

@@ -17,7 +17,6 @@
 package com.echothree.control.user.letter.server.command;
 
 import com.echothree.control.user.letter.common.form.GetLetterSourceChoicesForm;
-import com.echothree.control.user.letter.common.result.GetLetterSourceChoicesResult;
 import com.echothree.control.user.letter.common.result.LetterResultFactory;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -63,9 +62,9 @@ public class GetLetterSourceChoicesCommand
     @Override
     protected BaseResult execute() {
         var letterControl = Session.getModelController(LetterControl.class);
-        GetLetterSourceChoicesResult result = LetterResultFactory.getGetLetterSourceChoicesResult();
-        String defaultLetterSourceChoice = form.getDefaultLetterSourceChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = LetterResultFactory.getGetLetterSourceChoicesResult();
+        var defaultLetterSourceChoice = form.getDefaultLetterSourceChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setLetterSourceChoices(letterControl.getLetterSourceChoices(defaultLetterSourceChoice,
                 getPreferredLanguage(), allowNullChoice));

@@ -17,9 +17,7 @@
 package com.echothree.model.control.employee.server.transfer;
 
 import com.echothree.model.control.employee.common.transfer.LeaveReasonDescriptionTransfer;
-import com.echothree.model.control.employee.common.transfer.LeaveReasonTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.employee.server.entity.LeaveReasonDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,12 +30,12 @@ public class LeaveReasonDescriptionTransferCache
     }
     
     public LeaveReasonDescriptionTransfer getLeaveReasonDescriptionTransfer(LeaveReasonDescription leaveReasonDescription) {
-        LeaveReasonDescriptionTransfer leaveReasonDescriptionTransfer = get(leaveReasonDescription);
+        var leaveReasonDescriptionTransfer = get(leaveReasonDescription);
         
         if(leaveReasonDescriptionTransfer == null) {
-            LeaveReasonTransfer leaveReasonTransfer = employeeControl.getLeaveReasonTransfer(userVisit,
+            var leaveReasonTransfer = employeeControl.getLeaveReasonTransfer(userVisit,
                     leaveReasonDescription.getLeaveReason());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, leaveReasonDescription.getLanguage());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, leaveReasonDescription.getLanguage());
             
             leaveReasonDescriptionTransfer = new LeaveReasonDescriptionTransfer(languageTransfer, leaveReasonTransfer, leaveReasonDescription.getDescription());
             put(leaveReasonDescription, leaveReasonDescriptionTransfer);

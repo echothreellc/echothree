@@ -18,7 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.DeleteMoodForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.Mood;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class DeleteMoodCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String moodName = form.getMoodName();
-        Mood mood = partyControl.getMoodByNameForUpdate(moodName);
+        var moodName = form.getMoodName();
+        var mood = partyControl.getMoodByNameForUpdate(moodName);
         
         if(mood != null) {
             partyControl.deleteMood(mood, getPartyPK());

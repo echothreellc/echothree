@@ -18,7 +18,6 @@ package com.echothree.util.client.string.test;
 
 import com.echothree.util.client.string.NameCleaner;
 import com.echothree.util.client.test.UserVisitTestCase;
-import com.echothree.util.common.string.NameResult;
 import javax.naming.NamingException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -37,7 +36,7 @@ public class NameCleanerTest
     }
     
     public static Test suite() {
-        TestSuite suite = new TestSuite();
+        var suite = new TestSuite();
         
         suite.addTest(new NameCleanerTest("testNameCleaner"));
         
@@ -64,7 +63,7 @@ public class NameCleanerTest
 
     protected void checkCleansedName(final String str, final String personalTitleChoice, final String firstName, final String middleName,
             final String lastName, final String nameSuffixChoice) {
-        NameResult nameResult = nameCleaner.getCleansedName(str);
+        var nameResult = nameCleaner.getCleansedName(str);
 
         if(personalTitleChoice == null ? !(nameResult.getPersonalTitleChoice() == null) : !nameCleaner.getPersonalTitlesOriginal().get(nameResult.getPersonalTitleChoice()).equals(personalTitleChoice)) {
             fail("checkCleansedName personalTitleChoice: " + personalTitleChoice + " != " + nameCleaner.getPersonalTitlesOriginal().get(nameResult.getPersonalTitleChoice()));

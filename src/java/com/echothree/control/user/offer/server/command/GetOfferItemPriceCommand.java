@@ -17,7 +17,6 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetOfferItemPriceForm;
-import com.echothree.control.user.offer.common.result.GetOfferItemPriceResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
@@ -29,16 +28,8 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -91,34 +82,34 @@ public class GetOfferItemPriceCommand
     @Override
     protected OfferItemPrice getEntity() {
         var offerControl = Session.getModelController(OfferControl.class);
-        String offerName = form.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
+        var offerName = form.getOfferName();
+        var offer = offerControl.getOfferByName(offerName);
         OfferItemPrice offerItemPrice = null;
 
         if(offer != null) {
             var itemControl = Session.getModelController(ItemControl.class);
-            String itemName = form.getItemName();
-            Item item = itemControl.getItemByName(itemName);
+            var itemName = form.getItemName();
+            var item = itemControl.getItemByName(itemName);
             
             if(item != null) {
                 var offerItemControl = Session.getModelController(OfferItemControl.class);
-                OfferItem offerItem = offerItemControl.getOfferItem(offer, item);
+                var offerItem = offerItemControl.getOfferItem(offer, item);
 
                 if(offerItem != null) {
                     var inventoryControl = Session.getModelController(InventoryControl.class);
-                    String inventoryConditionName = form.getInventoryConditionName();
-                    InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                    var inventoryConditionName = form.getInventoryConditionName();
+                    var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
                     if(inventoryCondition != null) {
                         var uomControl = Session.getModelController(UomControl.class);
-                        UnitOfMeasureKind unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-                        String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                        UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                        var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
+                        var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                        var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
                         if(unitOfMeasureType != null) {
                             var accountingControl = Session.getModelController(AccountingControl.class);
-                            String currencyIsoName = form.getCurrencyIsoName();
-                            Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+                            var currencyIsoName = form.getCurrencyIsoName();
+                            var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
                             if(currency != null) {
                                 offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency);
@@ -154,11 +145,11 @@ public class GetOfferItemPriceCommand
     
     @Override
     protected BaseResult getResult(OfferItemPrice offerItemPrice) {
-        GetOfferItemPriceResult result = OfferResultFactory.getGetOfferItemPriceResult();
+        var result = OfferResultFactory.getGetOfferItemPriceResult();
 
         if(offerItemPrice != null) {
             var offerItemControl = Session.getModelController(OfferItemControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             result.setOfferItemPrice(offerItemControl.getOfferItemPriceTransfer(userVisit, offerItemPrice));
 

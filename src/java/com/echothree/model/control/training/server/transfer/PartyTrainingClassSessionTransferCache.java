@@ -21,17 +21,10 @@ import com.echothree.model.control.training.common.transfer.PartyTrainingClassSe
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionQuestionTransfer;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionSectionTransfer;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionTransfer;
-import com.echothree.model.control.training.common.transfer.PartyTrainingClassTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSession;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionDetail;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionPage;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionQuestion;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionSection;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionStatus;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import java.util.Set;
 
 public class PartyTrainingClassSessionTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClassSession, PartyTrainingClassSessionTransfer> {
@@ -53,21 +46,21 @@ public class PartyTrainingClassSessionTransferCache
     }
     
     public PartyTrainingClassSessionTransfer getPartyTrainingClassSessionTransfer(PartyTrainingClassSession partyTrainingClassSession) {
-        PartyTrainingClassSessionTransfer partyTrainingClassSessionTransfer = get(partyTrainingClassSession);
+        var partyTrainingClassSessionTransfer = get(partyTrainingClassSession);
         
         if(partyTrainingClassSessionTransfer == null) {
-            PartyTrainingClassSessionDetail partyTrainingClassSessionDetail = partyTrainingClassSession.getLastDetail();
-            PartyTrainingClassTransfer partyTrainingClassTransfer = trainingControl.getPartyTrainingClassTransfer(userVisit, partyTrainingClassSessionDetail.getPartyTrainingClass());
-            Integer partyTrainingClassSessionSequence = partyTrainingClassSessionDetail.getPartyTrainingClassSessionSequence();
-            PartyTrainingClassSessionStatus partyTrainingClassSessionStatus = trainingControl.getPartyTrainingClassSessionStatus(partyTrainingClassSession);
+            var partyTrainingClassSessionDetail = partyTrainingClassSession.getLastDetail();
+            var partyTrainingClassTransfer = trainingControl.getPartyTrainingClassTransfer(userVisit, partyTrainingClassSessionDetail.getPartyTrainingClass());
+            var partyTrainingClassSessionSequence = partyTrainingClassSessionDetail.getPartyTrainingClassSessionSequence();
+            var partyTrainingClassSessionStatus = trainingControl.getPartyTrainingClassSessionStatus(partyTrainingClassSession);
             PartyTrainingClassSessionSectionTransfer lastPartyTrainingClassSessionSectionTransfer = null;
             PartyTrainingClassSessionPageTransfer lastPartyTrainingClassSessionPageTransfer = null;
             PartyTrainingClassSessionQuestionTransfer lastPartyTrainingClassSessionQuestionTransfer = null;
             
             if(partyTrainingClassSessionStatus != null) {
-                PartyTrainingClassSessionSection lastPartyTrainingClassSessionSection = partyTrainingClassSessionStatus.getLastPartyTrainingClassSessionSection();
-                PartyTrainingClassSessionPage lastPartyTrainingClassSessionPage = partyTrainingClassSessionStatus.getLastPartyTrainingClassSessionPage();
-                PartyTrainingClassSessionQuestion lastPartyTrainingClassSessionQuestion = partyTrainingClassSessionStatus.getLastPartyTrainingClassSessionQuestion();
+                var lastPartyTrainingClassSessionSection = partyTrainingClassSessionStatus.getLastPartyTrainingClassSessionSection();
+                var lastPartyTrainingClassSessionPage = partyTrainingClassSessionStatus.getLastPartyTrainingClassSessionPage();
+                var lastPartyTrainingClassSessionQuestion = partyTrainingClassSessionStatus.getLastPartyTrainingClassSessionQuestion();
 
                 lastPartyTrainingClassSessionSectionTransfer = lastPartyTrainingClassSessionSection == null ? null : trainingControl.getPartyTrainingClassSessionSectionTransfer(userVisit, lastPartyTrainingClassSessionSection);
                 lastPartyTrainingClassSessionPageTransfer = lastPartyTrainingClassSessionPage == null ? null : trainingControl.getPartyTrainingClassSessionPageTransfer(userVisit, lastPartyTrainingClassSessionPage);

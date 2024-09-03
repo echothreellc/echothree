@@ -18,7 +18,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.GetForumMessageTypeChoicesForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
-import com.echothree.control.user.forum.common.result.GetForumMessageTypeChoicesResult;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,9 +49,9 @@ public class GetForumMessageTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        GetForumMessageTypeChoicesResult result = ForumResultFactory.getGetForumMessageTypeChoicesResult();
-        String defaultForumMessageTypeChoice = form.getDefaultForumMessageTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ForumResultFactory.getGetForumMessageTypeChoicesResult();
+        var defaultForumMessageTypeChoice = form.getDefaultForumMessageTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setForumMessageTypeChoices(forumControl.getForumMessageTypeChoices(defaultForumMessageTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

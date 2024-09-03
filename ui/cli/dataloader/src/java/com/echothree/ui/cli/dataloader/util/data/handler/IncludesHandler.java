@@ -35,8 +35,8 @@ public class IncludesHandler
         if(localName.equals("file")) {
             String name = null;
 
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("name")) {
                     name = attrs.getValue(i);
                 }

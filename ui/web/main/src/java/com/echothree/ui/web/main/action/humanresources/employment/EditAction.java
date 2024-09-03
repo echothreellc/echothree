@@ -21,7 +21,6 @@ import com.echothree.control.user.employee.common.edit.EmploymentEdit;
 import com.echothree.control.user.employee.common.form.EditEmploymentForm;
 import com.echothree.control.user.employee.common.result.EditEmploymentResult;
 import com.echothree.control.user.employee.common.spec.EmploymentSpec;
-import com.echothree.model.control.employee.common.transfer.EmploymentTransfer;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
@@ -54,7 +53,7 @@ public class EditAction
     @Override
     protected EmploymentSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        EmploymentSpec spec = EmployeeUtil.getHome().getEmploymentSpec();
+        var spec = EmployeeUtil.getHome().getEmploymentSpec();
         
         actionForm.setPartyName(findParameter(request, ParameterConstants.PARTY_NAME, actionForm.getPartyName()));
         spec.setEmploymentName(findParameter(request, ParameterConstants.EMPLOYMENT_NAME, actionForm.getEmploymentName()));
@@ -65,7 +64,7 @@ public class EditAction
     @Override
     protected EmploymentEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        EmploymentEdit edit = EmployeeUtil.getHome().getEmploymentEdit();
+        var edit = EmployeeUtil.getHome().getEmploymentEdit();
 
         edit.setCompanyName(actionForm.getCompanyChoice());
         edit.setStartTime(actionForm.getStartTime());
@@ -106,7 +105,7 @@ public class EditAction
     @Override
     protected void setupTransferForForm(HttpServletRequest request, EditActionForm actionForm, EditEmploymentResult result)
             throws NamingException {
-        EmploymentTransfer employment = result.getEmployment();
+        var employment = result.getEmployment();
         
         request.setAttribute(AttributeConstants.EMPLOYMENT, employment);
         request.setAttribute(AttributeConstants.EMPLOYEE, EmployeeUtils.getInstance().getEmployee(getUserVisitPK(request), employment.getParty().getPartyName(),

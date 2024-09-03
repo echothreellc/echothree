@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.selector.selector;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.form.GetSelectorsForm;
 import com.echothree.control.user.selector.common.result.GetSelectorsResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,19 +48,19 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetSelectorsForm getSelectorsForm = SelectorUtil.getHome().getGetSelectorsForm();
-            String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-            String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+            var getSelectorsForm = SelectorUtil.getHome().getGetSelectorsForm();
+            var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+            var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
             
             getSelectorsForm.setSelectorKindName(selectorKindName);
             getSelectorsForm.setSelectorTypeName(selectorTypeName);
-            
-            CommandResult commandResult = SelectorUtil.getHome().getSelectors(getUserVisitPK(request), getSelectorsForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSelectorsResult getSelectorsResult = (GetSelectorsResult)executionResult.getResult();
+
+            var commandResult = SelectorUtil.getHome().getSelectors(getUserVisitPK(request), getSelectorsForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getSelectorsResult = (GetSelectorsResult)executionResult.getResult();
             
             request.setAttribute("selectorType", getSelectorsResult.getSelectorType());
             request.setAttribute("selectors", getSelectorsResult.getSelectors());

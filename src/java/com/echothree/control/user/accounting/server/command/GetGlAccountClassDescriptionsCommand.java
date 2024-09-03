@@ -18,12 +18,10 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetGlAccountClassDescriptionsForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetGlAccountClassDescriptionsResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.accounting.server.entity.GlAccountClass;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetGlAccountClassDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetGlAccountClassDescriptionsResult result = AccountingResultFactory.getGetGlAccountClassDescriptionsResult();
-        String glAccountClassName = form.getGlAccountClassName();
-        GlAccountClass glAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
+        var result = AccountingResultFactory.getGetGlAccountClassDescriptionsResult();
+        var glAccountClassName = form.getGlAccountClassName();
+        var glAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
         
         if(glAccountClass != null) {
             result.setGlAccountClass(accountingControl.getGlAccountClassTransfer(getUserVisit(), glAccountClass));

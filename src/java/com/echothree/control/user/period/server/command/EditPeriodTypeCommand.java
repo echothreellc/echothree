@@ -19,24 +19,15 @@ package com.echothree.control.user.period.server.command;
 import com.echothree.control.user.period.common.edit.PeriodEditFactory;
 import com.echothree.control.user.period.common.edit.PeriodTypeEdit;
 import com.echothree.control.user.period.common.form.EditPeriodTypeForm;
-import com.echothree.control.user.period.common.result.EditPeriodTypeResult;
 import com.echothree.control.user.period.common.result.PeriodResultFactory;
 import com.echothree.control.user.period.common.spec.PeriodTypeSpec;
-import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.period.server.entity.PeriodKind;
 import com.echothree.model.data.period.server.entity.PeriodType;
-import com.echothree.model.data.period.server.entity.PeriodTypeDescription;
-import com.echothree.model.data.period.server.entity.PeriodTypeDetail;
-import com.echothree.model.data.period.server.value.PeriodTypeDescriptionValue;
-import com.echothree.model.data.period.server.value.PeriodTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -90,24 +81,24 @@ public class EditPeriodTypeCommand
     @Override
     protected BaseResult execute() {
         var periodControl = Session.getModelController(PeriodControl.class);
-        EditPeriodTypeResult result = PeriodResultFactory.getEditPeriodTypeResult();
-        String periodKindName = spec.getPeriodKindName();
-        PeriodKind periodKind = periodControl.getPeriodKindByName(periodKindName);
+        var result = PeriodResultFactory.getEditPeriodTypeResult();
+        var periodKindName = spec.getPeriodKindName();
+        var periodKind = periodControl.getPeriodKindByName(periodKindName);
         
         if(periodKind != null) {
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                String periodTypeName = spec.getPeriodTypeName();
-                PeriodType periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
+                var periodTypeName = spec.getPeriodTypeName();
+                var periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
                 
                 if(periodType != null) {
                     if(editMode.equals(EditMode.LOCK)) {
                         if(lockEntity(periodType)) {
-                            PeriodTypeDescription periodTypeDescription = periodControl.getPeriodTypeDescription(periodType, getPreferredLanguage());
-                            PeriodTypeEdit edit = PeriodEditFactory.getPeriodTypeEdit();
-                            PeriodTypeDetail periodTypeDetail = periodType.getLastDetail();
-                            PeriodType parentPeriodType = periodTypeDetail.getParentPeriodType();
-                            WorkflowEntrance workflowEntrance = periodTypeDetail.getWorkflowEntrance();
-                            Workflow workflow = workflowEntrance == null? null: workflowEntrance.getLastDetail().getWorkflow();
+                            var periodTypeDescription = periodControl.getPeriodTypeDescription(periodType, getPreferredLanguage());
+                            var edit = PeriodEditFactory.getPeriodTypeEdit();
+                            var periodTypeDetail = periodType.getLastDetail();
+                            var parentPeriodType = periodTypeDetail.getParentPeriodType();
+                            var workflowEntrance = periodTypeDetail.getWorkflowEntrance();
+                            var workflow = workflowEntrance == null? null: workflowEntrance.getLastDetail().getWorkflow();
 
                             result.setPeriodType(periodControl.getPeriodTypeTransfer(getUserVisit(), periodType));
 
@@ -133,15 +124,15 @@ public class EditPeriodTypeCommand
                     addExecutionError(ExecutionErrors.UnknownPeriodTypeName.name(), periodTypeName);
                 }
             } else if(editMode.equals(EditMode.UPDATE)) {
-                String periodTypeName = spec.getPeriodTypeName();
-                PeriodType periodType = periodControl.getPeriodTypeByNameForUpdate(periodKind, periodTypeName);
+                var periodTypeName = spec.getPeriodTypeName();
+                var periodType = periodControl.getPeriodTypeByNameForUpdate(periodKind, periodTypeName);
                 
                 if(periodType != null) {
                     periodTypeName = edit.getPeriodTypeName();
-                    PeriodType duplicatePeriodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
+                    var duplicatePeriodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
 
                     if(duplicatePeriodType == null || periodType.equals(duplicatePeriodType)) {
-                        String parentPeriodTypeName = edit.getParentPeriodTypeName();
+                        var parentPeriodTypeName = edit.getParentPeriodTypeName();
                         PeriodType parentPeriodType = null;
 
                         if(parentPeriodTypeName != null) {
@@ -150,24 +141,24 @@ public class EditPeriodTypeCommand
 
                         if(parentPeriodTypeName == null || parentPeriodType != null) {
                             if(periodControl.isParentPeriodTypeSafe(periodType, parentPeriodType)) {
-                                String workflowName = edit.getWorkflowName();
-                                String workflowEntranceName = edit.getWorkflowEntranceName();
+                                var workflowName = edit.getWorkflowName();
+                                var workflowEntranceName = edit.getWorkflowEntranceName();
                                 var parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
 
                                 if(parameterCount == 0 || parameterCount == 2) {
                                     var workflowControl = Session.getModelController(WorkflowControl.class);
-                                    Workflow workflow = workflowName == null ? null : workflowControl.getWorkflowByName(workflowName);
+                                    var workflow = workflowName == null ? null : workflowControl.getWorkflowByName(workflowName);
 
                                     if(workflowName == null || workflow != null) {
-                                         WorkflowEntrance workflowEntrance = workflowEntranceName == null? null: workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
+                                        var workflowEntrance = workflowEntranceName == null? null: workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
 
                                         if(workflowEntranceName == null || workflowEntrance != null) {
                                             if(lockEntityForUpdate(periodType)) {
                                                 try {
                                                     var partyPK = getPartyPK();
-                                                    PeriodTypeDetailValue periodTypeDetailValue = periodControl.getPeriodTypeDetailValueForUpdate(periodType);
-                                                    PeriodTypeDescription periodTypeDescription = periodControl.getPeriodTypeDescriptionForUpdate(periodType, getPreferredLanguage());
-                                                    String description = edit.getDescription();
+                                                    var periodTypeDetailValue = periodControl.getPeriodTypeDetailValueForUpdate(periodType);
+                                                    var periodTypeDescription = periodControl.getPeriodTypeDescriptionForUpdate(periodType, getPreferredLanguage());
+                                                    var description = edit.getDescription();
 
                                                     periodTypeDetailValue.setPeriodTypeName(edit.getPeriodTypeName());
                                                     periodTypeDetailValue.setParentPeriodTypePK(parentPeriodType == null? null: parentPeriodType.getPrimaryKey());
@@ -182,7 +173,7 @@ public class EditPeriodTypeCommand
                                                     } else if(periodTypeDescription != null && description == null) {
                                                         periodControl.deletePeriodTypeDescription(periodTypeDescription, partyPK);
                                                     } else if(periodTypeDescription != null && description != null) {
-                                                        PeriodTypeDescriptionValue periodTypeDescriptionValue = periodControl.getPeriodTypeDescriptionValue(periodTypeDescription);
+                                                        var periodTypeDescriptionValue = periodControl.getPeriodTypeDescriptionValue(periodTypeDescription);
 
                                                         periodTypeDescriptionValue.setDescription(description);
                                                         periodControl.updatePeriodTypeDescriptionFromValue(periodTypeDescriptionValue, partyPK);

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.shipping.shippingmethodcarrierservice;
 
 import com.echothree.control.user.shipping.common.ShippingUtil;
-import com.echothree.control.user.shipping.common.form.GetShippingMethodCarrierServicesForm;
 import com.echothree.control.user.shipping.common.result.GetShippingMethodCarrierServicesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,21 +49,21 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String shippingMethodName = request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME);
-            String carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
-            String carrierServiceName = request.getParameter(ParameterConstants.CARRIER_SERVICE_NAME);
-            GetShippingMethodCarrierServicesForm commandForm = ShippingUtil.getHome().getGetShippingMethodCarrierServicesForm();
+            var shippingMethodName = request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME);
+            var carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
+            var carrierServiceName = request.getParameter(ParameterConstants.CARRIER_SERVICE_NAME);
+            var commandForm = ShippingUtil.getHome().getGetShippingMethodCarrierServicesForm();
             
             commandForm.setShippingMethodName(shippingMethodName);
             commandForm.setCarrierName(carrierName);
             commandForm.setCarrierServiceName(carrierServiceName);
-            
-            CommandResult commandResult = ShippingUtil.getHome().getShippingMethodCarrierServices(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetShippingMethodCarrierServicesResult result = (GetShippingMethodCarrierServicesResult)executionResult.getResult();
+
+            var commandResult = ShippingUtil.getHome().getShippingMethodCarrierServices(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetShippingMethodCarrierServicesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SHIPPING_METHOD, result.getShippingMethod());
             request.setAttribute(AttributeConstants.CARRIER_SERVICE, result.getCarrierService());

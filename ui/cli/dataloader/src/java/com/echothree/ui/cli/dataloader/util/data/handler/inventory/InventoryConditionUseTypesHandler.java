@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.inventory;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.InventoryService;
-import com.echothree.control.user.inventory.common.form.CreateInventoryConditionUseTypeForm;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -48,9 +47,9 @@ public class InventoryConditionUseTypesHandler
             String inventoryConditionUseTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("inventoryConditionUseTypeName"))
                     inventoryConditionUseTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +59,7 @@ public class InventoryConditionUseTypesHandler
             }
             
             try {
-                CreateInventoryConditionUseTypeForm commandForm = InventoryFormFactory.getCreateInventoryConditionUseTypeForm();
+                var commandForm = InventoryFormFactory.getCreateInventoryConditionUseTypeForm();
                 
                 commandForm.setInventoryConditionUseTypeName(inventoryConditionUseTypeName);
                 commandForm.setIsDefault(isDefault);

@@ -19,9 +19,6 @@ package com.echothree.control.user.scale.server.command;
 import com.echothree.control.user.scale.common.form.DeleteScaleUseTypeDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.scale.server.control.ScaleControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.scale.server.entity.ScaleUseType;
-import com.echothree.model.data.scale.server.entity.ScaleUseTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,16 +50,16 @@ public class DeleteScaleUseTypeDescriptionCommand
    @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleUseTypeName = form.getScaleUseTypeName();
-        ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
+       var scaleUseTypeName = form.getScaleUseTypeName();
+       var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
         
         if(scaleUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ScaleUseTypeDescription scaleUseTypeDescription = scaleControl.getScaleUseTypeDescriptionForUpdate(scaleUseType, language);
+                var scaleUseTypeDescription = scaleControl.getScaleUseTypeDescriptionForUpdate(scaleUseType, language);
                 
                 if(scaleUseTypeDescription != null) {
                     scaleControl.deleteScaleUseTypeDescription(scaleUseTypeDescription, getPartyPK());

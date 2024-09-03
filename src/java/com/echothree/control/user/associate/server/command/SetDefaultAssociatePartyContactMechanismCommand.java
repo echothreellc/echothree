@@ -18,9 +18,6 @@ package com.echothree.control.user.associate.server.command;
 
 import com.echothree.control.user.associate.common.form.SetDefaultAssociatePartyContactMechanismForm;
 import com.echothree.model.control.associate.server.control.AssociateControl;
-import com.echothree.model.data.associate.server.entity.Associate;
-import com.echothree.model.data.associate.server.entity.AssociateProgram;
-import com.echothree.model.data.associate.server.value.AssociatePartyContactMechanismDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,16 +50,16 @@ public class SetDefaultAssociatePartyContactMechanismCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        String associateProgramName = form.getAssociateProgramName();
-        AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+        var associateProgramName = form.getAssociateProgramName();
+        var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
         if(associateProgram != null) {
-            String associateName = form.getAssociateName();
-            Associate associate = associateControl.getAssociateByName(associateProgram, associateName);
+            var associateName = form.getAssociateName();
+            var associate = associateControl.getAssociateByName(associateProgram, associateName);
             
             if(associate != null) {
-                String associatePartyContactMechanismName = form.getAssociatePartyContactMechanismName();
-                AssociatePartyContactMechanismDetailValue associatePartyContactMechanismDetailValue = associateControl.getAssociatePartyContactMechanismDetailValueByNameForUpdate(associate,
+                var associatePartyContactMechanismName = form.getAssociatePartyContactMechanismName();
+                var associatePartyContactMechanismDetailValue = associateControl.getAssociatePartyContactMechanismDetailValueByNameForUpdate(associate,
                         associatePartyContactMechanismName);
                 
                 if(associatePartyContactMechanismDetailValue != null) {

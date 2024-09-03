@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected GeoCodeAliasSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        GeoCodeAliasSpec spec = GeoUtil.getHome().getGeoCodeAliasSpec();
+        var spec = GeoUtil.getHome().getGeoCodeAliasSpec();
         
         spec.setGeoCodeName(findParameter(request, ParameterConstants.GEO_CODE_NAME, actionForm.getGeoCodeName()));
         spec.setGeoCodeAliasTypeName(findParameter(request, ParameterConstants.GEO_CODE_ALIAS_TYPE_NAME, actionForm.getGeoCodeAliasTypeName()));
@@ -62,7 +62,7 @@ public class EditAction
     @Override
     protected GeoCodeAliasEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        GeoCodeAliasEdit edit = GeoUtil.getHome().getGeoCodeAliasEdit();
+        var edit = GeoUtil.getHome().getGeoCodeAliasEdit();
 
         edit.setAlias(actionForm.getAlias());
 

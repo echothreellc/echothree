@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.forum.forumgroupforum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.GetForumGroupForumsForm;
 import com.echothree.control.user.forum.common.result.GetForumGroupForumsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetForumGroupForumsForm commandForm = ForumUtil.getHome().getGetForumGroupForumsForm();
-            String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+            var commandForm = ForumUtil.getHome().getGetForumGroupForumsForm();
+            var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
             
             commandForm.setForumName(forumName);
 
-            CommandResult commandResult = ForumUtil.getHome().getForumGroupForums(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetForumGroupForumsResult result = (GetForumGroupForumsResult)executionResult.getResult();
+            var commandResult = ForumUtil.getHome().getForumGroupForums(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetForumGroupForumsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FORUM, result.getForum());
             request.setAttribute(AttributeConstants.FORUM_GROUP_FORUMS, result.getForumGroupForums());

@@ -17,13 +17,11 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemImageTypeDescriptionsForm;
-import com.echothree.control.user.item.common.result.GetItemImageTypeDescriptionsResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.ItemImageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetItemImageTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemImageTypeDescriptionsResult result = ItemResultFactory.getGetItemImageTypeDescriptionsResult();
-        String itemImageTypeName = form.getItemImageTypeName();
-        ItemImageType itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
+        var result = ItemResultFactory.getGetItemImageTypeDescriptionsResult();
+        var itemImageTypeName = form.getItemImageTypeName();
+        var itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
         
         if(itemImageType != null) {
             result.setItemImageType(itemControl.getItemImageTypeTransfer(getUserVisit(), itemImageType));

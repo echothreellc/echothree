@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.wishlist.wishlistpriority;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.form.CreateWishlistPriorityForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,14 +54,14 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
+        var wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateWishlistPriorityForm commandForm = WishlistUtil.getHome().getCreateWishlistPriorityForm();
+                    var commandForm = WishlistUtil.getHome().getCreateWishlistPriorityForm();
                     
                     if(wishlistTypeName == null)
                         wishlistTypeName = actionForm.getWishlistTypeName();
@@ -73,8 +71,8 @@ public class AddAction
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = WishlistUtil.getHome().createWishlistPriority(getUserVisitPK(request), commandForm);
+
+                    var commandResult = WishlistUtil.getHome().createWishlistPriority(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -91,8 +89,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WISHLIST_TYPE_NAME, wishlistTypeName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

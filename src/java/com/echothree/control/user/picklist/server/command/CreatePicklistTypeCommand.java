@@ -24,10 +24,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.picklist.server.entity.PicklistType;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -75,11 +72,11 @@ public class CreatePicklistTypeCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType == null) {
-            String parentPicklistTypeName = form.getParentPicklistTypeName();
+            var parentPicklistTypeName = form.getParentPicklistTypeName();
             PicklistType parentPicklistType = null;
 
             if(parentPicklistTypeName != null) {
@@ -88,19 +85,19 @@ public class CreatePicklistTypeCommand
 
             if(parentPicklistTypeName == null || parentPicklistType != null) {
                 var sequenceControl = Session.getModelController(SequenceControl.class);
-                String picklistSequenceTypeName = form.getPicklistSequenceTypeName();
-                SequenceType picklistSequenceType = sequenceControl.getSequenceTypeByName(picklistSequenceTypeName);
+                var picklistSequenceTypeName = form.getPicklistSequenceTypeName();
+                var picklistSequenceType = sequenceControl.getSequenceTypeByName(picklistSequenceTypeName);
 
                 if(picklistSequenceTypeName == null || picklistSequenceType != null) {
                     var workflowControl = Session.getModelController(WorkflowControl.class);
-                    String picklistWorkflowName = form.getPicklistWorkflowName();
-                    Workflow picklistWorkflow = picklistWorkflowName == null ? null : workflowControl.getWorkflowByName(picklistWorkflowName);
+                    var picklistWorkflowName = form.getPicklistWorkflowName();
+                    var picklistWorkflow = picklistWorkflowName == null ? null : workflowControl.getWorkflowByName(picklistWorkflowName);
 
                     if(picklistWorkflowName == null || picklistWorkflow != null) {
-                        String picklistWorkflowEntranceName = form.getPicklistWorkflowEntranceName();
+                        var picklistWorkflowEntranceName = form.getPicklistWorkflowEntranceName();
 
                         if(picklistWorkflowEntranceName == null || (picklistWorkflow != null && picklistWorkflowEntranceName != null)) {
-                            WorkflowEntrance picklistWorkflowEntrance = picklistWorkflowEntranceName == null ? null : workflowControl.getWorkflowEntranceByName(picklistWorkflow, picklistWorkflowEntranceName);
+                            var picklistWorkflowEntrance = picklistWorkflowEntranceName == null ? null : workflowControl.getWorkflowEntranceByName(picklistWorkflow, picklistWorkflowEntranceName);
 
                             if(picklistWorkflowEntranceName == null || picklistWorkflowEntrance != null) {
                                 var partyPK = getPartyPK();

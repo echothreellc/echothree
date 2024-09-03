@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forummimetype;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.SetDefaultForumMimeTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,15 +49,15 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
-        SetDefaultForumMimeTypeForm commandForm = ForumUtil.getHome().getSetDefaultForumMimeTypeForm();
+        var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+        var commandForm = ForumUtil.getHome().getSetDefaultForumMimeTypeForm();
         
         commandForm.setForumName(forumName);
         commandForm.setMimeTypeName(request.getParameter(ParameterConstants.MIME_TYPE_NAME));
         
         ForumUtil.getHome().setDefaultForumMimeType(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.FORUM_NAME, forumName);

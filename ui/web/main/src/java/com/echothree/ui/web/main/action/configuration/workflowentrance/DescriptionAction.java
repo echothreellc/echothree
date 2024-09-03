@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.workflowentrance;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.GetWorkflowEntranceDescriptionsForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowEntranceDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,16 +52,16 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
-            String workflowEntranceName = request.getParameter(ParameterConstants.WORKFLOW_ENTRANCE_NAME);
-            GetWorkflowEntranceDescriptionsForm commandForm = WorkflowUtil.getHome().getGetWorkflowEntranceDescriptionsForm();
+            var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+            var workflowEntranceName = request.getParameter(ParameterConstants.WORKFLOW_ENTRANCE_NAME);
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowEntranceDescriptionsForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowEntranceName(workflowEntranceName);
-            
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowEntranceDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowEntranceDescriptionsResult result = (GetWorkflowEntranceDescriptionsResult)executionResult.getResult();
+
+            var commandResult = WorkflowUtil.getHome().getWorkflowEntranceDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowEntranceDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORKFLOW_ENTRANCE, result.getWorkflowEntrance());
             request.setAttribute(AttributeConstants.WORKFLOW_ENTRANCE_DESCRIPTIONS, result.getWorkflowEntranceDescriptions());

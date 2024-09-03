@@ -18,16 +18,11 @@ package com.echothree.control.user.chain.server.command;
 
 import com.echothree.control.user.chain.common.form.GetChainTypeDescriptionForm;
 import com.echothree.control.user.chain.common.result.ChainResultFactory;
-import com.echothree.control.user.chain.common.result.GetChainTypeDescriptionResult;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.model.data.chain.server.entity.ChainType;
-import com.echothree.model.data.chain.server.entity.ChainTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -71,21 +66,21 @@ public class GetChainTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetChainTypeDescriptionResult result = ChainResultFactory.getGetChainTypeDescriptionResult();
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var result = ChainResultFactory.getGetChainTypeDescriptionResult();
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
             if(chainType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    ChainTypeDescription chainTypeDescription = chainControl.getChainTypeDescription(chainType, language);
+                    var chainTypeDescription = chainControl.getChainTypeDescription(chainType, language);
 
                     if(chainTypeDescription != null) {
                         result.setChainTypeDescription(chainControl.getChainTypeDescriptionTransfer(getUserVisit(), chainTypeDescription));

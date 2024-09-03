@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemunitofmeasuretype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.SetDefaultItemUnitOfMeasureTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,16 +49,16 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
-        String unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
-        SetDefaultItemUnitOfMeasureTypeForm commandForm = ItemUtil.getHome().getSetDefaultItemUnitOfMeasureTypeForm();
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        var unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
+        var commandForm = ItemUtil.getHome().getSetDefaultItemUnitOfMeasureTypeForm();
         
         commandForm.setItemName(itemName);
         commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
         
         ItemUtil.getHome().setDefaultItemUnitOfMeasureType(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.ITEM_NAME, itemName);

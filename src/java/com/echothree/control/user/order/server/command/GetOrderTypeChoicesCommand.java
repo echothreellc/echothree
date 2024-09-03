@@ -17,7 +17,6 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.GetOrderTypeChoicesForm;
-import com.echothree.control.user.order.common.result.GetOrderTypeChoicesResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -63,9 +62,9 @@ public class GetOrderTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        GetOrderTypeChoicesResult result = OrderResultFactory.getGetOrderTypeChoicesResult();
-        String defaultOrderTypeChoice = form.getDefaultOrderTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = OrderResultFactory.getGetOrderTypeChoicesResult();
+        var defaultOrderTypeChoice = form.getDefaultOrderTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setOrderTypeChoices(orderTypeControl.getOrderTypeChoices(defaultOrderTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

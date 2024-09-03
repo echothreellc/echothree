@@ -19,25 +19,14 @@ package com.echothree.model.control.content.server.transfer;
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.ContentProperties;
 import com.echothree.model.control.content.common.transfer.ContentPageAreaTransfer;
-import com.echothree.model.control.content.common.transfer.ContentPageLayoutAreaTransfer;
-import com.echothree.model.control.content.common.transfer.ContentPageTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.content.server.entity.ContentPageArea;
-import com.echothree.model.data.content.server.entity.ContentPageAreaBlob;
-import com.echothree.model.data.content.server.entity.ContentPageAreaClob;
-import com.echothree.model.data.content.server.entity.ContentPageAreaDetail;
-import com.echothree.model.data.content.server.entity.ContentPageAreaString;
-import com.echothree.model.data.content.server.entity.ContentPageAreaUrl;
-import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class ContentPageAreaTransferCache
         extends BaseContentTransferCache<ContentPageArea, ContentPageAreaTransfer> {
@@ -85,15 +74,15 @@ public class ContentPageAreaTransferCache
     }
 
     public ContentPageAreaTransfer getContentPageAreaTransfer(ContentPageArea contentPageArea) {
-        ContentPageAreaTransfer contentPageAreaTransfer = get(contentPageArea);
+        var contentPageAreaTransfer = get(contentPageArea);
         
         if(contentPageAreaTransfer == null) {
-            ContentPageAreaDetail contentPageAreaDetail = contentPageArea.getLastDetail();
-            ContentPageTransfer contentPageTransfer = filterContentPage ? null : contentControl.getContentPageTransfer(userVisit, contentPageAreaDetail.getContentPage());
-            ContentPageLayoutAreaTransfer contentPageLayoutAreaTransfer = filterContentPageLayoutArea ? null : contentControl.getContentPageLayoutAreaTransfer(userVisit, contentPageAreaDetail.getContentPageLayoutArea());
-            LanguageTransfer languageTransfer = filterLanguage ? null : partyControl.getLanguageTransfer(userVisit, contentPageAreaDetail.getLanguage());
-            MimeType mimeType = contentPageAreaDetail.getMimeType();
-            MimeTypeTransfer mimeTypeTransfer = filterMimeType ? null : mimeType == null ? null : coreControl.getMimeTypeTransfer(userVisit, mimeType);
+            var contentPageAreaDetail = contentPageArea.getLastDetail();
+            var contentPageTransfer = filterContentPage ? null : contentControl.getContentPageTransfer(userVisit, contentPageAreaDetail.getContentPage());
+            var contentPageLayoutAreaTransfer = filterContentPageLayoutArea ? null : contentControl.getContentPageLayoutAreaTransfer(userVisit, contentPageAreaDetail.getContentPageLayoutArea());
+            var languageTransfer = filterLanguage ? null : partyControl.getLanguageTransfer(userVisit, contentPageAreaDetail.getLanguage());
+            var mimeType = contentPageAreaDetail.getMimeType();
+            var mimeTypeTransfer = filterMimeType ? null : mimeType == null ? null : coreControl.getMimeTypeTransfer(userVisit, mimeType);
             ByteArray blob = null;
             String clob = null;
             String string = null;
@@ -101,7 +90,7 @@ public class ContentPageAreaTransferCache
             
             if(mimeType != null) {
                 if(includeBlob) {
-                    ContentPageAreaBlob contentPageAreaBlob = contentControl.getContentPageAreaBlob(contentPageAreaDetail);
+                    var contentPageAreaBlob = contentControl.getContentPageAreaBlob(contentPageAreaDetail);
 
                     if(contentPageAreaBlob != null) {
                         blob = contentPageAreaBlob.getBlob();
@@ -109,7 +98,7 @@ public class ContentPageAreaTransferCache
                 }
 
                 if(includeClob) {
-                    ContentPageAreaClob contentPageAreaClob = contentControl.getContentPageAreaClob(contentPageAreaDetail);
+                    var contentPageAreaClob = contentControl.getContentPageAreaClob(contentPageAreaDetail);
 
                     if(contentPageAreaClob != null) {
                         clob = contentPageAreaClob.getClob();
@@ -118,7 +107,7 @@ public class ContentPageAreaTransferCache
             }
 
             if(includeString) {
-                ContentPageAreaString contentPageAreaString = contentControl.getContentPageAreaString(contentPageAreaDetail);
+                var contentPageAreaString = contentControl.getContentPageAreaString(contentPageAreaDetail);
 
                 if(contentPageAreaString != null) {
                     string = contentPageAreaString.getString();
@@ -126,7 +115,7 @@ public class ContentPageAreaTransferCache
             }
 
             if(includeUrl) {
-                ContentPageAreaUrl contentPageAreaUrl = contentControl.getContentPageAreaUrl(contentPageAreaDetail);
+                var contentPageAreaUrl = contentControl.getContentPageAreaUrl(contentPageAreaDetail);
 
                 if(contentPageAreaUrl != null) {
                     url = contentPageAreaUrl.getUrl();

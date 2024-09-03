@@ -69,11 +69,11 @@ public class CreateItemPurchasingCategoryCommand
     protected BaseResult execute() {
         var result = VendorResultFactory.getCreateItemPurchasingCategoryResult();
         var vendorControl = Session.getModelController(VendorControl.class);
-        String itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
-        ItemPurchasingCategory itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
+        var itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
+        var itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
         
         if(itemPurchasingCategory == null) {
-            String parentItemPurchasingCategoryName = form.getParentItemPurchasingCategoryName();
+            var parentItemPurchasingCategoryName = form.getParentItemPurchasingCategoryName();
             ItemPurchasingCategory parentItemPurchasingCategory = null;
             
             if(parentItemPurchasingCategoryName != null) {

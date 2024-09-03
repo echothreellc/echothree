@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.searchsortorder;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetSearchSortOrderDescriptionsForm;
 import com.echothree.control.user.search.common.result.GetSearchSortOrderDescriptionsResult;
-import com.echothree.model.control.search.common.transfer.SearchSortOrderTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetSearchSortOrderDescriptionsForm commandForm = SearchUtil.getHome().getGetSearchSortOrderDescriptionsForm();
+        var commandForm = SearchUtil.getHome().getGetSearchSortOrderDescriptionsForm();
 
         commandForm.setSearchKindName(request.getParameter(ParameterConstants.SEARCH_KIND_NAME));
         commandForm.setSearchSortOrderName(request.getParameter(ParameterConstants.SEARCH_SORT_ORDER_NAME));
 
-        CommandResult commandResult = SearchUtil.getHome().getSearchSortOrderDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = SearchUtil.getHome().getSearchSortOrderDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSearchSortOrderDescriptionsResult result = (GetSearchSortOrderDescriptionsResult) executionResult.getResult();
-            SearchSortOrderTransfer searchSortOrderTransfer = result.getSearchSortOrder();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchSortOrderDescriptionsResult) executionResult.getResult();
+            var searchSortOrderTransfer = result.getSearchSortOrder();
 
             request.setAttribute(AttributeConstants.SEARCH_SORT_ORDER, searchSortOrderTransfer);
             request.setAttribute(AttributeConstants.SEARCH_SORT_ORDER_DESCRIPTIONS, result.getSearchSortOrderDescriptions());

@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected ItemVolumeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemVolumeSpec spec = ItemUtil.getHome().getItemVolumeSpec();
+        var spec = ItemUtil.getHome().getItemVolumeSpec();
 
         spec.setItemName(findParameter(request, ParameterConstants.ITEM_NAME, actionForm.getItemName()));
         spec.setUnitOfMeasureTypeName(findParameter(request, ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME, actionForm.getUnitOfMeasureTypeName()));
@@ -62,7 +62,7 @@ public class EditAction
     @Override
     protected ItemVolumeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemVolumeEdit edit = ItemUtil.getHome().getItemVolumeEdit();
+        var edit = ItemUtil.getHome().getItemVolumeEdit();
 
         edit.setHeightUnitOfMeasureTypeName(actionForm.getHeightUnitOfMeasureTypeChoice());
         edit.setHeight(actionForm.getHeight());

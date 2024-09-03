@@ -21,7 +21,6 @@ import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.campaign.server.entity.CampaignContent;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,8 +62,8 @@ public class DeleteCampaignContentCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignContentName = form.getCampaignContentName();
-        CampaignContent campaignContent = campaignControl.getCampaignContentByNameForUpdate(campaignContentName);
+        var campaignContentName = form.getCampaignContentName();
+        var campaignContent = campaignControl.getCampaignContentByNameForUpdate(campaignContentName);
         
         if(campaignContent != null) {
             campaignControl.deleteCampaignContent(campaignContent, getPartyPK());

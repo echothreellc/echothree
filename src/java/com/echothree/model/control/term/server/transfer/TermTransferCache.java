@@ -18,12 +18,8 @@ package com.echothree.model.control.term.server.transfer;
 
 import com.echothree.model.control.term.common.TermTypes;
 import com.echothree.model.control.term.common.transfer.TermTransfer;
-import com.echothree.model.control.term.common.transfer.TermTypeTransfer;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.term.server.entity.DateDrivenTerm;
-import com.echothree.model.data.term.server.entity.StandardTerm;
 import com.echothree.model.data.term.server.entity.Term;
-import com.echothree.model.data.term.server.entity.TermDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.string.PercentUtils;
 
@@ -38,32 +34,32 @@ public class TermTransferCache
     }
     
     public TermTransfer getTermTransfer(Term term) {
-        TermTransfer termTransfer = get(term);
+        var termTransfer = get(term);
         
         if(termTransfer == null) {
-            TermDetail termDetail = term.getLastDetail();
-            String termName = termDetail.getTermName();
-            TermTypeTransferCache termTypeTransferCache = termControl.getTermTransferCaches(userVisit).getTermTypeTransferCache();
-            TermTypeTransfer termType = termTypeTransferCache.getTermTypeTransfer(termDetail.getTermType());
-            Boolean isDefault = termDetail.getIsDefault();
-            Integer sortOrder = termDetail.getSortOrder();
-            String description = termControl.getBestTermDescription(term, getLanguage());
+            var termDetail = term.getLastDetail();
+            var termName = termDetail.getTermName();
+            var termTypeTransferCache = termControl.getTermTransferCaches(userVisit).getTermTypeTransferCache();
+            var termType = termTypeTransferCache.getTermTypeTransfer(termDetail.getTermType());
+            var isDefault = termDetail.getIsDefault();
+            var sortOrder = termDetail.getSortOrder();
+            var description = termControl.getBestTermDescription(term, getLanguage());
             String netDueDays = null;
             String discountPercentage = null;
             String discountDays = null;
             String netDueDayOfMonth = null;
             String dueNextMonthDays = null;
             String discountBeforeDayOfMonth = null;
-            
-            String termTypeName = termDetail.getTermType().getTermTypeName();
+
+            var termTypeName = termDetail.getTermType().getTermTypeName();
             if(termTypeName.equals(TermTypes.STANDARD.name())) {
-                StandardTerm standardTerm = termControl.getStandardTerm(term);
+                var standardTerm = termControl.getStandardTerm(term);
                 
                 netDueDays = standardTerm.getNetDueDays().toString();
                 discountPercentage = PercentUtils.getInstance().formatFractionalPercent(standardTerm.getDiscountPercentage());
                 discountDays = standardTerm.getDiscountDays().toString();
             } else if(termTypeName.equals(TermTypes.DATE_DRIVEN.name())) {
-                DateDrivenTerm dateDrivenTerm = termControl.getDateDrivenTerm(term);
+                var dateDrivenTerm = termControl.getDateDrivenTerm(term);
                 
                 netDueDayOfMonth = dateDrivenTerm.getNetDueDayOfMonth().toString();
                 dueNextMonthDays = dateDrivenTerm.getDueNextMonthDays().toString();

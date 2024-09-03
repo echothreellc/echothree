@@ -17,10 +17,8 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetMoodDescriptionsForm;
-import com.echothree.control.user.party.common.result.GetMoodDescriptionsResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.Mood;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,9 +49,9 @@ public class GetMoodDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetMoodDescriptionsResult result = PartyResultFactory.getGetMoodDescriptionsResult();
-        String moodName = form.getMoodName();
-        Mood mood = partyControl.getMoodByName(moodName);
+        var result = PartyResultFactory.getGetMoodDescriptionsResult();
+        var moodName = form.getMoodName();
+        var mood = partyControl.getMoodByName(moodName);
         
         if(mood != null) {
             result.setMood(partyControl.getMoodTransfer(getUserVisit(), mood));

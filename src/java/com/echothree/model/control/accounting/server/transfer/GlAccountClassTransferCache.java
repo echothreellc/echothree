@@ -19,7 +19,6 @@ package com.echothree.model.control.accounting.server.transfer;
 import com.echothree.model.control.accounting.common.transfer.GlAccountClassTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlAccountClass;
-import com.echothree.model.data.accounting.server.entity.GlAccountClassDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class GlAccountClassTransferCache
@@ -34,16 +33,16 @@ public class GlAccountClassTransferCache
     
     @Override
     public GlAccountClassTransfer getTransfer(GlAccountClass glAccountClass) {
-        GlAccountClassTransfer glAccountClassTransfer = get(glAccountClass);
+        var glAccountClassTransfer = get(glAccountClass);
         
         if(glAccountClassTransfer == null) {
-            GlAccountClassDetail glAccountClassDetail = glAccountClass.getLastDetail();
-            String glAccountClassName = glAccountClassDetail.getGlAccountClassName();
-            GlAccountClass parentGlAccountClass = glAccountClassDetail.getParentGlAccountClass();
-            GlAccountClassTransfer parentGlAccountClassTransfer = parentGlAccountClass == null? null: getTransfer(parentGlAccountClass);
-            Boolean isDefault = glAccountClassDetail.getIsDefault();
-            Integer sortOrder = glAccountClassDetail.getSortOrder();
-            String description = accountingControl.getBestGlAccountClassDescription(glAccountClass, getLanguage());
+            var glAccountClassDetail = glAccountClass.getLastDetail();
+            var glAccountClassName = glAccountClassDetail.getGlAccountClassName();
+            var parentGlAccountClass = glAccountClassDetail.getParentGlAccountClass();
+            var parentGlAccountClassTransfer = parentGlAccountClass == null? null: getTransfer(parentGlAccountClass);
+            var isDefault = glAccountClassDetail.getIsDefault();
+            var sortOrder = glAccountClassDetail.getSortOrder();
+            var description = accountingControl.getBestGlAccountClassDescription(glAccountClass, getLanguage());
             
             glAccountClassTransfer = new GlAccountClassTransfer(glAccountClassName, parentGlAccountClassTransfer, isDefault, sortOrder, description);
             put(glAccountClass, glAccountClassTransfer);

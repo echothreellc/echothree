@@ -17,33 +17,23 @@
 package com.echothree.ui.web.main.action.customer.customertype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetGlAccountChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetGlAccountChoicesResult;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationPolicyChoicesForm;
 import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationPolicyChoicesResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerCreditStatusChoicesForm;
-import com.echothree.control.user.customer.common.form.GetCustomerStatusChoicesForm;
 import com.echothree.control.user.customer.common.result.GetCustomerCreditStatusChoicesResult;
 import com.echothree.control.user.customer.common.result.GetCustomerStatusChoicesResult;
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.form.GetAllocationPriorityChoicesForm;
 import com.echothree.control.user.inventory.common.result.GetAllocationPriorityChoicesResult;
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetSourceChoicesForm;
 import com.echothree.control.user.offer.common.result.GetSourceChoicesResult;
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.form.GetReturnPolicyChoicesForm;
 import com.echothree.control.user.returnpolicy.common.result.GetReturnPolicyChoicesResult;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.form.GetSequenceChoicesForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
 import com.echothree.control.user.shipment.common.ShipmentUtil;
-import com.echothree.control.user.shipment.common.form.GetFreeOnBoardChoicesForm;
 import com.echothree.control.user.shipment.common.result.GetFreeOnBoardChoicesResult;
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.common.form.GetTermChoicesForm;
 import com.echothree.control.user.term.common.result.GetTermChoicesResult;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
@@ -59,8 +49,6 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
 import com.echothree.model.control.shipment.common.choice.FreeOnBoardChoicesBean;
 import com.echothree.model.control.term.common.choice.TermChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -110,15 +98,15 @@ public class AddActionForm
     public void setupCustomerSequenceChoices()
             throws NamingException {
         if(customerSequenceChoices == null) {
-            GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
+            var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
 
             form.setSequenceTypeName(SequenceTypes.CUSTOMER.name());
             form.setDefaultSequenceChoice(customerSequenceChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+            var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceChoicesResult)executionResult.getResult();
             customerSequenceChoices = result.getSequenceChoices();
 
             if(customerSequenceChoice == null)
@@ -129,14 +117,14 @@ public class AddActionForm
     public void setupDefaultSourceChoices()
             throws NamingException {
         if(defaultSourceChoices == null) {
-            GetSourceChoicesForm form = OfferUtil.getHome().getGetSourceChoicesForm();
+            var form = OfferUtil.getHome().getGetSourceChoicesForm();
 
             form.setDefaultSourceChoice(defaultSourceChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSourceChoicesResult result = (GetSourceChoicesResult)executionResult.getResult();
+            var commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSourceChoicesResult)executionResult.getResult();
             defaultSourceChoices = result.getSourceChoices();
 
             if(defaultSourceChoice == null)
@@ -147,14 +135,14 @@ public class AddActionForm
     public void setupDefaultTermChoices()
             throws NamingException {
         if(defaultTermChoices == null) {
-            GetTermChoicesForm form = TermUtil.getHome().getGetTermChoicesForm();
+            var form = TermUtil.getHome().getGetTermChoicesForm();
 
             form.setDefaultTermChoice(defaultTermChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = TermUtil.getHome().getTermChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTermChoicesResult result = (GetTermChoicesResult)executionResult.getResult();
+            var commandResult = TermUtil.getHome().getTermChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTermChoicesResult)executionResult.getResult();
             defaultTermChoices = result.getTermChoices();
 
             if(defaultTermChoice == null)
@@ -165,14 +153,14 @@ public class AddActionForm
     public void setupDefaultFreeOnBoardChoices()
             throws NamingException {
         if(defaultFreeOnBoardChoices == null) {
-            GetFreeOnBoardChoicesForm form = ShipmentUtil.getHome().getGetFreeOnBoardChoicesForm();
+            var form = ShipmentUtil.getHome().getGetFreeOnBoardChoicesForm();
 
             form.setDefaultFreeOnBoardChoice(defaultFreeOnBoardChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = ShipmentUtil.getHome().getFreeOnBoardChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFreeOnBoardChoicesResult result = (GetFreeOnBoardChoicesResult)executionResult.getResult();
+            var commandResult = ShipmentUtil.getHome().getFreeOnBoardChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetFreeOnBoardChoicesResult)executionResult.getResult();
             defaultFreeOnBoardChoices = result.getFreeOnBoardChoices();
 
             if(defaultFreeOnBoardChoice == null)
@@ -183,15 +171,15 @@ public class AddActionForm
     public void setupDefaultCancellationPolicyChoices()
             throws NamingException {
         if(defaultCancellationPolicyChoices == null) {
-            GetCancellationPolicyChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
+            var form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
 
             form.setCancellationKindName(CancellationKinds.CUSTOMER_CANCELLATION.name());
             form.setDefaultCancellationPolicyChoice(defaultCancellationPolicyChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCancellationPolicyChoicesResult result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
             defaultCancellationPolicyChoices = result.getCancellationPolicyChoices();
 
             if(defaultCancellationPolicyChoice == null)
@@ -202,15 +190,15 @@ public class AddActionForm
     public void setupDefaultReturnPolicyChoices()
             throws NamingException {
         if(defaultReturnPolicyChoices == null) {
-            GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
+            var form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
 
             form.setReturnKindName(ReturnKinds.CUSTOMER_RETURN.name());
             form.setDefaultReturnPolicyChoice(defaultReturnPolicyChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetReturnPolicyChoicesResult result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+            var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
             defaultReturnPolicyChoices = result.getReturnPolicyChoices();
 
             if(defaultReturnPolicyChoice == null)
@@ -221,14 +209,14 @@ public class AddActionForm
     public void setupDefaultCustomerStatusChoices()
             throws NamingException {
         if(defaultCustomerStatusChoices == null) {
-            GetCustomerStatusChoicesForm form = CustomerUtil.getHome().getGetCustomerStatusChoicesForm();
+            var form = CustomerUtil.getHome().getGetCustomerStatusChoicesForm();
 
             form.setDefaultCustomerStatusChoice(defaultCustomerStatusChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = CustomerUtil.getHome().getCustomerStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerStatusChoicesResult result = (GetCustomerStatusChoicesResult)executionResult.getResult();
+            var commandResult = CustomerUtil.getHome().getCustomerStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerStatusChoicesResult)executionResult.getResult();
             defaultCustomerStatusChoices = result.getCustomerStatusChoices();
 
             if(defaultCustomerStatusChoice == null)
@@ -239,14 +227,14 @@ public class AddActionForm
     public void setupDefaultCustomerCreditStatusChoices()
             throws NamingException {
         if(defaultCustomerCreditStatusChoices == null) {
-            GetCustomerCreditStatusChoicesForm form = CustomerUtil.getHome().getGetCustomerCreditStatusChoicesForm();
+            var form = CustomerUtil.getHome().getGetCustomerCreditStatusChoicesForm();
 
             form.setDefaultCustomerCreditStatusChoice(defaultCustomerCreditStatusChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = CustomerUtil.getHome().getCustomerCreditStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerCreditStatusChoicesResult result = (GetCustomerCreditStatusChoicesResult)executionResult.getResult();
+            var commandResult = CustomerUtil.getHome().getCustomerCreditStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerCreditStatusChoicesResult)executionResult.getResult();
             defaultCustomerCreditStatusChoices = result.getCustomerCreditStatusChoices();
 
             if(defaultCustomerCreditStatusChoice == null)
@@ -257,15 +245,15 @@ public class AddActionForm
     private void setupDefaultArGlAccountChoices()
             throws NamingException {
         if(defaultArGlAccountChoices == null) {
-            GetGlAccountChoicesForm form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
+            var form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
 
             form.setGlAccountCategoryName(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE);
             form.setDefaultGlAccountChoice(defaultArGlAccountChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGlAccountChoicesResult getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
+            var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
             defaultArGlAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
 
             if(defaultArGlAccountChoice == null) {
@@ -277,14 +265,14 @@ public class AddActionForm
     private void setupAllocationPriorityChoices()
             throws NamingException {
         if(allocationPriorityChoices == null) {
-            GetAllocationPriorityChoicesForm form = InventoryUtil.getHome().getGetAllocationPriorityChoicesForm();
+            var form = InventoryUtil.getHome().getGetAllocationPriorityChoicesForm();
 
             form.setDefaultAllocationPriorityChoice(allocationPriorityChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = InventoryUtil.getHome().getAllocationPriorityChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAllocationPriorityChoicesResult getAllocationPriorityChoicesResult = (GetAllocationPriorityChoicesResult)executionResult.getResult();
+            var commandResult = InventoryUtil.getHome().getAllocationPriorityChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getAllocationPriorityChoicesResult = (GetAllocationPriorityChoicesResult)executionResult.getResult();
             allocationPriorityChoices = getAllocationPriorityChoicesResult.getAllocationPriorityChoices();
 
             if(allocationPriorityChoice == null) {

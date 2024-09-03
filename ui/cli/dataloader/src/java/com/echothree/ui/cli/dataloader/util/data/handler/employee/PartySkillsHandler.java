@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.employee;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.common.EmployeeService;
-import com.echothree.control.user.employee.common.form.CreatePartySkillForm;
 import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -51,15 +50,15 @@ public class PartySkillsHandler
             throws SAXException {
         if(localName.equals("partySkill")) {
             String skillTypeName = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("skillTypeName"))
                     skillTypeName = attrs.getValue(i);
             }
             
             try {
-                CreatePartySkillForm commandForm = EmployeeFormFactory.getCreatePartySkillForm();
+                var commandForm = EmployeeFormFactory.getCreatePartySkillForm();
                 
                 commandForm.setPartyName(partyName);
                 commandForm.setSkillTypeName(skillTypeName);

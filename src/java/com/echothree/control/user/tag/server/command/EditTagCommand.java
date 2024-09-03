@@ -27,9 +27,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.Tag;
-import com.echothree.model.data.tag.server.entity.TagDetail;
 import com.echothree.model.data.tag.server.entity.TagScope;
-import com.echothree.model.data.tag.server.value.TagDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -90,12 +88,12 @@ public class EditTagCommand
     public Tag getEntity(EditTagResult result) {
         var tagControl = Session.getModelController(TagControl.class);
         Tag tag = null;
-        String tagScopeName = spec.getTagScopeName();
+        var tagScopeName = spec.getTagScopeName();
         
         tagScope = tagControl.getTagScopeByNameForUpdate(tagScopeName);
         
         if(tagScope != null) {
-            String tagName = spec.getTagName();
+            var tagName = spec.getTagName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 tag = tagControl.getTagByName(tagScope, tagName);
@@ -129,7 +127,7 @@ public class EditTagCommand
 
     @Override
     public void doLock(TagEdit edit, Tag tag) {
-        TagDetail tagDetail = tag.getLastDetail();
+        var tagDetail = tag.getLastDetail();
 
         edit.setTagName(tagDetail.getTagName());
     }
@@ -137,8 +135,8 @@ public class EditTagCommand
     @Override
     public void canUpdate(Tag tag) {
         var tagControl = Session.getModelController(TagControl.class);
-        String tagName = edit.getTagName();
-        Tag duplicateTag = tagControl.getTagByName(tagScope, tagName);
+        var tagName = edit.getTagName();
+        var duplicateTag = tagControl.getTagByName(tagScope, tagName);
 
         if(duplicateTag != null && !tag.equals(duplicateTag)) {
             addExecutionError(ExecutionErrors.DuplicateTagName.name(), tagName);
@@ -148,7 +146,7 @@ public class EditTagCommand
     @Override
     public void doUpdate(Tag tag) {
         var tagControl = Session.getModelController(TagControl.class);
-        TagDetailValue tagDetailValue = tagControl.getTagDetailValueForUpdate(tag);
+        var tagDetailValue = tagControl.getTagDetailValueForUpdate(tag);
 
         tagDetailValue.setTagName(edit.getTagName());
 

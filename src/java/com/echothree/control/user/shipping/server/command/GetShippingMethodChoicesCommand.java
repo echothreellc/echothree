@@ -17,14 +17,12 @@
 package com.echothree.control.user.shipping.server.command;
 
 import com.echothree.control.user.shipping.common.form.GetShippingMethodChoicesForm;
-import com.echothree.control.user.shipping.common.result.GetShippingMethodChoicesResult;
 import com.echothree.control.user.shipping.common.result.ShippingResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
-import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,13 +66,13 @@ public class GetShippingMethodChoicesCommand
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
         var shippingControl = Session.getModelController(ShippingControl.class);
-        GetShippingMethodChoicesResult result = ShippingResultFactory.getGetShippingMethodChoicesResult();
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentTypeName == null? null: shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var result = ShippingResultFactory.getGetShippingMethodChoicesResult();
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentTypeName == null? null: shipmentControl.getShipmentTypeByName(shipmentTypeName);
         
         if(shipmentTypeName == null || shipmentType != null) {
-            String defaultShippingMethodChoice = form.getDefaultShippingMethodChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultShippingMethodChoice = form.getDefaultShippingMethodChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             if(shipmentType == null) {
                 result.setShippingMethodChoices(shippingControl.getShippingMethodChoices(defaultShippingMethodChoice,

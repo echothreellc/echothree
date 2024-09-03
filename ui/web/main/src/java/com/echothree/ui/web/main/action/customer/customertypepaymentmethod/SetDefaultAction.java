@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customertypepaymentmethod;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.SetDefaultCustomerTypePaymentMethodForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,11 +51,11 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
+        var customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
         
         try {
-            String paymentMethodName = request.getParameter(ParameterConstants.PAYMENT_METHOD_NAME);
-            SetDefaultCustomerTypePaymentMethodForm commandForm = CustomerUtil.getHome().getSetDefaultCustomerTypePaymentMethodForm();
+            var paymentMethodName = request.getParameter(ParameterConstants.PAYMENT_METHOD_NAME);
+            var commandForm = CustomerUtil.getHome().getSetDefaultCustomerTypePaymentMethodForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.setPaymentMethodName(paymentMethodName);
@@ -67,8 +66,8 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

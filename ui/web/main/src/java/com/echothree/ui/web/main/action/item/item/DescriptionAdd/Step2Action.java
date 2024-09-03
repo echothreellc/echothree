@@ -17,19 +17,14 @@
 package com.echothree.ui.web.main.action.item.item.DescriptionAdd;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.CreateItemDescriptionForm;
-import com.echothree.control.user.item.common.form.GetItemDescriptionTypeForm;
-import com.echothree.control.user.item.common.form.GetItemForm;
 import com.echothree.control.user.item.common.result.GetItemDescriptionTypeResult;
 import com.echothree.control.user.item.common.result.GetItemResult;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.core.common.transfer.MimeTypeUsageTypeTransfer;
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -40,7 +35,6 @@ import java.io.IOException;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.struts.upload.FormFile;
 
 @SproutAction(
     path = "/Item/Item/DescriptionAdd/Step2",
@@ -65,26 +59,26 @@ public class Step2Action
 
     private void setupItemTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+        var commandForm = ItemUtil.getHome().getGetItemForm();
 
         commandForm.setItemName(actionForm.getItemName());
 
-        CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemResult result = (GetItemResult)executionResult.getResult();
+        var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM, result.getItem());
     }
 
     private ItemDescriptionTypeTransfer getItemDescriptionTypeTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemDescriptionTypeForm commandForm = ItemUtil.getHome().getGetItemDescriptionTypeForm();
+        var commandForm = ItemUtil.getHome().getGetItemDescriptionTypeForm();
 
         commandForm.setItemDescriptionTypeName(actionForm.getItemDescriptionTypeName());
 
-        CommandResult commandResult = ItemUtil.getHome().getItemDescriptionType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemDescriptionTypeResult result = (GetItemDescriptionTypeResult)executionResult.getResult();
+        var commandResult = ItemUtil.getHome().getItemDescriptionType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemDescriptionTypeResult)executionResult.getResult();
 
         return result.getItemDescriptionType();
     }
@@ -104,9 +98,9 @@ public class Step2Action
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        ItemDescriptionTypeTransfer itemDescriptionType = getItemDescriptionTypeTransfer(actionForm, request);
-        CreateItemDescriptionForm commandForm = ItemUtil.getHome().getCreateItemDescriptionForm();
-        MimeTypeUsageTypeTransfer mimeTypeUsageType = itemDescriptionType.getMimeTypeUsageType();
+        var itemDescriptionType = getItemDescriptionTypeTransfer(actionForm, request);
+        var commandForm = ItemUtil.getHome().getCreateItemDescriptionForm();
+        var mimeTypeUsageType = itemDescriptionType.getMimeTypeUsageType();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setItemDescriptionTypeName(actionForm.getItemDescriptionTypeName());
@@ -115,13 +109,13 @@ public class Step2Action
         if(mimeTypeUsageType == null) {
             commandForm.setStringDescription(actionForm.getStringDescription());
         } else {
-            String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
+            var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
 
             if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.TEXT.name())) {
                 commandForm.setMimeTypeName(actionForm.getMimeTypeChoice());
                 commandForm.setClobDescription(actionForm.getClobDescription());
             } else {
-                FormFile blobDescription = actionForm.getBlobDescription();
+                var blobDescription = actionForm.getBlobDescription();
 
                 commandForm.setMimeTypeName(blobDescription.getContentType());
                 commandForm.setItemImageTypeName(actionForm.getItemImageTypeChoice());

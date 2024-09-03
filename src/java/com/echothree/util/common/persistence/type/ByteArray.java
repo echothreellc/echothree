@@ -38,7 +38,7 @@ public class ByteArray
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof ByteArray) {
-            ByteArray that = (ByteArray)obj;
+            var that = (ByteArray)obj;
             
             return Arrays.equals(_bytes, that.byteArrayValue());
         } else
@@ -47,7 +47,7 @@ public class ByteArray
 
     @Override
     public int hashCode() {
-        int hash = 7;
+        var hash = 7;
 
         hash = 53 * hash + Arrays.hashCode(this._bytes);
 

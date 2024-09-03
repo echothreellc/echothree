@@ -19,10 +19,6 @@ package com.echothree.control.user.employee.server.command;
 import com.echothree.control.user.employee.common.form.CreateEmploymentForm;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.employee.server.entity.TerminationReason;
-import com.echothree.model.data.employee.server.entity.TerminationType;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -58,26 +54,26 @@ public class CreateEmploymentCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            String companyName = form.getCompanyName();
-            PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
+            var companyName = form.getCompanyName();
+            var partyCompany = partyControl.getPartyCompanyByName(companyName);
 
             if(partyCompany != null) {
                 var employeeControl = Session.getModelController(EmployeeControl.class);
-                String terminationTypeName = form.getTerminationTypeName();
-                TerminationType terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
+                var terminationTypeName = form.getTerminationTypeName();
+                var terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
 
                 if(terminationTypeName == null || terminationType != null) {
-                    String terminationReasonName = form.getTerminationReasonName();
-                    TerminationReason terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
+                    var terminationReasonName = form.getTerminationReasonName();
+                    var terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
 
                     if(terminationReasonName == null || terminationReason != null) {
-                        Long startTime = Long.valueOf(form.getStartTime());
-                        String strEndTime = form.getEndTime();
-                        Long endTime = strEndTime == null ? null : Long.valueOf(strEndTime);
+                        var startTime = Long.valueOf(form.getStartTime());
+                        var strEndTime = form.getEndTime();
+                        var endTime = strEndTime == null ? null : Long.valueOf(strEndTime);
 
                         employeeControl.createEmployment(party, partyCompany.getParty(), startTime, endTime, terminationType, terminationReason, getPartyPK());
                     } else {

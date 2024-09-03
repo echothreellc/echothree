@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.humanresources.employeetype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.edit.EmployeeTypeDescriptionEdit;
-import com.echothree.control.user.employee.common.form.EditEmployeeTypeDescriptionForm;
 import com.echothree.control.user.employee.common.result.EditEmployeeTypeDescriptionResult;
-import com.echothree.control.user.employee.common.spec.EmployeeTypeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String employeeTypeName = request.getParameter(ParameterConstants.EMPLOYEE_TYPE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var employeeTypeName = request.getParameter(ParameterConstants.EMPLOYEE_TYPE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditEmployeeTypeDescriptionForm commandForm = EmployeeUtil.getHome().getEditEmployeeTypeDescriptionForm();
-                EmployeeTypeDescriptionSpec spec = EmployeeUtil.getHome().getEmployeeTypeDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = EmployeeUtil.getHome().getEditEmployeeTypeDescriptionForm();
+                var spec = EmployeeUtil.getHome().getEmployeeTypeDescriptionSpec();
                 
                 if(employeeTypeName == null)
                     employeeTypeName = actionForm.getEmployeeTypeName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    EmployeeTypeDescriptionEdit edit = EmployeeUtil.getHome().getEmployeeTypeDescriptionEdit();
+                    var edit = EmployeeUtil.getHome().getEmployeeTypeDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().editEmployeeTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = EmployeeUtil.getHome().editEmployeeTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditEmployeeTypeDescriptionResult result = (EditEmployeeTypeDescriptionResult)executionResult.getResult();
+                            var result = (EditEmployeeTypeDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().editEmployeeTypeDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditEmployeeTypeDescriptionResult result = (EditEmployeeTypeDescriptionResult)executionResult.getResult();
+
+                    var commandResult = EmployeeUtil.getHome().editEmployeeTypeDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditEmployeeTypeDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        EmployeeTypeDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setEmployeeTypeName(employeeTypeName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.EMPLOYEE_TYPE_NAME, employeeTypeName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

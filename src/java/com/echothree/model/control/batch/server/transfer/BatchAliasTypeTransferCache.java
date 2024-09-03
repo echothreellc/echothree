@@ -17,10 +17,8 @@
 package com.echothree.model.control.batch.server.transfer;
 
 import com.echothree.model.control.batch.common.transfer.BatchAliasTypeTransfer;
-import com.echothree.model.control.batch.common.transfer.BatchTypeTransfer;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.data.batch.server.entity.BatchAliasType;
-import com.echothree.model.data.batch.server.entity.BatchAliasTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class BatchAliasTypeTransferCache
@@ -35,16 +33,16 @@ public class BatchAliasTypeTransferCache
     
     @Override
     public BatchAliasTypeTransfer getTransfer(BatchAliasType batchAliasType) {
-        BatchAliasTypeTransfer batchAliasTypeTransfer = get(batchAliasType);
+        var batchAliasTypeTransfer = get(batchAliasType);
         
         if(batchAliasTypeTransfer == null) {
-            BatchAliasTypeDetail batchAliasTypeDetail = batchAliasType.getLastDetail();
-            BatchTypeTransfer batchType = batchControl.getBatchTypeTransfer(userVisit, batchAliasTypeDetail.getBatchType());
-            String batchAliasTypeName = batchAliasTypeDetail.getBatchAliasTypeName();
-            String validationPattern = batchAliasTypeDetail.getValidationPattern();
-            Boolean isDefault = batchAliasTypeDetail.getIsDefault();
-            Integer sortOrder = batchAliasTypeDetail.getSortOrder();
-            String description = batchControl.getBestBatchAliasTypeDescription(batchAliasType, getLanguage());
+            var batchAliasTypeDetail = batchAliasType.getLastDetail();
+            var batchType = batchControl.getBatchTypeTransfer(userVisit, batchAliasTypeDetail.getBatchType());
+            var batchAliasTypeName = batchAliasTypeDetail.getBatchAliasTypeName();
+            var validationPattern = batchAliasTypeDetail.getValidationPattern();
+            var isDefault = batchAliasTypeDetail.getIsDefault();
+            var sortOrder = batchAliasTypeDetail.getSortOrder();
+            var description = batchControl.getBestBatchAliasTypeDescription(batchAliasType, getLanguage());
             
             batchAliasTypeTransfer = new BatchAliasTypeTransfer(batchType, batchAliasTypeName, validationPattern, isDefault, sortOrder, description);
             put(batchAliasType, batchAliasTypeTransfer);

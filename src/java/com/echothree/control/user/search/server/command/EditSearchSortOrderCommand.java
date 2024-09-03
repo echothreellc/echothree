@@ -27,12 +27,7 @@ import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.search.server.entity.SearchKind;
-import com.echothree.model.data.search.server.entity.SearchKindDetail;
 import com.echothree.model.data.search.server.entity.SearchSortOrder;
-import com.echothree.model.data.search.server.entity.SearchSortOrderDescription;
-import com.echothree.model.data.search.server.entity.SearchSortOrderDetail;
-import com.echothree.model.data.search.server.value.SearchSortOrderDescriptionValue;
-import com.echothree.model.data.search.server.value.SearchSortOrderDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -95,12 +90,12 @@ public class EditSearchSortOrderCommand
     public SearchSortOrder getEntity(EditSearchSortOrderResult result) {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchSortOrder searchSortOrder = null;
-        String searchKindName = spec.getSearchKindName();
+        var searchKindName = spec.getSearchKindName();
 
         searchKind = searchControl.getSearchKindByName(searchKindName);
 
         if(searchKind != null) {
-            String searchSortOrderName = spec.getSearchSortOrderName();
+            var searchSortOrderName = spec.getSearchSortOrderName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 searchSortOrder = searchControl.getSearchSortOrderByName(searchKind, searchSortOrderName);
@@ -133,8 +128,8 @@ public class EditSearchSortOrderCommand
     @Override
     public void doLock(SearchSortOrderEdit edit, SearchSortOrder searchSortOrder) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchSortOrderDescription searchSortOrderDescription = searchControl.getSearchSortOrderDescription(searchSortOrder, getPreferredLanguage());
-        SearchSortOrderDetail searchSortOrderDetail = searchSortOrder.getLastDetail();
+        var searchSortOrderDescription = searchControl.getSearchSortOrderDescription(searchSortOrder, getPreferredLanguage());
+        var searchSortOrderDetail = searchSortOrder.getLastDetail();
 
         edit.setSearchSortOrderName(searchSortOrderDetail.getSearchSortOrderName());
         edit.setIsDefault(searchSortOrderDetail.getIsDefault().toString());
@@ -148,9 +143,9 @@ public class EditSearchSortOrderCommand
     @Override
     public void canUpdate(SearchSortOrder searchSortOrder) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKindDetail searchKindDetail = searchKind.getLastDetail();
-        String searchSortOrderName = edit.getSearchSortOrderName();
-        SearchSortOrder duplicateSearchSortOrder = searchControl.getSearchSortOrderByName(searchKind, searchSortOrderName);
+        var searchKindDetail = searchKind.getLastDetail();
+        var searchSortOrderName = edit.getSearchSortOrderName();
+        var duplicateSearchSortOrder = searchControl.getSearchSortOrderByName(searchKind, searchSortOrderName);
 
         if(duplicateSearchSortOrder != null && !searchSortOrder.equals(duplicateSearchSortOrder)) {
             addExecutionError(ExecutionErrors.DuplicateSearchSortOrderName.name(), searchKindDetail.getSearchKindName(), searchSortOrderName);
@@ -161,9 +156,9 @@ public class EditSearchSortOrderCommand
     public void doUpdate(SearchSortOrder searchSortOrder) {
         var searchControl = Session.getModelController(SearchControl.class);
         var partyPK = getPartyPK();
-        SearchSortOrderDetailValue searchSortOrderDetailValue = searchControl.getSearchSortOrderDetailValueForUpdate(searchSortOrder);
-        SearchSortOrderDescription searchSortOrderDescription = searchControl.getSearchSortOrderDescriptionForUpdate(searchSortOrder, getPreferredLanguage());
-        String description = edit.getDescription();
+        var searchSortOrderDetailValue = searchControl.getSearchSortOrderDetailValueForUpdate(searchSortOrder);
+        var searchSortOrderDescription = searchControl.getSearchSortOrderDescriptionForUpdate(searchSortOrder, getPreferredLanguage());
+        var description = edit.getDescription();
 
         searchSortOrderDetailValue.setSearchSortOrderName(edit.getSearchSortOrderName());
         searchSortOrderDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -176,7 +171,7 @@ public class EditSearchSortOrderCommand
         } else if(searchSortOrderDescription != null && description == null) {
             searchControl.deleteSearchSortOrderDescription(searchSortOrderDescription, partyPK);
         } else if(searchSortOrderDescription != null && description != null) {
-            SearchSortOrderDescriptionValue searchSortOrderDescriptionValue = searchControl.getSearchSortOrderDescriptionValue(searchSortOrderDescription);
+            var searchSortOrderDescriptionValue = searchControl.getSearchSortOrderDescriptionValue(searchSortOrderDescription);
 
             searchSortOrderDescriptionValue.setDescription(description);
             searchControl.updateSearchSortOrderDescriptionFromValue(searchSortOrderDescriptionValue, partyPK);

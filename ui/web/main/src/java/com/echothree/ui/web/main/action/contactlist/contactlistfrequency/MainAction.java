@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.contactlist.contactlistfrequency;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.GetContactListFrequenciesForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListFrequenciesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -50,13 +47,13 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetContactListFrequenciesForm commandForm = ContactListUtil.getHome().getGetContactListFrequenciesForm();
+        String forwardKey;
+        var commandForm = ContactListUtil.getHome().getGetContactListFrequenciesForm();
 
-        CommandResult commandResult = ContactListUtil.getHome().getContactListFrequencies(getUserVisitPK(request), commandForm);
+        var commandResult = ContactListUtil.getHome().getContactListFrequencies(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListFrequenciesResult result = (GetContactListFrequenciesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListFrequenciesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CONTACT_LIST_FREQUENCIES, result.getContactListFrequencies());
             forwardKey = ForwardConstants.DISPLAY;

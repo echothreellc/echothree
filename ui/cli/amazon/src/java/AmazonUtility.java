@@ -52,9 +52,9 @@ public class AmazonUtility {
 
     public static void main(String args[])
             throws Exception {
-        CommandLine line = getCommandLine(args);
-        boolean doDirectory = line.hasOption("d");
-        boolean doFile = line.hasOption("f");
+        var line = getCommandLine(args);
+        var doDirectory = line.hasOption("d");
+        var doFile = line.hasOption("f");
 
         if(doDirectory) {
             new BatchOrderDirectoryHandler(configuration, line.getOptionValue("d")).execute();

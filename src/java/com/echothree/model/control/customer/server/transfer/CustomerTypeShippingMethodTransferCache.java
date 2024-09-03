@@ -17,9 +17,7 @@
 package com.echothree.model.control.customer.server.transfer;
 
 import com.echothree.model.control.customer.common.transfer.CustomerTypeShippingMethodTransfer;
-import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.customer.server.entity.CustomerTypeShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -34,15 +32,15 @@ public class CustomerTypeShippingMethodTransferCache
     }
     
     public CustomerTypeShippingMethodTransfer getCustomerTypeShippingMethodTransfer(CustomerTypeShippingMethod customerTypeShippingMethod) {
-        CustomerTypeShippingMethodTransfer customerTypeShippingMethodTransfer = get(customerTypeShippingMethod);
+        var customerTypeShippingMethodTransfer = get(customerTypeShippingMethod);
         
         if(customerTypeShippingMethodTransfer == null) {
-            ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
-            CustomerTypeTransfer customerType = customerControl.getCustomerTypeTransfer(userVisit, customerTypeShippingMethod.getCustomerType());
-            ShippingMethodTransfer shippingMethod = shippingControl.getShippingMethodTransfer(userVisit, customerTypeShippingMethod.getShippingMethod());
-            Integer defaultSelectionPriority = customerTypeShippingMethod.getDefaultSelectionPriority();
-            Boolean isDefault = customerTypeShippingMethod.getIsDefault();
-            Integer sortOrder = customerTypeShippingMethod.getSortOrder();
+            var shippingControl = Session.getModelController(ShippingControl.class);
+            var customerType = customerControl.getCustomerTypeTransfer(userVisit, customerTypeShippingMethod.getCustomerType());
+            var shippingMethod = shippingControl.getShippingMethodTransfer(userVisit, customerTypeShippingMethod.getShippingMethod());
+            var defaultSelectionPriority = customerTypeShippingMethod.getDefaultSelectionPriority();
+            var isDefault = customerTypeShippingMethod.getIsDefault();
+            var sortOrder = customerTypeShippingMethod.getSortOrder();
             
             customerTypeShippingMethodTransfer = new CustomerTypeShippingMethodTransfer(customerType, shippingMethod, defaultSelectionPriority, isDefault,
                     sortOrder);

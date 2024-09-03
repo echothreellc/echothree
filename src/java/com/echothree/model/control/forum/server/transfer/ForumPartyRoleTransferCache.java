@@ -17,10 +17,7 @@
 package com.echothree.model.control.forum.server.transfer;
 
 import com.echothree.model.control.forum.common.transfer.ForumPartyRoleTransfer;
-import com.echothree.model.control.forum.common.transfer.ForumRoleTypeTransfer;
-import com.echothree.model.control.forum.common.transfer.ForumTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.forum.server.entity.ForumPartyRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -39,12 +36,12 @@ public class ForumPartyRoleTransferCache
     }
     
     public ForumPartyRoleTransfer getForumPartyRoleTransfer(ForumPartyRole forumPartyRole) {
-        ForumPartyRoleTransfer forumPartyRoleTransfer = get(forumPartyRole);
+        var forumPartyRoleTransfer = get(forumPartyRole);
         
         if(forumPartyRoleTransfer == null) {
-            ForumTransfer forum = forumControl.getForumTransfer(userVisit, forumPartyRole.getForum());
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, forumPartyRole.getParty());
-            ForumRoleTypeTransfer forumRoleType = forumControl.getForumRoleTypeTransfer(userVisit, forumPartyRole.getForumRoleType());
+            var forum = forumControl.getForumTransfer(userVisit, forumPartyRole.getForum());
+            var party = partyControl.getPartyTransfer(userVisit, forumPartyRole.getParty());
+            var forumRoleType = forumControl.getForumRoleTypeTransfer(userVisit, forumPartyRole.getForumRoleType());
             
             forumPartyRoleTransfer = new ForumPartyRoleTransfer(forum, party, forumRoleType);
             put(forumPartyRole, forumPartyRoleTransfer);

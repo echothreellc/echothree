@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.tag.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.tag.common.transfer.TagScopeDescriptionTransfer;
-import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.TagScopeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -35,11 +33,11 @@ public class TagScopeDescriptionTransferCache
     }
     
     public TagScopeDescriptionTransfer getTagScopeDescriptionTransfer(TagScopeDescription tagScopeDescription) {
-        TagScopeDescriptionTransfer tagScopeDescriptionTransfer = get(tagScopeDescription);
+        var tagScopeDescriptionTransfer = get(tagScopeDescription);
         
         if(tagScopeDescriptionTransfer == null) {
-            TagScopeTransfer tagScopeTransfer = tagControl.getTagScopeTransfer(userVisit, tagScopeDescription.getTagScope());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, tagScopeDescription.getLanguage());
+            var tagScopeTransfer = tagControl.getTagScopeTransfer(userVisit, tagScopeDescription.getTagScope());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, tagScopeDescription.getLanguage());
             
             tagScopeDescriptionTransfer = new TagScopeDescriptionTransfer(languageTransfer, tagScopeTransfer, tagScopeDescription.getDescription());
             put(tagScopeDescription, tagScopeDescriptionTransfer);

@@ -21,7 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.period.server.value.PeriodKindDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultPeriodKindCommand
     @Override
     protected BaseResult execute() {
         var periodControl = Session.getModelController(PeriodControl.class);
-        String periodKindName = form.getPeriodKindName();
-        PeriodKindDetailValue periodKindDetailValue = periodControl.getPeriodKindDetailValueByNameForUpdate(periodKindName);
+        var periodKindName = form.getPeriodKindName();
+        var periodKindDetailValue = periodControl.getPeriodKindDetailValueByNameForUpdate(periodKindName);
         
         if(periodKindDetailValue != null) {
             periodKindDetailValue.setIsDefault(Boolean.TRUE);

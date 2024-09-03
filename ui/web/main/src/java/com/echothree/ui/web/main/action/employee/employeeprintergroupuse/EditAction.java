@@ -52,7 +52,7 @@ public class EditAction
     @Override
     protected PartyPrinterGroupUseSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyPrinterGroupUseSpec spec = PrinterUtil.getHome().getPartyPrinterGroupUseSpec();
+        var spec = PrinterUtil.getHome().getPartyPrinterGroupUseSpec();
 
         spec.setPrinterGroupUseTypeName(findParameter(request, ParameterConstants.PRINTER_GROUP_USE_TYPE_NAME, actionForm.getPrinterGroupUseTypeName()));
 
@@ -62,7 +62,7 @@ public class EditAction
     @Override
     protected PartyPrinterGroupUseEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyPrinterGroupUseEdit edit = PrinterUtil.getHome().getPartyPrinterGroupUseEdit();
+        var edit = PrinterUtil.getHome().getPartyPrinterGroupUseEdit();
 
         edit.setPrinterGroupName(actionForm.getPrinterGroupChoice());
 

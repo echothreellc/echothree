@@ -19,20 +19,12 @@ package com.echothree.control.user.selector.server.command;
 import com.echothree.control.user.selector.common.edit.SelectorEdit;
 import com.echothree.control.user.selector.common.edit.SelectorEditFactory;
 import com.echothree.control.user.selector.common.form.EditSelectorForm;
-import com.echothree.control.user.selector.common.result.EditSelectorResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.control.user.selector.common.spec.SelectorSpec;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorDescription;
-import com.echothree.model.data.selector.server.entity.SelectorDetail;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
-import com.echothree.model.data.selector.server.value.SelectorDescriptionValue;
-import com.echothree.model.data.selector.server.value.SelectorDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
@@ -85,26 +77,26 @@ public class EditSelectorCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        EditSelectorResult result = SelectorResultFactory.getEditSelectorResult();
-        String selectorKindName = spec.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var result = SelectorResultFactory.getEditSelectorResult();
+        var selectorKindName = spec.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
         if(selectorKind != null) {
-            String selectorTypeName = spec.getSelectorTypeName();
-            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
+            var selectorTypeName = spec.getSelectorTypeName();
+            var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
             
             if(selectorType != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    String selectorName = spec.getSelectorName();
-                    Selector selector = selectorControl.getSelectorByName(selectorType, selectorName);
+                    var selectorName = spec.getSelectorName();
+                    var selector = selectorControl.getSelectorByName(selectorType, selectorName);
                     
                     if(selector != null) {
                         result.setSelector(selectorControl.getSelectorTransfer(getUserVisit(), selector));
                         
                         if(lockEntity(selector)) {
-                            SelectorDescription selectorDescription = selectorControl.getSelectorDescription(selector, getPreferredLanguage());
-                            SelectorEdit edit = SelectorEditFactory.getSelectorEdit();
-                            SelectorDetail selectorDetail = selector.getLastDetail();
+                            var selectorDescription = selectorControl.getSelectorDescription(selector, getPreferredLanguage());
+                            var edit = SelectorEditFactory.getSelectorEdit();
+                            var selectorDetail = selector.getLastDetail();
                             
                             result.setEdit(edit);
                             edit.setSelectorName(selectorDetail.getSelectorName());
@@ -123,20 +115,20 @@ public class EditSelectorCommand
                         addExecutionError(ExecutionErrors.UnknownSelectorName.name(), selectorName);
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    String selectorName = spec.getSelectorName();
-                    Selector selector = selectorControl.getSelectorByNameForUpdate(selectorType, selectorName);
+                    var selectorName = spec.getSelectorName();
+                    var selector = selectorControl.getSelectorByNameForUpdate(selectorType, selectorName);
                     
                     if(selector != null) {
                         selectorName = edit.getSelectorName();
-                        Selector duplicateSelector = selectorControl.getSelectorByName(selectorType, selectorName);
+                        var duplicateSelector = selectorControl.getSelectorByName(selectorType, selectorName);
                         
                         if(duplicateSelector == null || selector.equals(duplicateSelector)) {
                             if(lockEntityForUpdate(selector)) {
                                 try {
                                     var partyPK = getPartyPK();
-                                    SelectorDetailValue selectorDetailValue = selectorControl.getSelectorDetailValueForUpdate(selector);
-                                    SelectorDescription selectorDescription = selectorControl.getSelectorDescriptionForUpdate(selector, getPreferredLanguage());
-                                    String description = edit.getDescription();
+                                    var selectorDetailValue = selectorControl.getSelectorDetailValueForUpdate(selector);
+                                    var selectorDescription = selectorControl.getSelectorDescriptionForUpdate(selector, getPreferredLanguage());
+                                    var description = edit.getDescription();
                                     
                                     selectorDetailValue.setSelectorName(edit.getSelectorName());
                                     selectorDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -149,7 +141,7 @@ public class EditSelectorCommand
                                     } else if(selectorDescription != null && description == null) {
                                         selectorControl.deleteSelectorDescription(selectorDescription, partyPK);
                                     } else if(selectorDescription != null && description != null) {
-                                        SelectorDescriptionValue selectorDescriptionValue = selectorControl.getSelectorDescriptionValue(selectorDescription);
+                                        var selectorDescriptionValue = selectorControl.getSelectorDescriptionValue(selectorDescription);
                                         
                                         selectorDescriptionValue.setDescription(description);
                                         selectorControl.updateSelectorDescriptionFromValue(selectorDescriptionValue, partyPK);

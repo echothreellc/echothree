@@ -18,11 +18,9 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetBaseEncryptionKeyStatusChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetBaseEncryptionKeyStatusChoicesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.BaseEncryptionKey;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,13 +62,13 @@ public class GetBaseEncryptionKeyStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetBaseEncryptionKeyStatusChoicesResult result = CoreResultFactory.getGetBaseEncryptionKeyStatusChoicesResult();
-        String baseEncryptionKeyName = form.getBaseEncryptionKeyName();
-        BaseEncryptionKey baseEncryptionKey = coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
+        var result = CoreResultFactory.getGetBaseEncryptionKeyStatusChoicesResult();
+        var baseEncryptionKeyName = form.getBaseEncryptionKeyName();
+        var baseEncryptionKey = coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
         
         if(baseEncryptionKeyName == null || baseEncryptionKey != null) {
-            String defaultBaseEncryptionKeyStatusChoice = form.getDefaultBaseEncryptionKeyStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultBaseEncryptionKeyStatusChoice = form.getDefaultBaseEncryptionKeyStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setBaseEncryptionKeyStatusChoices(coreControl.getBaseEncryptionKeyStatusChoices(defaultBaseEncryptionKeyStatusChoice,
                     getPreferredLanguage(), allowNullChoice, baseEncryptionKey, getPartyPK()));

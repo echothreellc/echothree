@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.payment;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.PaymentService;
-import com.echothree.control.user.payment.common.form.CreatePaymentMethodDescriptionForm;
 import com.echothree.control.user.payment.common.form.PaymentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -52,7 +51,7 @@ public class PaymentMethodHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("paymentMethodDescription")) {
-            CreatePaymentMethodDescriptionForm commandForm = PaymentFormFactory.getCreatePaymentMethodDescriptionForm();
+            var commandForm = PaymentFormFactory.getCreatePaymentMethodDescriptionForm();
             
             commandForm.setPaymentMethodName(paymentMethodName);
             commandForm.set(getAttrsMap(attrs));

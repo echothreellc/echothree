@@ -17,14 +17,12 @@
 package com.echothree.control.user.period.server.command;
 
 import com.echothree.control.user.period.common.form.GetFiscalPeriodStatusChoicesForm;
-import com.echothree.control.user.period.common.result.GetFiscalPeriodStatusChoicesResult;
 import com.echothree.control.user.period.common.result.PeriodResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.period.server.logic.FiscalPeriodLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -65,13 +63,13 @@ public class GetFiscalPeriodStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetFiscalPeriodStatusChoicesResult result = PeriodResultFactory.getGetFiscalPeriodStatusChoicesResult();
-        Period period = FiscalPeriodLogic.getInstance().getFiscalPeriodByName(this, form.getPeriodName());
+        var result = PeriodResultFactory.getGetFiscalPeriodStatusChoicesResult();
+        var period = FiscalPeriodLogic.getInstance().getFiscalPeriodByName(this, form.getPeriodName());
         
         if(!hasExecutionErrors()) {
             var periodControl = Session.getModelController(PeriodControl.class);
-            String defaultFiscalPeriodStatusChoice = form.getDefaultFiscalPeriodStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultFiscalPeriodStatusChoice = form.getDefaultFiscalPeriodStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setFiscalPeriodStatusChoices(periodControl.getFiscalPeriodStatusChoices(defaultFiscalPeriodStatusChoice, getPreferredLanguage(),
                     allowNullChoice, period, getPartyPK()));

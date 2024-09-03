@@ -18,7 +18,6 @@ package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.GetContactListFrequencyChoicesForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
-import com.echothree.control.user.contactlist.common.result.GetContactListFrequencyChoicesResult;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetContactListFrequencyChoicesCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        GetContactListFrequencyChoicesResult result = ContactListResultFactory.getGetContactListFrequencyChoicesResult();
-        String defaultContactListFrequencyChoice = form.getDefaultContactListFrequencyChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ContactListResultFactory.getGetContactListFrequencyChoicesResult();
+        var defaultContactListFrequencyChoice = form.getDefaultContactListFrequencyChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setContactListFrequencyChoices(contactListControl.getContactListFrequencyChoices(defaultContactListFrequencyChoice, getPreferredLanguage(),
                 allowNullChoice));

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.purchasing.vendortype;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.GetVendorTypeForm;
 import com.echothree.control.user.vendor.common.result.GetVendorTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetVendorTypeForm commandForm = VendorUtil.getHome().getGetVendorTypeForm();
-            String vendorTypeName = request.getParameter(ParameterConstants.VENDOR_TYPE_NAME);
+            var commandForm = VendorUtil.getHome().getGetVendorTypeForm();
+            var vendorTypeName = request.getParameter(ParameterConstants.VENDOR_TYPE_NAME);
             
             commandForm.setVendorTypeName(vendorTypeName);
-            
-            CommandResult commandResult = VendorUtil.getHome().getVendorType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetVendorTypeResult result = (GetVendorTypeResult)executionResult.getResult();
+
+            var commandResult = VendorUtil.getHome().getVendorType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetVendorTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.VENDOR_TYPE, result.getVendorType());
             forwardKey = ForwardConstants.DISPLAY;

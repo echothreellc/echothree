@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.humanresources.leavereason;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.DeleteLeaveReasonDescriptionForm;
-import com.echothree.control.user.employee.common.form.GetLeaveReasonDescriptionForm;
 import com.echothree.control.user.employee.common.result.GetLeaveReasonDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetLeaveReasonDescriptionForm commandForm = EmployeeUtil.getHome().getGetLeaveReasonDescriptionForm();
+        var commandForm = EmployeeUtil.getHome().getGetLeaveReasonDescriptionForm();
         
         commandForm.setLeaveReasonName(actionForm.getLeaveReasonName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getLeaveReasonDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = EmployeeUtil.getHome().getLeaveReasonDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLeaveReasonDescriptionResult result = (GetLeaveReasonDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveReasonDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.LEAVE_REASON_DESCRIPTION, result.getLeaveReasonDescription());
         }
@@ -80,7 +77,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteLeaveReasonDescriptionForm commandForm = EmployeeUtil.getHome().getDeleteLeaveReasonDescriptionForm();
+        var commandForm = EmployeeUtil.getHome().getDeleteLeaveReasonDescriptionForm();
 
         commandForm.setLeaveReasonName(actionForm.getLeaveReasonName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

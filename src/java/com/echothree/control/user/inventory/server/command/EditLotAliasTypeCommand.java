@@ -27,11 +27,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.LotAliasType;
-import com.echothree.model.data.inventory.server.entity.LotAliasTypeDescription;
-import com.echothree.model.data.inventory.server.entity.LotAliasTypeDetail;
-import com.echothree.model.data.inventory.server.value.LotAliasTypeDescriptionValue;
-import com.echothree.model.data.inventory.server.value.LotAliasTypeDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -93,7 +88,7 @@ public class EditLotAliasTypeCommand
     public LotAliasType getEntity(EditLotAliasTypeResult result) {
         var lotAliasControl = Session.getModelController(LotAliasControl.class);
         LotAliasType lotAliasType;
-        String lotAliasTypeName = spec.getLotAliasTypeName();
+        var lotAliasTypeName = spec.getLotAliasTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
@@ -125,8 +120,8 @@ public class EditLotAliasTypeCommand
     @Override
     public void doLock(LotAliasTypeEdit edit, LotAliasType lotAliasType) {
         var lotAliasControl = Session.getModelController(LotAliasControl.class);
-        LotAliasTypeDescription lotAliasTypeDescription = lotAliasControl.getLotAliasTypeDescription(lotAliasType, getPreferredLanguage());
-        LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getLastDetail();
+        var lotAliasTypeDescription = lotAliasControl.getLotAliasTypeDescription(lotAliasType, getPreferredLanguage());
+        var lotAliasTypeDetail = lotAliasType.getLastDetail();
 
         edit.setLotAliasTypeName(lotAliasTypeDetail.getLotAliasTypeName());
         edit.setValidationPattern(lotAliasTypeDetail.getValidationPattern());
@@ -141,8 +136,8 @@ public class EditLotAliasTypeCommand
     @Override
     public void canUpdate(LotAliasType lotAliasType) {
         var lotAliasControl = Session.getModelController(LotAliasControl.class);
-        String lotAliasTypeName = edit.getLotAliasTypeName();
-        LotAliasType duplicateLotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
+        var lotAliasTypeName = edit.getLotAliasTypeName();
+        var duplicateLotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
         if(duplicateLotAliasType != null && !lotAliasType.equals(duplicateLotAliasType)) {
             addExecutionError(ExecutionErrors.DuplicateLotAliasTypeName.name(), lotAliasTypeName);
@@ -153,9 +148,9 @@ public class EditLotAliasTypeCommand
     public void doUpdate(LotAliasType lotAliasType) {
         var lotAliasControl = Session.getModelController(LotAliasControl.class);
         var partyPK = getPartyPK();
-        LotAliasTypeDetailValue lotAliasTypeDetailValue = lotAliasControl.getLotAliasTypeDetailValueForUpdate(lotAliasType);
-        LotAliasTypeDescription lotAliasTypeDescription = lotAliasControl.getLotAliasTypeDescriptionForUpdate(lotAliasType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var lotAliasTypeDetailValue = lotAliasControl.getLotAliasTypeDetailValueForUpdate(lotAliasType);
+        var lotAliasTypeDescription = lotAliasControl.getLotAliasTypeDescriptionForUpdate(lotAliasType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         lotAliasTypeDetailValue.setLotAliasTypeName(edit.getLotAliasTypeName());
         lotAliasTypeDetailValue.setValidationPattern(edit.getValidationPattern());
@@ -169,7 +164,7 @@ public class EditLotAliasTypeCommand
         } else if(lotAliasTypeDescription != null && description == null) {
             lotAliasControl.deleteLotAliasTypeDescription(lotAliasTypeDescription, partyPK);
         } else if(lotAliasTypeDescription != null && description != null) {
-            LotAliasTypeDescriptionValue lotAliasTypeDescriptionValue = lotAliasControl.getLotAliasTypeDescriptionValue(lotAliasTypeDescription);
+            var lotAliasTypeDescriptionValue = lotAliasControl.getLotAliasTypeDescriptionValue(lotAliasTypeDescription);
 
             lotAliasTypeDescriptionValue.setDescription(description);
             lotAliasControl.updateLotAliasTypeDescriptionFromValue(lotAliasTypeDescriptionValue, partyPK);

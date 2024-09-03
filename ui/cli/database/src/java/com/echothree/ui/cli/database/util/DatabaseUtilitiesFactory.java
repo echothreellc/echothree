@@ -61,11 +61,11 @@ public final class DatabaseUtilitiesFactory {
     }
     
     private String getProperty(Configuration configuration, String database, String databaseProperty, boolean required) {
-        String defaultProperty = BASE + DEFAULT + "." + databaseProperty;
-        String specificProperty = BASE + database + "." + databaseProperty;
-        String defaultValue = trimToNull(configuration.getString(defaultProperty));
-        String specificValue = trimToNull(configuration.getString(specificProperty));
-        String value = specificValue == null ? defaultValue : specificValue;
+        var defaultProperty = BASE + DEFAULT + "." + databaseProperty;
+        var specificProperty = BASE + database + "." + databaseProperty;
+        var defaultValue = trimToNull(configuration.getString(defaultProperty));
+        var specificValue = trimToNull(configuration.getString(specificProperty));
+        var value = specificValue == null ? defaultValue : specificValue;
         
         if(value == null && required) {
             log.fatal(defaultProperty + " is a required property");
@@ -77,12 +77,12 @@ public final class DatabaseUtilitiesFactory {
     public DatabaseUtilities getDatabaseUtilities(Configuration configuration, boolean verbose, Database database)
             throws Exception {
         DatabaseUtilities result;
-        String connectionClass = getProperty(configuration, DB_ECHO_THREE, "class", true);
-        String connectionUrl  = getProperty(configuration, DB_ECHO_THREE, "url", true);
-        String connectionUser = getProperty(configuration, DB_ECHO_THREE, "user", true);
-        String connectionPassword = getProperty(configuration, DB_ECHO_THREE, "password", true);
-        String connectionCharacterSet = getProperty(configuration, DB_ECHO_THREE, "characterSet", true);
-        String connectionCollation = getProperty(configuration, DB_ECHO_THREE, "collation", true);
+        var connectionClass = getProperty(configuration, DB_ECHO_THREE, "class", true);
+        var connectionUrl  = getProperty(configuration, DB_ECHO_THREE, "url", true);
+        var connectionUser = getProperty(configuration, DB_ECHO_THREE, "user", true);
+        var connectionPassword = getProperty(configuration, DB_ECHO_THREE, "password", true);
+        var connectionCharacterSet = getProperty(configuration, DB_ECHO_THREE, "characterSet", true);
+        var connectionCollation = getProperty(configuration, DB_ECHO_THREE, "collation", true);
         
         if(connectionClass.equals("com.mysql.cj.jdbc.Driver")) {
             result = new DatabaseUtilitiesForMySQL(verbose, database, connectionClass, connectionUrl, connectionUser,
@@ -95,10 +95,10 @@ public final class DatabaseUtilitiesFactory {
     }
 
     public DatabaseViewUtilities getDatabaseViewUtilities(Configuration configuration, boolean verbose, Database database) {
-        String connectionClass = getProperty(configuration, DB_REPORTING, "class", true);
-        String connectionUrl  = getProperty(configuration, DB_REPORTING, "url", true);
-        String connectionUser = getProperty(configuration, DB_REPORTING, "user", true);
-        String connectionPassword = getProperty(configuration, DB_REPORTING, "password", true);
+        var connectionClass = getProperty(configuration, DB_REPORTING, "class", true);
+        var connectionUrl  = getProperty(configuration, DB_REPORTING, "url", true);
+        var connectionUser = getProperty(configuration, DB_REPORTING, "user", true);
+        var connectionPassword = getProperty(configuration, DB_REPORTING, "password", true);
         
         return new DatabaseViewUtilities(verbose, database, connectionClass, connectionUrl, connectionUser, connectionPassword);
     }

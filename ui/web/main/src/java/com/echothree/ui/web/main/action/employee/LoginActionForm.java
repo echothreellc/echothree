@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.employee;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetCompanyChoicesForm;
 import com.echothree.control.user.party.common.result.GetCompanyChoicesResult;
 import com.echothree.model.control.party.common.choice.CompanyChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -42,14 +39,14 @@ public class LoginActionForm
     private void setupCompanyChoices()
             throws NamingException {
         if(companyChoices == null) {
-            GetCompanyChoicesForm commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
+            var commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
 
             commandForm.setDefaultCompanyChoice(companyChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCompanyChoicesResult result = (GetCompanyChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCompanyChoicesResult)executionResult.getResult();
             companyChoices = result.getCompanyChoices();
 
             if(companyChoice == null)

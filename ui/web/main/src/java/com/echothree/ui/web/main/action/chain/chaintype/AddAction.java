@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.chain.chaintype;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.CreateChainTypeForm;
-import com.echothree.control.user.chain.common.form.GetChainKindForm;
 import com.echothree.control.user.chain.common.result.GetChainKindResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,13 +53,13 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetChainKindForm commandForm = ChainUtil.getHome().getGetChainKindForm();
+        var commandForm = ChainUtil.getHome().getGetChainKindForm();
         
         commandForm.setChainKindName(actionForm.getChainKindName());
 
-        CommandResult commandResult = ChainUtil.getHome().getChainKind(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetChainKindResult result = (GetChainKindResult)executionResult.getResult();
+        var commandResult = ChainUtil.getHome().getChainKind(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetChainKindResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CHAIN_KIND, result.getChainKind());
     }
@@ -76,7 +73,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateChainTypeForm commandForm = ChainUtil.getHome().getCreateChainTypeForm();
+        var commandForm = ChainUtil.getHome().getCreateChainTypeForm();
 
         commandForm.setChainKindName(actionForm.getChainKindName());
         commandForm.setChainTypeName(actionForm.getChainTypeName());

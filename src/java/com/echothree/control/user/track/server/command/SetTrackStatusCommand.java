@@ -22,7 +22,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.track.server.control.TrackControl;
 import com.echothree.model.control.track.server.logic.TrackLogic;
-import com.echothree.model.data.track.server.entity.Track;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,11 +64,11 @@ public class SetTrackStatusCommand
     @Override
     protected BaseResult execute() {
         var trackControl = Session.getModelController(TrackControl.class);
-        String trackName = form.getTrackName();
-        Track track = trackControl.getTrackByName(trackName);
+        var trackName = form.getTrackName();
+        var track = trackControl.getTrackByName(trackName);
         
         if(track != null) {
-            String trackStatusChoice = form.getTrackStatusChoice();
+            var trackStatusChoice = form.getTrackStatusChoice();
             
             TrackLogic.getInstance().setTrackStatus(session, this, track, trackStatusChoice, getPartyPK());
         } else {

@@ -16,26 +16,18 @@
 
 package com.echothree.model.control.workrequirement.server.transfer;
 
-import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.workeffort.common.transfer.WorkEffortTypeTransfer;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.model.control.workflow.common.transfer.WorkflowStepTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workrequirement.common.WorkRequirementOptions;
 import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementTypeTransfer;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
-import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirementType;
-import com.echothree.model.data.workrequirement.server.entity.WorkRequirementTypeDetail;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class WorkRequirementTypeTransferCache
         extends BaseWorkRequirementTransferCache<WorkRequirementType, WorkRequirementTypeTransfer> {
@@ -59,22 +51,22 @@ public class WorkRequirementTypeTransferCache
     }
     
     public WorkRequirementTypeTransfer getWorkRequirementTypeTransfer(WorkRequirementType workRequirementType) {
-        WorkRequirementTypeTransfer workRequirementTypeTransfer = get(workRequirementType);
+        var workRequirementTypeTransfer = get(workRequirementType);
         
         if(workRequirementTypeTransfer == null) {
-            WorkRequirementTypeDetail workRequirementTypeDetail = workRequirementType.getLastDetail();
-            WorkEffortTypeTransfer workEffortTypeTransfer = workEffortControl.getWorkEffortTypeTransfer(userVisit, workRequirementTypeDetail.getWorkEffortType());
-            String workRequirementTypeName = workRequirementTypeDetail.getWorkRequirementTypeName();
-            Sequence workRequirementSequence = workRequirementTypeDetail.getWorkRequirementSequence();
-            SequenceTransfer workRequirementSequenceTransfer = workRequirementSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, workRequirementSequence);
-            WorkflowStep workflowStep = workRequirementTypeDetail.getWorkflowStep();
-            WorkflowStepTransfer workflowStepTransfer = workflowStep == null? null: workflowControl.getWorkflowStepTransfer(userVisit, workflowStep);
-            UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
-            String estimatedTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, workRequirementTypeDetail.getEstimatedTimeAllowed());
-            String maximumTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, workRequirementTypeDetail.getMaximumTimeAllowed());
-            Boolean allowReassignment = workRequirementTypeDetail.getAllowReassignment();
-            Integer sortOrder = workRequirementTypeDetail.getSortOrder();
-            String description = workRequirementControl.getBestWorkRequirementTypeDescription(workRequirementType, getLanguage());
+            var workRequirementTypeDetail = workRequirementType.getLastDetail();
+            var workEffortTypeTransfer = workEffortControl.getWorkEffortTypeTransfer(userVisit, workRequirementTypeDetail.getWorkEffortType());
+            var workRequirementTypeName = workRequirementTypeDetail.getWorkRequirementTypeName();
+            var workRequirementSequence = workRequirementTypeDetail.getWorkRequirementSequence();
+            var workRequirementSequenceTransfer = workRequirementSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, workRequirementSequence);
+            var workflowStep = workRequirementTypeDetail.getWorkflowStep();
+            var workflowStepTransfer = workflowStep == null? null: workflowControl.getWorkflowStepTransfer(userVisit, workflowStep);
+            var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var estimatedTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, workRequirementTypeDetail.getEstimatedTimeAllowed());
+            var maximumTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, workRequirementTypeDetail.getMaximumTimeAllowed());
+            var allowReassignment = workRequirementTypeDetail.getAllowReassignment();
+            var sortOrder = workRequirementTypeDetail.getSortOrder();
+            var description = workRequirementControl.getBestWorkRequirementTypeDescription(workRequirementType, getLanguage());
             
             workRequirementTypeTransfer = new WorkRequirementTypeTransfer(workEffortTypeTransfer, workRequirementTypeName, workRequirementSequenceTransfer,
                     workflowStepTransfer, estimatedTimeAllowed, maximumTimeAllowed, allowReassignment, sortOrder, description);

@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.accounting.tax;
 
 import com.echothree.control.user.tax.common.TaxUtil;
-import com.echothree.control.user.tax.common.form.CreateTaxForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -48,10 +46,10 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         if(wasPost(request)) {
-            CreateTaxForm commandForm = TaxUtil.getHome().getCreateTaxForm();
+            var commandForm = TaxUtil.getHome().getCreateTaxForm();
             
             commandForm.setTaxName(actionForm.getTaxName());
             commandForm.setContactMechanismPurposeName(actionForm.getContactMechanismPurposeChoice());
@@ -63,8 +61,8 @@ public class AddAction
             commandForm.setIsDefault(actionForm.getIsDefault().toString());
             commandForm.setSortOrder(actionForm.getSortOrder());
             commandForm.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = TaxUtil.getHome().createTax(getUserVisitPK(request), commandForm);
+
+            var commandResult = TaxUtil.getHome().createTax(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

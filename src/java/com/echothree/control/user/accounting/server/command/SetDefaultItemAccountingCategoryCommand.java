@@ -21,7 +21,6 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.accounting.server.value.ItemAccountingCategoryDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultItemAccountingCategoryCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String itemAccountingCategoryName = form.getItemAccountingCategoryName();
-        ItemAccountingCategoryDetailValue itemAccountingCategoryDetailValue = accountingControl.getItemAccountingCategoryDetailValueByNameForUpdate(itemAccountingCategoryName);
+        var itemAccountingCategoryName = form.getItemAccountingCategoryName();
+        var itemAccountingCategoryDetailValue = accountingControl.getItemAccountingCategoryDetailValueByNameForUpdate(itemAccountingCategoryName);
         
         if(itemAccountingCategoryDetailValue != null) {
             itemAccountingCategoryDetailValue.setIsDefault(Boolean.TRUE);

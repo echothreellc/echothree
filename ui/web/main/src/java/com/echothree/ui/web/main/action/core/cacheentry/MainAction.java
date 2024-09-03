@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.cacheentry;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetCacheEntriesForm;
 import com.echothree.control.user.core.common.result.GetCacheEntriesResult;
 import com.echothree.model.data.core.common.CacheEntryConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -57,20 +54,20 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetCacheEntriesForm commandForm = CoreUtil.getHome().getGetCacheEntriesForm();
+        var commandForm = CoreUtil.getHome().getGetCacheEntriesForm();
 
-        String offsetParameter = request.getParameter(new ParamEncoder("cacheEntry").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
-        Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
+        var offsetParameter = request.getParameter(new ParamEncoder("cacheEntry").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
+        var offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
         Map<String, Limit> limits = new HashMap<>();
         limits.put(CacheEntryConstants.ENTITY_TYPE_NAME, new Limit("20", offset == null ? null : offset.toString()));
         commandForm.setLimits(limits);
 
-        CommandResult commandResult = CoreUtil.getHome().getCacheEntries(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCacheEntriesResult result = (GetCacheEntriesResult)executionResult.getResult();
+        var commandResult = CoreUtil.getHome().getCacheEntries(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCacheEntriesResult)executionResult.getResult();
 
-        Long cacheEntryCount = result.getCacheEntryCount();
+        var cacheEntryCount = result.getCacheEntryCount();
         if(cacheEntryCount != null) {
             request.setAttribute(AttributeConstants.CACHE_ENTRY_COUNT, toIntExact(cacheEntryCount));
         }

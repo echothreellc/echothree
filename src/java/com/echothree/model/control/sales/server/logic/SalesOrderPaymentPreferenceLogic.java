@@ -25,7 +25,6 @@ import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
 import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -89,8 +88,8 @@ public class SalesOrderPaymentPreferenceLogic
         salesOrderLogic.checkOrderAvailableForModification(session, eea, order, createdBy);
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            Party billTo = salesOrderLogic.getOrderBillToParty(order);
-            CustomerType customerType = billTo == null ? null : salesOrderLogic.getCustomerTypeFromParty(billTo);
+            var billTo = salesOrderLogic.getOrderBillToParty(order);
+            var customerType = billTo == null ? null : salesOrderLogic.getCustomerTypeFromParty(billTo);
 
             if(customerType != null) {
                 checkCustomerTypePaymentMethod(eea, customerType, paymentMethod);

@@ -17,17 +17,13 @@
 package com.echothree.control.user.letter.server.command;
 
 import com.echothree.control.user.letter.common.form.GetLettersForm;
-import com.echothree.control.user.letter.common.result.GetLettersResult;
 import com.echothree.control.user.letter.common.result.LetterResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -69,17 +65,17 @@ public class GetLettersCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetLettersResult result = LetterResultFactory.getGetLettersResult();
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var result = LetterResultFactory.getGetLettersResult();
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
                 var letterControl = Session.getModelController(LetterControl.class);
-                UserVisit userVisit = getUserVisit();
+                var userVisit = getUserVisit();
                 
                 result.setChainType(chainControl.getChainTypeTransfer(userVisit, chainType));
                 result.setLetters(letterControl.getLetterTransfersByChainType(userVisit, chainType));

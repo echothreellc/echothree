@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.core.componentvendor;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.CreateComponentVendorForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,15 +52,15 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateComponentVendorForm commandForm = CoreUtil.getHome().getCreateComponentVendorForm();
+                    var commandForm = CoreUtil.getHome().getCreateComponentVendorForm();
                     
                     commandForm.setComponentVendorName(actionForm.getComponentVendorName());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CoreUtil.getHome().createComponentVendor(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CoreUtil.getHome().createComponentVendor(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

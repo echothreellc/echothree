@@ -17,18 +17,11 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreateCompanyForm;
-import com.echothree.control.user.party.common.result.CreateCompanyResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.party.server.entity.DateTimeFormat;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyCompany;
-import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,25 +59,25 @@ public class CreateCompanyCommand
     
     @Override
     protected BaseResult execute() {
-        CreateCompanyResult result = PartyResultFactory.getCreateCompanyResult();
+        var result = PartyResultFactory.getCreateCompanyResult();
         var partyControl = Session.getModelController(PartyControl.class);
-        String companyName = form.getCompanyName();
-        PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
+        var companyName = form.getCompanyName();
+        var partyCompany = partyControl.getPartyCompanyByName(companyName);
         
         if(partyCompany == null) {
-            String preferredLanguageIsoName = form.getPreferredLanguageIsoName();
-            Language preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
+            var preferredLanguageIsoName = form.getPreferredLanguageIsoName();
+            var preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
             
             if(preferredLanguageIsoName == null || (preferredLanguage != null)) {
-                String preferredJavaTimeZoneName = form.getPreferredJavaTimeZoneName();
-                TimeZone preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
+                var preferredJavaTimeZoneName = form.getPreferredJavaTimeZoneName();
+                var preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
                 
                 if(preferredJavaTimeZoneName == null || (preferredTimeZone != null)) {
-                    String preferredDateTimeFormatName = form.getPreferredDateTimeFormatName();
-                    DateTimeFormat preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
+                    var preferredDateTimeFormatName = form.getPreferredDateTimeFormatName();
+                    var preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
                     
                     if(preferredDateTimeFormatName == null || (preferredDateTimeFormat != null)) {
-                        String preferredCurrencyIsoName = form.getPreferredCurrencyIsoName();
+                        var preferredCurrencyIsoName = form.getPreferredCurrencyIsoName();
                         Currency preferredCurrency;
                         
                         if(preferredCurrencyIsoName == null)
@@ -95,13 +88,13 @@ public class CreateCompanyCommand
                         }
                         
                         if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                            PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.COMPANY.name());
+                            var partyType = partyControl.getPartyTypeByName(PartyTypes.COMPANY.name());
                             BasePK createdBy = getPartyPK();
-                            String name = form.getName();
+                            var name = form.getName();
                             var isDefault = Boolean.valueOf(form.getIsDefault());
                             var sortOrder = Integer.valueOf(form.getSortOrder());
-                            
-                            Party party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, createdBy);
+
+                            var party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, createdBy);
                             partyControl.createPartyGroup(party, name, createdBy);
                             partyCompany = partyControl.createPartyCompany(party, companyName, isDefault, sortOrder, createdBy);
                         } else {
@@ -121,7 +114,7 @@ public class CreateCompanyCommand
         }
         
         if(partyCompany != null) {
-            Party party = partyCompany.getParty();
+            var party = partyCompany.getParty();
             
             result.setEntityRef(party.getPrimaryKey().getEntityRef());
             result.setCompanyName(partyCompany.getPartyCompanyName());

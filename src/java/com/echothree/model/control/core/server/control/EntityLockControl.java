@@ -296,7 +296,7 @@ public class EntityLockControl
                         ps.setLong(3, currentLockedTime);
                         ps.setLong(4, currentLockExpirationTime);
 
-                        int rowCount = ps.executeUpdate();
+                        var rowCount = ps.executeUpdate();
                         isLocked = rowCount != 0;
                     } catch (SQLException se) {
                         throw new EntityLockException(se);
@@ -439,7 +439,7 @@ public class EntityLockControl
 
         try(var rs = ps.executeQuery()) {
             if(rs.next()) {
-                long lockExpirationTime = rs.getLong(1);
+                var lockExpirationTime = rs.getLong(1);
 
                 isLocked = lockExpirationTime == 0 || System.currentTimeMillis() < lockExpirationTime;
             } else {

@@ -18,12 +18,10 @@ package com.echothree.control.user.campaign.server.command;
 
 import com.echothree.control.user.campaign.common.form.GetCampaignTermDescriptionsForm;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
-import com.echothree.control.user.campaign.common.result.GetCampaignTermDescriptionsResult;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.campaign.server.entity.CampaignTerm;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetCampaignTermDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        GetCampaignTermDescriptionsResult result = CampaignResultFactory.getGetCampaignTermDescriptionsResult();
-        String campaignTermName = form.getCampaignTermName();
-        CampaignTerm campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
+        var result = CampaignResultFactory.getGetCampaignTermDescriptionsResult();
+        var campaignTermName = form.getCampaignTermName();
+        var campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
         
         if(campaignTerm != null) {
             result.setCampaignTerm(campaignControl.getCampaignTermTransfer(getUserVisit(), campaignTerm));

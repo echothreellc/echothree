@@ -17,16 +17,11 @@
 package com.echothree.control.user.workrequirement.server.command;
 
 import com.echothree.control.user.workrequirement.common.form.GetWorkRequirementScopeForm;
-import com.echothree.control.user.workrequirement.common.result.GetWorkRequirementScopeResult;
 import com.echothree.control.user.workrequirement.common.result.WorkRequirementResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
-import com.echothree.model.data.workrequirement.server.entity.WorkRequirementScope;
-import com.echothree.model.data.workrequirement.server.entity.WorkRequirementType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -58,21 +53,21 @@ public class GetWorkRequirementScopeCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        GetWorkRequirementScopeResult result = WorkRequirementResultFactory.getGetWorkRequirementScopeResult();
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var result = WorkRequirementResultFactory.getGetWorkRequirementScopeResult();
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-            String workEffortScopeName = form.getWorkEffortScopeName();
-            WorkEffortScope workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
+            var workEffortScopeName = form.getWorkEffortScopeName();
+            var workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
             
             if(workEffortScope != null) {
                 var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
-                String workRequirementTypeName = form.getWorkRequirementTypeName();
-                WorkRequirementType workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
+                var workRequirementTypeName = form.getWorkRequirementTypeName();
+                var workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
                 
                 if(workRequirementType != null) {
-                    WorkRequirementScope workRequirementScope = workRequirementControl.getWorkRequirementScope(workEffortScope, workRequirementType);
+                    var workRequirementScope = workRequirementControl.getWorkRequirementScope(workEffortScope, workRequirementType);
                     
                     result.setWorkRequirementScope(workRequirementControl.getWorkRequirementScopeTransfer(getUserVisit(), workRequirementScope));
                     

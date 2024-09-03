@@ -17,10 +17,8 @@
 package com.echothree.model.control.selector.server.transfer;
 
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
-import com.echothree.model.control.selector.common.transfer.SelectorTypeTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class SelectorTransferCache
@@ -34,16 +32,16 @@ public class SelectorTransferCache
     }
     
     public SelectorTransfer getSelectorTransfer(Selector selector) {
-        SelectorTransfer selectorTransfer = get(selector);
+        var selectorTransfer = get(selector);
         
         if(selectorTransfer == null) {
-            SelectorDetail selectorDetail = selector.getLastDetail();
-            SelectorTypeTransferCache selectorTypeTransferCache = selectorControl.getSelectorTransferCaches(userVisit).getSelectorTypeTransferCache();
-            SelectorTypeTransfer selectorType = selectorTypeTransferCache.getSelectorTypeTransfer(selectorDetail.getSelectorType());
-            String selectorName = selectorDetail.getSelectorName();
-            Boolean isDefault = selectorDetail.getIsDefault();
-            Integer sortOrder = selectorDetail.getSortOrder();
-            String description = selectorControl.getBestSelectorDescription(selector, getLanguage());
+            var selectorDetail = selector.getLastDetail();
+            var selectorTypeTransferCache = selectorControl.getSelectorTransferCaches(userVisit).getSelectorTypeTransferCache();
+            var selectorType = selectorTypeTransferCache.getSelectorTypeTransfer(selectorDetail.getSelectorType());
+            var selectorName = selectorDetail.getSelectorName();
+            var isDefault = selectorDetail.getIsDefault();
+            var sortOrder = selectorDetail.getSortOrder();
+            var description = selectorControl.getBestSelectorDescription(selector, getLanguage());
             
             selectorTransfer = new SelectorTransfer(selectorType, selectorName, isDefault, sortOrder, description);
             put(selector, selectorTransfer);

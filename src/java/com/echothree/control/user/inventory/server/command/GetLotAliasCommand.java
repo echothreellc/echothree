@@ -17,16 +17,12 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetLotAliasForm;
-import com.echothree.control.user.inventory.common.result.GetLotAliasResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.Lot;
-import com.echothree.model.data.inventory.server.entity.LotAlias;
-import com.echothree.model.data.inventory.server.entity.LotAliasType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -69,17 +65,17 @@ public class GetLotAliasCommand
     @Override
     protected BaseResult execute() {
         var lotControl = Session.getModelController(LotControl.class);
-        GetLotAliasResult result = InventoryResultFactory.getGetLotAliasResult();
-        String lotName = form.getLotName();
-        Lot lot = lotControl.getLotByName(lotName);
+        var result = InventoryResultFactory.getGetLotAliasResult();
+        var lotName = form.getLotName();
+        var lot = lotControl.getLotByName(lotName);
 
         if(lot != null) {
             var lotAliasControl = Session.getModelController(LotAliasControl.class);
-            String lotAliasTypeName = form.getLotAliasTypeName();
-            LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
+            var lotAliasTypeName = form.getLotAliasTypeName();
+            var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
             if(lotAliasType != null) {
-                LotAlias lotAlias = lotAliasControl.getLotAlias(lot, lotAliasType);
+                var lotAlias = lotAliasControl.getLotAlias(lot, lotAliasType);
 
                 if(lotAlias != null) {
                     result.setLotAlias(lotAliasControl.getLotAliasTransfer(getUserVisit(), lotAlias));

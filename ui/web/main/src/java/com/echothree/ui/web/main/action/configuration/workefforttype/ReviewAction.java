@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.workefforttype;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
-import com.echothree.control.user.workeffort.common.form.GetWorkEffortTypeForm;
 import com.echothree.control.user.workeffort.common.result.GetWorkEffortTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetWorkEffortTypeForm commandForm = WorkEffortUtil.getHome().getGetWorkEffortTypeForm();
-            String workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
+            var commandForm = WorkEffortUtil.getHome().getGetWorkEffortTypeForm();
+            var workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
             
             commandForm.setWorkEffortTypeName(workEffortTypeName);
-            
-            CommandResult commandResult = WorkEffortUtil.getHome().getWorkEffortType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkEffortTypeResult result = (GetWorkEffortTypeResult)executionResult.getResult();
+
+            var commandResult = WorkEffortUtil.getHome().getWorkEffortType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkEffortTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORK_EFFORT_TYPE, result.getWorkEffortType());
             forwardKey = ForwardConstants.DISPLAY;

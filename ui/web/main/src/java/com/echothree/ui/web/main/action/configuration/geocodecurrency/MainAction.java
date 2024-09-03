@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.geocodecurrency;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetGeoCodeCurrenciesForm;
 import com.echothree.control.user.geo.common.result.GetGeoCodeCurrenciesResult;
-import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,18 +49,18 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
-            GetGeoCodeCurrenciesForm commandForm = GeoUtil.getHome().getGetGeoCodeCurrenciesForm();
+            var geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
+            var commandForm = GeoUtil.getHome().getGetGeoCodeCurrenciesForm();
             
             commandForm.setGeoCodeName(geoCodeName);
-            
-            CommandResult commandResult = GeoUtil.getHome().getGeoCodeCurrencies(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeCurrenciesResult result = (GetGeoCodeCurrenciesResult)executionResult.getResult();
-            GeoCodeTransfer geoCode = result.getGeoCode();
+
+            var commandResult = GeoUtil.getHome().getGeoCodeCurrencies(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeCurrenciesResult)executionResult.getResult();
+            var geoCode = result.getGeoCode();
             
             if(geoCode == null) {
                 forwardKey = ForwardConstants.ERROR_404;

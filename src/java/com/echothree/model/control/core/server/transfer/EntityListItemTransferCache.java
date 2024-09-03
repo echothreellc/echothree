@@ -18,12 +18,10 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
-import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityListItemTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityListItem;
-import com.echothree.model.data.core.server.entity.EntityListItemDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
@@ -69,15 +67,15 @@ public class EntityListItemTransferCache
     }
     
     public EntityListItemTransfer getEntityListItemTransfer(EntityListItem entityListItem, EntityInstance entityInstance) {
-        EntityListItemTransfer entityListItemTransfer = get(entityListItem);
+        var entityListItemTransfer = get(entityListItem);
         
         if(entityListItemTransfer == null) {
-            EntityListItemDetail entityListItemDetail = entityListItem.getLastDetail();
-            EntityAttributeTransfer entityAttributeTransfer = filterEntityAttribute ? null : entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityListItemDetail.getEntityAttribute(), entityInstance) : null;
-            String entityListItemName = filterEntityListItemName ? null : entityListItemDetail.getEntityListItemName();
-            Boolean isDefault = filterIsDefault ? null : entityListItemDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : entityListItemDetail.getSortOrder();
-            String description = filterDescription ? null : coreControl.getBestEntityListItemDescription(entityListItem, getLanguage());
+            var entityListItemDetail = entityListItem.getLastDetail();
+            var entityAttributeTransfer = filterEntityAttribute ? null : entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityListItemDetail.getEntityAttribute(), entityInstance) : null;
+            var entityListItemName = filterEntityListItemName ? null : entityListItemDetail.getEntityListItemName();
+            var isDefault = filterIsDefault ? null : entityListItemDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : entityListItemDetail.getSortOrder();
+            var description = filterDescription ? null : coreControl.getBestEntityListItemDescription(entityListItem, getLanguage());
             
             entityListItemTransfer = new EntityListItemTransfer(entityAttributeTransfer, entityListItemName, isDefault, sortOrder, description);
             put(entityListItem, entityListItemTransfer);

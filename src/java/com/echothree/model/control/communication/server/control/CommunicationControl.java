@@ -27,26 +27,16 @@ import com.echothree.model.control.communication.common.transfer.CommunicationEv
 import com.echothree.model.control.communication.common.transfer.CommunicationSourceDescriptionTransfer;
 import com.echothree.model.control.communication.common.transfer.CommunicationSourceTransfer;
 import com.echothree.model.control.communication.common.transfer.CommunicationSourceTypeTransfer;
-import com.echothree.model.control.communication.server.transfer.CommunicationEventPurposeDescriptionTransferCache;
-import com.echothree.model.control.communication.server.transfer.CommunicationEventPurposeTransferCache;
-import com.echothree.model.control.communication.server.transfer.CommunicationEventTransferCache;
-import com.echothree.model.control.communication.server.transfer.CommunicationSourceDescriptionTransferCache;
-import com.echothree.model.control.communication.server.transfer.CommunicationSourceTransferCache;
 import com.echothree.model.control.communication.server.transfer.CommunicationTransferCaches;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.communication.common.pk.CommunicationEventPK;
-import com.echothree.model.data.communication.common.pk.CommunicationEventPurposePK;
-import com.echothree.model.data.communication.common.pk.CommunicationSourcePK;
-import com.echothree.model.data.communication.common.pk.CommunicationSourceTypePK;
 import com.echothree.model.data.communication.server.entity.CommunicationEmailSource;
 import com.echothree.model.data.communication.server.entity.CommunicationEvent;
-import com.echothree.model.data.communication.server.entity.CommunicationEventDetail;
 import com.echothree.model.data.communication.server.entity.CommunicationEventPurpose;
 import com.echothree.model.data.communication.server.entity.CommunicationEventPurposeDescription;
-import com.echothree.model.data.communication.server.entity.CommunicationEventPurposeDetail;
 import com.echothree.model.data.communication.server.entity.CommunicationEventRole;
 import com.echothree.model.data.communication.server.entity.CommunicationEventRoleType;
 import com.echothree.model.data.communication.server.entity.CommunicationEventRoleTypeDescription;
@@ -54,7 +44,6 @@ import com.echothree.model.data.communication.server.entity.CommunicationEventTy
 import com.echothree.model.data.communication.server.entity.CommunicationEventTypeDescription;
 import com.echothree.model.data.communication.server.entity.CommunicationSource;
 import com.echothree.model.data.communication.server.entity.CommunicationSourceDescription;
-import com.echothree.model.data.communication.server.entity.CommunicationSourceDetail;
 import com.echothree.model.data.communication.server.entity.CommunicationSourceType;
 import com.echothree.model.data.communication.server.entity.CommunicationSourceTypeDescription;
 import com.echothree.model.data.communication.server.factory.CommunicationEmailSourceFactory;
@@ -80,17 +69,13 @@ import com.echothree.model.data.communication.server.value.CommunicationEventPur
 import com.echothree.model.data.communication.server.value.CommunicationSourceDescriptionValue;
 import com.echothree.model.data.communication.server.value.CommunicationSourceDetailValue;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
-import com.echothree.model.data.core.common.pk.ServerPK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Server;
 import com.echothree.model.data.document.server.entity.Document;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.selector.common.pk.SelectorPK;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workeffort.common.pk.WorkEffortScopePK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
@@ -98,7 +83,6 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -133,20 +117,20 @@ public class CommunicationControl
     // --------------------------------------------------------------------------------
     
     public CommunicationEventPurpose createCommunicationEventPurpose(String communicationEventPurposeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        CommunicationEventPurpose defaultCommunicationEventPurpose = getDefaultCommunicationEventPurpose();
-        boolean defaultFound = defaultCommunicationEventPurpose != null;
+        var defaultCommunicationEventPurpose = getDefaultCommunicationEventPurpose();
+        var defaultFound = defaultCommunicationEventPurpose != null;
         
         if(defaultFound && isDefault) {
-            CommunicationEventPurposeDetailValue defaultCommunicationEventPurposeDetailValue = getDefaultCommunicationEventPurposeDetailValueForUpdate();
+            var defaultCommunicationEventPurposeDetailValue = getDefaultCommunicationEventPurposeDetailValueForUpdate();
             
             defaultCommunicationEventPurposeDetailValue.setIsDefault(Boolean.FALSE);
             updateCommunicationEventPurposeFromValue(defaultCommunicationEventPurposeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        CommunicationEventPurpose communicationEventPurpose = CommunicationEventPurposeFactory.getInstance().create();
-        CommunicationEventPurposeDetail communicationEventPurposeDetail = CommunicationEventPurposeDetailFactory.getInstance().create(session,
+
+        var communicationEventPurpose = CommunicationEventPurposeFactory.getInstance().create();
+        var communicationEventPurposeDetail = CommunicationEventPurposeDetailFactory.getInstance().create(session,
                 communicationEventPurpose, communicationEventPurposeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -176,8 +160,8 @@ public class CommunicationControl
                         "WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_communicationeventpurposename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommunicationEventPurposeFactory.getInstance().prepareStatement(query);
+
+            var ps = CommunicationEventPurposeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, communicationEventPurposeName);
             
@@ -218,8 +202,8 @@ public class CommunicationControl
                     "WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = CommunicationEventPurposeFactory.getInstance().prepareStatement(query);
+
+        var ps = CommunicationEventPurposeFactory.getInstance().prepareStatement(query);
         
         return CommunicationEventPurposeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -250,8 +234,8 @@ public class CommunicationControl
                     "WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = CommunicationEventPurposeFactory.getInstance().prepareStatement(query);
+
+        var ps = CommunicationEventPurposeFactory.getInstance().prepareStatement(query);
         
         return CommunicationEventPurposeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -269,9 +253,9 @@ public class CommunicationControl
     }
     
     public List<CommunicationEventPurposeTransfer> getCommunicationEventPurposeTransfers(UserVisit userVisit) {
-        List<CommunicationEventPurpose> communicationEventPurposes = getCommunicationEventPurposes();
+        var communicationEventPurposes = getCommunicationEventPurposes();
         List<CommunicationEventPurposeTransfer> communicationEventPurposeTransfers = new ArrayList<>(communicationEventPurposes.size());
-        CommunicationEventPurposeTransferCache communicationEventPurposeTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventPurposeTransferCache();
+        var communicationEventPurposeTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventPurposeTransferCache();
         
         communicationEventPurposes.forEach((communicationEventPurpose) ->
                 communicationEventPurposeTransfers.add(communicationEventPurposeTransferCache.getCommunicationEventPurposeTransfer(communicationEventPurpose))
@@ -282,7 +266,7 @@ public class CommunicationControl
     
     public CommunicationEventPurposeChoicesBean getCommunicationEventPurposeChoices(String defaultCommunicationEventPurposeChoice, Language language,
             boolean allowNullChoice) {
-        List<CommunicationEventPurpose> communicationEventPurposes = getCommunicationEventPurposes();
+        var communicationEventPurposes = getCommunicationEventPurposes();
         var size = communicationEventPurposes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -298,7 +282,7 @@ public class CommunicationControl
         }
         
         for(var communicationEventPurpose : communicationEventPurposes) {
-            CommunicationEventPurposeDetail communicationEventPurposeDetail = communicationEventPurpose.getLastDetail();
+            var communicationEventPurposeDetail = communicationEventPurpose.getLastDetail();
             
             var label = getBestCommunicationEventPurposeDescription(communicationEventPurpose, language);
             var value = communicationEventPurposeDetail.getCommunicationEventPurposeName();
@@ -318,25 +302,25 @@ public class CommunicationControl
     private void updateCommunicationEventPurposeFromValue(CommunicationEventPurposeDetailValue communicationEventPurposeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(communicationEventPurposeDetailValue.hasBeenModified()) {
-            CommunicationEventPurpose communicationEventPurpose = CommunicationEventPurposeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var communicationEventPurpose = CommunicationEventPurposeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      communicationEventPurposeDetailValue.getCommunicationEventPurposePK());
-            CommunicationEventPurposeDetail communicationEventPurposeDetail = communicationEventPurpose.getActiveDetailForUpdate();
+            var communicationEventPurposeDetail = communicationEventPurpose.getActiveDetailForUpdate();
             
             communicationEventPurposeDetail.setThruTime(session.START_TIME_LONG);
             communicationEventPurposeDetail.store();
-            
-            CommunicationEventPurposePK communicationEventPurposePK = communicationEventPurposeDetail.getCommunicationEventPurposePK();
-            String communicationEventPurposeName = communicationEventPurposeDetailValue.getCommunicationEventPurposeName();
-            Boolean isDefault = communicationEventPurposeDetailValue.getIsDefault();
-            Integer sortOrder = communicationEventPurposeDetailValue.getSortOrder();
+
+            var communicationEventPurposePK = communicationEventPurposeDetail.getCommunicationEventPurposePK();
+            var communicationEventPurposeName = communicationEventPurposeDetailValue.getCommunicationEventPurposeName();
+            var isDefault = communicationEventPurposeDetailValue.getIsDefault();
+            var sortOrder = communicationEventPurposeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                CommunicationEventPurpose defaultCommunicationEventPurpose = getDefaultCommunicationEventPurpose();
-                boolean defaultFound = defaultCommunicationEventPurpose != null && !defaultCommunicationEventPurpose.equals(communicationEventPurpose);
+                var defaultCommunicationEventPurpose = getDefaultCommunicationEventPurpose();
+                var defaultFound = defaultCommunicationEventPurpose != null && !defaultCommunicationEventPurpose.equals(communicationEventPurpose);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CommunicationEventPurposeDetailValue defaultCommunicationEventPurposeDetailValue = getDefaultCommunicationEventPurposeDetailValueForUpdate();
+                    var defaultCommunicationEventPurposeDetailValue = getDefaultCommunicationEventPurposeDetailValueForUpdate();
                     
                     defaultCommunicationEventPurposeDetailValue.setIsDefault(Boolean.FALSE);
                     updateCommunicationEventPurposeFromValue(defaultCommunicationEventPurposeDetailValue, false, updatedBy);
@@ -362,23 +346,23 @@ public class CommunicationControl
     
     public void deleteCommunicationEventPurpose(CommunicationEventPurpose communicationEventPurpose, BasePK deletedBy) {
         deleteCommunicationEventPurposeDescriptionsByCommunicationEventPurpose(communicationEventPurpose, deletedBy);
-        
-        CommunicationEventPurposeDetail communicationEventPurposeDetail = communicationEventPurpose.getLastDetailForUpdate();
+
+        var communicationEventPurposeDetail = communicationEventPurpose.getLastDetailForUpdate();
         communicationEventPurposeDetail.setThruTime(session.START_TIME_LONG);
         communicationEventPurpose.setActiveDetail(null);
         communicationEventPurpose.store();
         
         // Check for default, and pick one if necessary
-        CommunicationEventPurpose defaultCommunicationEventPurpose = getDefaultCommunicationEventPurpose();
+        var defaultCommunicationEventPurpose = getDefaultCommunicationEventPurpose();
         if(defaultCommunicationEventPurpose == null) {
-            List<CommunicationEventPurpose> communicationEventPurposes = getCommunicationEventPurposesForUpdate();
+            var communicationEventPurposes = getCommunicationEventPurposesForUpdate();
             
             if(!communicationEventPurposes.isEmpty()) {
                 Iterator iter = communicationEventPurposes.iterator();
                 if(iter.hasNext()) {
                     defaultCommunicationEventPurpose = (CommunicationEventPurpose)iter.next();
                 }
-                CommunicationEventPurposeDetailValue communicationEventPurposeDetailValue = Objects.requireNonNull(defaultCommunicationEventPurpose).getLastDetailForUpdate().getCommunicationEventPurposeDetailValue().clone();
+                var communicationEventPurposeDetailValue = Objects.requireNonNull(defaultCommunicationEventPurpose).getLastDetailForUpdate().getCommunicationEventPurposeDetailValue().clone();
                 
                 communicationEventPurposeDetailValue.setIsDefault(Boolean.TRUE);
                 updateCommunicationEventPurposeFromValue(communicationEventPurposeDetailValue, false, deletedBy);
@@ -394,7 +378,7 @@ public class CommunicationControl
     
     public CommunicationEventPurposeDescription createCommunicationEventPurposeDescription(CommunicationEventPurpose communicationEventPurpose,
             Language language, String description, BasePK createdBy) {
-        CommunicationEventPurposeDescription communicationEventPurposeDescription = CommunicationEventPurposeDescriptionFactory.getInstance().create(session,
+        var communicationEventPurposeDescription = CommunicationEventPurposeDescriptionFactory.getInstance().create(session,
                 communicationEventPurpose, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(communicationEventPurpose.getPrimaryKey(), EventTypes.MODIFY, communicationEventPurposeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -419,8 +403,8 @@ public class CommunicationControl
                         "WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_lang_languageid = ? AND cmmnevprd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommunicationEventPurposeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CommunicationEventPurposeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, communicationEventPurpose.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -467,8 +451,8 @@ public class CommunicationControl
                         "WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommunicationEventPurposeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CommunicationEventPurposeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, communicationEventPurpose.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -491,7 +475,7 @@ public class CommunicationControl
     
     public String getBestCommunicationEventPurposeDescription(CommunicationEventPurpose communicationEventPurpose, Language language) {
         String description;
-        CommunicationEventPurposeDescription communicationEventPurposeDescription = getCommunicationEventPurposeDescription(communicationEventPurpose, language);
+        var communicationEventPurposeDescription = getCommunicationEventPurposeDescription(communicationEventPurpose, language);
         
         if(communicationEventPurposeDescription == null && !language.getIsDefault()) {
             communicationEventPurposeDescription = getCommunicationEventPurposeDescription(communicationEventPurpose, getPartyControl().getDefaultLanguage());
@@ -511,9 +495,9 @@ public class CommunicationControl
     }
     
     public List<CommunicationEventPurposeDescriptionTransfer> getCommunicationEventPurposeDescriptionTransfers(UserVisit userVisit, CommunicationEventPurpose communicationEventPurpose) {
-        List<CommunicationEventPurposeDescription> communicationEventPurposeDescriptions = getCommunicationEventPurposeDescriptionsByCommunicationEventPurpose(communicationEventPurpose);
+        var communicationEventPurposeDescriptions = getCommunicationEventPurposeDescriptionsByCommunicationEventPurpose(communicationEventPurpose);
         List<CommunicationEventPurposeDescriptionTransfer> communicationEventPurposeDescriptionTransfers = new ArrayList<>(communicationEventPurposeDescriptions.size());
-        CommunicationEventPurposeDescriptionTransferCache communicationEventPurposeDescriptionTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventPurposeDescriptionTransferCache();
+        var communicationEventPurposeDescriptionTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventPurposeDescriptionTransferCache();
         
         communicationEventPurposeDescriptions.forEach((communicationEventPurposeDescription) ->
                 communicationEventPurposeDescriptionTransfers.add(communicationEventPurposeDescriptionTransferCache.getCommunicationEventPurposeDescriptionTransfer(communicationEventPurposeDescription))
@@ -524,14 +508,14 @@ public class CommunicationControl
     
     public void updateCommunicationEventPurposeDescriptionFromValue(CommunicationEventPurposeDescriptionValue communicationEventPurposeDescriptionValue, BasePK updatedBy) {
         if(communicationEventPurposeDescriptionValue.hasBeenModified()) {
-            CommunicationEventPurposeDescription communicationEventPurposeDescription = CommunicationEventPurposeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, communicationEventPurposeDescriptionValue.getPrimaryKey());
+            var communicationEventPurposeDescription = CommunicationEventPurposeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, communicationEventPurposeDescriptionValue.getPrimaryKey());
             
             communicationEventPurposeDescription.setThruTime(session.START_TIME_LONG);
             communicationEventPurposeDescription.store();
-            
-            CommunicationEventPurpose communicationEventPurpose = communicationEventPurposeDescription.getCommunicationEventPurpose();
-            Language language = communicationEventPurposeDescription.getLanguage();
-            String description = communicationEventPurposeDescriptionValue.getDescription();
+
+            var communicationEventPurpose = communicationEventPurposeDescription.getCommunicationEventPurpose();
+            var language = communicationEventPurposeDescription.getLanguage();
+            var description = communicationEventPurposeDescriptionValue.getDescription();
             
             communicationEventPurposeDescription = CommunicationEventPurposeDescriptionFactory.getInstance().create(communicationEventPurpose, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -548,7 +532,7 @@ public class CommunicationControl
     }
     
     public void deleteCommunicationEventPurposeDescriptionsByCommunicationEventPurpose(CommunicationEventPurpose communicationEventPurpose, BasePK deletedBy) {
-        List<CommunicationEventPurposeDescription> communicationEventPurposeDescriptions = getCommunicationEventPurposeDescriptionsByCommunicationEventPurposeForUpdate(communicationEventPurpose);
+        var communicationEventPurposeDescriptions = getCommunicationEventPurposeDescriptionsByCommunicationEventPurposeForUpdate(communicationEventPurpose);
         
         communicationEventPurposeDescriptions.forEach((communicationEventPurposeDescription) -> 
                 deleteCommunicationEventPurposeDescription(communicationEventPurposeDescription, deletedBy)
@@ -567,7 +551,7 @@ public class CommunicationControl
         CommunicationEventRoleType communicationEventRoleType;
         
         try {
-            PreparedStatement ps = CommunicationEventRoleTypeFactory.getInstance().prepareStatement(
+            var ps = CommunicationEventRoleTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM communicationeventroletypes " +
                     "WHERE cmmnevrtyp_communicationeventroletypename = ?");
@@ -584,7 +568,7 @@ public class CommunicationControl
     }
     
     public List<CommunicationEventRoleType> getCommunicationEventRoleTypes() {
-        PreparedStatement ps = CommunicationEventRoleTypeFactory.getInstance().prepareStatement(
+        var ps = CommunicationEventRoleTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM communicationeventroletypes " +
                 "ORDER BY cmmnevrtyp_sortorder, cmmnevrtyp_communicationeventroletypename");
@@ -611,7 +595,7 @@ public class CommunicationControl
         CommunicationEventRoleTypeDescription communicationEventRoleTypeDescription;
         
         try {
-            PreparedStatement ps = CommunicationEventRoleTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = CommunicationEventRoleTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM communicationeventroletypedescriptions " +
                     "WHERE cmmnevrtypd_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevrtypd_lang_languageid = ?");
@@ -630,7 +614,7 @@ public class CommunicationControl
     
     public String getBestCommunicationEventRoleTypeDescription(CommunicationEventRoleType communicationEventRoleType, Language language) {
         String description;
-        CommunicationEventRoleTypeDescription communicationEventRoleTypeDescription = getCommunicationEventRoleTypeDescription(communicationEventRoleType, language);
+        var communicationEventRoleTypeDescription = getCommunicationEventRoleTypeDescription(communicationEventRoleType, language);
         
         if(communicationEventRoleTypeDescription == null && !language.getIsDefault()) {
             communicationEventRoleTypeDescription = getCommunicationEventRoleTypeDescription(communicationEventRoleType, getPartyControl().getDefaultLanguage());
@@ -658,7 +642,7 @@ public class CommunicationControl
         CommunicationEventType communicationEventType;
         
         try {
-            PreparedStatement ps = CommunicationEventTypeFactory.getInstance().prepareStatement(
+            var ps = CommunicationEventTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM communicationeventtypes " +
                     "WHERE cmmnevtyp_communicationeventtypename = ?");
@@ -675,7 +659,7 @@ public class CommunicationControl
     }
     
     public List<CommunicationEventType> getCommunicationEventTypes() {
-        PreparedStatement ps = CommunicationEventTypeFactory.getInstance().prepareStatement(
+        var ps = CommunicationEventTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM communicationeventtypes " +
                 "ORDER BY cmmnevtyp_sortorder, cmmnevtyp_communicationeventtypename");
@@ -702,7 +686,7 @@ public class CommunicationControl
         CommunicationEventTypeDescription communicationEventTypeDescription;
         
         try {
-            PreparedStatement ps = CommunicationEventTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = CommunicationEventTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM communicationeventtypedescriptions " +
                     "WHERE cmmnevtypd_cmmnevtyp_communicationeventtypeid = ? AND cmmnevtypd_lang_languageid = ?");
@@ -721,7 +705,7 @@ public class CommunicationControl
     
     public String getBestCommunicationEventTypeDescription(CommunicationEventType communicationEventType, Language language) {
         String description;
-        CommunicationEventTypeDescription communicationEventTypeDescription = getCommunicationEventTypeDescription(communicationEventType, language);
+        var communicationEventTypeDescription = getCommunicationEventTypeDescription(communicationEventType, language);
         
         if(communicationEventTypeDescription == null && !language.getIsDefault()) {
             communicationEventTypeDescription = getCommunicationEventTypeDescription(communicationEventType, getPartyControl().getDefaultLanguage());
@@ -745,8 +729,8 @@ public class CommunicationControl
             CommunicationEvent originalCommunicationEvent, CommunicationEvent parentCommunicationEvent,
             PartyContactMechanism partyContactMechanism, Document document, BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.COMMUNICATION_EVENT.name()));
-        String communicationEventName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.COMMUNICATION_EVENT.name()));
+        var communicationEventName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createCommunicationEvent(communicationEventName, communicationEventType, communicationSource, communicationEventPurpose,
                 originalCommunicationEvent, parentCommunicationEvent, partyContactMechanism, document, createdBy);
@@ -756,8 +740,8 @@ public class CommunicationControl
             CommunicationSource communicationSource, CommunicationEventPurpose communicationEventPurpose,
             CommunicationEvent originalCommunicationEvent, CommunicationEvent parentCommunicationEvent,
             PartyContactMechanism partyContactMechanism, Document document, BasePK createdBy) {
-        CommunicationEvent communicationEvent = CommunicationEventFactory.getInstance().create();
-        CommunicationEventDetail communicationEventDetail = CommunicationEventDetailFactory.getInstance().create(session,
+        var communicationEvent = CommunicationEventFactory.getInstance().create();
+        var communicationEventDetail = CommunicationEventDetailFactory.getInstance().create(session,
                 communicationEvent, communicationEventName, communicationEventType, communicationSource, communicationEventPurpose,
                 originalCommunicationEvent, parentCommunicationEvent, partyContactMechanism, document,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -776,8 +760,8 @@ public class CommunicationControl
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CommunicationEvent */
     public CommunicationEvent getCommunicationEventByEntityInstance(EntityInstance entityInstance) {
-        CommunicationEventPK pk = new CommunicationEventPK(entityInstance.getEntityUniqueId());
-        CommunicationEvent communicationEvent = CommunicationEventFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new CommunicationEventPK(entityInstance.getEntityUniqueId());
+        var communicationEvent = CommunicationEventFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return communicationEvent;
     }
@@ -803,8 +787,8 @@ public class CommunicationControl
                         "AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommunicationEventFactory.getInstance().prepareStatement(query);
+
+            var ps = CommunicationEventFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -849,8 +833,8 @@ public class CommunicationControl
                         "WHERE cmmnev_activedetailid = cmmnevdt_communicationeventdetailid AND cmmnevdt_communicationeventname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommunicationEventFactory.getInstance().prepareStatement(query);
+
+            var ps = CommunicationEventFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, communicationEventName);
             
@@ -884,7 +868,7 @@ public class CommunicationControl
     
     public List<CommunicationEventTransfer> getCommunicationEventTransfers(UserVisit userVisit, Collection<CommunicationEvent> communicationEvents) {
         List<CommunicationEventTransfer> communicationEventTransfers = new ArrayList<>(communicationEvents.size());
-        CommunicationEventTransferCache communicationEventTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventTransferCache();
+        var communicationEventTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventTransferCache();
         
         communicationEvents.forEach((communicationEvent) ->
                 communicationEventTransfers.add(communicationEventTransferCache.getCommunicationEventTransfer(communicationEvent))
@@ -907,7 +891,7 @@ public class CommunicationControl
     
     public CommunicationEventRole createCommunicationEventRole(CommunicationEvent communicationEvent, Party party,
             CommunicationEventRoleType communicationEventRoleType, BasePK createdBy) {
-        CommunicationEventRole communicationEventRole = CommunicationEventRoleFactory.getInstance().create(session,
+        var communicationEventRole = CommunicationEventRoleFactory.getInstance().create(session,
                 communicationEvent, party, communicationEventRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(communicationEvent.getPrimaryKey(), EventTypes.MODIFY,
@@ -935,8 +919,8 @@ public class CommunicationControl
                         "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommunicationEventRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = CommunicationEventRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, communicationEvent.getPrimaryKey().getEntityId());
             ps.setLong(2, party.getPrimaryKey().getEntityId());
@@ -982,8 +966,8 @@ public class CommunicationControl
                         "WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommunicationEventRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = CommunicationEventRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, communicationEvent.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1026,8 +1010,8 @@ public class CommunicationControl
                         "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommunicationEventRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = CommunicationEventRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, communicationEventRoleType.getPrimaryKey().getEntityId());
@@ -1078,7 +1062,7 @@ public class CommunicationControl
         CommunicationSourceType communicationSourceType;
         
         try {
-            PreparedStatement ps = CommunicationSourceTypeFactory.getInstance().prepareStatement(
+            var ps = CommunicationSourceTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM communicationsourcetypes " +
                     "WHERE cmmnsrctyp_communicationsourcetypename = ?");
@@ -1095,7 +1079,7 @@ public class CommunicationControl
     }
     
     public List<CommunicationSourceType> getCommunicationSourceTypes() {
-        PreparedStatement ps = CommunicationSourceTypeFactory.getInstance().prepareStatement(
+        var ps = CommunicationSourceTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM communicationsourcetypes " +
                 "ORDER BY cmmnsrctyp_sortorder, cmmnsrctyp_communicationsourcetypename");
@@ -1122,7 +1106,7 @@ public class CommunicationControl
         CommunicationSourceTypeDescription communicationSourceTypeDescription;
         
         try {
-            PreparedStatement ps = CommunicationSourceTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = CommunicationSourceTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM communicationsourcetypedescriptions " +
                     "WHERE cmmnsrctypd_cmmnsrctyp_communicationsourcetypeid = ? AND cmmnsrctypd_lang_languageid = ?");
@@ -1141,7 +1125,7 @@ public class CommunicationControl
     
     public String getBestCommunicationSourceTypeDescription(CommunicationSourceType communicationSourceType, Language language) {
         String description;
-        CommunicationSourceTypeDescription communicationSourceTypeDescription = getCommunicationSourceTypeDescription(communicationSourceType, language);
+        var communicationSourceTypeDescription = getCommunicationSourceTypeDescription(communicationSourceType, language);
         
         if(communicationSourceTypeDescription == null && !language.getIsDefault()) {
             communicationSourceTypeDescription = getCommunicationSourceTypeDescription(communicationSourceType, getPartyControl().getDefaultLanguage());
@@ -1162,8 +1146,8 @@ public class CommunicationControl
     
     public CommunicationSource createCommunicationSource(String communicationSourceName, CommunicationSourceType communicationSourceType,
             Integer sortOrder, BasePK createdBy) {
-        CommunicationSource communicationSource = CommunicationSourceFactory.getInstance().create();
-        CommunicationSourceDetail communicationSourceDetail = CommunicationSourceDetailFactory.getInstance().create(session,
+        var communicationSource = CommunicationSourceFactory.getInstance().create();
+        var communicationSourceDetail = CommunicationSourceDetailFactory.getInstance().create(session,
                 communicationSource, communicationSourceName, communicationSourceType, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -1194,8 +1178,8 @@ public class CommunicationControl
                         "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_communicationsourcename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommunicationSourceFactory.getInstance().prepareStatement(query);
+
+            var ps = CommunicationSourceFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, communicationSourceName);
             
@@ -1237,8 +1221,8 @@ public class CommunicationControl
                     "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = CommunicationSourceFactory.getInstance().prepareStatement(query);
+
+        var ps = CommunicationSourceFactory.getInstance().prepareStatement(query);
         
         return CommunicationSourceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -1269,8 +1253,8 @@ public class CommunicationControl
                         "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_cmmnsrctyp_communicationsourcetypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommunicationSourceFactory.getInstance().prepareStatement(query);
+
+            var ps = CommunicationSourceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, communicationSourceType.getPrimaryKey().getEntityId());
             
@@ -1296,7 +1280,7 @@ public class CommunicationControl
     
     public List<CommunicationSourceTransfer> getCommunicationSourceTransfers(UserVisit userVisit, Collection<CommunicationSource> communicationSources) {
         List<CommunicationSourceTransfer> communicationSourceTransfers = new ArrayList<>(communicationSources.size());
-        CommunicationSourceTransferCache communicationSourceTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationSourceTransferCache();
+        var communicationSourceTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationSourceTransferCache();
         
         communicationSources.forEach((communicationSource) ->
                 communicationSourceTransfers.add(communicationSourceTransferCache.getCommunicationSourceTransfer(communicationSource))
@@ -1316,17 +1300,17 @@ public class CommunicationControl
     
     public void updateCommunicationSourceFromValue(CommunicationSourceDetailValue communicationSourceDetailValue, BasePK updatedBy) {
         if(communicationSourceDetailValue.hasBeenModified()) {
-            CommunicationSource communicationSource = CommunicationSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var communicationSource = CommunicationSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      communicationSourceDetailValue.getCommunicationSourcePK());
-            CommunicationSourceDetail communicationSourceDetail = communicationSource.getActiveDetailForUpdate();
+            var communicationSourceDetail = communicationSource.getActiveDetailForUpdate();
             
             communicationSourceDetail.setThruTime(session.START_TIME_LONG);
             communicationSourceDetail.store();
-            
-            CommunicationSourcePK communicationSourcePK = communicationSourceDetail.getCommunicationSourcePK();
-            String communicationSourceName = communicationSourceDetailValue.getCommunicationSourceName();
-            CommunicationSourceTypePK communicationSourceTypePK = communicationSourceDetail.getCommunicationSourceTypePK(); // Not updated
-            Integer sortOrder = communicationSourceDetailValue.getSortOrder();
+
+            var communicationSourcePK = communicationSourceDetail.getCommunicationSourcePK();
+            var communicationSourceName = communicationSourceDetailValue.getCommunicationSourceName();
+            var communicationSourceTypePK = communicationSourceDetail.getCommunicationSourceTypePK(); // Not updated
+            var sortOrder = communicationSourceDetailValue.getSortOrder();
             
             communicationSourceDetail = CommunicationSourceDetailFactory.getInstance().create(communicationSourcePK,
                     communicationSourceName, communicationSourceTypePK, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1341,8 +1325,8 @@ public class CommunicationControl
     public void deleteCommunicationSource(CommunicationSource communicationSource, BasePK deletedBy) {
         deleteCommunicationSourceDescriptionsByCommunicationSource(communicationSource, deletedBy);
         deleteCommunicationEmailSourceByCommunicationSource(communicationSource, deletedBy);
-        
-        CommunicationSourceDetail communicationSourceDetail = communicationSource.getLastDetailForUpdate();
+
+        var communicationSourceDetail = communicationSource.getLastDetailForUpdate();
         communicationSourceDetail.setThruTime(session.START_TIME_LONG);
         communicationSource.setActiveDetail(null);
         communicationSource.store();
@@ -1356,7 +1340,7 @@ public class CommunicationControl
     
     public CommunicationSourceDescription createCommunicationSourceDescription(CommunicationSource communicationSource,
             Language language, String description, BasePK createdBy) {
-        CommunicationSourceDescription communicationSourceDescription = CommunicationSourceDescriptionFactory.getInstance().create(session,
+        var communicationSourceDescription = CommunicationSourceDescriptionFactory.getInstance().create(session,
                 communicationSource, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(communicationSource.getPrimaryKey(), EventTypes.MODIFY, communicationSourceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1381,8 +1365,8 @@ public class CommunicationControl
                         "WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_lang_languageid = ? AND cmmnsrcd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommunicationSourceDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CommunicationSourceDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, communicationSource.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1429,8 +1413,8 @@ public class CommunicationControl
                         "WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommunicationSourceDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CommunicationSourceDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, communicationSource.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1453,7 +1437,7 @@ public class CommunicationControl
     
     public String getBestCommunicationSourceDescription(CommunicationSource communicationSource, Language language) {
         String description;
-        CommunicationSourceDescription communicationSourceDescription = getCommunicationSourceDescription(communicationSource, language);
+        var communicationSourceDescription = getCommunicationSourceDescription(communicationSource, language);
         
         if(communicationSourceDescription == null && !language.getIsDefault()) {
             communicationSourceDescription = getCommunicationSourceDescription(communicationSource, getPartyControl().getDefaultLanguage());
@@ -1473,9 +1457,9 @@ public class CommunicationControl
     }
     
     public List<CommunicationSourceDescriptionTransfer> getCommunicationSourceDescriptionTransfers(UserVisit userVisit, CommunicationSource communicationSource) {
-        List<CommunicationSourceDescription> communicationSourceDescriptions = getCommunicationSourceDescriptionsByCommunicationSource(communicationSource);
+        var communicationSourceDescriptions = getCommunicationSourceDescriptionsByCommunicationSource(communicationSource);
         List<CommunicationSourceDescriptionTransfer> communicationSourceDescriptionTransfers = new ArrayList<>(communicationSourceDescriptions.size());
-        CommunicationSourceDescriptionTransferCache communicationSourceDescriptionTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationSourceDescriptionTransferCache();
+        var communicationSourceDescriptionTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationSourceDescriptionTransferCache();
         
         communicationSourceDescriptions.forEach((communicationSourceDescription) ->
                 communicationSourceDescriptionTransfers.add(communicationSourceDescriptionTransferCache.getCommunicationSourceDescriptionTransfer(communicationSourceDescription))
@@ -1486,14 +1470,14 @@ public class CommunicationControl
     
     public void updateCommunicationSourceDescriptionFromValue(CommunicationSourceDescriptionValue communicationSourceDescriptionValue, BasePK updatedBy) {
         if(communicationSourceDescriptionValue.hasBeenModified()) {
-            CommunicationSourceDescription communicationSourceDescription = CommunicationSourceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, communicationSourceDescriptionValue.getPrimaryKey());
+            var communicationSourceDescription = CommunicationSourceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, communicationSourceDescriptionValue.getPrimaryKey());
             
             communicationSourceDescription.setThruTime(session.START_TIME_LONG);
             communicationSourceDescription.store();
-            
-            CommunicationSource communicationSource = communicationSourceDescription.getCommunicationSource();
-            Language language = communicationSourceDescription.getLanguage();
-            String description = communicationSourceDescriptionValue.getDescription();
+
+            var communicationSource = communicationSourceDescription.getCommunicationSource();
+            var language = communicationSourceDescription.getLanguage();
+            var description = communicationSourceDescriptionValue.getDescription();
             
             communicationSourceDescription = CommunicationSourceDescriptionFactory.getInstance().create(communicationSource, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1510,7 +1494,7 @@ public class CommunicationControl
     }
     
     public void deleteCommunicationSourceDescriptionsByCommunicationSource(CommunicationSource communicationSource, BasePK deletedBy) {
-        List<CommunicationSourceDescription> communicationSourceDescriptions = getCommunicationSourceDescriptionsByCommunicationSourceForUpdate(communicationSource);
+        var communicationSourceDescriptions = getCommunicationSourceDescriptionsByCommunicationSourceForUpdate(communicationSource);
         
         communicationSourceDescriptions.forEach((communicationSourceDescription) -> 
                 deleteCommunicationSourceDescription(communicationSourceDescription, deletedBy)
@@ -1524,7 +1508,7 @@ public class CommunicationControl
     public CommunicationEmailSource createCommunicationEmailSource(CommunicationSource communicationSource, Server server,
             String username, String password, WorkEffortScope receiveWorkEffortScope, WorkEffortScope sendWorkEffortScope,
             Selector reviewEmployeeSelector, BasePK createdBy) {
-        CommunicationEmailSource communicationEmailSource = CommunicationEmailSourceFactory.getInstance().create(session,
+        var communicationEmailSource = CommunicationEmailSourceFactory.getInstance().create(session,
                 communicationSource, server, username, encodeCommunicationEmailSourcePassword(password), receiveWorkEffortScope,
                 sendWorkEffortScope, reviewEmployeeSelector, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -1549,8 +1533,8 @@ public class CommunicationControl
                         "WHERE cmmnesrc_cmmnsrc_communicationsourceid = ? AND cmmnesrc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommunicationEmailSourceFactory.getInstance().prepareStatement(query);
+
+            var ps = CommunicationEmailSourceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, communicationSource.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1595,19 +1579,19 @@ public class CommunicationControl
     
     public void updateCommunicationEmailSourceFromValue(CommunicationEmailSourceValue communicationEmailSourceValue, BasePK updatedBy) {
         if(communicationEmailSourceValue.hasBeenModified()) {
-            CommunicationEmailSource communicationEmailSource = CommunicationEmailSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var communicationEmailSource = CommunicationEmailSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      communicationEmailSourceValue.getPrimaryKey());
             
             communicationEmailSource.setThruTime(session.START_TIME_LONG);
             communicationEmailSource.store();
-            
-            CommunicationSource communicationSource = communicationEmailSource.getCommunicationSource();
-            ServerPK serverPK = communicationEmailSourceValue.getServerPK();
-            String username = communicationEmailSourceValue.getUsername();
-            String password = communicationEmailSourceValue.getPassword();
-            WorkEffortScopePK receiveWorkEffortScopePK = communicationEmailSourceValue.getReceiveWorkEffortScopePK();
-            WorkEffortScopePK sendWorkEffortScopePK = communicationEmailSourceValue.getSendWorkEffortScopePK();
-            SelectorPK reviewEmployeeSelectorPK = communicationEmailSourceValue.getReviewEmployeeSelectorPK();
+
+            var communicationSource = communicationEmailSource.getCommunicationSource();
+            var serverPK = communicationEmailSourceValue.getServerPK();
+            var username = communicationEmailSourceValue.getUsername();
+            var password = communicationEmailSourceValue.getPassword();
+            var receiveWorkEffortScopePK = communicationEmailSourceValue.getReceiveWorkEffortScopePK();
+            var sendWorkEffortScopePK = communicationEmailSourceValue.getSendWorkEffortScopePK();
+            var reviewEmployeeSelectorPK = communicationEmailSourceValue.getReviewEmployeeSelectorPK();
             
             communicationEmailSource = CommunicationEmailSourceFactory.getInstance().create(session,
                     communicationSource.getPrimaryKey(), serverPK, username, password, receiveWorkEffortScopePK,
@@ -1626,7 +1610,7 @@ public class CommunicationControl
     }
     
     public void deleteCommunicationEmailSourceByCommunicationSource(CommunicationSource communicationSource, BasePK deletedBy) {
-        CommunicationEmailSource communicationEmailSource = getCommunicationEmailSourceForUpdate(communicationSource);
+        var communicationEmailSource = getCommunicationEmailSourceForUpdate(communicationSource);
         
         if(communicationEmailSource != null) {
             deleteCommunicationEmailSource(communicationEmailSource, deletedBy);

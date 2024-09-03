@@ -17,11 +17,9 @@
 package com.echothree.ui.web.main.action.configuration.partytypepasswordstringpolicy;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.CreatePartyTypePasswordStringPolicyForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -50,12 +48,12 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
-        AddActionForm actionForm = (AddActionForm)form;
+        String forwardKey;
+        var partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
+        var actionForm = (AddActionForm)form;
         
         if(wasPost(request)) {
-            CreatePartyTypePasswordStringPolicyForm commandForm = PartyUtil.getHome().getCreatePartyTypePasswordStringPolicyForm();
+            var commandForm = PartyUtil.getHome().getCreatePartyTypePasswordStringPolicyForm();
             
             if(partyTypeName == null)
                 partyTypeName = actionForm.getPartyTypeName();
@@ -80,8 +78,8 @@ public class AddAction
             commandForm.setRequiredLowerCaseCount(actionForm.getRequiredLowerCaseCount());
             commandForm.setMaximumRepeated(actionForm.getMaximumRepeated());
             commandForm.setMinimumCharacterTypes(actionForm.getMinimumCharacterTypes());
-            
-            CommandResult commandResult = PartyUtil.getHome().createPartyTypePasswordStringPolicy(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().createPartyTypePasswordStringPolicy(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

@@ -17,13 +17,9 @@
 package com.echothree.control.user.rating.server.command;
 
 import com.echothree.control.user.rating.common.form.GetRatingTypeForm;
-import com.echothree.control.user.rating.common.result.GetRatingTypeResult;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.rating.server.control.RatingControl;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -55,19 +51,19 @@ public class GetRatingTypeCommand
     
     @Override
     protected BaseResult execute() {
-        GetRatingTypeResult result = RatingResultFactory.getGetRatingTypeResult();
+        var result = RatingResultFactory.getGetRatingTypeResult();
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var ratingControl = Session.getModelController(RatingControl.class);
-                String ratingTypeName = form.getRatingTypeName();
-                RatingType ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
+                var ratingTypeName = form.getRatingTypeName();
+                var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 
                 if(ratingType != null) {
                     result.setRatingType(ratingControl.getRatingTypeTransfer(getUserVisit(), ratingType));

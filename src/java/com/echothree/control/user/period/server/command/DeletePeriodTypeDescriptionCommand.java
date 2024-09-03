@@ -22,10 +22,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.period.server.entity.PeriodKind;
-import com.echothree.model.data.period.server.entity.PeriodType;
-import com.echothree.model.data.period.server.entity.PeriodTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,20 +65,20 @@ public class DeletePeriodTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var periodControl = Session.getModelController(PeriodControl.class);
-        String periodKindName = form.getPeriodKindName();
-        PeriodKind periodKind = periodControl.getPeriodKindByName(periodKindName);
+        var periodKindName = form.getPeriodKindName();
+        var periodKind = periodControl.getPeriodKindByName(periodKindName);
         
         if(periodKind != null) {
-            String periodTypeName = form.getPeriodTypeName();
-            PeriodType periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
+            var periodTypeName = form.getPeriodTypeName();
+            var periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
             
             if(periodType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    PeriodTypeDescription periodTypeDescription = periodControl.getPeriodTypeDescriptionForUpdate(periodType, language);
+                    var periodTypeDescription = periodControl.getPeriodTypeDescriptionForUpdate(periodType, language);
                     
                     if(periodTypeDescription != null) {
                         periodControl.deletePeriodTypeDescription(periodTypeDescription, getPartyPK());

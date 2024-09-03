@@ -23,11 +23,6 @@ import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.model.data.chain.server.entity.ChainType;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
-import com.echothree.model.data.letter.server.entity.Letter;
-import com.echothree.model.data.letter.server.entity.LetterSource;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -76,26 +71,26 @@ public class CreateLetterCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
                 var letterControl = Session.getModelController(LetterControl.class);
-                String letterName = form.getLetterName();
-                Letter letter = letterControl.getLetterByName(chainType, letterName);
+                var letterName = form.getLetterName();
+                var letter = letterControl.getLetterByName(chainType, letterName);
                 
                 if(letter == null) {
-                    String letterSourceName = form.getLetterSourceName();
-                    LetterSource letterSource = letterControl.getLetterSourceByName(letterSourceName);
+                    var letterSourceName = form.getLetterSourceName();
+                    var letterSource = letterControl.getLetterSourceByName(letterSourceName);
                     
                     if(letterSource != null) {
                         var contactListControl = Session.getModelController(ContactListControl.class);
-                        String contactListName = form.getContactListName();
-                        ContactList contactList = contactListName == null? null: contactListControl.getContactListByName(contactListName);
+                        var contactListName = form.getContactListName();
+                        var contactList = contactListName == null? null: contactListControl.getContactListByName(contactListName);
                         
                         if(contactListName == null || contactList != null) {
                             var partyPK = getPartyPK();

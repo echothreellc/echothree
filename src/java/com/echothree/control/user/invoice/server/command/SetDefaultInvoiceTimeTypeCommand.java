@@ -21,8 +21,6 @@ import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.invoice.server.entity.InvoiceType;
-import com.echothree.model.data.invoice.server.value.InvoiceTimeTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,12 +62,12 @@ public class SetDefaultInvoiceTimeTypeCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        String invoiceTypeName = form.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var invoiceTypeName = form.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
 
         if(invoiceType != null) {
-            String invoiceTimeTypeName = form.getInvoiceTimeTypeName();
-            InvoiceTimeTypeDetailValue invoiceTimeTypeDetailValue = invoiceControl.getInvoiceTimeTypeDetailValueByNameForUpdate(invoiceType, invoiceTimeTypeName);
+            var invoiceTimeTypeName = form.getInvoiceTimeTypeName();
+            var invoiceTimeTypeDetailValue = invoiceControl.getInvoiceTimeTypeDetailValueByNameForUpdate(invoiceType, invoiceTimeTypeName);
 
             if(invoiceTimeTypeDetailValue != null) {
                 invoiceTimeTypeDetailValue.setIsDefault(Boolean.TRUE);

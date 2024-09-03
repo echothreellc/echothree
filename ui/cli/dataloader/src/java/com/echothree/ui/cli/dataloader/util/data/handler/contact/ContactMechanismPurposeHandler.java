@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.contact;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.ContactService;
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
-import com.echothree.control.user.contact.common.form.CreateContactMechanismPurposeDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -50,9 +49,9 @@ public class ContactMechanismPurposeHandler
         if(localName.equals("contactMechanismPurposeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +59,7 @@ public class ContactMechanismPurposeHandler
             }
             
             try {
-                CreateContactMechanismPurposeDescriptionForm createContactMechanismPurposeDescriptionForm = ContactFormFactory.getCreateContactMechanismPurposeDescriptionForm();
+                var createContactMechanismPurposeDescriptionForm = ContactFormFactory.getCreateContactMechanismPurposeDescriptionForm();
                 
                 createContactMechanismPurposeDescriptionForm.setContactMechanismPurposeName(contactMechanismPurposeName);
                 createContactMechanismPurposeDescriptionForm.setLanguageIsoName(languageIsoName);

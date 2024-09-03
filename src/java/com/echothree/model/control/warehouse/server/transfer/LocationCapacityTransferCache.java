@@ -16,13 +16,9 @@
 
 package com.echothree.model.control.warehouse.server.transfer;
 
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.uom.server.transfer.UnitOfMeasureTypeTransferCache;
 import com.echothree.model.control.warehouse.common.transfer.LocationCapacityTransfer;
-import com.echothree.model.control.warehouse.common.transfer.LocationTransfer;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationCapacity;
 import com.echothree.util.server.persistence.Session;
@@ -40,15 +36,15 @@ public class LocationCapacityTransferCache
     }
     
     public LocationCapacityTransfer getLocationCapacityTransfer(LocationCapacity locationCapacity) {
-        LocationCapacityTransfer locationCapacityTransfer = get(locationCapacity);
+        var locationCapacityTransfer = get(locationCapacity);
         
         if(locationCapacityTransfer == null) {
-            LocationTransferCache locationTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationTransferCache();
-            LocationTransfer locationTransfer = locationTransferCache.getLocationTransfer(locationCapacity.getLocation());
-            UnitOfMeasureTypeTransferCache unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
-            UnitOfMeasureType unitOfMeasureType = locationCapacity.getUnitOfMeasureType();
-            UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureType);
-            Long capacity = locationCapacity.getCapacity();
+            var locationTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationTransferCache();
+            var locationTransfer = locationTransferCache.getLocationTransfer(locationCapacity.getLocation());
+            var unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
+            var unitOfMeasureType = locationCapacity.getUnitOfMeasureType();
+            var unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureType);
+            var capacity = locationCapacity.getCapacity();
             
             locationCapacityTransfer = new LocationCapacityTransfer(locationTransfer, unitOfMeasureTypeTransfer, capacity);
             put(locationCapacity, locationCapacityTransfer);

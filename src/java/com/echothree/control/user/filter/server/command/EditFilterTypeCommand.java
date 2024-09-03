@@ -27,12 +27,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.entity.FilterKindDetail;
 import com.echothree.model.data.filter.server.entity.FilterType;
-import com.echothree.model.data.filter.server.entity.FilterTypeDescription;
-import com.echothree.model.data.filter.server.entity.FilterTypeDetail;
-import com.echothree.model.data.filter.server.value.FilterTypeDescriptionValue;
-import com.echothree.model.data.filter.server.value.FilterTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -95,12 +90,12 @@ public class EditFilterTypeCommand
     public FilterType getEntity(EditFilterTypeResult result) {
         var filterControl = Session.getModelController(FilterControl.class);
         FilterType filterType = null;
-        String filterKindName = spec.getFilterKindName();
+        var filterKindName = spec.getFilterKindName();
 
         filterKind = filterControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
-            String filterTypeName = spec.getFilterTypeName();
+            var filterTypeName = spec.getFilterTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
@@ -133,8 +128,8 @@ public class EditFilterTypeCommand
     @Override
     public void doLock(FilterTypeEdit edit, FilterType filterType) {
         var filterControl = Session.getModelController(FilterControl.class);
-        FilterTypeDescription filterTypeDescription = filterControl.getFilterTypeDescription(filterType, getPreferredLanguage());
-        FilterTypeDetail filterTypeDetail = filterType.getLastDetail();
+        var filterTypeDescription = filterControl.getFilterTypeDescription(filterType, getPreferredLanguage());
+        var filterTypeDetail = filterType.getLastDetail();
 
         edit.setFilterTypeName(filterTypeDetail.getFilterTypeName());
         edit.setIsDefault(filterTypeDetail.getIsDefault().toString());
@@ -148,9 +143,9 @@ public class EditFilterTypeCommand
     @Override
     public void canUpdate(FilterType filterType) {
         var filterControl = Session.getModelController(FilterControl.class);
-        FilterKindDetail filterKindDetail = filterKind.getLastDetail();
-        String filterTypeName = edit.getFilterTypeName();
-        FilterType duplicateFilterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+        var filterKindDetail = filterKind.getLastDetail();
+        var filterTypeName = edit.getFilterTypeName();
+        var duplicateFilterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
 
         if(duplicateFilterType != null && !filterType.equals(duplicateFilterType)) {
             addExecutionError(ExecutionErrors.DuplicateFilterTypeName.name(), filterKindDetail.getFilterKindName(), filterTypeName);
@@ -161,9 +156,9 @@ public class EditFilterTypeCommand
     public void doUpdate(FilterType filterType) {
         var filterControl = Session.getModelController(FilterControl.class);
         var partyPK = getPartyPK();
-        FilterTypeDetailValue filterTypeDetailValue = filterControl.getFilterTypeDetailValueForUpdate(filterType);
-        FilterTypeDescription filterTypeDescription = filterControl.getFilterTypeDescriptionForUpdate(filterType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var filterTypeDetailValue = filterControl.getFilterTypeDetailValueForUpdate(filterType);
+        var filterTypeDescription = filterControl.getFilterTypeDescriptionForUpdate(filterType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         filterTypeDetailValue.setFilterTypeName(edit.getFilterTypeName());
         filterTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -176,7 +171,7 @@ public class EditFilterTypeCommand
         } else if(filterTypeDescription != null && description == null) {
             filterControl.deleteFilterTypeDescription(filterTypeDescription, partyPK);
         } else if(filterTypeDescription != null && description != null) {
-            FilterTypeDescriptionValue filterTypeDescriptionValue = filterControl.getFilterTypeDescriptionValue(filterTypeDescription);
+            var filterTypeDescriptionValue = filterControl.getFilterTypeDescriptionValue(filterTypeDescription);
 
             filterTypeDescriptionValue.setDescription(description);
             filterControl.updateFilterTypeDescriptionFromValue(filterTypeDescriptionValue, partyPK);

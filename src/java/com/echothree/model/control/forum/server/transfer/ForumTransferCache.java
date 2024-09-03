@@ -18,24 +18,16 @@ package com.echothree.model.control.forum.server.transfer;
 
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.control.forum.common.transfer.ForumTransfer;
-import com.echothree.model.control.forum.common.transfer.ForumTypeTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.icon.common.transfer.IconTransfer;
 import com.echothree.model.control.icon.server.control.IconControl;
-import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.forum.server.entity.ForumDetail;
 import com.echothree.model.data.forum.server.entity.ForumGroup;
-import com.echothree.model.data.forum.server.entity.ForumGroupForum;
-import com.echothree.model.data.icon.server.entity.Icon;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class ForumTransferCache
         extends BaseForumTransferCache<Forum, ForumTransfer> {
@@ -64,26 +56,26 @@ public class ForumTransferCache
     }
     
     public ForumTransfer getForumTransfer(Forum forum) {
-        ForumTransfer forumTransfer = get(forum);
+        var forumTransfer = get(forum);
         
         if(forumTransfer == null) {
-            ForumDetail forumDetail = forum.getLastDetail();
-            String forumName = forumDetail.getForumName();
-            ForumTypeTransfer forumTypeTransfer = forumControl.getForumTypeTransfer(userVisit, forumDetail.getForumType());
-            Icon icon = forumDetail.getIcon();
-            IconTransfer iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
-            Sequence forumThreadSequence = forumDetail.getForumThreadSequence();
-            SequenceTransfer forumThreadSequenceTransfer = forumThreadSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, forumThreadSequence);
-            Sequence forumMessageSequence = forumDetail.getForumMessageSequence();
-            SequenceTransfer forumMessageSequenceTransfer = forumMessageSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, forumMessageSequence);
-            Integer sortOrder = forumDetail.getSortOrder();
-            String description = forumControl.getBestForumDescription(forum, getLanguage());
+            var forumDetail = forum.getLastDetail();
+            var forumName = forumDetail.getForumName();
+            var forumTypeTransfer = forumControl.getForumTypeTransfer(userVisit, forumDetail.getForumType());
+            var icon = forumDetail.getIcon();
+            var iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
+            var forumThreadSequence = forumDetail.getForumThreadSequence();
+            var forumThreadSequenceTransfer = forumThreadSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, forumThreadSequence);
+            var forumMessageSequence = forumDetail.getForumMessageSequence();
+            var forumMessageSequenceTransfer = forumMessageSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, forumMessageSequence);
+            var sortOrder = forumDetail.getSortOrder();
+            var description = forumControl.getBestForumDescription(forum, getLanguage());
             
             forumTransfer = new ForumTransfer(forumName, forumTypeTransfer, iconTransfer, forumThreadSequenceTransfer, forumMessageSequenceTransfer, sortOrder, description);
             put(forum, forumTransfer);
             
             if(includeForumGroups) {
-                List<ForumGroupForum> forumGroupForums = forumControl.getForumGroupForumsByForum(forum);
+                var forumGroupForums = forumControl.getForumGroupForumsByForum(forum);
                 List<ForumGroup> forumGroups = new ArrayList<>(forumGroupForums.size());
                 
                 forumGroupForums.forEach((forumGroupForum) -> {

@@ -17,10 +17,8 @@
 package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.GetPrintersForm;
-import com.echothree.control.user.printer.common.result.GetPrintersResult;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.printer.server.control.PrinterControl;
-import com.echothree.model.data.printer.server.entity.PrinterGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -50,9 +48,9 @@ public class GetPrintersCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        GetPrintersResult result = PrinterResultFactory.getGetPrintersResult();
-        String printerGroupName = form.getPrinterGroupName();
-        PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
+       var result = PrinterResultFactory.getGetPrintersResult();
+       var printerGroupName = form.getPrinterGroupName();
+       var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
         
         if(printerGroup == null) {
             result.setPrinters(printerControl.getPrinterTransfers(getUserVisit()));

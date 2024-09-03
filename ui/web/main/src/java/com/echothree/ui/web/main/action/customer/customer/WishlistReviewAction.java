@@ -18,14 +18,11 @@ package com.echothree.ui.web.main.action.customer.customer;
 
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.form.GetWishlistLinesForm;
 import com.echothree.control.user.wishlist.common.result.GetWishlistLinesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,17 +53,17 @@ public class WishlistReviewAction
         String forwardKey;
         
         try {
-            GetWishlistLinesForm commandForm = WishlistUtil.getHome().getGetWishlistLinesForm();
-            String customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
-            String wishlistName = request.getParameter(ParameterConstants.WISHLIST_NAME);
-            String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+            var commandForm = WishlistUtil.getHome().getGetWishlistLinesForm();
+            var customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
+            var wishlistName = request.getParameter(ParameterConstants.WISHLIST_NAME);
+            var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
             
             commandForm.setWishlistName(wishlistName);
             commandForm.setItemName(itemName);
-            
-            CommandResult commandResult = WishlistUtil.getHome().getWishlistLines(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWishlistLinesResult result = (GetWishlistLinesResult)executionResult.getResult();
+
+            var commandResult = WishlistUtil.getHome().getWishlistLines(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWishlistLinesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WISHLIST_LINES, result.getWishlistLines());
             request.setAttribute(AttributeConstants.CUSTOMER_NAME, customerName);

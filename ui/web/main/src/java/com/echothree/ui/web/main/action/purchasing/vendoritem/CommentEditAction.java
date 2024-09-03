@@ -22,13 +22,11 @@ import com.echothree.control.user.comment.common.form.EditCommentForm;
 import com.echothree.control.user.comment.common.result.EditCommentResult;
 import com.echothree.control.user.comment.common.spec.CommentSpec;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.GetVendorItemForm;
 import com.echothree.control.user.vendor.common.result.GetVendorItemResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,7 +53,7 @@ public class CommentEditAction
     @Override
     protected CommentSpec getSpec(HttpServletRequest request, CommentEditActionForm actionForm)
             throws NamingException {
-        CommentSpec spec = CommentUtil.getHome().getCommentSpec();
+        var spec = CommentUtil.getHome().getCommentSpec();
 
         spec.setCommentName(findParameter(request, ParameterConstants.COMMENT_NAME, actionForm.getCommentName()));
         
@@ -65,7 +63,7 @@ public class CommentEditAction
     @Override
     protected CommentEdit getEdit(HttpServletRequest request, CommentEditActionForm actionForm)
             throws NamingException {
-        CommentEdit edit = CommentUtil.getHome().getCommentEdit();
+        var edit = CommentUtil.getHome().getCommentEdit();
 
         edit.setLanguageIsoName(actionForm.getLanguageChoice());
         edit.setDescription(actionForm.getDescription());
@@ -95,9 +93,9 @@ public class CommentEditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditCommentForm commandForm)
             throws Exception {
-        CommandResult commandResult = CommentUtil.getHome().editComment(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditCommentResult result = (EditCommentResult)executionResult.getResult();
+        var commandResult = CommentUtil.getHome().editComment(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditCommentResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.COMMENT, result.getComment());
         
@@ -113,14 +111,14 @@ public class CommentEditAction
     @Override
     public void setupTransfer(CommentEditActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetVendorItemForm commandForm = VendorUtil.getHome().getGetVendorItemForm();
+        var commandForm = VendorUtil.getHome().getGetVendorItemForm();
         
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setVendorItemName(actionForm.getVendorItemName());
-        
-        CommandResult commandResult = VendorUtil.getHome().getVendorItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetVendorItemResult result = (GetVendorItemResult)executionResult.getResult();
+
+        var commandResult = VendorUtil.getHome().getVendorItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetVendorItemResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.VENDOR_ITEM, result.getVendorItem());
     }

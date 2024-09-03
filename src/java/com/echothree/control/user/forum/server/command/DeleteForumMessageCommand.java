@@ -18,9 +18,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.DeleteForumMessageForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.forum.server.entity.ForumMessage;
-import com.echothree.model.data.forum.server.entity.ForumThread;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,12 +48,12 @@ public class DeleteForumMessageCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumMessageName = form.getForumMessageName();
-        ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
+        var forumMessageName = form.getForumMessageName();
+        var forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
         
         if(forumMessage != null) {
-            ForumThread forumThread = forumMessage.getLastDetail().getForumThreadForUpdate();
-            PartyPK deletedBy = getPartyPK();
+            var forumThread = forumMessage.getLastDetail().getForumThreadForUpdate();
+            var deletedBy = getPartyPK();
             
             if(forumControl.countForumMessagesByForumThread(forumThread) == 1) {
                 forumControl.deleteForumThread(forumThread, deletedBy);

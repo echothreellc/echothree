@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.customer.customertypecreditlimit;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.common.form.CreateCustomerTypeCreditLimitForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -55,12 +53,12 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
-        String customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
+        String forwardKey;
+        var customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
         
         try {
-            AddActionForm actionForm = (AddActionForm)form;
-            CreateCustomerTypeCreditLimitForm commandForm = TermUtil.getHome().getCreateCustomerTypeCreditLimitForm();
+            var actionForm = (AddActionForm)form;
+            var commandForm = TermUtil.getHome().getCreateCustomerTypeCreditLimitForm();
 
             if(customerTypeName == null)
                 customerTypeName = actionForm.getCustomerTypeName();
@@ -70,8 +68,8 @@ public class AddAction
                 commandForm.setCurrencyIsoName(actionForm.getCurrencyChoice());
                 commandForm.setCreditLimit(actionForm.getCreditLimit());
                 commandForm.setPotentialCreditLimit(actionForm.getPotentialCreditLimit());
-                
-                CommandResult commandResult = TermUtil.getHome().createCustomerTypeCreditLimit(getUserVisitPK(request), commandForm);
+
+                var commandResult = TermUtil.getHome().createCustomerTypeCreditLimit(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);
@@ -87,8 +85,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_NAME, customerTypeName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

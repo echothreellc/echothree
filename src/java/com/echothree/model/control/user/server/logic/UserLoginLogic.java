@@ -41,7 +41,7 @@ public class UserLoginLogic
     
     public UserLogin getUserLoginByUsername(final ExecutionErrorAccumulator eea, final String username) {
         var userControl = Session.getModelController(UserControl.class);
-        UserLogin userLogin = userControl.getUserLoginByUsername(username);
+        var userLogin = userControl.getUserLoginByUsername(username);
 
         if(userLogin == null) {
             handleExecutionError(UnknownUsernameException.class, eea, ExecutionErrors.UnknownUsername.name(), username);

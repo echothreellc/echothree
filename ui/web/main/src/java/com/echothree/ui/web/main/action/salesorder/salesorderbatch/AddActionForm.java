@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.salesorder.salesorderbatch;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetCurrencyChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetCurrencyChoicesResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.GetPaymentMethodChoicesForm;
 import com.echothree.control.user.payment.common.result.GetPaymentMethodChoicesResult;
 import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
 import com.echothree.model.control.payment.common.choice.PaymentMethodChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -49,14 +45,14 @@ public class AddActionForm
     public void setupCurrencyChoices() {
         if(currencyChoices == null) {
             try {
-                GetCurrencyChoicesForm form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
+                var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
                 
                 form.setDefaultCurrencyChoice(currencyChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCurrencyChoicesResult getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
                 currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
                 
                 if(currencyChoice == null)
@@ -71,14 +67,14 @@ public class AddActionForm
     public void setupPaymentMethodChoices() {
         if(paymentMethodChoices == null) {
             try {
-                GetPaymentMethodChoicesForm form = PaymentUtil.getHome().getGetPaymentMethodChoicesForm();
+                var form = PaymentUtil.getHome().getGetPaymentMethodChoicesForm();
                 
                 form.setDefaultPaymentMethodChoice(paymentMethodChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPaymentMethodChoicesResult getPaymentMethodChoicesResult = (GetPaymentMethodChoicesResult)executionResult.getResult();
+
+                var commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getPaymentMethodChoicesResult = (GetPaymentMethodChoicesResult)executionResult.getResult();
                 paymentMethodChoices = getPaymentMethodChoicesResult.getPaymentMethodChoices();
                 
                 if(paymentMethodChoice == null)

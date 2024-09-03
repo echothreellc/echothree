@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.core.messagetype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetMimeTypeUsageTypeChoicesForm;
 import com.echothree.control.user.core.common.result.GetMimeTypeUsageTypeChoicesResult;
 import com.echothree.model.control.core.common.choice.MimeTypeUsageTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -44,14 +41,14 @@ public class AddActionForm
     public void setupMimeTypeUsageTypeChoices()
             throws NamingException {
         if(mimeTypeUsageTypeChoices == null) {
-            GetMimeTypeUsageTypeChoicesForm form = CoreUtil.getHome().getGetMimeTypeUsageTypeChoicesForm();
+            var form = CoreUtil.getHome().getGetMimeTypeUsageTypeChoicesForm();
 
             form.setDefaultMimeTypeUsageTypeChoice(mimeTypeUsageTypeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getMimeTypeUsageTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeUsageTypeChoicesResult result = (GetMimeTypeUsageTypeChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getMimeTypeUsageTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeUsageTypeChoicesResult)executionResult.getResult();
             mimeTypeUsageTypeChoices = result.getMimeTypeUsageTypeChoices();
 
             if(mimeTypeUsageTypeChoice == null)

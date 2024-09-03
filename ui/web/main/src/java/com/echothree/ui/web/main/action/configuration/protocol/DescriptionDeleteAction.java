@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.protocol;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteProtocolDescriptionForm;
-import com.echothree.control.user.core.common.form.GetProtocolDescriptionForm;
 import com.echothree.control.user.core.common.result.GetProtocolDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetProtocolDescriptionForm commandForm = CoreUtil.getHome().getGetProtocolDescriptionForm();
+        var commandForm = CoreUtil.getHome().getGetProtocolDescriptionForm();
         
         commandForm.setProtocolName(actionForm.getProtocolName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getProtocolDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getProtocolDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetProtocolDescriptionResult result = (GetProtocolDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetProtocolDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.PROTOCOL_DESCRIPTION, result.getProtocolDescription());
         }
@@ -80,7 +77,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteProtocolDescriptionForm commandForm = CoreUtil.getHome().getDeleteProtocolDescriptionForm();
+        var commandForm = CoreUtil.getHome().getDeleteProtocolDescriptionForm();
 
         commandForm.setProtocolName(actionForm.getProtocolName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

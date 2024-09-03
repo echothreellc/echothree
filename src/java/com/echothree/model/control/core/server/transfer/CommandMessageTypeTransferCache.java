@@ -19,7 +19,6 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.transfer.CommandMessageTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.CommandMessageType;
-import com.echothree.model.data.core.server.entity.CommandMessageTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -36,14 +35,14 @@ public class CommandMessageTypeTransferCache
     }
     
     public CommandMessageTypeTransfer getCommandMessageTypeTransfer(CommandMessageType commandMessageType) {
-        CommandMessageTypeTransfer commandMessageTypeTransfer = get(commandMessageType);
+        var commandMessageTypeTransfer = get(commandMessageType);
         
         if(commandMessageTypeTransfer == null) {
-            CommandMessageTypeDetail commandMessageTypeDetail = commandMessageType.getLastDetail();
-            String commandMessageTypeName = commandMessageTypeDetail.getCommandMessageTypeName();
-            Boolean isDefault = commandMessageTypeDetail.getIsDefault();
-            Integer sortOrder = commandMessageTypeDetail.getSortOrder();
-            String description = coreControl.getBestCommandMessageTypeDescription(commandMessageType, getLanguage());
+            var commandMessageTypeDetail = commandMessageType.getLastDetail();
+            var commandMessageTypeName = commandMessageTypeDetail.getCommandMessageTypeName();
+            var isDefault = commandMessageTypeDetail.getIsDefault();
+            var sortOrder = commandMessageTypeDetail.getSortOrder();
+            var description = coreControl.getBestCommandMessageTypeDescription(commandMessageType, getLanguage());
             
             commandMessageTypeTransfer = new CommandMessageTypeTransfer(commandMessageTypeName, isDefault, sortOrder, description);
             put(commandMessageType, commandMessageTypeTransfer);

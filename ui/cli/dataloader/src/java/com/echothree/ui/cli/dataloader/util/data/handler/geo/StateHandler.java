@@ -18,21 +18,15 @@ package com.echothree.ui.cli.dataloader.util.data.handler.geo;
 
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.GeoService;
-import com.echothree.control.user.geo.common.form.CreateCityForm;
-import com.echothree.control.user.geo.common.form.CreateCountyForm;
-import com.echothree.control.user.geo.common.form.CreateGeoCodeDescriptionForm;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
 import com.echothree.control.user.geo.common.result.CreateCityResult;
 import com.echothree.control.user.geo.common.result.CreateCountyResult;
 import com.echothree.control.user.tax.common.TaxUtil;
 import com.echothree.control.user.tax.common.TaxService;
-import com.echothree.control.user.tax.common.form.CreateGeoCodeTaxForm;
 import com.echothree.control.user.tax.common.form.TaxFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -63,12 +57,12 @@ public class StateHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("geoCodeDescription")) {
-            CreateGeoCodeDescriptionForm commandForm = GeoFormFactory.getCreateGeoCodeDescriptionForm();
+            var commandForm = GeoFormFactory.getCreateGeoCodeDescriptionForm();
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -81,14 +75,14 @@ public class StateHandler
             
             geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("county")) {
-            CreateCountyForm commandForm = GeoFormFactory.getCreateCountyForm();
+            var commandForm = GeoFormFactory.getCreateCountyForm();
             String countyName = null;
             String countyNumber = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("countyName"))
                     countyName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("countyNumber"))
@@ -104,22 +98,22 @@ public class StateHandler
             commandForm.setCountyNumber(countyNumber);
             commandForm.setIsDefault(isDefault);
             commandForm.setSortOrder(sortOrder);
-            
-            CommandResult commandResult = geoService.createCounty(initialDataParser.getUserVisit(), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            CreateCountyResult createCountyResult = (CreateCountyResult)executionResult.getResult();
-            String countyGeoCodeName = createCountyResult.getGeoCodeName();
-            String countyEntityRef = createCountyResult.getEntityRef();
+
+            var commandResult = geoService.createCounty(initialDataParser.getUserVisit(), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var createCountyResult = (CreateCountyResult)executionResult.getResult();
+            var countyGeoCodeName = createCountyResult.getGeoCodeName();
+            var countyEntityRef = createCountyResult.getEntityRef();
             
             initialDataParser.pushHandler(new CountyHandler(initialDataParser, this, countyGeoCodeName, countyEntityRef));
         } else if(localName.equals("city")) {
-            CreateCityForm commandForm = GeoFormFactory.getCreateCityForm();
+            var commandForm = GeoFormFactory.getCreateCityForm();
             String cityName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("cityName"))
                     cityName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -132,20 +126,20 @@ public class StateHandler
             commandForm.setCityName(cityName);
             commandForm.setIsDefault(isDefault);
             commandForm.setSortOrder(sortOrder);
-            
-            CommandResult commandResult = geoService.createCity(initialDataParser.getUserVisit(), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            CreateCityResult createCityResult = (CreateCityResult)executionResult.getResult();
-            String cityGeoCodeName = createCityResult.getGeoCodeName();
-            String cityEntityRef = createCityResult.getEntityRef();
+
+            var commandResult = geoService.createCity(initialDataParser.getUserVisit(), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var createCityResult = (CreateCityResult)executionResult.getResult();
+            var cityGeoCodeName = createCityResult.getGeoCodeName();
+            var cityEntityRef = createCityResult.getEntityRef();
             
             initialDataParser.pushHandler(new CityHandler(initialDataParser, this, cityGeoCodeName, cityEntityRef));
         } else if(localName.equals("geoCodeTax")) {
-            CreateGeoCodeTaxForm commandForm = TaxFormFactory.getCreateGeoCodeTaxForm();
+            var commandForm = TaxFormFactory.getCreateGeoCodeTaxForm();
             String taxName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("taxName"))
                     taxName = attrs.getValue(i);
             }

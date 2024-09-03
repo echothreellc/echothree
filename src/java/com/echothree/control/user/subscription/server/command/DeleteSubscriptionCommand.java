@@ -18,7 +18,6 @@ package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.form.DeleteSubscriptionForm;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
-import com.echothree.model.data.subscription.server.entity.Subscription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class DeleteSubscriptionCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        String subscriptionName = form.getSubscriptionName();
-        Subscription subscription = subscriptionControl.getSubscriptionByNameForUpdate(subscriptionName);
+        var subscriptionName = form.getSubscriptionName();
+        var subscription = subscriptionControl.getSubscriptionByNameForUpdate(subscriptionName);
         
         if(subscription != null) {
             subscriptionControl.deleteSubscription(subscription, getPartyPK());

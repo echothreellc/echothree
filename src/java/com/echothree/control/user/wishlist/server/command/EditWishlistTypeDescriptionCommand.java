@@ -19,7 +19,6 @@ package com.echothree.control.user.wishlist.server.command;
 import com.echothree.control.user.wishlist.common.edit.WishlistEditFactory;
 import com.echothree.control.user.wishlist.common.edit.WishlistTypeDescriptionEdit;
 import com.echothree.control.user.wishlist.common.form.EditWishlistTypeDescriptionForm;
-import com.echothree.control.user.wishlist.common.result.EditWishlistTypeDescriptionResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.control.user.wishlist.common.spec.WishlistTypeDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -27,11 +26,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypeDescription;
-import com.echothree.model.data.wishlist.server.value.WishlistTypeDescriptionValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -79,24 +74,24 @@ public class EditWishlistTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        EditWishlistTypeDescriptionResult result = WishlistResultFactory.getEditWishlistTypeDescriptionResult();
-        String wishlistTypeName = spec.getWishlistTypeName();
-        WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
+        var result = WishlistResultFactory.getEditWishlistTypeDescriptionResult();
+        var wishlistTypeName = spec.getWishlistTypeName();
+        var wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    WishlistTypeDescription wishlistTypeDescription = wishlistControl.getWishlistTypeDescription(wishlistType, language);
+                    var wishlistTypeDescription = wishlistControl.getWishlistTypeDescription(wishlistType, language);
                     
                     if(wishlistTypeDescription != null) {
                         result.setWishlistTypeDescription(wishlistControl.getWishlistTypeDescriptionTransfer(getUserVisit(), wishlistTypeDescription));
                         
                         if(lockEntity(wishlistType)) {
-                            WishlistTypeDescriptionEdit edit = WishlistEditFactory.getWishlistTypeDescriptionEdit();
+                            var edit = WishlistEditFactory.getWishlistTypeDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(wishlistTypeDescription.getDescription());
@@ -109,12 +104,12 @@ public class EditWishlistTypeDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownWishlistTypeDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    WishlistTypeDescriptionValue wishlistTypeDescriptionValue = wishlistControl.getWishlistTypeDescriptionValueForUpdate(wishlistType, language);
+                    var wishlistTypeDescriptionValue = wishlistControl.getWishlistTypeDescriptionValueForUpdate(wishlistType, language);
                     
                     if(wishlistTypeDescriptionValue != null) {
                         if(lockEntityForUpdate(wishlistType)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 wishlistTypeDescriptionValue.setDescription(description);
                                 

@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.associate.associatereferral;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.common.form.GetAssociateReferralForm;
 import com.echothree.control.user.associate.common.result.GetAssociateReferralResult;
-import com.echothree.model.control.associate.common.transfer.AssociateReferralTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,18 +49,18 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String associateReferralName = request.getParameter(ParameterConstants.ASSOCIATE_REFERRAL_NAME);
-            GetAssociateReferralForm commandForm = AssociateUtil.getHome().getGetAssociateReferralForm();
+            var associateReferralName = request.getParameter(ParameterConstants.ASSOCIATE_REFERRAL_NAME);
+            var commandForm = AssociateUtil.getHome().getGetAssociateReferralForm();
             
             commandForm.setAssociateReferralName(associateReferralName);
-            
-            CommandResult commandResult = AssociateUtil.getHome().getAssociateReferral(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAssociateReferralResult result = (GetAssociateReferralResult)executionResult.getResult();
-            AssociateReferralTransfer associateReferralTransfer = result.getAssociateReferral();
+
+            var commandResult = AssociateUtil.getHome().getAssociateReferral(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAssociateReferralResult)executionResult.getResult();
+            var associateReferralTransfer = result.getAssociateReferral();
             
             request.setAttribute(AttributeConstants.ASSOCIATE_REFERRAL, associateReferralTransfer);
             forwardKey = ForwardConstants.DISPLAY;

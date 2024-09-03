@@ -27,9 +27,7 @@ import com.echothree.model.control.item.server.logic.RelatedItemTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
-import com.echothree.model.data.item.server.value.RelatedItemTypeDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -152,7 +150,7 @@ public class EditRelatedItemTypeCommand
         } else if(relatedItemTypeDescription != null && description == null) {
             itemControl.deleteRelatedItemTypeDescription(relatedItemTypeDescription, partyPK);
         } else if(relatedItemTypeDescription != null && description != null) {
-            RelatedItemTypeDescriptionValue relatedItemTypeDescriptionValue = itemControl.getRelatedItemTypeDescriptionValue(relatedItemTypeDescription);
+            var relatedItemTypeDescriptionValue = itemControl.getRelatedItemTypeDescriptionValue(relatedItemTypeDescription);
 
             relatedItemTypeDescriptionValue.setDescription(description);
             itemControl.updateRelatedItemTypeDescriptionFromValue(relatedItemTypeDescriptionValue, partyPK);

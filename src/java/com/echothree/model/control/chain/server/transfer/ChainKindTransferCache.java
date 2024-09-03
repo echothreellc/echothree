@@ -19,7 +19,6 @@ package com.echothree.model.control.chain.server.transfer;
 import com.echothree.model.control.chain.common.transfer.ChainKindTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.model.data.chain.server.entity.ChainKindDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class ChainKindTransferCache
@@ -33,14 +32,14 @@ public class ChainKindTransferCache
     }
     
     public ChainKindTransfer getChainKindTransfer(ChainKind chainKind) {
-        ChainKindTransfer chainKindTransfer = get(chainKind);
+        var chainKindTransfer = get(chainKind);
         
         if(chainKindTransfer == null) {
-            ChainKindDetail chainKindDetail = chainKind.getLastDetail();
-            String chainKindName = chainKindDetail.getChainKindName();
-            Boolean isDefault = chainKindDetail.getIsDefault();
-            Integer sortOrder = chainKindDetail.getSortOrder();
-            String description = chainControl.getBestChainKindDescription(chainKind, getLanguage());
+            var chainKindDetail = chainKind.getLastDetail();
+            var chainKindName = chainKindDetail.getChainKindName();
+            var isDefault = chainKindDetail.getIsDefault();
+            var sortOrder = chainKindDetail.getSortOrder();
+            var description = chainControl.getBestChainKindDescription(chainKind, getLanguage());
             
             chainKindTransfer = new ChainKindTransfer(chainKindName, isDefault, sortOrder, description);
             put(chainKind, chainKindTransfer);

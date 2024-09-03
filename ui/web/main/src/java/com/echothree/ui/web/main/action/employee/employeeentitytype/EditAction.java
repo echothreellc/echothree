@@ -52,7 +52,7 @@ public class EditAction
     @Override
     protected PartyEntityTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyEntityTypeSpec spec = CoreUtil.getHome().getPartyEntityTypeSpec();
+        var spec = CoreUtil.getHome().getPartyEntityTypeSpec();
 
         spec.setComponentVendorName(findParameter(request, ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName()));
         spec.setEntityTypeName(findParameter(request, ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName()));
@@ -63,7 +63,7 @@ public class EditAction
     @Override
     protected PartyEntityTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyEntityTypeEdit edit = CoreUtil.getHome().getPartyEntityTypeEdit();
+        var edit = CoreUtil.getHome().getPartyEntityTypeEdit();
         
         edit.setConfirmDelete(actionForm.getConfirmDelete().toString());
 

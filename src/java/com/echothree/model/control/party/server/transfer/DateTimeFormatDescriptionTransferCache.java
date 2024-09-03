@@ -17,8 +17,6 @@
 package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.DateTimeFormatDescriptionTransfer;
-import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.DateTimeFormatDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class DateTimeFormatDescriptionTransferCache
     }
     
     public DateTimeFormatDescriptionTransfer getDateTimeFormatDescriptionTransfer(DateTimeFormatDescription dateTimeFormatDescription) {
-        DateTimeFormatDescriptionTransfer dateTimeFormatDescriptionTransfer = get(dateTimeFormatDescription);
+        var dateTimeFormatDescriptionTransfer = get(dateTimeFormatDescription);
         
         if(dateTimeFormatDescriptionTransfer == null) {
-            DateTimeFormatTransfer dateTimeFormatTransfer = partyControl.getDateTimeFormatTransfer(userVisit, dateTimeFormatDescription.getDateTimeFormat());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, dateTimeFormatDescription.getLanguage());
+            var dateTimeFormatTransfer = partyControl.getDateTimeFormatTransfer(userVisit, dateTimeFormatDescription.getDateTimeFormat());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, dateTimeFormatDescription.getLanguage());
             
             dateTimeFormatDescriptionTransfer = new DateTimeFormatDescriptionTransfer(languageTransfer, dateTimeFormatTransfer, dateTimeFormatDescription.getDescription());
             put(dateTimeFormatDescription, dateTimeFormatDescriptionTransfer);

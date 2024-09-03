@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.scaleusetype;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.GetScaleUseTypeForm;
 import com.echothree.control.user.scale.common.result.GetScaleUseTypeResult;
 import com.echothree.model.control.scale.common.transfer.ScaleUseTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetScaleUseTypeForm commandForm = ScaleUtil.getHome().getGetScaleUseTypeForm();
+        String forwardKey;
+        var commandForm = ScaleUtil.getHome().getGetScaleUseTypeForm();
 
         commandForm.setScaleUseTypeName(request.getParameter(ParameterConstants.SCALE_USE_TYPE_NAME));
-        
-        CommandResult commandResult = ScaleUtil.getHome().getScaleUseType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ScaleUtil.getHome().getScaleUseType(getUserVisitPK(request), commandForm);
         ScaleUseTypeTransfer scaleUseType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetScaleUseTypeResult result = (GetScaleUseTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetScaleUseTypeResult)executionResult.getResult();
             
             scaleUseType = result.getScaleUseType();
         }

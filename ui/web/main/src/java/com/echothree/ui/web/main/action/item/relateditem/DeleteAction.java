@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.item.relateditem;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.DeleteRelatedItemForm;
-import com.echothree.control.user.item.common.form.GetRelatedItemForm;
 import com.echothree.control.user.item.common.result.GetRelatedItemResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -64,15 +61,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetRelatedItemForm commandForm = ItemUtil.getHome().getGetRelatedItemForm();
+        var commandForm = ItemUtil.getHome().getGetRelatedItemForm();
         
         commandForm.setRelatedItemTypeName(actionForm.getRelatedItemTypeName());
         commandForm.setFromItemName(actionForm.getFromItemName());
         commandForm.setToItemName(actionForm.getToItemName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getRelatedItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetRelatedItemResult result = (GetRelatedItemResult)executionResult.getResult();
+
+        var commandResult = ItemUtil.getHome().getRelatedItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetRelatedItemResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.RELATED_ITEM, result.getRelatedItem());
     }
@@ -80,7 +77,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteRelatedItemForm commandForm = ItemUtil.getHome().getDeleteRelatedItemForm();
+        var commandForm = ItemUtil.getHome().getDeleteRelatedItemForm();
 
         commandForm.setRelatedItemTypeName(actionForm.getRelatedItemTypeName());
         commandForm.setFromItemName(actionForm.getFromItemName());

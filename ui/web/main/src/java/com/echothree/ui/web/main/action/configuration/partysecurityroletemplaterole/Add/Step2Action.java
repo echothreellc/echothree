@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.configuration.partysecurityroletemplaterole.Add;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.CreatePartySecurityRoleTemplateRoleForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -54,14 +52,14 @@ public class Step2Action
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        CreatePartySecurityRoleTemplateRoleForm commandForm = SecurityUtil.getHome().getCreatePartySecurityRoleTemplateRoleForm();
-        String partySecurityRoleTemplateName = request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME);
+        var commandForm = SecurityUtil.getHome().getCreatePartySecurityRoleTemplateRoleForm();
+        var partySecurityRoleTemplateName = request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME);
 
         commandForm.setPartySecurityRoleTemplateName(partySecurityRoleTemplateName);
         commandForm.setSecurityRoleGroupName(request.getParameter(ParameterConstants.SECURITY_ROLE_GROUP_NAME));
         commandForm.setSecurityRoleName(request.getParameter(ParameterConstants.SECURITY_ROLE_NAME));
 
-        CommandResult commandResult = SecurityUtil.getHome().createPartySecurityRoleTemplateRole(getUserVisitPK(request), commandForm);
+        var commandResult = SecurityUtil.getHome().createPartySecurityRoleTemplateRole(getUserVisitPK(request), commandForm);
 
         if(commandResult.hasErrors()) {
             request.setAttribute(AttributeConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME, partySecurityRoleTemplateName);
@@ -71,8 +69,8 @@ public class Step2Action
         } else {
             forwardKey = ForwardConstants.DISPLAY;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

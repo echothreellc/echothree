@@ -21,11 +21,8 @@ import com.echothree.model.control.security.common.transfer.SecurityRoleGroupTra
 import com.echothree.model.control.security.common.transfer.SecurityRoleTransfer;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
-import com.echothree.model.data.security.server.entity.SecurityRoleGroupDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
-import java.util.List;
-import java.util.Set;
 
 public class SecurityRoleGroupTransferCache
         extends BaseSecurityTransferCache<SecurityRoleGroup, SecurityRoleGroupTransfer> {
@@ -47,16 +44,16 @@ public class SecurityRoleGroupTransferCache
     }
     
     public SecurityRoleGroupTransfer getSecurityRoleGroupTransfer(SecurityRoleGroup securityRoleGroup) {
-        SecurityRoleGroupTransfer securityRoleGroupTransfer = get(securityRoleGroup);
+        var securityRoleGroupTransfer = get(securityRoleGroup);
 
         if(securityRoleGroupTransfer == null) {
-            SecurityRoleGroupDetail securityRoleGroupDetail = securityRoleGroup.getLastDetail();
-            String securityRoleGroupName = securityRoleGroupDetail.getSecurityRoleGroupName();
-            SecurityRoleGroup parentSecurityRoleGroup = securityRoleGroupDetail.getParentSecurityRoleGroup();
-            SecurityRoleGroupTransfer parentSecurityRoleGroupTransfer = parentSecurityRoleGroup == null ? null : getSecurityRoleGroupTransfer(parentSecurityRoleGroup);
-            Boolean isDefault = securityRoleGroupDetail.getIsDefault();
-            Integer sortOrder = securityRoleGroupDetail.getSortOrder();
-            String description = securityControl.getBestSecurityRoleGroupDescription(securityRoleGroup, getLanguage());
+            var securityRoleGroupDetail = securityRoleGroup.getLastDetail();
+            var securityRoleGroupName = securityRoleGroupDetail.getSecurityRoleGroupName();
+            var parentSecurityRoleGroup = securityRoleGroupDetail.getParentSecurityRoleGroup();
+            var parentSecurityRoleGroupTransfer = parentSecurityRoleGroup == null ? null : getSecurityRoleGroupTransfer(parentSecurityRoleGroup);
+            var isDefault = securityRoleGroupDetail.getIsDefault();
+            var sortOrder = securityRoleGroupDetail.getSortOrder();
+            var description = securityControl.getBestSecurityRoleGroupDescription(securityRoleGroup, getLanguage());
 
             securityRoleGroupTransfer = new SecurityRoleGroupTransfer(securityRoleGroupName, parentSecurityRoleGroupTransfer, isDefault, sortOrder, description);
             put(securityRoleGroup, securityRoleGroupTransfer);
@@ -66,8 +63,8 @@ public class SecurityRoleGroupTransferCache
             }
 
             if(includeSecurityRoles) {
-                List<SecurityRoleTransfer> securityRoleTransfers = securityControl.getSecurityRoleTransfersBySecurityRoleGroup(userVisit, securityRoleGroup);
-                MapWrapper<SecurityRoleTransfer> securityRoles = new MapWrapper<>(securityRoleTransfers.size());
+                var securityRoleTransfers = securityControl.getSecurityRoleTransfersBySecurityRoleGroup(userVisit, securityRoleGroup);
+                var securityRoles = new MapWrapper<SecurityRoleTransfer>(securityRoleTransfers.size());
 
                 securityRoleTransfers.forEach((securityRoleTransfer) -> {
                     securityRoles.put(securityRoleTransfer.getSecurityRoleName(), securityRoleTransfer);

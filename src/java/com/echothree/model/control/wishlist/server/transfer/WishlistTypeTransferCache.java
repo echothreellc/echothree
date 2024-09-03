@@ -20,7 +20,6 @@ import com.echothree.model.control.wishlist.common.transfer.WishlistTypeTransfer
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypeDetail;
 
 public class WishlistTypeTransferCache
         extends BaseWishlistTransferCache<WishlistType, WishlistTypeTransfer> {
@@ -33,14 +32,14 @@ public class WishlistTypeTransferCache
     }
     
     public WishlistTypeTransfer getWishlistTypeTransfer(WishlistType wishlistType) {
-        WishlistTypeTransfer wishlistTypeTransfer = get(wishlistType);
+        var wishlistTypeTransfer = get(wishlistType);
         
         if(wishlistTypeTransfer == null) {
-            WishlistTypeDetail wishlistTypeDetail = wishlistType.getLastDetail();
-            String wishlistTypeName = wishlistTypeDetail.getWishlistTypeName();
-            Boolean isDefault = wishlistTypeDetail.getIsDefault();
-            Integer sortOrder = wishlistTypeDetail.getSortOrder();
-            String description = wishlistControl.getBestWishlistTypeDescription(wishlistType, getLanguage());
+            var wishlistTypeDetail = wishlistType.getLastDetail();
+            var wishlistTypeName = wishlistTypeDetail.getWishlistTypeName();
+            var isDefault = wishlistTypeDetail.getIsDefault();
+            var sortOrder = wishlistTypeDetail.getSortOrder();
+            var description = wishlistControl.getBestWishlistTypeDescription(wishlistType, getLanguage());
             
             wishlistTypeTransfer = new WishlistTypeTransfer(wishlistTypeName, isDefault, sortOrder, description);
             put(wishlistType, wishlistTypeTransfer);

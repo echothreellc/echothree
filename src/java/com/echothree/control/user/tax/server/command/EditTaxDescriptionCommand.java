@@ -19,15 +19,10 @@ package com.echothree.control.user.tax.server.command;
 import com.echothree.control.user.tax.common.edit.TaxDescriptionEdit;
 import com.echothree.control.user.tax.common.edit.TaxEditFactory;
 import com.echothree.control.user.tax.common.form.EditTaxDescriptionForm;
-import com.echothree.control.user.tax.common.result.EditTaxDescriptionResult;
 import com.echothree.control.user.tax.common.result.TaxResultFactory;
 import com.echothree.control.user.tax.common.spec.TaxDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.tax.server.control.TaxControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.tax.server.entity.Tax;
-import com.echothree.model.data.tax.server.entity.TaxDescription;
-import com.echothree.model.data.tax.server.value.TaxDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,24 +60,24 @@ public class EditTaxDescriptionCommand
     @Override
     protected BaseResult execute() {
         var taxControl = Session.getModelController(TaxControl.class);
-        EditTaxDescriptionResult result = TaxResultFactory.getEditTaxDescriptionResult();
-        String taxName = spec.getTaxName();
-        Tax tax = taxControl.getTaxByName(taxName);
+        var result = TaxResultFactory.getEditTaxDescriptionResult();
+        var taxName = spec.getTaxName();
+        var tax = taxControl.getTaxByName(taxName);
         
         if(tax != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    TaxDescription taxDescription = taxControl.getTaxDescription(tax, language);
+                    var taxDescription = taxControl.getTaxDescription(tax, language);
                     
                     if(taxDescription != null) {
                         result.setTaxDescription(taxControl.getTaxDescriptionTransfer(getUserVisit(), taxDescription));
                         
                         if(lockEntity(tax)) {
-                            TaxDescriptionEdit edit = TaxEditFactory.getTaxDescriptionEdit();
+                            var edit = TaxEditFactory.getTaxDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(taxDescription.getDescription());
@@ -95,12 +90,12 @@ public class EditTaxDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownTaxDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    TaxDescriptionValue taxDescriptionValue = taxControl.getTaxDescriptionValueForUpdate(tax, language);
+                    var taxDescriptionValue = taxControl.getTaxDescriptionValueForUpdate(tax, language);
                     
                     if(taxDescriptionValue != null) {
                         if(lockEntityForUpdate(tax)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 taxDescriptionValue.setDescription(description);
                                 

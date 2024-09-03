@@ -18,7 +18,6 @@ package com.echothree.control.user.comment.server.command;
 
 import com.echothree.control.user.comment.common.form.CreateCommentForm;
 import com.echothree.control.user.comment.common.result.CommentResultFactory;
-import com.echothree.control.user.comment.common.result.CreateCommentResult;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
@@ -26,18 +25,12 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.comment.server.entity.Comment;
 import com.echothree.model.data.comment.server.entity.CommentType;
-import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserLogin;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -81,13 +74,13 @@ public class CreateCommentCommand
         BasePK createdBy = getPartyPK();
         EntityInstance commentedByEntityInstance = null;
         String commentName = null;
-        String commentedByUsername = form.getCommentedByUsername();
-        String workflowEntranceName = form.getWorkflowEntranceName();
-        WorkflowEntrance workflowEntrance = commentType.getLastDetail().getWorkflowEntrance();
+        var commentedByUsername = form.getCommentedByUsername();
+        var workflowEntranceName = form.getWorkflowEntranceName();
+        var workflowEntrance = commentType.getLastDetail().getWorkflowEntrance();
         
         if(commentedByUsername != null) {
-            UserControl userControl = getUserControl();
-            UserLogin userLogin = userControl.getUserLoginByUsername(commentedByUsername);
+            var userControl = getUserControl();
+            var userLogin = userControl.getUserLoginByUsername(commentedByUsername);
             
             if(userLogin != null) {
                 commentedByEntityInstance = coreControl.getEntityInstanceByBasePK(userLogin.getPartyPK());
@@ -111,15 +104,15 @@ public class CreateCommentCommand
         
         if(!hasExecutionErrors()) {
             var description = form.getDescription();
-            Sequence commentSequence = commentType.getLastDetail().getCommentSequence();
+            var commentSequence = commentType.getLastDetail().getCommentSequence();
             
             if(commentSequence == null) {
                 commentSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.COMMENT.name());
             }
             
             commentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(commentSequence);
-            
-            Comment comment = commentControl.createComment(commentName, commentType, commentedEntityInstance,
+
+            var comment = commentControl.createComment(commentName, commentType, commentedEntityInstance,
                     commentedByEntityInstance, language == null? getPreferredLanguage(): language, description, mimeType, createdBy);
             
             if(blobComment != null) {
@@ -132,7 +125,7 @@ public class CreateCommentCommand
             
             if(workflowEntrance != null) {
                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
+                var entityInstance = coreControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
                 
                 // TODO: WorkEffort should be created for addEntityToWorkflow
                 workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
@@ -144,28 +137,28 @@ public class CreateCommentCommand
     
     @Override
     protected BaseResult execute() {
-        CreateCommentResult result = CommentResultFactory.getCreateCommentResult();
+        var result = CommentResultFactory.getCreateCommentResult();
         var coreControl = getCoreControl();
         String commentName = null;
-        String entityRef = form.getEntityRef();
-        EntityInstance commentedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var entityRef = form.getEntityRef();
+        var commentedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
         
         if(commentedEntityInstance != null) {
             var commentControl = Session.getModelController(CommentControl.class);
-            String commentTypeName = form.getCommentTypeName();
-            CommentType commentType = commentControl.getCommentTypeByName(commentedEntityInstance.getEntityType(),
+            var commentTypeName = form.getCommentTypeName();
+            var commentType = commentControl.getCommentTypeByName(commentedEntityInstance.getEntityType(),
                     commentTypeName);
             
             if(commentType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = languageIsoName == null? null: partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = languageIsoName == null? null: partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(languageIsoName == null || language != null) {
-                    String mimeTypeName = form.getMimeTypeName();
+                    var mimeTypeName = form.getMimeTypeName();
 
                     if(mimeTypeName == null) {
-                        String commentString = form.getStringComment();
+                        var commentString = form.getStringComment();
 
                         if(commentString != null) {
                             commentName = createComment(coreControl, commentControl, commentType, commentedEntityInstance, language, null, null,
@@ -174,14 +167,14 @@ public class CreateCommentCommand
                             addExecutionError(ExecutionErrors.MissingStringComment.name());
                         }
                     } else {
-                        MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+                        var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
                         if(mimeType != null) {
-                            EntityAttributeType entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();
-                            String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+                            var entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();
+                            var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
 
                             if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
-                                ByteArray blobComment = form.getBlobComment();
+                                var blobComment = form.getBlobComment();
 
                                 if(blobComment != null) {
                                     commentName = createComment(coreControl, commentControl, commentType, commentedEntityInstance,
@@ -190,7 +183,7 @@ public class CreateCommentCommand
                                     addExecutionError(ExecutionErrors.MissingBlobComment.name());
                                 }
                             } else if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-                                String clobComment = form.getClobComment();
+                                var clobComment = form.getClobComment();
 
                                 if(clobComment != null) {
                                     commentName = createComment(coreControl, commentControl, commentType, commentedEntityInstance,

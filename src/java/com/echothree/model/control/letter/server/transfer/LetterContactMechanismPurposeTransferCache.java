@@ -16,13 +16,10 @@
 
 package com.echothree.model.control.letter.server.transfer;
 
-import com.echothree.model.control.contact.common.transfer.ContactMechanismPurposeTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.letter.common.transfer.LetterContactMechanismPurposeTransfer;
-import com.echothree.model.control.letter.common.transfer.LetterTransfer;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.letter.server.entity.LetterContactMechanismPurpose;
-import com.echothree.model.data.letter.server.entity.LetterContactMechanismPurposeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -39,13 +36,13 @@ public class LetterContactMechanismPurposeTransferCache
     }
     
     public LetterContactMechanismPurposeTransfer getLetterContactMechanismPurposeTransfer(LetterContactMechanismPurpose letterContactMechanismPurpose) {
-        LetterContactMechanismPurposeTransfer letterContactMechanismPurposeTransfer = get(letterContactMechanismPurpose);
+        var letterContactMechanismPurposeTransfer = get(letterContactMechanismPurpose);
         
         if(letterContactMechanismPurposeTransfer == null) {
-            LetterContactMechanismPurposeDetail letterContactMechanismPurposeDetail = letterContactMechanismPurpose.getLastDetail();
-            LetterTransfer letter = letterControl.getLetterTransfer(userVisit, letterContactMechanismPurposeDetail.getLetter());
-            ContactMechanismPurposeTransfer contactMechanismPurpose = contactControl.getContactMechanismPurposeTransfer(userVisit, letterContactMechanismPurposeDetail.getContactMechanismPurpose());
-            Integer priority = letterContactMechanismPurposeDetail.getPriority();
+            var letterContactMechanismPurposeDetail = letterContactMechanismPurpose.getLastDetail();
+            var letter = letterControl.getLetterTransfer(userVisit, letterContactMechanismPurposeDetail.getLetter());
+            var contactMechanismPurpose = contactControl.getContactMechanismPurposeTransfer(userVisit, letterContactMechanismPurposeDetail.getContactMechanismPurpose());
+            var priority = letterContactMechanismPurposeDetail.getPriority();
             
             letterContactMechanismPurposeTransfer = new LetterContactMechanismPurposeTransfer(letter, contactMechanismPurpose,
                     priority);

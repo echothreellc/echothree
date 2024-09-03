@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.advertising.usenameelement;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetUseNameElementDescriptionsForm;
 import com.echothree.control.user.offer.common.result.GetUseNameElementDescriptionsResult;
-import com.echothree.model.control.offer.common.transfer.UseNameElementTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String useNameElementName = request.getParameter(ParameterConstants.USE_NAME_ELEMENT_NAME);
-            GetUseNameElementDescriptionsForm commandForm = OfferUtil.getHome().getGetUseNameElementDescriptionsForm();
+            var useNameElementName = request.getParameter(ParameterConstants.USE_NAME_ELEMENT_NAME);
+            var commandForm = OfferUtil.getHome().getGetUseNameElementDescriptionsForm();
             
             commandForm.setUseNameElementName(useNameElementName);
-            
-            CommandResult commandResult = OfferUtil.getHome().getUseNameElementDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUseNameElementDescriptionsResult result = (GetUseNameElementDescriptionsResult)executionResult.getResult();
-            UseNameElementTransfer useNameElementTransfer = result.getUseNameElement();
+
+            var commandResult = OfferUtil.getHome().getUseNameElementDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetUseNameElementDescriptionsResult)executionResult.getResult();
+            var useNameElementTransfer = result.getUseNameElement();
             
             request.setAttribute(AttributeConstants.USE_NAME_ELEMENT, useNameElementTransfer);
             request.setAttribute(AttributeConstants.USE_NAME_ELEMENT_NAME, useNameElementTransfer.getUseNameElementName());

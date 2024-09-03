@@ -17,10 +17,8 @@
 package com.echothree.model.control.invoice.server.transfer;
 
 import com.echothree.model.control.invoice.common.transfer.InvoiceAliasTypeTransfer;
-import com.echothree.model.control.invoice.common.transfer.InvoiceTypeTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceAliasType;
-import com.echothree.model.data.invoice.server.entity.InvoiceAliasTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class InvoiceAliasTypeTransferCache
@@ -34,16 +32,16 @@ public class InvoiceAliasTypeTransferCache
     }
     
     public InvoiceAliasTypeTransfer getInvoiceAliasTypeTransfer(InvoiceAliasType invoiceAliasType) {
-        InvoiceAliasTypeTransfer invoiceAliasTypeTransfer = get(invoiceAliasType);
+        var invoiceAliasTypeTransfer = get(invoiceAliasType);
         
         if(invoiceAliasTypeTransfer == null) {
-            InvoiceAliasTypeDetail invoiceAliasTypeDetail = invoiceAliasType.getLastDetail();
-            InvoiceTypeTransfer invoiceType = invoiceControl.getInvoiceTypeTransfer(userVisit, invoiceAliasTypeDetail.getInvoiceType());
-            String invoiceAliasTypeName = invoiceAliasTypeDetail.getInvoiceAliasTypeName();
-            String validationPattern = invoiceAliasTypeDetail.getValidationPattern();
-            Boolean isDefault = invoiceAliasTypeDetail.getIsDefault();
-            Integer sortOrder = invoiceAliasTypeDetail.getSortOrder();
-            String description = invoiceControl.getBestInvoiceAliasTypeDescription(invoiceAliasType, getLanguage());
+            var invoiceAliasTypeDetail = invoiceAliasType.getLastDetail();
+            var invoiceType = invoiceControl.getInvoiceTypeTransfer(userVisit, invoiceAliasTypeDetail.getInvoiceType());
+            var invoiceAliasTypeName = invoiceAliasTypeDetail.getInvoiceAliasTypeName();
+            var validationPattern = invoiceAliasTypeDetail.getValidationPattern();
+            var isDefault = invoiceAliasTypeDetail.getIsDefault();
+            var sortOrder = invoiceAliasTypeDetail.getSortOrder();
+            var description = invoiceControl.getBestInvoiceAliasTypeDescription(invoiceAliasType, getLanguage());
             
             invoiceAliasTypeTransfer = new InvoiceAliasTypeTransfer(invoiceType, invoiceAliasTypeName, validationPattern, isDefault, sortOrder, description);
             put(invoiceAliasType, invoiceAliasTypeTransfer);

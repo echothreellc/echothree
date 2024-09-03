@@ -19,9 +19,6 @@ package com.echothree.control.user.forum.server.command;
 import com.echothree.control.user.forum.common.form.CreateForumMessageTypeDescriptionForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.forum.server.entity.ForumMessageType;
-import com.echothree.model.data.forum.server.entity.ForumMessageTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,16 +51,16 @@ public class CreateForumMessageTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumMessageTypeName = form.getForumMessageTypeName();
-        ForumMessageType forumMessageType = forumControl.getForumMessageTypeByName(forumMessageTypeName);
+        var forumMessageTypeName = form.getForumMessageTypeName();
+        var forumMessageType = forumControl.getForumMessageTypeByName(forumMessageTypeName);
         
         if(forumMessageType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ForumMessageTypeDescription forumMessageTypeDescription = forumControl.getForumMessageTypeDescription(forumMessageType, language);
+                var forumMessageTypeDescription = forumControl.getForumMessageTypeDescription(forumMessageType, language);
                 
                 if(forumMessageTypeDescription == null) {
                     var description = form.getDescription();

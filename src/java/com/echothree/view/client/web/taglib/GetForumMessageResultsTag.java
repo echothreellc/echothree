@@ -18,19 +18,14 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetForumMessageResultsForm;
 import com.echothree.control.user.search.common.result.GetForumMessageResultsResult;
 import com.echothree.model.data.forum.common.ForumMessageConstants;
 import com.echothree.model.data.search.common.SearchResultConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -129,7 +124,7 @@ public class GetForumMessageResultsTag
     @Override
     public int doStartTag() throws JspException {
         try {
-            GetForumMessageResultsForm commandForm = SearchUtil.getHome().getGetForumMessageResultsForm();
+            var commandForm = SearchUtil.getHome().getGetForumMessageResultsForm();
             Map<String, Limit> limits = new HashMap<>();
             
             commandForm.setSearchTypeName(searchTypeName);
@@ -145,8 +140,8 @@ public class GetForumMessageResultsTag
                 limits.put(SearchResultConstants.ENTITY_TYPE_NAME, new Limit(forumMessageResultCount, forumMessageResultOffset));
             }
             commandForm.setLimits(limits);
-            
-            CommandResult commandResult = SearchUtil.getHome().getForumMessageResults(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().getForumMessageResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -154,8 +149,8 @@ public class GetForumMessageResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetForumMessageResultsResult result = (GetForumMessageResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetForumMessageResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getForumMessageResults()), scope);
 

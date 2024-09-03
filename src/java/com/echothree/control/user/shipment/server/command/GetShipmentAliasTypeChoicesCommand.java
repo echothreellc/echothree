@@ -17,13 +17,11 @@
 package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.form.GetShipmentAliasTypeChoicesForm;
-import com.echothree.control.user.shipment.common.result.GetShipmentAliasTypeChoicesResult;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.ShipmentControl;
-import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,13 +64,13 @@ public class GetShipmentAliasTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        GetShipmentAliasTypeChoicesResult result = ShipmentResultFactory.getGetShipmentAliasTypeChoicesResult();
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var result = ShipmentResultFactory.getGetShipmentAliasTypeChoicesResult();
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
-            String defaultShipmentAliasTypeChoice = form.getDefaultShipmentAliasTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultShipmentAliasTypeChoice = form.getDefaultShipmentAliasTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setShipmentAliasTypeChoices(shipmentControl.getShipmentAliasTypeChoices(defaultShipmentAliasTypeChoice, getPreferredLanguage(), allowNullChoice,
                     shipmentType));

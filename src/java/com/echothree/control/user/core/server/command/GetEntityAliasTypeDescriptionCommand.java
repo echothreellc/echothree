@@ -18,16 +18,10 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAliasTypeDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEntityAliasTypeDescriptionResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityAliasType;
-import com.echothree.model.data.core.server.entity.EntityAliasTypeDescription;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -71,25 +65,25 @@ public class GetEntityAliasTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEntityAliasTypeDescriptionResult result = CoreResultFactory.getGetEntityAliasTypeDescriptionResult();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var result = CoreResultFactory.getGetEntityAliasTypeDescriptionResult();
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
-                String entityAliasTypeName = form.getEntityAliasTypeName();
-                EntityAliasType entityAliasType = coreControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
+                var entityAliasTypeName = form.getEntityAliasTypeName();
+                var entityAliasType = coreControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
 
                 if(entityAliasType != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = form.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = form.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                     if(language != null) {
-                        EntityAliasTypeDescription entityAliasTypeDescription = coreControl.getEntityAliasTypeDescription(entityAliasType, language);
+                        var entityAliasTypeDescription = coreControl.getEntityAliasTypeDescription(entityAliasType, language);
 
                         if(entityAliasTypeDescription != null) {
                             result.setEntityAliasTypeDescription(coreControl.getEntityAliasTypeDescriptionTransfer(getUserVisit(), entityAliasTypeDescription, null));

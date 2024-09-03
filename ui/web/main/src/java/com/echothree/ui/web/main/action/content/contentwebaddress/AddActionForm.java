@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.content.contentwebaddress;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentCollectionChoicesForm;
 import com.echothree.control.user.content.common.result.GetContentCollectionChoicesResult;
 import com.echothree.model.control.content.common.choice.ContentCollectionChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -43,13 +40,13 @@ public class AddActionForm
     private void setupContentCollectionChoices()
             throws NamingException {
         if(contentCollectionChoices == null) {
-            GetContentCollectionChoicesForm getContentCollectionChoicesForm = ContentUtil.getHome().getGetContentCollectionChoicesForm();
+            var getContentCollectionChoicesForm = ContentUtil.getHome().getGetContentCollectionChoicesForm();
 
             getContentCollectionChoicesForm.setDefaultContentCollectionChoice(contentCollectionChoice);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentCollectionChoices(userVisitPK, getContentCollectionChoicesForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentCollectionChoicesResult getContentCollectionChoicesResult = (GetContentCollectionChoicesResult)executionResult.getResult();
+            var commandResult = ContentUtil.getHome().getContentCollectionChoices(userVisitPK, getContentCollectionChoicesForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getContentCollectionChoicesResult = (GetContentCollectionChoicesResult)executionResult.getResult();
             contentCollectionChoices = getContentCollectionChoicesResult.getContentCollectionChoices();
 
             if(contentCollectionChoice == null)

@@ -18,14 +18,10 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEditorDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEditorDescriptionResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Editor;
-import com.echothree.model.data.core.server.entity.EditorDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,17 +63,17 @@ public class GetEditorDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEditorDescriptionResult result = CoreResultFactory.getGetEditorDescriptionResult();
-        String editorName = form.getEditorName();
-        Editor editor = coreControl.getEditorByName(editorName);
+        var result = CoreResultFactory.getGetEditorDescriptionResult();
+        var editorName = form.getEditorName();
+        var editor = coreControl.getEditorByName(editorName);
 
         if(editor != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                EditorDescription editorDescription = coreControl.getEditorDescription(editor, language);
+                var editorDescription = coreControl.getEditorDescription(editor, language);
 
                 if(editorDescription != null) {
                     result.setEditorDescription(coreControl.getEditorDescriptionTransfer(getUserVisit(), editorDescription));

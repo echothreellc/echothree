@@ -23,9 +23,6 @@ import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.chain.server.entity.Chain;
-import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.model.data.contactlist.server.entity.ContactListType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -74,29 +71,29 @@ public class CreateContactListTypeCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListTypeName = form.getContactListTypeName();
-        ContactListType contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
+        var contactListTypeName = form.getContactListTypeName();
+        var contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
 
         if(contactListType == null) {
             var chainControl = Session.getModelController(ChainControl.class);
-            ChainKind chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_CONTACT_LIST);
-            String confirmationRequestChainName = form.getConfirmationRequestChainName();
-            Chain confirmationRequestChain = confirmationRequestChainName == null ? null
+            var chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_CONTACT_LIST);
+            var confirmationRequestChainName = form.getConfirmationRequestChainName();
+            var confirmationRequestChain = confirmationRequestChainName == null ? null
                     : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_CONFIRMATION_REQUEST), confirmationRequestChainName);
 
             if(confirmationRequestChainName == null || confirmationRequestChain != null) {
-                String subscribeChainName = form.getSubscribeChainName();
-                Chain subscribeChain = subscribeChainName == null ? null
+                var subscribeChainName = form.getSubscribeChainName();
+                var subscribeChain = subscribeChainName == null ? null
                         : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_SUBSCRIBE), subscribeChainName);
 
                 if(subscribeChainName == null || subscribeChain != null) {
-                    String unsubscribeChainName = form.getUnsubscribeChainName();
-                    Chain unsubscribeChain = unsubscribeChainName == null ? null
+                    var unsubscribeChainName = form.getUnsubscribeChainName();
+                    var unsubscribeChain = unsubscribeChainName == null ? null
                             : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_UNSUBSCRIBE), unsubscribeChainName);
 
                     if(unsubscribeChainName == null || unsubscribeChain != null) {
                         var partyPK = getPartyPK();
-                        Boolean usedForSolicitation = Boolean.valueOf(form.getUsedForSolicitation());
+                        var usedForSolicitation = Boolean.valueOf(form.getUsedForSolicitation());
                         var isDefault = Boolean.valueOf(form.getIsDefault());
                         var sortOrder = Integer.valueOf(form.getSortOrder());
                         var description = form.getDescription();

@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.core.entityattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityAttributeGroupChoicesForm;
 import com.echothree.control.user.core.common.result.GetEntityAttributeGroupChoicesResult;
 import com.echothree.model.control.core.common.choice.EntityAttributeGroupChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -43,14 +40,14 @@ public class EntityAttributeGroupAddActionForm
     private void setupEntityAttributeGroupChoices()
             throws NamingException {
         if(entityAttributeGroupChoices == null) {
-            GetEntityAttributeGroupChoicesForm commandForm = CoreUtil.getHome().getGetEntityAttributeGroupChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupChoicesForm();
 
             commandForm.setDefaultEntityAttributeGroupChoice(entityAttributeGroupChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getEntityAttributeGroupChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeGroupChoicesResult getEntityAttributeGroupChoicesResult = (GetEntityAttributeGroupChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getEntityAttributeGroupChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getEntityAttributeGroupChoicesResult = (GetEntityAttributeGroupChoicesResult)executionResult.getResult();
             entityAttributeGroupChoices = getEntityAttributeGroupChoicesResult.getEntityAttributeGroupChoices();
 
             if(entityAttributeGroupChoice == null) {

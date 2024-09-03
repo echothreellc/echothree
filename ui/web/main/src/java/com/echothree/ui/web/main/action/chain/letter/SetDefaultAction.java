@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.letter;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.form.SetDefaultLetterForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,18 +49,18 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
-        String letterName = request.getParameter(ParameterConstants.LETTER_NAME);
-        SetDefaultLetterForm commandForm = LetterUtil.getHome().getSetDefaultLetterForm();
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
+        var letterName = request.getParameter(ParameterConstants.LETTER_NAME);
+        var commandForm = LetterUtil.getHome().getSetDefaultLetterForm();
         
         commandForm.setChainKindName(chainKindName);
         commandForm.setChainTypeName(chainTypeName);
         commandForm.setLetterName(letterName);
         
         LetterUtil.getHome().setDefaultLetter(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(2);
         
         parameters.put(ParameterConstants.CHAIN_KIND_NAME, chainKindName);

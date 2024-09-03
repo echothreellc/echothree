@@ -17,7 +17,6 @@
 package com.echothree.control.user.queue.server.command;
 
 import com.echothree.control.user.queue.common.form.GetQueueTypeChoicesForm;
-import com.echothree.control.user.queue.common.result.GetQueueTypeChoicesResult;
 import com.echothree.control.user.queue.common.result.QueueResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;
@@ -63,9 +62,9 @@ public class GetQueueTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var queueControl = Session.getModelController(QueueControl.class);
-        GetQueueTypeChoicesResult result = QueueResultFactory.getGetQueueTypeChoicesResult();
-        String defaultQueueTypeChoice = form.getDefaultQueueTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = QueueResultFactory.getGetQueueTypeChoicesResult();
+        var defaultQueueTypeChoice = form.getDefaultQueueTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setQueueTypeChoices(queueControl.getQueueTypeChoices(defaultQueueTypeChoice, getPreferredLanguage(), allowNullChoice));
         

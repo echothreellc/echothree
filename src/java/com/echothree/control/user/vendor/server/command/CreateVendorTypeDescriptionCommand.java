@@ -22,10 +22,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.entity.VendorType;
-import com.echothree.model.data.vendor.server.entity.VendorTypeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -68,16 +65,16 @@ public class CreateVendorTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
-        String vendorTypeName = form.getVendorTypeName();
-        VendorType vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
+        var vendorTypeName = form.getVendorTypeName();
+        var vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
         
         if(vendorType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                VendorTypeDescription vendorTypeDescription = vendorControl.getVendorTypeDescription(vendorType, language);
+                var vendorTypeDescription = vendorControl.getVendorTypeDescription(vendorType, language);
                 
                 if(vendorTypeDescription == null) {
                     var description = form.getDescription();

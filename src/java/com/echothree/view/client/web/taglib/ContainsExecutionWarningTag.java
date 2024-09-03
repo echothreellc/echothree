@@ -67,7 +67,7 @@ public class ContainsExecutionWarningTag
     @Override
     public int doStartTag()
             throws JspException {
-        CommandResult commandResult = (CommandResult)pageContext.findAttribute(commandResultVar);
+        var commandResult = (CommandResult)pageContext.findAttribute(commandResultVar);
 
         if(commandResult != null) {
             if(commandResult.containsExecutionWarning(key)) {

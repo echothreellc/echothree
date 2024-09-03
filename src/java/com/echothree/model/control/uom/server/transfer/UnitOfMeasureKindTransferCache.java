@@ -20,10 +20,8 @@ import com.echothree.model.control.uom.common.UomProperties;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureKindTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import java.util.Set;
 
 public class UnitOfMeasureKindTransferCache
         extends BaseUomTransferCache<UnitOfMeasureKind, UnitOfMeasureKindTransfer> {
@@ -58,15 +56,15 @@ public class UnitOfMeasureKindTransferCache
     }
     
     public UnitOfMeasureKindTransfer getUnitOfMeasureKindTransfer(UnitOfMeasureKind unitOfMeasureKind) {
-        UnitOfMeasureKindTransfer unitOfMeasureKindTransfer = get(unitOfMeasureKind);
+        var unitOfMeasureKindTransfer = get(unitOfMeasureKind);
         
         if(unitOfMeasureKindTransfer == null) {
-            UnitOfMeasureKindDetail unitOfMeasureKindDetail = unitOfMeasureKind.getLastDetail();
-            String unitOfMeasureKindName = filterUnitOfMeasureKindName ? null : unitOfMeasureKindDetail.getUnitOfMeasureKindName();
-            Integer fractionDigits = filterFractionDigits ? null : unitOfMeasureKindDetail.getFractionDigits();
-            Boolean isDefault = filterIsDefault ? null : unitOfMeasureKindDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : unitOfMeasureKindDetail.getSortOrder();
-            String description = filterDescription ? null : uomControl.getBestUnitOfMeasureKindDescription(unitOfMeasureKind, getLanguage());
+            var unitOfMeasureKindDetail = unitOfMeasureKind.getLastDetail();
+            var unitOfMeasureKindName = filterUnitOfMeasureKindName ? null : unitOfMeasureKindDetail.getUnitOfMeasureKindName();
+            var fractionDigits = filterFractionDigits ? null : unitOfMeasureKindDetail.getFractionDigits();
+            var isDefault = filterIsDefault ? null : unitOfMeasureKindDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : unitOfMeasureKindDetail.getSortOrder();
+            var description = filterDescription ? null : uomControl.getBestUnitOfMeasureKindDescription(unitOfMeasureKind, getLanguage());
             
             unitOfMeasureKindTransfer = new UnitOfMeasureKindTransfer(unitOfMeasureKindName, fractionDigits, isDefault, sortOrder, description);
             put(unitOfMeasureKind, unitOfMeasureKindTransfer);

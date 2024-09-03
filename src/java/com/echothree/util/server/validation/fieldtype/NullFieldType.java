@@ -32,7 +32,7 @@ public class NullFieldType
     
     @Override
     public String validate() {
-        boolean hadErrors = false;
+        var hadErrors = false;
         
         if(fieldValue != null) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_NO_VALUE_ALLOWED));

@@ -21,7 +21,6 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.value.ItemDescriptionTypeUseTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultItemDescriptionTypeUseTypeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
-        ItemDescriptionTypeUseTypeDetailValue itemDescriptionTypeUseTypeDetailValue = itemControl.getItemDescriptionTypeUseTypeDetailValueByNameForUpdate(itemDescriptionTypeUseTypeName);
+        var itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
+        var itemDescriptionTypeUseTypeDetailValue = itemControl.getItemDescriptionTypeUseTypeDetailValueByNameForUpdate(itemDescriptionTypeUseTypeName);
         
         if(itemDescriptionTypeUseTypeDetailValue != null) {
             itemDescriptionTypeUseTypeDetailValue.setIsDefault(Boolean.TRUE);

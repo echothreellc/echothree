@@ -18,9 +18,7 @@ package com.echothree.ui.cli.dataloader.util.data.handler.sequence;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.SequenceService;
-import com.echothree.control.user.sequence.common.form.CreateSequenceDescriptionForm;
 import com.echothree.control.user.sequence.common.form.SequenceFormFactory;
-import com.echothree.control.user.sequence.common.form.SetSequenceValueForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -53,7 +51,7 @@ public class SequenceHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("sequenceDescription")) {
-            CreateSequenceDescriptionForm commandForm = SequenceFormFactory.getCreateSequenceDescriptionForm();
+            var commandForm = SequenceFormFactory.getCreateSequenceDescriptionForm();
 
             commandForm.setSequenceTypeName(sequenceTypeName);
             commandForm.setSequenceName(sequenceName);
@@ -61,7 +59,7 @@ public class SequenceHandler
 
             sequenceService.createSequenceDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("sequenceValue")) {
-            SetSequenceValueForm commandForm = SequenceFormFactory.getSetSequenceValueForm();
+            var commandForm = SequenceFormFactory.getSetSequenceValueForm();
 
             commandForm.setSequenceTypeName(sequenceTypeName);
             commandForm.setSequenceName(sequenceName);

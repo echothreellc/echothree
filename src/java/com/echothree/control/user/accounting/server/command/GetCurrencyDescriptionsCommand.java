@@ -18,12 +18,10 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetCurrencyDescriptionsForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetCurrencyDescriptionsResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetCurrencyDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetCurrencyDescriptionsResult result = AccountingResultFactory.getGetCurrencyDescriptionsResult();
-        String currencyIsoName = form.getCurrencyIsoName();
-        Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+        var result = AccountingResultFactory.getGetCurrencyDescriptionsResult();
+        var currencyIsoName = form.getCurrencyIsoName();
+        var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
         
         if(currency != null) {
             result.setCurrency(accountingControl.getCurrencyTransfer(getUserVisit(), currency));

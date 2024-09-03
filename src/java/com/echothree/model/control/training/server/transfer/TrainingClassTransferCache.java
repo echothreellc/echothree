@@ -21,19 +21,13 @@ import com.echothree.model.control.training.common.transfer.TrainingClassTransfe
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClassDetail;
-import com.echothree.model.data.training.server.entity.TrainingClassTranslation;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
 import com.echothree.util.server.string.UnitOfMeasureUtils;
-import java.util.Set;
 
 public class TrainingClassTransferCache
         extends BaseTrainingTransferCache<TrainingClass, TrainingClassTransfer> {
@@ -57,37 +51,37 @@ public class TrainingClassTransferCache
     }
     
     public TrainingClassTransfer getTrainingClassTransfer(TrainingClass trainingClass) {
-        TrainingClassTransfer trainingClassTransfer = get(trainingClass);
+        var trainingClassTransfer = get(trainingClass);
         
         if(trainingClassTransfer == null) {
-            TrainingClassDetail trainingClassDetail = trainingClass.getLastDetail();
-            String trainingClassName = trainingClassDetail.getTrainingClassName();
-            UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
-            UnitOfMeasureUtils unitOfMeasureUtils = UnitOfMeasureUtils.getInstance();
-            Long unformattedEstimatedReadingTime = trainingClassDetail.getEstimatedReadingTime();
-            String estimatedReadingTime = unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedEstimatedReadingTime);
-            Long unformattedReadingTimeAllowed = trainingClassDetail.getReadingTimeAllowed();
-            String readingTimeAllowed = unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedReadingTimeAllowed);
-            Long unformattedEstimatedTestingTime = trainingClassDetail.getEstimatedTestingTime();
-            String estimatedTestingTime = unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedEstimatedTestingTime);
-            Long unformattedTestingTimeAllowed = trainingClassDetail.getTestingTimeAllowed();
-            String testingTimeAllowed = unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedTestingTimeAllowed);
-            Long unformattedRequiredCompletionTime = trainingClassDetail.getRequiredCompletionTime();
-            String requiredCompletionTime = unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedRequiredCompletionTime);
-            WorkEffortScope workEffortScope = trainingClassDetail.getWorkEffortScope();
-            WorkEffortScopeTransfer workEffortScopeTransfer = workEffortScope == null ? null : workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortScope);
-            Integer unformattedDefaultPercentageToPass = trainingClassDetail.getDefaultPercentageToPass();
-            String defaultPercentageToPass = PercentUtils.getInstance().formatFractionalPercent(unformattedDefaultPercentageToPass);
-            Integer overallQuestionCount = trainingClassDetail.getOverallQuestionCount();
-            Long unformattedTestingValidityTime = trainingClassDetail.getTestingValidityTime();
-            String testingValidityTime = unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedTestingValidityTime);
-            Long unformattedExpiredRetentionTime = trainingClassDetail.getExpiredRetentionTime();
-            String expiredRetentionTime = unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedExpiredRetentionTime);
-            Boolean alwaysReassignOnExpiration = trainingClassDetail.getAlwaysReassignOnExpiration();
-            Boolean isDefault = trainingClassDetail.getIsDefault();
-            Integer sortOrder = trainingClassDetail.getSortOrder();
-            TrainingClassTranslation trainingClassTranslation = trainingControl.getBestTrainingClassTranslation(trainingClass, getLanguage());
-            String description = trainingClassTranslation == null ? trainingClassName : trainingClassTranslation.getDescription();
+            var trainingClassDetail = trainingClass.getLastDetail();
+            var trainingClassName = trainingClassDetail.getTrainingClassName();
+            var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var unitOfMeasureUtils = UnitOfMeasureUtils.getInstance();
+            var unformattedEstimatedReadingTime = trainingClassDetail.getEstimatedReadingTime();
+            var estimatedReadingTime = unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedEstimatedReadingTime);
+            var unformattedReadingTimeAllowed = trainingClassDetail.getReadingTimeAllowed();
+            var readingTimeAllowed = unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedReadingTimeAllowed);
+            var unformattedEstimatedTestingTime = trainingClassDetail.getEstimatedTestingTime();
+            var estimatedTestingTime = unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedEstimatedTestingTime);
+            var unformattedTestingTimeAllowed = trainingClassDetail.getTestingTimeAllowed();
+            var testingTimeAllowed = unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedTestingTimeAllowed);
+            var unformattedRequiredCompletionTime = trainingClassDetail.getRequiredCompletionTime();
+            var requiredCompletionTime = unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedRequiredCompletionTime);
+            var workEffortScope = trainingClassDetail.getWorkEffortScope();
+            var workEffortScopeTransfer = workEffortScope == null ? null : workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortScope);
+            var unformattedDefaultPercentageToPass = trainingClassDetail.getDefaultPercentageToPass();
+            var defaultPercentageToPass = PercentUtils.getInstance().formatFractionalPercent(unformattedDefaultPercentageToPass);
+            var overallQuestionCount = trainingClassDetail.getOverallQuestionCount();
+            var unformattedTestingValidityTime = trainingClassDetail.getTestingValidityTime();
+            var testingValidityTime = unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedTestingValidityTime);
+            var unformattedExpiredRetentionTime = trainingClassDetail.getExpiredRetentionTime();
+            var expiredRetentionTime = unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedExpiredRetentionTime);
+            var alwaysReassignOnExpiration = trainingClassDetail.getAlwaysReassignOnExpiration();
+            var isDefault = trainingClassDetail.getIsDefault();
+            var sortOrder = trainingClassDetail.getSortOrder();
+            var trainingClassTranslation = trainingControl.getBestTrainingClassTranslation(trainingClass, getLanguage());
+            var description = trainingClassTranslation == null ? trainingClassName : trainingClassTranslation.getDescription();
             
             trainingClassTransfer = new TrainingClassTransfer(trainingClassName, unformattedEstimatedReadingTime, estimatedReadingTime,
                     unformattedReadingTimeAllowed, readingTimeAllowed, unformattedEstimatedTestingTime, estimatedTestingTime, unformattedTestingTimeAllowed,

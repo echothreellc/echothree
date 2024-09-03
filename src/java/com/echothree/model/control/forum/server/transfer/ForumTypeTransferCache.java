@@ -30,13 +30,13 @@ public class ForumTypeTransferCache
     }
     
     public ForumTypeTransfer getForumTypeTransfer(ForumType forumType) {
-        ForumTypeTransfer forumTypeTransfer = get(forumType);
+        var forumTypeTransfer = get(forumType);
         
         if(forumTypeTransfer == null) {
-            String forumTypeName = forumType.getForumTypeName();
-            Boolean isDefault = forumType.getIsDefault();
-            Integer sortOrder = forumType.getSortOrder();
-            String description = forumControl.getBestForumTypeDescription(forumType, getLanguage());
+            var forumTypeName = forumType.getForumTypeName();
+            var isDefault = forumType.getIsDefault();
+            var sortOrder = forumType.getSortOrder();
+            var description = forumControl.getBestForumTypeDescription(forumType, getLanguage());
             
             forumTypeTransfer = new ForumTypeTransfer(forumTypeName, isDefault, sortOrder, description);
             put(forumType, forumTypeTransfer);

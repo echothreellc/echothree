@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.transactiontype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.CreateTransactionTypeDescriptionForm;
-import com.echothree.control.user.accounting.common.form.GetTransactionTypeForm;
 import com.echothree.control.user.accounting.common.result.GetTransactionTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTransactionTypeForm commandForm = AccountingUtil.getHome().getGetTransactionTypeForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionTypeForm();
 
         commandForm.setTransactionTypeName(actionForm.getTransactionTypeName());
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionType(getUserVisitPK(request), commandForm);
+
+        var commandResult = AccountingUtil.getHome().getTransactionType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTransactionTypeResult result = (GetTransactionTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRANSACTION_TYPE, result.getTransactionType());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateTransactionTypeDescriptionForm commandForm = AccountingUtil.getHome().getCreateTransactionTypeDescriptionForm();
+        var commandForm = AccountingUtil.getHome().getCreateTransactionTypeDescriptionForm();
 
         commandForm.setTransactionTypeName( actionForm.getTransactionTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

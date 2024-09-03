@@ -18,15 +18,11 @@ package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.form.GetFreeOnBoardDescriptionForm;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
-import com.echothree.control.user.shipment.common.result.GetFreeOnBoardDescriptionResult;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
-import com.echothree.model.data.shipment.server.entity.FreeOnBoardDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetFreeOnBoardDescriptionCommand
     @Override
     protected BaseResult execute() {
         var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-        GetFreeOnBoardDescriptionResult result = ShipmentResultFactory.getGetFreeOnBoardDescriptionResult();
-        String freeOnBoardName = form.getFreeOnBoardName();
-        FreeOnBoard freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
+        var result = ShipmentResultFactory.getGetFreeOnBoardDescriptionResult();
+        var freeOnBoardName = form.getFreeOnBoardName();
+        var freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
         
         if(freeOnBoard != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                FreeOnBoardDescription freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescription(freeOnBoard, language);
+                var freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescription(freeOnBoard, language);
                 
                 if(freeOnBoardDescription != null) {
                     result.setFreeOnBoardDescription(freeOnBoardControl.getFreeOnBoardDescriptionTransfer(getUserVisit(), freeOnBoardDescription));

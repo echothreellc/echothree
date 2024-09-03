@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationSelectorTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSelector;
@@ -38,11 +36,11 @@ public class WorkflowDestinationSelectorTransferCache
     }
     
     public WorkflowDestinationSelectorTransfer getWorkflowDestinationSelectorTransfer(WorkflowDestinationSelector workflowDestinationSelector) {
-        WorkflowDestinationSelectorTransfer workflowDestinationSelectorTransfer = get(workflowDestinationSelector);
+        var workflowDestinationSelectorTransfer = get(workflowDestinationSelector);
         
         if(workflowDestinationSelectorTransfer == null) {
-            WorkflowDestinationTransfer workflowDestination = workflowControl.getWorkflowDestinationTransfer(userVisit, workflowDestinationSelector.getWorkflowDestination());
-            SelectorTransfer selector = selectorControl.getSelectorTransfer(userVisit, workflowDestinationSelector.getSelector());
+            var workflowDestination = workflowControl.getWorkflowDestinationTransfer(userVisit, workflowDestinationSelector.getWorkflowDestination());
+            var selector = selectorControl.getSelectorTransfer(userVisit, workflowDestinationSelector.getSelector());
             
             workflowDestinationSelectorTransfer = new WorkflowDestinationSelectorTransfer(workflowDestination, selector);
             put(workflowDestinationSelector, workflowDestinationSelectorTransfer);

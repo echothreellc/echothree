@@ -19,14 +19,9 @@ package com.echothree.control.user.party.server.command;
 import com.echothree.control.user.party.common.edit.PartyEditFactory;
 import com.echothree.control.user.party.common.edit.PersonalTitleEdit;
 import com.echothree.control.user.party.common.form.EditPersonalTitleForm;
-import com.echothree.control.user.party.common.result.EditPersonalTitleResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.common.spec.PersonalTitleSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.common.pk.PersonalTitlePK;
-import com.echothree.model.data.party.server.entity.PersonalTitle;
-import com.echothree.model.data.party.server.entity.PersonalTitleDetail;
-import com.echothree.model.data.party.server.value.PersonalTitleDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,18 +61,18 @@ public class EditPersonalTitleCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        EditPersonalTitleResult result = PartyResultFactory.getEditPersonalTitleResult();
+        var result = PartyResultFactory.getEditPersonalTitleResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String personalTitleId = spec.getPersonalTitleId();
-            PersonalTitle personalTitle = partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
+            var personalTitleId = spec.getPersonalTitleId();
+            var personalTitle = partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
             
             if(personalTitle != null) {
                 result.setPersonalTitle(partyControl.getPersonalTitleTransfer(getUserVisit(), personalTitle));
                 
                 if(lockEntity(personalTitle)) {
-                    PersonalTitleEdit edit = PartyEditFactory.getPersonalTitleEdit();
-                    PersonalTitleDetail personalTitleDetail = personalTitle.getLastDetail();
+                    var edit = PartyEditFactory.getPersonalTitleEdit();
+                    var personalTitleDetail = personalTitle.getLastDetail();
                     
                     result.setEdit(edit);
                     edit.setDescription(personalTitleDetail.getDescription());
@@ -92,14 +87,14 @@ public class EditPersonalTitleCommand
                 addExecutionError(ExecutionErrors.UnknownPersonalTitleId.name(), personalTitleId);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String personalTitleId = spec.getPersonalTitleId();
-            PersonalTitlePK personalTitlePK = partyControl.convertPersonalTitleIdToPK(personalTitleId);
+            var personalTitleId = spec.getPersonalTitleId();
+            var personalTitlePK = partyControl.convertPersonalTitleIdToPK(personalTitleId);
             
             if(personalTitlePK != null) {
                 if(lockEntityForUpdate(personalTitlePK)) {
                     try {
                         var partyPK = getPartyPK();
-                        PersonalTitleDetailValue personalTitleDetailValue = partyControl.getPersonalTitleDetailValueByPKForUpdate(personalTitlePK);
+                        var personalTitleDetailValue = partyControl.getPersonalTitleDetailValueByPKForUpdate(personalTitlePK);
                         
                         personalTitleDetailValue.setDescription(edit.getDescription());
                         personalTitleDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.tag;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.form.DeleteTagForm;
-import com.echothree.control.user.tag.common.form.GetTagForm;
 import com.echothree.control.user.tag.common.result.GetTagResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,14 +60,14 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTagForm commandForm = TagUtil.getHome().getGetTagForm();
+        var commandForm = TagUtil.getHome().getGetTagForm();
         
         commandForm.setTagScopeName(actionForm.getTagScopeName());
         commandForm.setTagName(actionForm.getTagName());
-        
-        CommandResult commandResult = TagUtil.getHome().getTag(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTagResult result = (GetTagResult)executionResult.getResult();
+
+        var commandResult = TagUtil.getHome().getTag(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTagResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.TAG, result.getTag());
     }
@@ -78,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteTagForm commandForm = TagUtil.getHome().getDeleteTagForm();
+        var commandForm = TagUtil.getHome().getDeleteTagForm();
 
         commandForm.setTagScopeName(actionForm.getTagScopeName());
         commandForm.setTagName(actionForm.getTagName());

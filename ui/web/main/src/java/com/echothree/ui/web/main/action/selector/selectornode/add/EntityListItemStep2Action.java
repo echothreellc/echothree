@@ -22,8 +22,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,14 +52,14 @@ public class EntityListItemStep2Action
         String forwardKey;
         
         try {
-            final String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-            final String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-            final String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
-            final String selectorNodeTypeName = request.getParameter(ParameterConstants.SELECTOR_NODE_TYPE_NAME);
-            
-            CommandResult commandResult = CoreUtil.getHome().getComponentVendors(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetComponentVendorsResult result = (GetComponentVendorsResult)executionResult.getResult();
+            final var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+            final var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+            final var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+            final var selectorNodeTypeName = request.getParameter(ParameterConstants.SELECTOR_NODE_TYPE_NAME);
+
+            var commandResult = CoreUtil.getHome().getComponentVendors(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetComponentVendorsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SELECTOR_KIND_NAME, selectorKindName);
             request.setAttribute(AttributeConstants.SELECTOR_TYPE_NAME, selectorTypeName);

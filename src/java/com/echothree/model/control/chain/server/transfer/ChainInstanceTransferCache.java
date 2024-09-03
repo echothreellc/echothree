@@ -19,14 +19,10 @@ package com.echothree.model.control.chain.server.transfer;
 import com.echothree.model.control.chain.common.ChainOptions;
 import com.echothree.model.control.chain.common.transfer.ChainInstanceEntityRoleTransfer;
 import com.echothree.model.control.chain.common.transfer.ChainInstanceTransfer;
-import com.echothree.model.control.chain.common.transfer.ChainTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
-import com.echothree.model.data.chain.server.entity.ChainInstanceDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
-import java.util.List;
-import java.util.Set;
 
 public class ChainInstanceTransferCache
         extends BaseChainTransferCache<ChainInstance, ChainInstanceTransfer> {
@@ -48,12 +44,12 @@ public class ChainInstanceTransferCache
     }
     
     public ChainInstanceTransfer getChainInstanceTransfer(ChainInstance chainInstance) {
-        ChainInstanceTransfer chainInstanceTransfer = get(chainInstance);
+        var chainInstanceTransfer = get(chainInstance);
         
         if(chainInstanceTransfer == null) {
-            ChainInstanceDetail chainInstanceDetail = chainInstance.getLastDetail();
-            String chainInstanceName = chainInstanceDetail.getChainInstanceName();
-            ChainTransfer chain = chainControl.getChainTransfer(userVisit, chainInstanceDetail.getChain());
+            var chainInstanceDetail = chainInstance.getLastDetail();
+            var chainInstanceName = chainInstanceDetail.getChainInstanceName();
+            var chain = chainControl.getChainTransfer(userVisit, chainInstanceDetail.getChain());
             
             chainInstanceTransfer = new ChainInstanceTransfer(chainInstanceName, chain);
             put(chainInstance, chainInstanceTransfer);
@@ -63,8 +59,8 @@ public class ChainInstanceTransferCache
             }
             
             if(includeChainInstanceEntityRoles) {
-                List<ChainInstanceEntityRoleTransfer> chainInstanceEntityRoleTransfers = chainControl.getChainInstanceEntityRoleTransfersByChainInstance(userVisit, chainInstance);
-                MapWrapper<ChainInstanceEntityRoleTransfer> chainInstanceEntityRoles = new MapWrapper<>(chainInstanceEntityRoleTransfers.size());
+                var chainInstanceEntityRoleTransfers = chainControl.getChainInstanceEntityRoleTransfersByChainInstance(userVisit, chainInstance);
+                var chainInstanceEntityRoles = new MapWrapper<ChainInstanceEntityRoleTransfer>(chainInstanceEntityRoleTransfers.size());
 
                 chainInstanceEntityRoleTransfers.forEach((chainInstanceEntityRoleTransfer) -> {
                     chainInstanceEntityRoles.put(chainInstanceEntityRoleTransfer.getChainEntityRoleType().getChainEntityRoleTypeName(), chainInstanceEntityRoleTransfer);

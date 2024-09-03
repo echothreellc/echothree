@@ -18,7 +18,6 @@ package com.echothree.control.user.carrier.server.command;
 
 import com.echothree.control.user.carrier.common.form.GetCarrierForm;
 import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
-import com.echothree.control.user.carrier.common.result.GetCarrierResult;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -26,8 +25,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.carrier.server.entity.Carrier;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,9 +66,9 @@ public class GetCarrierCommand
     
     @Override
     protected BaseResult execute() {
-        GetCarrierResult result = CarrierResultFactory.getGetCarrierResult();
-        String carrierName = form.getCarrierName();
-        String partyName = form.getPartyName();
+        var result = CarrierResultFactory.getGetCarrierResult();
+        var carrierName = form.getCarrierName();
+        var partyName = form.getPartyName();
         var parameterCount = (carrierName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         
         if(parameterCount == 1) {
@@ -86,10 +83,10 @@ public class GetCarrierCommand
                 }
             } else {
                 var partyControl = Session.getModelController(PartyControl.class);
-                Party party = partyControl.getPartyByName(partyName);
+                var party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
-                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.CARRIER.name());
+                    var partyType = partyControl.getPartyTypeByName(PartyTypes.CARRIER.name());
                     
                     if(party.getLastDetail().getPartyType().equals(partyType)) {
                         carrier = carrierControl.getCarrier(party);

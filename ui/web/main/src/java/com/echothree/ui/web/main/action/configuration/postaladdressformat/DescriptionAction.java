@@ -17,14 +17,10 @@
 package com.echothree.ui.web.main.action.configuration.postaladdressformat;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.GetPostalAddressFormatDescriptionsForm;
 import com.echothree.control.user.contact.common.result.GetPostalAddressFormatDescriptionsResult;
-import com.echothree.model.control.contact.common.transfer.PostalAddressFormatTransfer;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,15 +51,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
-            GetPostalAddressFormatDescriptionsForm commandForm = ContactUtil.getHome().getGetPostalAddressFormatDescriptionsForm();
+            var postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
+            var commandForm = ContactUtil.getHome().getGetPostalAddressFormatDescriptionsForm();
             
             commandForm.setPostalAddressFormatName(postalAddressFormatName);
-            
-            CommandResult commandResult = ContactUtil.getHome().getPostalAddressFormatDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPostalAddressFormatDescriptionsResult result = (GetPostalAddressFormatDescriptionsResult)executionResult.getResult();
-            PostalAddressFormatTransfer postalAddressFormat = result.getPostalAddressFormat();
+
+            var commandResult = ContactUtil.getHome().getPostalAddressFormatDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPostalAddressFormatDescriptionsResult)executionResult.getResult();
+            var postalAddressFormat = result.getPostalAddressFormat();
             
             request.setAttribute("postalAddressFormat", postalAddressFormat);
             request.setAttribute("postalAddressFormatDescriptions", result.getPostalAddressFormatDescriptions());

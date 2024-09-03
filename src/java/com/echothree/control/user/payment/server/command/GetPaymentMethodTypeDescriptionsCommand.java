@@ -18,12 +18,10 @@ package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.GetPaymentMethodTypeDescriptionsForm;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
-import com.echothree.control.user.payment.common.result.GetPaymentMethodTypeDescriptionsResult;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetPaymentMethodTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
-        GetPaymentMethodTypeDescriptionsResult result = PaymentResultFactory.getGetPaymentMethodTypeDescriptionsResult();
-        String paymentMethodTypeName = form.getPaymentMethodTypeName();
-        PaymentMethodType paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName);
+        var result = PaymentResultFactory.getGetPaymentMethodTypeDescriptionsResult();
+        var paymentMethodTypeName = form.getPaymentMethodTypeName();
+        var paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName);
         
         if(paymentMethodType != null) {
             result.setPaymentMethodType(paymentMethodTypeControl.getPaymentMethodTypeTransfer(getUserVisit(), paymentMethodType));

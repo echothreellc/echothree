@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.glaccountcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetGlAccountCategoryDescriptionsForm;
 import com.echothree.control.user.accounting.common.result.GetGlAccountCategoryDescriptionsResult;
-import com.echothree.model.control.accounting.common.transfer.GlAccountCategoryTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String glAccountCategoryName = request.getParameter(ParameterConstants.GL_ACCOUNT_CATEGORY_NAME);
-            GetGlAccountCategoryDescriptionsForm commandForm = AccountingUtil.getHome().getGetGlAccountCategoryDescriptionsForm();
+            var glAccountCategoryName = request.getParameter(ParameterConstants.GL_ACCOUNT_CATEGORY_NAME);
+            var commandForm = AccountingUtil.getHome().getGetGlAccountCategoryDescriptionsForm();
             
             commandForm.setGlAccountCategoryName(glAccountCategoryName);
-            
-            CommandResult commandResult = AccountingUtil.getHome().getGlAccountCategoryDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGlAccountCategoryDescriptionsResult result = (GetGlAccountCategoryDescriptionsResult)executionResult.getResult();
-            GlAccountCategoryTransfer glAccountCategoryTransfer = result.getGlAccountCategory();
+
+            var commandResult = AccountingUtil.getHome().getGlAccountCategoryDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGlAccountCategoryDescriptionsResult)executionResult.getResult();
+            var glAccountCategoryTransfer = result.getGlAccountCategory();
             
             request.setAttribute(AttributeConstants.GL_ACCOUNT_CATEGORY, glAccountCategoryTransfer);
             request.setAttribute(AttributeConstants.GL_ACCOUNT_CATEGORY_NAME, glAccountCategoryTransfer.getGlAccountCategoryName());

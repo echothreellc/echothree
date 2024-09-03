@@ -18,7 +18,6 @@ package com.echothree.control.user.communication.server.server;
 
 import com.echothree.control.user.communication.common.form.CreateCommunicationEventRoleTypeForm;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.data.communication.server.entity.CommunicationEventRoleType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,8 +49,8 @@ public class CreateCommunicationEventRoleTypeCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        String communicationEventRoleTypeName = form.getCommunicationEventRoleTypeName();
-        CommunicationEventRoleType communicationEventRoleType = communicationControl.getCommunicationEventRoleTypeByName(communicationEventRoleTypeName);
+        var communicationEventRoleTypeName = form.getCommunicationEventRoleTypeName();
+        var communicationEventRoleType = communicationControl.getCommunicationEventRoleTypeByName(communicationEventRoleTypeName);
         
         if(communicationEventRoleType == null) {
             var sortOrder = Integer.valueOf(form.getSortOrder());

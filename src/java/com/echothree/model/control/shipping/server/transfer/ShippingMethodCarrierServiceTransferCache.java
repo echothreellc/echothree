@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.shipping.server.transfer;
 
-import com.echothree.model.control.carrier.common.transfer.CarrierServiceTransfer;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodCarrierServiceTransfer;
-import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodCarrierService;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -38,11 +36,11 @@ public class ShippingMethodCarrierServiceTransferCache
     }
     
     public ShippingMethodCarrierServiceTransfer getShippingMethodCarrierServiceTransfer(ShippingMethodCarrierService shippingMethodCarrierService) {
-        ShippingMethodCarrierServiceTransfer shippingMethodCarrierServiceTransfer = get(shippingMethodCarrierService);
+        var shippingMethodCarrierServiceTransfer = get(shippingMethodCarrierService);
         
         if(shippingMethodCarrierServiceTransfer == null) {
-            ShippingMethodTransfer shippingMethod = shippingControl.getShippingMethodTransfer(userVisit, shippingMethodCarrierService.getShippingMethod());
-            CarrierServiceTransfer carrierService = carrierControl.getCarrierServiceTransfer(userVisit, shippingMethodCarrierService.getCarrierService());
+            var shippingMethod = shippingControl.getShippingMethodTransfer(userVisit, shippingMethodCarrierService.getShippingMethod());
+            var carrierService = carrierControl.getCarrierServiceTransfer(userVisit, shippingMethodCarrierService.getCarrierService());
             
             shippingMethodCarrierServiceTransfer = new ShippingMethodCarrierServiceTransfer(shippingMethod, carrierService);
             put(shippingMethodCarrierService, shippingMethodCarrierServiceTransfer);

@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.accounting.department;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.edit.DepartmentEdit;
-import com.echothree.control.user.party.common.form.EditDepartmentForm;
 import com.echothree.control.user.party.common.result.EditDepartmentResult;
-import com.echothree.control.user.party.common.spec.DepartmentSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -58,12 +53,12 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
-        String divisionName = request.getParameter(ParameterConstants.DIVISION_NAME);
-        String originalDepartmentName = request.getParameter(ParameterConstants.ORIGINAL_DEPARTMENT_NAME);
-        EditDepartmentForm commandForm = PartyUtil.getHome().getEditDepartmentForm();
-        DepartmentSpec spec = PartyUtil.getHome().getDepartmentSpec();
+        String forwardKey;
+        var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
+        var divisionName = request.getParameter(ParameterConstants.DIVISION_NAME);
+        var originalDepartmentName = request.getParameter(ParameterConstants.ORIGINAL_DEPARTMENT_NAME);
+        var commandForm = PartyUtil.getHome().getEditDepartmentForm();
+        var spec = PartyUtil.getHome().getDepartmentSpec();
         
         if(companyName == null)
             companyName = actionForm.getCompanyName();
@@ -78,12 +73,12 @@ public class EditAction
         spec.setDepartmentName(originalDepartmentName);
         
         if(wasPost(request)) {
-            boolean wasCanceled = wasCanceled(request);
+            var wasCanceled = wasCanceled(request);
             
             if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
-                DepartmentEdit edit = PartyUtil.getHome().getDepartmentEdit();
+                var edit = PartyUtil.getHome().getDepartmentEdit();
 
                 commandForm.setEditMode(EditMode.UPDATE);
                 commandForm.setEdit(edit);
@@ -97,14 +92,14 @@ public class EditAction
                 edit.setIsDefault(actionForm.getIsDefault().toString());
                 edit.setSortOrder(actionForm.getSortOrder());
             }
-            
-            CommandResult commandResult = PartyUtil.getHome().editDepartment(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().editDepartment(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors() && !wasCanceled) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditDepartmentResult result = (EditDepartmentResult)executionResult.getResult();
+                    var result = (EditDepartmentResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -117,13 +112,13 @@ public class EditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = PartyUtil.getHome().editDepartment(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditDepartmentResult result = (EditDepartmentResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().editDepartment(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditDepartmentResult)executionResult.getResult();
             
             if(result != null) {
-                DepartmentEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setCompanyName(companyName);
@@ -146,8 +141,8 @@ public class EditAction
             
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.COMPANY_NAME, companyName);
             request.setAttribute(AttributeConstants.DIVISION_NAME, divisionName);

@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.geo;
 
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.GeoService;
-import com.echothree.control.user.geo.common.form.CreateGeoCodeScopeDescriptionForm;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -49,9 +48,9 @@ public class GeoCodeScopeHandler
         if(localName.equals("geoCodeScopeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -59,7 +58,7 @@ public class GeoCodeScopeHandler
             }
             
             try {
-                CreateGeoCodeScopeDescriptionForm createGeoCodeScopeDescriptionForm = GeoFormFactory.getCreateGeoCodeScopeDescriptionForm();
+                var createGeoCodeScopeDescriptionForm = GeoFormFactory.getCreateGeoCodeScopeDescriptionForm();
                 
                 createGeoCodeScopeDescriptionForm.setGeoCodeScopeName(geoCodeScopeName);
                 createGeoCodeScopeDescriptionForm.setLanguageIsoName(languageIsoName);

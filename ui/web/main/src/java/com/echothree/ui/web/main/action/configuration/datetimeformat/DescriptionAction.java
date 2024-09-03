@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.datetimeformat;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetDateTimeFormatDescriptionsForm;
 import com.echothree.control.user.party.common.result.GetDateTimeFormatDescriptionsResult;
-import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String dateTimeFormatName = request.getParameter(ParameterConstants.DATE_TIME_FORMAT_NAME);
-            GetDateTimeFormatDescriptionsForm commandForm = PartyUtil.getHome().getGetDateTimeFormatDescriptionsForm();
+            var dateTimeFormatName = request.getParameter(ParameterConstants.DATE_TIME_FORMAT_NAME);
+            var commandForm = PartyUtil.getHome().getGetDateTimeFormatDescriptionsForm();
             
             commandForm.setDateTimeFormatName(dateTimeFormatName);
-            
-            CommandResult commandResult = PartyUtil.getHome().getDateTimeFormatDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetDateTimeFormatDescriptionsResult result = (GetDateTimeFormatDescriptionsResult)executionResult.getResult();
-            DateTimeFormatTransfer dateTimeFormatTransfer = result.getDateTimeFormat();
+
+            var commandResult = PartyUtil.getHome().getDateTimeFormatDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetDateTimeFormatDescriptionsResult)executionResult.getResult();
+            var dateTimeFormatTransfer = result.getDateTimeFormat();
             
             request.setAttribute(AttributeConstants.DATE_TIME_FORMAT, dateTimeFormatTransfer);
             request.setAttribute(AttributeConstants.DATE_TIME_FORMAT_NAME, dateTimeFormatTransfer.getDateTimeFormatName());

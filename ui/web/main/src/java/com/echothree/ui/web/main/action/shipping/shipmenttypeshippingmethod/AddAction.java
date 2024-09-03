@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.shipping.shipmenttypeshippingmethod;
 
 import com.echothree.control.user.shipment.common.ShipmentUtil;
-import com.echothree.control.user.shipment.common.form.CreateShipmentTypeShippingMethodForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,24 +54,24 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String shipmentTypeName = request.getParameter(ParameterConstants.SHIPMENT_TYPE_NAME);
+        var shipmentTypeName = request.getParameter(ParameterConstants.SHIPMENT_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(shipmentTypeName == null)
                     shipmentTypeName = actionForm.getShipmentTypeName();
                 
                 if(wasPost(request)) {
-                    CreateShipmentTypeShippingMethodForm commandForm = ShipmentUtil.getHome().getCreateShipmentTypeShippingMethodForm();
+                    var commandForm = ShipmentUtil.getHome().getCreateShipmentTypeShippingMethodForm();
                     
                     commandForm.setShipmentTypeName(shipmentTypeName);
                     commandForm.setShippingMethodName(actionForm.getShippingMethodChoice());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
-                    
-                    CommandResult commandResult = ShipmentUtil.getHome().createShipmentTypeShippingMethod(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ShipmentUtil.getHome().createShipmentTypeShippingMethod(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -90,8 +88,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SHIPMENT_TYPE_NAME, shipmentTypeName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

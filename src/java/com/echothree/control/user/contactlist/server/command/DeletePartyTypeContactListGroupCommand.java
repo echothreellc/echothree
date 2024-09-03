@@ -22,9 +22,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
-import com.echothree.model.data.contactlist.server.entity.PartyTypeContactListGroup;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,16 +64,16 @@ public class DeletePartyTypeContactListGroupCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var partyTypeName = form.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
         
         if(partyType != null) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            String contactListGroupName = form.getContactListGroupName();
-            ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+            var contactListGroupName = form.getContactListGroupName();
+            var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
             
             if(contactListGroup != null) {
-                PartyTypeContactListGroup partyTypeContactListGroup = contactListControl.getPartyTypeContactListGroupForUpdate(partyType, contactListGroup);
+                var partyTypeContactListGroup = contactListControl.getPartyTypeContactListGroupForUpdate(partyType, contactListGroup);
                 
                 if(partyTypeContactListGroup != null) {
                     contactListControl.deletePartyTypeContactListGroup(partyTypeContactListGroup, getPartyPK());

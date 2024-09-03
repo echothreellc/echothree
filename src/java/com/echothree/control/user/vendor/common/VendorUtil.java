@@ -18,7 +18,6 @@ package com.echothree.control.user.vendor.common;
 
 import com.echothree.control.user.vendor.server.VendorLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class VendorUtil {
@@ -30,7 +29,7 @@ public class VendorUtil {
     public static VendorLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (VendorLocal)ctx.lookup("ejb:echothree/echothree-server/VendorBean!com.echothree.control.user.vendor.server.VendorLocal");
         }
@@ -42,7 +41,7 @@ public class VendorUtil {
     public static VendorRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (VendorRemote)ctx.lookup("ejb:echothree/echothree-server/VendorBean!com.echothree.control.user.vendor.common.VendorRemote");
         }

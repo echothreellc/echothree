@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.purchasing.vendordocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.form.GetPartyDocumentForm;
 import com.echothree.control.user.document.common.result.GetPartyDocumentResult;
 import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,19 +49,19 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetPartyDocumentForm commandForm = DocumentUtil.getHome().getGetPartyDocumentForm();
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String documentName = request.getParameter(ParameterConstants.DOCUMENT_NAME);
+        String forwardKey;
+        var commandForm = DocumentUtil.getHome().getGetPartyDocumentForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var documentName = request.getParameter(ParameterConstants.DOCUMENT_NAME);
 
         commandForm.setDocumentName(documentName);
 
-        CommandResult commandResult = DocumentUtil.getHome().getPartyDocument(getUserVisitPK(request), commandForm);
+        var commandResult = DocumentUtil.getHome().getPartyDocument(getUserVisitPK(request), commandForm);
         PartyDocumentTransfer partyDocument = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyDocumentResult result = (GetPartyDocumentResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyDocumentResult)executionResult.getResult();
             partyDocument = result.getPartyDocument();
         }
 

@@ -36,8 +36,8 @@ public class EntityRefs
 
     private void addComponentVendors(String componentVendorNames) {
         if(componentVendorNames != null) {
-            for(String splitComponentVendorName : Splitter.on(':').trimResults().omitEmptyStrings().splitToList(componentVendorNames).toArray(new String[0])) {
-                String[] splitComponentVendorNameParts = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(splitComponentVendorName).toArray(new String[0]);
+            for(var splitComponentVendorName : Splitter.on(':').trimResults().omitEmptyStrings().splitToList(componentVendorNames).toArray(new String[0])) {
+                var splitComponentVendorNameParts = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(splitComponentVendorName).toArray(new String[0]);
 
                 if(splitComponentVendorNameParts.length == 1) {
                     this.componentVendorNames.add(splitComponentVendorNameParts[0]);
@@ -50,12 +50,12 @@ public class EntityRefs
 
     private void addEntityTypeNames(String entityTypeNames) {
         if(entityTypeNames != null) {
-            for(String splitEntityTypeName : Splitter.on(':').trimResults().omitEmptyStrings().splitToList(entityTypeNames).toArray(new String[0])) {
-                String[] splitEntityTypeNameParts = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(splitEntityTypeName).toArray(new String[0]);
+            for(var splitEntityTypeName : Splitter.on(':').trimResults().omitEmptyStrings().splitToList(entityTypeNames).toArray(new String[0])) {
+                var splitEntityTypeNameParts = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(splitEntityTypeName).toArray(new String[0]);
 
                 if(splitEntityTypeNameParts.length == 2) {
                     // Check for, and add, the ComponentVendorName.
-                    Set<String> entityTypes = this.entityTypeNames.get(splitEntityTypeNameParts[0]);
+                    var entityTypes = this.entityTypeNames.get(splitEntityTypeNameParts[0]);
 
                     if(entityTypes == null) {
                         entityTypes = new HashSet<>(1);
@@ -73,12 +73,12 @@ public class EntityRefs
 
     private void addEntityRefs(String entityRefs) {
         if(entityRefs != null) {
-            for(String splitEntityRef : Splitter.on(':').trimResults().omitEmptyStrings().splitToList(entityRefs).toArray(new String[0])) {
-                String[] splitEntityRefParts = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(splitEntityRef).toArray(new String[0]);
+            for(var splitEntityRef : Splitter.on(':').trimResults().omitEmptyStrings().splitToList(entityRefs).toArray(new String[0])) {
+                var splitEntityRefParts = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(splitEntityRef).toArray(new String[0]);
 
                 if(splitEntityRefParts.length == 3) {
                     // Check for, and add, the ComponentVendorName.
-                    Map<String, Set<String>> entityTypes = this.entityRefs.get(splitEntityRefParts[0]);
+                    var entityTypes = this.entityRefs.get(splitEntityRefParts[0]);
 
                     if(entityTypes == null) {
                         entityTypes = new HashMap<>(1);
@@ -86,7 +86,7 @@ public class EntityRefs
                     }
 
                     // Check for, and add, the EntityTypeName.
-                    Set<String> entityUniqueIds = entityTypes.get(splitEntityRefParts[1]);
+                    var entityUniqueIds = entityTypes.get(splitEntityRefParts[1]);
 
                     if(entityUniqueIds == null) {
                         entityUniqueIds = new HashSet<>(1);
@@ -114,26 +114,26 @@ public class EntityRefs
     }
 
     private boolean containsEntityTypeName(String componentVendorName, String entityTypeName) {
-        Set<String> entityTypes = this.entityTypeNames.get(componentVendorName);
+        var entityTypes = this.entityTypeNames.get(componentVendorName);
 
         return entityTypes == null ? false : entityTypes.contains(entityTypeName);
     }
 
     private boolean containsEntityRef(String componentVendorName, String entityTypeName, String entityUniqueId) {
-        Map<String, Set<String>> entityTypes = this.entityRefs.get(componentVendorName);
-        Set<String> entityUniqueIds = entityTypes == null ? null : entityTypes.get(entityTypeName);
+        var entityTypes = this.entityRefs.get(componentVendorName);
+        var entityUniqueIds = entityTypes == null ? null : entityTypes.get(entityTypeName);
 
         return entityUniqueIds == null ? false : entityUniqueIds.contains(entityUniqueId);
     }
 
     public boolean contains(String entityRef) {
-        boolean result = false;
-        String[] entityRefParts = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(entityRef).toArray(new String[0]);
+        var result = false;
+        var entityRefParts = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(entityRef).toArray(new String[0]);
 
         if(entityRefParts.length == 3) {
-            String componentVendorName = entityRefParts[0];
-            String entityTypeName = entityRefParts[1];
-            String entityUniqueId = entityRefParts[2];
+            var componentVendorName = entityRefParts[0];
+            var entityTypeName = entityRefParts[1];
+            var entityUniqueId = entityRefParts[2];
 
             result = containsCompnenentVendorName(componentVendorName) || containsEntityTypeName(componentVendorName, entityTypeName)
                     || containsEntityRef(componentVendorName, entityTypeName, entityUniqueId);

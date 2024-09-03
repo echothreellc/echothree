@@ -24,8 +24,6 @@ import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
-import com.echothree.model.data.content.server.entity.ContentCatalogItem;
-import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -115,7 +113,7 @@ public class ContentCatalogObject
     @GraphQLDescription("content categories")
     public List<ContentCategoryObject> getContentCategories(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentCategory> entities = ContentSecurityUtils.getHasContentCategoriesAccess(env) ? contentControl.getContentCategories(contentCatalog) : null;
+        var entities = ContentSecurityUtils.getHasContentCategoriesAccess(env) ? contentControl.getContentCategories(contentCatalog) : null;
         List<ContentCategoryObject> contentCategories = entities == null ? null : new ArrayList<>(entities.size());
         
         if(entities != null) {
@@ -139,7 +137,7 @@ public class ContentCatalogObject
     @GraphQLDescription("content catalog items")
     public List<ContentCatalogItemObject> getContentCatalogItems(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentCatalogItem> entities = ContentSecurityUtils.getHasContentCatalogItemsAccess(env) ? contentControl.getContentCatalogItemsByContentCatalog(contentCatalog) : null;
+        var entities = ContentSecurityUtils.getHasContentCatalogItemsAccess(env) ? contentControl.getContentCatalogItemsByContentCatalog(contentCatalog) : null;
         List<ContentCatalogItemObject> contentCatalogItems = entities == null ? null : new ArrayList<>(entities.size());
         
         if(entities != null) {

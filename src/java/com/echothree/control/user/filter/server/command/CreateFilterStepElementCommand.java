@@ -24,15 +24,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.filter.server.entity.Filter;
-import com.echothree.model.data.filter.server.entity.FilterAdjustment;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.entity.FilterStep;
-import com.echothree.model.data.filter.server.entity.FilterStepElement;
-import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -79,35 +71,35 @@ public class CreateFilterStepElementCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterTypeName = form.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterTypeName = form.getFilterTypeName();
+            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
-                String filterName = form.getFilterName();
-                Filter filter = filterControl.getFilterByName(filterType, filterName);
+                var filterName = form.getFilterName();
+                var filter = filterControl.getFilterByName(filterType, filterName);
                 
                 if(filter != null) {
-                    String filterStepName = form.getFilterStepName();
-                    FilterStep filterStep = filterControl.getFilterStepByName(filter, filterStepName);
+                    var filterStepName = form.getFilterStepName();
+                    var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
                     
                     if(filterStep != null) {
-                        String filterStepElementName = form.getFilterStepElementName();
-                        FilterStepElement filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
+                        var filterStepElementName = form.getFilterStepElementName();
+                        var filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
                         
                         if(filterStepElement == null) {
-                            String filterItemSelectorName = form.getFilterItemSelectorName();
+                            var filterItemSelectorName = form.getFilterItemSelectorName();
                             Selector filterItemSelector = null;
                             
                             if(filterItemSelectorName != null) {
                                 var selectorControl = Session.getModelController(SelectorControl.class);
-                                SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
+                                var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
                                 
                                 if(selectorKind != null) {
-                                    SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.FILTER.name());
+                                    var selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.FILTER.name());
                                     
                                     if(selectorType != null) {
                                         filterItemSelector = selectorControl.getSelectorByName(selectorType, filterItemSelectorName);
@@ -120,8 +112,8 @@ public class CreateFilterStepElementCommand
                             }
                             
                             if(filterItemSelectorName == null || filterItemSelector != null) {
-                                String filterAdjustmentName = form.getFilterAdjustmentName();
-                                FilterAdjustment filterAdjustment = filterAdjustmentName == null? null: filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+                                var filterAdjustmentName = form.getFilterAdjustmentName();
+                                var filterAdjustment = filterAdjustmentName == null? null: filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
                                 
                                 if(filterAdjustmentName == null || filterAdjustment != null) {
                                     var description = form.getDescription();

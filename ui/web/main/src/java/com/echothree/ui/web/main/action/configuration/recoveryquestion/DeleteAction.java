@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.recoveryquestion;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.DeleteRecoveryQuestionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteRecoveryQuestionForm commandForm = UserUtil.getHome().getDeleteRecoveryQuestionForm();
-            String recoveryQuestionName = request.getParameter(ParameterConstants.RECOVERY_QUESTION_NAME);
+            var commandForm = UserUtil.getHome().getDeleteRecoveryQuestionForm();
+            var recoveryQuestionName = request.getParameter(ParameterConstants.RECOVERY_QUESTION_NAME);
             
             commandForm.setRecoveryQuestionName(recoveryQuestionName);
             

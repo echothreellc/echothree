@@ -16,16 +16,11 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
-import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.common.transfer.PartyInventoryLevelTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.inventory.server.entity.PartyInventoryLevel;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -42,17 +37,17 @@ public class PartyInventoryLevelTransferCache
     
     @Override
     public PartyInventoryLevelTransfer getTransfer(PartyInventoryLevel partyInventoryLevel) {
-        PartyInventoryLevelTransfer partyInventoryLevelTransfer = get(partyInventoryLevel);
+        var partyInventoryLevelTransfer = get(partyInventoryLevel);
         
         if(partyInventoryLevelTransfer == null) {
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, partyInventoryLevel.getParty());
-            Item item = partyInventoryLevel.getItem();
-            ItemTransfer itemTransfer = itemControl.getItemTransfer(userVisit, item);
-            InventoryConditionTransfer inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, partyInventoryLevel.getInventoryCondition());
-            UnitOfMeasureKind unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-            String minimumInventory = formatUnitOfMeasure(unitOfMeasureKind, partyInventoryLevel.getMinimumInventory());
-            String maximumInventory = formatUnitOfMeasure(unitOfMeasureKind, partyInventoryLevel.getMaximumInventory());
-            String reorderQuantity = formatUnitOfMeasure(unitOfMeasureKind, partyInventoryLevel.getReorderQuantity());
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, partyInventoryLevel.getParty());
+            var item = partyInventoryLevel.getItem();
+            var itemTransfer = itemControl.getItemTransfer(userVisit, item);
+            var inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, partyInventoryLevel.getInventoryCondition());
+            var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
+            var minimumInventory = formatUnitOfMeasure(unitOfMeasureKind, partyInventoryLevel.getMinimumInventory());
+            var maximumInventory = formatUnitOfMeasure(unitOfMeasureKind, partyInventoryLevel.getMaximumInventory());
+            var reorderQuantity = formatUnitOfMeasure(unitOfMeasureKind, partyInventoryLevel.getReorderQuantity());
             
             partyInventoryLevelTransfer = new PartyInventoryLevelTransfer(partyTransfer, itemTransfer, inventoryConditionTransfer,
                     minimumInventory, maximumInventory, reorderQuantity);

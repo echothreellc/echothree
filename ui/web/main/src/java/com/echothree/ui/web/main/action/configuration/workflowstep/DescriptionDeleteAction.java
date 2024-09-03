@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowstep;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.DeleteWorkflowStepDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,12 +51,12 @@ public class DescriptionDeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
-        String workflowStepName = request.getParameter(ParameterConstants.WORKFLOW_STEP_NAME);
+        var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+        var workflowStepName = request.getParameter(ParameterConstants.WORKFLOW_STEP_NAME);
         
         try {
-            String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-            DeleteWorkflowStepDescriptionForm commandForm = WorkflowUtil.getHome().getDeleteWorkflowStepDescriptionForm();
+            var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+            var commandForm = WorkflowUtil.getHome().getDeleteWorkflowStepDescriptionForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);
@@ -69,8 +68,8 @@ public class DescriptionDeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(2);
             

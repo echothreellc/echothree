@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.humanresources.employeecontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.GetPostalAddressStatusChoicesForm;
 import com.echothree.control.user.contact.common.result.GetPostalAddressStatusChoicesResult;
 import com.echothree.model.control.contact.common.choice.PostalAddressStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -41,15 +38,15 @@ public class ContactPostalAddressStatusActionForm
     public void setupPostalAddressStatusChoices()
             throws NamingException {
         if(postalAddressStatusChoices == null) {
-            GetPostalAddressStatusChoicesForm form = ContactUtil.getHome().getGetPostalAddressStatusChoicesForm();
+            var form = ContactUtil.getHome().getGetPostalAddressStatusChoicesForm();
 
             form.setContactMechanismName(contactMechanismName);
             form.setDefaultPostalAddressStatusChoice(postalAddressStatusChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getPostalAddressStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPostalAddressStatusChoicesResult result = (GetPostalAddressStatusChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getPostalAddressStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPostalAddressStatusChoicesResult)executionResult.getResult();
             postalAddressStatusChoices = result.getPostalAddressStatusChoices();
 
             if(postalAddressStatusChoice == null) {

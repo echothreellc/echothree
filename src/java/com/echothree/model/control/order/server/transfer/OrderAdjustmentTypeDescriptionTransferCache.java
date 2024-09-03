@@ -17,9 +17,7 @@
 package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderAdjustmentTypeDescriptionTransfer;
-import com.echothree.model.control.order.common.transfer.OrderAdjustmentTypeTransfer;
 import com.echothree.model.control.order.server.control.OrderAdjustmentControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.order.server.entity.OrderAdjustmentTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -35,11 +33,11 @@ public class OrderAdjustmentTypeDescriptionTransferCache
     }
     
     public OrderAdjustmentTypeDescriptionTransfer getOrderAdjustmentTypeDescriptionTransfer(OrderAdjustmentTypeDescription orderAdjustmentTypeDescription) {
-        OrderAdjustmentTypeDescriptionTransfer orderAdjustmentTypeDescriptionTransfer = get(orderAdjustmentTypeDescription);
+        var orderAdjustmentTypeDescriptionTransfer = get(orderAdjustmentTypeDescription);
         
         if(orderAdjustmentTypeDescriptionTransfer == null) {
-            OrderAdjustmentTypeTransfer orderAdjustmentTypeTransfer = orderAdjustmentControl.getOrderAdjustmentTypeTransfer(userVisit, orderAdjustmentTypeDescription.getOrderAdjustmentType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, orderAdjustmentTypeDescription.getLanguage());
+            var orderAdjustmentTypeTransfer = orderAdjustmentControl.getOrderAdjustmentTypeTransfer(userVisit, orderAdjustmentTypeDescription.getOrderAdjustmentType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, orderAdjustmentTypeDescription.getLanguage());
             
             orderAdjustmentTypeDescriptionTransfer = new OrderAdjustmentTypeDescriptionTransfer(languageTransfer, orderAdjustmentTypeTransfer, orderAdjustmentTypeDescription.getDescription());
             put(orderAdjustmentTypeDescription, orderAdjustmentTypeDescriptionTransfer);

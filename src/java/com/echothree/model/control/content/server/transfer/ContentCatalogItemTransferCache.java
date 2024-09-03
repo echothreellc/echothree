@@ -16,31 +16,20 @@
 
 package com.echothree.model.control.content.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.ContentProperties;
 import com.echothree.model.control.content.common.transfer.ContentCatalogItemTransfer;
-import com.echothree.model.control.content.common.transfer.ContentCatalogTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
-import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.vendor.common.VendorOptions;
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
-import com.echothree.model.data.content.server.entity.ContentCatalogItemFixedPrice;
-import com.echothree.model.data.content.server.entity.ContentCatalogItemVariablePrice;
-import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
-import java.util.Set;
 
 public class ContentCatalogItemTransferCache
         extends BaseContentTransferCache<ContentCatalogItem, ContentCatalogItemTransfer> {
@@ -103,16 +92,16 @@ public class ContentCatalogItemTransferCache
     }
     
     public ContentCatalogItemTransfer getContentCatalogItemTransfer(ContentCatalogItem contentCatalogItem) {
-        ContentCatalogItemTransfer contentCatalogItemTransfer = get(contentCatalogItem);
+        var contentCatalogItemTransfer = get(contentCatalogItem);
         
         if(contentCatalogItemTransfer == null) {
-            ContentCatalogTransfer contentCatalog = filterContentCatalog ? null : contentControl.getContentCatalogTransfer(userVisit, contentCatalogItem.getContentCatalog());
-            Item item = contentCatalogItem.getItem();
-            ItemTransfer itemTransfer = filterItem ? null : itemControl.getItemTransfer(userVisit, item);
-            InventoryConditionTransfer inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, contentCatalogItem.getInventoryCondition());
-            UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = filterUnitOfMeasureType ? null : uomControl.getUnitOfMeasureTypeTransfer(userVisit, contentCatalogItem.getUnitOfMeasureType());
-            Currency currency = contentCatalogItem.getCurrency();
-            CurrencyTransfer currencyTransfer = filterCurrency ? null : accountingControl.getCurrencyTransfer(userVisit, currency);
+            var contentCatalog = filterContentCatalog ? null : contentControl.getContentCatalogTransfer(userVisit, contentCatalogItem.getContentCatalog());
+            var item = contentCatalogItem.getItem();
+            var itemTransfer = filterItem ? null : itemControl.getItemTransfer(userVisit, item);
+            var inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, contentCatalogItem.getInventoryCondition());
+            var unitOfMeasureTypeTransfer = filterUnitOfMeasureType ? null : uomControl.getUnitOfMeasureTypeTransfer(userVisit, contentCatalogItem.getUnitOfMeasureType());
+            var currency = contentCatalogItem.getCurrency();
+            var currencyTransfer = filterCurrency ? null : accountingControl.getCurrencyTransfer(userVisit, currency);
             Long unformattedUnitPrice = null;
             String unitPrice = null;
             Long unformattedMinimumUnitPrice = null;
@@ -122,13 +111,13 @@ public class ContentCatalogItemTransferCache
             Long unformattedUnitPriceIncrement = null;
             String unitPriceIncrement = null;
 
-            String itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
+            var itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
             if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
                 if(!filterUnformattedUnitPrice || !filterUnitPrice) {
-                    ContentCatalogItemFixedPrice contentCatalogItemFixedPrice = contentControl.getContentCatalogItemFixedPrice(contentCatalogItem);
+                    var contentCatalogItemFixedPrice = contentControl.getContentCatalogItemFixedPrice(contentCatalogItem);
 
                     if(contentCatalogItemFixedPrice != null) {
-                        Long rawUnitPrice = contentCatalogItemFixedPrice.getUnitPrice();
+                        var rawUnitPrice = contentCatalogItemFixedPrice.getUnitPrice();
                         
                         unformattedUnitPrice = filterUnformattedUnitPrice ? null : rawUnitPrice;
                         unitPrice = filterUnitPrice ? null : amountUtils.formatPriceUnit(currency, rawUnitPrice);
@@ -137,12 +126,12 @@ public class ContentCatalogItemTransferCache
             } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
                 if(!filterUnformattedMinimumUnitPrice || !filterMinimumUnitPrice || !filterUnformattedMaximumUnitPrice || !filterMaximumUnitPrice
                         || !filterUnformattedUnitPriceIncrement || !filterUnitPriceIncrement) {
-                    ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = contentControl.getContentCatalogItemVariablePrice(contentCatalogItem);
+                    var contentCatalogItemVariablePrice = contentControl.getContentCatalogItemVariablePrice(contentCatalogItem);
 
                     if(contentCatalogItemVariablePrice != null) {
-                        Long rawMinimumUnitPrice = contentCatalogItemVariablePrice.getMinimumUnitPrice();
-                        Long rawMaximumUnitPrice = contentCatalogItemVariablePrice.getMaximumUnitPrice();
-                        Long rawUnitPriceIncrement = contentCatalogItemVariablePrice.getUnitPriceIncrement();
+                        var rawMinimumUnitPrice = contentCatalogItemVariablePrice.getMinimumUnitPrice();
+                        var rawMaximumUnitPrice = contentCatalogItemVariablePrice.getMaximumUnitPrice();
+                        var rawUnitPriceIncrement = contentCatalogItemVariablePrice.getUnitPriceIncrement();
 
                         unformattedMinimumUnitPrice = filterUnformattedMinimumUnitPrice ? null : rawMinimumUnitPrice;
                         minimumUnitPrice = filterMinimumUnitPrice ? null : amountUtils.formatPriceUnit(currency, rawMinimumUnitPrice);

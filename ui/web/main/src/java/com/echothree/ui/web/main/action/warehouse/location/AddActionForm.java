@@ -17,18 +17,13 @@
 package com.echothree.ui.web.main.action.warehouse.location;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.form.GetInventoryLocationGroupChoicesForm;
 import com.echothree.control.user.inventory.common.result.GetInventoryLocationGroupChoicesResult;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.GetLocationTypeChoicesForm;
-import com.echothree.control.user.warehouse.common.form.GetLocationUseTypeChoicesForm;
 import com.echothree.control.user.warehouse.common.result.GetLocationTypeChoicesResult;
 import com.echothree.control.user.warehouse.common.result.GetLocationUseTypeChoicesResult;
 import com.echothree.model.control.inventory.common.choice.InventoryLocationGroupChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.LocationTypeChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.LocationUseTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -54,15 +49,15 @@ public class AddActionForm
     public void setupLocationTypeChoices()
             throws NamingException {
         if(locationTypeChoices == null) {
-            GetLocationTypeChoicesForm form = WarehouseUtil.getHome().getGetLocationTypeChoicesForm();
+            var form = WarehouseUtil.getHome().getGetLocationTypeChoicesForm();
 
             form.setWarehouseName(warehouseName);
             form.setDefaultLocationTypeChoice(locationTypeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = WarehouseUtil.getHome().getLocationTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLocationTypeChoicesResult result = (GetLocationTypeChoicesResult)executionResult.getResult();
+            var commandResult = WarehouseUtil.getHome().getLocationTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLocationTypeChoicesResult)executionResult.getResult();
             locationTypeChoices = result.getLocationTypeChoices();
 
             if(locationTypeChoice == null) {
@@ -74,14 +69,14 @@ public class AddActionForm
     public void setupLocationUseTypeChoices()
             throws NamingException {
         if(locationUseTypeChoices == null) {
-            GetLocationUseTypeChoicesForm form = WarehouseUtil.getHome().getGetLocationUseTypeChoicesForm();
+            var form = WarehouseUtil.getHome().getGetLocationUseTypeChoicesForm();
 
             form.setDefaultLocationUseTypeChoice(locationUseTypeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = WarehouseUtil.getHome().getLocationUseTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLocationUseTypeChoicesResult result = (GetLocationUseTypeChoicesResult)executionResult.getResult();
+            var commandResult = WarehouseUtil.getHome().getLocationUseTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLocationUseTypeChoicesResult)executionResult.getResult();
             locationUseTypeChoices = result.getLocationUseTypeChoices();
 
             if(locationUseTypeChoice == null) {
@@ -93,15 +88,15 @@ public class AddActionForm
     public void setupInventoryLocationGroupChoices()
             throws NamingException {
         if(inventoryLocationGroupChoices == null) {
-            GetInventoryLocationGroupChoicesForm form = InventoryUtil.getHome().getGetInventoryLocationGroupChoicesForm();
+            var form = InventoryUtil.getHome().getGetInventoryLocationGroupChoicesForm();
 
             form.setWarehouseName(warehouseName);
             form.setDefaultInventoryLocationGroupChoice(inventoryLocationGroupChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = InventoryUtil.getHome().getInventoryLocationGroupChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetInventoryLocationGroupChoicesResult result = (GetInventoryLocationGroupChoicesResult)executionResult.getResult();
+            var commandResult = InventoryUtil.getHome().getInventoryLocationGroupChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetInventoryLocationGroupChoicesResult)executionResult.getResult();
             inventoryLocationGroupChoices = result.getInventoryLocationGroupChoices();
 
             if(inventoryLocationGroupChoice == null) {

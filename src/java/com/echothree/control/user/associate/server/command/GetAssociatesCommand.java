@@ -18,9 +18,7 @@ package com.echothree.control.user.associate.server.command;
 
 import com.echothree.control.user.associate.common.form.GetAssociatesForm;
 import com.echothree.control.user.associate.common.result.AssociateResultFactory;
-import com.echothree.control.user.associate.common.result.GetAssociatesResult;
 import com.echothree.model.control.associate.server.control.AssociateControl;
-import com.echothree.model.data.associate.server.entity.AssociateProgram;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,9 +49,9 @@ public class GetAssociatesCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        GetAssociatesResult result = AssociateResultFactory.getGetAssociatesResult();
-        String associateProgramName = form.getAssociateProgramName();
-        AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+        var result = AssociateResultFactory.getGetAssociatesResult();
+        var associateProgramName = form.getAssociateProgramName();
+        var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
         if(associateProgram != null) {
             result.setAssociateProgram(associateControl.getAssociateProgramTransfer(getUserVisit(), associateProgram));

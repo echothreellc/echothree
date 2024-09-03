@@ -22,7 +22,6 @@ import com.echothree.model.control.employee.server.logic.LeaveLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.employee.server.entity.Leave;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,8 +63,8 @@ public class DeleteLeaveCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String leaveName = form.getLeaveName();
-        Leave leave = employeeControl.getLeaveByNameForUpdate(leaveName);
+        var leaveName = form.getLeaveName();
+        var leave = employeeControl.getLeaveByNameForUpdate(leaveName);
 
         if(leave != null) {
             LeaveLogic.getInstance().deleteLeave(leave, getPartyPK());

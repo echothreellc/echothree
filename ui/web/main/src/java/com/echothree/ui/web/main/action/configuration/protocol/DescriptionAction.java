@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.protocol;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetProtocolDescriptionsForm;
 import com.echothree.control.user.core.common.result.GetProtocolDescriptionsResult;
-import com.echothree.model.control.core.common.transfer.ProtocolTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String protocolName = request.getParameter(ParameterConstants.PROTOCOL_NAME);
-        GetProtocolDescriptionsForm commandForm = CoreUtil.getHome().getGetProtocolDescriptionsForm();
+        var protocolName = request.getParameter(ParameterConstants.PROTOCOL_NAME);
+        var commandForm = CoreUtil.getHome().getGetProtocolDescriptionsForm();
 
         commandForm.setProtocolName(protocolName);
 
-        CommandResult commandResult = CoreUtil.getHome().getProtocolDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getProtocolDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetProtocolDescriptionsResult result = (GetProtocolDescriptionsResult) executionResult.getResult();
-            ProtocolTransfer protocolTransfer = result.getProtocol();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetProtocolDescriptionsResult) executionResult.getResult();
+            var protocolTransfer = result.getProtocol();
 
             request.setAttribute(AttributeConstants.PROTOCOL, protocolTransfer);
             request.setAttribute(AttributeConstants.PROTOCOL_DESCRIPTIONS, result.getProtocolDescriptions());

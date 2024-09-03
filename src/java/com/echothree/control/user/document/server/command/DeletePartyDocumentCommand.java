@@ -21,8 +21,6 @@ import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.document.server.entity.Document;
-import com.echothree.model.data.document.server.entity.PartyDocument;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,11 +62,11 @@ public class DeletePartyDocumentCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        String documentName = form.getDocumentName();
-        Document document = documentControl.getDocumentByNameForUpdate(documentName);
+        var documentName = form.getDocumentName();
+        var document = documentControl.getDocumentByNameForUpdate(documentName);
         
         if(document != null) {
-            PartyDocument partyDocument = documentControl.getPartyDocumentByDocumentForUpdate(document);
+            var partyDocument = documentControl.getPartyDocumentByDocumentForUpdate(document);
 
             if(partyDocument != null) {
                 documentControl.deletePartyDocument(partyDocument, getPartyPK());

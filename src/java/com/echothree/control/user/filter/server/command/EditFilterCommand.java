@@ -19,7 +19,6 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.edit.FilterEdit;
 import com.echothree.control.user.filter.common.edit.FilterEditFactory;
 import com.echothree.control.user.filter.common.form.EditFilterForm;
-import com.echothree.control.user.filter.common.result.EditFilterResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterSpec;
 import com.echothree.model.control.filter.server.control.FilterControl;
@@ -29,17 +28,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.filter.server.entity.Filter;
-import com.echothree.model.data.filter.server.entity.FilterAdjustment;
-import com.echothree.model.data.filter.server.entity.FilterDescription;
-import com.echothree.model.data.filter.server.entity.FilterDetail;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.entity.FilterType;
-import com.echothree.model.data.filter.server.value.FilterDescriptionValue;
-import com.echothree.model.data.filter.server.value.FilterDetailValue;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
@@ -92,27 +81,27 @@ public class EditFilterCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        EditFilterResult result = FilterResultFactory.getEditFilterResult();
-        String filterKindName = spec.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getEditFilterResult();
+        var filterKindName = spec.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterTypeName = spec.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterTypeName = spec.getFilterTypeName();
+            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    String filterName = spec.getFilterName();
-                    Filter filter = filterControl.getFilterByName(filterType, filterName);
+                    var filterName = spec.getFilterName();
+                    var filter = filterControl.getFilterByName(filterType, filterName);
                     
                     if(filter != null) {
                         result.setFilter(filterControl.getFilterTransfer(getUserVisit(), filter));
                         
                         if(lockEntity(filter)) {
-                            FilterDescription filterDescription = filterControl.getFilterDescription(filter, getPreferredLanguage());
-                            FilterEdit edit = FilterEditFactory.getFilterEdit();
-                            FilterDetail filterDetail = filter.getLastDetail();
-                            Selector filterItemSelector = filterDetail.getFilterItemSelector();
+                            var filterDescription = filterControl.getFilterDescription(filter, getPreferredLanguage());
+                            var edit = FilterEditFactory.getFilterEdit();
+                            var filterDetail = filter.getLastDetail();
+                            var filterItemSelector = filterDetail.getFilterItemSelector();
                             
                             result.setEdit(edit);
                             edit.setFilterName(filterDetail.getFilterName());
@@ -133,27 +122,27 @@ public class EditFilterCommand
                         addExecutionError(ExecutionErrors.UnknownFilterName.name(), filterName);
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    String filterName = spec.getFilterName();
-                    Filter filter = filterControl.getFilterByNameForUpdate(filterType, filterName);
+                    var filterName = spec.getFilterName();
+                    var filter = filterControl.getFilterByNameForUpdate(filterType, filterName);
                     
                     if(filter != null) {
                         filterName = edit.getFilterName();
-                        Filter duplicateFilter = filterControl.getFilterByName(filterType, filterName);
+                        var duplicateFilter = filterControl.getFilterByName(filterType, filterName);
                         
                         if(duplicateFilter == null || filter.equals(duplicateFilter)) {
-                            String initialFilterAdjustmentName = edit.getInitialFilterAdjustmentName();
-                            FilterAdjustment initialFilterAdjustment = initialFilterAdjustmentName == null? null: filterControl.getFilterAdjustmentByName(filterKind, initialFilterAdjustmentName);
+                            var initialFilterAdjustmentName = edit.getInitialFilterAdjustmentName();
+                            var initialFilterAdjustment = initialFilterAdjustmentName == null? null: filterControl.getFilterAdjustmentByName(filterKind, initialFilterAdjustmentName);
                             
                             if(initialFilterAdjustmentName == null || initialFilterAdjustment != null) {
-                                String filterItemSelectorName = edit.getFilterItemSelectorName();
+                                var filterItemSelectorName = edit.getFilterItemSelectorName();
                                 Selector filterItemSelector = null;
                                 
                                 if(filterItemSelectorName != null) {
                                     var selectorControl = Session.getModelController(SelectorControl.class);
-                                    SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
+                                    var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                                     if(selectorKind != null) {
-                                        SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.FILTER.name());
+                                        var selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.FILTER.name());
                                         
                                         if(selectorType != null) {
                                             filterItemSelector = selectorControl.getSelectorByName(selectorType, filterItemSelectorName);
@@ -169,9 +158,9 @@ public class EditFilterCommand
                                     if(lockEntityForUpdate(filter)) {
                                         try {
                                             var partyPK = getPartyPK();
-                                            FilterDetailValue filterDetailValue = filterControl.getFilterDetailValueForUpdate(filter);
-                                            FilterDescription filterDescription = filterControl.getFilterDescriptionForUpdate(filter, getPreferredLanguage());
-                                            String description = edit.getDescription();
+                                            var filterDetailValue = filterControl.getFilterDetailValueForUpdate(filter);
+                                            var filterDescription = filterControl.getFilterDescriptionForUpdate(filter, getPreferredLanguage());
+                                            var description = edit.getDescription();
                                             
                                             filterDetailValue.setFilterName(edit.getFilterName());
                                             filterDetailValue.setInitialFilterAdjustmentPK(initialFilterAdjustment.getPrimaryKey());
@@ -186,7 +175,7 @@ public class EditFilterCommand
                                             } else if(filterDescription != null && description == null) {
                                                 filterControl.deleteFilterDescription(filterDescription, partyPK);
                                             } else if(filterDescription != null && description != null) {
-                                                FilterDescriptionValue filterDescriptionValue = filterControl.getFilterDescriptionValue(filterDescription);
+                                                var filterDescriptionValue = filterControl.getFilterDescriptionValue(filterDescription);
                                                 
                                                 filterDescriptionValue.setDescription(description);
                                                 filterControl.updateFilterDescriptionFromValue(filterDescriptionValue, partyPK);

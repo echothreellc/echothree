@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.leavereason;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.CreateLeaveReasonForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -51,7 +50,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateLeaveReasonForm commandForm = EmployeeUtil.getHome().getCreateLeaveReasonForm();
+        var commandForm = EmployeeUtil.getHome().getCreateLeaveReasonForm();
 
         commandForm.setLeaveReasonName(actionForm.getLeaveReasonName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());

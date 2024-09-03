@@ -17,14 +17,11 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetPartyAliasTypeDescriptionsForm;
-import com.echothree.control.user.party.common.result.GetPartyAliasTypeDescriptionsResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.PartyAliasType;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,13 +64,13 @@ public class GetPartyAliasTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyAliasTypeDescriptionsResult result = PartyResultFactory.getGetPartyAliasTypeDescriptionsResult();
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var result = PartyResultFactory.getGetPartyAliasTypeDescriptionsResult();
+        var partyTypeName = form.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
-            String partyAliasTypeName = form.getPartyAliasTypeName();
-            PartyAliasType partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
+            var partyAliasTypeName = form.getPartyAliasTypeName();
+            var partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
 
             if(partyAliasType != null) {
                 result.setPartyAliasType(partyControl.getPartyAliasTypeTransfer(getUserVisit(), partyAliasType));

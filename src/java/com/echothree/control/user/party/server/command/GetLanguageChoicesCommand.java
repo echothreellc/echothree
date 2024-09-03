@@ -17,7 +17,6 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetLanguageChoicesForm;
-import com.echothree.control.user.party.common.result.GetLanguageChoicesResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -51,9 +50,9 @@ public class GetLanguageChoicesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetLanguageChoicesResult result = PartyResultFactory.getGetLanguageChoicesResult();
-        String defaultLanguageChoice = form.getDefaultLanguageChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = PartyResultFactory.getGetLanguageChoicesResult();
+        var defaultLanguageChoice = form.getDefaultLanguageChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setLanguageChoices(partyControl.getLanguageChoices(defaultLanguageChoice, getPreferredLanguage(), allowNullChoice));
         

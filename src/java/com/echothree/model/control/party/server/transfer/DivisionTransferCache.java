@@ -16,36 +16,20 @@
 
 package com.echothree.model.control.party.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyOptions;
-import com.echothree.model.control.party.common.transfer.CompanyTransfer;
-import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
 import com.echothree.model.control.party.common.transfer.DivisionTransfer;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
-import com.echothree.model.control.party.common.transfer.PartyGroupTransfer;
-import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
-import com.echothree.model.control.party.common.transfer.PersonTransfer;
-import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.scale.server.control.ScaleControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.party.server.entity.DateTimeFormat;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyDetail;
 import com.echothree.model.data.party.server.entity.PartyDivision;
-import com.echothree.model.data.party.server.entity.PartyGroup;
-import com.echothree.model.data.party.server.entity.Person;
-import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class DivisionTransferCache
         extends BasePartyTransferCache<Party, DivisionTransfer> {
@@ -85,30 +69,30 @@ public class DivisionTransferCache
     }
     
     public DivisionTransfer getDivisionTransfer(Party party) {
-        DivisionTransfer divisionTransfer = get(party);
+        var divisionTransfer = get(party);
         
         if(divisionTransfer == null) {
-            PartyDetail partyDetail = party.getLastDetail();
-            String partyName = partyDetail.getPartyName();
-            PartyTypeTransfer partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyDetail.getPartyType());
-            Language preferredLanguage = partyDetail.getPreferredLanguage();
-            LanguageTransfer preferredLanguageTransfer = preferredLanguage == null ? null : partyControl.getLanguageTransfer(userVisit, preferredLanguage);
-            Currency preferredCurrency = partyDetail.getPreferredCurrency();
-            CurrencyTransfer preferredCurrencyTransfer = preferredCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
-            TimeZone preferredTimeZone = partyDetail.getPreferredTimeZone();
-            TimeZoneTransfer preferredTimeZoneTransfer = preferredTimeZone == null ? null : partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
-            DateTimeFormat preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
-            DateTimeFormatTransfer preferredDateTimeFormatTransfer = preferredDateTimeFormat == null ? null : partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
-            Person person = partyControl.getPerson(party);
-            PersonTransfer personTransfer = person == null ? null : partyControl.getPersonTransfer(userVisit, person);
-            PartyGroup partyGroup = partyControl.getPartyGroup(party);
-            PartyGroupTransfer partyGroupTransfer = partyGroup == null ? null : partyControl.getPartyGroupTransfer(userVisit, partyGroup);
-            PartyDivision partyDivision = partyControl.getPartyDivision(party);
-            Party companyParty = partyDivision.getCompanyParty();
-            CompanyTransfer company = partyControl.getCompanyTransfer(userVisit, companyParty);
-            String divisionName = partyDivision.getPartyDivisionName();
-            String isDefault = partyDivision.getIsDefault().toString();
-            String sortOrder = partyDivision.getSortOrder().toString();
+            var partyDetail = party.getLastDetail();
+            var partyName = partyDetail.getPartyName();
+            var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyDetail.getPartyType());
+            var preferredLanguage = partyDetail.getPreferredLanguage();
+            var preferredLanguageTransfer = preferredLanguage == null ? null : partyControl.getLanguageTransfer(userVisit, preferredLanguage);
+            var preferredCurrency = partyDetail.getPreferredCurrency();
+            var preferredCurrencyTransfer = preferredCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, preferredCurrency);
+            var preferredTimeZone = partyDetail.getPreferredTimeZone();
+            var preferredTimeZoneTransfer = preferredTimeZone == null ? null : partyControl.getTimeZoneTransfer(userVisit, preferredTimeZone);
+            var preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
+            var preferredDateTimeFormatTransfer = preferredDateTimeFormat == null ? null : partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
+            var person = partyControl.getPerson(party);
+            var personTransfer = person == null ? null : partyControl.getPersonTransfer(userVisit, person);
+            var partyGroup = partyControl.getPartyGroup(party);
+            var partyGroupTransfer = partyGroup == null ? null : partyControl.getPartyGroupTransfer(userVisit, partyGroup);
+            var partyDivision = partyControl.getPartyDivision(party);
+            var companyParty = partyDivision.getCompanyParty();
+            var company = partyControl.getCompanyTransfer(userVisit, companyParty);
+            var divisionName = partyDivision.getPartyDivisionName();
+            var isDefault = partyDivision.getIsDefault().toString();
+            var sortOrder = partyDivision.getSortOrder().toString();
             
             divisionTransfer = new DivisionTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
                     personTransfer, partyGroupTransfer, company, divisionName, isDefault, sortOrder);

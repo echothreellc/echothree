@@ -18,15 +18,11 @@ package com.echothree.control.user.warehouse.server.command;
 
 import com.echothree.control.user.warehouse.common.form.GetWarehouseTypeDescriptionForm;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
-import com.echothree.control.user.warehouse.common.result.GetWarehouseTypeDescriptionResult;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.warehouse.server.entity.WarehouseType;
-import com.echothree.model.data.warehouse.server.entity.WarehouseTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetWarehouseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        GetWarehouseTypeDescriptionResult result = WarehouseResultFactory.getGetWarehouseTypeDescriptionResult();
-        String warehouseTypeName = form.getWarehouseTypeName();
-        WarehouseType warehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName);
+        var result = WarehouseResultFactory.getGetWarehouseTypeDescriptionResult();
+        var warehouseTypeName = form.getWarehouseTypeName();
+        var warehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName);
         
         if(warehouseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                WarehouseTypeDescription warehouseTypeDescription = warehouseControl.getWarehouseTypeDescription(warehouseType, language);
+                var warehouseTypeDescription = warehouseControl.getWarehouseTypeDescription(warehouseType, language);
                 
                 if(warehouseTypeDescription != null) {
                     result.setWarehouseTypeDescription(warehouseControl.getWarehouseTypeDescriptionTransfer(getUserVisit(), warehouseTypeDescription));

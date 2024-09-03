@@ -310,7 +310,7 @@ public class SalesOrderLineLogic
                     handleExecutionError(CurrentTimeBeforeSalesOrderStartTimeException.class, eea, ExecutionErrors.CurrentTimeBeforeSalesOrderStartTime.name());
                 }
 
-                Long salesOrderEndTime = itemDetail.getSalesOrderEndTime();
+                var salesOrderEndTime = itemDetail.getSalesOrderEndTime();
                 if(salesOrderEndTime != null && session.START_TIME > salesOrderEndTime) {
                     handleExecutionError(CurrentTimeAfterSalesOrderEndTimeException.class, eea, ExecutionErrors.CurrentTimeAfterSalesOrderEndTime.name());
                 }

@@ -18,15 +18,11 @@ package com.echothree.control.user.batch.server.command;
 
 import com.echothree.control.user.batch.common.form.GetBatchTypeDescriptionForm;
 import com.echothree.control.user.batch.common.result.BatchResultFactory;
-import com.echothree.control.user.batch.common.result.GetBatchTypeDescriptionResult;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.batch.server.entity.BatchType;
-import com.echothree.model.data.batch.server.entity.BatchTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetBatchTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        GetBatchTypeDescriptionResult result = BatchResultFactory.getGetBatchTypeDescriptionResult();
-        String batchTypeName = form.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var result = BatchResultFactory.getGetBatchTypeDescriptionResult();
+        var batchTypeName = form.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
         
         if(batchType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                BatchTypeDescription batchTypeDescription = batchControl.getBatchTypeDescription(batchType, language);
+                var batchTypeDescription = batchControl.getBatchTypeDescription(batchType, language);
 
                 if(batchTypeDescription != null) {
                     result.setBatchTypeDescription(batchControl.getBatchTypeDescriptionTransfer(getUserVisit(), batchTypeDescription));

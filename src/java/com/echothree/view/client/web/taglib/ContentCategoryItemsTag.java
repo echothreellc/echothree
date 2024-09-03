@@ -18,11 +18,8 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentCategoryItemsForm;
 import com.echothree.control.user.content.common.result.GetContentCategoryItemsResult;
 import com.echothree.model.data.content.common.ContentCategoryItemConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -161,7 +158,7 @@ public class ContentCategoryItemsTag
     public int doStartTag()
             throws JspException {
         try {
-            GetContentCategoryItemsForm commandForm = ContentUtil.getHome().getGetContentCategoryItemsForm();
+            var commandForm = ContentUtil.getHome().getGetContentCategoryItemsForm();
             Map<String, Limit> limits = new HashMap<>();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -181,7 +178,7 @@ public class ContentCategoryItemsTag
             }
             commandForm.setLimits(limits);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentCategoryItems(getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().getContentCategoryItems(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -189,8 +186,8 @@ public class ContentCategoryItemsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentCategoryItemsResult result = (GetContentCategoryItemsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContentCategoryItemsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getContentCategoryItems()), scope);
 

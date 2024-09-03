@@ -17,9 +17,7 @@
 package com.echothree.model.control.chain.server.transfer;
 
 import com.echothree.model.control.chain.common.transfer.ChainEntityRoleTypeDescriptionTransfer;
-import com.echothree.model.control.chain.common.transfer.ChainEntityRoleTypeTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.chain.server.entity.ChainEntityRoleTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class ChainEntityRoleTypeDescriptionTransferCache
     }
     
     public ChainEntityRoleTypeDescriptionTransfer getChainEntityRoleTypeDescriptionTransfer(ChainEntityRoleTypeDescription chainEntityRoleTypeDescription) {
-        ChainEntityRoleTypeDescriptionTransfer chainEntityRoleTypeDescriptionTransfer = get(chainEntityRoleTypeDescription);
+        var chainEntityRoleTypeDescriptionTransfer = get(chainEntityRoleTypeDescription);
         
         if(chainEntityRoleTypeDescriptionTransfer == null) {
-            ChainEntityRoleTypeTransfer chainEntityRoleTypeTransfer = chainControl.getChainEntityRoleTypeTransfer(userVisit, chainEntityRoleTypeDescription.getChainEntityRoleType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, chainEntityRoleTypeDescription.getLanguage());
+            var chainEntityRoleTypeTransfer = chainControl.getChainEntityRoleTypeTransfer(userVisit, chainEntityRoleTypeDescription.getChainEntityRoleType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, chainEntityRoleTypeDescription.getLanguage());
             
             chainEntityRoleTypeDescriptionTransfer = new ChainEntityRoleTypeDescriptionTransfer(languageTransfer, chainEntityRoleTypeTransfer, chainEntityRoleTypeDescription.getDescription());
             put(chainEntityRoleTypeDescription, chainEntityRoleTypeDescriptionTransfer);

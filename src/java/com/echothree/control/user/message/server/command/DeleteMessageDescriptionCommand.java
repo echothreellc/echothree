@@ -19,12 +19,6 @@ package com.echothree.control.user.message.server.command;
 import com.echothree.control.user.message.common.form.DeleteMessageDescriptionForm;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.message.server.entity.Message;
-import com.echothree.model.data.message.server.entity.MessageDescription;
-import com.echothree.model.data.message.server.entity.MessageType;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -59,29 +53,29 @@ public class DeleteMessageDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var messageControl = Session.getModelController(MessageControl.class);
-                String messageTypeName = form.getMessageTypeName();
-                MessageType messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
+                var messageTypeName = form.getMessageTypeName();
+                var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 
                 if(messageType != null) {
-                    String messageName = form.getMessageName();
-                    Message message = messageControl.getMessageByName(messageType, messageName);
+                    var messageName = form.getMessageName();
+                    var message = messageControl.getMessageByName(messageType, messageName);
                     
                     if(message != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = form.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = form.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
                         if(language != null) {
-                            MessageDescription messageDescription = messageControl.getMessageDescriptionForUpdate(message, language);
+                            var messageDescription = messageControl.getMessageDescriptionForUpdate(message, language);
                             
                             if(messageDescription != null) {
                                 messageControl.deleteMessageDescription(messageDescription, getPartyPK());

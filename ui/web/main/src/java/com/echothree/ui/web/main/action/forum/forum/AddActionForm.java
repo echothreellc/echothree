@@ -17,21 +17,16 @@
 package com.echothree.ui.web.main.action.forum.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.GetForumTypeChoicesForm;
 import com.echothree.control.user.forum.common.result.GetForumTypeChoicesResult;
 import com.echothree.control.user.icon.common.IconUtil;
-import com.echothree.control.user.icon.common.form.GetIconChoicesForm;
 import com.echothree.control.user.icon.common.result.GetIconChoicesResult;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.form.GetSequenceChoicesForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
 import com.echothree.model.control.forum.common.choice.ForumTypeChoicesBean;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.common.choice.IconChoicesBean;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -60,14 +55,14 @@ public class AddActionForm
     private void setupForumTypeChoices()
             throws NamingException {
         if(forumTypeChoices == null) {
-            GetForumTypeChoicesForm commandForm = ForumUtil.getHome().getGetForumTypeChoicesForm();
+            var commandForm = ForumUtil.getHome().getGetForumTypeChoicesForm();
 
             commandForm.setDefaultForumTypeChoice(forumTypeChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ForumUtil.getHome().getForumTypeChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetForumTypeChoicesResult result = (GetForumTypeChoicesResult)executionResult.getResult();
+            var commandResult = ForumUtil.getHome().getForumTypeChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetForumTypeChoicesResult)executionResult.getResult();
             forumTypeChoices = result.getForumTypeChoices();
 
             if(forumTypeChoice == null)
@@ -78,15 +73,15 @@ public class AddActionForm
     private void setupIconChoices()
             throws NamingException {
         if(iconChoices == null) {
-            GetIconChoicesForm commandForm = IconUtil.getHome().getGetIconChoicesForm();
+            var commandForm = IconUtil.getHome().getGetIconChoicesForm();
 
             commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM);
             commandForm.setDefaultIconChoice(iconChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetIconChoicesResult getIconChoicesResult = (GetIconChoicesResult)executionResult.getResult();
+            var commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getIconChoicesResult = (GetIconChoicesResult)executionResult.getResult();
             iconChoices = getIconChoicesResult.getIconChoices();
 
             if(iconChoice == null)
@@ -97,15 +92,15 @@ public class AddActionForm
     private void setupForumThreadSequenceChoices()
             throws NamingException {
         if(forumThreadSequenceChoices == null) {
-            GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
+            var commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
 
             commandForm.setSequenceTypeName(SequenceTypes.FORUM_THREAD.name());
             commandForm.setDefaultSequenceChoice(forumThreadSequenceChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+            var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceChoicesResult)executionResult.getResult();
             forumThreadSequenceChoices = result.getSequenceChoices();
 
             if(forumThreadSequenceChoice == null)
@@ -116,15 +111,15 @@ public class AddActionForm
     private void setupForumMessageSequenceChoices()
             throws NamingException {
         if(forumMessageSequenceChoices == null) {
-            GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
+            var commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
 
             commandForm.setSequenceTypeName(SequenceTypes.FORUM_MESSAGE.name());
             commandForm.setDefaultSequenceChoice(forumMessageSequenceChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+            var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceChoicesResult)executionResult.getResult();
             forumMessageSequenceChoices = result.getSequenceChoices();
 
             if(forumMessageSequenceChoice == null)

@@ -17,19 +17,14 @@
 package com.echothree.ui.web.main.action.purchasing.vendor;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetGlAccountChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetGlAccountChoicesResult;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationPolicyChoicesForm;
 import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationPolicyChoicesResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemAliasTypeChoicesForm;
 import com.echothree.control.user.item.common.result.GetItemAliasTypeChoicesResult;
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.form.GetReturnPolicyChoicesForm;
 import com.echothree.control.user.returnpolicy.common.result.GetReturnPolicyChoicesResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.GetVendorTypeChoicesForm;
 import com.echothree.control.user.vendor.common.result.GetVendorTypeChoicesResult;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
@@ -39,8 +34,6 @@ import com.echothree.model.control.item.common.choice.ItemAliasTypeChoicesBean;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
 import com.echothree.model.control.vendor.common.choice.VendorTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BasePersonActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -83,14 +76,14 @@ public class VendorEditActionForm
     public void setupVendorTypeChoices() {
         if(vendorTypeChoices == null) {
             try {
-                GetVendorTypeChoicesForm form = VendorUtil.getHome().getGetVendorTypeChoicesForm();
+                var form = VendorUtil.getHome().getGetVendorTypeChoicesForm();
                 
                 form.setDefaultVendorTypeChoice(vendorTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = VendorUtil.getHome().getVendorTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetVendorTypeChoicesResult getVendorTypeChoicesResult = (GetVendorTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = VendorUtil.getHome().getVendorTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getVendorTypeChoicesResult = (GetVendorTypeChoicesResult)executionResult.getResult();
                 vendorTypeChoices = getVendorTypeChoicesResult.getVendorTypeChoices();
                 
                 if(vendorTypeChoice == null) {
@@ -106,14 +99,14 @@ public class VendorEditActionForm
     public void setupDefaultItemAliasTypeChoices() {
         if(defaultItemAliasTypeChoices == null) {
             try {
-                GetItemAliasTypeChoicesForm form = ItemUtil.getHome().getGetItemAliasTypeChoicesForm();
+                var form = ItemUtil.getHome().getGetItemAliasTypeChoicesForm();
                 
                 form.setDefaultItemAliasTypeChoice(defaultItemAliasTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = ItemUtil.getHome().getItemAliasTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemAliasTypeChoicesResult getItemAliasTypeChoicesResult = (GetItemAliasTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = ItemUtil.getHome().getItemAliasTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getItemAliasTypeChoicesResult = (GetItemAliasTypeChoicesResult)executionResult.getResult();
                 defaultItemAliasTypeChoices = getItemAliasTypeChoicesResult.getItemAliasTypeChoices();
                 
                 if(defaultItemAliasTypeChoice == null) {
@@ -129,15 +122,15 @@ public class VendorEditActionForm
     public void setupCancellationPolicyChoices() {
         if(cancellationPolicyChoices == null) {
             try {
-                GetCancellationPolicyChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
+                var form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
 
                 form.setCancellationKindName(CancellationKinds.VENDOR_CANCELLATION.name());
                 form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCancellationPolicyChoicesResult result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+                var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
                 cancellationPolicyChoices = result.getCancellationPolicyChoices();
 
                 if(cancellationPolicyChoice == null)
@@ -152,15 +145,15 @@ public class VendorEditActionForm
     public void setupReturnPolicyChoices() {
         if(returnPolicyChoices == null) {
             try {
-                GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
+                var form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
 
                 form.setReturnKindName(ReturnKinds.VENDOR_RETURN.name());
                 form.setDefaultReturnPolicyChoice(returnPolicyChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetReturnPolicyChoicesResult result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+                var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
                 returnPolicyChoices = result.getReturnPolicyChoices();
 
                 if(returnPolicyChoice == null)
@@ -175,15 +168,15 @@ public class VendorEditActionForm
     public void setupApGlAccountChoices() {
         if(apGlAccountChoices == null) {
             try {
-                GetGlAccountChoicesForm form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
+                var form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
                 
                 form.setGlAccountCategoryName(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE);
                 form.setDefaultGlAccountChoice(apGlAccountChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGlAccountChoicesResult getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
                 apGlAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
                 
                 if(apGlAccountChoice == null) {

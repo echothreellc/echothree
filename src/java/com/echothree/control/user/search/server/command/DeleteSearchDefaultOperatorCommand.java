@@ -21,7 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,8 +62,8 @@ public class DeleteSearchDefaultOperatorCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchDefaultOperatorName = form.getSearchDefaultOperatorName();
-        SearchDefaultOperator searchDefaultOperator = searchControl.getSearchDefaultOperatorByNameForUpdate(searchDefaultOperatorName);
+        var searchDefaultOperatorName = form.getSearchDefaultOperatorName();
+        var searchDefaultOperator = searchControl.getSearchDefaultOperatorByNameForUpdate(searchDefaultOperatorName);
         
         if(searchDefaultOperator != null) {
             searchControl.deleteSearchDefaultOperator(searchDefaultOperator, getPartyPK());

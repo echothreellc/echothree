@@ -30,15 +30,11 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.control.uom.server.util.Conversion;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.PartyInventoryLevel;
-import com.echothree.model.data.inventory.server.value.PartyInventoryLevelValue;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -104,7 +100,7 @@ public class EditPartyInventoryLevelCommand
                 party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
-                    String partyTypeName = getPartyTypeName(party);
+                    var partyTypeName = getPartyTypeName(party);
 
                     if(!partyTypeName.equals(PartyTypes.COMPANY.name())
                             && !partyTypeName.equals(PartyTypes.WAREHOUSE.name())) {
@@ -115,7 +111,7 @@ public class EditPartyInventoryLevelCommand
                     addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else if(companyName != null) {
-                PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
+                var partyCompany = partyControl.getPartyCompanyByName(companyName);
 
                 if(partyCompany != null) {
                     party = partyCompany.getParty();
@@ -125,7 +121,7 @@ public class EditPartyInventoryLevelCommand
             }
         } else if(warehouseName != null) {
             var warehouseControl = Session.getModelController(WarehouseControl.class);
-            Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+            var warehouse = warehouseControl.getWarehouseByName(warehouseName);
 
             if(warehouse != null) {
                 party = warehouse.getParty();
@@ -137,9 +133,9 @@ public class EditPartyInventoryLevelCommand
     }
 
     protected Party getParty(PartyInventoryLevelSpec spec) {
-        String partyName = spec.getPartyName();
-        String companyName = spec.getCompanyName();
-        String warehouseName = spec.getWarehouseName();
+        var partyName = spec.getPartyName();
+        var companyName = spec.getCompanyName();
+        var warehouseName = spec.getWarehouseName();
         var parameterCount = (partyName == null ? 0 : 1) + (companyName == null ? 0 : 1) + (warehouseName == null ? 0 : 1);
         Party party = null;
 
@@ -158,14 +154,14 @@ public class EditPartyInventoryLevelCommand
     public PartyInventoryLevel getEntity(EditPartyInventoryLevelResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         PartyInventoryLevel partyInventoryLevel = null;
-        Party party = getParty(spec);
+        var party = getParty(spec);
 
         if(party != null) {
-            String itemName = spec.getItemName();
-            Item item = itemControl.getItemByName(itemName);
+            var itemName = spec.getItemName();
+            var item = itemControl.getItemByName(itemName);
 
             if(item != null) {
-                String partyTypeName = getPartyTypeName(party);
+                var partyTypeName = getPartyTypeName(party);
 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.UPDATE)) {
                     unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
@@ -179,8 +175,8 @@ public class EditPartyInventoryLevelCommand
 
                 if(!hasExecutionErrors()) {
                     var inventoryControl = Session.getModelController(InventoryControl.class);
-                    String inventoryConditionName = spec.getInventoryConditionName();
-                    InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                    var inventoryConditionName = spec.getInventoryConditionName();
+                    var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
                     if(inventoryCondition != null) {
                         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -221,13 +217,13 @@ public class EditPartyInventoryLevelCommand
         var uomControl = Session.getModelController(UomControl.class);
 
         minimumInventory = partyInventoryLevel.getMinimumInventory();
-        Conversion minimumInventoryConversion = minimumInventory == null ? null : new Conversion(uomControl, unitOfMeasureKind, minimumInventory).convertToHighestUnitOfMeasureType();
+        var minimumInventoryConversion = minimumInventory == null ? null : new Conversion(uomControl, unitOfMeasureKind, minimumInventory).convertToHighestUnitOfMeasureType();
 
         maximumInventory = partyInventoryLevel.getMaximumInventory();
-        Conversion maximumInventoryConversion = maximumInventory == null ? null : new Conversion(uomControl, unitOfMeasureKind, maximumInventory).convertToHighestUnitOfMeasureType();
+        var maximumInventoryConversion = maximumInventory == null ? null : new Conversion(uomControl, unitOfMeasureKind, maximumInventory).convertToHighestUnitOfMeasureType();
 
         reorderQuantity = partyInventoryLevel.getReorderQuantity();
-        Conversion reorderQuantityConversion = reorderQuantity == null ? null : new Conversion(uomControl, unitOfMeasureKind, reorderQuantity).convertToHighestUnitOfMeasureType();
+        var reorderQuantityConversion = reorderQuantity == null ? null : new Conversion(uomControl, unitOfMeasureKind, reorderQuantity).convertToHighestUnitOfMeasureType();
 
         edit.setMinimumInventory(minimumInventoryConversion.getQuantity().toString());
         edit.setMinimumInventoryUnitOfMeasureTypeName(minimumInventoryConversion.getUnitOfMeasureType().getLastDetail().getUnitOfMeasureTypeName());
@@ -243,7 +239,7 @@ public class EditPartyInventoryLevelCommand
 
     @Override
     public void canUpdate(PartyInventoryLevel partyInventoryLevel) {
-        UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
 
         minimumInventory = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, unitOfMeasureKind,
                 edit.getMinimumInventory(), edit.getMinimumInventoryUnitOfMeasureTypeName(),
@@ -268,7 +264,7 @@ public class EditPartyInventoryLevelCommand
     @Override
     public void doUpdate(PartyInventoryLevel partyInventoryLevel) {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        PartyInventoryLevelValue partyInventoryLevelValue = inventoryControl.getPartyInventoryLevelValue(partyInventoryLevel);
+        var partyInventoryLevelValue = inventoryControl.getPartyInventoryLevelValue(partyInventoryLevel);
 
         partyInventoryLevelValue.setMinimumInventory(minimumInventory);
         partyInventoryLevelValue.setMaximumInventory(maximumInventory);

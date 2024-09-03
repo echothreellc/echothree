@@ -17,16 +17,12 @@
 package com.echothree.control.user.returnpolicy.server.command;
 
 import com.echothree.control.user.returnpolicy.common.form.GetPartyReturnPoliciesForm;
-import com.echothree.control.user.returnpolicy.common.result.GetPartyReturnPoliciesResult;
 import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -70,16 +66,16 @@ public class GetPartyReturnPoliciesCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        GetPartyReturnPoliciesResult result = ReturnPolicyResultFactory.getGetPartyReturnPoliciesResult();
-        String partyName = form.getPartyName();
-        String returnKindName = form.getReturnKindName();
-        String returnPolicyName = form.getReturnPolicyName();
+        var result = ReturnPolicyResultFactory.getGetPartyReturnPoliciesResult();
+        var partyName = form.getPartyName();
+        var returnKindName = form.getReturnKindName();
+        var returnPolicyName = form.getReturnPolicyName();
         var parameterCount = (partyName != null ? 1 : 0) + (returnKindName != null && returnPolicyName != null ? 1 : 0);
 
         if(parameterCount == 1) {
             if(partyName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                Party party = partyControl.getPartyByName(partyName);
+                var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
                     result.setPartyReturnPolicies(returnPolicyControl.getPartyReturnPolicyTransfersByParty(getUserVisit(), party));
@@ -87,10 +83,10 @@ public class GetPartyReturnPoliciesCommand
                     addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else {
-                ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+                var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
                 if(returnKind != null) {
-                    ReturnPolicy returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
+                    var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
 
                     if(returnPolicy != null) {
                         result.setPartyReturnPolicies(returnPolicyControl.getPartyReturnPolicyTransfersByReturnPolicy(getUserVisit(), returnPolicy));

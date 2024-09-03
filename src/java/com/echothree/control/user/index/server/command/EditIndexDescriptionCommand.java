@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.index.server.entity.IndexDescription;
-import com.echothree.model.data.index.server.value.IndexDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditIndexDescriptionCommand
     public IndexDescription getEntity(EditIndexDescriptionResult result) {
         var indexControl = Session.getModelController(IndexControl.class);
         IndexDescription indexDescription = null;
-        String indexName = spec.getIndexName();
-        Index index = indexControl.getIndexByName(indexName);
+        var indexName = spec.getIndexName();
+        var index = indexControl.getIndexByName(indexName);
 
         if(index != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditIndexDescriptionCommand
     @Override
     public void doUpdate(IndexDescription indexDescription) {
         var indexControl = Session.getModelController(IndexControl.class);
-        IndexDescriptionValue indexDescriptionValue = indexControl.getIndexDescriptionValue(indexDescription);
+        var indexDescriptionValue = indexControl.getIndexDescriptionValue(indexDescription);
         indexDescriptionValue.setDescription(edit.getDescription());
 
         indexControl.updateIndexDescriptionFromValue(indexDescriptionValue, getPartyPK());

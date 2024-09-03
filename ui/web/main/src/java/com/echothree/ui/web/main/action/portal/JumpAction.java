@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.portal;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.IdentifyForm;
 import com.echothree.control.user.search.common.result.IdentifyResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -51,15 +48,15 @@ public class JumpAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, JumpActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        IdentifyForm commandForm = SearchUtil.getHome().getIdentifyForm();
+        var commandForm = SearchUtil.getHome().getIdentifyForm();
         
         commandForm.setTarget(actionForm.getTarget());
-        
-        CommandResult commandResult = SearchUtil.getHome().identify(getUserVisitPK(request), commandForm);
+
+        var commandResult = SearchUtil.getHome().identify(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            IdentifyResult result = (IdentifyResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (IdentifyResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.ENTITY_INSTANCES, new ListWrapper<>(result.getEntityInstances()));
         }

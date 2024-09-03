@@ -16,17 +16,12 @@
 
 package com.echothree.model.control.cancellationpolicy.server.transfer;
 
-import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationPolicyTransfer;
 import com.echothree.model.control.cancellationpolicy.common.transfer.PartyCancellationPolicyTransfer;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.cancellationpolicy.server.logic.PartyCancellationPolicyLogic;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.data.cancellationpolicy.server.entity.PartyCancellationPolicy;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -42,15 +37,15 @@ public class PartyCancellationPolicyTransferCache
     }
 
     public PartyCancellationPolicyTransfer getPartyCancellationPolicyTransfer(PartyCancellationPolicy partyCancellationPolicy) {
-        PartyCancellationPolicyTransfer partyCancellationPolicyTransfer = get(partyCancellationPolicy);
+        var partyCancellationPolicyTransfer = get(partyCancellationPolicy);
         
         if(partyCancellationPolicyTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyCancellationPolicy.getParty());
-            CancellationPolicyTransfer cancellationPolicy = cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, partyCancellationPolicy.getCancellationPolicy());
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey());
-            PartyPK createdBy = getPartyPK();
-            WorkflowEntityStatusTransfer partyCancellationPolicyStatusTransfer = PartyCancellationPolicyLogic.getInstance().getPartyCancellationPolicyStatusTransfer(userVisit, entityInstance, createdBy);
+            var party = partyControl.getPartyTransfer(userVisit, partyCancellationPolicy.getParty());
+            var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, partyCancellationPolicy.getCancellationPolicy());
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey());
+            var createdBy = getPartyPK();
+            var partyCancellationPolicyStatusTransfer = PartyCancellationPolicyLogic.getInstance().getPartyCancellationPolicyStatusTransfer(userVisit, entityInstance, createdBy);
 
             partyCancellationPolicyTransfer = new PartyCancellationPolicyTransfer(party, cancellationPolicy, partyCancellationPolicyStatusTransfer);
             put(partyCancellationPolicy, partyCancellationPolicyTransfer, entityInstance);

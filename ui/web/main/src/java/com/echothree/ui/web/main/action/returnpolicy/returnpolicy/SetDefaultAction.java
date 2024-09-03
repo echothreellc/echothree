@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnpolicy;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.form.SetDefaultReturnPolicyForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,11 +51,11 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+        var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
         
         try {
-            SetDefaultReturnPolicyForm commandForm = ReturnPolicyUtil.getHome().getSetDefaultReturnPolicyForm();
-            String returnPolicyName = request.getParameter(ParameterConstants.RETURN_POLICY_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getSetDefaultReturnPolicyForm();
+            var returnPolicyName = request.getParameter(ParameterConstants.RETURN_POLICY_NAME);
             
             commandForm.setReturnKindName(returnKindName);
             commandForm.setReturnPolicyName(returnPolicyName);
@@ -67,8 +66,8 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

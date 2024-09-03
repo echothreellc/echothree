@@ -26,7 +26,6 @@ import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
-import com.echothree.model.data.core.common.EntityMultipleListItemAttributeConstants;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.workflow.common.WorkflowEntityStatusConstants;
@@ -38,8 +37,6 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @GraphQLDescription("entity workflow attribute object")
 @GraphQLName("EntityWorkflowAttribute")

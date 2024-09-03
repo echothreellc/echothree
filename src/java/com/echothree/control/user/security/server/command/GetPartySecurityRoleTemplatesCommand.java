@@ -17,7 +17,6 @@
 package com.echothree.control.user.security.server.command;
 
 import com.echothree.control.user.security.common.form.GetPartySecurityRoleTemplatesForm;
-import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplatesResult;
 import com.echothree.control.user.security.common.result.SecurityResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -60,7 +59,7 @@ public class GetPartySecurityRoleTemplatesCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartySecurityRoleTemplatesResult result = SecurityResultFactory.getGetPartySecurityRoleTemplatesResult();
+        var result = SecurityResultFactory.getGetPartySecurityRoleTemplatesResult();
         var securityControl = Session.getModelController(SecurityControl.class);
         
         result.setPartySecurityRoleTemplates(securityControl.getPartySecurityRoleTemplateTransfers(getUserVisit()));

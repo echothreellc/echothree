@@ -18,12 +18,10 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.GetGeoCodeTypeDescriptionsForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
-import com.echothree.control.user.geo.common.result.GetGeoCodeTypeDescriptionsResult;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetGeoCodeTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetGeoCodeTypeDescriptionsResult result = GeoResultFactory.getGetGeoCodeTypeDescriptionsResult();
-        String geoCodeTypeName = form.getGeoCodeTypeName();
-        GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
+        var result = GeoResultFactory.getGetGeoCodeTypeDescriptionsResult();
+        var geoCodeTypeName = form.getGeoCodeTypeName();
+        var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
         
         if(geoCodeType != null) {
             result.setGeoCodeType(geoControl.getGeoCodeTypeTransfer(getUserVisit(), geoCodeType));

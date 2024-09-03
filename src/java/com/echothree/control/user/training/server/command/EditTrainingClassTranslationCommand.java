@@ -30,10 +30,8 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.training.server.entity.TrainingClassTranslation;
-import com.echothree.model.data.training.server.value.TrainingClassTranslationValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -96,13 +94,13 @@ public class EditTrainingClassTranslationCommand
     public TrainingClassTranslation getEntity(EditTrainingClassTranslationResult result) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassTranslation trainingClassTranslation = null;
-        String trainingClassName = spec.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClassName = spec.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -153,17 +151,17 @@ public class EditTrainingClassTranslationCommand
 
     @Override
     protected void canUpdate(TrainingClassTranslation trainingClassTranslation) {
-        MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-        String overviewMimeTypeName = edit.getOverviewMimeTypeName();
-        String overview = edit.getOverview();
+        var mimeTypeLogic = MimeTypeLogic.getInstance();
+        var overviewMimeTypeName = edit.getOverviewMimeTypeName();
+        var overview = edit.getOverview();
         
         overviewMimeType = mimeTypeLogic.checkMimeType(this, overviewMimeTypeName, overview, MimeTypeUsageTypes.TEXT.name(),
                 ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),
                 ExecutionErrors.UnknownOverviewMimeTypeName.name(), ExecutionErrors.UnknownOverviewMimeTypeUsage.name());
         
         if(!hasExecutionErrors()) {
-            String introductionMimeTypeName = edit.getIntroductionMimeTypeName();
-            String introduction = edit.getIntroduction();
+            var introductionMimeTypeName = edit.getIntroductionMimeTypeName();
+            var introduction = edit.getIntroduction();
 
             introductionMimeType = mimeTypeLogic.checkMimeType(this, introductionMimeTypeName, introduction, MimeTypeUsageTypes.TEXT.name(),
                     ExecutionErrors.MissingRequiredIntroductionMimeTypeName.name(), ExecutionErrors.MissingRequiredIntroduction.name(),
@@ -174,7 +172,7 @@ public class EditTrainingClassTranslationCommand
     @Override
     public void doUpdate(TrainingClassTranslation trainingClassTranslation) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        TrainingClassTranslationValue trainingClassTranslationValue = trainingControl.getTrainingClassTranslationValue(trainingClassTranslation);
+        var trainingClassTranslationValue = trainingControl.getTrainingClassTranslationValue(trainingClassTranslation);
         
         trainingClassTranslationValue.setDescription(edit.getDescription());
         trainingClassTranslationValue.setOverviewMimeTypePK(overviewMimeType == null? null: overviewMimeType.getPrimaryKey());

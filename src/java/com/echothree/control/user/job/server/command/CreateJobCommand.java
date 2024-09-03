@@ -24,11 +24,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.job.common.workflow.JobStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.job.server.entity.Job;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -72,20 +67,20 @@ public class CreateJobCommand
     @Override
     protected BaseResult execute() {
         var jobControl = Session.getModelController(JobControl.class);
-        String jobName = form.getJobName();
-        Job job = jobControl.getJobByName(jobName);
+        var jobName = form.getJobName();
+        var job = jobControl.getJobByName(jobName);
         
         if(job == null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            Party runAsParty = partyControl.getPartyByName(jobName);
+            var runAsParty = partyControl.getPartyByName(jobName);
             
             if(runAsParty == null) {
                 var coreControl = getCoreControl();
                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.UTILITY.name());
+                var partyType = partyControl.getPartyTypeByName(PartyTypes.UTILITY.name());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();
-                PartyPK createdBy = getPartyPK();
+                var createdBy = getPartyPK();
                 
                 runAsParty = partyControl.createParty(jobName, partyType, null, null, null, null, null);
                 job = jobControl.createJob(jobName, runAsParty, sortOrder, createdBy);
@@ -93,8 +88,8 @@ public class CreateJobCommand
                 if(description != null) {
                     jobControl.createJobDescription(job, getPreferredLanguage(), description, createdBy);
                 }
-                
-                EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(job.getPrimaryKey());
+
+                var entityInstance = coreControl.getEntityInstanceByBasePK(job.getPrimaryKey());
                 workflowControl.addEntityToWorkflowUsingNames(null, JobStatusConstants.Workflow_JOB_STATUS, JobStatusConstants.WorkflowEntrance_NEW_ENABLED, entityInstance, null, null, createdBy);
             } else {
                 addExecutionError(ExecutionErrors.DuplicatePartyName.name(), jobName);

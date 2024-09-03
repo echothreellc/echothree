@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.core;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.form.CreateFontWeightForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -47,7 +46,7 @@ public class FontWeightsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("fontWeight")) {
-            CreateFontWeightForm commandForm = CoreFormFactory.getCreateFontWeightForm();
+            var commandForm = CoreFormFactory.getCreateFontWeightForm();
             
             commandForm.set(getAttrsMap(attrs));
             

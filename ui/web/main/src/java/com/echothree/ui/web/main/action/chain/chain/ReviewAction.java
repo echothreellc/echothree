@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.chain.chain;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.GetChainForm;
 import com.echothree.control.user.chain.common.result.GetChainResult;
 import com.echothree.model.control.chain.common.transfer.ChainTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,19 +49,19 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetChainForm commandForm = ChainUtil.getHome().getGetChainForm();
+        String forwardKey;
+        var commandForm = ChainUtil.getHome().getGetChainForm();
 
         commandForm.setChainKindName(request.getParameter(ParameterConstants.CHAIN_KIND_NAME));
         commandForm.setChainTypeName(request.getParameter(ParameterConstants.CHAIN_TYPE_NAME));
         commandForm.setChainName(request.getParameter(ParameterConstants.CHAIN_NAME));
-        
-        CommandResult commandResult = ChainUtil.getHome().getChain(getUserVisitPK(request), commandForm);
+
+        var commandResult = ChainUtil.getHome().getChain(getUserVisitPK(request), commandForm);
         ChainTransfer chain = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetChainResult result = (GetChainResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetChainResult)executionResult.getResult();
             
             chain = result.getChain();
         }

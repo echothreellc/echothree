@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected ItemPackCheckRequirementSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemPackCheckRequirementSpec spec = ItemUtil.getHome().getItemPackCheckRequirementSpec();
+        var spec = ItemUtil.getHome().getItemPackCheckRequirementSpec();
 
         spec.setItemName(findParameter(request, ParameterConstants.ITEM_NAME, actionForm.getItemName()));
         spec.setUnitOfMeasureTypeName(findParameter(request, ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME, actionForm.getUnitOfMeasureTypeName()));
@@ -62,7 +62,7 @@ public class EditAction
     @Override
     protected ItemPackCheckRequirementEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemPackCheckRequirementEdit edit = ItemUtil.getHome().getItemPackCheckRequirementEdit();
+        var edit = ItemUtil.getHome().getItemPackCheckRequirementEdit();
 
         edit.setMinimumQuantity(actionForm.getMinimumQuantity());
         edit.setMaximumQuantity(actionForm.getMaximumQuantity());

@@ -20,9 +20,6 @@ import com.echothree.control.user.invoice.common.form.CreateInvoiceRoleTypeDescr
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.invoice.server.entity.InvoiceRoleType;
-import com.echothree.model.data.invoice.server.entity.InvoiceRoleTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,16 +59,16 @@ public class CreateInvoiceRoleTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        String invoiceRoleTypeName = form.getInvoiceRoleTypeName();
-        InvoiceRoleType invoiceRoleType = invoiceControl.getInvoiceRoleTypeByName(invoiceRoleTypeName);
+        var invoiceRoleTypeName = form.getInvoiceRoleTypeName();
+        var invoiceRoleType = invoiceControl.getInvoiceRoleTypeByName(invoiceRoleTypeName);
         
         if(invoiceRoleType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                InvoiceRoleTypeDescription invoiceRoleTypeDescription = invoiceControl.getInvoiceRoleTypeDescription(invoiceRoleType, language);
+                var invoiceRoleTypeDescription = invoiceControl.getInvoiceRoleTypeDescription(invoiceRoleType, language);
                 
                 if(invoiceRoleTypeDescription == null) {
                     var description = form.getDescription();

@@ -17,9 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.ServiceDescriptionTransfer;
-import com.echothree.model.control.core.common.transfer.ServiceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.core.server.entity.ServiceDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -35,11 +33,11 @@ public class ServiceDescriptionTransferCache
     }
     
     public ServiceDescriptionTransfer getServiceDescriptionTransfer(ServiceDescription serviceDescription) {
-        ServiceDescriptionTransfer serviceDescriptionTransfer = get(serviceDescription);
+        var serviceDescriptionTransfer = get(serviceDescription);
         
         if(serviceDescriptionTransfer == null) {
-            ServiceTransfer serviceTransfer = coreControl.getServiceTransfer(userVisit, serviceDescription.getService());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, serviceDescription.getLanguage());
+            var serviceTransfer = coreControl.getServiceTransfer(userVisit, serviceDescription.getService());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, serviceDescription.getLanguage());
             
             serviceDescriptionTransfer = new ServiceDescriptionTransfer(languageTransfer, serviceTransfer,
                     serviceDescription.getDescription());

@@ -19,7 +19,6 @@ package com.echothree.model.control.printer.server.logic;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.printer.server.entity.PartyPrinterGroupUse;
-import com.echothree.model.data.printer.server.entity.PrinterGroup;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -45,10 +44,10 @@ public class PartyPrinterGroupUseLogic
     public PartyPrinterGroupUse getPartyPrinterGroupUse(final ExecutionErrorAccumulator ema, final Party party, final PrinterGroupUseType printerGroupUseType,
             final BasePK createdBy) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        PartyPrinterGroupUse partyPrinterGroupUse = printerControl.getPartyPrinterGroupUse(party, printerGroupUseType);
+        var partyPrinterGroupUse = printerControl.getPartyPrinterGroupUse(party, printerGroupUseType);
 
         if(partyPrinterGroupUse == null) {
-            PrinterGroup printerGroup = printerControl.getDefaultPrinterGroup();
+            var printerGroup = printerControl.getDefaultPrinterGroup();
 
             if(printerGroup == null) {
                 addExecutionError(ema, ExecutionErrors.MissingDefaultPartyPrinterGroup.name());
@@ -63,7 +62,7 @@ public class PartyPrinterGroupUseLogic
     public PartyPrinterGroupUse getPartyPrinterGroupUseUsingNames(final ExecutionErrorAccumulator ema, final Party party, final String printerGroupUseTypeName,
             final BasePK createdBy) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
+        var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
         PartyPrinterGroupUse partyPrinterGroupUse = null;
 
         if(printerGroupUseType == null) {

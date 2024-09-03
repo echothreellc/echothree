@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.postaladdressformat;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.GetPostalAddressFormatForm;
 import com.echothree.control.user.contact.common.result.GetPostalAddressFormatResult;
-import com.echothree.model.control.contact.common.transfer.PostalAddressFormatTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,18 +49,18 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
-            GetPostalAddressFormatForm commandForm = ContactUtil.getHome().getGetPostalAddressFormatForm();
+            var postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
+            var commandForm = ContactUtil.getHome().getGetPostalAddressFormatForm();
             
             commandForm.setPostalAddressFormatName(postalAddressFormatName);
-            
-            CommandResult commandResult = ContactUtil.getHome().getPostalAddressFormat(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPostalAddressFormatResult result = (GetPostalAddressFormatResult)executionResult.getResult();
-            PostalAddressFormatTransfer postalAddressFormatTransfer = result.getPostalAddressFormat();
+
+            var commandResult = ContactUtil.getHome().getPostalAddressFormat(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPostalAddressFormatResult)executionResult.getResult();
+            var postalAddressFormatTransfer = result.getPostalAddressFormat();
             
             if(postalAddressFormatTransfer == null) {
                 forwardKey = ForwardConstants.ERROR_404;

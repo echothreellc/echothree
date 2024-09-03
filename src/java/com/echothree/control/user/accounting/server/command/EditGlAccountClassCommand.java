@@ -20,18 +20,12 @@ import com.echothree.control.user.accounting.common.edit.AccountingEditFactory;
 import com.echothree.control.user.accounting.common.edit.GlAccountClassEdit;
 import com.echothree.control.user.accounting.common.form.EditGlAccountClassForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.EditGlAccountClassResult;
 import com.echothree.control.user.accounting.common.spec.GlAccountClassSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.accounting.server.entity.GlAccountClass;
-import com.echothree.model.data.accounting.server.entity.GlAccountClassDescription;
-import com.echothree.model.data.accounting.server.entity.GlAccountClassDetail;
-import com.echothree.model.data.accounting.server.value.GlAccountClassDescriptionValue;
-import com.echothree.model.data.accounting.server.value.GlAccountClassDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -83,19 +77,19 @@ public class EditGlAccountClassCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        EditGlAccountClassResult result = AccountingResultFactory.getEditGlAccountClassResult();
+        var result = AccountingResultFactory.getEditGlAccountClassResult();
         
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            String glAccountClassName = spec.getGlAccountClassName();
-            GlAccountClass glAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
+            var glAccountClassName = spec.getGlAccountClassName();
+            var glAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
             
             if(glAccountClass != null) {
                 if(editMode.equals(EditMode.LOCK)) {
                     if(lockEntity(glAccountClass)) {
-                        GlAccountClassDescription glAccountClassDescription = accountingControl.getGlAccountClassDescription(glAccountClass, getPreferredLanguage());
-                        GlAccountClassEdit edit = AccountingEditFactory.getGlAccountClassEdit();
-                        GlAccountClassDetail glAccountClassDetail = glAccountClass.getLastDetail();
-                        GlAccountClass parentGlAccountClass = glAccountClassDetail.getParentGlAccountClass();
+                        var glAccountClassDescription = accountingControl.getGlAccountClassDescription(glAccountClass, getPreferredLanguage());
+                        var edit = AccountingEditFactory.getGlAccountClassEdit();
+                        var glAccountClassDetail = glAccountClass.getLastDetail();
+                        var parentGlAccountClass = glAccountClassDetail.getParentGlAccountClass();
 
                         result.setGlAccountClass(accountingControl.getGlAccountClassTransfer(getUserVisit(), glAccountClass));
 
@@ -120,15 +114,15 @@ public class EditGlAccountClassCommand
                 addExecutionError(ExecutionErrors.UnknownGlAccountClassName.name(), glAccountClassName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String glAccountClassName = spec.getGlAccountClassName();
-            GlAccountClass glAccountClass = accountingControl.getGlAccountClassByNameForUpdate(glAccountClassName);
+            var glAccountClassName = spec.getGlAccountClassName();
+            var glAccountClass = accountingControl.getGlAccountClassByNameForUpdate(glAccountClassName);
             
             if(glAccountClass != null) {
                 glAccountClassName = edit.getGlAccountClassName();
-                GlAccountClass duplicateGlAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
+                var duplicateGlAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
                 
                 if(duplicateGlAccountClass == null || glAccountClass.equals(duplicateGlAccountClass)) {
-                    String parentGlAccountClassName = edit.getParentGlAccountClassName();
+                    var parentGlAccountClassName = edit.getParentGlAccountClassName();
                     GlAccountClass parentGlAccountClass = null;
                     
                     if(parentGlAccountClassName != null) {
@@ -140,9 +134,9 @@ public class EditGlAccountClassCommand
                             if(lockEntityForUpdate(glAccountClass)) {
                                 try {
                                     var partyPK = getPartyPK();
-                                    GlAccountClassDetailValue glAccountClassDetailValue = accountingControl.getGlAccountClassDetailValueForUpdate(glAccountClass);
-                                    GlAccountClassDescription glAccountClassDescription = accountingControl.getGlAccountClassDescriptionForUpdate(glAccountClass, getPreferredLanguage());
-                                    String description = edit.getDescription();
+                                    var glAccountClassDetailValue = accountingControl.getGlAccountClassDetailValueForUpdate(glAccountClass);
+                                    var glAccountClassDescription = accountingControl.getGlAccountClassDescriptionForUpdate(glAccountClass, getPreferredLanguage());
+                                    var description = edit.getDescription();
                                     
                                     glAccountClassDetailValue.setGlAccountClassName(edit.getGlAccountClassName());
                                     glAccountClassDetailValue.setParentGlAccountClassPK(parentGlAccountClass == null? null: parentGlAccountClass.getPrimaryKey());
@@ -156,7 +150,7 @@ public class EditGlAccountClassCommand
                                     } else if(glAccountClassDescription != null && description == null) {
                                         accountingControl.deleteGlAccountClassDescription(glAccountClassDescription, partyPK);
                                     } else if(glAccountClassDescription != null && description != null) {
-                                        GlAccountClassDescriptionValue glAccountClassDescriptionValue = accountingControl.getGlAccountClassDescriptionValue(glAccountClassDescription);
+                                        var glAccountClassDescriptionValue = accountingControl.getGlAccountClassDescriptionValue(glAccountClassDescription);
                                         
                                         glAccountClassDescriptionValue.setDescription(description);
                                         accountingControl.updateGlAccountClassDescriptionFromValue(glAccountClassDescriptionValue, partyPK);

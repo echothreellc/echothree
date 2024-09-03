@@ -28,7 +28,7 @@ public class TransferOptions
     private Map<Class, Set<String>> classesAndOptions = new HashMap<>();
 
     public TransferOptions addClassAndProperty(Class clazz, String property) {
-        Set<String> options = classesAndOptions.get(clazz);
+        var options = classesAndOptions.get(clazz);
         
         if(options == null) {
             options = new HashSet<>();

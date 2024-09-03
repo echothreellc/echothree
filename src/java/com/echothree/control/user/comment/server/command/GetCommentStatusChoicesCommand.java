@@ -18,14 +18,12 @@ package com.echothree.control.user.comment.server.command;
 
 import com.echothree.control.user.comment.common.form.GetCommentStatusChoicesForm;
 import com.echothree.control.user.comment.common.result.CommentResultFactory;
-import com.echothree.control.user.comment.common.result.GetCommentStatusChoicesResult;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.data.comment.server.entity.Comment;
 import com.echothree.model.data.comment.server.entity.CommentType;
-import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -58,10 +56,10 @@ public class GetCommentStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetCommentStatusChoicesResult result = CommentResultFactory.getGetCommentStatusChoicesResult();
+        var result = CommentResultFactory.getGetCommentStatusChoicesResult();
         var commentControl = Session.getModelController(CommentControl.class);
-        String commentTypeName = form.getCommentTypeName();
-        String commentName = form.getCommentName();
+        var commentTypeName = form.getCommentTypeName();
+        var commentName = form.getCommentName();
         var parameterCount = (commentTypeName == null ? 0 : 1) + (commentName == null ? 0 : 1);
 
         if(parameterCount == 1) {
@@ -69,7 +67,7 @@ public class GetCommentStatusChoicesCommand
             Comment comment = null;
             
             if(commentTypeName != null) {
-                EntityType entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, ComponentVendors.ECHO_THREE.name(), EntityTypes.Comment.name());
+                var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, ComponentVendors.ECHO_THREE.name(), EntityTypes.Comment.name());
                 
                 if(!hasExecutionErrors()) {
                     commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
@@ -90,8 +88,8 @@ public class GetCommentStatusChoicesCommand
             }
 
             if(!hasExecutionErrors()) {
-                String defaultCommentStatusChoice = form.getDefaultCommentStatusChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultCommentStatusChoice = form.getDefaultCommentStatusChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setCommentStatusChoices(commentControl.getCommentStatusChoices(this, defaultCommentStatusChoice, getPreferredLanguage(),
                         allowNullChoice, commentType, comment, getPartyPK()));

@@ -20,9 +20,6 @@ import com.echothree.control.user.term.common.form.DeleteCustomerTypeCreditLimit
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.term.server.entity.CustomerTypeCreditLimit;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,17 +51,17 @@ public class DeleteCustomerTypeCreditLimitCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var accountingControl = Session.getModelController(AccountingControl.class);
-            String currencyIsoName = form.getCurrencyIsoName();
-            Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+            var currencyIsoName = form.getCurrencyIsoName();
+            var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             
             if(currency != null) {
                 var termControl = Session.getModelController(TermControl.class);
-                CustomerTypeCreditLimit customerTypeCreditLimit = termControl.getCustomerTypeCreditLimitForUpdate(customerType, currency);
+                var customerTypeCreditLimit = termControl.getCustomerTypeCreditLimitForUpdate(customerType, currency);
                 
                 if(customerTypeCreditLimit != null) {
                     termControl.deleteCustomerTypeCreditLimit(customerTypeCreditLimit, getPartyPK());

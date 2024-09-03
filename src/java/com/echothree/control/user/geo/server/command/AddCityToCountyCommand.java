@@ -23,11 +23,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
-import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
 import com.echothree.model.data.geo.server.entity.GeoCodeRelationship;
-import com.echothree.model.data.geo.server.entity.GeoCodeScope;
-import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -41,7 +37,6 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public class AddCityToCountyCommand
@@ -72,15 +67,15 @@ public class AddCityToCountyCommand
     
     @Override
     protected BaseResult execute() {
-        String countyGeoCodeName = form.getCountyGeoCodeName();
-        String countyName = form.getCountyName();
+        var countyGeoCodeName = form.getCountyGeoCodeName();
+        var countyName = form.getCountyName();
         var parameterCount = (countyGeoCodeName == null ? 0 : 1) + (countyName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var geoControl = Session.getModelController(GeoControl.class);
-            GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTY);
-            String cityGeoCodeName = form.getCityGeoCodeName();
-            GeoCode cityGeoCode = geoControl.getGeoCodeByName(cityGeoCodeName);
+            var geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTY);
+            var cityGeoCodeName = form.getCityGeoCodeName();
+            var cityGeoCode = geoControl.getGeoCodeByName(cityGeoCodeName);
             GeoCode countyGeoCode = null;
             
             if(countyGeoCodeName != null) {
@@ -94,43 +89,43 @@ public class AddCityToCountyCommand
                     addExecutionError(ExecutionErrors.UnknownCountyGeoCodeName.name(), countyGeoCodeName);
                 }
             } else if(countyName != null) {
-                GeoCodeType stateGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_STATE);
+                var stateGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_STATE);
                 GeoCode stateGeoCode = null;
                 Collection cityRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCode(cityGeoCode);
-                for(Iterator iter = cityRelationships.iterator(); iter.hasNext();) {
-                    GeoCodeRelationship geoCodeRelationship = (GeoCodeRelationship)iter.next();
-                    GeoCode toGeoCode = geoCodeRelationship.getToGeoCode();
+                for(var iter = cityRelationships.iterator(); iter.hasNext();) {
+                    var geoCodeRelationship = (GeoCodeRelationship)iter.next();
+                    var toGeoCode = geoCodeRelationship.getToGeoCode();
                     if(toGeoCode.getLastDetail().getGeoCodeType().equals(stateGeoCodeType)) {
                         stateGeoCode = toGeoCode;
                         break;
                     }
                 }
-                
-                GeoCodeAliasType stateGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
-                GeoCodeAlias stateGeoCodeAlias = geoControl.getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
-                String statePostal2Letter = stateGeoCodeAlias.getAlias();
-                
-                GeoCodeType countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+
+                var stateGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+                var stateGeoCodeAlias = geoControl.getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
+                var statePostal2Letter = stateGeoCodeAlias.getAlias();
+
+                var countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
                 GeoCode countryGeoCode = null;
                 Collection stateRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
-                for(Iterator iter = stateRelationships.iterator(); iter.hasNext();) {
-                    GeoCodeRelationship geoCodeRelationship = (GeoCodeRelationship)iter.next();
-                    GeoCode toGeoCode = geoCodeRelationship.getToGeoCode();
+                for(var iter = stateRelationships.iterator(); iter.hasNext();) {
+                    var geoCodeRelationship = (GeoCodeRelationship)iter.next();
+                    var toGeoCode = geoCodeRelationship.getToGeoCode();
                     if(toGeoCode.getLastDetail().getGeoCodeType().equals(countryGeoCodeType)) {
                         countryGeoCode = toGeoCode;
                         break;
                     }
                 }
-                
-                GeoCodeAliasType countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
-                GeoCodeAlias countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
-                String countryIso2Letter = countryGeoCodeAlias.getAlias();
-                
-                String geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_COUNTIES";
-                GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
-                
-                GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_COUNTY_NAME);
-                GeoCodeAlias geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, countyName);
+
+                var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+                var countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
+                var countryIso2Letter = countryGeoCodeAlias.getAlias();
+
+                var geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_COUNTIES";
+                var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
+
+                var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_COUNTY_NAME);
+                var geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, countyName);
                 countyGeoCode = geoCodeAlias.getGeoCode();
                 
                 if(countyGeoCode == null) {
@@ -139,7 +134,7 @@ public class AddCityToCountyCommand
             }
             
             if(countyGeoCode != null) {
-                GeoCodeRelationship geoCodeRelationship = geoControl.getGeoCodeRelationship(cityGeoCode, countyGeoCode);
+                var geoCodeRelationship = geoControl.getGeoCodeRelationship(cityGeoCode, countyGeoCode);
                 
                 if(geoCodeRelationship == null) {
                     geoControl.createGeoCodeRelationship(cityGeoCode, countyGeoCode, getPartyPK());

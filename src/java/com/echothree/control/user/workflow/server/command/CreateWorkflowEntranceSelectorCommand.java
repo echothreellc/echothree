@@ -22,12 +22,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntranceSelector;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -70,23 +65,23 @@ public class CreateWorkflowEntranceSelectorCommand
     @Override
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            SelectorType selectorType = workflow.getLastDetail().getSelectorType();
+            var selectorType = workflow.getLastDetail().getSelectorType();
             
             if(selectorType != null) {
-            String workflowEntranceName = form.getWorkflowEntranceName();
-            WorkflowEntrance workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
+                var workflowEntranceName = form.getWorkflowEntranceName();
+                var workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
             
             if(workflowEntrance != null) {
                 var selectorControl = Session.getModelController(SelectorControl.class);
-                String selectorName = form.getSelectorName();
-                    Selector selector = selectorControl.getSelectorByName(workflow.getLastDetail().getSelectorType(), selectorName);
+                var selectorName = form.getSelectorName();
+                var selector = selectorControl.getSelectorByName(workflow.getLastDetail().getSelectorType(), selectorName);
                     
                     if(selector != null) {
-                    WorkflowEntranceSelector workflowEntranceSelector = workflowControl.getWorkflowEntranceSelector(workflowEntrance, selector);
+                        var workflowEntranceSelector = workflowControl.getWorkflowEntranceSelector(workflowEntrance, selector);
                     
                     if(workflowEntranceSelector == null) {                        
                         workflowControl.createWorkflowEntranceSelector(workflowEntrance, selector, getPartyPK());

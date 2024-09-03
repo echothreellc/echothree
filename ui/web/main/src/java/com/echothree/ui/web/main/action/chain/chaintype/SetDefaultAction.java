@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.chaintype;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.SetDefaultChainTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,15 +49,15 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        SetDefaultChainTypeForm commandForm = ChainUtil.getHome().getSetDefaultChainTypeForm();
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var commandForm = ChainUtil.getHome().getSetDefaultChainTypeForm();
 
         commandForm.setChainKindName(chainKindName);
         commandForm.setChainTypeName(request.getParameter(ParameterConstants.CHAIN_TYPE_NAME));
 
         ChainUtil.getHome().setDefaultChainType(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.CHAIN_KIND_NAME, chainKindName);

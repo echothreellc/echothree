@@ -18,7 +18,6 @@ package com.echothree.util.server.string;
 
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.party.server.entity.PartyTypePasswordStringPolicyDetail;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.Graph.GraphType;
@@ -114,13 +113,13 @@ public class PasswordGeneratorUtils {
     }
     
     public String getPassword(int minimumLength) {
-        Random random = EncryptionUtils.getInstance().getRandom();
+        var random = EncryptionUtils.getInstance().getRandom();
         Graph previous = null;
-        Graph current = selectGraph(random, graphs);
-        StringBuilder password = new StringBuilder();
+        var current = selectGraph(random, graphs);
+        var password = new StringBuilder();
         
         while(password.length() < minimumLength) {
-            Set<GraphType> nextGraphTypes = chooseNext(random, previous == null ? null : previous.graphType, current.graphType);
+            var nextGraphTypes = chooseNext(random, previous == null ? null : previous.graphType, current.graphType);
             List<Graph> nextGraphs = new ArrayList<>(graphs.size());
             
             password.append(selectSpelling(random, current));
@@ -138,11 +137,11 @@ public class PasswordGeneratorUtils {
     
     public String getPassword(PartyType partyType) {
         var partyControl = Session.getModelController(PartyControl.class);
-        PartyTypePasswordStringPolicyDetail partyTypePasswordStringPolicyDetail = partyControl.getPartyTypePasswordStringPolicy(partyType).getLastDetail();
-        Integer intMinimumLength = partyTypePasswordStringPolicyDetail.getMinimumLength();
-        Integer intMaximumLength = partyTypePasswordStringPolicyDetail.getMaximumLength();
-        int minimumLength = intMinimumLength == null ? 0 : intMinimumLength;
-        int maximumLength = intMaximumLength == null ? 38 : intMaximumLength;
+        var partyTypePasswordStringPolicyDetail = partyControl.getPartyTypePasswordStringPolicy(partyType).getLastDetail();
+        var intMinimumLength = partyTypePasswordStringPolicyDetail.getMinimumLength();
+        var intMaximumLength = partyTypePasswordStringPolicyDetail.getMaximumLength();
+        var minimumLength = intMinimumLength == null ? 0 : intMinimumLength;
+        var maximumLength = intMaximumLength == null ? 38 : intMaximumLength;
         
         return getPassword(minimumLength + (maximumLength - minimumLength) / 4);
     }

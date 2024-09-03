@@ -21,7 +21,6 @@ import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObje
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
-import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutDetail;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -100,7 +99,7 @@ public class ContentPageLayoutObject
     @GraphQLNonNull
     public List<ContentPageLayoutAreaObject> getContentPageLayoutAreas(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentPageLayoutArea> entities = contentControl.getContentPageLayoutAreasByContentPageLayout(contentPageLayout);
+        var entities = contentControl.getContentPageLayoutAreasByContentPageLayout(contentPageLayout);
         List<ContentPageLayoutAreaObject> contentPageLayoutAreas = new ArrayList<>(entities.size());
         
         entities.forEach((entity) -> {

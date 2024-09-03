@@ -19,18 +19,12 @@ package com.echothree.control.user.employee.server.command;
 import com.echothree.control.user.employee.common.edit.EmployeeEditFactory;
 import com.echothree.control.user.employee.common.edit.TerminationReasonEdit;
 import com.echothree.control.user.employee.common.form.EditTerminationReasonForm;
-import com.echothree.control.user.employee.common.result.EditTerminationReasonResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.TerminationReasonSpec;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.employee.server.entity.TerminationReason;
-import com.echothree.model.data.employee.server.entity.TerminationReasonDescription;
-import com.echothree.model.data.employee.server.entity.TerminationReasonDetail;
-import com.echothree.model.data.employee.server.value.TerminationReasonDescriptionValue;
-import com.echothree.model.data.employee.server.value.TerminationReasonDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -81,19 +75,19 @@ public class EditTerminationReasonCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        EditTerminationReasonResult result = EmployeeResultFactory.getEditTerminationReasonResult();
+        var result = EmployeeResultFactory.getEditTerminationReasonResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String terminationReasonName = spec.getTerminationReasonName();
-            TerminationReason terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
+            var terminationReasonName = spec.getTerminationReasonName();
+            var terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
             
             if(terminationReason != null) {
                 result.setTerminationReason(employeeControl.getTerminationReasonTransfer(getUserVisit(), terminationReason));
                 
                 if(lockEntity(terminationReason)) {
-                    TerminationReasonDescription terminationReasonDescription = employeeControl.getTerminationReasonDescription(terminationReason, getPreferredLanguage());
-                    TerminationReasonEdit edit = EmployeeEditFactory.getTerminationReasonEdit();
-                    TerminationReasonDetail terminationReasonDetail = terminationReason.getLastDetail();
+                    var terminationReasonDescription = employeeControl.getTerminationReasonDescription(terminationReason, getPreferredLanguage());
+                    var edit = EmployeeEditFactory.getTerminationReasonEdit();
+                    var terminationReasonDetail = terminationReason.getLastDetail();
                     
                     result.setEdit(edit);
                     edit.setTerminationReasonName(terminationReasonDetail.getTerminationReasonName());
@@ -111,16 +105,16 @@ public class EditTerminationReasonCommand
                 addExecutionError(ExecutionErrors.UnknownTerminationReasonName.name(), terminationReasonName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String terminationReasonName = spec.getTerminationReasonName();
-            TerminationReason terminationReason = employeeControl.getTerminationReasonByNameForUpdate(terminationReasonName);
+            var terminationReasonName = spec.getTerminationReasonName();
+            var terminationReason = employeeControl.getTerminationReasonByNameForUpdate(terminationReasonName);
             
             if(terminationReason != null) {
                 if(lockEntityForUpdate(terminationReason)) {
                     try {
                         var partyPK = getPartyPK();
-                        TerminationReasonDetailValue terminationReasonDetailValue = employeeControl.getTerminationReasonDetailValueForUpdate(terminationReason);
-                        TerminationReasonDescription terminationReasonDescription = employeeControl.getTerminationReasonDescriptionForUpdate(terminationReason, getPreferredLanguage());
-                        String description = edit.getDescription();
+                        var terminationReasonDetailValue = employeeControl.getTerminationReasonDetailValueForUpdate(terminationReason);
+                        var terminationReasonDescription = employeeControl.getTerminationReasonDescriptionForUpdate(terminationReason, getPreferredLanguage());
+                        var description = edit.getDescription();
                         
                         terminationReasonDetailValue.setTerminationReasonName(edit.getTerminationReasonName());
                         terminationReasonDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -133,7 +127,7 @@ public class EditTerminationReasonCommand
                         } else if(terminationReasonDescription != null && description == null) {
                             employeeControl.deleteTerminationReasonDescription(terminationReasonDescription, partyPK);
                         } else if(terminationReasonDescription != null && description != null) {
-                            TerminationReasonDescriptionValue terminationReasonDescriptionValue = employeeControl.getTerminationReasonDescriptionValue(terminationReasonDescription);
+                            var terminationReasonDescriptionValue = employeeControl.getTerminationReasonDescriptionValue(terminationReasonDescription);
                             
                             terminationReasonDescriptionValue.setDescription(description);
                             employeeControl.updateTerminationReasonDescriptionFromValue(terminationReasonDescriptionValue, partyPK);

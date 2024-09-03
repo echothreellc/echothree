@@ -21,10 +21,6 @@ import com.echothree.model.control.party.server.logic.CompanyLogic;
 import com.echothree.model.control.party.server.logic.DivisionLogic;
 import com.echothree.model.control.party.server.logic.EmployeeLogic;
 import com.echothree.model.control.party.server.logic.PartyRelationshipLogic;
-import com.echothree.model.data.employee.server.entity.PartyEmployee;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyCompany;
-import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -54,21 +50,21 @@ public class AddEmployeeToDivisionCommand
     
     @Override
     protected BaseResult execute() {
-        String employeeName = form.getEmployeeName();
-        String partyName = form.getPartyName();
-        PartyEmployee partyEmployee = EmployeeLogic.getInstance().getPartyEmployeeByName(this, employeeName, partyName);
+        var employeeName = form.getEmployeeName();
+        var partyName = form.getPartyName();
+        var partyEmployee = EmployeeLogic.getInstance().getPartyEmployeeByName(this, employeeName, partyName);
 
         if(!hasExecutionErrors()) {
-            String companyName = form.getCompanyName();
-            PartyCompany partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, false);
+            var companyName = form.getCompanyName();
+            var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, false);
 
             if(!hasExecutionErrors()) {
-                String divisionName = form.getDivisionName();
-                PartyDivision partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, null, null, true);
+                var divisionName = form.getDivisionName();
+                var partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, null, null, true);
 
                 if(!hasExecutionErrors()) {
-                    Party division = partyDivision.getParty();
-                    Party employee = partyEmployee.getParty();
+                    var division = partyDivision.getParty();
+                    var employee = partyEmployee.getParty();
 
                     PartyRelationshipLogic.getInstance().addEmployeeToDivision(this, division, employee, getPartyPK());
                 }

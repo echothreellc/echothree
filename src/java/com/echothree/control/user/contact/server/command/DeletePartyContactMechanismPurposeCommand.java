@@ -19,11 +19,6 @@ package com.echothree.control.user.contact.server.command;
 import com.echothree.control.user.contact.common.form.DeletePartyContactMechanismPurposeForm;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.contact.server.entity.ContactMechanism;
-import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurpose;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -56,23 +51,23 @@ public class DeletePartyContactMechanismPurposeCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var contactControl = Session.getModelController(ContactControl.class);
-            String contactMechanismName = form.getContactMechanismName();
-            ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+            var contactMechanismName = form.getContactMechanismName();
+            var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
             
             if(contactMechanism != null) {
-                PartyContactMechanism partyContactMechanism = contactControl.getPartyContactMechanism(party, contactMechanism);
+                var partyContactMechanism = contactControl.getPartyContactMechanism(party, contactMechanism);
                 
                 if(partyContactMechanism != null) {
-                    String contactMechanismPurposeName = form.getContactMechanismPurposeName();
-                    ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
+                    var contactMechanismPurposeName = form.getContactMechanismPurposeName();
+                    var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
                     
                     if(contactMechanismPurpose != null) {
-                        PartyContactMechanismPurpose partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurposeForUpdate(partyContactMechanism,
+                        var partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurposeForUpdate(partyContactMechanism,
                                 contactMechanismPurpose);
                         
                         if(partyContactMechanismPurpose != null) {

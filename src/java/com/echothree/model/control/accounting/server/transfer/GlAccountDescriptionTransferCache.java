@@ -17,9 +17,7 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.GlAccountDescriptionTransfer;
-import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.accounting.server.entity.GlAccountDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -33,12 +31,12 @@ public class GlAccountDescriptionTransferCache
     
     @Override
     public GlAccountDescriptionTransfer getTransfer(GlAccountDescription glAccountDescription) {
-        GlAccountDescriptionTransfer glAccountDescriptionTransfer = get(glAccountDescription);
+        var glAccountDescriptionTransfer = get(glAccountDescription);
         
         if(glAccountDescriptionTransfer == null) {
-            GlAccountTransferCache glAccountTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlAccountTransferCache();
-            GlAccountTransfer glAccountTransfer = glAccountTransferCache.getTransfer(glAccountDescription.getGlAccount());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, glAccountDescription.getLanguage());
+            var glAccountTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlAccountTransferCache();
+            var glAccountTransfer = glAccountTransferCache.getTransfer(glAccountDescription.getGlAccount());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, glAccountDescription.getLanguage());
             
             glAccountDescriptionTransfer = new GlAccountDescriptionTransfer(languageTransfer, glAccountTransfer, glAccountDescription.getDescription());
             put(glAccountDescription, glAccountDescriptionTransfer);

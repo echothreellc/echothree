@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.customer.customercontactlist;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.GetContactMechanismPurposeChoicesForm;
 import com.echothree.control.user.contact.common.result.GetContactMechanismPurposeChoicesResult;
 import com.echothree.model.control.contact.common.choice.ContactMechanismPurposeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -41,15 +38,15 @@ public class EditActionForm
     public void setupPreferredContactMechanismPurposeChoices()
             throws NamingException {
         if(preferredContactMechanismPurposeChoices == null) {
-            GetContactMechanismPurposeChoicesForm form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
+            var form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
 
             form.setContactListName(contactListName);
             form.setDefaultContactMechanismPurposeChoice(preferredContactMechanismPurposeChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactMechanismPurposeChoicesResult getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
             preferredContactMechanismPurposeChoices = getContactMechanismPurposeChoicesResult.getContactMechanismPurposeChoices();
 
             if(preferredContactMechanismPurposeChoice == null) {

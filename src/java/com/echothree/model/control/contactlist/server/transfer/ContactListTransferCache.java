@@ -16,16 +16,10 @@
 
 package com.echothree.model.control.contactlist.server.transfer;
 
-import com.echothree.model.control.contactlist.common.transfer.ContactListFrequencyTransfer;
-import com.echothree.model.control.contactlist.common.transfer.ContactListGroupTransfer;
 import com.echothree.model.control.contactlist.common.transfer.ContactListTransfer;
-import com.echothree.model.control.contactlist.common.transfer.ContactListTypeTransfer;
 import com.echothree.model.control.contactlist.server.ContactListControl;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
-import com.echothree.model.data.contactlist.server.entity.ContactListDetail;
-import com.echothree.model.data.contactlist.server.entity.ContactListFrequency;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -42,19 +36,19 @@ public class ContactListTransferCache
     }
     
     public ContactListTransfer getContactListTransfer(ContactList contactList) {
-        ContactListTransfer contactListTransfer = get(contactList);
+        var contactListTransfer = get(contactList);
         
         if(contactListTransfer == null) {
-            ContactListDetail contactListDetail = contactList.getLastDetail();
-            String contactListName = contactListDetail.getContactListName();
-            ContactListGroupTransfer contactListGroupTransfer = contactListControl.getContactListGroupTransfer(userVisit, contactListDetail.getContactListGroup());
-            ContactListTypeTransfer contactListTypeTransfer = contactListControl.getContactListTypeTransfer(userVisit, contactListDetail.getContactListType());
-            ContactListFrequency contactListFrequency = contactListDetail.getContactListFrequency();
-            ContactListFrequencyTransfer contactListFrequencyTransfer = contactListFrequency == null ? null : contactListControl.getContactListFrequencyTransfer(userVisit, contactListFrequency);
-            WorkflowEntranceTransfer defaultPartyContactListStatus = workflowControl.getWorkflowEntranceTransfer(userVisit, contactListDetail.getDefaultPartyContactListStatus());
-            Boolean isDefault = contactListDetail.getIsDefault();
-            Integer sortOrder = contactListDetail.getSortOrder();
-            String description = contactListControl.getBestContactListDescription(contactList, getLanguage());
+            var contactListDetail = contactList.getLastDetail();
+            var contactListName = contactListDetail.getContactListName();
+            var contactListGroupTransfer = contactListControl.getContactListGroupTransfer(userVisit, contactListDetail.getContactListGroup());
+            var contactListTypeTransfer = contactListControl.getContactListTypeTransfer(userVisit, contactListDetail.getContactListType());
+            var contactListFrequency = contactListDetail.getContactListFrequency();
+            var contactListFrequencyTransfer = contactListFrequency == null ? null : contactListControl.getContactListFrequencyTransfer(userVisit, contactListFrequency);
+            var defaultPartyContactListStatus = workflowControl.getWorkflowEntranceTransfer(userVisit, contactListDetail.getDefaultPartyContactListStatus());
+            var isDefault = contactListDetail.getIsDefault();
+            var sortOrder = contactListDetail.getSortOrder();
+            var description = contactListControl.getBestContactListDescription(contactList, getLanguage());
             
             contactListTransfer = new ContactListTransfer(contactListName, contactListGroupTransfer, contactListTypeTransfer, contactListFrequencyTransfer,
                     defaultPartyContactListStatus, isDefault, sortOrder, description);

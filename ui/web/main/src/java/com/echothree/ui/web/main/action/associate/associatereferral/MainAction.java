@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.associate.associatereferral;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.common.form.GetAssociateReferralsForm;
 import com.echothree.control.user.associate.common.result.GetAssociateReferralsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,19 +49,19 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
-            String associateName = request.getParameter(ParameterConstants.ASSOCIATE_NAME);
-            GetAssociateReferralsForm commandForm = AssociateUtil.getHome().getGetAssociateReferralsForm();
+            var associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
+            var associateName = request.getParameter(ParameterConstants.ASSOCIATE_NAME);
+            var commandForm = AssociateUtil.getHome().getGetAssociateReferralsForm();
             
             commandForm.setAssociateProgramName(associateProgramName);
             commandForm.setAssociateName(associateName);
-            
-            CommandResult commandResult = AssociateUtil.getHome().getAssociateReferrals(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAssociateReferralsResult result = (GetAssociateReferralsResult)executionResult.getResult();
+
+            var commandResult = AssociateUtil.getHome().getAssociateReferrals(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAssociateReferralsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ASSOCIATE, result.getAssociate());
             request.setAttribute(AttributeConstants.ASSOCIATE_REFERRALS, result.getAssociateReferrals());

@@ -20,10 +20,6 @@ import com.echothree.control.user.core.common.form.CreateEntityAttributeEntityTy
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityAttributeEntityType;
-import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,27 +64,27 @@ public class CreateEntityAttributeEntityTypeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
-                String entityAttributeName = form.getEntityAttributeName();
-                EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
 
                 if(entityAttribute != null) {
-                    String allowedComponentVendorName = form.getAllowedComponentVendorName();
-                    ComponentVendor allowedComponentVendor = coreControl.getComponentVendorByName(allowedComponentVendorName);
+                    var allowedComponentVendorName = form.getAllowedComponentVendorName();
+                    var allowedComponentVendor = coreControl.getComponentVendorByName(allowedComponentVendorName);
 
                     if(allowedComponentVendor != null) {
-                        String allowedEntityTypeName = form.getAllowedEntityTypeName();
-                        EntityType allowedEntityType = coreControl.getEntityTypeByName(allowedComponentVendor, allowedEntityTypeName);
+                        var allowedEntityTypeName = form.getAllowedEntityTypeName();
+                        var allowedEntityType = coreControl.getEntityTypeByName(allowedComponentVendor, allowedEntityTypeName);
 
                         if(allowedEntityType != null) {
-                            EntityAttributeEntityType entityAttributeEntityType = coreControl.getEntityAttributeEntityType(entityAttribute, allowedEntityType);
+                            var entityAttributeEntityType = coreControl.getEntityAttributeEntityType(entityAttribute, allowedEntityType);
 
                             if(entityAttributeEntityType == null) {
                                 coreControl.createEntityAttributeEntityType(entityAttribute, allowedEntityType, getPartyPK());

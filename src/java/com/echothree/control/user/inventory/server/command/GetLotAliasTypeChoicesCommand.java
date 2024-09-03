@@ -17,7 +17,6 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetLotAliasTypeChoicesForm;
-import com.echothree.control.user.inventory.common.result.GetLotAliasTypeChoicesResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -63,9 +62,9 @@ public class GetLotAliasTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var lotAliasControl = Session.getModelController(LotAliasControl.class);
-        GetLotAliasTypeChoicesResult result = InventoryResultFactory.getGetLotAliasTypeChoicesResult();
-        String defaultLotAliasTypeChoice = form.getDefaultLotAliasTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = InventoryResultFactory.getGetLotAliasTypeChoicesResult();
+        var defaultLotAliasTypeChoice = form.getDefaultLotAliasTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
         result.setLotAliasTypeChoices(lotAliasControl.getLotAliasTypeChoices(defaultLotAliasTypeChoice, getPreferredLanguage(), allowNullChoice));
 

@@ -17,7 +17,6 @@
 package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.CreateZipCodeForm;
-import com.echothree.control.user.geo.common.result.CreateZipCodeResult;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.model.control.geo.common.GeoConstants;
 import com.echothree.model.control.geo.server.control.GeoControl;
@@ -27,10 +26,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
-import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
-import com.echothree.model.data.geo.server.entity.GeoCodeScope;
-import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.persistence.BasePK;
@@ -75,29 +70,29 @@ public class CreateZipCodeCommand
     
     @Override
     protected BaseResult execute() {
-        CreateZipCodeResult result = GeoResultFactory.getCreateZipCodeResult();
+        var result = GeoResultFactory.getCreateZipCodeResult();
         var geoControl = Session.getModelController(GeoControl.class);
         GeoCode geoCode = null;
-        
-        String countryGeoCodeName = form.getCountryGeoCodeName();
-        GeoCode countryGeoCode = geoControl.getGeoCodeByName(countryGeoCodeName);
-        
-        GeoCodeAliasType countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
-        GeoCodeAlias countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
-        String countryIso2Letter = countryGeoCodeAlias.getAlias();
-        
-        String geoCodeScopeName = countryIso2Letter + "_ZIP_CODES";
-        GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
+
+        var countryGeoCodeName = form.getCountryGeoCodeName();
+        var countryGeoCode = geoControl.getGeoCodeByName(countryGeoCodeName);
+
+        var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        var countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
+        var countryIso2Letter = countryGeoCodeAlias.getAlias();
+
+        var geoCodeScopeName = countryIso2Letter + "_ZIP_CODES";
+        var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
         
         if(geoCodeScope != null) {
-            GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_ZIP_CODE);
-            GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ZIP_CODE);
-            String zipCodeName = form.getZipCodeName();
-            GeoCodeAlias geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, zipCodeName);
+            var geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_ZIP_CODE);
+            var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ZIP_CODE);
+            var zipCodeName = form.getZipCodeName();
+            var geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, zipCodeName);
             
             if(geoCodeAlias == null) {
                 BasePK createdBy = getPartyPK();
-                String geoCodeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
+                var geoCodeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();

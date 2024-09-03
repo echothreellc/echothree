@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.content.contentcategoryitem;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentCategoryItemsForm;
 import com.echothree.control.user.content.common.result.GetContentCategoryItemsResult;
 import com.echothree.model.data.content.common.ContentCategoryItemConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -60,28 +57,28 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetContentCategoryItemsForm commandForm = ContentUtil.getHome().getGetContentCategoryItemsForm();
-        String results = request.getParameter(ParameterConstants.RESULTS);
+        var commandForm = ContentUtil.getHome().getGetContentCategoryItemsForm();
+        var results = request.getParameter(ParameterConstants.RESULTS);
         
         commandForm.setContentCollectionName(request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME));
         commandForm.setContentCatalogName(request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME));
         commandForm.setContentCategoryName(request.getParameter(ParameterConstants.CONTENT_CATEGORY_NAME));
         
         if(results == null) {
-            String offsetParameter = request.getParameter(new ParamEncoder("contentCategoryItem").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
-            Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
+            var offsetParameter = request.getParameter(new ParamEncoder("contentCategoryItem").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
+            var offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
             Map<String, Limit> limits = new HashMap<>();
             limits.put(ContentCategoryItemConstants.ENTITY_TYPE_NAME, new Limit("20", offset == null ? null : offset.toString()));
             commandForm.setLimits(limits);
         }
 
-        CommandResult commandResult = ContentUtil.getHome().getContentCategoryItems(getUserVisitPK(request), commandForm);
+        var commandResult = ContentUtil.getHome().getContentCategoryItems(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentCategoryItemsResult result = (GetContentCategoryItemsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentCategoryItemsResult)executionResult.getResult();
 
-            Long contentCategoryItemCount = result.getContentCategoryItemCount();
+            var contentCategoryItemCount = result.getContentCategoryItemCount();
             if(contentCategoryItemCount != null) {
                 request.setAttribute(AttributeConstants.CONTENT_CATEGORY_ITEM_COUNT, toIntExact(contentCategoryItemCount));
             }

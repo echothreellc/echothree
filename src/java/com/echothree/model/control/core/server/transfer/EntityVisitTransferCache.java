@@ -44,10 +44,10 @@ public class EntityVisitTransferCache
     }
     
     public EntityVisitTransfer getEntityVisitTransfer(EntityVisit entityVisit) {
-        EntityVisitTransfer entityVisitTransfer = get(entityVisit);
+        var entityVisitTransfer = get(entityVisit);
         
         if(entityVisitTransfer == null) {
-            Long unformattedVisitedTime = entityVisit.getVisitedTime();
+            var unformattedVisitedTime = entityVisit.getVisitedTime();
 
             entityVisitTransfer = new EntityVisitTransfer(unformattedVisitedTime);
             put(entityVisit, entityVisitTransfer);

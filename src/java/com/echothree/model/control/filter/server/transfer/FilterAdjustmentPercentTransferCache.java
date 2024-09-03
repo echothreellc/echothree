@@ -16,15 +16,10 @@
 
 package com.echothree.model.control.filter.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.accounting.server.transfer.CurrencyTransferCache;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentPercentTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.uom.server.transfer.UnitOfMeasureTypeTransferCache;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentPercent;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -44,13 +39,13 @@ public class FilterAdjustmentPercentTransferCache
 
     @Override
     public FilterAdjustmentPercentTransfer getTransfer(FilterAdjustmentPercent filterAdjustmentPercent) {
-        FilterAdjustmentPercentTransfer filterAdjustmentPercentTransfer = get(filterAdjustmentPercent);
+        var filterAdjustmentPercentTransfer = get(filterAdjustmentPercent);
         
         if(filterAdjustmentPercentTransfer == null) {
-            FilterAdjustmentTransfer filterAdjustment = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentPercent.getFilterAdjustment());
-            UnitOfMeasureTypeTransfer unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, filterAdjustmentPercent.getUnitOfMeasureType());
-            CurrencyTransfer currency = accountingControl.getCurrencyTransfer(userVisit, filterAdjustmentPercent.getCurrency());
-            String percent = PercentUtils.getInstance().formatFractionalPercent(filterAdjustmentPercent.getPercent());
+            var filterAdjustment = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentPercent.getFilterAdjustment());
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, filterAdjustmentPercent.getUnitOfMeasureType());
+            var currency = accountingControl.getCurrencyTransfer(userVisit, filterAdjustmentPercent.getCurrency());
+            var percent = PercentUtils.getInstance().formatFractionalPercent(filterAdjustmentPercent.getPercent());
             
             filterAdjustmentPercentTransfer = new FilterAdjustmentPercentTransfer(filterAdjustment, unitOfMeasureType, currency, percent);
             

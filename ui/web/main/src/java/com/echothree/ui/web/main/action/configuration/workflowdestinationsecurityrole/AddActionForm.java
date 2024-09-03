@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.configuration.workflowdestinationsecurityrole;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.GetSecurityRoleChoicesForm;
 import com.echothree.control.user.security.common.result.GetSecurityRoleChoicesResult;
 import com.echothree.model.control.security.common.choice.SecurityRoleChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -43,15 +40,15 @@ public class AddActionForm
     private void setupSecurityRoleChoices() {
         if(securityRoleChoices == null) {
             try {
-                GetSecurityRoleChoicesForm commandForm = SecurityUtil.getHome().getGetSecurityRoleChoicesForm();
+                var commandForm = SecurityUtil.getHome().getGetSecurityRoleChoicesForm();
                 
                 commandForm.setWorkflowName(workflowName);
                 commandForm.setDefaultSecurityRoleChoice(securityRoleChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = SecurityUtil.getHome().getSecurityRoleChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSecurityRoleChoicesResult result = (GetSecurityRoleChoicesResult)executionResult.getResult();
+
+                var commandResult = SecurityUtil.getHome().getSecurityRoleChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSecurityRoleChoicesResult)executionResult.getResult();
                 securityRoleChoices = result.getSecurityRoleChoices();
                 
                 if(securityRoleChoice == null) {

@@ -18,7 +18,6 @@ package com.echothree.control.user.tag.common;
 
 import com.echothree.control.user.tag.server.TagLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class TagUtil {
@@ -30,7 +29,7 @@ public class TagUtil {
     public static TagLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (TagLocal)ctx.lookup("ejb:echothree/echothree-server/TagBean!com.echothree.control.user.tag.server.TagLocal");
         }
@@ -42,7 +41,7 @@ public class TagUtil {
     public static TagRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (TagRemote)ctx.lookup("ejb:echothree/echothree-server/TagBean!com.echothree.control.user.tag.common.TagRemote");
         }

@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.entityattributegroup;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.result.GetEntityAttributeGroupResult;
 import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetEntityAttributeGroupForm commandForm = CoreUtil.getHome().getGetEntityAttributeGroupForm();
+        String forwardKey;
+        var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupForm();
 
         commandForm.setEntityAttributeGroupName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME));
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityAttributeGroup(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEntityAttributeGroup(getUserVisitPK(request), commandForm);
         EntityAttributeGroupTransfer entityAttributeGroup = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeGroupResult result = (GetEntityAttributeGroupResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityAttributeGroupResult)executionResult.getResult();
             
             entityAttributeGroup = result.getEntityAttributeGroup();
         }

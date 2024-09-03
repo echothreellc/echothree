@@ -17,15 +17,12 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.GetOrderAdjustmentTypeDescriptionsForm;
-import com.echothree.control.user.order.common.result.GetOrderAdjustmentTypeDescriptionsResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.order.server.control.OrderAdjustmentControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.order.server.entity.OrderAdjustmentType;
-import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -68,14 +65,14 @@ public class GetOrderAdjustmentTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        GetOrderAdjustmentTypeDescriptionsResult result = OrderResultFactory.getGetOrderAdjustmentTypeDescriptionsResult();
+        var result = OrderResultFactory.getGetOrderAdjustmentTypeDescriptionsResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
-            String orderAdjustmentTypeName = form.getOrderAdjustmentTypeName();
-            OrderAdjustmentType orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
+            var orderAdjustmentTypeName = form.getOrderAdjustmentTypeName();
+            var orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
 
             if(orderAdjustmentType != null) {
                 result.setOrderAdjustmentType(orderAdjustmentControl.getOrderAdjustmentTypeTransfer(getUserVisit(), orderAdjustmentType));

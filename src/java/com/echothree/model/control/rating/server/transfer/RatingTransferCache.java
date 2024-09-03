@@ -20,7 +20,6 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.rating.common.transfer.RatingTransfer;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.data.rating.server.entity.Rating;
-import com.echothree.model.data.rating.server.entity.RatingDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -37,10 +36,10 @@ public class RatingTransferCache
     }
     
     public RatingTransfer getRatingTransfer(Rating rating) {
-        RatingTransfer ratingTransfer = get(rating);
+        var ratingTransfer = get(rating);
         
         if(ratingTransfer == null) {
-            RatingDetail ratingDetail = rating.getLastDetail();
+            var ratingDetail = rating.getLastDetail();
             
             ratingTransfer = new RatingTransfer();
             put(rating, ratingTransfer);

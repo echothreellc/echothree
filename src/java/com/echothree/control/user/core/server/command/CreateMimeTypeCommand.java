@@ -17,10 +17,6 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateMimeTypeForm;
-import com.echothree.model.data.core.server.entity.EntityAttributeType;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,23 +50,23 @@ public class CreateMimeTypeCommand
    @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String mimeTypeName = form.getMimeTypeName();
-        MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+       var mimeTypeName = form.getMimeTypeName();
+       var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
         
         if(mimeType == null) {
-            String entityAttributeTypeName = form.getEntityAttributeTypeName();
-            EntityAttributeType entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
+            var entityAttributeTypeName = form.getEntityAttributeTypeName();
+            var entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
 
             if(entityAttributeType != null) {
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();
-                PartyPK createdBy = getPartyPK();
+                var createdBy = getPartyPK();
 
                 mimeType = coreControl.createMimeType(mimeTypeName, entityAttributeType, isDefault, sortOrder, createdBy);
 
                 if(description != null) {
-                    Language language = getPreferredLanguage();
+                    var language = getPreferredLanguage();
 
                     coreControl.createMimeTypeDescription(mimeType, language, description, createdBy);
                 }

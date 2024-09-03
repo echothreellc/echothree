@@ -23,12 +23,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClassAnswer;
-import com.echothree.model.data.training.server.entity.TrainingClassQuestion;
-import com.echothree.model.data.training.server.entity.TrainingClassSection;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -79,31 +73,31 @@ public class CreateTrainingClassAnswerCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = form.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = form.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String trainingClassQuestionName = form.getTrainingClassQuestionName();
-                TrainingClassQuestion trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
+                var trainingClassQuestionName = form.getTrainingClassQuestionName();
+                var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion != null) {
-                    String trainingClassAnswerName = form.getTrainingClassAnswerName();
-                    TrainingClassAnswer trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
+                    var trainingClassAnswerName = form.getTrainingClassAnswerName();
+                    var trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
 
                     if(trainingClassAnswer == null) {
-                        MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-                        String answer = form.getAnswer();
-                        MimeType answerMimeType = mimeTypeLogic.checkMimeType(this, form.getAnswerMimeTypeName(), answer, MimeTypeUsageTypes.TEXT.name(),
+                        var mimeTypeLogic = MimeTypeLogic.getInstance();
+                        var answer = form.getAnswer();
+                        var answerMimeType = mimeTypeLogic.checkMimeType(this, form.getAnswerMimeTypeName(), answer, MimeTypeUsageTypes.TEXT.name(),
                                 ExecutionErrors.MissingRequiredAnswerMimeTypeName.name(), ExecutionErrors.MissingRequiredAnswer.name(),
                                 ExecutionErrors.UnknownAnswerMimeTypeName.name(), ExecutionErrors.UnknownAnswerMimeTypeUsage.name());
 
                         if(!hasExecutionErrors()) {
-                            String selected = form.getSelected();
-                            MimeType selectedMimeType = mimeTypeLogic.checkMimeType(this, form.getSelectedMimeTypeName(), selected, MimeTypeUsageTypes.TEXT.name(),
+                            var selected = form.getSelected();
+                            var selectedMimeType = mimeTypeLogic.checkMimeType(this, form.getSelectedMimeTypeName(), selected, MimeTypeUsageTypes.TEXT.name(),
                                     ExecutionErrors.MissingRequiredSelectedMimeTypeName.name(), ExecutionErrors.MissingRequiredSelected.name(),
                                     ExecutionErrors.UnknownSelectedMimeTypeName.name(), ExecutionErrors.UnknownSelectedMimeTypeUsage.name());
 
@@ -112,8 +106,8 @@ public class CreateTrainingClassAnswerCommand
                                     addExecutionError(ExecutionErrors.MissingRequiredAnswerMimeTypeName.name());
                                     addExecutionError(ExecutionErrors.MissingRequiredAnswer.name());
                                 } else {
-                                    PartyPK createdBy = getPartyPK();
-                                    Boolean isCorrect = Boolean.valueOf(form.getIsCorrect());
+                                    var createdBy = getPartyPK();
+                                    var isCorrect = Boolean.valueOf(form.getIsCorrect());
                                     var sortOrder = Integer.valueOf(form.getSortOrder());
 
                                     trainingClassAnswer = trainingControl.createTrainingClassAnswer(trainingClassQuestion, trainingClassAnswerName, isCorrect,

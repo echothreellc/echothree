@@ -32,14 +32,9 @@ import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortScopeDescription;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortScopeDetail;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
-import com.echothree.model.data.workeffort.server.value.WorkEffortScopeDescriptionValue;
-import com.echothree.model.data.workeffort.server.value.WorkEffortScopeDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -109,12 +104,12 @@ public class EditWorkEffortScopeCommand
     public WorkEffortScope getEntity(EditWorkEffortScopeResult result) {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
         WorkEffortScope workEffortScope = null;
-        String workEffortTypeName = spec.getWorkEffortTypeName();
+        var workEffortTypeName = spec.getWorkEffortTypeName();
 
         workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
 
         if(workEffortType != null) {
-            String workEffortScopeName = spec.getWorkEffortScopeName();
+            var workEffortScopeName = spec.getWorkEffortScopeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
@@ -152,10 +147,10 @@ public class EditWorkEffortScopeCommand
     @Override
     public void doLock(WorkEffortScopeEdit edit, WorkEffortScope workEffortScope) {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-        WorkEffortScopeDescription workEffortScopeDescription = workEffortControl.getWorkEffortScopeDescription(workEffortScope, getPreferredLanguage());
-        WorkEffortScopeDetail workEffortScopeDetail = workEffortScope.getLastDetail();
-        Sequence workEffortSequence = workEffortScopeDetail.getWorkEffortSequence();
+        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+        var workEffortScopeDescription = workEffortControl.getWorkEffortScopeDescription(workEffortScope, getPreferredLanguage());
+        var workEffortScopeDetail = workEffortScope.getLastDetail();
+        var workEffortSequence = workEffortScopeDetail.getWorkEffortSequence();
         UnitOfMeasureTypeLogic.StringUnitOfMeasure stringUnitOfMeasure;
 
         edit.setWorkEffortScopeName(workEffortScopeDetail.getWorkEffortScopeName());
@@ -185,17 +180,17 @@ public class EditWorkEffortScopeCommand
     @Override
     public void canUpdate(WorkEffortScope workEffortScope) {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        String workEffortScopeName = edit.getWorkEffortScopeName();
-        WorkEffortScope duplicateWorkEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
+        var workEffortScopeName = edit.getWorkEffortScopeName();
+        var duplicateWorkEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
 
         if(duplicateWorkEffortScope != null && !workEffortScope.equals(duplicateWorkEffortScope)) {
             addExecutionError(ExecutionErrors.DuplicateWorkEffortScopeName.name(), workEffortScopeName);
         } else {
-            String workEffortSequenceName = edit.getWorkEffortSequenceName();
+            var workEffortSequenceName = edit.getWorkEffortSequenceName();
 
             if(workEffortSequenceName != null) {
                 var sequenceControl = Session.getModelController(SequenceControl.class);
-                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_EFFORT.name());
+                var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_EFFORT.name());
 
                 if(sequenceType != null) {
                     workEffortSequence = sequenceControl.getSequenceByName(sequenceType, workEffortSequenceName);
@@ -205,7 +200,7 @@ public class EditWorkEffortScopeCommand
             }
 
             if(workEffortSequenceName == null || workEffortSequence != null) {
-                UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+                var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
 
                 scheduledTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                         edit.getScheduledTime(), edit.getScheduledTimeUnitOfMeasureTypeName(),
@@ -235,9 +230,9 @@ public class EditWorkEffortScopeCommand
     public void doUpdate(WorkEffortScope workEffortScope) {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
         var partyPK = getPartyPK();
-        WorkEffortScopeDetailValue workEffortScopeDetailValue = workEffortControl.getWorkEffortScopeDetailValueForUpdate(workEffortScope);
-        WorkEffortScopeDescription workEffortScopeDescription = workEffortControl.getWorkEffortScopeDescriptionForUpdate(workEffortScope, getPreferredLanguage());
-        String description = edit.getDescription();
+        var workEffortScopeDetailValue = workEffortControl.getWorkEffortScopeDetailValueForUpdate(workEffortScope);
+        var workEffortScopeDescription = workEffortControl.getWorkEffortScopeDescriptionForUpdate(workEffortScope, getPreferredLanguage());
+        var description = edit.getDescription();
 
         workEffortScopeDetailValue.setWorkEffortScopeName(edit.getWorkEffortScopeName());
         workEffortScopeDetailValue.setWorkEffortSequencePK(workEffortSequence == null ? null : workEffortSequence.getPrimaryKey());
@@ -254,7 +249,7 @@ public class EditWorkEffortScopeCommand
         } else if(workEffortScopeDescription != null && description == null) {
             workEffortControl.deleteWorkEffortScopeDescription(workEffortScopeDescription, partyPK);
         } else if(workEffortScopeDescription != null && description != null) {
-            WorkEffortScopeDescriptionValue workEffortScopeDescriptionValue = workEffortControl.getWorkEffortScopeDescriptionValue(workEffortScopeDescription);
+            var workEffortScopeDescriptionValue = workEffortControl.getWorkEffortScopeDescriptionValue(workEffortScopeDescription);
 
             workEffortScopeDescriptionValue.setDescription(description);
             workEffortControl.updateWorkEffortScopeDescriptionFromValue(workEffortScopeDescriptionValue, partyPK);

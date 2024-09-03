@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.chain.lettersource;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.form.GetLetterSourceForm;
 import com.echothree.control.user.letter.common.result.GetLetterSourceResult;
-import com.echothree.model.control.letter.common.transfer.LetterSourceTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,16 +48,16 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetLetterSourceForm commandForm = LetterUtil.getHome().getGetLetterSourceForm();
-        String letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
+        String forwardKey;
+        var commandForm = LetterUtil.getHome().getGetLetterSourceForm();
+        var letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
         
         commandForm.setLetterSourceName(letterSourceName);
-        
-        CommandResult commandResult = LetterUtil.getHome().getLetterSource(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetLetterSourceResult result = (GetLetterSourceResult)executionResult.getResult();
-        LetterSourceTransfer letterSource = result.getLetterSource();
+
+        var commandResult = LetterUtil.getHome().getLetterSource(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetLetterSourceResult)executionResult.getResult();
+        var letterSource = result.getLetterSource();
         
         if(letterSource == null) {
             forwardKey = ForwardConstants.ERROR_404;

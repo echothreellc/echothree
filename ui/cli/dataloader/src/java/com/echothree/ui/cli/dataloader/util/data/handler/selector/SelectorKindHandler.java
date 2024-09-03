@@ -18,13 +18,9 @@ package com.echothree.ui.cli.dataloader.util.data.handler.selector;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.control.user.selector.common.SelectorService;
-import com.echothree.control.user.selector.common.form.CreateSelectorKindDescriptionForm;
-import com.echothree.control.user.selector.common.form.CreateSelectorNodeTypeUseForm;
-import com.echothree.control.user.selector.common.form.CreateSelectorTypeForm;
 import com.echothree.control.user.selector.common.form.SelectorFormFactory;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.WorkflowService;
-import com.echothree.control.user.workflow.common.form.CreateWorkflowSelectorKindForm;
 import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -62,28 +58,28 @@ public class SelectorKindHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("selectorKindDescription")) {
-            CreateSelectorKindDescriptionForm commandForm = SelectorFormFactory.getCreateSelectorKindDescriptionForm();
+            var commandForm = SelectorFormFactory.getCreateSelectorKindDescriptionForm();
 
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.set(getAttrsMap(attrs));
 
             selectorService.createSelectorKindDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("selectorNodeTypeUse")) {
-            CreateSelectorNodeTypeUseForm commandForm = SelectorFormFactory.getCreateSelectorNodeTypeUseForm();
+            var commandForm = SelectorFormFactory.getCreateSelectorNodeTypeUseForm();
 
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.set(getAttrsMap(attrs));
 
             selectorService.createSelectorNodeTypeUse(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("workflowSelectorKind")) {
-            CreateWorkflowSelectorKindForm commandForm = WorkflowFormFactory.getCreateWorkflowSelectorKindForm();
+            var commandForm = WorkflowFormFactory.getCreateWorkflowSelectorKindForm();
 
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.set(getAttrsMap(attrs));
 
             workflowService.createWorkflowSelectorKind(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("selectorType")) {
-            CreateSelectorTypeForm commandForm = SelectorFormFactory.getCreateSelectorTypeForm();
+            var commandForm = SelectorFormFactory.getCreateSelectorTypeForm();
 
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.set(getAttrsMap(attrs));

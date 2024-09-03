@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.humanresources.trainingclassanswer;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.form.CreateTrainingClassAnswerTranslationForm;
-import com.echothree.control.user.training.common.form.GetTrainingClassAnswerForm;
 import com.echothree.control.user.training.common.result.GetTrainingClassAnswerResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -59,17 +56,17 @@ public class TranslationAddAction
     @Override
     public void setupTransfer(TranslationAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTrainingClassAnswerForm commandForm = TrainingUtil.getHome().getGetTrainingClassAnswerForm();
+        var commandForm = TrainingUtil.getHome().getGetTrainingClassAnswerForm();
 
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());
         commandForm.setTrainingClassQuestionName(actionForm.getTrainingClassQuestionName());
         commandForm.setTrainingClassAnswerName(actionForm.getTrainingClassAnswerName());
-        
-        CommandResult commandResult = TrainingUtil.getHome().getTrainingClassAnswer(getUserVisitPK(request), commandForm);
+
+        var commandResult = TrainingUtil.getHome().getTrainingClassAnswer(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTrainingClassAnswerResult result = (GetTrainingClassAnswerResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTrainingClassAnswerResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRAINING_CLASS_ANSWER, result.getTrainingClassAnswer());
         }
@@ -78,7 +75,7 @@ public class TranslationAddAction
     @Override
     public CommandResult doAdd(TranslationAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateTrainingClassAnswerTranslationForm commandForm = TrainingUtil.getHome().getCreateTrainingClassAnswerTranslationForm();
+        var commandForm = TrainingUtil.getHome().getCreateTrainingClassAnswerTranslationForm();
 
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());

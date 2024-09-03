@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.workefforttype;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
-import com.echothree.control.user.workeffort.common.form.GetWorkEffortTypeDescriptionsForm;
 import com.echothree.control.user.workeffort.common.result.GetWorkEffortTypeDescriptionsResult;
-import com.echothree.model.control.workeffort.common.transfer.WorkEffortTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
-            GetWorkEffortTypeDescriptionsForm commandForm = WorkEffortUtil.getHome().getGetWorkEffortTypeDescriptionsForm();
+            var workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
+            var commandForm = WorkEffortUtil.getHome().getGetWorkEffortTypeDescriptionsForm();
             
             commandForm.setWorkEffortTypeName(workEffortTypeName);
-            
-            CommandResult commandResult = WorkEffortUtil.getHome().getWorkEffortTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkEffortTypeDescriptionsResult result = (GetWorkEffortTypeDescriptionsResult)executionResult.getResult();
-            WorkEffortTypeTransfer workEffortTypeTransfer = result.getWorkEffortType();
+
+            var commandResult = WorkEffortUtil.getHome().getWorkEffortTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkEffortTypeDescriptionsResult)executionResult.getResult();
+            var workEffortTypeTransfer = result.getWorkEffortType();
             
             request.setAttribute(AttributeConstants.WORK_EFFORT_TYPE, workEffortTypeTransfer);
             request.setAttribute(AttributeConstants.WORK_EFFORT_TYPE_NAME, workEffortTypeTransfer.getWorkEffortTypeName());

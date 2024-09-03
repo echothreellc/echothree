@@ -23,9 +23,6 @@ import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.printer.server.entity.PartyPrinterGroupUse;
-import com.echothree.model.data.printer.server.entity.PrinterGroup;
-import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,8 +65,8 @@ public class CreatePartyPrinterGroupUseCommand
     
     @Override
     protected BaseResult execute() {
-        String partyName = form.getPartyName();
-        Party party = null;
+        var partyName = form.getPartyName();
+        Party party;
 
         if(partyName != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -85,15 +82,15 @@ public class CreatePartyPrinterGroupUseCommand
 
         if(!hasExecutionErrors()) {
             var printerControl = Session.getModelController(PrinterControl.class);
-            String printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
-            PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
+            var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
+            var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
 
             if(printerGroupUseType != null) {
-                PartyPrinterGroupUse partyPrinterGroupUse = printerControl.getPartyPrinterGroupUse(party, printerGroupUseType);
+                var partyPrinterGroupUse = printerControl.getPartyPrinterGroupUse(party, printerGroupUseType);
 
                 if(partyPrinterGroupUse == null) {
-                    String printerGroupName = form.getPrinterGroupName();
-                    PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
+                    var printerGroupName = form.getPrinterGroupName();
+                    var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
 
                     if(printerGroup != null) {
                         printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, printerGroup, getPartyPK());

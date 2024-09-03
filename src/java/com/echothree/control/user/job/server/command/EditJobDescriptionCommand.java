@@ -19,7 +19,6 @@ package com.echothree.control.user.job.server.command;
 import com.echothree.control.user.job.common.edit.JobDescriptionEdit;
 import com.echothree.control.user.job.common.edit.JobEditFactory;
 import com.echothree.control.user.job.common.form.EditJobDescriptionForm;
-import com.echothree.control.user.job.common.result.EditJobDescriptionResult;
 import com.echothree.control.user.job.common.result.JobResultFactory;
 import com.echothree.control.user.job.common.spec.JobDescriptionSpec;
 import com.echothree.model.control.job.server.control.JobControl;
@@ -27,10 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.job.server.entity.Job;
-import com.echothree.model.data.job.server.entity.JobDescription;
-import com.echothree.model.data.job.server.value.JobDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -79,24 +74,24 @@ public class EditJobDescriptionCommand
     @Override
     protected BaseResult execute() {
         var jobControl = Session.getModelController(JobControl.class);
-        EditJobDescriptionResult result = JobResultFactory.getEditJobDescriptionResult();
-        String jobName = spec.getJobName();
-        Job job = jobControl.getJobByName(jobName);
+        var result = JobResultFactory.getEditJobDescriptionResult();
+        var jobName = spec.getJobName();
+        var job = jobControl.getJobByName(jobName);
         
         if(job != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    JobDescription jobDescription = jobControl.getJobDescription(job, language);
+                    var jobDescription = jobControl.getJobDescription(job, language);
                     
                     if(jobDescription != null) {
                         result.setJobDescription(jobControl.getJobDescriptionTransfer(getUserVisit(), jobDescription));
                         
                         if(lockEntity(job)) {
-                            JobDescriptionEdit edit = JobEditFactory.getJobDescriptionEdit();
+                            var edit = JobEditFactory.getJobDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(jobDescription.getDescription());
@@ -109,12 +104,12 @@ public class EditJobDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownJobDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    JobDescriptionValue jobDescriptionValue = jobControl.getJobDescriptionValueForUpdate(job, language);
+                    var jobDescriptionValue = jobControl.getJobDescriptionValueForUpdate(job, language);
                     
                     if(jobDescriptionValue != null) {
                         if(lockEntityForUpdate(job)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 jobDescriptionValue.setDescription(description);
                                 

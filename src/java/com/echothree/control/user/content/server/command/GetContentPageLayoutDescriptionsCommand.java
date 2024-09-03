@@ -18,12 +18,10 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentPageLayoutDescriptionsForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentPageLayoutDescriptionsResult;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetContentPageLayoutDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentPageLayoutDescriptionsResult result = ContentResultFactory.getGetContentPageLayoutDescriptionsResult();
-        String contentPageLayoutName = form.getContentPageLayoutName();
-        ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
+        var result = ContentResultFactory.getGetContentPageLayoutDescriptionsResult();
+        var contentPageLayoutName = form.getContentPageLayoutName();
+        var contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
         
         if(contentPageLayout != null) {
             result.setContentPageLayout(contentControl.getContentPageLayoutTransfer(getUserVisit(), contentPageLayout));

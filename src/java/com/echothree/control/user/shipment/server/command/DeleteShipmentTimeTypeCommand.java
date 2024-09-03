@@ -21,8 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.ShipmentControl;
-import com.echothree.model.data.shipment.server.entity.ShipmentTimeType;
-import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,12 +63,12 @@ public class DeleteShipmentTimeTypeCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
-            String shipmentTimeTypeName = form.getShipmentTimeTypeName();
-            ShipmentTimeType shipmentTimeType = shipmentControl.getShipmentTimeTypeByNameForUpdate(shipmentType, shipmentTimeTypeName);
+            var shipmentTimeTypeName = form.getShipmentTimeTypeName();
+            var shipmentTimeType = shipmentControl.getShipmentTimeTypeByNameForUpdate(shipmentType, shipmentTimeTypeName);
 
             if(shipmentTimeType != null) {
                 shipmentControl.deleteShipmentTimeType(shipmentTimeType, getPartyPK());

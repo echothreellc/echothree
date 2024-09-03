@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.geocodescope;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetGeoCodeScopeDescriptionsForm;
 import com.echothree.control.user.geo.common.result.GetGeoCodeScopeDescriptionsResult;
-import com.echothree.model.control.geo.common.transfer.GeoCodeScopeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String geoCodeScopeName = request.getParameter(ParameterConstants.GEO_CODE_SCOPE_NAME);
-        GetGeoCodeScopeDescriptionsForm commandForm = GeoUtil.getHome().getGetGeoCodeScopeDescriptionsForm();
+        var geoCodeScopeName = request.getParameter(ParameterConstants.GEO_CODE_SCOPE_NAME);
+        var commandForm = GeoUtil.getHome().getGetGeoCodeScopeDescriptionsForm();
 
         commandForm.setGeoCodeScopeName(geoCodeScopeName);
 
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeScopeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = GeoUtil.getHome().getGeoCodeScopeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeScopeDescriptionsResult result = (GetGeoCodeScopeDescriptionsResult) executionResult.getResult();
-            GeoCodeScopeTransfer geoCodeScopeTransfer = result.getGeoCodeScope();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeScopeDescriptionsResult) executionResult.getResult();
+            var geoCodeScopeTransfer = result.getGeoCodeScope();
 
             request.setAttribute(AttributeConstants.GEO_CODE_SCOPE, geoCodeScopeTransfer);
             request.setAttribute(AttributeConstants.GEO_CODE_SCOPE_DESCRIPTIONS, result.getGeoCodeScopeDescriptions());

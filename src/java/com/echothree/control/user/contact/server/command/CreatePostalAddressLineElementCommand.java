@@ -18,10 +18,6 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.CreatePostalAddressLineElementForm;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.data.contact.server.entity.PostalAddressElementType;
-import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
-import com.echothree.model.data.contact.server.entity.PostalAddressLine;
-import com.echothree.model.data.contact.server.entity.PostalAddressLineElement;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -59,28 +55,28 @@ public class CreatePostalAddressLineElementCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String postalAddressFormatName = form.getPostalAddressFormatName();
-        PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
+        var postalAddressFormatName = form.getPostalAddressFormatName();
+        var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
         
         if(postalAddressFormat != null) {
-            Integer postalAddressLineSortOrder = Integer.valueOf(form.getPostalAddressLineSortOrder());
-            PostalAddressLine postalAddressLine = contactControl.getPostalAddressLine(postalAddressFormat, postalAddressLineSortOrder);
+            var postalAddressLineSortOrder = Integer.valueOf(form.getPostalAddressLineSortOrder());
+            var postalAddressLine = contactControl.getPostalAddressLine(postalAddressFormat, postalAddressLineSortOrder);
             
             if(postalAddressLine != null) {
-                Integer postalAddressLineElementSortOrder = Integer.valueOf(form.getPostalAddressLineElementSortOrder());
-                PostalAddressLineElement postalAddressLineElement = contactControl.getPostalAddressLineElement(postalAddressLine, postalAddressLineElementSortOrder);
+                var postalAddressLineElementSortOrder = Integer.valueOf(form.getPostalAddressLineElementSortOrder());
+                var postalAddressLineElement = contactControl.getPostalAddressLineElement(postalAddressLine, postalAddressLineElementSortOrder);
                 
                 if(postalAddressLineElement == null) {
-                    String postalAddressElementTypeName = form.getPostalAddressElementTypeName();
-                    PostalAddressElementType postalAddressElementType = contactControl.getPostalAddressElementTypeByName(postalAddressElementTypeName);
+                    var postalAddressElementTypeName = form.getPostalAddressElementTypeName();
+                    var postalAddressElementType = contactControl.getPostalAddressElementTypeByName(postalAddressElementTypeName);
                     
                     if(postalAddressElementType != null) {
-                        String prefix = form.getPrefix();
-                        Boolean alwaysIncludePrefix = Boolean.valueOf(form.getAlwaysIncludePrefix());
+                        var prefix = form.getPrefix();
+                        var alwaysIncludePrefix = Boolean.valueOf(form.getAlwaysIncludePrefix());
                         
                         if(!alwaysIncludePrefix || (alwaysIncludePrefix && prefix != null)) {
-                            String suffix = form.getSuffix();
-                            Boolean alwaysIncludeSuffix = Boolean.valueOf(form.getAlwaysIncludeSuffix());
+                            var suffix = form.getSuffix();
+                            var alwaysIncludeSuffix = Boolean.valueOf(form.getAlwaysIncludeSuffix());
 
                             if(!alwaysIncludeSuffix || (alwaysIncludeSuffix && suffix != null)) {
                                 contactControl.createPostalAddressLineElement(postalAddressLine, postalAddressLineElementSortOrder, postalAddressElementType, prefix, alwaysIncludePrefix, suffix,

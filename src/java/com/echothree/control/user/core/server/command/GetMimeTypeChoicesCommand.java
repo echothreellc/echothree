@@ -18,23 +18,11 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypeChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.data.comment.server.entity.Comment;
-import com.echothree.model.data.comment.server.entity.CommentType;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
-import com.echothree.model.data.document.server.entity.Document;
-import com.echothree.model.data.document.server.entity.DocumentType;
-import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.forum.server.entity.ForumForumThread;
-import com.echothree.model.data.forum.server.entity.ForumMessage;
-import com.echothree.model.data.forum.server.entity.ForumThread;
-import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -76,24 +64,24 @@ public class GetMimeTypeChoicesCommand
    @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetMimeTypeChoicesResult result = CoreResultFactory.getGetMimeTypeChoicesResult();
-        String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
-        String itemDescriptionTypeName = form.getItemDescriptionTypeName();
-        String forumName = form.getForumName();
-        String forumMessageName = form.getForumMessageName();
-        String componentVendorName = form.getComponentVendorName();
-        String entityTypeName = form.getEntityTypeName();
-        String commentTypeName = form.getCommentTypeName();
-        String commentName = form.getCommentName();
-        String documentTypeName = form.getDocumentTypeName();
-        String documentName = form.getDocumentName();
+       var result = CoreResultFactory.getGetMimeTypeChoicesResult();
+       var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
+       var itemDescriptionTypeName = form.getItemDescriptionTypeName();
+       var forumName = form.getForumName();
+       var forumMessageName = form.getForumMessageName();
+       var componentVendorName = form.getComponentVendorName();
+       var entityTypeName = form.getEntityTypeName();
+       var commentTypeName = form.getCommentTypeName();
+       var commentName = form.getCommentName();
+       var documentTypeName = form.getDocumentTypeName();
+       var documentName = form.getDocumentName();
         var parameterCount = (mimeTypeUsageTypeName != null? 1: 0) + (itemDescriptionTypeName != null? 1: 0) + (forumName != null? 1: 0)
                 + (forumMessageName != null? 1: 0) + (componentVendorName != null && entityTypeName != null && commentTypeName != null? 1: 0)
                 + (commentName != null? 1: 0) + (documentTypeName != null? 1: 0) + (documentName != null? 1: 0);
 
         if(parameterCount == 1) {
-        String defaultMimeTypeChoice = form.getDefaultMimeTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultMimeTypeChoice = form.getDefaultMimeTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
             if(mimeTypeUsageTypeName != null || itemDescriptionTypeName != null || documentTypeName != null || documentName != null) {
                 MimeTypeUsageType mimeTypeUsageType = null;
@@ -106,7 +94,7 @@ public class GetMimeTypeChoicesCommand
                     }
                 } else if(itemDescriptionTypeName != null) {
                     var itemControl = Session.getModelController(ItemControl.class);
-                    ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
+                    var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
 
                     if(itemDescriptionType != null) {
                         mimeTypeUsageType = itemDescriptionType.getLastDetail().getMimeTypeUsageType();
@@ -121,7 +109,7 @@ public class GetMimeTypeChoicesCommand
                     var documentControl = Session.getModelController(DocumentControl.class);
 
                     if(documentTypeName != null) {
-                        DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
+                        var documentType = documentControl.getDocumentTypeByName(documentTypeName);
 
                         if(documentType != null) {
                             mimeTypeUsageType = documentType.getLastDetail().getMimeTypeUsageType();
@@ -133,7 +121,7 @@ public class GetMimeTypeChoicesCommand
                             addExecutionError(ExecutionErrors.UnknownDocumentTypeName.name(), documentTypeName);
                         }
                     } else if(documentName != null) {
-                        Document document = documentControl.getDocumentByName(documentName);
+                        var document = documentControl.getDocumentByName(documentName);
 
                         if(document != null) {
                             mimeTypeUsageType = document.getLastDetail().getDocumentType().getLastDetail().getMimeTypeUsageType();
@@ -155,7 +143,7 @@ public class GetMimeTypeChoicesCommand
                 var forumControl = Session.getModelController(ForumControl.class);
 
                 if(forumName != null) {
-                    Forum forum = forumControl.getForumByName(forumName);
+                    var forum = forumControl.getForumByName(forumName);
 
                     if(forum != null) {
                         result.setMimeTypeChoices(forumControl.getForumMimeTypeChoices(forum, defaultMimeTypeChoice,
@@ -164,11 +152,11 @@ public class GetMimeTypeChoicesCommand
                         addExecutionError(ExecutionErrors.UnknownForumName.name(), forumName);
                     }
                 } else if(forumMessageName != null) {
-                    ForumMessage forumMessage = forumControl.getForumMessageByName(forumMessageName);
+                    var forumMessage = forumControl.getForumMessageByName(forumMessageName);
 
                     if(forumMessage != null) {
-                        ForumThread forumThread = forumMessage.getLastDetail().getForumThread();
-                        ForumForumThread forumForumThread = forumControl.getDefaultForumForumThread(forumThread);
+                        var forumThread = forumMessage.getLastDetail().getForumThread();
+                        var forumForumThread = forumControl.getDefaultForumForumThread(forumThread);
 
                         result.setMimeTypeChoices(forumControl.getForumMimeTypeChoices(forumForumThread.getForum(),
                                 defaultMimeTypeChoice, getPreferredLanguage(), allowNullChoice));
@@ -181,7 +169,7 @@ public class GetMimeTypeChoicesCommand
                 MimeTypeUsageType mimeTypeUsageType = null;
 
                 if(commentName != null) {
-                    Comment comment = commentControl.getCommentByName(commentName);
+                    var comment = commentControl.getCommentByName(commentName);
 
                     if(comment != null) {
                         mimeTypeUsageType = comment.getLastDetail().getCommentType().getLastDetail().getMimeTypeUsageType();
@@ -189,13 +177,13 @@ public class GetMimeTypeChoicesCommand
                         addExecutionError(ExecutionErrors.UnknownCommentName.name(), commentName);
                     }
                 } else {
-                    ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                    var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
                     if(componentVendor != null) {
-                        EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                        var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
                         if(entityType != null) {
-                            CommentType commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
+                            var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
 
                             if(commentType != null) {
                                 mimeTypeUsageType = commentType.getLastDetail().getMimeTypeUsageType();

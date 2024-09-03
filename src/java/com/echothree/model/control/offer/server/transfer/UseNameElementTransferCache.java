@@ -19,7 +19,6 @@ package com.echothree.model.control.offer.server.transfer;
 import com.echothree.model.control.offer.common.transfer.UseNameElementTransfer;
 import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
-import com.echothree.model.data.offer.server.entity.UseNameElementDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -36,15 +35,15 @@ public class UseNameElementTransferCache
     }
     
     public UseNameElementTransfer getUseNameElementTransfer(UseNameElement useNameElement) {
-        UseNameElementTransfer useNameElementTransfer = get(useNameElement);
+        var useNameElementTransfer = get(useNameElement);
         
         if(useNameElementTransfer == null) {
-            UseNameElementDetail useNameElementDetail = useNameElement.getLastDetail();
-            String useNameElementName = useNameElementDetail.getUseNameElementName();
-            Integer offset = useNameElementDetail.getOffset();
-            Integer length = useNameElementDetail.getLength();
-            String validationPattern = useNameElementDetail.getValidationPattern();
-            String description = useNameElementControl.getBestUseNameElementDescription(useNameElement, getLanguage());
+            var useNameElementDetail = useNameElement.getLastDetail();
+            var useNameElementName = useNameElementDetail.getUseNameElementName();
+            var offset = useNameElementDetail.getOffset();
+            var length = useNameElementDetail.getLength();
+            var validationPattern = useNameElementDetail.getValidationPattern();
+            var description = useNameElementControl.getBestUseNameElementDescription(useNameElement, getLanguage());
             
             useNameElementTransfer = new UseNameElementTransfer(useNameElementName, offset, length, validationPattern, description);
             put(useNameElement, useNameElementTransfer);

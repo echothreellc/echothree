@@ -21,10 +21,6 @@ import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
-import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
-import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,17 +63,17 @@ public class DeleteGeoCodeAliasCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeName = form.getGeoCodeName();
-        GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var geoCodeName = form.getGeoCodeName();
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
 
         if(geoCode != null) {
-            GeoCodeType geoCodeType = geoCode.getLastDetail().getGeoCodeType();
-            String geoCodeAliasTypeName = form.getGeoCodeAliasTypeName();
-            GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByNameForUpdate(geoCodeType, geoCodeAliasTypeName);
+            var geoCodeType = geoCode.getLastDetail().getGeoCodeType();
+            var geoCodeAliasTypeName = form.getGeoCodeAliasTypeName();
+            var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByNameForUpdate(geoCodeType, geoCodeAliasTypeName);
 
             if(geoCodeAliasType != null) {
                 if(!geoCodeAliasType.getLastDetail().getIsRequired()) {
-                    GeoCodeAlias geoCodeAlias = geoControl.getGeoCodeAliasForUpdate(geoCode, geoCodeAliasType);
+                    var geoCodeAlias = geoControl.getGeoCodeAliasForUpdate(geoCode, geoCodeAliasType);
 
                     if(geoCodeAlias != null) {
                         geoControl.deleteGeoCodeAlias(geoCodeAlias, getPartyPK());

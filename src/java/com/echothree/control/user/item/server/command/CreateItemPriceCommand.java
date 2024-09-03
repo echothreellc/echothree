@@ -26,16 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.inventory.server.entity.InventoryConditionUse;
-import com.echothree.model.data.inventory.server.entity.InventoryConditionUseType;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemDetail;
-import com.echothree.model.data.item.server.entity.ItemPrice;
-import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -85,46 +75,46 @@ public class CreateItemPriceCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            String inventoryConditionName = form.getInventoryConditionName();
-            InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+            var inventoryConditionName = form.getInventoryConditionName();
+            var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
             
             if(inventoryCondition != null) {
-                InventoryConditionUseType inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConstants.InventoryConditionUseType_SALES_ORDER);
-                InventoryConditionUse inventoryConditionUse = inventoryControl.getInventoryConditionUse(inventoryConditionUseType,
+                var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConstants.InventoryConditionUseType_SALES_ORDER);
+                var inventoryConditionUse = inventoryControl.getInventoryConditionUse(inventoryConditionUseType,
                         inventoryCondition);
                 
                 if(inventoryConditionUse != null) {
                     var uomControl = Session.getModelController(UomControl.class);
-                    String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                    ItemDetail itemDetail = item.getLastDetail();
-                    UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
-                    UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                    var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                    var itemDetail = item.getLastDetail();
+                    var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
+                    var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                     
                     if(unitOfMeasureType != null) {
-                        ItemUnitOfMeasureType itemUnitOfMeasureType = itemControl.getItemUnitOfMeasureType(item, unitOfMeasureType);
+                        var itemUnitOfMeasureType = itemControl.getItemUnitOfMeasureType(item, unitOfMeasureType);
                         
                         if(itemUnitOfMeasureType != null) {
                             var accountingControl = Session.getModelController(AccountingControl.class);
-                            String currencyIsoName = form.getCurrencyIsoName();
-                            Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+                            var currencyIsoName = form.getCurrencyIsoName();
+                            var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                             
                             if(currency != null) {
-                                ItemPrice itemPrice = itemControl.getItemPrice(item, inventoryCondition, unitOfMeasureType, currency);
+                                var itemPrice = itemControl.getItemPrice(item, inventoryCondition, unitOfMeasureType, currency);
                                 
                                 if(itemPrice == null) {
-                                    String itemPriceTypeName = itemDetail.getItemPriceType().getItemPriceTypeName();
+                                    var itemPriceTypeName = itemDetail.getItemPriceType().getItemPriceTypeName();
                                     BasePK createdBy = getPartyPK();
                                     
                                     if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
-                                        String strUnitPrice = form.getUnitPrice();
+                                        var strUnitPrice = form.getUnitPrice();
                                         
                                         if(strUnitPrice != null) {
-                                            Long unitPrice = Long.valueOf(strUnitPrice);
+                                            var unitPrice = Long.valueOf(strUnitPrice);
                                             
                                             itemPrice = itemControl.createItemPrice(item, inventoryCondition, unitOfMeasureType,
                                                     currency, createdBy);
@@ -133,11 +123,11 @@ public class CreateItemPriceCommand
                                             addExecutionError(ExecutionErrors.MissingUnitPrice.name());
                                         }
                                     } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
-                                        String strMinimumUnitPrice = form.getMinimumUnitPrice();
+                                        var strMinimumUnitPrice = form.getMinimumUnitPrice();
                                         Long minimumUnitPrice = null;
-                                        String strMaximumUnitPrice = form.getMaximumUnitPrice();
+                                        var strMaximumUnitPrice = form.getMaximumUnitPrice();
                                         Long maximumUnitPrice = null;
-                                        String strUnitPriceIncrement = form.getUnitPriceIncrement();
+                                        var strUnitPriceIncrement = form.getUnitPriceIncrement();
                                         Long unitPriceIncrement = null;
                                         
                                         if(strMinimumUnitPrice != null) {

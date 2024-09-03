@@ -17,15 +17,12 @@
 package com.echothree.control.user.period.server.command;
 
 import com.echothree.control.user.period.common.form.GetPeriodTypeForm;
-import com.echothree.control.user.period.common.result.GetPeriodTypeResult;
 import com.echothree.control.user.period.common.result.PeriodResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.period.server.entity.PeriodKind;
-import com.echothree.model.data.period.server.entity.PeriodType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,13 +65,13 @@ public class GetPeriodTypeCommand
     @Override
     protected BaseResult execute() {
         var periodControl = Session.getModelController(PeriodControl.class);
-        GetPeriodTypeResult result = PeriodResultFactory.getGetPeriodTypeResult();
-        String periodKindName = form.getPeriodKindName();
-        PeriodKind periodKind = periodControl.getPeriodKindByName(periodKindName);
+        var result = PeriodResultFactory.getGetPeriodTypeResult();
+        var periodKindName = form.getPeriodKindName();
+        var periodKind = periodControl.getPeriodKindByName(periodKindName);
         
         if(periodKind != null) {
-            String periodTypeName = form.getPeriodTypeName();
-            PeriodType periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
+            var periodTypeName = form.getPeriodTypeName();
+            var periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
             
             if(periodType != null) {
                 result.setPeriodType(periodControl.getPeriodTypeTransfer(getUserVisit(), periodType));

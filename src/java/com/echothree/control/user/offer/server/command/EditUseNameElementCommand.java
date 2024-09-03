@@ -28,10 +28,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
-import com.echothree.model.data.offer.server.entity.UseNameElementDescription;
-import com.echothree.model.data.offer.server.entity.UseNameElementDetail;
-import com.echothree.model.data.offer.server.value.UseNameElementDescriptionValue;
-import com.echothree.model.data.offer.server.value.UseNameElementDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -112,8 +108,8 @@ public class EditUseNameElementCommand
     @Override
     public void doLock(UseNameElementEdit edit, UseNameElement useNameElement) {
         var useNameElementControl = Session.getModelController(UseNameElementControl.class);
-        UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement, getPreferredLanguage());
-        UseNameElementDetail useNameElementDetail = useNameElement.getLastDetail();
+        var useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement, getPreferredLanguage());
+        var useNameElementDetail = useNameElement.getLastDetail();
         
         edit.setUseNameElementName(useNameElementDetail.getUseNameElementName());
         edit.setOffset(useNameElementDetail.getOffset().toString());
@@ -128,8 +124,8 @@ public class EditUseNameElementCommand
     @Override
     public void canUpdate(UseNameElement useNameElement) {
         var useNameElementControl = Session.getModelController(UseNameElementControl.class);
-        String useNameElementName = edit.getUseNameElementName();
-        UseNameElement duplicateUseNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
+        var useNameElementName = edit.getUseNameElementName();
+        var duplicateUseNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
 
         if(duplicateUseNameElement != null && !useNameElement.equals(duplicateUseNameElement)) {
             addExecutionError(ExecutionErrors.DuplicateUseNameElementName.name(), useNameElementName);
@@ -140,9 +136,9 @@ public class EditUseNameElementCommand
     public void doUpdate(UseNameElement useNameElement) {
         var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         var partyPK = getPartyPK();
-        UseNameElementDetailValue useNameElementDetailValue = useNameElementControl.getUseNameElementDetailValueForUpdate(useNameElement);
-        UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescriptionForUpdate(useNameElement, getPreferredLanguage());
-        String description = edit.getDescription();
+        var useNameElementDetailValue = useNameElementControl.getUseNameElementDetailValueForUpdate(useNameElement);
+        var useNameElementDescription = useNameElementControl.getUseNameElementDescriptionForUpdate(useNameElement, getPreferredLanguage());
+        var description = edit.getDescription();
 
         useNameElementDetailValue.setUseNameElementName(edit.getUseNameElementName());
         useNameElementDetailValue.setOffset(Integer.valueOf(edit.getOffset()));
@@ -156,7 +152,7 @@ public class EditUseNameElementCommand
         } else if(useNameElementDescription != null && description == null) {
             useNameElementControl.deleteUseNameElementDescription(useNameElementDescription, partyPK);
         } else if(useNameElementDescription != null && description != null) {
-            UseNameElementDescriptionValue useNameElementDescriptionValue = useNameElementControl.getUseNameElementDescriptionValue(useNameElementDescription);
+            var useNameElementDescriptionValue = useNameElementControl.getUseNameElementDescriptionValue(useNameElementDescription);
 
             useNameElementDescriptionValue.setDescription(description);
             useNameElementControl.updateUseNameElementDescriptionFromValue(useNameElementDescriptionValue, partyPK);

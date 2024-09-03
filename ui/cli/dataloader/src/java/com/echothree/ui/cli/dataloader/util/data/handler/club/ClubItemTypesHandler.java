@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.club;
 import com.echothree.control.user.club.common.ClubUtil;
 import com.echothree.control.user.club.common.ClubService;
 import com.echothree.control.user.club.common.form.ClubFormFactory;
-import com.echothree.control.user.club.common.form.CreateClubItemTypeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -48,9 +47,9 @@ public class ClubItemTypesHandler
             String clubItemTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("clubItemTypeName"))
                     clubItemTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +59,7 @@ public class ClubItemTypesHandler
             }
             
             try {
-                CreateClubItemTypeForm commandForm = ClubFormFactory.getCreateClubItemTypeForm();
+                var commandForm = ClubFormFactory.getCreateClubItemTypeForm();
                 
                 commandForm.setClubItemTypeName(clubItemTypeName);
                 commandForm.setIsDefault(isDefault);

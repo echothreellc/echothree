@@ -17,19 +17,14 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.GetRecoveryAnswerForm;
 import com.echothree.control.user.user.common.result.GetRecoveryAnswerResult;
-import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.model.control.user.common.transfer.RecoveryAnswerTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,16 +51,16 @@ public class CustomerRecoveryAnswerReviewAction
 
     public void setupCustomerTransfer(HttpServletRequest request, HttpServletResponse response)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
-            CustomerTransfer customer = result.getCustomer();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerResult)executionResult.getResult();
+            var customer = result.getCustomer();
 
             if(customer != null) {
                 request.setAttribute(AttributeConstants.CUSTOMER, customer);
@@ -77,17 +72,17 @@ public class CustomerRecoveryAnswerReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetRecoveryAnswerForm commandForm = UserUtil.getHome().getGetRecoveryAnswerForm();
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = UserUtil.getHome().getGetRecoveryAnswerForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = UserUtil.getHome().getRecoveryAnswer(getUserVisitPK(request), commandForm);
+        var commandResult = UserUtil.getHome().getRecoveryAnswer(getUserVisitPK(request), commandForm);
         RecoveryAnswerTransfer recoveryAnswer = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetRecoveryAnswerResult result = (GetRecoveryAnswerResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetRecoveryAnswerResult)executionResult.getResult();
             recoveryAnswer = result.getRecoveryAnswer();
         }
 

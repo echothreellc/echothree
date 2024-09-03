@@ -18,7 +18,6 @@ package com.echothree.control.user.communication.common;
 
 import com.echothree.control.user.communication.server.CommunicationLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class CommunicationUtil {
@@ -30,7 +29,7 @@ public class CommunicationUtil {
     public static CommunicationLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (CommunicationLocal)ctx.lookup("ejb:echothree/echothree-server/CommunicationBean!com.echothree.control.user.communication.server.CommunicationLocal");
         }
@@ -42,7 +41,7 @@ public class CommunicationUtil {
     public static CommunicationRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (CommunicationRemote)ctx.lookup("ejb:echothree/echothree-server/CommunicationBean!com.echothree.control.user.communication.common.CommunicationRemote");
         }

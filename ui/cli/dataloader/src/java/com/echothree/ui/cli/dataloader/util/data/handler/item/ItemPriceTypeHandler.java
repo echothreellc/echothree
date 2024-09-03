@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.ItemService;
-import com.echothree.control.user.item.common.form.CreateItemPriceTypeDescriptionForm;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -50,9 +49,9 @@ public class ItemPriceTypeHandler
         if(localName.equals("itemPriceTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +59,7 @@ public class ItemPriceTypeHandler
             }
             
                 try {
-                    CreateItemPriceTypeDescriptionForm createItemPriceTypeDescriptionForm = ItemFormFactory.getCreateItemPriceTypeDescriptionForm();
+                    var createItemPriceTypeDescriptionForm = ItemFormFactory.getCreateItemPriceTypeDescriptionForm();
                     
                     createItemPriceTypeDescriptionForm.setItemPriceTypeName(itemPriceTypeName);
                     createItemPriceTypeDescriptionForm.setLanguageIsoName(languageIsoName);

@@ -18,7 +18,6 @@ package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.SetPrinterStatusForm;
 import com.echothree.model.control.printer.server.control.PrinterControl;
-import com.echothree.model.data.printer.server.entity.Printer;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,11 +49,11 @@ public class SetPrinterStatusCommand
     @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerName = form.getPrinterName();
-        Printer printer = printerControl.getPrinterByName(printerName);
+        var printerName = form.getPrinterName();
+        var printer = printerControl.getPrinterByName(printerName);
         
         if(printer != null) {
-            String printerStatusChoice = form.getPrinterStatusChoice();
+            var printerStatusChoice = form.getPrinterStatusChoice();
             
             printerControl.setPrinterStatus(this, printer, printerStatusChoice, getPartyPK());
         } else {

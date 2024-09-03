@@ -19,9 +19,7 @@ package com.echothree.model.control.payment.server.logic;
 import com.echothree.model.control.payment.common.exception.DuplicatePaymentProcessorActionException;
 import com.echothree.model.control.payment.common.exception.UnknownPaymentProcessorActionException;
 import com.echothree.model.control.payment.server.control.PaymentProcessorActionControl;
-import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorAction;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -46,8 +44,8 @@ public class PaymentProcessorActionLogic
 
     public PaymentProcessorAction createPaymentProcessorAction(final ExecutionErrorAccumulator eea, final String paymentProcessorName,
             final String paymentProcessorActionTypeName, final BasePK createdBy) {
-        PaymentProcessor paymentProcessor = PaymentProcessorLogic.getInstance().getPaymentProcessorByName(eea, paymentProcessorName);
-        PaymentProcessorActionType paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByName(eea, paymentProcessorActionTypeName);
+        var paymentProcessor = PaymentProcessorLogic.getInstance().getPaymentProcessorByName(eea, paymentProcessorName);
+        var paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByName(eea, paymentProcessorActionTypeName);
         PaymentProcessorAction paymentProcessorAction = null;
 
         if(!eea.hasExecutionErrors()) {
@@ -74,8 +72,8 @@ public class PaymentProcessorActionLogic
 
     public PaymentProcessorAction getPaymentProcessorActionByNames(final ExecutionErrorAccumulator eea, final String paymentProcessorName,
             final String paymentProcessorActionTypeName, final EntityPermission entityPermission) {
-        PaymentProcessor paymentProcessor = PaymentProcessorLogic.getInstance().getPaymentProcessorByName(eea, paymentProcessorName);
-        PaymentProcessorActionType paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByName(eea, paymentProcessorActionTypeName);
+        var paymentProcessor = PaymentProcessorLogic.getInstance().getPaymentProcessorByName(eea, paymentProcessorName);
+        var paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByName(eea, paymentProcessorActionTypeName);
         PaymentProcessorAction paymentProcessorAction = null;
 
         if(!eea.hasExecutionErrors()) {

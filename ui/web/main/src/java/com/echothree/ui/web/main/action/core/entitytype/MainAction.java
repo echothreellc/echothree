@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entitytype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityTypesForm;
 import com.echothree.control.user.core.common.result.GetEntityTypesResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.data.core.common.EntityTypeConstants;
@@ -25,8 +24,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -62,7 +59,7 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetEntityTypesForm commandForm = CoreUtil.getHome().getGetEntityTypesForm();
+        var commandForm = CoreUtil.getHome().getGetEntityTypesForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
 
@@ -73,18 +70,18 @@ public class MainAction
         options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
 
-        String offsetParameter = request.getParameter(new ParamEncoder("entityType").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
-        Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
+        var offsetParameter = request.getParameter(new ParamEncoder("entityType").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
+        var offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
         Map<String, Limit> limits = new HashMap<>();
         limits.put(EntityTypeConstants.ENTITY_TYPE_NAME, new Limit("20", offset == null ? null : offset.toString()));
         commandForm.setLimits(limits);
 
-        CommandResult commandResult = CoreUtil.getHome().getEntityTypes(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getEntityTypes(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityTypesResult result = (GetEntityTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityTypesResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR, result.getComponentVendor());
             request.setAttribute(AttributeConstants.ENTITY_TYPE_COUNT, toIntExact(result.getEntityTypeCount()));

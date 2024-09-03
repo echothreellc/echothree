@@ -17,8 +17,6 @@
 package com.echothree.model.control.filter.server.evaluator;
 
 import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.util.server.persistence.Session;
 
 public class FilterCacheFactory {
@@ -41,11 +39,11 @@ public class FilterCacheFactory {
     
     public FilterCache getFilterCache(Session session, String filterKindName, String filterTypeName) {
         var filterControl = Session.getModelController(FilterControl.class);
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
-        FilterCache filterCache = null;
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        FilterCache filterCache;
         
         if(filterKind != null) {
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
                 filterCache = new FilterCache(session, filterControl, filterType);

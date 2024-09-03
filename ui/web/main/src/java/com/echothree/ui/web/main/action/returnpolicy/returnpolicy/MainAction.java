@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnpolicy;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.form.GetReturnPoliciesForm;
 import com.echothree.control.user.returnpolicy.common.result.GetReturnPoliciesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetReturnPoliciesForm commandForm = ReturnPolicyUtil.getHome().getGetReturnPoliciesForm();
-            String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getGetReturnPoliciesForm();
+            var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
             
             commandForm.setReturnKindName(returnKindName);
 
-            CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnPolicies(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetReturnPoliciesResult result = (GetReturnPoliciesResult)executionResult.getResult();
+            var commandResult = ReturnPolicyUtil.getHome().getReturnPolicies(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnPoliciesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RETURN_KIND, result.getReturnKind());
             request.setAttribute(AttributeConstants.RETURN_POLICIES, result.getReturnPolicies());

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.workeffortscope;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
-import com.echothree.control.user.workeffort.common.form.CreateWorkEffortScopeForm;
-import com.echothree.control.user.workeffort.common.form.GetWorkEffortTypeForm;
 import com.echothree.control.user.workeffort.common.result.GetWorkEffortTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -62,14 +59,14 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetWorkEffortTypeForm commandForm = WorkEffortUtil.getHome().getGetWorkEffortTypeForm();
+        var commandForm = WorkEffortUtil.getHome().getGetWorkEffortTypeForm();
 
         commandForm.setWorkEffortTypeName(actionForm.getWorkEffortTypeName());
-        
-        CommandResult commandResult = WorkEffortUtil.getHome().getWorkEffortType(getUserVisitPK(request), commandForm);
+
+        var commandResult = WorkEffortUtil.getHome().getWorkEffortType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkEffortTypeResult result = (GetWorkEffortTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkEffortTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORK_EFFORT_TYPE, result.getWorkEffortType());
         }
@@ -78,7 +75,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateWorkEffortScopeForm commandForm = WorkEffortUtil.getHome().getCreateWorkEffortScopeForm();
+        var commandForm = WorkEffortUtil.getHome().getCreateWorkEffortScopeForm();
 
         commandForm.setWorkEffortTypeName(actionForm.getWorkEffortTypeName());
         commandForm.setWorkEffortScopeName(actionForm.getWorkEffortScopeName());

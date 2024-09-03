@@ -27,11 +27,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceDescription;
-import com.echothree.model.data.sequence.server.entity.SequenceDetail;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
-import com.echothree.model.data.sequence.server.value.SequenceDescriptionValue;
-import com.echothree.model.data.sequence.server.value.SequenceDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -97,12 +93,12 @@ public class EditSequenceCommand
     public Sequence getEntity(EditSequenceResult result) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = null;
-        String sequenceTypeName = spec.getSequenceTypeName();
+        var sequenceTypeName = spec.getSequenceTypeName();
         
         sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
         
         if(sequenceType != null) {
-            String sequenceName = spec.getSequenceName();
+            var sequenceName = spec.getSequenceName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
@@ -137,9 +133,9 @@ public class EditSequenceCommand
     @Override
     public void doLock(SequenceEdit edit, Sequence sequence) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        SequenceDescription sequenceDescription = sequenceControl.getSequenceDescription(sequence, getPreferredLanguage());
-        SequenceDetail sequenceDetail = sequence.getLastDetail();
-        Integer chunkSize = sequenceDetail.getChunkSize();
+        var sequenceDescription = sequenceControl.getSequenceDescription(sequence, getPreferredLanguage());
+        var sequenceDetail = sequence.getLastDetail();
+        var chunkSize = sequenceDetail.getChunkSize();
 
         edit.setSequenceName(sequenceDetail.getSequenceName());
         edit.setMask(sequenceDetail.getMask());
@@ -155,8 +151,8 @@ public class EditSequenceCommand
     @Override
     public void canUpdate(Sequence sequence) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        String sequenceName = edit.getSequenceName();
-        Sequence duplicateSequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
+        var sequenceName = edit.getSequenceName();
+        var duplicateSequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
 
         if(duplicateSequence != null && !sequence.equals(duplicateSequence)) {
             addExecutionError(ExecutionErrors.DuplicateSequenceName.name(), sequenceType.getLastDetail().getSequenceTypeName(), sequenceName);
@@ -167,11 +163,11 @@ public class EditSequenceCommand
     public void doUpdate(Sequence sequence) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var partyPK = getPartyPK();
-        SequenceDetailValue sequenceDetailValue = sequenceControl.getSequenceDetailValueForUpdate(sequence);
-        SequenceDescription sequenceDescription = sequenceControl.getSequenceDescriptionForUpdate(sequence, getPreferredLanguage());
-        String rawChunkSize = edit.getChunkSize();
-        Integer chunkSize = rawChunkSize == null? null: Integer.valueOf(rawChunkSize);
-        String description = edit.getDescription();
+        var sequenceDetailValue = sequenceControl.getSequenceDetailValueForUpdate(sequence);
+        var sequenceDescription = sequenceControl.getSequenceDescriptionForUpdate(sequence, getPreferredLanguage());
+        var rawChunkSize = edit.getChunkSize();
+        var chunkSize = rawChunkSize == null? null: Integer.valueOf(rawChunkSize);
+        var description = edit.getDescription();
 
         sequenceDetailValue.setSequenceName(edit.getSequenceName());
         sequenceDetailValue.setMask(edit.getMask());
@@ -186,7 +182,7 @@ public class EditSequenceCommand
         } else if(sequenceDescription != null && description == null) {
             sequenceControl.deleteSequenceDescription(sequenceDescription, partyPK);
         } else if(sequenceDescription != null && description != null) {
-            SequenceDescriptionValue sequenceDescriptionValue = sequenceControl.getSequenceDescriptionValue(sequenceDescription);
+            var sequenceDescriptionValue = sequenceControl.getSequenceDescriptionValue(sequenceDescription);
 
             sequenceDescriptionValue.setDescription(description);
             sequenceControl.updateSequenceDescriptionFromValue(sequenceDescriptionValue, partyPK);

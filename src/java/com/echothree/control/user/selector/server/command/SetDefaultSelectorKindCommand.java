@@ -21,7 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.value.SelectorKindDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultSelectorKindCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKindDetailValue selectorKindDetailValue = selectorControl.getSelectorKindDetailValueByNameForUpdate(selectorKindName);
+        var selectorKindName = form.getSelectorKindName();
+        var selectorKindDetailValue = selectorControl.getSelectorKindDetailValueByNameForUpdate(selectorKindName);
         
         if(selectorKindDetailValue != null) {
             selectorKindDetailValue.setIsDefault(Boolean.TRUE);

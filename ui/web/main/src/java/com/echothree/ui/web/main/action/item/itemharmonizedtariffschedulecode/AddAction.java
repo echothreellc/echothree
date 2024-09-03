@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.item.itemharmonizedtariffschedulecode;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.CreateItemHarmonizedTariffScheduleCodeForm;
-import com.echothree.control.user.item.common.form.GetItemForm;
 import com.echothree.control.user.item.common.result.GetItemResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -57,21 +53,21 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, AddActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
         
         if(itemName == null) {
             itemName = form.getItemName();
         }
         
         if(wasPost(request)) {
-            CreateItemHarmonizedTariffScheduleCodeForm commandForm = ItemUtil.getHome().getCreateItemHarmonizedTariffScheduleCodeForm();
+            var commandForm = ItemUtil.getHome().getCreateItemHarmonizedTariffScheduleCodeForm();
             
             commandForm.setItemName(itemName);
             commandForm.setCountryName(form.getCountryChoice());
             commandForm.setHarmonizedTariffScheduleCodeUseTypeName(form.getHarmonizedTariffScheduleCodeUseTypeChoice());
             commandForm.setHarmonizedTariffScheduleCodeName(form.getHarmonizedTariffScheduleCodeName());
-            
-            CommandResult commandResult = ItemUtil.getHome().createItemHarmonizedTariffScheduleCode(getUserVisitPK(request), commandForm);
+
+            var commandResult = ItemUtil.getHome().createItemHarmonizedTariffScheduleCode(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -83,17 +79,17 @@ public class AddAction
             form.setItemName(itemName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             if(itemName != null) {
-                GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+                var commandForm = ItemUtil.getHome().getGetItemForm();
                 
                 commandForm.setItemName(itemName);
-                
-                CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemResult result = (GetItemResult)executionResult.getResult();
+
+                var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemResult)executionResult.getResult();
                 
                 request.setAttribute(AttributeConstants.ITEM, result.getItem());
             }

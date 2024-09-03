@@ -16,20 +16,15 @@
 
 package com.echothree.model.control.user.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.common.UserOptions;
 import com.echothree.model.control.user.common.transfer.UserLoginPasswordTransfer;
 import com.echothree.model.control.user.common.transfer.UserLoginTransfer;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserLogin;
-import com.echothree.model.data.user.server.entity.UserLoginStatus;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.List;
-import java.util.Set;
 
 public class UserLoginTransferCache
         extends BaseUserTransferCache<UserLogin, UserLoginTransfer> {
@@ -48,30 +43,30 @@ public class UserLoginTransferCache
     }
     
     public UserLoginTransfer getUserLoginTransfer(UserLogin userLogin) {
-        UserLoginTransfer userLoginTransfer = get(userLogin);
+        var userLoginTransfer = get(userLogin);
         
         if(userLoginTransfer == null) {
-            Party party = userLogin.getParty();
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, party);
-            UserLoginStatus userLoginStatus = userControl.getUserLoginStatus(party);
-            String username = userLogin.getUsername();
-            Long unformattedLastLoginTime = userLoginStatus.getLastLoginTime();
-            String lastLoginTime = formatTypicalDateTime(unformattedLastLoginTime);
-            Integer failureCount = userLoginStatus.getFailureCount();
-            Long unformattedFirstFailureTime = userLoginStatus.getFirstFailureTime();
-            String firstFailureTime = formatTypicalDateTime(unformattedFirstFailureTime);
-            Long unformattedLastFailureTime = userLoginStatus.getLastFailureTime();
-            String lastFailureTime = formatTypicalDateTime(unformattedLastFailureTime);
-            Integer expiredCount = userLoginStatus.getExpiredCount();
-            Boolean forceChange = userLoginStatus.getForceChange();
+            var party = userLogin.getParty();
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, party);
+            var userLoginStatus = userControl.getUserLoginStatus(party);
+            var username = userLogin.getUsername();
+            var unformattedLastLoginTime = userLoginStatus.getLastLoginTime();
+            var lastLoginTime = formatTypicalDateTime(unformattedLastLoginTime);
+            var failureCount = userLoginStatus.getFailureCount();
+            var unformattedFirstFailureTime = userLoginStatus.getFirstFailureTime();
+            var firstFailureTime = formatTypicalDateTime(unformattedFirstFailureTime);
+            var unformattedLastFailureTime = userLoginStatus.getLastFailureTime();
+            var lastFailureTime = formatTypicalDateTime(unformattedLastFailureTime);
+            var expiredCount = userLoginStatus.getExpiredCount();
+            var forceChange = userLoginStatus.getForceChange();
             
             userLoginTransfer = new UserLoginTransfer(partyTransfer, username, unformattedLastLoginTime, lastLoginTime, failureCount,
                     unformattedFirstFailureTime, firstFailureTime, unformattedLastFailureTime, lastFailureTime, expiredCount, forceChange);
             put(userLogin, userLoginTransfer);
 
             if(includeUserLoginPasswords) {
-                List<UserLoginPasswordTransfer> userLoginPasswordTransfers = userControl.getUserLoginPasswordTransfersByParty(userVisit, userLogin.getParty());
-                MapWrapper<UserLoginPasswordTransfer> userLoginPasswords = new MapWrapper<>(userLoginPasswordTransfers.size());
+                var userLoginPasswordTransfers = userControl.getUserLoginPasswordTransfersByParty(userVisit, userLogin.getParty());
+                var userLoginPasswords = new MapWrapper<UserLoginPasswordTransfer>(userLoginPasswordTransfers.size());
 
                 userLoginPasswordTransfers.forEach((userLoginPasswordTransfer) -> {
                     userLoginPasswords.put(userLoginPasswordTransfer.getUserLoginPasswordType().getUserLoginPasswordTypeName(), userLoginPasswordTransfer);

@@ -17,9 +17,7 @@
 package com.echothree.model.control.financial.server.transfer;
 
 import com.echothree.model.control.financial.common.transfer.FinancialAccountTypeDescriptionTransfer;
-import com.echothree.model.control.financial.common.transfer.FinancialAccountTypeTransfer;
 import com.echothree.model.control.financial.server.control.FinancialControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.financial.server.entity.FinancialAccountTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class FinancialAccountTypeDescriptionTransferCache
     }
     
     public FinancialAccountTypeDescriptionTransfer getFinancialAccountTypeDescriptionTransfer(FinancialAccountTypeDescription financialAccountTypeDescription) {
-        FinancialAccountTypeDescriptionTransfer financialAccountTypeDescriptionTransfer = get(financialAccountTypeDescription);
+        var financialAccountTypeDescriptionTransfer = get(financialAccountTypeDescription);
         
         if(financialAccountTypeDescriptionTransfer == null) {
-            FinancialAccountTypeTransfer financialAccountTypeTransfer = financialControl.getFinancialAccountTypeTransfer(userVisit, financialAccountTypeDescription.getFinancialAccountType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, financialAccountTypeDescription.getLanguage());
+            var financialAccountTypeTransfer = financialControl.getFinancialAccountTypeTransfer(userVisit, financialAccountTypeDescription.getFinancialAccountType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, financialAccountTypeDescription.getLanguage());
             
             financialAccountTypeDescriptionTransfer = new FinancialAccountTypeDescriptionTransfer(languageTransfer, financialAccountTypeTransfer, financialAccountTypeDescription.getDescription());
             put(financialAccountTypeDescription, financialAccountTypeDescriptionTransfer);

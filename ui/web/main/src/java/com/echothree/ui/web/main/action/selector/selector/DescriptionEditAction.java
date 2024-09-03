@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.selector.selector;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.edit.SelectorDescriptionEdit;
-import com.echothree.control.user.selector.common.form.EditSelectorDescriptionForm;
 import com.echothree.control.user.selector.common.result.EditSelectorDescriptionResult;
-import com.echothree.control.user.selector.common.spec.SelectorDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,16 +56,16 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-        String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-        String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+        var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+        var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditSelectorDescriptionForm commandForm = SelectorUtil.getHome().getEditSelectorDescriptionForm();
-                SelectorDescriptionSpec spec = SelectorUtil.getHome().getSelectorDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = SelectorUtil.getHome().getEditSelectorDescriptionForm();
+                var spec = SelectorUtil.getHome().getSelectorDescriptionSpec();
                 
                 if(selectorKindName == null)
                     selectorKindName = actionForm.getSelectorKindName();
@@ -88,19 +83,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    SelectorDescriptionEdit edit = SelectorUtil.getHome().getSelectorDescriptionEdit();
+                    var edit = SelectorUtil.getHome().getSelectorDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = SelectorUtil.getHome().editSelectorDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = SelectorUtil.getHome().editSelectorDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditSelectorDescriptionResult result = (EditSelectorDescriptionResult)executionResult.getResult();
+                            var result = (EditSelectorDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -113,13 +108,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = SelectorUtil.getHome().editSelectorDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditSelectorDescriptionResult result = (EditSelectorDescriptionResult)executionResult.getResult();
+
+                    var commandResult = SelectorUtil.getHome().editSelectorDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditSelectorDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        SelectorDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setSelectorKindName(selectorKindName);
@@ -140,8 +135,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SELECTOR_KIND_NAME, selectorKindName);
             request.setAttribute(AttributeConstants.SELECTOR_TYPE_NAME, selectorTypeName);

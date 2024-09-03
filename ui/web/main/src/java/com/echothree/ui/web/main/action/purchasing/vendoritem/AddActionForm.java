@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.purchasing.vendoritem;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationPolicyChoicesForm;
 import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationPolicyChoicesResult;
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.form.GetReturnPolicyChoicesForm;
 import com.echothree.control.user.returnpolicy.common.result.GetReturnPolicyChoicesResult;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.common.choice.CancellationPolicyChoicesBean;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -52,15 +48,15 @@ public class AddActionForm
     public void setupCancellationPolicyChoices() {
         if(cancellationPolicyChoices == null) {
             try {
-                GetCancellationPolicyChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
+                var form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
                 
                 form.setCancellationKindName(CancellationKinds.VENDOR_CANCELLATION.name());
                 form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCancellationPolicyChoicesResult result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+
+                var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
                 cancellationPolicyChoices = result.getCancellationPolicyChoices();
                 
                 if(cancellationPolicyChoice == null) {
@@ -76,15 +72,15 @@ public class AddActionForm
     public void setupReturnPolicyChoices() {
         if(returnPolicyChoices == null) {
             try {
-                GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
+                var form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
                 
                 form.setReturnKindName(ReturnKinds.VENDOR_RETURN.name());
                 form.setDefaultReturnPolicyChoice(returnPolicyChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetReturnPolicyChoicesResult result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+
+                var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
                 returnPolicyChoices = result.getReturnPolicyChoices();
                 
                 if(returnPolicyChoice == null) {

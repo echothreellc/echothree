@@ -16,10 +16,7 @@
 
 package com.echothree.model.control.training.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
-import com.echothree.model.control.training.common.transfer.TrainingClassQuestionTransfer;
 import com.echothree.model.control.training.common.transfer.TrainingClassQuestionTranslationTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassQuestionTranslation;
@@ -37,13 +34,13 @@ public class TrainingClassQuestionTranslationTransferCache
     }
     
     public TrainingClassQuestionTranslationTransfer getTrainingClassQuestionTranslationTransfer(TrainingClassQuestionTranslation trainingClassQuestionTranslation) {
-        TrainingClassQuestionTranslationTransfer trainingClassQuestionTranslationTransfer = get(trainingClassQuestionTranslation);
+        var trainingClassQuestionTranslationTransfer = get(trainingClassQuestionTranslation);
         
         if(trainingClassQuestionTranslationTransfer == null) {
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, trainingClassQuestionTranslation.getLanguage());
-            TrainingClassQuestionTransfer trainingClassQuestionTransfer = trainingControl.getTrainingClassQuestionTransfer(userVisit, trainingClassQuestionTranslation.getTrainingClassQuestion());
-            MimeTypeTransfer questionMimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit, trainingClassQuestionTranslation.getQuestionMimeType());
-            String question = trainingClassQuestionTranslation.getQuestion();
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, trainingClassQuestionTranslation.getLanguage());
+            var trainingClassQuestionTransfer = trainingControl.getTrainingClassQuestionTransfer(userVisit, trainingClassQuestionTranslation.getTrainingClassQuestion());
+            var questionMimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit, trainingClassQuestionTranslation.getQuestionMimeType());
+            var question = trainingClassQuestionTranslation.getQuestion();
             
             trainingClassQuestionTranslationTransfer = new TrainingClassQuestionTranslationTransfer(trainingClassQuestionTransfer, languageTransfer,
                     questionMimeTypeTransfer, question);

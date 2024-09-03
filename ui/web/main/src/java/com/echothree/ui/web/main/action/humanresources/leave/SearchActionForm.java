@@ -17,19 +17,14 @@
 package com.echothree.ui.web.main.action.humanresources.leave;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetLeaveReasonChoicesForm;
-import com.echothree.control.user.employee.common.form.GetLeaveTypeChoicesForm;
 import com.echothree.control.user.employee.common.result.GetLeaveReasonChoicesResult;
 import com.echothree.control.user.employee.common.result.GetLeaveTypeChoicesResult;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.GetWorkflowStepChoicesForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowStepChoicesResult;
 import com.echothree.model.control.employee.common.choice.LeaveReasonChoicesBean;
 import com.echothree.model.control.employee.common.choice.LeaveTypeChoicesBean;
 import com.echothree.model.control.employee.common.workflow.LeaveStatusConstants;
 import com.echothree.model.control.workflow.common.choice.WorkflowStepChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -54,14 +49,14 @@ public class SearchActionForm
     private void setupLeaveTypeChoices() {
         if(leaveTypeChoices == null) {
             try {
-                GetLeaveTypeChoicesForm form = EmployeeUtil.getHome().getGetLeaveTypeChoicesForm();
+                var form = EmployeeUtil.getHome().getGetLeaveTypeChoicesForm();
                 
                 form.setDefaultLeaveTypeChoice(leaveTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = EmployeeUtil.getHome().getLeaveTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetLeaveTypeChoicesResult result = (GetLeaveTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = EmployeeUtil.getHome().getLeaveTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetLeaveTypeChoicesResult)executionResult.getResult();
                 leaveTypeChoices = result.getLeaveTypeChoices();
                 
                 if(leaveTypeChoice == null) {
@@ -77,14 +72,14 @@ public class SearchActionForm
     private void setupLeaveReasonChoices() {
         if(leaveReasonChoices == null) {
             try {
-                GetLeaveReasonChoicesForm form = EmployeeUtil.getHome().getGetLeaveReasonChoicesForm();
+                var form = EmployeeUtil.getHome().getGetLeaveReasonChoicesForm();
                 
                 form.setDefaultLeaveReasonChoice(leaveReasonChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = EmployeeUtil.getHome().getLeaveReasonChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetLeaveReasonChoicesResult result = (GetLeaveReasonChoicesResult)executionResult.getResult();
+
+                var commandResult = EmployeeUtil.getHome().getLeaveReasonChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetLeaveReasonChoicesResult)executionResult.getResult();
                 leaveReasonChoices = result.getLeaveReasonChoices();
                 
                 if(leaveReasonChoice == null) {
@@ -100,15 +95,15 @@ public class SearchActionForm
     private void setupLeaveStatusChoices() {
         if(leaveStatusChoices == null) {
             try {
-                GetWorkflowStepChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
+                var form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
                 
                 form.setWorkflowName(LeaveStatusConstants.Workflow_LEAVE_STATUS);
                 form.setDefaultWorkflowStepChoice(leaveStatusChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetWorkflowStepChoicesResult result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+
+                var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
                 leaveStatusChoices = result.getWorkflowStepChoices();
                 
                 if(leaveStatusChoice == null) {

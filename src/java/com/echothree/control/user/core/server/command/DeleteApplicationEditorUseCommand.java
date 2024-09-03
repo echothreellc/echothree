@@ -21,8 +21,6 @@ import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Application;
-import com.echothree.model.data.core.server.entity.ApplicationEditorUse;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,13 +61,13 @@ public class DeleteApplicationEditorUseCommand
     
     @Override
     protected BaseResult execute() {
-        String applicationName = form.getApplicationName();
-        Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var applicationName = form.getApplicationName();
+        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
             var coreControl = getCoreControl();
-            String applicationEditorUseName = form.getApplicationEditorUseName();
-            ApplicationEditorUse applicationEditorUse = coreControl.getApplicationEditorUseByNameForUpdate(application, applicationEditorUseName);
+            var applicationEditorUseName = form.getApplicationEditorUseName();
+            var applicationEditorUse = coreControl.getApplicationEditorUseByNameForUpdate(application, applicationEditorUseName);
 
             if(applicationEditorUse != null) {
                 coreControl.deleteApplicationEditorUse(applicationEditorUse, getPartyPK());

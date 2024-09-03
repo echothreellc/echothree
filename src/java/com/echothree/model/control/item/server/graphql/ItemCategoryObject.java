@@ -73,7 +73,7 @@ public class ItemCategoryObject
     @GraphQLField
     @GraphQLDescription("parent item category")
     public ItemCategoryObject getParentItemCategory() {
-        ItemCategory parentItemCategory = getItemCategoryDetail().getParentItemCategory();
+        var parentItemCategory = getItemCategoryDetail().getParentItemCategory();
         
         return parentItemCategory == null ? null : new ItemCategoryObject(parentItemCategory);
     }

@@ -18,11 +18,8 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetEmployeeResultsForm;
 import com.echothree.control.user.search.common.result.GetEmployeeResultsResult;
 import com.echothree.model.data.search.common.SearchResultConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -114,7 +111,7 @@ public class GetEmployeeResultsTag
     @Override
     public int doStartTag() throws JspException {
         try {
-            GetEmployeeResultsForm commandForm = SearchUtil.getHome().getGetEmployeeResultsForm();
+            var commandForm = SearchUtil.getHome().getGetEmployeeResultsForm();
             Map<String, Limit> limits = new HashMap<>();
             
             commandForm.setSearchTypeName(searchTypeName);
@@ -127,8 +124,8 @@ public class GetEmployeeResultsTag
                 limits.put(SearchResultConstants.ENTITY_TYPE_NAME, new Limit(employeeResultCount, employeeResultOffset));
             }
             commandForm.setLimits(limits);
-            
-            CommandResult commandResult = SearchUtil.getHome().getEmployeeResults(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().getEmployeeResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -136,8 +133,8 @@ public class GetEmployeeResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetEmployeeResultsResult result = (GetEmployeeResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetEmployeeResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getEmployeeResults()), scope);
 

@@ -19,7 +19,6 @@ package com.echothree.control.user.warehouse.server.command;
 import com.echothree.control.user.warehouse.common.edit.LocationEdit;
 import com.echothree.control.user.warehouse.common.edit.WarehouseEditFactory;
 import com.echothree.control.user.warehouse.common.form.EditLocationForm;
-import com.echothree.control.user.warehouse.common.result.EditLocationResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.control.user.warehouse.common.spec.LocationSpec;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
@@ -29,16 +28,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.control.warehouse.server.logic.LocationLogic;
 import com.echothree.model.control.warehouse.server.logic.LocationUseTypeLogic;
-import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.Location;
-import com.echothree.model.data.warehouse.server.entity.LocationDescription;
-import com.echothree.model.data.warehouse.server.entity.LocationDetail;
-import com.echothree.model.data.warehouse.server.entity.LocationType;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
-import com.echothree.model.data.warehouse.server.value.LocationDescriptionValue;
-import com.echothree.model.data.warehouse.server.value.LocationDetailValue;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -91,23 +81,23 @@ public class EditLocationCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        EditLocationResult result = WarehouseResultFactory.getEditLocationResult();
-        String warehouseName = spec.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = WarehouseResultFactory.getEditLocationResult();
+        var warehouseName = spec.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
+            var warehouseParty = warehouse.getParty();
             if(editMode.equals(EditMode.LOCK)) {
-                String locationName = spec.getLocationName();
-                Location location = warehouseControl.getLocationByName(warehouseParty, locationName);
+                var locationName = spec.getLocationName();
+                var location = warehouseControl.getLocationByName(warehouseParty, locationName);
                 
                 if(location != null) {
                     result.setLocation(warehouseControl.getLocationTransfer(getUserVisit(), location));
                     
                     if(lockEntity(location)) {
-                        LocationDescription locationDescription = warehouseControl.getLocationDescription(location, getPreferredLanguage());
-                        LocationEdit edit = WarehouseEditFactory.getLocationEdit();
-                        LocationDetail locationDetail = location.getLastDetail();
+                        var locationDescription = warehouseControl.getLocationDescription(location, getPreferredLanguage());
+                        var edit = WarehouseEditFactory.getLocationEdit();
+                        var locationDetail = location.getLastDetail();
                         
                         result.setEdit(edit);
                         edit.setLocationName(locationDetail.getLocationName());
@@ -128,16 +118,16 @@ public class EditLocationCommand
                     addExecutionError(ExecutionErrors.UnknownLocationName.name(), locationName);
                 }
             } else if(editMode.equals(EditMode.UPDATE)) {
-                String locationName = spec.getLocationName();
-                Location location = warehouseControl.getLocationByNameForUpdate(warehouseParty, locationName);
+                var locationName = spec.getLocationName();
+                var location = warehouseControl.getLocationByNameForUpdate(warehouseParty, locationName);
                 
                 if(location != null) {
                     locationName = edit.getLocationName();
-                    Location duplicateLocation = warehouseControl.getLocationByName(warehouseParty, locationName);
+                    var duplicateLocation = warehouseControl.getLocationByName(warehouseParty, locationName);
                     
                     if(duplicateLocation == null || location.equals(duplicateLocation)) {
-                        String locationTypeName = edit.getLocationTypeName();
-                        LocationType locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
+                        var locationTypeName = edit.getLocationTypeName();
+                        var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
                         
                         if(locationType != null) {
                             LocationLogic.getInstance().validateLocationName(this, locationType, locationName);
@@ -147,7 +137,7 @@ public class EditLocationCommand
                                 var locationUseType = LocationUseTypeLogic.getInstance().getLocationUseTypeByName(this, locationUseTypeName, null, false);
                                 
                                 if(!hasExecutionErrors()) {
-                                    boolean multipleUseError = false;
+                                    var multipleUseError = false;
                                     
                                     if(!locationUseType.getAllowMultiple()) {
                                         if(warehouseControl.countLocationsByLocationUseType(warehouseParty, locationUseType) != 0)
@@ -156,16 +146,16 @@ public class EditLocationCommand
                                     
                                     if(!multipleUseError) {
                                         var inventoryControl = Session.getModelController(InventoryControl.class);
-                                        String inventoryLocationGroupName = edit.getInventoryLocationGroupName();
-                                        InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+                                        var inventoryLocationGroupName = edit.getInventoryLocationGroupName();
+                                        var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
                                         
                                         if(inventoryLocationGroup != null) {
                                             if(lockEntityForUpdate(location)) {
                                                 try {
                                                     var partyPK = getPartyPK();
-                                                    LocationDetailValue locationDetailValue = warehouseControl.getLocationDetailValueForUpdate(location);
-                                                    LocationDescription locationDescription = warehouseControl.getLocationDescriptionForUpdate(location, getPreferredLanguage());
-                                                    String description = edit.getDescription();
+                                                    var locationDetailValue = warehouseControl.getLocationDetailValueForUpdate(location);
+                                                    var locationDescription = warehouseControl.getLocationDescriptionForUpdate(location, getPreferredLanguage());
+                                                    var description = edit.getDescription();
                                                     
                                                     locationDetailValue.setLocationName(edit.getLocationName());
                                                     locationDetailValue.setLocationTypePK(locationType.getPrimaryKey());
@@ -180,7 +170,7 @@ public class EditLocationCommand
                                                     } else if(locationDescription != null && description == null) {
                                                         warehouseControl.deleteLocationDescription(locationDescription, partyPK);
                                                     } else if(locationDescription != null && description != null) {
-                                                        LocationDescriptionValue locationDescriptionValue = warehouseControl.getLocationDescriptionValue(locationDescription);
+                                                        var locationDescriptionValue = warehouseControl.getLocationDescriptionValue(locationDescription);
                                                         
                                                         locationDescriptionValue.setDescription(description);
                                                         warehouseControl.updateLocationDescriptionFromValue(locationDescriptionValue, partyPK);

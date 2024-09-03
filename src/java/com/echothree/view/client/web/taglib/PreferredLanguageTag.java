@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetPreferredLanguageForm;
 import com.echothree.control.user.party.common.result.GetPreferredLanguageResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -86,13 +83,13 @@ public class PreferredLanguageTag
     public int doStartTag()
             throws JspException {
         try {
-            GetPreferredLanguageForm commandForm = PartyUtil.getHome().getGetPreferredLanguageForm();
+            var commandForm = PartyUtil.getHome().getGetPreferredLanguageForm();
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = PartyUtil.getHome().getPreferredLanguage(getUserVisitPK(), commandForm);
+
+            var commandResult = PartyUtil.getHome().getPreferredLanguage(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -100,8 +97,8 @@ public class PreferredLanguageTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPreferredLanguageResult result = (GetPreferredLanguageResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPreferredLanguageResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getPreferredLanguage(), scope);
             }

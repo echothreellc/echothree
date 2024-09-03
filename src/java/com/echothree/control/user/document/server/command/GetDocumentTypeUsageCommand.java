@@ -18,14 +18,10 @@ package com.echothree.control.user.document.server.command;
 
 import com.echothree.control.user.document.common.form.GetDocumentTypeUsageForm;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
-import com.echothree.control.user.document.common.result.GetDocumentTypeUsageResult;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.document.server.entity.DocumentType;
-import com.echothree.model.data.document.server.entity.DocumentTypeUsage;
-import com.echothree.model.data.document.server.entity.DocumentTypeUsageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,16 +64,16 @@ public class GetDocumentTypeUsageCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        GetDocumentTypeUsageResult result = DocumentResultFactory.getGetDocumentTypeUsageResult();
-        String documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
-        DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
+        var result = DocumentResultFactory.getGetDocumentTypeUsageResult();
+        var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
+        var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
         
         if(documentTypeUsageType != null) {
-            String documentTypeName = form.getDocumentTypeName();
-            DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
+            var documentTypeName = form.getDocumentTypeName();
+            var documentType = documentControl.getDocumentTypeByName(documentTypeName);
 
             if(documentType != null) {
-                DocumentTypeUsage documentTypeUsage = documentControl.getDocumentTypeUsage(documentTypeUsageType, documentType);
+                var documentTypeUsage = documentControl.getDocumentTypeUsage(documentTypeUsageType, documentType);
 
                 if(documentTypeUsage != null) {
                     result.setDocumentTypeUsage(documentControl.getDocumentTypeUsageTransfer(getUserVisit(), documentTypeUsage));

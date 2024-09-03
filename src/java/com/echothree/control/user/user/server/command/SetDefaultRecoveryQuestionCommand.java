@@ -17,9 +17,7 @@
 package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.SetDefaultRecoveryQuestionForm;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.value.RecoveryQuestionDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -47,9 +45,9 @@ public class SetDefaultRecoveryQuestionCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        String recoveryQuestionName = form.getRecoveryQuestionName();
-        RecoveryQuestionDetailValue recoveryQuestionDetailValue = userControl.getRecoveryQuestionDetailValueByNameForUpdate(recoveryQuestionName);
+        var userControl = getUserControl();
+        var recoveryQuestionName = form.getRecoveryQuestionName();
+        var recoveryQuestionDetailValue = userControl.getRecoveryQuestionDetailValueByNameForUpdate(recoveryQuestionName);
         
         if(recoveryQuestionDetailValue != null) {
             recoveryQuestionDetailValue.setIsDefault(Boolean.TRUE);

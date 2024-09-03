@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.chain.chain;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.GetChainsForm;
 import com.echothree.control.user.chain.common.result.GetChainsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,17 +48,17 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetChainsForm commandForm = ChainUtil.getHome().getGetChainsForm();
+        String forwardKey;
+        var commandForm = ChainUtil.getHome().getGetChainsForm();
 
         commandForm.setChainKindName(request.getParameter(ParameterConstants.CHAIN_KIND_NAME));
         commandForm.setChainTypeName(request.getParameter(ParameterConstants.CHAIN_TYPE_NAME));
 
-        CommandResult commandResult = ChainUtil.getHome().getChains(getUserVisitPK(request), commandForm);
+        var commandResult = ChainUtil.getHome().getChains(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetChainsResult result = (GetChainsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetChainsResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CHAIN_TYPE, result.getChainType());
             request.setAttribute(AttributeConstants.CHAINS, result.getChains());

@@ -28,12 +28,10 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import static com.echothree.model.control.security.common.SecurityRoles.UserLogin;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.logic.UserKeyLogic;
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.message.SecurityMessages;
@@ -79,7 +77,7 @@ public class DeleteUserLoginCommand
     
     @Override
     protected BaseResult execute() {
-        String partyName = form.getPartyName();
+        var partyName = form.getPartyName();
         var parameterCount = (partyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -105,8 +103,8 @@ public class DeleteUserLoginCommand
                         && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, getParty(), securityRoleGroupName, UserLogin.name())) {
                     if(!hasExecutionErrors()) {
                         if(partyType.getAllowUserLogins()) {
-                            UserControl userControl = getUserControl();
-                            UserLogin userLogin = userControl.getUserLoginForUpdate(party);
+                            var userControl = getUserControl();
+                            var userLogin = userControl.getUserLoginForUpdate(party);
 
                             if(userLogin != null) {
                                 UserKeyLogic.getInstance().clearUserKeysByParty(party);

@@ -25,11 +25,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tax.server.control.TaxControl;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.tax.server.entity.TaxClassification;
-import com.echothree.model.data.tax.server.entity.TaxClassificationTranslation;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -76,27 +71,27 @@ public class CreateTaxClassificationTranslationCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String countryName = form.getCountryName();
-        GeoCode geoCode = geoControl.getCountryByAlias(countryName);
+        var countryName = form.getCountryName();
+        var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
             var taxControl = Session.getModelController(TaxControl.class);
-            String taxClassificationName = form.getTaxClassificationName();
-            TaxClassification taxClassification = taxControl.getTaxClassificationByName(geoCode, taxClassificationName);
+            var taxClassificationName = form.getTaxClassificationName();
+            var taxClassification = taxControl.getTaxClassificationByName(geoCode, taxClassificationName);
             
             if(taxClassification != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    String overview = form.getOverview();
-                    MimeType overviewMimeType = MimeTypeLogic.getInstance().checkMimeType(this, form.getOverviewMimeTypeName(), overview, MimeTypeUsageTypes.TEXT.name(),
+                    var overview = form.getOverview();
+                    var overviewMimeType = MimeTypeLogic.getInstance().checkMimeType(this, form.getOverviewMimeTypeName(), overview, MimeTypeUsageTypes.TEXT.name(),
                             ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),
                             ExecutionErrors.UnknownOverviewMimeTypeName.name(), ExecutionErrors.UnknownOverviewMimeTypeUsage.name());
 
                     if(!hasExecutionErrors()) {
-                        TaxClassificationTranslation taxClassificationTranslation = taxControl.getTaxClassificationTranslation(taxClassification, language);
+                        var taxClassificationTranslation = taxControl.getTaxClassificationTranslation(taxClassification, language);
 
                         if(taxClassificationTranslation == null) {
                             var description = form.getDescription();

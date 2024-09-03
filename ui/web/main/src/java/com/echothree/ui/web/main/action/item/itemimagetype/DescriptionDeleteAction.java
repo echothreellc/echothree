@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.item.itemimagetype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.DeleteItemImageTypeDescriptionForm;
-import com.echothree.control.user.item.common.form.GetItemImageTypeDescriptionForm;
 import com.echothree.control.user.item.common.result.GetItemImageTypeDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemImageTypeDescriptionForm commandForm = ItemUtil.getHome().getGetItemImageTypeDescriptionForm();
+        var commandForm = ItemUtil.getHome().getGetItemImageTypeDescriptionForm();
         
         commandForm.setItemImageTypeName(actionForm.getItemImageTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getItemImageTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getItemImageTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemImageTypeDescriptionResult result = (GetItemImageTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemImageTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.ITEM_IMAGE_TYPE_DESCRIPTION, result.getItemImageTypeDescription());
         }
@@ -80,7 +77,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteItemImageTypeDescriptionForm commandForm = ItemUtil.getHome().getDeleteItemImageTypeDescriptionForm();
+        var commandForm = ItemUtil.getHome().getDeleteItemImageTypeDescriptionForm();
 
         commandForm.setItemImageTypeName(actionForm.getItemImageTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

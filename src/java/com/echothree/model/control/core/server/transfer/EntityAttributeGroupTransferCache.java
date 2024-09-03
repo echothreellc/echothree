@@ -21,13 +21,10 @@ import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTran
 import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
-import com.echothree.model.data.core.server.entity.EntityAttributeGroupDetail;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.List;
-import java.util.Set;
 
 public class EntityAttributeGroupTransferCache
         extends BaseCoreTransferCache<EntityAttributeGroup, EntityAttributeGroupTransfer> {
@@ -49,14 +46,14 @@ public class EntityAttributeGroupTransferCache
     }
     
     public EntityAttributeGroupTransfer getEntityAttributeGroupTransfer(EntityAttributeGroup entityAttributeGroup, EntityInstance entityInstance) {
-        EntityAttributeGroupTransfer entityAttributeGroupTransfer = get(entityAttributeGroup);
+        var entityAttributeGroupTransfer = get(entityAttributeGroup);
         
         if(entityAttributeGroupTransfer == null) {
-            EntityAttributeGroupDetail entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
-            String entityAttributeGroupName = entityAttributeGroupDetail.getEntityAttributeGroupName();
-            Boolean isDefault = entityAttributeGroupDetail.getIsDefault();
-            Integer sortOrder = entityAttributeGroupDetail.getSortOrder();
-            String description = coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, getLanguage());
+            var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
+            var entityAttributeGroupName = entityAttributeGroupDetail.getEntityAttributeGroupName();
+            var isDefault = entityAttributeGroupDetail.getIsDefault();
+            var sortOrder = entityAttributeGroupDetail.getSortOrder();
+            var description = coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, getLanguage());
             
             entityAttributeGroupTransfer = new EntityAttributeGroupTransfer(entityAttributeGroupName, isDefault, sortOrder, description);
             if(entityInstance == null) {
@@ -67,9 +64,9 @@ public class EntityAttributeGroupTransferCache
             
             if(includeEntityAttributes) {
                 if(entityInstance != null) {
-                    List<EntityAttributeTransfer> entityAttributeTransfers = coreControl.getEntityAttributeTransfersByEntityAttributeGroupAndEntityType(userVisit,
+                    var entityAttributeTransfers = coreControl.getEntityAttributeTransfersByEntityAttributeGroupAndEntityType(userVisit,
                             entityAttributeGroup, entityInstance.getEntityType(), entityInstance);
-                    MapWrapper<EntityAttributeTransfer> mapWrapper = new MapWrapper<>(entityAttributeTransfers.size());
+                    var mapWrapper = new MapWrapper<EntityAttributeTransfer>(entityAttributeTransfers.size());
 
                     entityAttributeTransfers.forEach((entityAttributeTransfer) -> {
                         mapWrapper.put(entityAttributeTransfer.getEntityAttributeName(), entityAttributeTransfer);

@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected SearchKindSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        SearchKindSpec spec = SearchUtil.getHome().getSearchKindSpec();
+        var spec = SearchUtil.getHome().getSearchKindSpec();
         
         spec.setSearchKindName(findParameter(request, ParameterConstants.ORIGINAL_SEARCH_KIND_NAME, actionForm.getOriginalSearchKindName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected SearchKindEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        SearchKindEdit edit = SearchUtil.getHome().getSearchKindEdit();
+        var edit = SearchUtil.getHome().getSearchKindEdit();
 
         edit.setSearchKindName(actionForm.getSearchKindName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

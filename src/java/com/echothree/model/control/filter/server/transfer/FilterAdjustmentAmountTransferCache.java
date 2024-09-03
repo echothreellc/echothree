@@ -16,15 +16,11 @@
 
 package com.echothree.model.control.filter.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentAmountTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -44,17 +40,17 @@ public class FilterAdjustmentAmountTransferCache
 
     @Override
     public FilterAdjustmentAmountTransfer getTransfer(FilterAdjustmentAmount filterAdjustmentAmount) {
-        FilterAdjustmentAmountTransfer filterAdjustmentAmountTransfer = get(filterAdjustmentAmount);
+        var filterAdjustmentAmountTransfer = get(filterAdjustmentAmount);
         
         if(filterAdjustmentAmountTransfer == null) {
-            FilterAdjustmentTransfer filterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentAmount.getFilterAdjustment());
-            UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, filterAdjustmentAmount.getUnitOfMeasureType());
-            Currency currency = filterAdjustmentAmount.getCurrency();
-            CurrencyTransfer currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
-            Long unformattedAmount = filterAdjustmentAmount.getAmount();
+            var filterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentAmount.getFilterAdjustment());
+            var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, filterAdjustmentAmount.getUnitOfMeasureType());
+            var currency = filterAdjustmentAmount.getCurrency();
+            var currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
+            var unformattedAmount = filterAdjustmentAmount.getAmount();
             String amount = null;
-            
-            String filterKindName = filterAdjustmentTransfer.getFilterKind().getFilterKindName();
+
+            var filterKindName = filterAdjustmentTransfer.getFilterKind().getFilterKindName();
             if(FilterKinds.COST.name().equals(filterKindName)) {
                 amount = AmountUtils.getInstance().formatCostUnit(currency, unformattedAmount);
             } else if(FilterKinds.PRICE.name().equals(filterKindName)) {

@@ -25,22 +25,11 @@ import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderLineLogic;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.associate.server.entity.AssociateReferral;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.offer.server.entity.OfferItemFixedPrice;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Source;
-import com.echothree.model.data.order.server.entity.Order;
-import com.echothree.model.data.order.server.entity.OrderLine;
-import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyDepartment;
-import com.echothree.model.data.party.server.entity.PartyDivision;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
@@ -66,16 +55,16 @@ public class WishlistLogic
 
     private OfferUse getOrderOfferUse(final UserVisit userVisit, final OfferUse offerUse, final Party companyParty) {
             var partyControl = Session.getModelController(PartyControl.class);
-        OfferUse orderOfferUse = userVisit.getOfferUse();
+        var orderOfferUse = userVisit.getOfferUse();
 
         if(orderOfferUse == null) {
             orderOfferUse = offerUse;
         } else {
-            Party orderDepartmentParty = offerUse.getLastDetail().getOffer().getLastDetail().getDepartmentParty();
-            PartyDepartment orderPartyDepartment = partyControl.getPartyDepartment(orderDepartmentParty);
-            Party orderDivisionParty = orderPartyDepartment.getDivisionParty();
-            PartyDivision orderPartyDivision = partyControl.getPartyDivision(orderDivisionParty);
-            Party orderCompanyParty = orderPartyDivision.getCompanyParty();
+            var orderDepartmentParty = offerUse.getLastDetail().getOffer().getLastDetail().getDepartmentParty();
+            var orderPartyDepartment = partyControl.getPartyDepartment(orderDepartmentParty);
+            var orderDivisionParty = orderPartyDepartment.getDivisionParty();
+            var orderPartyDivision = partyControl.getPartyDivision(orderDivisionParty);
+            var orderCompanyParty = orderPartyDivision.getCompanyParty();
 
             if(!orderCompanyParty.equals(companyParty)) {
                 orderOfferUse = offerUse;
@@ -88,24 +77,24 @@ public class WishlistLogic
     public void createWishlistLine(final Session session, final ExecutionErrorAccumulator ema, final UserVisit userVisit, final Party party, final Source source,
             final OfferItemPrice offerItemPrice, final WishlistType wishlistType, final WishlistPriority wishlistPriority, final Long quantity,
             final String comment, final PartyPK createdBy) {
-        Item item = offerItemPrice.getOfferItem().getItem();
-        String itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
+        var item = offerItemPrice.getOfferItem().getItem();
+        var itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
 
         if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
             var partyControl = Session.getModelController(PartyControl.class);
             var wishlistControl = Session.getModelController(WishlistControl.class);
-            OrderLogic orderLogic = OrderLogic.getInstance();
-            Currency currency = offerItemPrice.getCurrency();
-            OfferUse offerUse = source.getLastDetail().getOfferUse();
-            Party departmentParty = offerUse.getLastDetail().getOffer().getLastDetail().getDepartmentParty();
-            PartyDepartment partyDepartment = partyControl.getPartyDepartment(departmentParty);
-            Party divisionParty = partyDepartment.getDivisionParty();
-            PartyDivision partyDivision = partyControl.getPartyDivision(divisionParty);
-            Party companyParty = partyDivision.getCompanyParty();
-            Order order = wishlistControl.getWishlist(companyParty, party, wishlistType, currency);
+            var orderLogic = OrderLogic.getInstance();
+            var currency = offerItemPrice.getCurrency();
+            var offerUse = source.getLastDetail().getOfferUse();
+            var departmentParty = offerUse.getLastDetail().getOffer().getLastDetail().getDepartmentParty();
+            var partyDepartment = partyControl.getPartyDepartment(departmentParty);
+            var divisionParty = partyDepartment.getDivisionParty();
+            var partyDivision = partyControl.getPartyDivision(divisionParty);
+            var companyParty = partyDivision.getCompanyParty();
+            var order = wishlistControl.getWishlist(companyParty, party, wishlistType, currency);
 
             if(order == null) {
-                OrderType orderType = orderLogic.getOrderTypeByName(ema, OrderTypes.WISHLIST.name());
+                var orderType = orderLogic.getOrderTypeByName(ema, OrderTypes.WISHLIST.name());
 
                 if(!ema.hasExecutionErrors()) {
                     order = orderLogic.createOrder(ema, orderType, null, null, currency, null, null, null, null, null, null, null, null, null, null, null, createdBy);
@@ -122,15 +111,15 @@ public class WishlistLogic
             }
 
             if(!ema.hasExecutionErrors()) {
-                InventoryCondition inventoryCondition = offerItemPrice.getInventoryCondition();
-                UnitOfMeasureType unitOfMeasureType = offerItemPrice.getUnitOfMeasureType();
-                OrderLine orderLine = wishlistControl.getWishlistLineByItemForUpdate(order, item, inventoryCondition, unitOfMeasureType);
+                var inventoryCondition = offerItemPrice.getInventoryCondition();
+                var unitOfMeasureType = offerItemPrice.getUnitOfMeasureType();
+                var orderLine = wishlistControl.getWishlistLineByItemForUpdate(order, item, inventoryCondition, unitOfMeasureType);
 
                 if(orderLine == null) {
                     var offerItemControl = Session.getModelController(OfferItemControl.class);
-                    OfferItemFixedPrice offerItemFixedPrice = offerItemControl.getOfferItemFixedPrice(offerItemPrice);
-                    Long unitAmount = offerItemFixedPrice.getUnitPrice();
-                    AssociateReferral associateReferral = userVisit.getAssociateReferral();
+                    var offerItemFixedPrice = offerItemControl.getOfferItemFixedPrice(offerItemPrice);
+                    var unitAmount = offerItemFixedPrice.getUnitPrice();
+                    var associateReferral = userVisit.getAssociateReferral();
 
                     orderLine = SalesOrderLineLogic.getInstance().createOrderLine(session, ema, order, null, null, null, item, inventoryCondition, unitOfMeasureType,
                             quantity, unitAmount, null, null, null, null, createdBy);

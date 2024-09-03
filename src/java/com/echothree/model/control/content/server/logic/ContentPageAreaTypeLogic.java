@@ -25,7 +25,6 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.content.server.entity.ContentPageAreaType;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -52,7 +51,7 @@ public class ContentPageAreaTypeLogic
     public ContentPageAreaType createContentPageAreaType(final ExecutionErrorAccumulator eea, final String contentPageAreaTypeName,
             final Language language, final String description, final BasePK createdBy) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentPageAreaType contentPageAreaType = contentControl.getContentPageAreaTypeByName(contentPageAreaTypeName);
+        var contentPageAreaType = contentControl.getContentPageAreaTypeByName(contentPageAreaTypeName);
 
         if(contentPageAreaType == null) {
             contentPageAreaType = contentControl.createContentPageAreaType(contentPageAreaTypeName, createdBy);
@@ -70,7 +69,7 @@ public class ContentPageAreaTypeLogic
     public ContentPageAreaType getContentPageAreaTypeByName(final ExecutionErrorAccumulator eea, final String contentPageAreaTypeName,
             final EntityPermission entityPermission) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentPageAreaType contentPageAreaType = contentControl.getContentPageAreaTypeByName(contentPageAreaTypeName, entityPermission);
+        var contentPageAreaType = contentControl.getContentPageAreaTypeByName(contentPageAreaTypeName, entityPermission);
 
         if(contentPageAreaType == null) {
             handleExecutionError(UnknownContentPageAreaTypeNameException.class, eea, ExecutionErrors.UnknownContentPageAreaTypeName.name(), contentPageAreaTypeName);
@@ -91,7 +90,7 @@ public class ContentPageAreaTypeLogic
             final ContentPageAreaTypeUniversalSpec universalSpec, final EntityPermission entityPermission) {
         ContentPageAreaType contentPageAreaType = null;
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentPageAreaTypeName = universalSpec.getContentPageAreaTypeName();
+        var contentPageAreaTypeName = universalSpec.getContentPageAreaTypeName();
         var parameterCount = (contentPageAreaTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {

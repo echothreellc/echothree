@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.wishlist.wishlisttype;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.form.DeleteWishlistTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteWishlistTypeForm commandForm = WishlistUtil.getHome().getDeleteWishlistTypeForm();
-            String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
+            var commandForm = WishlistUtil.getHome().getDeleteWishlistTypeForm();
+            var wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
             
             commandForm.setWishlistTypeName(wishlistTypeName);
             

@@ -17,7 +17,6 @@
 package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.form.GetSubscriptionKindsForm;
-import com.echothree.control.user.subscription.common.result.GetSubscriptionKindsResult;
 import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -61,7 +60,7 @@ public class GetSubscriptionKindsCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        GetSubscriptionKindsResult result = SubscriptionResultFactory.getGetSubscriptionKindsResult();
+        var result = SubscriptionResultFactory.getGetSubscriptionKindsResult();
         
         result.setSubscriptionKinds(subscriptionControl.getSubscriptionKindTransfers(getUserVisit()));
         

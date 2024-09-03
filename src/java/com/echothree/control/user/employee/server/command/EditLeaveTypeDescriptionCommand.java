@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.employee.server.entity.LeaveType;
 import com.echothree.model.data.employee.server.entity.LeaveTypeDescription;
-import com.echothree.model.data.employee.server.value.LeaveTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditLeaveTypeDescriptionCommand
     public LeaveTypeDescription getEntity(EditLeaveTypeDescriptionResult result) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
         LeaveTypeDescription leaveTypeDescription = null;
-        String leaveTypeName = spec.getLeaveTypeName();
-        LeaveType leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
+        var leaveTypeName = spec.getLeaveTypeName();
+        var leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
 
         if(leaveType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditLeaveTypeDescriptionCommand
     @Override
     public void doUpdate(LeaveTypeDescription leaveTypeDescription) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        LeaveTypeDescriptionValue leaveTypeDescriptionValue = employeeControl.getLeaveTypeDescriptionValue(leaveTypeDescription);
+        var leaveTypeDescriptionValue = employeeControl.getLeaveTypeDescriptionValue(leaveTypeDescription);
 
         leaveTypeDescriptionValue.setDescription(edit.getDescription());
 

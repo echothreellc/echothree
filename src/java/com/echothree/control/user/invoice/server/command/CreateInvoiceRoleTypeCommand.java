@@ -19,7 +19,6 @@ package com.echothree.control.user.invoice.server.command;
 import com.echothree.control.user.invoice.common.form.CreateInvoiceRoleTypeForm;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.invoice.server.entity.InvoiceRoleType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -58,8 +57,8 @@ public class CreateInvoiceRoleTypeCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        String invoiceRoleTypeName = form.getInvoiceRoleTypeName();
-        InvoiceRoleType invoiceRoleType = invoiceControl.getInvoiceRoleTypeByName(invoiceRoleTypeName);
+        var invoiceRoleTypeName = form.getInvoiceRoleTypeName();
+        var invoiceRoleType = invoiceControl.getInvoiceRoleTypeByName(invoiceRoleTypeName);
         
         if(invoiceRoleType == null) {
             var sortOrder = Integer.valueOf(form.getSortOrder());

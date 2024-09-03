@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.item.itemalias;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemAliasesForm;
 import com.echothree.control.user.item.common.result.GetItemAliasesResult;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,16 +48,16 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetItemAliasesForm commandForm = ItemUtil.getHome().getGetItemAliasesForm();
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        String forwardKey;
+        var commandForm = ItemUtil.getHome().getGetItemAliasesForm();
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
 
         commandForm.setItemName(itemName);
 
-        CommandResult commandResult = ItemUtil.getHome().getItemAliases(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemAliasesResult result = (GetItemAliasesResult)executionResult.getResult();
-        ItemTransfer item = result.getItem();
+        var commandResult = ItemUtil.getHome().getItemAliases(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemAliasesResult)executionResult.getResult();
+        var item = result.getItem();
 
         if(item != null) {
             request.setAttribute(AttributeConstants.ITEM, result.getItem());

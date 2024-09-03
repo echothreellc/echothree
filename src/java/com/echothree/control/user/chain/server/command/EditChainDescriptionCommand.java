@@ -29,10 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainDescription;
-import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.model.data.chain.server.entity.ChainType;
-import com.echothree.model.data.chain.server.value.ChainDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -93,21 +89,21 @@ public class EditChainDescriptionCommand
     public ChainDescription getEntity(EditChainDescriptionResult result) {
         var chainControl = Session.getModelController(ChainControl.class);
         ChainDescription chainDescription = null;
-        String chainKindName = spec.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = spec.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind != null) {
-            String chainTypeName = spec.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = spec.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
             if(chainType != null) {
-                String chainName = spec.getChainName();
-                Chain chain = chainControl.getChainByName(chainType, chainName);
+                var chainName = spec.getChainName();
+                var chain = chainControl.getChainByName(chainType, chainName);
 
                 if(chain != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = spec.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = spec.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                     if(language != null) {
                         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -155,7 +151,7 @@ public class EditChainDescriptionCommand
     @Override
     public void doUpdate(ChainDescription chainDescription) {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainDescriptionValue chainDescriptionValue = chainControl.getChainDescriptionValue(chainDescription);
+        var chainDescriptionValue = chainControl.getChainDescriptionValue(chainDescription);
 
         chainDescriptionValue.setDescription(edit.getDescription());
 

@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.rating;
 
 import com.echothree.control.user.rating.common.RatingUtil;
 import com.echothree.control.user.rating.common.RatingService;
-import com.echothree.control.user.rating.common.form.CreateRatingTypeListItemDescriptionForm;
 import com.echothree.control.user.rating.common.form.RatingFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -57,9 +56,9 @@ public class RatingTypeListItemHandler
         if(localName.equals("ratingTypeListItemDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -67,7 +66,7 @@ public class RatingTypeListItemHandler
             }
             
             try {
-                CreateRatingTypeListItemDescriptionForm createRatingTypeListItemDescriptionForm = RatingFormFactory.getCreateRatingTypeListItemDescriptionForm();
+                var createRatingTypeListItemDescriptionForm = RatingFormFactory.getCreateRatingTypeListItemDescriptionForm();
                 
                 createRatingTypeListItemDescriptionForm.setComponentVendorName(componentVendorName);
                 createRatingTypeListItemDescriptionForm.setEntityTypeName(entityTypeName);

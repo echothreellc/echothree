@@ -17,7 +17,6 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetLotTimeTypeChoicesForm;
-import com.echothree.control.user.inventory.common.result.GetLotTimeTypeChoicesResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -63,9 +62,9 @@ public class GetLotTimeTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var lotTimeControl = Session.getModelController(LotTimeControl.class);
-        GetLotTimeTypeChoicesResult result = InventoryResultFactory.getGetLotTimeTypeChoicesResult();
-        String defaultLotTimeTypeChoice = form.getDefaultLotTimeTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = InventoryResultFactory.getGetLotTimeTypeChoicesResult();
+        var defaultLotTimeTypeChoice = form.getDefaultLotTimeTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
         result.setLotTimeTypeChoices(lotTimeControl.getLotTimeTypeChoices(defaultLotTimeTypeChoice, getPreferredLanguage(), allowNullChoice));
 

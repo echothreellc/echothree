@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.subscription.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionKindDescriptionTransfer;
-import com.echothree.model.control.subscription.common.transfer.SubscriptionKindTransfer;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKindDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class SubscriptionKindDescriptionTransferCache
     }
     
     public SubscriptionKindDescriptionTransfer getSubscriptionKindDescriptionTransfer(SubscriptionKindDescription subscriptionKindDescription) {
-        SubscriptionKindDescriptionTransfer subscriptionKindDescriptionTransfer = get(subscriptionKindDescription);
+        var subscriptionKindDescriptionTransfer = get(subscriptionKindDescription);
         
         if(subscriptionKindDescriptionTransfer == null) {
-            SubscriptionKindTransfer subscriptionKindTransfer = subscriptionControl.getSubscriptionKindTransfer(userVisit, subscriptionKindDescription.getSubscriptionKind());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, subscriptionKindDescription.getLanguage());
+            var subscriptionKindTransfer = subscriptionControl.getSubscriptionKindTransfer(userVisit, subscriptionKindDescription.getSubscriptionKind());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, subscriptionKindDescription.getLanguage());
             
             subscriptionKindDescriptionTransfer = new SubscriptionKindDescriptionTransfer(languageTransfer, subscriptionKindTransfer, subscriptionKindDescription.getDescription());
             put(subscriptionKindDescription, subscriptionKindDescriptionTransfer);

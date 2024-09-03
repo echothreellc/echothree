@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.uom;
 
 import com.echothree.control.user.uom.common.UomUtil;
 import com.echothree.control.user.uom.common.UomService;
-import com.echothree.control.user.uom.common.form.CreateUnitOfMeasureTypeDescriptionForm;
-import com.echothree.control.user.uom.common.form.CreateUnitOfMeasureTypeVolumeForm;
 import com.echothree.control.user.uom.common.form.UomFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -53,7 +51,7 @@ public class UnitOfMeasureTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("unitOfMeasureTypeDescription")) {
-            CreateUnitOfMeasureTypeDescriptionForm form = UomFormFactory.getCreateUnitOfMeasureTypeDescriptionForm();
+            var form = UomFormFactory.getCreateUnitOfMeasureTypeDescriptionForm();
 
             form.setUnitOfMeasureKindName(unitOfMeasureKindName);
             form.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
@@ -61,7 +59,7 @@ public class UnitOfMeasureTypeHandler
 
             checkCommandResult(uomService.createUnitOfMeasureTypeDescription(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("unitOfMeasureTypeVolume")) {
-            CreateUnitOfMeasureTypeVolumeForm form = UomFormFactory.getCreateUnitOfMeasureTypeVolumeForm();
+            var form = UomFormFactory.getCreateUnitOfMeasureTypeVolumeForm();
 
             form.setUnitOfMeasureKindName(unitOfMeasureKindName);
             form.setUnitOfMeasureTypeName(unitOfMeasureTypeName);

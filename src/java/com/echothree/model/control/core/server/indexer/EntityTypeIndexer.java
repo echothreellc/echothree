@@ -24,7 +24,6 @@ import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import org.apache.lucene.analysis.Analyzer;
@@ -53,8 +52,8 @@ public class EntityTypeIndexer
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final EntityType entityType) {
-        EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
-        String description = coreControl.getBestEntityTypeDescription(entityType, language);
+        var entityTypeDetail = entityType.getLastDetail();
+        var description = coreControl.getBestEntityTypeDescription(entityType, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, entityType.getPrimaryKey());
 

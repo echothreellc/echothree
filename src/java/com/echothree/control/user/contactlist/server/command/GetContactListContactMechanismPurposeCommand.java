@@ -18,7 +18,6 @@ package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.GetContactListContactMechanismPurposeForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
-import com.echothree.control.user.contactlist.common.result.GetContactListContactMechanismPurposeResult;
 import com.echothree.model.control.contact.server.logic.ContactMechanismPurposeLogic;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
@@ -26,9 +25,6 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
-import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -70,17 +66,17 @@ public class GetContactListContactMechanismPurposeCommand
     
     @Override
     protected BaseResult execute() {
-        GetContactListContactMechanismPurposeResult result = ContactListResultFactory.getGetContactListContactMechanismPurposeResult();
-        String contactListName = form.getContactListName();
-        ContactList contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
+        var result = ContactListResultFactory.getGetContactListContactMechanismPurposeResult();
+        var contactListName = form.getContactListName();
+        var contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
         
         if(!hasExecutionErrors()) {
-            String contactMechanismPurposeName = form.getContactMechanismPurposeName();
-            ContactMechanismPurpose contactMechanismPurpose = ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByName(this, contactMechanismPurposeName);
+            var contactMechanismPurposeName = form.getContactMechanismPurposeName();
+            var contactMechanismPurpose = ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByName(this, contactMechanismPurposeName);
             
             if(!hasExecutionErrors()) {
                 var contactListControl = Session.getModelController(ContactListControl.class);
-                ContactListContactMechanismPurpose contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurpose(contactList, contactMechanismPurpose);
+                var contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurpose(contactList, contactMechanismPurpose);
                 
                 if(contactListContactMechanismPurpose != null) {
                     result.setContactListContactMechanismPurpose(contactListControl.getContactListContactMechanismPurposeTransfer(getUserVisit(), contactListContactMechanismPurpose));

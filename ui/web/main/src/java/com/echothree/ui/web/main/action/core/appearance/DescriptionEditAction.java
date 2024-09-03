@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected AppearanceDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        AppearanceDescriptionSpec spec = CoreUtil.getHome().getAppearanceDescriptionSpec();
+        var spec = CoreUtil.getHome().getAppearanceDescriptionSpec();
         
         spec.setAppearanceName(findParameter(request, ParameterConstants.APPEARANCE_NAME, actionForm.getAppearanceName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected AppearanceDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        AppearanceDescriptionEdit edit = CoreUtil.getHome().getAppearanceDescriptionEdit();
+        var edit = CoreUtil.getHome().getAppearanceDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.content.contentpagearea;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentPageAreasForm;
-import com.echothree.control.user.content.common.form.GetContentPageLayoutAreasForm;
 import com.echothree.control.user.content.common.result.GetContentPageAreasResult;
 import com.echothree.control.user.content.common.result.GetContentPageLayoutAreasResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,23 +50,23 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetContentPageAreasForm getContentPageAreasForm = ContentUtil.getHome().getGetContentPageAreasForm();
-            GetContentPageLayoutAreasForm getContentPageLayoutAreasForm = ContentUtil.getHome().getGetContentPageLayoutAreasForm();
-            String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-            String contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
-            String contentPageName = request.getParameter(ParameterConstants.CONTENT_PAGE_NAME);
-            String parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
+            var getContentPageAreasForm = ContentUtil.getHome().getGetContentPageAreasForm();
+            var getContentPageLayoutAreasForm = ContentUtil.getHome().getGetContentPageLayoutAreasForm();
+            var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+            var contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
+            var contentPageName = request.getParameter(ParameterConstants.CONTENT_PAGE_NAME);
+            var parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
             
             getContentPageAreasForm.setContentCollectionName(contentCollectionName);
             getContentPageAreasForm.setContentSectionName(contentSectionName);
             getContentPageAreasForm.setContentPageName(contentPageName);
-            
-            CommandResult commandResult = ContentUtil.getHome().getContentPageAreas(getUserVisitPK(request), getContentPageAreasForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentPageAreasResult getContentPageAreasResult = (GetContentPageAreasResult)executionResult.getResult();
+
+            var commandResult = ContentUtil.getHome().getContentPageAreas(getUserVisitPK(request), getContentPageAreasForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getContentPageAreasResult = (GetContentPageAreasResult)executionResult.getResult();
             
             getContentPageLayoutAreasForm.setContentCollectionName(contentCollectionName);
             getContentPageLayoutAreasForm.setContentSectionName(contentSectionName);
@@ -78,7 +74,7 @@ public class MainAction
             
             commandResult = ContentUtil.getHome().getContentPageLayoutAreas(getUserVisitPK(request), getContentPageLayoutAreasForm);
             executionResult = commandResult.getExecutionResult();
-            GetContentPageLayoutAreasResult getContentPageLayoutAreasResult = (GetContentPageLayoutAreasResult)executionResult.getResult();
+            var getContentPageLayoutAreasResult = (GetContentPageLayoutAreasResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionName);
             request.setAttribute(AttributeConstants.CONTENT_SECTION_NAME, contentSectionName);

@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.accounting;
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.common.AccountingService;
 import com.echothree.control.user.accounting.common.form.AccountingFormFactory;
-import com.echothree.control.user.accounting.common.form.CreateSymbolPositionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -47,7 +46,7 @@ public class SymbolPositionsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("symbolPosition")) {
-            CreateSymbolPositionForm commandForm = AccountingFormFactory.getCreateSymbolPositionForm();
+            var commandForm = AccountingFormFactory.getCreateSymbolPositionForm();
             
             commandForm.set(getAttrsMap(attrs));
             

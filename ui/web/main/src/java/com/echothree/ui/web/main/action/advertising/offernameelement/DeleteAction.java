@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.offernameelement;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.DeleteOfferNameElementForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteOfferNameElementForm commandForm = OfferUtil.getHome().getDeleteOfferNameElementForm();
-            String offerNameElementName = request.getParameter(ParameterConstants.OFFER_NAME_ELEMENT_NAME);
+            var commandForm = OfferUtil.getHome().getDeleteOfferNameElementForm();
+            var offerNameElementName = request.getParameter(ParameterConstants.OFFER_NAME_ELEMENT_NAME);
             
             commandForm.setOfferNameElementName(offerNameElementName);
             

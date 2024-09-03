@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnpolicyreason;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.form.GetReturnReasonChoicesForm;
 import com.echothree.control.user.returnpolicy.common.result.GetReturnReasonChoicesResult;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnReasonChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -45,15 +42,15 @@ public class AddActionForm
     private void setupReturnReasonChoices() {
         if(returnReasonChoices == null) {
             try {
-                GetReturnReasonChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnReasonChoicesForm();
+                var form = ReturnPolicyUtil.getHome().getGetReturnReasonChoicesForm();
                 
                 form.setReturnKindName(returnKindName);
                 form.setDefaultReturnReasonChoice(returnReasonChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnReasonChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetReturnReasonChoicesResult getReturnReasonChoicesResult = (GetReturnReasonChoicesResult)executionResult.getResult();
+
+                var commandResult = ReturnPolicyUtil.getHome().getReturnReasonChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getReturnReasonChoicesResult = (GetReturnReasonChoicesResult)executionResult.getResult();
                 returnReasonChoices = getReturnReasonChoicesResult.getReturnReasonChoices();
                 
                 if(returnReasonChoice == null) {

@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.item.itemalias;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemAliasTypeChoicesForm;
 import com.echothree.control.user.item.common.result.GetItemAliasTypeChoicesResult;
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.form.GetUnitOfMeasureTypeChoicesForm;
 import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeChoicesResult;
 import com.echothree.model.control.item.common.choice.ItemAliasTypeChoicesBean;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -47,15 +43,15 @@ public class AddActionForm
     private void setupUnitOfMeasureTypeChoices() {
         if(unitOfMeasureTypeChoices == null) {
             try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
                 
                 form.setItemName(itemName);
                 form.setDefaultUnitOfMeasureTypeChoice(unitOfMeasureTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
                 unitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
                 
                 if(unitOfMeasureTypeChoice == null) {
@@ -71,14 +67,14 @@ public class AddActionForm
     public void setupItemAliasTypeChoices() {
         if(itemAliasTypeChoices == null) {
             try {
-                GetItemAliasTypeChoicesForm form = ItemUtil.getHome().getGetItemAliasTypeChoicesForm();
+                var form = ItemUtil.getHome().getGetItemAliasTypeChoicesForm();
                 
                 form.setDefaultItemAliasTypeChoice(itemAliasTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ItemUtil.getHome().getItemAliasTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemAliasTypeChoicesResult getItemAliasTypeChoicesResult = (GetItemAliasTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = ItemUtil.getHome().getItemAliasTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getItemAliasTypeChoicesResult = (GetItemAliasTypeChoicesResult)executionResult.getResult();
                 itemAliasTypeChoices = getItemAliasTypeChoicesResult.getItemAliasTypeChoices();
                 
                 if(itemAliasTypeChoice == null) {

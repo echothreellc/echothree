@@ -18,14 +18,10 @@ package com.echothree.model.control.communication.server.transfer;
 
 import com.echothree.model.control.communication.common.transfer.CommunicationEmailSourceTransfer;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.control.core.common.transfer.ServerTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEmailSource;
-import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -46,16 +42,16 @@ public class CommunicationEmailSourceTransferCache
     }
     
     public CommunicationEmailSourceTransfer getCommunicationEmailSourceTransfer(CommunicationEmailSource communicationEmailSource) {
-        CommunicationEmailSourceTransfer communicationEmailSourceTransfer = get(communicationEmailSource);
+        var communicationEmailSourceTransfer = get(communicationEmailSource);
         
         if(communicationEmailSourceTransfer == null) {
-            ServerTransfer servertTransfer = coreControl.getServerTransfer(userVisit, communicationEmailSource.getServer());
-            String username = communicationEmailSource.getUsername();
-            String password = communicationControl.decodeCommunicationEmailSourcePassword(communicationEmailSource);
-            WorkEffortScopeTransfer receiveWorkEffortScopeTransfer = workEffortControl.getWorkEffortScopeTransfer(userVisit, communicationEmailSource.getReceiveWorkEffortScope());
-            WorkEffortScopeTransfer sendWorkEffortScopeTransfer = workEffortControl.getWorkEffortScopeTransfer(userVisit, communicationEmailSource.getSendWorkEffortScope());
-            Selector reviewEmployeeSelector = communicationEmailSource.getReviewEmployeeSelector();
-            SelectorTransfer reviewEmployeeSelectorTransfer = reviewEmployeeSelector == null? null: selectorControl.getSelectorTransfer(userVisit, reviewEmployeeSelector);
+            var servertTransfer = coreControl.getServerTransfer(userVisit, communicationEmailSource.getServer());
+            var username = communicationEmailSource.getUsername();
+            var password = communicationControl.decodeCommunicationEmailSourcePassword(communicationEmailSource);
+            var receiveWorkEffortScopeTransfer = workEffortControl.getWorkEffortScopeTransfer(userVisit, communicationEmailSource.getReceiveWorkEffortScope());
+            var sendWorkEffortScopeTransfer = workEffortControl.getWorkEffortScopeTransfer(userVisit, communicationEmailSource.getSendWorkEffortScope());
+            var reviewEmployeeSelector = communicationEmailSource.getReviewEmployeeSelector();
+            var reviewEmployeeSelectorTransfer = reviewEmployeeSelector == null? null: selectorControl.getSelectorTransfer(userVisit, reviewEmployeeSelector);
             
             communicationEmailSourceTransfer = new CommunicationEmailSourceTransfer(servertTransfer, username, password,
                     receiveWorkEffortScopeTransfer, sendWorkEffortScopeTransfer, reviewEmployeeSelectorTransfer);

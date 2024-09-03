@@ -44,7 +44,7 @@ public class InfinispanValueCacheImpl
 
     @Override
     public void put(BaseValue baseValue) {
-        BasePK basePK = baseValue.getPrimaryKey();
+        var basePK = baseValue.getPrimaryKey();
 
         dataCache.getAdvancedCache().withFlags(Flag.IGNORE_RETURN_VALUES).put(getFqn(basePK) + "/" + VALUE, baseValue);
     }

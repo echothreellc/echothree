@@ -19,10 +19,6 @@ package com.echothree.control.user.club.server.command;
 import com.echothree.control.user.club.common.form.DeleteClubItemForm;
 import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.data.club.server.entity.Club;
-import com.echothree.model.data.club.server.entity.ClubItem;
-import com.echothree.model.data.club.server.entity.ClubItemType;
-import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -55,20 +51,20 @@ public class DeleteClubItemCommand
     @Override
     protected BaseResult execute() {
         var clubControl = Session.getModelController(ClubControl.class);
-        String clubName = form.getClubName();
-        Club club = clubControl.getClubByName(clubName);
+        var clubName = form.getClubName();
+        var club = clubControl.getClubByName(clubName);
         
         if(club != null) {
-            String clubItemTypeName = form.getClubItemTypeName();
-            ClubItemType clubItemType = clubControl.getClubItemTypeByName(clubItemTypeName);
+            var clubItemTypeName = form.getClubItemTypeName();
+            var clubItemType = clubControl.getClubItemTypeByName(clubItemTypeName);
             
             if(clubItemType != null) {
                 var itemControl = Session.getModelController(ItemControl.class);
-                String itemName = form.getItemName();
-                Item item = itemControl.getItemByName(itemName);
+                var itemName = form.getItemName();
+                var item = itemControl.getItemByName(itemName);
                 
                 if(item != null) {
-                    ClubItem clubItem = clubControl.getClubItemForUpdate(club, clubItemType, item);
+                    var clubItem = clubControl.getClubItemForUpdate(club, clubItemType, item);
                     
                     if(clubItem != null) {
                         clubControl.deleteClubItem(clubItem, getPartyPK());

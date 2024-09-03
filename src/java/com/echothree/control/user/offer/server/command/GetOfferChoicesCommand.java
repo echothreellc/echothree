@@ -17,7 +17,6 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetOfferChoicesForm;
-import com.echothree.control.user.offer.common.result.GetOfferChoicesResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -64,9 +63,9 @@ public class GetOfferChoicesCommand
     @Override
     protected BaseResult execute() {
         var offerControl = Session.getModelController(OfferControl.class);
-        GetOfferChoicesResult result = OfferResultFactory.getGetOfferChoicesResult();
-        String defaultOfferChoice = form.getDefaultOfferChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = OfferResultFactory.getGetOfferChoicesResult();
+        var defaultOfferChoice = form.getDefaultOfferChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setOfferChoices(offerControl.getOfferChoices(defaultOfferChoice, getPreferredLanguage(), allowNullChoice));
         

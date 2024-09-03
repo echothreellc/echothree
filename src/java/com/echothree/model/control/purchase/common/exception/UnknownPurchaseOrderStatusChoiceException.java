@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.purchase.common.exception;
 
-import com.echothree.model.control.sales.common.exception.BaseSalesException;
 import com.echothree.util.common.message.Message;
 
 public class UnknownPurchaseOrderStatusChoiceException

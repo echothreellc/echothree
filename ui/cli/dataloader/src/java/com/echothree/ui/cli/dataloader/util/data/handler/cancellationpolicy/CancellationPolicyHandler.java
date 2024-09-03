@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.cancellationpolicy;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyService;
 import com.echothree.control.user.cancellationpolicy.common.form.CancellationPolicyFormFactory;
-import com.echothree.control.user.cancellationpolicy.common.form.CreateCancellationPolicyTranslationForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -50,7 +49,7 @@ public class CancellationPolicyHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("cancellationPolicyTranslation")) {
-            CreateCancellationPolicyTranslationForm commandForm = CancellationPolicyFormFactory.getCreateCancellationPolicyTranslationForm();
+            var commandForm = CancellationPolicyFormFactory.getCreateCancellationPolicyTranslationForm();
 
             commandForm.setCancellationKindName(cancellationKindName);
             commandForm.setCancellationPolicyName(cancellationPolicyName);

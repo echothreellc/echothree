@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.subscription.subscription;
 
 import com.echothree.control.user.subscription.common.SubscriptionUtil;
-import com.echothree.control.user.subscription.common.form.GetSubscriptionsForm;
 import com.echothree.control.user.subscription.common.result.GetSubscriptionsResult;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,12 +52,12 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetSubscriptionsForm commandForm = SubscriptionUtil.getHome().getGetSubscriptionsForm();
-            String subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
-            String subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
+            var commandForm = SubscriptionUtil.getHome().getGetSubscriptionsForm();
+            var subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
+            var subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
             
             commandForm.setSubscriptionKindName(subscriptionKindName);
             commandForm.setSubscriptionTypeName(subscriptionTypeName);
@@ -69,9 +66,9 @@ public class MainAction
             options.add(PartyOptions.PartyIncludeDescription);
             commandForm.setOptions(options);
 
-            CommandResult commandResult = SubscriptionUtil.getHome().getSubscriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSubscriptionsResult result = (GetSubscriptionsResult)executionResult.getResult();
+            var commandResult = SubscriptionUtil.getHome().getSubscriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSubscriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SUBSCRIPTION_KIND, result.getSubscriptionKind());
             request.setAttribute(AttributeConstants.SUBSCRIPTION_TYPE, result.getSubscriptionType());

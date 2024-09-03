@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
-import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.offer.common.transfer.OfferCustomerTypeTransfer;
-import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.data.offer.server.entity.OfferCustomerType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -37,13 +35,13 @@ public class OfferCustomerTypeTransferCache
     }
     
     public OfferCustomerTypeTransfer getOfferCustomerTypeTransfer(OfferCustomerType offerCustomerType) {
-        OfferCustomerTypeTransfer offerCustomerTypeTransfer = get(offerCustomerType);
+        var offerCustomerTypeTransfer = get(offerCustomerType);
         
         if(offerCustomerTypeTransfer == null) {
-            OfferTransfer offer = offerControl.getOfferTransfer(userVisit, offerCustomerType.getOffer());
-            CustomerTypeTransfer customerType = customerControl.getCustomerTypeTransfer(userVisit, offerCustomerType.getCustomerType());
-            Boolean isDefault = offerCustomerType.getIsDefault();
-            Integer sortOrder = offerCustomerType.getSortOrder();
+            var offer = offerControl.getOfferTransfer(userVisit, offerCustomerType.getOffer());
+            var customerType = customerControl.getCustomerTypeTransfer(userVisit, offerCustomerType.getCustomerType());
+            var isDefault = offerCustomerType.getIsDefault();
+            var sortOrder = offerCustomerType.getSortOrder();
             
             offerCustomerTypeTransfer = new OfferCustomerTypeTransfer(offer, customerType, isDefault, sortOrder);
             put(offerCustomerType, offerCustomerTypeTransfer);

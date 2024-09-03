@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnreasontype;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.form.CreateReturnReasonTypeForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,12 +54,12 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-        String returnReasonName = request.getParameter(ParameterConstants.RETURN_REASON_NAME);
+        var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+        var returnReasonName = request.getParameter(ParameterConstants.RETURN_REASON_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(returnKindName == null)
                     returnKindName = actionForm.getReturnKindName();
@@ -69,15 +67,15 @@ public class AddAction
                     returnReasonName = actionForm.getReturnReasonName();
                 
                 if(wasPost(request)) {
-                    CreateReturnReasonTypeForm commandForm = ReturnPolicyUtil.getHome().getCreateReturnReasonTypeForm();
+                    var commandForm = ReturnPolicyUtil.getHome().getCreateReturnReasonTypeForm();
                     
                     commandForm.setReturnKindName(returnKindName);
                     commandForm.setReturnReasonName(returnReasonName);
                     commandForm.setReturnTypeName(actionForm.getReturnTypeChoice());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
-                    
-                    CommandResult commandResult = ReturnPolicyUtil.getHome().createReturnReasonType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ReturnPolicyUtil.getHome().createReturnReasonType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -95,8 +93,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.RETURN_KIND_NAME, returnKindName);
             request.setAttribute(AttributeConstants.RETURN_REASON_NAME, returnReasonName);

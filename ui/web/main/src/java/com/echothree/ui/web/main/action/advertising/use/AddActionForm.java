@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.advertising.use;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetUseTypeChoicesForm;
 import com.echothree.control.user.offer.common.result.GetUseTypeChoicesResult;
 import com.echothree.model.control.offer.common.choice.UseTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -45,14 +42,14 @@ public class AddActionForm
     private void setupUseTypeChoices() {
         if(useTypeChoices == null) {
             try {
-                GetUseTypeChoicesForm form = OfferUtil.getHome().getGetUseTypeChoicesForm();
+                var form = OfferUtil.getHome().getGetUseTypeChoicesForm();
                 
                 form.setDefaultUseTypeChoice(useTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = OfferUtil.getHome().getUseTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUseTypeChoicesResult result = (GetUseTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = OfferUtil.getHome().getUseTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetUseTypeChoicesResult)executionResult.getResult();
                 useTypeChoices = result.getUseTypeChoices();
                 
                 if(useTypeChoice == null)

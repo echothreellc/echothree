@@ -18,12 +18,10 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentSectionChoicesForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentSectionChoicesResult;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,13 +65,13 @@ public class GetContentSectionChoicesCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentSectionChoicesResult result = ContentResultFactory.getGetContentSectionChoicesResult();
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var result = ContentResultFactory.getGetContentSectionChoicesResult();
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String defaultContentSectionChoice = form.getDefaultContentSectionChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultContentSectionChoice = form.getDefaultContentSectionChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setContentSectionChoices(contentControl.getContentSectionChoices(contentCollection, defaultContentSectionChoice, getPreferredLanguage(), allowNullChoice));
         } else {

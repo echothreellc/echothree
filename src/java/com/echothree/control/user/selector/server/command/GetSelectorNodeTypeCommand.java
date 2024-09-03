@@ -17,10 +17,8 @@
 package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.GetSelectorNodeTypeForm;
-import com.echothree.control.user.selector.common.result.GetSelectorNodeTypeResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.entity.SelectorNodeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,9 +49,9 @@ public class GetSelectorNodeTypeCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorNodeTypeResult result = SelectorResultFactory.getGetSelectorNodeTypeResult();
-        String selectorNodeTypeName = form.getSelectorNodeTypeName();
-        SelectorNodeType selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
+        var result = SelectorResultFactory.getGetSelectorNodeTypeResult();
+        var selectorNodeTypeName = form.getSelectorNodeTypeName();
+        var selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
         
         if(selectorNodeType != null) {
             result.setSelectorNodeType(selectorControl.getSelectorNodeTypeTransfer(getUserVisit(), selectorNodeType));

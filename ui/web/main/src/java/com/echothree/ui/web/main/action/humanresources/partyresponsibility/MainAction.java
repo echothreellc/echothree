@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.humanresources.partyresponsibility;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetPartyResponsibilitiesForm;
 import com.echothree.control.user.employee.common.result.GetPartyResponsibilitiesResult;
-import com.echothree.model.control.employee.common.transfer.ResponsibilityTypeTransfer;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,18 +49,18 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String responsibilityTypeName = request.getParameter(ParameterConstants.RESPONSIBILITY_TYPE_NAME);
-        GetPartyResponsibilitiesForm commandForm = EmployeeUtil.getHome().getGetPartyResponsibilitiesForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var responsibilityTypeName = request.getParameter(ParameterConstants.RESPONSIBILITY_TYPE_NAME);
+        var commandForm = EmployeeUtil.getHome().getGetPartyResponsibilitiesForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setResponsibilityTypeName(responsibilityTypeName);
 
-        CommandResult commandResult = EmployeeUtil.getHome().getPartyResponsibilities(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyResponsibilitiesResult result = (GetPartyResponsibilitiesResult)executionResult.getResult();
-        PartyTransfer party = result.getParty();
-        ResponsibilityTypeTransfer responsibilityType = result.getResponsibilityType();
+        var commandResult = EmployeeUtil.getHome().getPartyResponsibilities(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyResponsibilitiesResult)executionResult.getResult();
+        var party = result.getParty();
+        var responsibilityType = result.getResponsibilityType();
 
         request.setAttribute(AttributeConstants.PARTY, party);
         request.setAttribute(AttributeConstants.RESPONSIBILITY_TYPE, responsibilityType);

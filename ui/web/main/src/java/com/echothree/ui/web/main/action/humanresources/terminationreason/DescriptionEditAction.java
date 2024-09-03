@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.humanresources.terminationreason;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.edit.TerminationReasonDescriptionEdit;
-import com.echothree.control.user.employee.common.form.EditTerminationReasonDescriptionForm;
 import com.echothree.control.user.employee.common.result.EditTerminationReasonDescriptionResult;
-import com.echothree.control.user.employee.common.spec.TerminationReasonDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String terminationReasonName = request.getParameter(ParameterConstants.TERMINATION_REASON_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var terminationReasonName = request.getParameter(ParameterConstants.TERMINATION_REASON_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditTerminationReasonDescriptionForm commandForm = EmployeeUtil.getHome().getEditTerminationReasonDescriptionForm();
-                TerminationReasonDescriptionSpec spec = EmployeeUtil.getHome().getTerminationReasonDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = EmployeeUtil.getHome().getEditTerminationReasonDescriptionForm();
+                var spec = EmployeeUtil.getHome().getTerminationReasonDescriptionSpec();
                 
                 if(terminationReasonName == null)
                     terminationReasonName = actionForm.getTerminationReasonName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    TerminationReasonDescriptionEdit edit = EmployeeUtil.getHome().getTerminationReasonDescriptionEdit();
+                    var edit = EmployeeUtil.getHome().getTerminationReasonDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().editTerminationReasonDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = EmployeeUtil.getHome().editTerminationReasonDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditTerminationReasonDescriptionResult result = (EditTerminationReasonDescriptionResult)executionResult.getResult();
+                            var result = (EditTerminationReasonDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().editTerminationReasonDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditTerminationReasonDescriptionResult result = (EditTerminationReasonDescriptionResult)executionResult.getResult();
+
+                    var commandResult = EmployeeUtil.getHome().editTerminationReasonDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditTerminationReasonDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        TerminationReasonDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setTerminationReasonName(terminationReasonName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.TERMINATION_REASON_NAME, terminationReasonName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

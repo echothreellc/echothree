@@ -18,7 +18,6 @@ package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.SetDefaultTermForm;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.term.server.value.TermDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class SetDefaultTermCommand
     @Override
     protected BaseResult execute() {
         var termControl = Session.getModelController(TermControl.class);
-        String termName = form.getTermName();
-        TermDetailValue termDetailValue = termControl.getTermDetailValueByNameForUpdate(termName);
+        var termName = form.getTermName();
+        var termDetailValue = termControl.getTermDetailValueByNameForUpdate(termName);
         
         if(termDetailValue != null) {
             termDetailValue.setIsDefault(Boolean.TRUE);

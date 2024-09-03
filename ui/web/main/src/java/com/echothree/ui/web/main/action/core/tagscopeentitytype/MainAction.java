@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.core.tagscopeentitytype;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.form.GetTagScopeEntityTypesForm;
 import com.echothree.control.user.tag.common.result.GetTagScopeEntityTypesResult;
-import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -54,15 +50,15 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws NamingException {
-        String forwardKey = null;
-        GetTagScopeEntityTypesForm commandForm = TagUtil.getHome().getGetTagScopeEntityTypesForm();
+        String forwardKey;
+        var commandForm = TagUtil.getHome().getGetTagScopeEntityTypesForm();
 
         commandForm.setTagScopeName(request.getParameter(ParameterConstants.TAG_SCOPE_NAME));
 
-        CommandResult commandResult = TagUtil.getHome().getTagScopeEntityTypes(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTagScopeEntityTypesResult result = (GetTagScopeEntityTypesResult)executionResult.getResult();
-        TagScopeTransfer tagScope = result.getTagScope();
+        var commandResult = TagUtil.getHome().getTagScopeEntityTypes(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTagScopeEntityTypesResult)executionResult.getResult();
+        var tagScope = result.getTagScope();
 
         if(tagScope == null) {
             forwardKey = ForwardConstants.ERROR_404;

@@ -21,9 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
-import com.echothree.model.data.selector.server.value.SelectorDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -64,16 +61,16 @@ public class SetDefaultSelectorCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var selectorKindName = form.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
         if(selectorKind != null) {
-            String selectorTypeName = form.getSelectorTypeName();
-            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
+            var selectorTypeName = form.getSelectorTypeName();
+            var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
             
             if(selectorType != null) {
-                String selectorName = form.getSelectorName();
-                SelectorDetailValue selectorDetailValue = selectorControl.getSelectorDetailValueByNameForUpdate(selectorType, selectorName);
+                var selectorName = form.getSelectorName();
+                var selectorDetailValue = selectorControl.getSelectorDetailValueByNameForUpdate(selectorType, selectorName);
                 
                 if(selectorDetailValue != null) {
                     selectorDetailValue.setIsDefault(Boolean.TRUE);

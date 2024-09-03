@@ -17,13 +17,9 @@
 package com.echothree.model.control.carrier.server.transfer;
 
 import com.echothree.model.control.carrier.common.transfer.CarrierServiceTransfer;
-import com.echothree.model.control.carrier.common.transfer.CarrierTransfer;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
-import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.carrier.server.entity.CarrierService;
-import com.echothree.model.data.carrier.server.entity.CarrierServiceDetail;
-import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -40,19 +36,19 @@ public class CarrierServiceTransferCache
     }
     
     public CarrierServiceTransfer getCarrierServiceTransfer(CarrierService carrierService) {
-        CarrierServiceTransfer carrierServiceTransfer = get(carrierService);
+        var carrierServiceTransfer = get(carrierService);
         
         if(carrierServiceTransfer == null) {
-            CarrierServiceDetail carrierServiceDetail = carrierService.getLastDetail();
-            CarrierTransfer carrier = carrierControl.getCarrierTransfer(userVisit, carrierServiceDetail.getCarrierParty());
-            String carrierServiceName = carrierServiceDetail.getCarrierServiceName();
-            Selector geoCodeSelector = carrierServiceDetail.getGeoCodeSelector();
-            SelectorTransfer geoCodeSelectorTransfer = geoCodeSelector == null? null: selectorControl.getSelectorTransfer(userVisit, geoCodeSelector);
-            Selector itemSelector = carrierServiceDetail.getItemSelector();
-            SelectorTransfer itemSelectorTransfer = itemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, itemSelector);
-            Boolean isDefault = carrierServiceDetail.getIsDefault();
-            Integer sortOrder = carrierServiceDetail.getSortOrder();
-            String description = carrierControl.getBestCarrierServiceDescription(carrierService, getLanguage());
+            var carrierServiceDetail = carrierService.getLastDetail();
+            var carrier = carrierControl.getCarrierTransfer(userVisit, carrierServiceDetail.getCarrierParty());
+            var carrierServiceName = carrierServiceDetail.getCarrierServiceName();
+            var geoCodeSelector = carrierServiceDetail.getGeoCodeSelector();
+            var geoCodeSelectorTransfer = geoCodeSelector == null? null: selectorControl.getSelectorTransfer(userVisit, geoCodeSelector);
+            var itemSelector = carrierServiceDetail.getItemSelector();
+            var itemSelectorTransfer = itemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, itemSelector);
+            var isDefault = carrierServiceDetail.getIsDefault();
+            var sortOrder = carrierServiceDetail.getSortOrder();
+            var description = carrierControl.getBestCarrierServiceDescription(carrierService, getLanguage());
             
             carrierServiceTransfer = new CarrierServiceTransfer(carrier, carrierServiceName, geoCodeSelectorTransfer, itemSelectorTransfer, isDefault,
                     sortOrder, description);

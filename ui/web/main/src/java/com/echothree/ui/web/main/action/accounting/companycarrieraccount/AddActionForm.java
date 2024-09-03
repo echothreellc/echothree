@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.accounting.companycarrieraccount;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.form.GetCarrierChoicesForm;
 import com.echothree.control.user.carrier.common.result.GetCarrierChoicesResult;
 import com.echothree.model.control.carrier.common.choice.CarrierChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseLanguageActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -44,14 +41,14 @@ public class AddActionForm
     private void setupCarrierChoices() {
         if(carrierChoices == null) {
             try {
-                GetCarrierChoicesForm commandForm = CarrierUtil.getHome().getGetCarrierChoicesForm();
+                var commandForm = CarrierUtil.getHome().getGetCarrierChoicesForm();
 
                 commandForm.setDefaultCarrierChoice(carrierChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = CarrierUtil.getHome().getCarrierChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCarrierChoicesResult result = (GetCarrierChoicesResult)executionResult.getResult();
+                var commandResult = CarrierUtil.getHome().getCarrierChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCarrierChoicesResult)executionResult.getResult();
                 carrierChoices = result.getCarrierChoices();
 
                 if(carrierChoice == null) {

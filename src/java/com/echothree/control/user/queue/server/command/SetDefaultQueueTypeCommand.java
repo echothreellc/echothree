@@ -21,7 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.queue.server.value.QueueTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,8 +62,8 @@ public class SetDefaultQueueTypeCommand
     @Override
     protected BaseResult execute() {
         var queueControl = Session.getModelController(QueueControl.class);
-        String queueTypeName = form.getQueueTypeName();
-        QueueTypeDetailValue queueTypeDetailValue = queueControl.getQueueTypeDetailValueByNameForUpdate(queueTypeName);
+        var queueTypeName = form.getQueueTypeName();
+        var queueTypeDetailValue = queueControl.getQueueTypeDetailValueByNameForUpdate(queueTypeName);
         
         if(queueTypeDetailValue != null) {
             queueTypeDetailValue.setIsDefault(Boolean.TRUE);

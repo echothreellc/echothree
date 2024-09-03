@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected LeaveTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        LeaveTypeSpec spec = EmployeeUtil.getHome().getLeaveTypeSpec();
+        var spec = EmployeeUtil.getHome().getLeaveTypeSpec();
         
         spec.setLeaveTypeName(findParameter(request, ParameterConstants.ORIGINAL_LEAVE_TYPE_NAME, actionForm.getOriginalLeaveTypeName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected LeaveTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        LeaveTypeEdit edit = EmployeeUtil.getHome().getLeaveTypeEdit();
+        var edit = EmployeeUtil.getHome().getLeaveTypeEdit();
 
         edit.setLeaveTypeName(actionForm.getLeaveTypeName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

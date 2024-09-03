@@ -43,7 +43,7 @@ public class DumpOrders {
     }
 
     private String limitLength(String str, int length) {
-        String result = str;
+        var result = str;
 
         if(str.length() > length) {
             result = str.substring(0, length - 3) + "...";
@@ -88,7 +88,7 @@ public class DumpOrders {
             return order;
         }).forEach((order) -> {
             order.getAmazonOrderShipmentGroups().values().stream().map((orderShipmentGroup) -> {
-                String shipAddress2 = orderShipmentGroup.getShipAddress2();
+                var shipAddress2 = orderShipmentGroup.getShipAddress2();
                 log.info("Shipment Group:");
                 log.info("  " + orderShipmentGroup.getRecipientName());
                 log.info("  " + orderShipmentGroup.getShipAddress1());

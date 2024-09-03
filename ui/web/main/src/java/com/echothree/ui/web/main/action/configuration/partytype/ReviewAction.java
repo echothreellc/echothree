@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.partytype;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetPartyTypeForm;
 import com.echothree.control.user.party.common.result.GetPartyTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetPartyTypeForm commandForm = PartyUtil.getHome().getGetPartyTypeForm();
-            String partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
+            var commandForm = PartyUtil.getHome().getGetPartyTypeForm();
+            var partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
             
             commandForm.setPartyTypeName(partyTypeName);
-            
-            CommandResult commandResult = PartyUtil.getHome().getPartyType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyTypeResult result = (GetPartyTypeResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().getPartyType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PARTY_TYPE, result.getPartyType());
             forwardKey = ForwardConstants.DISPLAY;

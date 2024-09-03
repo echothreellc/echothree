@@ -17,9 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.AppearanceDescriptionTransfer;
-import com.echothree.model.control.core.common.transfer.AppearanceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.core.server.entity.AppearanceDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -35,11 +33,11 @@ public class AppearanceDescriptionTransferCache
     }
     
     public AppearanceDescriptionTransfer getAppearanceDescriptionTransfer(AppearanceDescription appearanceDescription) {
-        AppearanceDescriptionTransfer appearanceDescriptionTransfer = get(appearanceDescription);
+        var appearanceDescriptionTransfer = get(appearanceDescription);
         
         if(appearanceDescriptionTransfer == null) {
-            AppearanceTransfer appearanceTransfer = coreControl.getAppearanceTransfer(userVisit, appearanceDescription.getAppearance());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, appearanceDescription.getLanguage());
+            var appearanceTransfer = coreControl.getAppearanceTransfer(userVisit, appearanceDescription.getAppearance());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, appearanceDescription.getLanguage());
             
             appearanceDescriptionTransfer = new AppearanceDescriptionTransfer(languageTransfer, appearanceTransfer, appearanceDescription.getDescription());
             put(appearanceDescription, appearanceDescriptionTransfer);

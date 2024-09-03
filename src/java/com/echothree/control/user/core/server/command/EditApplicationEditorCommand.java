@@ -26,11 +26,7 @@ import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Application;
 import com.echothree.model.data.core.server.entity.ApplicationEditor;
-import com.echothree.model.data.core.server.entity.ApplicationEditorDetail;
-import com.echothree.model.data.core.server.entity.Editor;
-import com.echothree.model.data.core.server.value.ApplicationEditorDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -88,12 +84,12 @@ public class EditApplicationEditorCommand
     @Override
     public ApplicationEditor getEntity(EditApplicationEditorResult result) {
         ApplicationEditor applicationEditor = null;
-        String applicationName = spec.getApplicationName();
-        Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var applicationName = spec.getApplicationName();
+        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
-            String editorName = spec.getEditorName();
-            Editor editor = ApplicationLogic.getInstance().getEditorByName(this, editorName);
+            var editorName = spec.getEditorName();
+            var editor = ApplicationLogic.getInstance().getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
@@ -127,7 +123,7 @@ public class EditApplicationEditorCommand
 
     @Override
     public void doLock(ApplicationEditorEdit edit, ApplicationEditor applicationEditor) {
-        ApplicationEditorDetail applicationEditorDetail = applicationEditor.getLastDetail();
+        var applicationEditorDetail = applicationEditor.getLastDetail();
 
         edit.setIsDefault(applicationEditorDetail.getIsDefault().toString());
         edit.setSortOrder(applicationEditorDetail.getSortOrder().toString());
@@ -137,7 +133,7 @@ public class EditApplicationEditorCommand
     public void doUpdate(ApplicationEditor applicationEditor) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        ApplicationEditorDetailValue applicationEditorDetailValue = coreControl.getApplicationEditorDetailValueForUpdate(applicationEditor);
+        var applicationEditorDetailValue = coreControl.getApplicationEditorDetailValueForUpdate(applicationEditor);
 
         applicationEditorDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         applicationEditorDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.contactlist.contactlistgroup;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.CreateContactListGroupDescriptionForm;
-import com.echothree.control.user.contactlist.common.form.GetContactListGroupForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListGroupResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContactListGroupForm commandForm = ContactListUtil.getHome().getGetContactListGroupForm();
+        var commandForm = ContactListUtil.getHome().getGetContactListGroupForm();
 
         commandForm.setContactListGroupName(actionForm.getContactListGroupName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getContactListGroup(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getContactListGroup(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListGroupResult result = (GetContactListGroupResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListGroupResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CONTACT_LIST_GROUP, result.getContactListGroup());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateContactListGroupDescriptionForm commandForm = ContactListUtil.getHome().getCreateContactListGroupDescriptionForm();
+        var commandForm = ContactListUtil.getHome().getCreateContactListGroupDescriptionForm();
 
         commandForm.setContactListGroupName( actionForm.getContactListGroupName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

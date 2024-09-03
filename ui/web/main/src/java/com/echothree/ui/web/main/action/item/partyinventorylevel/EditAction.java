@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected PartyInventoryLevelSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyInventoryLevelSpec spec = InventoryUtil.getHome().getPartyInventoryLevelSpec();
+        var spec = InventoryUtil.getHome().getPartyInventoryLevelSpec();
 
         spec.setItemName(findParameter(request, ParameterConstants.ITEM_NAME, actionForm.getItemName()));
         spec.setPartyName(findParameter(request, ParameterConstants.PARTY_NAME, actionForm.getPartyName()));
@@ -63,7 +63,7 @@ public class EditAction
     @Override
     protected PartyInventoryLevelEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyInventoryLevelEdit edit = InventoryUtil.getHome().getPartyInventoryLevelEdit();
+        var edit = InventoryUtil.getHome().getPartyInventoryLevelEdit();
 
         edit.setMinimumInventoryUnitOfMeasureTypeName(actionForm.getMinimumInventoryUnitOfMeasureTypeChoice());
         edit.setMinimumInventory(actionForm.getMinimumInventory());

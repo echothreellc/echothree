@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnkind;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.form.GetReturnKindDescriptionsForm;
 import com.echothree.control.user.returnpolicy.common.result.GetReturnKindDescriptionsResult;
-import com.echothree.model.control.returnpolicy.common.transfer.ReturnKindTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-            GetReturnKindDescriptionsForm commandForm = ReturnPolicyUtil.getHome().getGetReturnKindDescriptionsForm();
+            var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getGetReturnKindDescriptionsForm();
             
             commandForm.setReturnKindName(returnKindName);
-            
-            CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnKindDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetReturnKindDescriptionsResult result = (GetReturnKindDescriptionsResult)executionResult.getResult();
-            ReturnKindTransfer returnKindTransfer = result.getReturnKind();
+
+            var commandResult = ReturnPolicyUtil.getHome().getReturnKindDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnKindDescriptionsResult)executionResult.getResult();
+            var returnKindTransfer = result.getReturnKind();
             
             request.setAttribute(AttributeConstants.RETURN_KIND, returnKindTransfer);
             request.setAttribute(AttributeConstants.RETURN_KIND_NAME, returnKindTransfer.getReturnKindName());

@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.workflow;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.WorkflowService;
-import com.echothree.control.user.workflow.common.form.CreateWorkflowStepTypeForm;
 import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -46,7 +45,7 @@ public class WorkflowStepTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("workflowStepType")) {
-            CreateWorkflowStepTypeForm commandForm = WorkflowFormFactory.getCreateWorkflowStepTypeForm();
+            var commandForm = WorkflowFormFactory.getCreateWorkflowStepTypeForm();
             
             commandForm.set(getAttrsMap(attrs));
             

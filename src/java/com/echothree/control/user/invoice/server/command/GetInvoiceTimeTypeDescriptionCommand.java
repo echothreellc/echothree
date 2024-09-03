@@ -17,17 +17,12 @@
 package com.echothree.control.user.invoice.server.command;
 
 import com.echothree.control.user.invoice.common.form.GetInvoiceTimeTypeDescriptionForm;
-import com.echothree.control.user.invoice.common.result.GetInvoiceTimeTypeDescriptionResult;
 import com.echothree.control.user.invoice.common.result.InvoiceResultFactory;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.invoice.server.entity.InvoiceTimeType;
-import com.echothree.model.data.invoice.server.entity.InvoiceTimeTypeDescription;
-import com.echothree.model.data.invoice.server.entity.InvoiceType;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -71,21 +66,21 @@ public class GetInvoiceTimeTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        GetInvoiceTimeTypeDescriptionResult result = InvoiceResultFactory.getGetInvoiceTimeTypeDescriptionResult();
-        String invoiceTypeName = form.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var result = InvoiceResultFactory.getGetInvoiceTimeTypeDescriptionResult();
+        var invoiceTypeName = form.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
 
         if(invoiceType != null) {
-            String invoiceTimeTypeName = form.getInvoiceTimeTypeName();
-            InvoiceTimeType invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
+            var invoiceTimeTypeName = form.getInvoiceTimeTypeName();
+            var invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
 
             if(invoiceTimeType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    InvoiceTimeTypeDescription invoiceTimeTypeDescription = invoiceControl.getInvoiceTimeTypeDescription(invoiceTimeType, language);
+                    var invoiceTimeTypeDescription = invoiceControl.getInvoiceTimeTypeDescription(invoiceTimeType, language);
 
                     if(invoiceTimeTypeDescription != null) {
                         result.setInvoiceTimeTypeDescription(invoiceControl.getInvoiceTimeTypeDescriptionTransfer(getUserVisit(), invoiceTimeTypeDescription));

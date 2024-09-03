@@ -20,7 +20,6 @@ import com.echothree.model.control.inventory.common.transfer.LotTimeTypeTransfer
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.data.inventory.server.entity.LotTimeType;
-import com.echothree.model.data.inventory.server.entity.LotTimeTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -38,14 +37,14 @@ public class LotTimeTypeTransferCache
     
     @Override
     public LotTimeTypeTransfer getTransfer(LotTimeType lotTimeType) {
-        LotTimeTypeTransfer lotTimeTypeTransfer = get(lotTimeType);
+        var lotTimeTypeTransfer = get(lotTimeType);
         
         if(lotTimeTypeTransfer == null) {
-            LotTimeTypeDetail lotTimeTypeDetail = lotTimeType.getLastDetail();
-            String lotTimeTypeName = lotTimeTypeDetail.getLotTimeTypeName();
-            Boolean isDefault = lotTimeTypeDetail.getIsDefault();
-            Integer sortOrder = lotTimeTypeDetail.getSortOrder();
-            String description = lotTimeControl.getBestLotTimeTypeDescription(lotTimeType, getLanguage());
+            var lotTimeTypeDetail = lotTimeType.getLastDetail();
+            var lotTimeTypeName = lotTimeTypeDetail.getLotTimeTypeName();
+            var isDefault = lotTimeTypeDetail.getIsDefault();
+            var sortOrder = lotTimeTypeDetail.getSortOrder();
+            var description = lotTimeControl.getBestLotTimeTypeDescription(lotTimeType, getLanguage());
             
             lotTimeTypeTransfer = new LotTimeTypeTransfer(lotTimeTypeName, isDefault, sortOrder, description);
             put(lotTimeType, lotTimeTypeTransfer);

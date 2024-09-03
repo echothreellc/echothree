@@ -17,9 +17,7 @@
 package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.CreateUserLoginPasswordEncoderTypeForm;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserLoginPasswordEncoderType;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -46,9 +44,9 @@ public class CreateUserLoginPasswordEncoderTypeCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        String userLoginPasswordEncoderTypeName = form.getUserLoginPasswordEncoderTypeName();
-        UserLoginPasswordEncoderType userLoginPasswordEncoderType = userControl.getUserLoginPasswordEncoderTypeByName(userLoginPasswordEncoderTypeName);
+        var userControl = getUserControl();
+        var userLoginPasswordEncoderTypeName = form.getUserLoginPasswordEncoderTypeName();
+        var userLoginPasswordEncoderType = userControl.getUserLoginPasswordEncoderTypeByName(userLoginPasswordEncoderTypeName);
         
         if(userLoginPasswordEncoderType == null) {
             userControl.createUserLoginPasswordEncoderType(userLoginPasswordEncoderTypeName);

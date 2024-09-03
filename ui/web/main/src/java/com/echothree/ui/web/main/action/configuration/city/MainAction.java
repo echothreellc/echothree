@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.city;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetCitiesForm;
 import com.echothree.control.user.geo.common.result.GetCitiesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,19 +49,19 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetCitiesForm commandForm = GeoUtil.getHome().getGetCitiesForm();
-            String countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
-            String stateName = request.getParameter(ParameterConstants.STATE_NAME);
+            var commandForm = GeoUtil.getHome().getGetCitiesForm();
+            var countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
+            var stateName = request.getParameter(ParameterConstants.STATE_NAME);
             
             commandForm.setCountryName(countryName);
             commandForm.setStateName(stateName);
-            
-            CommandResult commandResult = GeoUtil.getHome().getCities(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCitiesResult result = (GetCitiesResult)executionResult.getResult();
+
+            var commandResult = GeoUtil.getHome().getCities(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCitiesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.STATE, result.getState());
             request.setAttribute(AttributeConstants.CITIES, result.getCities());

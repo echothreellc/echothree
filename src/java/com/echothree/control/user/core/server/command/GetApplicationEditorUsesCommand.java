@@ -18,14 +18,11 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetApplicationEditorUsesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetApplicationEditorUsesResult;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Application;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -63,13 +60,13 @@ public class GetApplicationEditorUsesCommand
     
     @Override
     protected BaseResult execute() {
-        GetApplicationEditorUsesResult result = CoreResultFactory.getGetApplicationEditorUsesResult();
-        String applicationName = form.getApplicationName();
-        Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var result = CoreResultFactory.getGetApplicationEditorUsesResult();
+        var applicationName = form.getApplicationName();
+        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
             var coreControl = getCoreControl();
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             result.setApplication(coreControl.getApplicationTransfer(userVisit, application));
             result.setApplicationEditorUses(coreControl.getApplicationEditorUseTransfersByApplication(userVisit, application));

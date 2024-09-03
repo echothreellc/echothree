@@ -23,17 +23,8 @@ import com.echothree.model.control.comment.common.transfer.CommentTypeTransfer;
 import com.echothree.model.control.comment.common.transfer.CommentUsageTransfer;
 import com.echothree.model.control.comment.common.transfer.CommentUsageTypeDescriptionTransfer;
 import com.echothree.model.control.comment.common.transfer.CommentUsageTypeTransfer;
-import com.echothree.model.control.comment.server.transfer.CommentTransferCache;
 import com.echothree.model.control.comment.server.transfer.CommentTransferCaches;
-import com.echothree.model.control.comment.server.transfer.CommentTypeDescriptionTransferCache;
-import com.echothree.model.control.comment.server.transfer.CommentTypeTransferCache;
-import com.echothree.model.control.comment.server.transfer.CommentUsageTransferCache;
-import com.echothree.model.control.comment.server.transfer.CommentUsageTypeDescriptionTransferCache;
-import com.echothree.model.control.comment.server.transfer.CommentUsageTypeTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.data.comment.common.pk.CommentPK;
-import com.echothree.model.data.comment.common.pk.CommentTypePK;
-import com.echothree.model.data.comment.common.pk.CommentUsageTypePK;
 import com.echothree.model.data.comment.server.entity.Comment;
 import com.echothree.model.data.comment.server.entity.CommentBlob;
 import com.echothree.model.data.comment.server.entity.CommentClob;
@@ -41,11 +32,9 @@ import com.echothree.model.data.comment.server.entity.CommentDetail;
 import com.echothree.model.data.comment.server.entity.CommentString;
 import com.echothree.model.data.comment.server.entity.CommentType;
 import com.echothree.model.data.comment.server.entity.CommentTypeDescription;
-import com.echothree.model.data.comment.server.entity.CommentTypeDetail;
 import com.echothree.model.data.comment.server.entity.CommentUsage;
 import com.echothree.model.data.comment.server.entity.CommentUsageType;
 import com.echothree.model.data.comment.server.entity.CommentUsageTypeDescription;
-import com.echothree.model.data.comment.server.entity.CommentUsageTypeDetail;
 import com.echothree.model.data.comment.server.factory.CommentBlobFactory;
 import com.echothree.model.data.comment.server.factory.CommentClobFactory;
 import com.echothree.model.data.comment.server.factory.CommentDetailFactory;
@@ -66,24 +55,14 @@ import com.echothree.model.data.comment.server.value.CommentTypeDescriptionValue
 import com.echothree.model.data.comment.server.value.CommentTypeDetailValue;
 import com.echothree.model.data.comment.server.value.CommentUsageTypeDescriptionValue;
 import com.echothree.model.data.comment.server.value.CommentUsageTypeDetailValue;
-import com.echothree.model.data.core.common.pk.EntityInstancePK;
-import com.echothree.model.data.core.common.pk.EntityTypePK;
-import com.echothree.model.data.core.common.pk.MimeTypePK;
-import com.echothree.model.data.core.common.pk.MimeTypeUsageTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
-import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.sequence.common.pk.SequencePK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.common.pk.WorkflowEntrancePK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -93,7 +72,6 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -127,8 +105,8 @@ public class CommentControl
     
     public CommentType createCommentType(EntityType entityType, String commentTypeName, Sequence commentSequence,
             WorkflowEntrance workflowEntrance, MimeTypeUsageType mimeTypeUsageType, Integer sortOrder, BasePK createdBy) {
-        CommentType commentType = CommentTypeFactory.getInstance().create();
-        CommentTypeDetail commentTypeDetail = CommentTypeDetailFactory.getInstance().create(commentType, entityType,
+        var commentType = CommentTypeFactory.getInstance().create();
+        var commentTypeDetail = CommentTypeDetailFactory.getInstance().create(commentType, entityType,
                 commentTypeName, commentSequence, workflowEntrance, mimeTypeUsageType, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -161,8 +139,8 @@ public class CommentControl
                         "WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             
@@ -200,8 +178,8 @@ public class CommentControl
                         "AND cmnttypdt_commenttypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setString(2, commentTypeName);
@@ -235,9 +213,9 @@ public class CommentControl
     }
     
     public List<CommentTypeTransfer> getCommentTypeTransfers(UserVisit userVisit, EntityType entityType) {
-        List<CommentType> commentTypes = getCommentTypes(entityType);
+        var commentTypes = getCommentTypes(entityType);
         List<CommentTypeTransfer> commentTypeTransfers = new ArrayList<>(commentTypes.size());
-        CommentTypeTransferCache commentTypeTransferCache = getCommentTransferCaches(userVisit).getCommentTypeTransferCache();
+        var commentTypeTransferCache = getCommentTransferCaches(userVisit).getCommentTypeTransferCache();
         
         commentTypes.forEach((commentType) ->
                 commentTypeTransfers.add(commentTypeTransferCache.getCommentTypeTransfer(commentType))
@@ -248,20 +226,20 @@ public class CommentControl
     
     public void updateCommentTypeFromValue(CommentTypeDetailValue commentTypeDetailValue, BasePK updatedBy) {
         if(commentTypeDetailValue.hasBeenModified()) {
-            CommentType commentType = CommentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var commentType = CommentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      commentTypeDetailValue.getCommentTypePK());
-            CommentTypeDetail commentTypeDetail = commentType.getActiveDetailForUpdate();
+            var commentTypeDetail = commentType.getActiveDetailForUpdate();
             
             commentTypeDetail.setThruTime(session.START_TIME_LONG);
             commentTypeDetail.store();
-            
-            CommentTypePK commentTypePK = commentTypeDetail.getCommentTypePK(); // Not updated
-            EntityTypePK entityTypePK = commentTypeDetail.getEntityTypePK(); // Not updated
-            String commentTypeName = commentTypeDetailValue.getCommentTypeName();
-            SequencePK commentSequencePK = commentTypeDetailValue.getCommentSequencePK();
-            WorkflowEntrancePK workflowEntrancePK = commentTypeDetailValue.getWorkflowEntrancePK();
-            MimeTypeUsageTypePK mimeTypeUsageTypePK = commentTypeDetail.getMimeTypeUsageTypePK(); // Not updated
-            Integer sortOrder = commentTypeDetailValue.getSortOrder();
+
+            var commentTypePK = commentTypeDetail.getCommentTypePK(); // Not updated
+            var entityTypePK = commentTypeDetail.getEntityTypePK(); // Not updated
+            var commentTypeName = commentTypeDetailValue.getCommentTypeName();
+            var commentSequencePK = commentTypeDetailValue.getCommentSequencePK();
+            var workflowEntrancePK = commentTypeDetailValue.getWorkflowEntrancePK();
+            var mimeTypeUsageTypePK = commentTypeDetail.getMimeTypeUsageTypePK(); // Not updated
+            var sortOrder = commentTypeDetailValue.getSortOrder();
             
             commentTypeDetail = CommentTypeDetailFactory.getInstance().create(commentTypePK, entityTypePK, commentTypeName,
                     commentSequencePK, workflowEntrancePK, mimeTypeUsageTypePK, sortOrder, session.START_TIME_LONG,
@@ -278,8 +256,8 @@ public class CommentControl
         deleteCommentTypeDescriptionsByCommentType(commentType, deletedBy);
         deleteCommentUsageTypesByCommentType(commentType, deletedBy);
         deleteCommentsByCommentType(commentType, deletedBy);
-        
-        CommentTypeDetail commentTypeDetail = commentType.getLastDetailForUpdate();
+
+        var commentTypeDetail = commentType.getLastDetailForUpdate();
         commentTypeDetail.setThruTime(session.START_TIME_LONG);
         commentType.setActiveDetail(null);
         commentType.store();
@@ -303,7 +281,7 @@ public class CommentControl
     
     public CommentTypeDescription createCommentTypeDescription(CommentType commentType, Language language, String description,
             BasePK createdBy) {
-        CommentTypeDescription commentTypeDescription = CommentTypeDescriptionFactory.getInstance().create(commentType,
+        var commentTypeDescription = CommentTypeDescriptionFactory.getInstance().create(commentType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(commentType.getPrimaryKey(), EventTypes.MODIFY, commentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -327,8 +305,8 @@ public class CommentControl
                         "WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_lang_languageid = ? AND cmnttypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commentType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -375,8 +353,8 @@ public class CommentControl
                         "WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commentType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -399,7 +377,7 @@ public class CommentControl
     
     public String getBestCommentTypeDescription(CommentType commentType, Language language) {
         String description;
-        CommentTypeDescription commentTypeDescription = getCommentTypeDescription(commentType, language);
+        var commentTypeDescription = getCommentTypeDescription(commentType, language);
         
         if(commentTypeDescription == null && !language.getIsDefault()) {
             commentTypeDescription = getCommentTypeDescription(commentType, getPartyControl().getDefaultLanguage());
@@ -419,9 +397,9 @@ public class CommentControl
     }
     
     public List<CommentTypeDescriptionTransfer> getCommentTypeDescriptionTransfers(UserVisit userVisit, CommentType commentType) {
-        List<CommentTypeDescription> commentTypeDescriptions = getCommentTypeDescriptionsByCommentType(commentType);
+        var commentTypeDescriptions = getCommentTypeDescriptionsByCommentType(commentType);
         List<CommentTypeDescriptionTransfer> commentTypeDescriptionTransfers = new ArrayList<>(commentTypeDescriptions.size());
-        CommentTypeDescriptionTransferCache commentTypeDescriptionTransferCache = getCommentTransferCaches(userVisit).getCommentTypeDescriptionTransferCache();
+        var commentTypeDescriptionTransferCache = getCommentTransferCaches(userVisit).getCommentTypeDescriptionTransferCache();
         
         commentTypeDescriptions.forEach((commentTypeDescription) ->
                 commentTypeDescriptionTransfers.add(commentTypeDescriptionTransferCache.getCommentTypeDescriptionTransfer(commentTypeDescription))
@@ -432,14 +410,14 @@ public class CommentControl
     
     public void updateCommentTypeDescriptionFromValue(CommentTypeDescriptionValue commentTypeDescriptionValue, BasePK updatedBy) {
         if(commentTypeDescriptionValue.hasBeenModified()) {
-            CommentTypeDescription commentTypeDescription = CommentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, commentTypeDescriptionValue.getPrimaryKey());
+            var commentTypeDescription = CommentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, commentTypeDescriptionValue.getPrimaryKey());
             
             commentTypeDescription.setThruTime(session.START_TIME_LONG);
             commentTypeDescription.store();
-            
-            CommentType commentType = commentTypeDescription.getCommentType();
-            Language language = commentTypeDescription.getLanguage();
-            String description = commentTypeDescriptionValue.getDescription();
+
+            var commentType = commentTypeDescription.getCommentType();
+            var language = commentTypeDescription.getLanguage();
+            var description = commentTypeDescriptionValue.getDescription();
             
             commentTypeDescription = CommentTypeDescriptionFactory.getInstance().create(commentType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -455,7 +433,7 @@ public class CommentControl
     }
     
     public void deleteCommentTypeDescriptionsByCommentType(CommentType commentType, BasePK deletedBy) {
-        List<CommentTypeDescription> commentTypeDescriptions = getCommentTypeDescriptionsByCommentTypeForUpdate(commentType);
+        var commentTypeDescriptions = getCommentTypeDescriptionsByCommentTypeForUpdate(commentType);
         
         commentTypeDescriptions.forEach((commentTypeDescription) -> 
                 deleteCommentTypeDescription(commentTypeDescription, deletedBy)
@@ -468,8 +446,8 @@ public class CommentControl
     
     public CommentUsageType createCommentUsageType(CommentType commentType, String commentUsageTypeName, Boolean selectedByDefault,
             Integer sortOrder, BasePK createdBy) {
-        CommentUsageType commentUsageType = CommentUsageTypeFactory.getInstance().create();
-        CommentUsageTypeDetail commentUsageTypeDetail = CommentUsageTypeDetailFactory.getInstance().create(session,
+        var commentUsageType = CommentUsageTypeFactory.getInstance().create();
+        var commentUsageTypeDetail = CommentUsageTypeDetailFactory.getInstance().create(session,
                 commentUsageType, commentType, commentUsageTypeName, selectedByDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -504,8 +482,8 @@ public class CommentControl
                         "AND cmntutypdt_cmnttyp_commenttypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentUsageTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentUsageTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commentType.getPrimaryKey().getEntityId());
             
@@ -544,8 +522,8 @@ public class CommentControl
                         "AND cmntutypdt_cmnttyp_commenttypeid = ? AND cmntutypdt_commentusagetypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentUsageTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentUsageTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commentType.getPrimaryKey().getEntityId());
             ps.setString(2, commentUsageTypeName);
@@ -579,9 +557,9 @@ public class CommentControl
     }
     
     public List<CommentUsageTypeTransfer> getCommentUsageTypeTransfers(UserVisit userVisit, CommentType commentType) {
-        List<CommentUsageType> commentUsageTypes = getCommentUsageTypes(commentType);
+        var commentUsageTypes = getCommentUsageTypes(commentType);
         List<CommentUsageTypeTransfer> commentUsageTypeTransfers = new ArrayList<>(commentUsageTypes.size());
-        CommentUsageTypeTransferCache commentUsageTypeTransferCache = getCommentTransferCaches(userVisit).getCommentUsageTypeTransferCache();
+        var commentUsageTypeTransferCache = getCommentTransferCaches(userVisit).getCommentUsageTypeTransferCache();
         
         commentUsageTypes.forEach((commentUsageType) ->
                 commentUsageTypeTransfers.add(commentUsageTypeTransferCache.getCommentUsageTypeTransfer(commentUsageType))
@@ -592,18 +570,18 @@ public class CommentControl
     
     public void updateCommentUsageTypeFromValue(CommentUsageTypeDetailValue commentUsageTypeDetailValue, BasePK updatedBy) {
         if(commentUsageTypeDetailValue.hasBeenModified()) {
-            CommentUsageType commentUsageType = CommentUsageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var commentUsageType = CommentUsageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      commentUsageTypeDetailValue.getCommentUsageTypePK());
-            CommentUsageTypeDetail commentUsageTypeDetail = commentUsageType.getActiveDetailForUpdate();
+            var commentUsageTypeDetail = commentUsageType.getActiveDetailForUpdate();
             
             commentUsageTypeDetail.setThruTime(session.START_TIME_LONG);
             commentUsageTypeDetail.store();
-            
-            CommentUsageTypePK commentUsageTypePK = commentUsageTypeDetail.getCommentUsageTypePK(); // Not updated
-            CommentTypePK commentTypePK = commentUsageTypeDetail.getCommentTypePK(); // Not updated
-            String commentUsageTypeName = commentUsageTypeDetailValue.getCommentUsageTypeName();
-            Boolean selectedByDefault = commentUsageTypeDetailValue.getSelectedByDefault();
-            Integer sortOrder = commentUsageTypeDetailValue.getSortOrder();
+
+            var commentUsageTypePK = commentUsageTypeDetail.getCommentUsageTypePK(); // Not updated
+            var commentTypePK = commentUsageTypeDetail.getCommentTypePK(); // Not updated
+            var commentUsageTypeName = commentUsageTypeDetailValue.getCommentUsageTypeName();
+            var selectedByDefault = commentUsageTypeDetailValue.getSelectedByDefault();
+            var sortOrder = commentUsageTypeDetailValue.getSortOrder();
             
             commentUsageTypeDetail = CommentUsageTypeDetailFactory.getInstance().create(commentUsageTypePK, commentTypePK,
                     commentUsageTypeName, selectedByDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -618,8 +596,8 @@ public class CommentControl
     public void deleteCommentUsageType(CommentUsageType commentUsageType, BasePK deletedBy) {
         deleteCommentUsageTypeDescriptionsByCommentUsageType(commentUsageType, deletedBy);
         deleteCommentUsagesByCommentUsageType(commentUsageType, deletedBy);
-        
-        CommentUsageTypeDetail commentUsageTypeDetail = commentUsageType.getLastDetailForUpdate();
+
+        var commentUsageTypeDetail = commentUsageType.getLastDetailForUpdate();
         commentUsageTypeDetail.setThruTime(session.START_TIME_LONG);
         commentUsageType.setActiveDetail(null);
         commentUsageType.store();
@@ -643,7 +621,7 @@ public class CommentControl
     
     public CommentUsageTypeDescription createCommentUsageTypeDescription(CommentUsageType commentUsageType, Language language,
             String description, BasePK createdBy) {
-        CommentUsageTypeDescription commentUsageTypeDescription = CommentUsageTypeDescriptionFactory.getInstance().create(session,
+        var commentUsageTypeDescription = CommentUsageTypeDescriptionFactory.getInstance().create(session,
                 commentUsageType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(commentUsageType.getPrimaryKey(), EventTypes.MODIFY, commentUsageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -668,8 +646,8 @@ public class CommentControl
                         "WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_lang_languageid = ? AND cmntutypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentUsageTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentUsageTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commentUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -717,8 +695,8 @@ public class CommentControl
                         "WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentUsageTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentUsageTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commentUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -742,7 +720,7 @@ public class CommentControl
     
     public String getBestCommentUsageTypeDescription(CommentUsageType commentUsageType, Language language) {
         String description;
-        CommentUsageTypeDescription commentUsageTypeDescription = getCommentUsageTypeDescription(commentUsageType, language);
+        var commentUsageTypeDescription = getCommentUsageTypeDescription(commentUsageType, language);
         
         if(commentUsageTypeDescription == null && !language.getIsDefault()) {
             commentUsageTypeDescription = getCommentUsageTypeDescription(commentUsageType, getPartyControl().getDefaultLanguage());
@@ -762,9 +740,9 @@ public class CommentControl
     }
     
     public List<CommentUsageTypeDescriptionTransfer> getCommentUsageTypeDescriptionTransfers(UserVisit userVisit, CommentUsageType commentUsageType) {
-        List<CommentUsageTypeDescription> commentUsageTypeDescriptions = getCommentUsageTypeDescriptionsByCommentUsageType(commentUsageType);
+        var commentUsageTypeDescriptions = getCommentUsageTypeDescriptionsByCommentUsageType(commentUsageType);
         List<CommentUsageTypeDescriptionTransfer> commentUsageTypeDescriptionTransfers = new ArrayList<>(commentUsageTypeDescriptions.size());
-        CommentUsageTypeDescriptionTransferCache commentUsageTypeDescriptionTransferCache = getCommentTransferCaches(userVisit).getCommentUsageTypeDescriptionTransferCache();
+        var commentUsageTypeDescriptionTransferCache = getCommentTransferCaches(userVisit).getCommentUsageTypeDescriptionTransferCache();
         
         commentUsageTypeDescriptions.forEach((commentUsageTypeDescription) ->
                 commentUsageTypeDescriptionTransfers.add(commentUsageTypeDescriptionTransferCache.getCommentUsageTypeDescriptionTransfer(commentUsageTypeDescription))
@@ -775,15 +753,15 @@ public class CommentControl
     
     public void updateCommentUsageTypeDescriptionFromValue(CommentUsageTypeDescriptionValue commentUsageTypeDescriptionValue, BasePK updatedBy) {
         if(commentUsageTypeDescriptionValue.hasBeenModified()) {
-            CommentUsageTypeDescription commentUsageTypeDescription = CommentUsageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var commentUsageTypeDescription = CommentUsageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      commentUsageTypeDescriptionValue.getPrimaryKey());
             
             commentUsageTypeDescription.setThruTime(session.START_TIME_LONG);
             commentUsageTypeDescription.store();
-            
-            CommentUsageType commentUsageType = commentUsageTypeDescription.getCommentUsageType();
-            Language language = commentUsageTypeDescription.getLanguage();
-            String description = commentUsageTypeDescriptionValue.getDescription();
+
+            var commentUsageType = commentUsageTypeDescription.getCommentUsageType();
+            var language = commentUsageTypeDescription.getLanguage();
+            var description = commentUsageTypeDescriptionValue.getDescription();
             
             commentUsageTypeDescription = CommentUsageTypeDescriptionFactory.getInstance().create(commentUsageType,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -800,7 +778,7 @@ public class CommentControl
     }
     
     public void deleteCommentUsageTypeDescriptionsByCommentUsageType(CommentUsageType commentUsageType, BasePK deletedBy) {
-        List<CommentUsageTypeDescription> commentUsageTypeDescriptions = getCommentUsageTypeDescriptionsByCommentUsageTypeForUpdate(commentUsageType);
+        var commentUsageTypeDescriptions = getCommentUsageTypeDescriptionsByCommentUsageTypeForUpdate(commentUsageType);
         
         commentUsageTypeDescriptions.forEach((commentUsageTypeDescription) -> 
                 deleteCommentUsageTypeDescription(commentUsageTypeDescription, deletedBy)
@@ -813,8 +791,8 @@ public class CommentControl
     
     public Comment createComment(String commentName, CommentType commentType, EntityInstance commentedEntityInstance,
             EntityInstance commentedByEntityInstance, Language language, String description, MimeType mimeType, BasePK createdBy) {
-        Comment comment = CommentFactory.getInstance().create();
-        CommentDetail commentDetail = CommentDetailFactory.getInstance().create(comment, commentName, commentType,
+        var comment = CommentFactory.getInstance().create();
+        var commentDetail = CommentDetailFactory.getInstance().create(comment, commentName, commentType,
                 commentedEntityInstance, commentedByEntityInstance, language, description, mimeType, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -846,8 +824,8 @@ public class CommentControl
                         "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, commentName);
             
@@ -895,8 +873,8 @@ public class CommentControl
                         "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedentityinstanceid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commentedEntityInstance.getPrimaryKey().getEntityId());
             
@@ -932,8 +910,8 @@ public class CommentControl
                         "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedbyentityinstanceid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commentedByEntityInstance.getPrimaryKey().getEntityId());
             
@@ -969,8 +947,8 @@ public class CommentControl
                         "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_cmnttyp_commenttypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commentType.getPrimaryKey().getEntityId());
             
@@ -1009,8 +987,8 @@ public class CommentControl
                         "AND cmntdt_commentedentityinstanceid = ? AND cmntdt_cmnttyp_commenttypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commentedEntityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, commentType.getPrimaryKey().getEntityId());
@@ -1039,7 +1017,7 @@ public class CommentControl
     
     public List<CommentTransfer> getCommentTransfers(UserVisit userVisit, Collection<Comment> comments) {
         List<CommentTransfer> commentTransfers = new ArrayList<>(comments.size());
-        CommentTransferCache commentTransferCache = getCommentTransferCaches(userVisit).getCommentTransferCache();
+        var commentTransferCache = getCommentTransferCaches(userVisit).getCommentTransferCache();
         
         comments.forEach((comment) ->
                 commentTransfers.add(commentTransferCache.getCommentTransfer(comment))
@@ -1059,21 +1037,21 @@ public class CommentControl
     
     public void updateCommentFromValue(CommentDetailValue commentDetailValue,  BasePK updatedBy) {
         if(commentDetailValue.hasBeenModified()) {
-            Comment comment = CommentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var comment = CommentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      commentDetailValue.getCommentPK());
-            CommentDetail commentDetail = comment.getActiveDetailForUpdate();
+            var commentDetail = comment.getActiveDetailForUpdate();
             
             commentDetail.setThruTime(session.START_TIME_LONG);
             commentDetail.store();
-            
-            CommentPK commentPK = commentDetail.getCommentPK(); // Not updated
-            String commentName = commentDetailValue.getCommentName();
-            CommentTypePK commentTypePK = commentDetail.getCommentTypePK(); // Not updated
-            EntityInstancePK commentedEntityInstancePK = commentDetail.getCommentedEntityInstancePK(); // Not updated
-            EntityInstancePK commentedByEntityInstancePK = commentDetail.getCommentedByEntityInstancePK(); // Not updated
-            LanguagePK languagePK = commentDetailValue.getLanguagePK();
-            String description = commentDetailValue.getDescription();
-            MimeTypePK mimeTypePK = commentDetailValue.getMimeTypePK();
+
+            var commentPK = commentDetail.getCommentPK(); // Not updated
+            var commentName = commentDetailValue.getCommentName();
+            var commentTypePK = commentDetail.getCommentTypePK(); // Not updated
+            var commentedEntityInstancePK = commentDetail.getCommentedEntityInstancePK(); // Not updated
+            var commentedByEntityInstancePK = commentDetail.getCommentedByEntityInstancePK(); // Not updated
+            var languagePK = commentDetailValue.getLanguagePK();
+            var description = commentDetailValue.getDescription();
+            var mimeTypePK = commentDetailValue.getMimeTypePK();
             
             commentDetail = CommentDetailFactory.getInstance().create(commentPK, commentName, commentTypePK,
                     commentedEntityInstancePK, commentedByEntityInstancePK, languagePK, description, mimeTypePK,
@@ -1094,19 +1072,19 @@ public class CommentControl
         if(commentType == null) {
             commentType = comment.getLastDetail().getCommentType();
         }
-        
-        WorkflowEntrance workflowEntrance = commentType.getLastDetail().getWorkflowEntrance();
+
+        var workflowEntrance = commentType.getLastDetail().getWorkflowEntrance();
         if(workflowEntrance != null) {
             var workflowControl = getWorkflowControl();
-            Workflow workflow = workflowEntrance.getLastDetail().getWorkflow();
+            var workflow = workflowEntrance.getLastDetail().getWorkflow();
         
             commentStatusChoicesBean = new CommentStatusChoicesBean();
             
             if(comment == null) {
                 workflowControl.getWorkflowEntranceChoices(commentStatusChoicesBean, defaultCommentStatusChoice, language, allowNullChoice, workflow, partyPK);
             } else {
-                EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(comment.getPrimaryKey());
-                WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstance(workflow, entityInstance);
+                var entityInstance = getCoreControl().getEntityInstanceByBasePK(comment.getPrimaryKey());
+                var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstance(workflow, entityInstance);
 
                 workflowControl.getWorkflowDestinationChoices(commentStatusChoicesBean, defaultCommentStatusChoice, language, allowNullChoice,
                         workflowEntityStatus.getWorkflowStep(), partyPK);
@@ -1119,15 +1097,15 @@ public class CommentControl
     }
     
     public void setCommentStatus(ExecutionErrorAccumulator eea, Comment comment, String commentStatusChoice, PartyPK modifiedBy) {
-        CommentTypeDetail commentTypeDetail = comment.getLastDetail().getCommentType().getLastDetail();
-        WorkflowEntrance workflowEntrance = commentTypeDetail.getWorkflowEntrance();
+        var commentTypeDetail = comment.getLastDetail().getCommentType().getLastDetail();
+        var workflowEntrance = commentTypeDetail.getWorkflowEntrance();
         
         if(workflowEntrance != null) {
             var workflowControl = getWorkflowControl();
-            Workflow workflow = workflowEntrance.getLastDetail().getWorkflow();
-            EntityInstance entityInstance = getEntityInstanceByBaseEntity(comment);
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
-            WorkflowDestination workflowDestination = commentStatusChoice == null ? null
+            var workflow = workflowEntrance.getLastDetail().getWorkflow();
+            var entityInstance = getEntityInstanceByBaseEntity(comment);
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
+            var workflowDestination = commentStatusChoice == null ? null
                     : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), commentStatusChoice);
 
             if(workflowDestination != null || commentStatusChoice == null) {
@@ -1147,23 +1125,23 @@ public class CommentControl
     
     public void deleteComment(Comment comment, BasePK deletedBy) {
         deleteCommentUsagesByComment(comment, deletedBy);
-        
-        CommentString commentString = getCommentStringForUpdate(comment);
+
+        var commentString = getCommentStringForUpdate(comment);
         if(commentString != null) {
             deleteCommentString(commentString, deletedBy);
         }
-        
-        CommentBlob commentBlob = getCommentBlobForUpdate(comment);
+
+        var commentBlob = getCommentBlobForUpdate(comment);
         if(commentBlob != null) {
             deleteCommentBlob(commentBlob, deletedBy);
         }
-        
-        CommentClob commentClob = getCommentClobForUpdate(comment);
+
+        var commentClob = getCommentClobForUpdate(comment);
         if(commentClob != null) {
             deleteCommentClob(commentClob, deletedBy);
         }
-        
-        CommentDetail commentDetail = comment.getLastDetailForUpdate();
+
+        var commentDetail = comment.getLastDetailForUpdate();
         commentDetail.setThruTime(session.START_TIME_LONG);
         commentDetail.store();
         comment.setActiveDetail(null);
@@ -1200,7 +1178,7 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     
     public CommentString createCommentString(Comment comment, String string, BasePK createdBy) {
-        CommentString commentString = CommentStringFactory.getInstance().create(comment, string, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var commentString = CommentStringFactory.getInstance().create(comment, string, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, commentString.getPrimaryKey(), EventTypes.CREATE, createdBy);
         sendEvent(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, comment.getPrimaryKey(), EventTypes.MODIFY, createdBy);
@@ -1224,8 +1202,8 @@ public class CommentControl
                         "WHERE cmnts_cmnt_commentid = ? AND cmnts_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentStringFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentStringFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, comment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1251,20 +1229,20 @@ public class CommentControl
     }
     
     public CommentStringValue getCommentStringValueForUpdate(Comment comment) {
-        CommentString commentString = getCommentStringForUpdate(comment);
+        var commentString = getCommentStringForUpdate(comment);
         
         return commentString == null? null: getCommentStringValue(commentString);
     }
     
     public void updateCommentStringFromValue(CommentStringValue commentStringValue, BasePK updatedBy) {
         if(commentStringValue.hasBeenModified()) {
-            CommentString commentString = CommentStringFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, commentStringValue.getPrimaryKey());
+            var commentString = CommentStringFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, commentStringValue.getPrimaryKey());
             
             commentString.setThruTime(session.START_TIME_LONG);
             commentString.store();
-            
-            CommentPK commentPK = commentString.getCommentPK(); // Not updated
-            String string = commentStringValue.getString();
+
+            var commentPK = commentString.getCommentPK(); // Not updated
+            var string = commentStringValue.getString();
             
             commentString = CommentStringFactory.getInstance().create(commentPK, string, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -1285,7 +1263,7 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     
     public CommentBlob createCommentBlob(Comment comment, ByteArray blob, BasePK createdBy) {
-        CommentBlob commentBlob = CommentBlobFactory.getInstance().create(comment, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var commentBlob = CommentBlobFactory.getInstance().create(comment, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, commentBlob.getPrimaryKey(), EventTypes.CREATE, createdBy);
         sendEvent(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, comment.getPrimaryKey(), EventTypes.MODIFY, createdBy);
@@ -1309,8 +1287,8 @@ public class CommentControl
                         "WHERE cmntb_cmnt_commentid = ? AND cmntb_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentBlobFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentBlobFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, comment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1336,20 +1314,20 @@ public class CommentControl
     }
     
     public CommentBlobValue getCommentBlobValueForUpdate(Comment comment) {
-        CommentBlob commentBlob = getCommentBlobForUpdate(comment);
+        var commentBlob = getCommentBlobForUpdate(comment);
         
         return commentBlob == null? null: getCommentBlobValue(commentBlob);
     }
     
     public void updateCommentBlobFromValue(CommentBlobValue commentBlobValue, BasePK updatedBy) {
         if(commentBlobValue.hasBeenModified()) {
-            CommentBlob commentBlob = CommentBlobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, commentBlobValue.getPrimaryKey());
+            var commentBlob = CommentBlobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, commentBlobValue.getPrimaryKey());
             
             commentBlob.setThruTime(session.START_TIME_LONG);
             commentBlob.store();
-            
-            CommentPK commentPK = commentBlob.getCommentPK(); // Not updated
-            ByteArray blob = commentBlobValue.getBlob();
+
+            var commentPK = commentBlob.getCommentPK(); // Not updated
+            var blob = commentBlobValue.getBlob();
             
             commentBlob = CommentBlobFactory.getInstance().create(commentPK, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -1370,7 +1348,7 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     
     public CommentClob createCommentClob(Comment comment, String clob, BasePK createdBy) {
-        CommentClob commentClob = CommentClobFactory.getInstance().create(comment, clob, session.START_TIME_LONG,
+        var commentClob = CommentClobFactory.getInstance().create(comment, clob, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, commentClob.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1395,8 +1373,8 @@ public class CommentControl
                         "WHERE cmntc_cmnt_commentid = ? AND cmntc_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentClobFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentClobFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, comment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1422,20 +1400,20 @@ public class CommentControl
     }
     
     public CommentClobValue getCommentClobValueForUpdate(Comment comment) {
-        CommentClob commentClob = getCommentClobForUpdate(comment);
+        var commentClob = getCommentClobForUpdate(comment);
         
         return commentClob == null? null: getCommentClobValue(commentClob);
     }
     
     public void updateCommentClobFromValue(CommentClobValue commentClobValue, BasePK updatedBy) {
         if(commentClobValue.hasBeenModified()) {
-            CommentClob commentClob = CommentClobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, commentClobValue.getPrimaryKey());
+            var commentClob = CommentClobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, commentClobValue.getPrimaryKey());
 
             commentClob.setThruTime(session.START_TIME_LONG);
             commentClob.store();
 
-            CommentPK commentPK = commentClob.getCommentPK(); // Not updated
-            String clob = commentClobValue.getClob();
+            var commentPK = commentClob.getCommentPK(); // Not updated
+            var clob = commentClobValue.getClob();
 
             commentClob = CommentClobFactory.getInstance().create(commentPK, clob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -1456,7 +1434,7 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     
     public CommentUsage createCommentUsage(Comment comment, CommentUsageType commentUsageType, BasePK createdBy) {
-        CommentUsage commentUsage = CommentUsageFactory.getInstance().create(comment, commentUsageType,
+        var commentUsage = CommentUsageFactory.getInstance().create(comment, commentUsageType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, commentUsage.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1481,8 +1459,8 @@ public class CommentControl
                         "WHERE cmntu_cmnt_commentid = ? AND cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentUsageFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentUsageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, comment.getPrimaryKey().getEntityId());
             ps.setLong(2, commentUsageType.getPrimaryKey().getEntityId());
@@ -1523,8 +1501,8 @@ public class CommentControl
                         "WHERE cmntu_cmnt_commentid = ? AND cmntu_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentUsageFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentUsageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, comment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1564,8 +1542,8 @@ public class CommentControl
                         "WHERE cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = CommentUsageFactory.getInstance().prepareStatement(query);
+
+            var ps = CommentUsageFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, commentUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1591,9 +1569,9 @@ public class CommentControl
     }
     
     public List<CommentUsageTransfer> getCommentUsageTransfersByComment(UserVisit userVisit, Comment comment) {
-        List<CommentUsage> entities = getCommentUsagesByComment(comment);
+        var entities = getCommentUsagesByComment(comment);
         List<CommentUsageTransfer> transfers = new ArrayList<>(entities.size());
-        CommentUsageTransferCache cache = getCommentTransferCaches(userVisit).getCommentUsageTransferCache();
+        var cache = getCommentTransferCaches(userVisit).getCommentUsageTransferCache();
         
         entities.forEach((entity) ->
                 transfers.add(cache.getCommentUsageTransfer(entity))

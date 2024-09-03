@@ -22,9 +22,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.shipping.server.entity.ShippingMethod;
-import com.echothree.model.data.shipping.server.entity.ShippingMethodDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,16 +65,16 @@ public class CreateShippingMethodDescriptionCommand
     @Override
     protected BaseResult execute() {
         var shippingControl = Session.getModelController(ShippingControl.class);
-            String shippingMethodName = form.getShippingMethodName();
-            ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+        var shippingMethodName = form.getShippingMethodName();
+        var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
             
             if(shippingMethod != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    ShippingMethodDescription shippingMethodDescription = shippingControl.getShippingMethodDescription(shippingMethod, language);
+                    var shippingMethodDescription = shippingControl.getShippingMethodDescription(shippingMethod, language);
                     
                     if(shippingMethodDescription == null) {
                         var description = form.getDescription();

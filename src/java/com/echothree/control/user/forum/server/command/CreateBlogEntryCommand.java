@@ -17,7 +17,6 @@
 package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateBlogEntryForm;
-import com.echothree.control.user.forum.common.result.CreateBlogEntryResult;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
@@ -26,22 +25,7 @@ import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.forum.server.entity.ForumMessage;
-import com.echothree.model.data.forum.server.entity.ForumMessagePart;
-import com.echothree.model.data.forum.server.entity.ForumMessagePartType;
-import com.echothree.model.data.forum.server.entity.ForumMessageType;
-import com.echothree.model.data.forum.server.entity.ForumMimeType;
-import com.echothree.model.data.forum.server.entity.ForumRoleType;
-import com.echothree.model.data.forum.server.entity.ForumThread;
-import com.echothree.model.data.icon.server.entity.Icon;
-import com.echothree.model.data.icon.server.entity.IconUsage;
-import com.echothree.model.data.icon.server.entity.IconUsageType;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -85,37 +69,37 @@ public class CreateBlogEntryCommand
     @Override
     protected BaseResult execute() {
         var userControl = Session.getModelController(UserControl.class);
-        CreateBlogEntryResult result = ForumResultFactory.getCreateBlogEntryResult();
-        String username = form.getUsername();
-        UserLogin userLogin = username == null ? null : userControl.getUserLoginByUsername(username);
+        var result = ForumResultFactory.getCreateBlogEntryResult();
+        var username = form.getUsername();
+        var userLogin = username == null ? null : userControl.getUserLoginByUsername(username);
         
         if(username == null || userLogin != null) {
             var forumControl = Session.getModelController(ForumControl.class);
-            String forumName = form.getForumName();
-            Forum forum = forumControl.getForumByName(forumName);
+            var forumName = form.getForumName();
+            var forum = forumControl.getForumByName(forumName);
 
             if(forum != null) {
-                String forumTypeName = forum.getLastDetail().getForumType().getForumTypeName();
+                var forumTypeName = forum.getLastDetail().getForumType().getForumTypeName();
 
                 if(forumTypeName.equals(ForumConstants.ForumType_BLOG)) {
-                    Party party = userLogin == null ? getParty() : userLogin.getParty();
-                    ForumRoleType forumRoleType = ForumLogic.getInstance().getForumRoleTypeByName(this, ForumConstants.ForumRoleType_AUTHOR);
+                    var party = userLogin == null ? getParty() : userLogin.getParty();
+                    var forumRoleType = ForumLogic.getInstance().getForumRoleTypeByName(this, ForumConstants.ForumRoleType_AUTHOR);
 
                     if(!hasExecutionErrors()) {
                         if(ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, party, forumRoleType)) {
                             var partyControl = Session.getModelController(PartyControl.class);
-                            String languageIsoName = form.getLanguageIsoName();
-                            Language language = languageIsoName == null? getPreferredLanguage(): partyControl.getLanguageByIsoName(languageIsoName);
+                            var languageIsoName = form.getLanguageIsoName();
+                            var language = languageIsoName == null? getPreferredLanguage(): partyControl.getLanguageByIsoName(languageIsoName);
 
                             if(language != null) {
                                 var iconControl = Session.getModelController(IconControl.class);
-                                String forumThreadIconName = form.getForumThreadIconName();
-                                Icon forumThreadIcon = iconControl.getIconByName(forumThreadIconName);
+                                var forumThreadIconName = form.getForumThreadIconName();
+                                var forumThreadIcon = iconControl.getIconByName(forumThreadIconName);
 
                                 if(forumThreadIconName == null || forumThreadIcon != null) {
                                     if(forumThreadIcon != null) {
-                                        IconUsageType iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_FORUM_THREAD);
-                                        IconUsage iconUsage = iconControl.getIconUsage(iconUsageType, forumThreadIcon);
+                                        var iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_FORUM_THREAD);
+                                        var iconUsage = iconControl.getIconUsage(iconUsageType, forumThreadIcon);
 
                                         if(iconUsage == null) {
                                             addExecutionError(ExecutionErrors.UnknownIconUsage.name());
@@ -123,13 +107,13 @@ public class CreateBlogEntryCommand
                                     }
 
                                     if(!hasExecutionErrors()) {
-                                        String forumMessageIconName = form.getForumMessageIconName();
-                                        Icon forumMessageIcon = iconControl.getIconByName(forumMessageIconName);
+                                        var forumMessageIconName = form.getForumMessageIconName();
+                                        var forumMessageIcon = iconControl.getIconByName(forumMessageIconName);
 
                                         if(forumMessageIconName == null || forumMessageIcon != null) {
                                             if(forumMessageIcon != null) {
-                                                IconUsageType iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_FORUM_MESSAGE);
-                                                IconUsage iconUsage = iconControl.getIconUsage(iconUsageType, forumMessageIcon);
+                                                var iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_FORUM_MESSAGE);
+                                                var iconUsage = iconControl.getIconUsage(iconUsageType, forumMessageIcon);
 
                                                 if(iconUsage == null) {
                                                     addExecutionError(ExecutionErrors.UnknownIconUsage.name());
@@ -137,51 +121,51 @@ public class CreateBlogEntryCommand
                                             }
 
                                             if(!hasExecutionErrors()) {
-                                                String feedSummaryMimeTypeName = form.getFeedSummaryMimeTypeName();
-                                                String feedSummary = form.getFeedSummary();
-                                                int feedSummaryParameterCount = (feedSummaryMimeTypeName == null ? 0 : 1) + (feedSummary == null ? 0 : 1);
+                                                var feedSummaryMimeTypeName = form.getFeedSummaryMimeTypeName();
+                                                var feedSummary = form.getFeedSummary();
+                                                var feedSummaryParameterCount = (feedSummaryMimeTypeName == null ? 0 : 1) + (feedSummary == null ? 0 : 1);
 
                                                 if(feedSummaryParameterCount == 0 || feedSummaryParameterCount == 2) {
                                                     var coreControl = getCoreControl();
-                                                    MimeType feedSummaryMimeType = feedSummaryMimeTypeName == null? null: coreControl.getMimeTypeByName(feedSummaryMimeTypeName);
+                                                    var feedSummaryMimeType = feedSummaryMimeTypeName == null? null: coreControl.getMimeTypeByName(feedSummaryMimeTypeName);
 
                                                     if(feedSummaryMimeTypeName == null || feedSummaryMimeType != null) {
-                                                        ForumMimeType forumMimeType = feedSummaryMimeType == null? null: forumControl.getForumMimeType(forum, feedSummaryMimeType);
+                                                        var forumMimeType = feedSummaryMimeType == null? null: forumControl.getForumMimeType(forum, feedSummaryMimeType);
 
                                                         if(feedSummaryMimeType == null || forumMimeType != null) {
-                                                            String summaryMimeTypeName = form.getSummaryMimeTypeName();
-                                                            String summary = form.getSummary();
-                                                            int summaryParameterCount = (summaryMimeTypeName == null ? 0 : 1) + (summary == null ? 0 : 1);
+                                                            var summaryMimeTypeName = form.getSummaryMimeTypeName();
+                                                            var summary = form.getSummary();
+                                                            var summaryParameterCount = (summaryMimeTypeName == null ? 0 : 1) + (summary == null ? 0 : 1);
 
                                                             if(summaryParameterCount == 0 || summaryParameterCount == 2) {
-                                                                MimeType summaryMimeType = summaryMimeTypeName == null? null: coreControl.getMimeTypeByName(summaryMimeTypeName);
+                                                                var summaryMimeType = summaryMimeTypeName == null? null: coreControl.getMimeTypeByName(summaryMimeTypeName);
 
                                                                 if(summaryMimeTypeName == null || summaryMimeType != null) {
                                                                     forumMimeType = summaryMimeType == null? null: forumControl.getForumMimeType(forum, summaryMimeType);
 
                                                                     if(summaryMimeType == null || forumMimeType != null) {
-                                                                        String contentMimeTypeName = form.getContentMimeTypeName();
-                                                                        MimeType contentMimeType = contentMimeTypeName == null? null: coreControl.getMimeTypeByName(contentMimeTypeName);
+                                                                        var contentMimeTypeName = form.getContentMimeTypeName();
+                                                                        var contentMimeType = contentMimeTypeName == null? null: coreControl.getMimeTypeByName(contentMimeTypeName);
 
                                                                         if(contentMimeType != null) {
                                                                             forumMimeType = forumControl.getForumMimeType(forum, contentMimeType);
 
                                                                             if(forumMimeType != null) {
-                                                                                String title = form.getTitle();
-                                                                                String rawPostedTime = form.getPostedTime();
-                                                                                Long postedTime = rawPostedTime == null? session.START_TIME_LONG: Long.valueOf(rawPostedTime);
+                                                                                var title = form.getTitle();
+                                                                                var rawPostedTime = form.getPostedTime();
+                                                                                var postedTime = rawPostedTime == null? session.START_TIME_LONG: Long.valueOf(rawPostedTime);
                                                                                 var sortOrder = Integer.valueOf(form.getSortOrder());
-                                                                                String content = form.getContent();
+                                                                                var content = form.getContent();
                                                                                 BasePK createdBy = getPartyPK();
 
-                                                                                ForumThread forumThread = forumControl.createForumThread(forum, forumThreadIcon, postedTime, sortOrder, createdBy);
+                                                                                var forumThread = forumControl.createForumThread(forum, forumThreadIcon, postedTime, sortOrder, createdBy);
                                                                                 forumControl.createForumForumThread(forum, forumThread, Boolean.TRUE, 1, createdBy);
-                                                                                ForumMessageType forumMessageType = forumControl.getForumMessageTypeByName(ForumConstants.ForumMessageType_BLOG_ENTRY);
-                                                                                ForumMessage forumMessage = forumControl.createForumMessage(forumThread, forumMessageType, null, forumMessageIcon, postedTime, createdBy);
+                                                                                var forumMessageType = forumControl.getForumMessageTypeByName(ForumConstants.ForumMessageType_BLOG_ENTRY);
+                                                                                var forumMessage = forumControl.createForumMessage(forumThread, forumMessageType, null, forumMessageIcon, postedTime, createdBy);
                                                                                 forumControl.createForumMessageRole(forumMessage, forumRoleType, party, createdBy);
 
-                                                                                ForumMessagePartType forumMessagePartType = forumControl.getForumMessagePartTypeByName(ForumConstants.ForumMessagePartType_TITLE);
-                                                                                ForumMessagePart forumMessagePart = forumControl.createForumMessagePart(forumMessage, forumMessagePartType, language, null, createdBy);
+                                                                                var forumMessagePartType = forumControl.getForumMessagePartTypeByName(ForumConstants.ForumMessagePartType_TITLE);
+                                                                                var forumMessagePart = forumControl.createForumMessagePart(forumMessage, forumMessagePartType, language, null, createdBy);
                                                                                 forumControl.createForumStringMessagePart(forumMessagePart, title, createdBy);
 
                                                                                 if(feedSummary != null) {

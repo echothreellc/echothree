@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.rating.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.rating.common.transfer.RatingTypeListItemDescriptionTransfer;
-import com.echothree.model.control.rating.common.transfer.RatingTypeListItemTransfer;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.data.rating.server.entity.RatingTypeListItemDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,12 +30,12 @@ public class RatingTypeListItemDescriptionTransferCache
     }
     
     public RatingTypeListItemDescriptionTransfer getRatingTypeListItemDescriptionTransfer(RatingTypeListItemDescription ratingTypeListItemDescription) {
-        RatingTypeListItemDescriptionTransfer ratingTypeListItemDescriptionTransfer = get(ratingTypeListItemDescription);
+        var ratingTypeListItemDescriptionTransfer = get(ratingTypeListItemDescription);
         
         if(ratingTypeListItemDescriptionTransfer == null) {
-            RatingTypeListItemTransferCache ratingTypeListItemTransferCache = ratingControl.getRatingTransferCaches(userVisit).getRatingTypeListItemTransferCache();
-            RatingTypeListItemTransfer ratingTypeListItemTransfer = ratingTypeListItemTransferCache.getRatingTypeListItemTransfer(ratingTypeListItemDescription.getRatingTypeListItem());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, ratingTypeListItemDescription.getLanguage());
+            var ratingTypeListItemTransferCache = ratingControl.getRatingTransferCaches(userVisit).getRatingTypeListItemTransferCache();
+            var ratingTypeListItemTransfer = ratingTypeListItemTransferCache.getRatingTypeListItemTransfer(ratingTypeListItemDescription.getRatingTypeListItem());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, ratingTypeListItemDescription.getLanguage());
             
             ratingTypeListItemDescriptionTransfer = new RatingTypeListItemDescriptionTransfer(languageTransfer, ratingTypeListItemTransfer, ratingTypeListItemDescription.getDescription());
             put(ratingTypeListItemDescription, ratingTypeListItemDescriptionTransfer);

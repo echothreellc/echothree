@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetContentCategoryResultsFacetForm;
 import com.echothree.control.user.search.common.result.GetContentCategoryResultsFacetResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -97,7 +94,7 @@ public class GetContentCategoryResultsFacetTag
     @Override
     public int doStartTag() throws JspException {
         try {
-            GetContentCategoryResultsFacetForm commandForm = SearchUtil.getHome().getGetContentCategoryResultsFacetForm();
+            var commandForm = SearchUtil.getHome().getGetContentCategoryResultsFacetForm();
             
             commandForm.setSearchTypeName(searchTypeName);
             commandForm.setEntityAttributeName(entityAttributeName);
@@ -105,8 +102,8 @@ public class GetContentCategoryResultsFacetTag
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = SearchUtil.getHome().getContentCategoryResultsFacet(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().getContentCategoryResultsFacet(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -114,8 +111,8 @@ public class GetContentCategoryResultsFacetTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentCategoryResultsFacetResult result = (GetContentCategoryResultsFacetResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContentCategoryResultsFacetResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getUserVisitSearchFacet(), scope);
             }

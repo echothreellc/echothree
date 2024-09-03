@@ -19,7 +19,6 @@ package com.echothree.control.user.invoice.server.command;
 import com.echothree.control.user.invoice.common.edit.InvoiceEditFactory;
 import com.echothree.control.user.invoice.common.edit.InvoiceLineTypeDescriptionEdit;
 import com.echothree.control.user.invoice.common.form.EditInvoiceLineTypeDescriptionForm;
-import com.echothree.control.user.invoice.common.result.EditInvoiceLineTypeDescriptionResult;
 import com.echothree.control.user.invoice.common.result.InvoiceResultFactory;
 import com.echothree.control.user.invoice.common.spec.InvoiceLineTypeDescriptionSpec;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
@@ -27,11 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.invoice.server.entity.InvoiceLineType;
-import com.echothree.model.data.invoice.server.entity.InvoiceLineTypeDescription;
-import com.echothree.model.data.invoice.server.entity.InvoiceType;
-import com.echothree.model.data.invoice.server.value.InvoiceLineTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -81,28 +75,28 @@ public class EditInvoiceLineTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        EditInvoiceLineTypeDescriptionResult result = InvoiceResultFactory.getEditInvoiceLineTypeDescriptionResult();
-        String invoiceTypeName = spec.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var result = InvoiceResultFactory.getEditInvoiceLineTypeDescriptionResult();
+        var invoiceTypeName = spec.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
         
         if(invoiceType != null) {
-            String invoiceLineTypeName = spec.getInvoiceLineTypeName();
-            InvoiceLineType invoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceLineTypeName);
+            var invoiceLineTypeName = spec.getInvoiceLineTypeName();
+            var invoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceLineTypeName);
             
             if(invoiceLineType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        InvoiceLineTypeDescription invoiceLineTypeDescription = invoiceControl.getInvoiceLineTypeDescription(invoiceLineType, language);
+                        var invoiceLineTypeDescription = invoiceControl.getInvoiceLineTypeDescription(invoiceLineType, language);
                         
                         if(invoiceLineTypeDescription != null) {
                             result.setInvoiceLineTypeDescription(invoiceControl.getInvoiceLineTypeDescriptionTransfer(getUserVisit(), invoiceLineTypeDescription));
                             
                             if(lockEntity(invoiceLineType)) {
-                                InvoiceLineTypeDescriptionEdit edit = InvoiceEditFactory.getInvoiceLineTypeDescriptionEdit();
+                                var edit = InvoiceEditFactory.getInvoiceLineTypeDescriptionEdit();
                                 
                                 result.setEdit(edit);
                                 edit.setDescription(invoiceLineTypeDescription.getDescription());
@@ -115,12 +109,12 @@ public class EditInvoiceLineTypeDescriptionCommand
                             addExecutionError(ExecutionErrors.UnknownInvoiceLineTypeDescription.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        InvoiceLineTypeDescriptionValue invoiceLineTypeDescriptionValue = invoiceControl.getInvoiceLineTypeDescriptionValueForUpdate(invoiceLineType, language);
+                        var invoiceLineTypeDescriptionValue = invoiceControl.getInvoiceLineTypeDescriptionValueForUpdate(invoiceLineType, language);
                         
                         if(invoiceLineTypeDescriptionValue != null) {
                             if(lockEntityForUpdate(invoiceLineType)) {
                                 try {
-                                    String description = edit.getDescription();
+                                    var description = edit.getDescription();
                                     
                                     invoiceLineTypeDescriptionValue.setDescription(description);
                                     

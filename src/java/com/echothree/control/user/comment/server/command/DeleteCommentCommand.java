@@ -18,7 +18,6 @@ package com.echothree.control.user.comment.server.command;
 
 import com.echothree.control.user.comment.common.form.DeleteCommentForm;
 import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.data.comment.server.entity.Comment;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class DeleteCommentCommand
     @Override
     protected BaseResult execute() {
         var commentControl = Session.getModelController(CommentControl.class);
-        String commentName = form.getCommentName();
-        Comment comment = commentControl.getCommentByNameForUpdate(commentName);
+        var commentName = form.getCommentName();
+        var comment = commentControl.getCommentByNameForUpdate(commentName);
         
         if(comment != null) {
             commentControl.deleteComment(comment, getPartyPK());

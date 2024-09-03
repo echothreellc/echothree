@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.glaccount;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.DeleteGlAccountForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteGlAccountForm commandForm = AccountingUtil.getHome().getDeleteGlAccountForm();
-            String glAccountName = request.getParameter(ParameterConstants.GL_ACCOUNT_NAME);
+            var commandForm = AccountingUtil.getHome().getDeleteGlAccountForm();
+            var glAccountName = request.getParameter(ParameterConstants.GL_ACCOUNT_NAME);
             
             commandForm.setGlAccountName(glAccountName);
             

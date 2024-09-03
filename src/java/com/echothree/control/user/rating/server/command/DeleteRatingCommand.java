@@ -18,7 +18,6 @@ package com.echothree.control.user.rating.server.command;
 
 import com.echothree.control.user.rating.common.form.DeleteRatingForm;
 import com.echothree.model.control.rating.server.control.RatingControl;
-import com.echothree.model.data.rating.server.entity.Rating;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class DeleteRatingCommand
     @Override
     protected BaseResult execute() {
         var ratingControl = Session.getModelController(RatingControl.class);
-        String ratingName = form.getRatingName();
-        Rating rating = ratingControl.getRatingByNameForUpdate(ratingName);
+        var ratingName = form.getRatingName();
+        var rating = ratingControl.getRatingByNameForUpdate(ratingName);
         
         if(rating != null) {
             ratingControl.deleteRating(rating, getPartyPK());

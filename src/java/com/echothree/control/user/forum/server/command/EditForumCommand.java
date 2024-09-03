@@ -27,13 +27,8 @@ import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.forum.server.entity.ForumDescription;
-import com.echothree.model.data.forum.server.entity.ForumDetail;
-import com.echothree.model.data.forum.server.value.ForumDescriptionValue;
-import com.echothree.model.data.forum.server.value.ForumDetailValue;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -84,8 +79,8 @@ public class EditForumCommand
     @Override
     public Forum getEntity(EditForumResult result) {
         var forumControl = Session.getModelController(ForumControl.class);
-        Forum forum = null;
-        String forumName = spec.getForumName();
+        Forum forum;
+        var forumName = spec.getForumName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             forum = forumControl.getForumByName(forumName);
@@ -115,8 +110,8 @@ public class EditForumCommand
     @Override
     public void doLock(ForumEdit edit, Forum forum) {
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumDescription forumDescription = forumControl.getForumDescription(forum, getPreferredLanguage());
-        ForumDetail forumDetail = forum.getLastDetail();
+        var forumDescription = forumControl.getForumDescription(forum, getPreferredLanguage());
+        var forumDetail = forum.getLastDetail();
 
         icon = forumDetail.getIcon();
         forumMessageSequence = forumDetail.getForumMessageSequence();
@@ -140,25 +135,25 @@ public class EditForumCommand
     @Override
     public void canUpdate(Forum forum) {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumName = edit.getForumName();
-        Forum duplicateForum = forumControl.getForumByName(forumName);
+        var forumName = edit.getForumName();
+        var duplicateForum = forumControl.getForumByName(forumName);
 
         if(duplicateForum == null || forum.equals(duplicateForum)) {
             var iconControl = Session.getModelController(IconControl.class);
-            String iconName = edit.getIconName();
+            var iconName = edit.getIconName();
 
             icon = iconName == null? null: iconControl.getIconByName(iconName);
 
             if(iconName == null || icon != null) {
                 SequenceControl sequenceControl = null;
-                String forumThreadSequenceName = edit.getForumThreadSequenceName();
-                String forumMessageSequenceName = edit.getForumMessageSequenceName();
+                var forumThreadSequenceName = edit.getForumThreadSequenceName();
+                var forumMessageSequenceName = edit.getForumMessageSequenceName();
 
                 if(forumThreadSequenceName != null || forumMessageSequenceName != null) {
                     sequenceControl = Session.getModelController(SequenceControl.class);
 
                     if(forumThreadSequenceName != null) {
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_THREAD.name());
+                        var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_THREAD.name());
                         forumThreadSequence = sequenceControl.getSequenceByName(sequenceType, forumThreadSequenceName);
                     }
                 }
@@ -166,7 +161,7 @@ public class EditForumCommand
                 if(forumThreadSequenceName == null || forumThreadSequence != null) {
 
                     if(forumMessageSequenceName != null) {
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_MESSAGE.name());
+                        var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_MESSAGE.name());
                         forumMessageSequence = sequenceControl.getSequenceByName(sequenceType, forumMessageSequenceName);
                     }
 
@@ -188,9 +183,9 @@ public class EditForumCommand
     public void doUpdate(Forum forum) {
         var forumControl = Session.getModelController(ForumControl.class);
         var partyPK = getPartyPK();
-        ForumDetailValue forumDetailValue = forumControl.getForumDetailValueForUpdate(forum);
-        ForumDescription forumDescription = forumControl.getForumDescriptionForUpdate(forum, getPreferredLanguage());
-        String description = edit.getDescription();
+        var forumDetailValue = forumControl.getForumDetailValueForUpdate(forum);
+        var forumDescription = forumControl.getForumDescriptionForUpdate(forum, getPreferredLanguage());
+        var description = edit.getDescription();
 
         forumDetailValue.setForumName(edit.getForumName());
         forumDetailValue.setIconPK(icon == null? null: icon.getPrimaryKey());
@@ -205,7 +200,7 @@ public class EditForumCommand
         } else if(forumDescription != null && description == null) {
             forumControl.deleteForumDescription(forumDescription, partyPK);
         } else if(forumDescription != null && description != null) {
-            ForumDescriptionValue forumDescriptionValue = forumControl.getForumDescriptionValue(forumDescription);
+            var forumDescriptionValue = forumControl.getForumDescriptionValue(forumDescription);
 
             forumDescriptionValue.setDescription(description);
             forumControl.updateForumDescriptionFromValue(forumDescriptionValue, partyPK);

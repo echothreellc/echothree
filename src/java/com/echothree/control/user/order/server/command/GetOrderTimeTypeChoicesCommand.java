@@ -17,14 +17,12 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.GetOrderTimeTypeChoicesForm;
-import com.echothree.control.user.order.common.result.GetOrderTimeTypeChoicesResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -67,14 +65,14 @@ public class GetOrderTimeTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        GetOrderTimeTypeChoicesResult result = OrderResultFactory.getGetOrderTimeTypeChoicesResult();
+        var result = OrderResultFactory.getGetOrderTimeTypeChoicesResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-            String defaultOrderTimeTypeChoice = form.getDefaultOrderTimeTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultOrderTimeTypeChoice = form.getDefaultOrderTimeTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setOrderTimeTypeChoices(orderTimeControl.getOrderTimeTypeChoices(defaultOrderTimeTypeChoice, getPreferredLanguage(), allowNullChoice,
                     orderType));

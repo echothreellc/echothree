@@ -17,7 +17,6 @@
 package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderTimeTransfer;
-import com.echothree.model.control.order.common.transfer.OrderTimeTypeTransfer;
 import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.data.order.server.entity.OrderTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -34,12 +33,12 @@ public class OrderTimeTransferCache
     }
     
     public OrderTimeTransfer getOrderTimeTransfer(OrderTime orderTime) {
-        OrderTimeTransfer orderTimeTransfer = get(orderTime);
+        var orderTimeTransfer = get(orderTime);
         
         if(orderTimeTransfer == null) {
-            OrderTimeTypeTransfer orderTimeType = orderTimeControl.getOrderTimeTypeTransfer(userVisit, orderTime.getOrderTimeType());
-            Long unformattedTime = orderTime.getTime();
-            String time = formatTypicalDateTime(unformattedTime);
+            var orderTimeType = orderTimeControl.getOrderTimeTypeTransfer(userVisit, orderTime.getOrderTimeType());
+            var unformattedTime = orderTime.getTime();
+            var time = formatTypicalDateTime(unformattedTime);
             
             orderTimeTransfer = new OrderTimeTransfer(orderTimeType, unformattedTime, time);
             put(orderTime, orderTimeTransfer);

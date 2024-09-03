@@ -18,13 +18,10 @@ package com.echothree.model.control.message.server.transfer;
 
 import com.echothree.model.control.message.common.MessageOptions;
 import com.echothree.model.control.message.common.transfer.MessageTransfer;
-import com.echothree.model.control.message.common.transfer.MessageTypeTransfer;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.message.server.entity.Message;
-import com.echothree.model.data.message.server.entity.MessageDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import java.util.Set;
 
 public class MessageTransferCache
         extends BaseMessageTransferCache<Message, MessageTransfer> {
@@ -48,16 +45,16 @@ public class MessageTransferCache
     }
     
     public MessageTransfer getMessageTransfer(Message message) {
-        MessageTransfer messageTransfer = get(message);
+        var messageTransfer = get(message);
         
         if(messageTransfer == null) {
-            MessageDetail messageDetail = message.getLastDetail();
-            MessageTypeTransfer messageTypeTransfer = messageControl.getMessageTypeTransfer(userVisit, messageDetail.getMessageType());
-            String messageName = messageDetail.getMessageName();
-            Boolean includeByDefault = messageDetail.getIncludeByDefault();
-            Boolean isDefault = messageDetail.getIsDefault();
-            Integer sortOrder = messageDetail.getSortOrder();
-            String description = messageControl.getBestMessageDescription(message, getLanguage());
+            var messageDetail = message.getLastDetail();
+            var messageTypeTransfer = messageControl.getMessageTypeTransfer(userVisit, messageDetail.getMessageType());
+            var messageName = messageDetail.getMessageName();
+            var includeByDefault = messageDetail.getIncludeByDefault();
+            var isDefault = messageDetail.getIsDefault();
+            var sortOrder = messageDetail.getSortOrder();
+            var description = messageControl.getBestMessageDescription(message, getLanguage());
             
             messageTransfer = new MessageTransfer(messageTypeTransfer, messageName, includeByDefault, isDefault, sortOrder, description);
             put(message, messageTransfer);

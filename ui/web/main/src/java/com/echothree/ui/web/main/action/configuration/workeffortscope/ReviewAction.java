@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.workeffortscope;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
-import com.echothree.control.user.workeffort.common.form.GetWorkEffortScopeForm;
 import com.echothree.control.user.workeffort.common.result.GetWorkEffortScopeResult;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,18 +49,18 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetWorkEffortScopeForm commandForm = WorkEffortUtil.getHome().getGetWorkEffortScopeForm();
+        String forwardKey;
+        var commandForm = WorkEffortUtil.getHome().getGetWorkEffortScopeForm();
 
         commandForm.setWorkEffortTypeName(request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME));
         commandForm.setWorkEffortScopeName(request.getParameter(ParameterConstants.WORK_EFFORT_SCOPE_NAME));
-        
-        CommandResult commandResult = WorkEffortUtil.getHome().getWorkEffortScope(getUserVisitPK(request), commandForm);
+
+        var commandResult = WorkEffortUtil.getHome().getWorkEffortScope(getUserVisitPK(request), commandForm);
         WorkEffortScopeTransfer workEffortScope = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkEffortScopeResult result = (GetWorkEffortScopeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkEffortScopeResult)executionResult.getResult();
             
             workEffortScope = result.getWorkEffortScope();
         }

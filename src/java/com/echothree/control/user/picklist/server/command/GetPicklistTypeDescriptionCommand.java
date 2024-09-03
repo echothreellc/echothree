@@ -17,16 +17,12 @@
 package com.echothree.control.user.picklist.server.command;
 
 import com.echothree.control.user.picklist.common.form.GetPicklistTypeDescriptionForm;
-import com.echothree.control.user.picklist.common.result.GetPicklistTypeDescriptionResult;
 import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.picklist.server.entity.PicklistType;
-import com.echothree.model.data.picklist.server.entity.PicklistTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetPicklistTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        GetPicklistTypeDescriptionResult result = PicklistResultFactory.getGetPicklistTypeDescriptionResult();
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var result = PicklistResultFactory.getGetPicklistTypeDescriptionResult();
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
         
         if(picklistType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                PicklistTypeDescription picklistTypeDescription = picklistControl.getPicklistTypeDescription(picklistType, language);
+                var picklistTypeDescription = picklistControl.getPicklistTypeDescription(picklistType, language);
 
                 if(picklistTypeDescription != null) {
                     result.setPicklistTypeDescription(picklistControl.getPicklistTypeDescriptionTransfer(getUserVisit(), picklistTypeDescription));

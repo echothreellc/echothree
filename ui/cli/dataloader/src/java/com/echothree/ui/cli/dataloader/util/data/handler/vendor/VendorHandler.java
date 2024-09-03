@@ -86,9 +86,9 @@ public class VendorHandler
             initialDataParser.pushHandler(new VendorItemHandler(initialDataParser, this, vendorName, form.getVendorItemName()));
         } else if(localName.equals("purchaseInvoices")) {
             String companyName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("companyName"))
                     companyName = attrs.getValue(i);
             }

@@ -17,7 +17,6 @@
 package com.echothree.control.user.security.server.command;
 
 import com.echothree.control.user.security.common.form.GetSecurityRoleChoicesForm;
-import com.echothree.control.user.security.common.result.GetSecurityRoleChoicesResult;
 import com.echothree.control.user.security.common.result.SecurityResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -26,7 +25,6 @@ import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -68,9 +66,9 @@ public class GetSecurityRoleChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetSecurityRoleChoicesResult result = SecurityResultFactory.getGetSecurityRoleChoicesResult();
-        String securityRoleGroupName = form.getSecurityRoleGroupName();
-        String workflowName = form.getWorkflowName();
+        var result = SecurityResultFactory.getGetSecurityRoleChoicesResult();
+        var securityRoleGroupName = form.getSecurityRoleGroupName();
+        var workflowName = form.getWorkflowName();
         var parameterCount = (securityRoleGroupName == null ? 0 : 1) + (workflowName == null ? 0 : 1);
         
         if(parameterCount == 1) {
@@ -99,8 +97,8 @@ public class GetSecurityRoleChoicesCommand
             }
             
             if(!hasExecutionErrors()) {
-                String defaultSecurityRoleChoice = form.getDefaultSecurityRoleChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultSecurityRoleChoice = form.getDefaultSecurityRoleChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setSecurityRoleChoices(securityControl.getSecurityRoleChoices(defaultSecurityRoleChoice, getPreferredLanguage(), allowNullChoice,
                         securityRoleGroup));

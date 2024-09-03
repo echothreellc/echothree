@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.search.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.search.common.transfer.SearchSortDirectionDescriptionTransfer;
-import com.echothree.model.control.search.common.transfer.SearchSortDirectionTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchSortDirectionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class SearchSortDirectionDescriptionTransferCache
     }
     
     public SearchSortDirectionDescriptionTransfer getSearchSortDirectionDescriptionTransfer(SearchSortDirectionDescription searchSortDirectionDescription) {
-        SearchSortDirectionDescriptionTransfer searchSortDirectionDescriptionTransfer = get(searchSortDirectionDescription);
+        var searchSortDirectionDescriptionTransfer = get(searchSortDirectionDescription);
         
         if(searchSortDirectionDescriptionTransfer == null) {
-            SearchSortDirectionTransfer searchSortDirectionTransfer = searchControl.getSearchSortDirectionTransfer(userVisit, searchSortDirectionDescription.getSearchSortDirection());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, searchSortDirectionDescription.getLanguage());
+            var searchSortDirectionTransfer = searchControl.getSearchSortDirectionTransfer(userVisit, searchSortDirectionDescription.getSearchSortDirection());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchSortDirectionDescription.getLanguage());
             
             searchSortDirectionDescriptionTransfer = new SearchSortDirectionDescriptionTransfer(languageTransfer, searchSortDirectionTransfer, searchSortDirectionDescription.getDescription());
             put(searchSortDirectionDescription, searchSortDirectionDescriptionTransfer);

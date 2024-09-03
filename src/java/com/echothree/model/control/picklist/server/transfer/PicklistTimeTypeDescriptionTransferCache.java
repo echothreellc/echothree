@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.picklist.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.picklist.common.transfer.PicklistTimeTypeDescriptionTransfer;
-import com.echothree.model.control.picklist.common.transfer.PicklistTimeTypeTransfer;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.PicklistTimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class PicklistTimeTypeDescriptionTransferCache
     }
     
     public PicklistTimeTypeDescriptionTransfer getPicklistTimeTypeDescriptionTransfer(PicklistTimeTypeDescription picklistTimeTypeDescription) {
-        PicklistTimeTypeDescriptionTransfer picklistTimeTypeDescriptionTransfer = get(picklistTimeTypeDescription);
+        var picklistTimeTypeDescriptionTransfer = get(picklistTimeTypeDescription);
         
         if(picklistTimeTypeDescriptionTransfer == null) {
-            PicklistTimeTypeTransfer picklistTimeTypeTransfer = picklistControl.getPicklistTimeTypeTransfer(userVisit, picklistTimeTypeDescription.getPicklistTimeType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, picklistTimeTypeDescription.getLanguage());
+            var picklistTimeTypeTransfer = picklistControl.getPicklistTimeTypeTransfer(userVisit, picklistTimeTypeDescription.getPicklistTimeType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, picklistTimeTypeDescription.getLanguage());
             
             picklistTimeTypeDescriptionTransfer = new PicklistTimeTypeDescriptionTransfer(languageTransfer, picklistTimeTypeTransfer, picklistTimeTypeDescription.getDescription());
             put(picklistTimeTypeDescription, picklistTimeTypeDescriptionTransfer);

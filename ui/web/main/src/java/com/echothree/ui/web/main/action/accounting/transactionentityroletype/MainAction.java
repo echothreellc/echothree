@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.transactionentityroletype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetTransactionEntityRoleTypesForm;
 import com.echothree.control.user.accounting.common.result.GetTransactionEntityRoleTypesResult;
-import com.echothree.model.control.accounting.common.transfer.TransactionTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,15 +48,15 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String transactionTypeName = request.getParameter(ParameterConstants.TRANSACTION_TYPE_NAME);
-        GetTransactionEntityRoleTypesForm commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypesForm();
+        var transactionTypeName = request.getParameter(ParameterConstants.TRANSACTION_TYPE_NAME);
+        var commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypesForm();
 
         commandForm.setTransactionTypeName(transactionTypeName);
 
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionEntityRoleTypes(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTransactionEntityRoleTypesResult result = (GetTransactionEntityRoleTypesResult)executionResult.getResult();
-        TransactionTypeTransfer transactionTypeTransfer = result.getTransactionType();
+        var commandResult = AccountingUtil.getHome().getTransactionEntityRoleTypes(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTransactionEntityRoleTypesResult)executionResult.getResult();
+        var transactionTypeTransfer = result.getTransactionType();
 
         request.setAttribute(AttributeConstants.TRANSACTION_TYPE, transactionTypeTransfer);
         request.setAttribute(AttributeConstants.TRANSACTION_ENTITY_ROLE_TYPES, result.getTransactionEntityRoleTypes());

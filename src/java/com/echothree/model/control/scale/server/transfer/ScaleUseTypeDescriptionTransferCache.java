@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.scale.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.scale.common.transfer.ScaleUseTypeDescriptionTransfer;
-import com.echothree.model.control.scale.common.transfer.ScaleUseTypeTransfer;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.scale.server.entity.ScaleUseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class ScaleUseTypeDescriptionTransferCache
     }
     
     public ScaleUseTypeDescriptionTransfer getScaleUseTypeDescriptionTransfer(ScaleUseTypeDescription scaleUseTypeDescription) {
-        ScaleUseTypeDescriptionTransfer scaleUseTypeDescriptionTransfer = get(scaleUseTypeDescription);
+        var scaleUseTypeDescriptionTransfer = get(scaleUseTypeDescription);
         
         if(scaleUseTypeDescriptionTransfer == null) {
-            ScaleUseTypeTransfer scaleUseTypeTransfer = scaleControl.getScaleUseTypeTransfer(userVisit, scaleUseTypeDescription.getScaleUseType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, scaleUseTypeDescription.getLanguage());
+            var scaleUseTypeTransfer = scaleControl.getScaleUseTypeTransfer(userVisit, scaleUseTypeDescription.getScaleUseType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, scaleUseTypeDescription.getLanguage());
             
             scaleUseTypeDescriptionTransfer = new ScaleUseTypeDescriptionTransfer(languageTransfer, scaleUseTypeTransfer, scaleUseTypeDescription.getDescription());
             put(scaleUseTypeDescription, scaleUseTypeDescriptionTransfer);

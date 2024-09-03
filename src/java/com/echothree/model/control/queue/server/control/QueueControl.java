@@ -22,16 +22,12 @@ import com.echothree.model.control.queue.common.transfer.QueueTypeDescriptionTra
 import com.echothree.model.control.queue.common.transfer.QueueTypeTransfer;
 import com.echothree.model.control.queue.common.transfer.QueuedEntityTransfer;
 import com.echothree.model.control.queue.server.transfer.QueueTransferCaches;
-import com.echothree.model.control.queue.server.transfer.QueueTypeDescriptionTransferCache;
-import com.echothree.model.control.queue.server.transfer.QueueTypeTransferCache;
-import com.echothree.model.control.queue.server.transfer.QueuedEntityTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.queue.common.pk.QueueTypePK;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.queue.server.entity.QueueTypeDescription;
-import com.echothree.model.data.queue.server.entity.QueueTypeDetail;
 import com.echothree.model.data.queue.server.entity.QueuedEntity;
 import com.echothree.model.data.queue.server.factory.QueueTypeDescriptionFactory;
 import com.echothree.model.data.queue.server.factory.QueueTypeDetailFactory;
@@ -46,13 +42,11 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -84,11 +78,11 @@ public class QueueControl
     // --------------------------------------------------------------------------------
 
     public QueueType createQueueType(String queueTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        QueueType defaultQueueType = getDefaultQueueType();
-        boolean defaultFound = defaultQueueType != null;
+        var defaultQueueType = getDefaultQueueType();
+        var defaultFound = defaultQueueType != null;
 
         if(defaultFound && isDefault) {
-            QueueTypeDetailValue defaultQueueTypeDetailValue = getDefaultQueueTypeDetailValueForUpdate();
+            var defaultQueueTypeDetailValue = getDefaultQueueTypeDetailValueForUpdate();
 
             defaultQueueTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateQueueTypeFromValue(defaultQueueTypeDetailValue, false, createdBy);
@@ -96,8 +90,8 @@ public class QueueControl
             isDefault = Boolean.TRUE;
         }
 
-        QueueType queueType = QueueTypeFactory.getInstance().create();
-        QueueTypeDetail queueTypeDetail = QueueTypeDetailFactory.getInstance().create(queueType, queueTypeName, isDefault, sortOrder, session.START_TIME_LONG,
+        var queueType = QueueTypeFactory.getInstance().create();
+        var queueTypeDetail = QueueTypeDetailFactory.getInstance().create(queueType, queueTypeName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -245,7 +239,7 @@ public class QueueControl
 
     public List<QueueTypeTransfer> getQueueTypeTransfers(UserVisit userVisit, Collection<QueueType> queueTypes) {
         List<QueueTypeTransfer> queueTypeTransfers = new ArrayList<>(queueTypes.size());
-        QueueTypeTransferCache queueTypeTransferCache = getQueueTransferCaches(userVisit).getQueueTypeTransferCache();
+        var queueTypeTransferCache = getQueueTransferCaches(userVisit).getQueueTypeTransferCache();
 
         queueTypes.forEach((queueType) ->
                 queueTypeTransfers.add(queueTypeTransferCache.getQueueTypeTransfer(queueType))
@@ -259,7 +253,7 @@ public class QueueControl
     }
 
     public QueueTypeChoicesBean getQueueTypeChoices(String defaultQueueTypeChoice, Language language, boolean allowNullChoice) {
-        List<QueueType> queueTypes = getQueueTypes();
+        var queueTypes = getQueueTypes();
         var size = queueTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -275,7 +269,7 @@ public class QueueControl
         }
 
         for(var queueType : queueTypes) {
-            QueueTypeDetail queueTypeDetail = queueType.getLastDetail();
+            var queueTypeDetail = queueType.getLastDetail();
 
             var label = getBestQueueTypeDescription(queueType, language);
             var value = queueTypeDetail.getQueueTypeName();
@@ -294,25 +288,25 @@ public class QueueControl
 
     private void updateQueueTypeFromValue(QueueTypeDetailValue queueTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(queueTypeDetailValue.hasBeenModified()) {
-            QueueType queueType = QueueTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var queueType = QueueTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      queueTypeDetailValue.getQueueTypePK());
-            QueueTypeDetail queueTypeDetail = queueType.getActiveDetailForUpdate();
+            var queueTypeDetail = queueType.getActiveDetailForUpdate();
 
             queueTypeDetail.setThruTime(session.START_TIME_LONG);
             queueTypeDetail.store();
 
-            QueueTypePK queueTypePK = queueTypeDetail.getQueueTypePK(); // Not updated
-            String queueTypeName = queueTypeDetailValue.getQueueTypeName();
-            Boolean isDefault = queueTypeDetailValue.getIsDefault();
-            Integer sortOrder = queueTypeDetailValue.getSortOrder();
+            var queueTypePK = queueTypeDetail.getQueueTypePK(); // Not updated
+            var queueTypeName = queueTypeDetailValue.getQueueTypeName();
+            var isDefault = queueTypeDetailValue.getIsDefault();
+            var sortOrder = queueTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                QueueType defaultQueueType = getDefaultQueueType();
-                boolean defaultFound = defaultQueueType != null && !defaultQueueType.equals(queueType);
+                var defaultQueueType = getDefaultQueueType();
+                var defaultFound = defaultQueueType != null && !defaultQueueType.equals(queueType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    QueueTypeDetailValue defaultQueueTypeDetailValue = getDefaultQueueTypeDetailValueForUpdate();
+                    var defaultQueueTypeDetailValue = getDefaultQueueTypeDetailValueForUpdate();
 
                     defaultQueueTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateQueueTypeFromValue(defaultQueueTypeDetailValue, false, updatedBy);
@@ -337,7 +331,7 @@ public class QueueControl
     }
 
     private void deleteQueueType(QueueType queueType, boolean checkDefault, BasePK deletedBy) {
-        QueueTypeDetail queueTypeDetail = queueType.getLastDetailForUpdate();
+        var queueTypeDetail = queueType.getLastDetailForUpdate();
 
         removeQueuedEntitiesByQueueType(queueType);
         deleteQueueTypeDescriptionsByQueueType(queueType, deletedBy);
@@ -348,17 +342,17 @@ public class QueueControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            QueueType defaultQueueType = getDefaultQueueType();
+            var defaultQueueType = getDefaultQueueType();
 
             if(defaultQueueType == null) {
-                List<QueueType> queueTypes = getQueueTypesForUpdate();
+                var queueTypes = getQueueTypesForUpdate();
 
                 if(!queueTypes.isEmpty()) {
-                    Iterator<QueueType> iter = queueTypes.iterator();
+                    var iter = queueTypes.iterator();
                     if(iter.hasNext()) {
                         defaultQueueType = iter.next();
                     }
-                    QueueTypeDetailValue queueTypeDetailValue = Objects.requireNonNull(defaultQueueType).getLastDetailForUpdate().getQueueTypeDetailValue().clone();
+                    var queueTypeDetailValue = Objects.requireNonNull(defaultQueueType).getLastDetailForUpdate().getQueueTypeDetailValue().clone();
 
                     queueTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateQueueTypeFromValue(queueTypeDetailValue, false, deletedBy);
@@ -386,7 +380,7 @@ public class QueueControl
     // --------------------------------------------------------------------------------
 
     public QueueTypeDescription createQueueTypeDescription(QueueType queueType, Language language, String description, BasePK createdBy) {
-        QueueTypeDescription queueTypeDescription = QueueTypeDescriptionFactory.getInstance().create(queueType, language, description,
+        var queueTypeDescription = QueueTypeDescriptionFactory.getInstance().create(queueType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(queueType.getPrimaryKey(), EventTypes.MODIFY, queueTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -465,7 +459,7 @@ public class QueueControl
 
     public String getBestQueueTypeDescription(QueueType queueType, Language language) {
         String description;
-        QueueTypeDescription queueTypeDescription = getQueueTypeDescription(queueType, language);
+        var queueTypeDescription = getQueueTypeDescription(queueType, language);
 
         if(queueTypeDescription == null && !language.getIsDefault()) {
             queueTypeDescription = getQueueTypeDescription(queueType, getPartyControl().getDefaultLanguage());
@@ -485,9 +479,9 @@ public class QueueControl
     }
 
     public List<QueueTypeDescriptionTransfer> getQueueTypeDescriptionTransfersByQueueType(UserVisit userVisit, QueueType queueType) {
-        List<QueueTypeDescription> queueTypeDescriptions = getQueueTypeDescriptionsByQueueType(queueType);
+        var queueTypeDescriptions = getQueueTypeDescriptionsByQueueType(queueType);
         List<QueueTypeDescriptionTransfer> queueTypeDescriptionTransfers = new ArrayList<>(queueTypeDescriptions.size());
-        QueueTypeDescriptionTransferCache queueTypeDescriptionTransferCache = getQueueTransferCaches(userVisit).getQueueTypeDescriptionTransferCache();
+        var queueTypeDescriptionTransferCache = getQueueTransferCaches(userVisit).getQueueTypeDescriptionTransferCache();
 
         queueTypeDescriptions.forEach((queueTypeDescription) ->
                 queueTypeDescriptionTransfers.add(queueTypeDescriptionTransferCache.getQueueTypeDescriptionTransfer(queueTypeDescription))
@@ -498,15 +492,15 @@ public class QueueControl
 
     public void updateQueueTypeDescriptionFromValue(QueueTypeDescriptionValue queueTypeDescriptionValue, BasePK updatedBy) {
         if(queueTypeDescriptionValue.hasBeenModified()) {
-            QueueTypeDescription queueTypeDescription = QueueTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var queueTypeDescription = QueueTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     queueTypeDescriptionValue.getPrimaryKey());
 
             queueTypeDescription.setThruTime(session.START_TIME_LONG);
             queueTypeDescription.store();
 
-            QueueType queueType = queueTypeDescription.getQueueType();
-            Language language = queueTypeDescription.getLanguage();
-            String description = queueTypeDescriptionValue.getDescription();
+            var queueType = queueTypeDescription.getQueueType();
+            var language = queueTypeDescription.getLanguage();
+            var description = queueTypeDescriptionValue.getDescription();
 
             queueTypeDescription = QueueTypeDescriptionFactory.getInstance().create(queueType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -523,7 +517,7 @@ public class QueueControl
     }
 
     public void deleteQueueTypeDescriptionsByQueueType(QueueType queueType, BasePK deletedBy) {
-        List<QueueTypeDescription> queueTypeDescriptions = getQueueTypeDescriptionsByQueueTypeForUpdate(queueType);
+        var queueTypeDescriptions = getQueueTypeDescriptionsByQueueTypeForUpdate(queueType);
 
         queueTypeDescriptions.forEach((queueTypeDescription) -> 
                 deleteQueueTypeDescription(queueTypeDescription, deletedBy)
@@ -643,8 +637,8 @@ public class QueueControl
                         "_LIMIT_ " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = QueuedEntityFactory.getInstance().prepareStatement(query);
+
+            var ps = QueuedEntityFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, queueType.getPrimaryKey().getEntityId());
             
@@ -682,8 +676,8 @@ public class QueueControl
                         "WHERE qeni_eni_entityinstanceid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = QueuedEntityFactory.getInstance().prepareStatement(query);
+
+            var ps = QueuedEntityFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             
@@ -709,7 +703,7 @@ public class QueueControl
     
     public List<QueuedEntityTransfer> getQueuedEntityTransfers(UserVisit userVisit, Collection<QueuedEntity> queuedEntities) {
         List<QueuedEntityTransfer> queuedEntityTransfers = new ArrayList<>(queuedEntities.size());
-        QueuedEntityTransferCache queuedEntityTransferCache = getQueueTransferCaches(userVisit).getQueuedEntityTransferCache();
+        var queuedEntityTransferCache = getQueueTransferCaches(userVisit).getQueuedEntityTransferCache();
 
         queuedEntities.forEach((queuedEntity) ->
                 queuedEntityTransfers.add(queuedEntityTransferCache.getQueuedEntityTransfer(queuedEntity))

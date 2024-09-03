@@ -17,17 +17,14 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.DeleteUserLoginForm;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -66,17 +63,17 @@ public class CustomerUserLoginDeleteAction
     @Override
     public void setupTransfer(CustomerUserLoginDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
         
         Set<String> options = new HashSet<>();
         options.add(PartyOptions.PartyIncludeUserLogin);
         commandForm.setOptions(options);
         
         commandForm.setPartyName(actionForm.getPartyName());
-        
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
+
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }
@@ -84,7 +81,7 @@ public class CustomerUserLoginDeleteAction
     @Override
     public CommandResult doDelete(CustomerUserLoginDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteUserLoginForm commandForm = UserUtil.getHome().getDeleteUserLoginForm();
+        var commandForm = UserUtil.getHome().getDeleteUserLoginForm();
         
         commandForm.setPartyName(actionForm.getPartyName());
 

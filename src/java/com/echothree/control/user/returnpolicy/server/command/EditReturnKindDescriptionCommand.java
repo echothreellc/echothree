@@ -27,10 +27,8 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKindDescription;
-import com.echothree.model.data.returnpolicy.server.value.ReturnKindDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditReturnKindDescriptionCommand
     public ReturnKindDescription getEntity(EditReturnKindDescriptionResult result) {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         ReturnKindDescription returnKindDescription = null;
-        String returnKindName = spec.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var returnKindName = spec.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
         if(returnKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditReturnKindDescriptionCommand
     @Override
     public void doUpdate(ReturnKindDescription returnKindDescription) {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        ReturnKindDescriptionValue returnKindDescriptionValue = returnPolicyControl.getReturnKindDescriptionValue(returnKindDescription);
+        var returnKindDescriptionValue = returnPolicyControl.getReturnKindDescriptionValue(returnKindDescription);
 
         returnKindDescriptionValue.setDescription(edit.getDescription());
 

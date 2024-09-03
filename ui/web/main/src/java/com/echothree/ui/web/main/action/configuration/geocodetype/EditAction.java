@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected GeoCodeTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        GeoCodeTypeSpec spec = GeoUtil.getHome().getGeoCodeTypeSpec();
+        var spec = GeoUtil.getHome().getGeoCodeTypeSpec();
         
         spec.setGeoCodeTypeName(findParameter(request, ParameterConstants.ORIGINAL_GEO_CODE_TYPE_NAME, actionForm.getOriginalGeoCodeTypeName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected GeoCodeTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        GeoCodeTypeEdit edit = GeoUtil.getHome().getGeoCodeTypeEdit();
+        var edit = GeoUtil.getHome().getGeoCodeTypeEdit();
 
         edit.setGeoCodeTypeName(actionForm.getGeoCodeTypeName());
         edit.setParentGeoCodeTypeName(actionForm.getParentGeoCodeTypeChoice());

@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.employee;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.common.EmployeeService;
-import com.echothree.control.user.employee.common.form.CreateEmployeeTypeForm;
 import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -46,7 +45,7 @@ public class EmployeeTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("employeeType")) {
-            CreateEmployeeTypeForm commandForm = EmployeeFormFactory.getCreateEmployeeTypeForm();
+            var commandForm = EmployeeFormFactory.getCreateEmployeeTypeForm();
             
             commandForm.set(getAttrsMap(attrs));
             

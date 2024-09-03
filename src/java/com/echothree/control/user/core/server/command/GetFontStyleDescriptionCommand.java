@@ -18,14 +18,10 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetFontStyleDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetFontStyleDescriptionResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.FontStyle;
-import com.echothree.model.data.core.server.entity.FontStyleDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,17 +63,17 @@ public class GetFontStyleDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetFontStyleDescriptionResult result = CoreResultFactory.getGetFontStyleDescriptionResult();
-        String fontStyleName = form.getFontStyleName();
-        FontStyle fontStyle = coreControl.getFontStyleByName(fontStyleName);
+        var result = CoreResultFactory.getGetFontStyleDescriptionResult();
+        var fontStyleName = form.getFontStyleName();
+        var fontStyle = coreControl.getFontStyleByName(fontStyleName);
 
         if(fontStyle != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                FontStyleDescription fontStyleDescription = coreControl.getFontStyleDescription(fontStyle, language);
+                var fontStyleDescription = coreControl.getFontStyleDescription(fontStyle, language);
 
                 if(fontStyleDescription != null) {
                     result.setFontStyleDescription(coreControl.getFontStyleDescriptionTransfer(getUserVisit(), fontStyleDescription));

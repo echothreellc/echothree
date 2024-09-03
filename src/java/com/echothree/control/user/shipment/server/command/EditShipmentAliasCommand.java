@@ -24,15 +24,10 @@ import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.control.user.shipment.common.spec.ShipmentAliasSpec;
 import com.echothree.control.user.shipment.server.command.util.ShipmentAliasUtil;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.ShipmentControl;
-import com.echothree.model.data.shipment.server.entity.Shipment;
 import com.echothree.model.data.shipment.server.entity.ShipmentAlias;
 import com.echothree.model.data.shipment.server.entity.ShipmentAliasType;
-import com.echothree.model.data.shipment.server.entity.ShipmentAliasTypeDetail;
-import com.echothree.model.data.shipment.server.entity.ShipmentType;
-import com.echothree.model.data.shipment.server.value.ShipmentAliasValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -91,15 +86,15 @@ public class EditShipmentAliasCommand
     public ShipmentAlias getEntity(EditShipmentAliasResult result) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
         ShipmentAlias shipmentAlias = null;
-        String shipmentTypeName = spec.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var shipmentTypeName = spec.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
-            String shipmentName = spec.getShipmentName();
-            Shipment shipment = shipmentControl.getShipmentByName(shipmentType, shipmentName);
+            var shipmentName = spec.getShipmentName();
+            var shipment = shipmentControl.getShipmentByName(shipmentType, shipmentName);
 
             if(shipment != null) {
-                String shipmentAliasTypeName = spec.getShipmentAliasTypeName();
+                var shipmentAliasTypeName = spec.getShipmentAliasTypeName();
 
                 shipmentAliasType = shipmentControl.getShipmentAliasTypeByName(shipmentType, shipmentAliasTypeName);
 
@@ -148,11 +143,11 @@ public class EditShipmentAliasCommand
     @Override
     public void canUpdate(ShipmentAlias shipmentAlias) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        String alias = edit.getAlias();
-        ShipmentAlias duplicateShipmentAlias = shipmentControl.getShipmentAliasByAlias(shipmentAliasType, alias);
+        var alias = edit.getAlias();
+        var duplicateShipmentAlias = shipmentControl.getShipmentAliasByAlias(shipmentAliasType, alias);
 
         if(duplicateShipmentAlias != null && !shipmentAlias.equals(duplicateShipmentAlias)) {
-            ShipmentAliasTypeDetail shipmentAliasTypeDetail = shipmentAlias.getShipmentAliasType().getLastDetail();
+            var shipmentAliasTypeDetail = shipmentAlias.getShipmentAliasType().getLastDetail();
 
             addExecutionError(ExecutionErrors.DuplicateShipmentAlias.name(), shipmentAliasTypeDetail.getShipmentType().getLastDetail().getShipmentTypeName(),
                     shipmentAliasTypeDetail.getShipmentAliasTypeName(), alias);
@@ -162,7 +157,7 @@ public class EditShipmentAliasCommand
     @Override
     public void doUpdate(ShipmentAlias shipmentAlias) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        ShipmentAliasValue shipmentAliasValue = shipmentControl.getShipmentAliasValue(shipmentAlias);
+        var shipmentAliasValue = shipmentControl.getShipmentAliasValue(shipmentAlias);
 
         shipmentAliasValue.setAlias(edit.getAlias());
 

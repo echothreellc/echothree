@@ -17,7 +17,6 @@
 package com.echothree.control.user.warehouse.server.command;
 
 import com.echothree.control.user.warehouse.common.form.GetWarehouseChoicesForm;
-import com.echothree.control.user.warehouse.common.result.GetWarehouseChoicesResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -64,9 +63,9 @@ public class GetWarehouseChoicesCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        GetWarehouseChoicesResult result = WarehouseResultFactory.getGetWarehouseChoicesResult();
-        String defaultWarehouseChoice = form.getDefaultWarehouseChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = WarehouseResultFactory.getGetWarehouseChoicesResult();
+        var defaultWarehouseChoice = form.getDefaultWarehouseChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
         result.setWarehouseChoices(warehouseControl.getWarehouseChoices(defaultWarehouseChoice, allowNullChoice));
         

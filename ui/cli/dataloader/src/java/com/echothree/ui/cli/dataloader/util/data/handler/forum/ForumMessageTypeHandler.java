@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
 import com.echothree.control.user.forum.common.ForumService;
-import com.echothree.control.user.forum.common.form.CreateForumMessageTypeDescriptionForm;
-import com.echothree.control.user.forum.common.form.CreateForumMessageTypePartTypeForm;
 import com.echothree.control.user.forum.common.form.ForumFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -51,14 +49,14 @@ public class ForumMessageTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("forumMessageTypeDescription")) {
-            CreateForumMessageTypeDescriptionForm commandForm = ForumFormFactory.getCreateForumMessageTypeDescriptionForm();
+            var commandForm = ForumFormFactory.getCreateForumMessageTypeDescriptionForm();
 
             commandForm.setForumMessageTypeName(forumMessageTypeName);
             commandForm.set(getAttrsMap(attrs));
 
             forumService.createForumMessageTypeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("forumMessageTypePartType")) {
-            CreateForumMessageTypePartTypeForm commandForm = ForumFormFactory.getCreateForumMessageTypePartTypeForm();
+            var commandForm = ForumFormFactory.getCreateForumMessageTypePartTypeForm();
 
             commandForm.setForumMessageTypeName(forumMessageTypeName);
             commandForm.set(getAttrsMap(attrs));

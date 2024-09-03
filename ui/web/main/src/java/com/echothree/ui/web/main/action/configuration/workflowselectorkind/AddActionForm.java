@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.configuration.workflowselectorkind;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.form.GetSelectorKindChoicesForm;
 import com.echothree.control.user.selector.common.result.GetSelectorKindChoicesResult;
 import com.echothree.model.control.selector.common.choice.SelectorKindChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -40,14 +37,14 @@ public class AddActionForm
     private void setupSelectorKindChoices() {
         if(selectorKindChoices == null) {
             try {
-                GetSelectorKindChoicesForm commandForm = SelectorUtil.getHome().getGetSelectorKindChoicesForm();
+                var commandForm = SelectorUtil.getHome().getGetSelectorKindChoicesForm();
                 
                 commandForm.setDefaultSelectorKindChoice(selectorKindChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = SelectorUtil.getHome().getSelectorKindChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSelectorKindChoicesResult result = (GetSelectorKindChoicesResult)executionResult.getResult();
+
+                var commandResult = SelectorUtil.getHome().getSelectorKindChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSelectorKindChoicesResult)executionResult.getResult();
                 selectorKindChoices = result.getSelectorKindChoices();
                 
                 if(selectorKindChoice == null)

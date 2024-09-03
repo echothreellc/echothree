@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.item.harmonizedtariffschedulecodeunit;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.DeleteHarmonizedTariffScheduleCodeUnitDescriptionForm;
-import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCodeUnitDescriptionForm;
 import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeUnitDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetHarmonizedTariffScheduleCodeUnitDescriptionForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitDescriptionForm();
+        var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitDescriptionForm();
         
         commandForm.setHarmonizedTariffScheduleCodeUnitName(actionForm.getHarmonizedTariffScheduleCodeUnitName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeUnitDescriptionResult result = (GetHarmonizedTariffScheduleCodeUnitDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodeUnitDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT_DESCRIPTION, result.getHarmonizedTariffScheduleCodeUnitDescription());
         }
@@ -80,7 +77,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteHarmonizedTariffScheduleCodeUnitDescriptionForm commandForm = ItemUtil.getHome().getDeleteHarmonizedTariffScheduleCodeUnitDescriptionForm();
+        var commandForm = ItemUtil.getHome().getDeleteHarmonizedTariffScheduleCodeUnitDescriptionForm();
 
         commandForm.setHarmonizedTariffScheduleCodeUnitName(actionForm.getHarmonizedTariffScheduleCodeUnitName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

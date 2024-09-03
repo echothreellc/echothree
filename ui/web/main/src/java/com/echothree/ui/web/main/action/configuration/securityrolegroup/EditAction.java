@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected SecurityRoleGroupSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        SecurityRoleGroupSpec spec = SecurityUtil.getHome().getSecurityRoleGroupSpec();
+        var spec = SecurityUtil.getHome().getSecurityRoleGroupSpec();
         
         spec.setSecurityRoleGroupName(findParameter(request, ParameterConstants.ORIGINAL_SECURITY_ROLE_GROUP_NAME, actionForm.getOriginalSecurityRoleGroupName()));
         
@@ -61,7 +61,7 @@ public class EditAction
     @Override
     protected SecurityRoleGroupEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        SecurityRoleGroupEdit edit = SecurityUtil.getHome().getSecurityRoleGroupEdit();
+        var edit = SecurityUtil.getHome().getSecurityRoleGroupEdit();
 
         edit.setSecurityRoleGroupName(actionForm.getSecurityRoleGroupName());
         edit.setParentSecurityRoleGroupName(actionForm.getParentSecurityRoleGroupChoice());
@@ -97,7 +97,7 @@ public class EditAction
     
     @Override
     public void setupForwardParameters(EditActionForm actionForm, Map<String, String> parameters) {
-        String parentSecurityRoleGroupName = actionForm.getParentSecurityRoleGroupName();
+        var parentSecurityRoleGroupName = actionForm.getParentSecurityRoleGroupName();
         
         if(parentSecurityRoleGroupName != null && parentSecurityRoleGroupName.length() > 0) {
             parameters.put(ParameterConstants.PARENT_SECURITY_ROLE_GROUP_NAME, parentSecurityRoleGroupName);

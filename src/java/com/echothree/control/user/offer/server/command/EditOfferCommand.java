@@ -19,7 +19,6 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.edit.OfferEdit;
 import com.echothree.control.user.offer.common.edit.OfferEditFactory;
 import com.echothree.control.user.offer.common.form.EditOfferForm;
-import com.echothree.control.user.offer.common.result.EditOfferResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.OfferSpec;
 import com.echothree.model.control.filter.common.FilterKinds;
@@ -36,18 +35,8 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.filter.server.entity.Filter;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.entity.FilterType;
-import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.OfferDescription;
-import com.echothree.model.data.offer.server.entity.OfferDetail;
-import com.echothree.model.data.offer.server.value.OfferDescriptionValue;
-import com.echothree.model.data.offer.server.value.OfferDetailValue;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
@@ -101,22 +90,22 @@ public class EditOfferCommand
     @Override
     protected BaseResult execute() {
         var offerControl = Session.getModelController(OfferControl.class);
-        EditOfferResult result = OfferResultFactory.getEditOfferResult();
+        var result = OfferResultFactory.getEditOfferResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String offerName = spec.getOfferName();
-            Offer offer = offerControl.getOfferByName(offerName);
+            var offerName = spec.getOfferName();
+            var offer = offerControl.getOfferByName(offerName);
             
             if(offer != null) {
                 result.setOffer(offerControl.getOfferTransfer(getUserVisit(), offer));
                 
                 if(lockEntity(offer)) {
-                    OfferDescription offerDescription = offerControl.getOfferDescription(offer, getPreferredLanguage());
-                    OfferEdit edit = OfferEditFactory.getOfferEdit();
-                    OfferDetail offerDetail = offer.getLastDetail();
-                    Sequence salesOrderSequence = offerDetail.getSalesOrderSequence();
-                    Selector offerItemSelector = offerDetail.getOfferItemSelector();
-                    Filter offerItemPriceFilter = offerDetail.getOfferItemPriceFilter();
+                    var offerDescription = offerControl.getOfferDescription(offer, getPreferredLanguage());
+                    var edit = OfferEditFactory.getOfferEdit();
+                    var offerDetail = offer.getLastDetail();
+                    var salesOrderSequence = offerDetail.getSalesOrderSequence();
+                    var offerItemSelector = offerDetail.getOfferItemSelector();
+                    var offerItemPriceFilter = offerDetail.getOfferItemPriceFilter();
                     
                     result.setEdit(edit);
                     edit.setOfferName(offerDetail.getOfferName());
@@ -138,20 +127,20 @@ public class EditOfferCommand
                 addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String offerName = spec.getOfferName();
-            Offer offer = offerControl.getOfferByNameForUpdate(offerName);
+            var offerName = spec.getOfferName();
+            var offer = offerControl.getOfferByNameForUpdate(offerName);
             
             if(offer != null) {
                 offerName = edit.getOfferName();
-                Offer duplicateOffer = offerControl.getOfferByName(offerName);
+                var duplicateOffer = offerControl.getOfferByName(offerName);
                 
                 if(duplicateOffer == null || offer.equals(duplicateOffer)) {
-                    String salesOrderSequenceName = edit.getSalesOrderSequenceName();
+                    var salesOrderSequenceName = edit.getSalesOrderSequenceName();
                     Sequence salesOrderSequence = null;
                     
                     if(salesOrderSequenceName != null) {
                         var sequenceControl = Session.getModelController(SequenceControl.class);
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
+                        var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
                         
                         if(sequenceType != null) {
                             salesOrderSequence = sequenceControl.getSequenceByName(sequenceType, salesOrderSequenceName);
@@ -161,15 +150,15 @@ public class EditOfferCommand
                     }
                     
                     if(salesOrderSequenceName == null || salesOrderSequence != null) {
-                        String offerItemSelectorName = edit.getOfferItemSelectorName();
+                        var offerItemSelectorName = edit.getOfferItemSelectorName();
                         Selector offerItemSelector = null;
                         
                         if(offerItemSelectorName != null) {
                             var selectorControl = Session.getModelController(SelectorControl.class);
-                            SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
+                            var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
                             
                             if(selectorKind != null) {
-                                SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
+                                var selectorType = selectorControl.getSelectorTypeByName(selectorKind,
                                         SelectorTypes.OFFER.name());
                                 
                                 if(selectorType != null) {
@@ -183,13 +172,13 @@ public class EditOfferCommand
                         }
                         
                         if(offerItemSelectorName == null || offerItemSelector != null) {
-                            String offerItemPriceFilterName = edit.getOfferItemPriceFilterName();
+                            var offerItemPriceFilterName = edit.getOfferItemPriceFilterName();
                             Filter offerItemPriceFilter = null;
                             
                             if(offerItemPriceFilterName != null) {
                                 var filterControl = Session.getModelController(FilterControl.class);
-                                FilterKind filterKind = filterControl.getFilterKindByName(FilterKinds.PRICE.name());
-                                FilterType filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.OFFER_ITEM_PRICE.name());
+                                var filterKind = filterControl.getFilterKindByName(FilterKinds.PRICE.name());
+                                var filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.OFFER_ITEM_PRICE.name());
                                 
                                 if(filterType != null) {
                                     offerItemPriceFilter = filterControl.getFilterByName(filterType, offerItemPriceFilterName);
@@ -200,9 +189,9 @@ public class EditOfferCommand
                                 if(lockEntityForUpdate(offer)) {
                                     try {
                                         var partyPK = getPartyPK();
-                                        OfferDetailValue offerDetailValue = offerControl.getOfferDetailValueForUpdate(offer);
-                                        OfferDescription offerDescription = offerControl.getOfferDescriptionForUpdate(offer, getPreferredLanguage());
-                                        String description = edit.getDescription();
+                                        var offerDetailValue = offerControl.getOfferDetailValueForUpdate(offer);
+                                        var offerDescription = offerControl.getOfferDescriptionForUpdate(offer, getPreferredLanguage());
+                                        var description = edit.getDescription();
 
                                         offerDetailValue.setOfferName(edit.getOfferName());
                                         offerDetailValue.setSalesOrderSequencePK(salesOrderSequence == null? null: salesOrderSequence.getPrimaryKey());
@@ -218,7 +207,7 @@ public class EditOfferCommand
                                         } else if(offerDescription != null && description == null) {
                                             offerControl.deleteOfferDescription(offerDescription, partyPK);
                                         } else if(offerDescription != null && description != null) {
-                                            OfferDescriptionValue offerDescriptionValue = offerControl.getOfferDescriptionValue(offerDescription);
+                                            var offerDescriptionValue = offerControl.getOfferDescriptionValue(offerDescription);
 
                                             offerDescriptionValue.setDescription(description);
                                             offerControl.updateOfferDescriptionFromValue(offerDescriptionValue, partyPK);

@@ -18,15 +18,11 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.GetContactMechanismAliasTypeDescriptionForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
-import com.echothree.control.user.contact.common.result.GetContactMechanismAliasTypeDescriptionResult;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contact.server.entity.ContactMechanismAliasType;
-import com.echothree.model.data.contact.server.entity.ContactMechanismAliasTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetContactMechanismAliasTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        GetContactMechanismAliasTypeDescriptionResult result = ContactResultFactory.getGetContactMechanismAliasTypeDescriptionResult();
-        String contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
-        ContactMechanismAliasType contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
+        var result = ContactResultFactory.getGetContactMechanismAliasTypeDescriptionResult();
+        var contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
+        var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
         
         if(contactMechanismAliasType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription = contactControl.getContactMechanismAliasTypeDescription(contactMechanismAliasType, language);
+                var contactMechanismAliasTypeDescription = contactControl.getContactMechanismAliasTypeDescription(contactMechanismAliasType, language);
                 
                 if(contactMechanismAliasTypeDescription != null) {
                     result.setContactMechanismAliasTypeDescription(contactControl.getContactMechanismAliasTypeDescriptionTransfer(getUserVisit(), contactMechanismAliasTypeDescription));

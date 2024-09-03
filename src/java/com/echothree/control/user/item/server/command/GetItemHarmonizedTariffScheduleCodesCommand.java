@@ -17,16 +17,12 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemHarmonizedTariffScheduleCodesForm;
-import com.echothree.control.user.item.common.result.GetItemHarmonizedTariffScheduleCodesResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUseType;
-import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetItemHarmonizedTariffScheduleCodesCommand
     
     @Override
     protected BaseResult execute() {
-        GetItemHarmonizedTariffScheduleCodesResult result = ItemResultFactory.getGetItemHarmonizedTariffScheduleCodesResult();
-        String itemName = form.getItemName();
-        String countryName = form.getCountryName();
-        String harmonizedTariffScheduleCodeUseTypeName = form.getHarmonizedTariffScheduleCodeUseTypeName();
+        var result = ItemResultFactory.getGetItemHarmonizedTariffScheduleCodesResult();
+        var itemName = form.getItemName();
+        var countryName = form.getCountryName();
+        var harmonizedTariffScheduleCodeUseTypeName = form.getHarmonizedTariffScheduleCodeUseTypeName();
         var parameterCount = (itemName == null ? 0 : 1) + (countryName == null ? 0 : 1) + (harmonizedTariffScheduleCodeUseTypeName == null ? 0 : 1);
 
         if(parameterCount == 1) {
             var itemControl = Session.getModelController(ItemControl.class);
 
             if(itemName != null) {
-                Item item = itemControl.getItemByName(itemName);
+                var item = itemControl.getItemByName(itemName);
 
                 if(item != null) {
                     result.setItem(itemControl.getItemTransfer(getUserVisit(), item));
@@ -89,7 +85,7 @@ public class GetItemHarmonizedTariffScheduleCodesCommand
                 }
             } else if(countryName != null) {
                 var geoControl = Session.getModelController(GeoControl.class);
-                GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
+                var countryGeoCode = geoControl.getCountryByAlias(countryName);
 
                 if(countryGeoCode != null) {
                     result.setCountry(geoControl.getCountryTransfer(getUserVisit(), countryGeoCode));
@@ -98,7 +94,7 @@ public class GetItemHarmonizedTariffScheduleCodesCommand
                     addExecutionError(ExecutionErrors.UnknownCountryName.name(), countryName);
                 }
             } else {
-                HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
+                var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
 
                 if(harmonizedTariffScheduleCodeUseType != null) {
                     result.setHarmonizedTariffScheduleCodeUseType(itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(getUserVisit(), harmonizedTariffScheduleCodeUseType));

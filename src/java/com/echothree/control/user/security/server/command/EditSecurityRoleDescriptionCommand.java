@@ -27,11 +27,9 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.security.server.entity.SecurityRole;
 import com.echothree.model.data.security.server.entity.SecurityRoleDescription;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
-import com.echothree.model.data.security.server.value.SecurityRoleDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -93,18 +91,18 @@ public class EditSecurityRoleDescriptionCommand
     public SecurityRoleDescription getEntity(EditSecurityRoleDescriptionResult result) {
         var securityControl = Session.getModelController(SecurityControl.class);
         SecurityRoleDescription securityRoleDescription = null;
-        String securityRoleGroupName = spec.getSecurityRoleGroupName();
+        var securityRoleGroupName = spec.getSecurityRoleGroupName();
         
         securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
 
         if(securityRoleGroup != null) {
-            String securityRoleName = spec.getSecurityRoleName();
-            SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
+            var securityRoleName = spec.getSecurityRoleName();
+            var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
 
             if(securityRole != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -149,7 +147,7 @@ public class EditSecurityRoleDescriptionCommand
     @Override
     public void doUpdate(SecurityRoleDescription securityRoleDescription) {
         var securityControl = Session.getModelController(SecurityControl.class);
-        SecurityRoleDescriptionValue securityRoleDescriptionValue = securityControl.getSecurityRoleDescriptionValue(securityRoleDescription);
+        var securityRoleDescriptionValue = securityControl.getSecurityRoleDescriptionValue(securityRoleDescription);
         
         securityRoleDescriptionValue.setDescription(edit.getDescription());
         

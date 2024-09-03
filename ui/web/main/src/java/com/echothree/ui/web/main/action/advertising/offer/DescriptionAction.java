@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.advertising.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetOfferDescriptionsForm;
 import com.echothree.control.user.offer.common.result.GetOfferDescriptionsResult;
-import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
-            GetOfferDescriptionsForm commandForm = OfferUtil.getHome().getGetOfferDescriptionsForm();
+            var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+            var commandForm = OfferUtil.getHome().getGetOfferDescriptionsForm();
             
             commandForm.setOfferName(offerName);
-            
-            CommandResult commandResult = OfferUtil.getHome().getOfferDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetOfferDescriptionsResult result = (GetOfferDescriptionsResult)executionResult.getResult();
-            OfferTransfer offerTransfer = result.getOffer();
+
+            var commandResult = OfferUtil.getHome().getOfferDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetOfferDescriptionsResult)executionResult.getResult();
+            var offerTransfer = result.getOffer();
             
             request.setAttribute(AttributeConstants.OFFER, offerTransfer);
             request.setAttribute(AttributeConstants.OFFER_NAME, offerTransfer.getOfferName());

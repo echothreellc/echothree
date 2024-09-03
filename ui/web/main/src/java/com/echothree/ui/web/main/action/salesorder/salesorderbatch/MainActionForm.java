@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.salesorder.salesorderbatch;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetCurrencyChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetCurrencyChoicesResult;
 import com.echothree.control.user.batch.common.BatchUtil;
-import com.echothree.control.user.batch.common.form.GetBatchAliasTypeChoicesForm;
 import com.echothree.control.user.batch.common.result.GetBatchAliasTypeChoicesResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.GetPaymentMethodChoicesForm;
 import com.echothree.control.user.payment.common.result.GetPaymentMethodChoicesResult;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.GetWorkflowStepChoicesForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowStepChoicesResult;
 import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
 import com.echothree.model.control.batch.common.BatchConstants;
@@ -34,8 +30,6 @@ import com.echothree.model.control.batch.common.choice.BatchAliasTypeChoicesBean
 import com.echothree.model.control.payment.common.choice.PaymentMethodChoicesBean;
 import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
 import com.echothree.model.control.workflow.common.choice.WorkflowStepChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -63,14 +57,14 @@ public class MainActionForm
     public void setupCurrencyChoices() {
         if(currencyChoices == null) {
             try {
-                GetCurrencyChoicesForm form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
+                var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
                 
                 form.setDefaultCurrencyChoice(currencyChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCurrencyChoicesResult result = (GetCurrencyChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCurrencyChoicesResult)executionResult.getResult();
                 currencyChoices = result.getCurrencyChoices();
                 
                 if(currencyChoice == null) {
@@ -86,14 +80,14 @@ public class MainActionForm
     private void setupPaymentMethodChoices() {
         if(paymentMethodChoices == null) {
             try {
-                GetPaymentMethodChoicesForm form = PaymentUtil.getHome().getGetPaymentMethodChoicesForm();
+                var form = PaymentUtil.getHome().getGetPaymentMethodChoicesForm();
                 
                 form.setDefaultPaymentMethodChoice(paymentMethodChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPaymentMethodChoicesResult getPaymentMethodChoicesResult = (GetPaymentMethodChoicesResult)executionResult.getResult();
+
+                var commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getPaymentMethodChoicesResult = (GetPaymentMethodChoicesResult)executionResult.getResult();
                 paymentMethodChoices = getPaymentMethodChoicesResult.getPaymentMethodChoices();
                 
                 if(paymentMethodChoice == null)
@@ -108,15 +102,15 @@ public class MainActionForm
     private void setupSalesOrderBatchStatusChoices() {
         if(salesOrderBatchStatusChoices == null) {
             try {
-                GetWorkflowStepChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
+                var form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
                 
                 form.setWorkflowName(SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS);
                 form.setDefaultWorkflowStepChoice(salesOrderBatchStatusChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetWorkflowStepChoicesResult result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+
+                var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
                 salesOrderBatchStatusChoices = result.getWorkflowStepChoices();
                 
                 if(salesOrderBatchStatusChoice == null) {
@@ -132,15 +126,15 @@ public class MainActionForm
     private void setupBatchAliasTypeChoices() {
         if(batchAliasTypeChoices == null) {
             try {
-                GetBatchAliasTypeChoicesForm form = BatchUtil.getHome().getGetBatchAliasTypeChoicesForm();
+                var form = BatchUtil.getHome().getGetBatchAliasTypeChoicesForm();
 
                 form.setBatchTypeName(BatchConstants.BatchType_SALES_ORDER);
                 form.setDefaultBatchAliasTypeChoice(batchAliasTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = BatchUtil.getHome().getBatchAliasTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetBatchAliasTypeChoicesResult getBatchAliasTypeChoicesResult = (GetBatchAliasTypeChoicesResult)executionResult.getResult();
+                var commandResult = BatchUtil.getHome().getBatchAliasTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getBatchAliasTypeChoicesResult = (GetBatchAliasTypeChoicesResult)executionResult.getResult();
                 batchAliasTypeChoices = getBatchAliasTypeChoicesResult.getBatchAliasTypeChoices();
 
                 if(batchAliasTypeChoice == null) {

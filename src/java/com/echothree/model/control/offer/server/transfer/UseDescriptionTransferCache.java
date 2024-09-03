@@ -17,10 +17,7 @@
 package com.echothree.model.control.offer.server.transfer;
 
 import com.echothree.model.control.offer.common.transfer.UseDescriptionTransfer;
-import com.echothree.model.control.offer.common.transfer.UseTransfer;
-import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.UseControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.offer.server.entity.UseDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -36,11 +33,11 @@ public class UseDescriptionTransferCache
     }
     
     public UseDescriptionTransfer getUseDescriptionTransfer(UseDescription useDescription) {
-        UseDescriptionTransfer useDescriptionTransfer = get(useDescription);
+        var useDescriptionTransfer = get(useDescription);
         
         if(useDescriptionTransfer == null) {
-            UseTransfer useTransfer = useControl.getUseTransfer(userVisit, useDescription.getUse());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, useDescription.getLanguage());
+            var useTransfer = useControl.getUseTransfer(userVisit, useDescription.getUse());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, useDescription.getLanguage());
             
             useDescriptionTransfer = new UseDescriptionTransfer(languageTransfer, useTransfer, useDescription.getDescription());
             put(useDescription, useDescriptionTransfer);

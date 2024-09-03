@@ -26,7 +26,6 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -54,7 +53,7 @@ public class ContentPageLayoutLogic
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
+        var contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
 
         if(contentPageLayout == null) {
             contentPageLayout = contentControl.createContentPageLayout(contentPageLayoutName, isDefault, sortOrder, createdBy);
@@ -72,7 +71,7 @@ public class ContentPageLayoutLogic
     public ContentPageLayout getContentPageLayoutByName(final ExecutionErrorAccumulator eea, final String contentPageLayoutName,
             final EntityPermission entityPermission) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName, entityPermission);
+        var contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName, entityPermission);
 
         if(contentPageLayout == null) {
             handleExecutionError(UnknownContentPageLayoutNameException.class, eea, ExecutionErrors.UnknownContentPageLayoutName.name(), contentPageLayoutName);
@@ -93,7 +92,7 @@ public class ContentPageLayoutLogic
             final ContentPageLayoutUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ContentPageLayout contentPageLayout = null;
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentPageLayoutName = universalSpec.getContentPageLayoutName();
+        var contentPageLayoutName = universalSpec.getContentPageLayoutName();
         var parameterCount = (contentPageLayoutName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {

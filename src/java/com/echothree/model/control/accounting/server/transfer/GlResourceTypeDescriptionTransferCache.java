@@ -17,9 +17,7 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.GlResourceTypeDescriptionTransfer;
-import com.echothree.model.control.accounting.common.transfer.GlResourceTypeTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.accounting.server.entity.GlResourceTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -33,12 +31,12 @@ public class GlResourceTypeDescriptionTransferCache
     
     @Override
     public GlResourceTypeDescriptionTransfer getTransfer(GlResourceTypeDescription glResourceTypeDescription) {
-        GlResourceTypeDescriptionTransfer glResourceTypeDescriptionTransfer = get(glResourceTypeDescription);
+        var glResourceTypeDescriptionTransfer = get(glResourceTypeDescription);
         
         if(glResourceTypeDescriptionTransfer == null) {
-            GlResourceTypeTransferCache glResourceTypeTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache();
-            GlResourceTypeTransfer glResourceTypeTransfer = glResourceTypeTransferCache.getTransfer(glResourceTypeDescription.getGlResourceType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, glResourceTypeDescription.getLanguage());
+            var glResourceTypeTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache();
+            var glResourceTypeTransfer = glResourceTypeTransferCache.getTransfer(glResourceTypeDescription.getGlResourceType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, glResourceTypeDescription.getLanguage());
             
             glResourceTypeDescriptionTransfer = new GlResourceTypeDescriptionTransfer(languageTransfer, glResourceTypeTransfer, glResourceTypeDescription.getDescription());
             put(glResourceTypeDescription, glResourceTypeDescriptionTransfer);

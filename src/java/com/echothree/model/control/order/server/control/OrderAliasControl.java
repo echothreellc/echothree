@@ -21,17 +21,10 @@ import com.echothree.model.control.order.common.choice.OrderAliasTypeChoicesBean
 import com.echothree.model.control.order.common.transfer.OrderAliasTransfer;
 import com.echothree.model.control.order.common.transfer.OrderAliasTypeDescriptionTransfer;
 import com.echothree.model.control.order.common.transfer.OrderAliasTypeTransfer;
-import com.echothree.model.control.order.server.transfer.OrderAliasTransferCache;
-import com.echothree.model.control.order.server.transfer.OrderAliasTypeDescriptionTransferCache;
-import com.echothree.model.control.order.server.transfer.OrderAliasTypeTransferCache;
-import com.echothree.model.data.order.common.pk.OrderAliasTypePK;
-import com.echothree.model.data.order.common.pk.OrderPK;
-import com.echothree.model.data.order.common.pk.OrderTypePK;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderAlias;
 import com.echothree.model.data.order.server.entity.OrderAliasType;
 import com.echothree.model.data.order.server.entity.OrderAliasTypeDescription;
-import com.echothree.model.data.order.server.entity.OrderAliasTypeDetail;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.factory.OrderAliasFactory;
 import com.echothree.model.data.order.server.factory.OrderAliasTypeDescriptionFactory;
@@ -48,7 +41,6 @@ import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -67,11 +59,11 @@ public class OrderAliasControl
 
     public OrderAliasType createOrderAliasType(OrderType orderType, String orderAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        OrderAliasType defaultOrderAliasType = getDefaultOrderAliasType(orderType);
-        boolean defaultFound = defaultOrderAliasType != null;
+        var defaultOrderAliasType = getDefaultOrderAliasType(orderType);
+        var defaultFound = defaultOrderAliasType != null;
 
         if(defaultFound && isDefault) {
-            OrderAliasTypeDetailValue defaultOrderAliasTypeDetailValue = getDefaultOrderAliasTypeDetailValueForUpdate(orderType);
+            var defaultOrderAliasTypeDetailValue = getDefaultOrderAliasTypeDetailValueForUpdate(orderType);
 
             defaultOrderAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateOrderAliasTypeFromValue(defaultOrderAliasTypeDetailValue, false, createdBy);
@@ -79,8 +71,8 @@ public class OrderAliasControl
             isDefault = Boolean.TRUE;
         }
 
-        OrderAliasType orderAliasType = OrderAliasTypeFactory.getInstance().create();
-        OrderAliasTypeDetail orderAliasTypeDetail = OrderAliasTypeDetailFactory.getInstance().create(orderAliasType, orderType, orderAliasTypeName,
+        var orderAliasType = OrderAliasTypeFactory.getInstance().create();
+        var orderAliasTypeDetail = OrderAliasTypeDetailFactory.getInstance().create(orderAliasType, orderType, orderAliasTypeName,
                 validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -205,9 +197,9 @@ public class OrderAliasControl
     }
 
     public List<OrderAliasTypeTransfer> getOrderAliasTypeTransfers(UserVisit userVisit, OrderType orderType) {
-        List<OrderAliasType> orderAliasTypes = getOrderAliasTypes(orderType);
+        var orderAliasTypes = getOrderAliasTypes(orderType);
         List<OrderAliasTypeTransfer> orderAliasTypeTransfers = new ArrayList<>(orderAliasTypes.size());
-        OrderAliasTypeTransferCache orderAliasTypeTransferCache = getOrderTransferCaches(userVisit).getOrderAliasTypeTransferCache();
+        var orderAliasTypeTransferCache = getOrderTransferCaches(userVisit).getOrderAliasTypeTransferCache();
 
         orderAliasTypes.forEach((orderAliasType) ->
                 orderAliasTypeTransfers.add(orderAliasTypeTransferCache.getOrderAliasTypeTransfer(orderAliasType))
@@ -218,7 +210,7 @@ public class OrderAliasControl
 
     public OrderAliasTypeChoicesBean getOrderAliasTypeChoices(String defaultOrderAliasTypeChoice, Language language,
             boolean allowNullChoice, OrderType orderType) {
-        List<OrderAliasType> orderAliasTypes = getOrderAliasTypes(orderType);
+        var orderAliasTypes = getOrderAliasTypes(orderType);
         var size = orderAliasTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -234,7 +226,7 @@ public class OrderAliasControl
         }
 
         for(var orderAliasType : orderAliasTypes) {
-            OrderAliasTypeDetail orderAliasTypeDetail = orderAliasType.getLastDetail();
+            var orderAliasTypeDetail = orderAliasType.getLastDetail();
 
             var label = getBestOrderAliasTypeDescription(orderAliasType, language);
             var value = orderAliasTypeDetail.getOrderAliasTypeName();
@@ -254,28 +246,28 @@ public class OrderAliasControl
     private void updateOrderAliasTypeFromValue(OrderAliasTypeDetailValue orderAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(orderAliasTypeDetailValue.hasBeenModified()) {
-            OrderAliasType orderAliasType = OrderAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderAliasType = OrderAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderAliasTypeDetailValue.getOrderAliasTypePK());
-            OrderAliasTypeDetail orderAliasTypeDetail = orderAliasType.getActiveDetailForUpdate();
+            var orderAliasTypeDetail = orderAliasType.getActiveDetailForUpdate();
 
             orderAliasTypeDetail.setThruTime(session.START_TIME_LONG);
             orderAliasTypeDetail.store();
 
-            OrderAliasTypePK orderAliasTypePK = orderAliasTypeDetail.getOrderAliasTypePK();
-            OrderType orderType = orderAliasTypeDetail.getOrderType();
-            OrderTypePK orderTypePK = orderType.getPrimaryKey();
-            String orderAliasTypeName = orderAliasTypeDetailValue.getOrderAliasTypeName();
-            String validationPattern = orderAliasTypeDetailValue.getValidationPattern();
-            Boolean isDefault = orderAliasTypeDetailValue.getIsDefault();
-            Integer sortOrder = orderAliasTypeDetailValue.getSortOrder();
+            var orderAliasTypePK = orderAliasTypeDetail.getOrderAliasTypePK();
+            var orderType = orderAliasTypeDetail.getOrderType();
+            var orderTypePK = orderType.getPrimaryKey();
+            var orderAliasTypeName = orderAliasTypeDetailValue.getOrderAliasTypeName();
+            var validationPattern = orderAliasTypeDetailValue.getValidationPattern();
+            var isDefault = orderAliasTypeDetailValue.getIsDefault();
+            var sortOrder = orderAliasTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                OrderAliasType defaultOrderAliasType = getDefaultOrderAliasType(orderType);
-                boolean defaultFound = defaultOrderAliasType != null && !defaultOrderAliasType.equals(orderAliasType);
+                var defaultOrderAliasType = getDefaultOrderAliasType(orderType);
+                var defaultFound = defaultOrderAliasType != null && !defaultOrderAliasType.equals(orderAliasType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    OrderAliasTypeDetailValue defaultOrderAliasTypeDetailValue = getDefaultOrderAliasTypeDetailValueForUpdate(orderType);
+                    var defaultOrderAliasTypeDetailValue = getDefaultOrderAliasTypeDetailValueForUpdate(orderType);
 
                     defaultOrderAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateOrderAliasTypeFromValue(defaultOrderAliasTypeDetailValue, false, updatedBy);
@@ -303,23 +295,23 @@ public class OrderAliasControl
         deleteOrderAliasesByOrderAliasType(orderAliasType, deletedBy);
         deleteOrderAliasTypeDescriptionsByOrderAliasType(orderAliasType, deletedBy);
 
-        OrderAliasTypeDetail orderAliasTypeDetail = orderAliasType.getLastDetailForUpdate();
+        var orderAliasTypeDetail = orderAliasType.getLastDetailForUpdate();
         orderAliasTypeDetail.setThruTime(session.START_TIME_LONG);
         orderAliasType.setActiveDetail(null);
         orderAliasType.store();
 
         // Check for default, and pick one if necessary
-        OrderType orderType = orderAliasTypeDetail.getOrderType();
-        OrderAliasType defaultOrderAliasType = getDefaultOrderAliasType(orderType);
+        var orderType = orderAliasTypeDetail.getOrderType();
+        var defaultOrderAliasType = getDefaultOrderAliasType(orderType);
         if(defaultOrderAliasType == null) {
-            List<OrderAliasType> orderAliasTypes = getOrderAliasTypesForUpdate(orderType);
+            var orderAliasTypes = getOrderAliasTypesForUpdate(orderType);
 
             if(!orderAliasTypes.isEmpty()) {
-                Iterator<OrderAliasType> iter = orderAliasTypes.iterator();
+                var iter = orderAliasTypes.iterator();
                 if(iter.hasNext()) {
                     defaultOrderAliasType = iter.next();
                 }
-                OrderAliasTypeDetailValue orderAliasTypeDetailValue = Objects.requireNonNull(defaultOrderAliasType).getLastDetailForUpdate().getOrderAliasTypeDetailValue().clone();
+                var orderAliasTypeDetailValue = Objects.requireNonNull(defaultOrderAliasType).getLastDetailForUpdate().getOrderAliasTypeDetailValue().clone();
 
                 orderAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateOrderAliasTypeFromValue(orderAliasTypeDetailValue, false, deletedBy);
@@ -344,7 +336,7 @@ public class OrderAliasControl
     // --------------------------------------------------------------------------------
 
     public OrderAliasTypeDescription createOrderAliasTypeDescription(OrderAliasType orderAliasType, Language language, String description, BasePK createdBy) {
-        OrderAliasTypeDescription orderAliasTypeDescription = OrderAliasTypeDescriptionFactory.getInstance().create(orderAliasType, language,
+        var orderAliasTypeDescription = OrderAliasTypeDescriptionFactory.getInstance().create(orderAliasType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(orderAliasType.getPrimaryKey(), EventTypes.MODIFY, orderAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -423,7 +415,7 @@ public class OrderAliasControl
 
     public String getBestOrderAliasTypeDescription(OrderAliasType orderAliasType, Language language) {
         String description;
-        OrderAliasTypeDescription orderAliasTypeDescription = getOrderAliasTypeDescription(orderAliasType, language);
+        var orderAliasTypeDescription = getOrderAliasTypeDescription(orderAliasType, language);
 
         if(orderAliasTypeDescription == null && !language.getIsDefault()) {
             orderAliasTypeDescription = getOrderAliasTypeDescription(orderAliasType, getPartyControl().getDefaultLanguage());
@@ -443,9 +435,9 @@ public class OrderAliasControl
     }
 
     public List<OrderAliasTypeDescriptionTransfer> getOrderAliasTypeDescriptionTransfersByOrderAliasType(UserVisit userVisit, OrderAliasType orderAliasType) {
-        List<OrderAliasTypeDescription> orderAliasTypeDescriptions = getOrderAliasTypeDescriptionsByOrderAliasType(orderAliasType);
+        var orderAliasTypeDescriptions = getOrderAliasTypeDescriptionsByOrderAliasType(orderAliasType);
         List<OrderAliasTypeDescriptionTransfer> orderAliasTypeDescriptionTransfers = new ArrayList<>(orderAliasTypeDescriptions.size());
-        OrderAliasTypeDescriptionTransferCache orderAliasTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderAliasTypeDescriptionTransferCache();
+        var orderAliasTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderAliasTypeDescriptionTransferCache();
 
         orderAliasTypeDescriptions.forEach((orderAliasTypeDescription) ->
                 orderAliasTypeDescriptionTransfers.add(orderAliasTypeDescriptionTransferCache.getOrderAliasTypeDescriptionTransfer(orderAliasTypeDescription))
@@ -456,15 +448,15 @@ public class OrderAliasControl
 
     public void updateOrderAliasTypeDescriptionFromValue(OrderAliasTypeDescriptionValue orderAliasTypeDescriptionValue, BasePK updatedBy) {
         if(orderAliasTypeDescriptionValue.hasBeenModified()) {
-            OrderAliasTypeDescription orderAliasTypeDescription = OrderAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderAliasTypeDescription = OrderAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      orderAliasTypeDescriptionValue.getPrimaryKey());
 
             orderAliasTypeDescription.setThruTime(session.START_TIME_LONG);
             orderAliasTypeDescription.store();
 
-            OrderAliasType orderAliasType = orderAliasTypeDescription.getOrderAliasType();
-            Language language = orderAliasTypeDescription.getLanguage();
-            String description = orderAliasTypeDescriptionValue.getDescription();
+            var orderAliasType = orderAliasTypeDescription.getOrderAliasType();
+            var language = orderAliasTypeDescription.getLanguage();
+            var description = orderAliasTypeDescriptionValue.getDescription();
 
             orderAliasTypeDescription = OrderAliasTypeDescriptionFactory.getInstance().create(orderAliasType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -481,7 +473,7 @@ public class OrderAliasControl
     }
 
     public void deleteOrderAliasTypeDescriptionsByOrderAliasType(OrderAliasType orderAliasType, BasePK deletedBy) {
-        List<OrderAliasTypeDescription> orderAliasTypeDescriptions = getOrderAliasTypeDescriptionsByOrderAliasTypeForUpdate(orderAliasType);
+        var orderAliasTypeDescriptions = getOrderAliasTypeDescriptionsByOrderAliasTypeForUpdate(orderAliasType);
 
         orderAliasTypeDescriptions.forEach((orderAliasTypeDescription) -> 
                 deleteOrderAliasTypeDescription(orderAliasTypeDescription, deletedBy)
@@ -493,7 +485,7 @@ public class OrderAliasControl
     // --------------------------------------------------------------------------------
 
     public OrderAlias createOrderAlias(Order order, OrderAliasType orderAliasType, String alias, BasePK createdBy) {
-        OrderAlias orderAlias = OrderAliasFactory.getInstance().create(order, orderAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var orderAlias = OrderAliasFactory.getInstance().create(order, orderAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, orderAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -636,9 +628,9 @@ public class OrderAliasControl
     }
 
     public List<OrderAliasTransfer> getOrderAliasTransfersByOrder(UserVisit userVisit, Order order) {
-        List<OrderAlias> orderaliases = getOrderAliasesByOrder(order);
+        var orderaliases = getOrderAliasesByOrder(order);
         List<OrderAliasTransfer> orderAliasTransfers = new ArrayList<>(orderaliases.size());
-        OrderAliasTransferCache orderAliasTransferCache = getOrderTransferCaches(userVisit).getOrderAliasTransferCache();
+        var orderAliasTransferCache = getOrderTransferCaches(userVisit).getOrderAliasTransferCache();
 
         orderaliases.forEach((orderAlias) ->
                 orderAliasTransfers.add(orderAliasTransferCache.getOrderAliasTransfer(orderAlias))
@@ -649,14 +641,14 @@ public class OrderAliasControl
 
     public void updateOrderAliasFromValue(OrderAliasValue orderAliasValue, BasePK updatedBy) {
         if(orderAliasValue.hasBeenModified()) {
-            OrderAlias orderAlias = OrderAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, orderAliasValue.getPrimaryKey());
+            var orderAlias = OrderAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, orderAliasValue.getPrimaryKey());
 
             orderAlias.setThruTime(session.START_TIME_LONG);
             orderAlias.store();
 
-            OrderPK orderPK = orderAlias.getOrderPK();
-            OrderAliasTypePK orderAliasTypePK = orderAlias.getOrderAliasTypePK();
-            String alias  = orderAliasValue.getAlias();
+            var orderPK = orderAlias.getOrderPK();
+            var orderAliasTypePK = orderAlias.getOrderAliasTypePK();
+            var alias  = orderAliasValue.getAlias();
 
             orderAlias = OrderAliasFactory.getInstance().create(orderPK, orderAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -672,7 +664,7 @@ public class OrderAliasControl
     }
 
     public void deleteOrderAliasesByOrderAliasType(OrderAliasType orderAliasType, BasePK deletedBy) {
-        List<OrderAlias> orderaliases = getOrderAliasesByOrderAliasTypeForUpdate(orderAliasType);
+        var orderaliases = getOrderAliasesByOrderAliasTypeForUpdate(orderAliasType);
 
         orderaliases.forEach((orderAlias) -> 
                 deleteOrderAlias(orderAlias, deletedBy)
@@ -680,7 +672,7 @@ public class OrderAliasControl
     }
 
     public void deleteOrderAliasesByOrder(Order order, BasePK deletedBy) {
-        List<OrderAlias> orderaliases = getOrderAliasesByOrderForUpdate(order);
+        var orderaliases = getOrderAliasesByOrderForUpdate(order);
 
         orderaliases.forEach((orderAlias) -> 
                 deleteOrderAlias(orderAlias, deletedBy)

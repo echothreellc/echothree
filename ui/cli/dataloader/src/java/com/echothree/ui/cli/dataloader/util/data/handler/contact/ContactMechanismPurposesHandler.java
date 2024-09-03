@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.contact;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.ContactService;
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
-import com.echothree.control.user.contact.common.form.CreateContactMechanismPurposeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -50,9 +49,9 @@ public class ContactMechanismPurposesHandler
             String eventSubscriber = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("contactMechanismPurposeName"))
                     contactMechanismPurposeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("contactMechanismTypeName"))
@@ -66,7 +65,7 @@ public class ContactMechanismPurposesHandler
             }
             
             try {
-                CreateContactMechanismPurposeForm form = ContactFormFactory.getCreateContactMechanismPurposeForm();
+                var form = ContactFormFactory.getCreateContactMechanismPurposeForm();
                 
                 form.setContactMechanismPurposeName(contactMechanismPurposeName);
                 form.setContactMechanismTypeName(contactMechanismTypeName);

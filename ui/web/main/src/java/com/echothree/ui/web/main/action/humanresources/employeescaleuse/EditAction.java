@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected PartyScaleUseSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyScaleUseSpec spec = ScaleUtil.getHome().getPartyScaleUseSpec();
+        var spec = ScaleUtil.getHome().getPartyScaleUseSpec();
 
         spec.setPartyName(findParameter(request, ParameterConstants.PARTY_NAME, actionForm.getPartyName()));
         spec.setScaleUseTypeName(findParameter(request, ParameterConstants.SCALE_USE_TYPE_NAME, actionForm.getScaleUseTypeName()));
@@ -62,7 +62,7 @@ public class EditAction
     @Override
     protected PartyScaleUseEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyScaleUseEdit edit = ScaleUtil.getHome().getPartyScaleUseEdit();
+        var edit = ScaleUtil.getHome().getPartyScaleUseEdit();
 
         edit.setScaleName(actionForm.getScaleChoice());
 

@@ -20,24 +20,12 @@ import com.echothree.control.user.comment.common.edit.CommentEdit;
 import com.echothree.control.user.comment.common.edit.CommentEditFactory;
 import com.echothree.control.user.comment.common.form.EditCommentForm;
 import com.echothree.control.user.comment.common.result.CommentResultFactory;
-import com.echothree.control.user.comment.common.result.EditCommentResult;
 import com.echothree.control.user.comment.common.spec.CommentSpec;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.comment.server.entity.Comment;
-import com.echothree.model.data.comment.server.entity.CommentBlob;
-import com.echothree.model.data.comment.server.entity.CommentClob;
-import com.echothree.model.data.comment.server.entity.CommentDetail;
-import com.echothree.model.data.comment.server.entity.CommentString;
-import com.echothree.model.data.comment.server.value.CommentBlobValue;
-import com.echothree.model.data.comment.server.value.CommentClobValue;
-import com.echothree.model.data.comment.server.value.CommentDetailValue;
-import com.echothree.model.data.comment.server.value.CommentStringValue;
-import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.core.server.entity.MimeTypeUsage;
-import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -83,20 +71,20 @@ public class EditCommentCommand
             String string) {
         if(lockEntityForUpdate(comment)) {
             try {
-                CommentDetailValue commentDetailValue = commentControl.getCommentDetailValueForUpdate(comment);
+                var commentDetailValue = commentControl.getCommentDetailValueForUpdate(comment);
                 
                 commentDetailValue.setLanguagePK(language.getPrimaryKey());
                 commentDetailValue.setDescription(description);
                 commentDetailValue.setMimeTypePK(mimeType == null? null: mimeType.getPrimaryKey());
                 commentControl.updateCommentFromValue(commentDetailValue, updatedBy);
-                
-                CommentBlob commentBlob = commentControl.getCommentBlobForUpdate(comment);
+
+                var commentBlob = commentControl.getCommentBlobForUpdate(comment);
                 
                 if(commentBlob != null) {
                     if(blob == null) {
                         commentControl.deleteCommentBlob(commentBlob, updatedBy);
                     } else {
-                        CommentBlobValue commentBlobValue = commentControl.getCommentBlobValue(commentBlob);
+                        var commentBlobValue = commentControl.getCommentBlobValue(commentBlob);
                         
                         commentBlobValue.setBlob(blob);
                         commentControl.updateCommentBlobFromValue(commentBlobValue, updatedBy);
@@ -104,14 +92,14 @@ public class EditCommentCommand
                 } else if(blob != null) {
                     commentControl.createCommentBlob(comment, blob, updatedBy);
                 }
-                
-                CommentClob commentClob = commentControl.getCommentClobForUpdate(comment);
+
+                var commentClob = commentControl.getCommentClobForUpdate(comment);
                 
                 if(commentClob != null) {
                     if(clob == null) {
                         commentControl.deleteCommentClob(commentClob, updatedBy);
                     } else {
-                        CommentClobValue commentClobValue = commentControl.getCommentClobValue(commentClob);
+                        var commentClobValue = commentControl.getCommentClobValue(commentClob);
                         
                         commentClobValue.setClob(clob);
                         commentControl.updateCommentClobFromValue(commentClobValue, updatedBy);
@@ -119,14 +107,14 @@ public class EditCommentCommand
                 } else if(clob != null) {
                     commentControl.createCommentClob(comment, clob, updatedBy);
                 }
-                
-                CommentString commentString = commentControl.getCommentStringForUpdate(comment);
+
+                var commentString = commentControl.getCommentStringForUpdate(comment);
                 
                 if(commentString != null) {
                     if(string == null) {
                         commentControl.deleteCommentString(commentString, updatedBy);
                     } else {
-                        CommentStringValue commentStringValue = commentControl.getCommentStringValue(commentString);
+                        var commentStringValue = commentControl.getCommentStringValue(commentString);
                         
                         commentStringValue.setString(string);
                         commentControl.updateCommentStringFromValue(commentStringValue, updatedBy);
@@ -145,16 +133,16 @@ public class EditCommentCommand
     @Override
     protected BaseResult execute() {
         var commentControl = Session.getModelController(CommentControl.class);
-        EditCommentResult result = CommentResultFactory.getEditCommentResult();
-        String commentName = spec.getCommentName();
-        Comment comment = commentControl.getCommentByName(commentName);
+        var result = CommentResultFactory.getEditCommentResult();
+        var commentName = spec.getCommentName();
+        var comment = commentControl.getCommentByName(commentName);
 
         if(comment != null) {
             if(editMode.equals(EditMode.LOCK)) {
                 if(lockEntity(comment)) {
-                    CommentDetail commentDetail = comment.getLastDetail();
-                    CommentEdit edit = CommentEditFactory.getCommentEdit();
-                    MimeType mimeType = commentDetail.getMimeType();
+                    var commentDetail = comment.getLastDetail();
+                    var edit = CommentEditFactory.getCommentEdit();
+                    var mimeType = commentDetail.getMimeType();
 
                     result.setEdit(edit);
 
@@ -163,17 +151,17 @@ public class EditCommentCommand
                     edit.setMimeTypeName(mimeType == null ? null : mimeType.getLastDetail().getMimeTypeName());
 
                     if(mimeType == null) {
-                        CommentString commentString = commentControl.getCommentString(comment);
+                        var commentString = commentControl.getCommentString(comment);
 
                         if(commentString != null) {
                             edit.setStringComment(commentString.getString());
                         }
                     } else {
-                        String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+                        var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
 
                         // EntityAttributeTypes.BLOB.name() does not return anything in edit
                         if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-                            CommentClob commentClob = commentControl.getCommentClob(comment);
+                            var commentClob = commentControl.getCommentClob(comment);
 
                             if(commentClob != null) {
                                 edit.setClobComment(commentClob.getClob());
@@ -190,18 +178,18 @@ public class EditCommentCommand
                 unlockEntity(comment);
             } else if(editMode.equals(EditMode.UPDATE)) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = edit.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = edit.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     BasePK updatedBy = getPartyPK();
-                    String description = edit.getDescription();
-                    String mimeTypeName = edit.getMimeTypeName();
-                    MimeTypeUsageType mimeTypeUsageType = comment.getLastDetail().getCommentType().getLastDetail().getMimeTypeUsageType();
+                    var description = edit.getDescription();
+                    var mimeTypeName = edit.getMimeTypeName();
+                    var mimeTypeUsageType = comment.getLastDetail().getCommentType().getLastDetail().getMimeTypeUsageType();
 
                     if(mimeTypeName == null) {
                         if(mimeTypeUsageType == null) {
-                            String string = edit.getStringComment();
+                            var string = edit.getStringComment();
 
                             if(string != null) {
                                 updateComment(commentControl, comment, language, description, null, updatedBy, null, null, string);
@@ -214,18 +202,18 @@ public class EditCommentCommand
                         }
                     } else {
                         var coreControl = getCoreControl();
-                        MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+                        var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
                         if(mimeType != null) {
                             if(mimeTypeUsageType != null) {
-                                MimeTypeUsage mimeTypeUsage = coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
+                                var mimeTypeUsage = coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
 
                                 if(mimeTypeUsage != null) {
-                                    EntityAttributeType entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();
-                                    String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+                                    var entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();
+                                    var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
 
                                     if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
-                                        ByteArray blob = edit.getBlobComment();
+                                        var blob = edit.getBlobComment();
 
                                         if(blob != null) {
                                             updateComment(commentControl, comment, language, description, mimeType, updatedBy, blob, null, null);
@@ -233,7 +221,7 @@ public class EditCommentCommand
                                             addExecutionError(ExecutionErrors.MissingCommentBlob.name());
                                         }
                                     } else if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-                                        String clob = edit.getClobComment();
+                                        var clob = edit.getClobComment();
 
                                         if(clob != null) {
                                             updateComment(commentControl, comment, language, description, mimeType, updatedBy, null, clob, null);

@@ -17,12 +17,9 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.TransactionEntityRoleTypeTransfer;
-import com.echothree.model.control.accounting.common.transfer.TransactionTypeTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleType;
-import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -40,15 +37,15 @@ public class TransactionEntityRoleTypeTransferCache
     
     @Override
     public TransactionEntityRoleTypeTransfer getTransfer(TransactionEntityRoleType transactionEntityRoleType) {
-        TransactionEntityRoleTypeTransfer transactionEntityRoleTypeTransfer = get(transactionEntityRoleType);
+        var transactionEntityRoleTypeTransfer = get(transactionEntityRoleType);
         
         if(transactionEntityRoleTypeTransfer == null) {
-            TransactionEntityRoleTypeDetail transactionEntityRoleTypeDetail = transactionEntityRoleType.getLastDetail();
-            TransactionTypeTransfer transactionType = accountingControl.getTransactionTypeTransfer(userVisit, transactionEntityRoleTypeDetail.getTransactionType());
-            String transactionEntityRoleTypeName = transactionEntityRoleTypeDetail.getTransactionEntityRoleTypeName();
-            EntityTypeTransfer entityType = coreControl.getEntityTypeTransfer(userVisit, transactionEntityRoleTypeDetail.getEntityType());
-            Integer sortOrder = transactionEntityRoleTypeDetail.getSortOrder();
-            String description = accountingControl.getBestTransactionEntityRoleTypeDescription(transactionEntityRoleType, getLanguage());
+            var transactionEntityRoleTypeDetail = transactionEntityRoleType.getLastDetail();
+            var transactionType = accountingControl.getTransactionTypeTransfer(userVisit, transactionEntityRoleTypeDetail.getTransactionType());
+            var transactionEntityRoleTypeName = transactionEntityRoleTypeDetail.getTransactionEntityRoleTypeName();
+            var entityType = coreControl.getEntityTypeTransfer(userVisit, transactionEntityRoleTypeDetail.getEntityType());
+            var sortOrder = transactionEntityRoleTypeDetail.getSortOrder();
+            var description = accountingControl.getBestTransactionEntityRoleTypeDescription(transactionEntityRoleType, getLanguage());
             
             transactionEntityRoleTypeTransfer = new TransactionEntityRoleTypeTransfer(transactionType, transactionEntityRoleTypeName, entityType, sortOrder, description);
             put(transactionEntityRoleType, transactionEntityRoleTypeTransfer);

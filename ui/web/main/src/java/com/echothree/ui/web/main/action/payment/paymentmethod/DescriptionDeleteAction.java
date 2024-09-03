@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.payment.paymentmethod;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.DeletePaymentMethodDescriptionForm;
-import com.echothree.control.user.payment.common.form.GetPaymentMethodDescriptionForm;
 import com.echothree.control.user.payment.common.result.GetPaymentMethodDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,14 +60,14 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPaymentMethodDescriptionForm commandForm = PaymentUtil.getHome().getGetPaymentMethodDescriptionForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentMethodDescriptionForm();
         
         commandForm.setPaymentMethodName(actionForm.getPaymentMethodName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentMethodDescription(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPaymentMethodDescriptionResult result = (GetPaymentMethodDescriptionResult)executionResult.getResult();
+
+        var commandResult = PaymentUtil.getHome().getPaymentMethodDescription(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPaymentMethodDescriptionResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.PAYMENT_METHOD_DESCRIPTION, result.getPaymentMethodDescription());
     }
@@ -78,7 +75,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePaymentMethodDescriptionForm commandForm = PaymentUtil.getHome().getDeletePaymentMethodDescriptionForm();
+        var commandForm = PaymentUtil.getHome().getDeletePaymentMethodDescriptionForm();
 
         commandForm.setPaymentMethodName(actionForm.getPaymentMethodName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

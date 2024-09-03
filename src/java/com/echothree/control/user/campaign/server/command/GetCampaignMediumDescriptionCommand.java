@@ -18,15 +18,11 @@ package com.echothree.control.user.campaign.server.command;
 
 import com.echothree.control.user.campaign.common.form.GetCampaignMediumDescriptionForm;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
-import com.echothree.control.user.campaign.common.result.GetCampaignMediumDescriptionResult;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.campaign.server.entity.CampaignMedium;
-import com.echothree.model.data.campaign.server.entity.CampaignMediumDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,17 +64,17 @@ public class GetCampaignMediumDescriptionCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        GetCampaignMediumDescriptionResult result = CampaignResultFactory.getGetCampaignMediumDescriptionResult();
-        String campaignMediumName = form.getCampaignMediumName();
-        CampaignMedium campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
+        var result = CampaignResultFactory.getGetCampaignMediumDescriptionResult();
+        var campaignMediumName = form.getCampaignMediumName();
+        var campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
 
         if(campaignMedium != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                CampaignMediumDescription campaignMediumDescription = campaignControl.getCampaignMediumDescription(campaignMedium, language);
+                var campaignMediumDescription = campaignControl.getCampaignMediumDescription(campaignMedium, language);
 
                 if(campaignMediumDescription != null) {
                     result.setCampaignMediumDescription(campaignControl.getCampaignMediumDescriptionTransfer(getUserVisit(), campaignMediumDescription));

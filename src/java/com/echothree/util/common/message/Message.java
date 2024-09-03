@@ -153,10 +153,10 @@ public class Message
     }
     
     private StringBuilder valuesToStringBuilder() {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         
         if(values != null) {
-            for(int i = 0 ; i < values.length ; i++) {
+            for(var i = 0; i < values.length ; i++) {
                 if(i != 0)
                     sb.append(", ");
                 

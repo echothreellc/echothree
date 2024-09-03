@@ -19,7 +19,6 @@ package com.echothree.control.user.warehouse.server.command;
 import com.echothree.control.user.warehouse.common.edit.LocationVolumeEdit;
 import com.echothree.control.user.warehouse.common.edit.WarehouseEditFactory;
 import com.echothree.control.user.warehouse.common.form.EditLocationVolumeForm;
-import com.echothree.control.user.warehouse.common.result.EditLocationVolumeResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.control.user.warehouse.common.spec.LocationSpec;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -29,13 +28,7 @@ import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.Location;
-import com.echothree.model.data.warehouse.server.entity.LocationVolume;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
-import com.echothree.model.data.warehouse.server.value.LocationVolumeValue;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -88,33 +81,33 @@ public class EditLocationVolumeCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        EditLocationVolumeResult result = WarehouseResultFactory.getEditLocationVolumeResult();
-        String warehouseName = spec.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = WarehouseResultFactory.getEditLocationVolumeResult();
+        var warehouseName = spec.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            String locationName = spec.getLocationName();
-            Location location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
+            var locationName = spec.getLocationName();
+            var location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
             
             if(location != null) {
                 var uomControl = Session.getModelController(UomControl.class);
-                UnitOfMeasureKind volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
+                var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
                 
                 if(volumeUnitOfMeasureKind != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        LocationVolume locationVolume = warehouseControl.getLocationVolume(location);
+                        var locationVolume = warehouseControl.getLocationVolume(location);
                         
                         if(locationVolume != null) {
                             result.setLocationVolume(warehouseControl.getLocationVolumeTransfer(getUserVisit(), locationVolume));
                             
                             if(lockEntity(location)) {
-                                LocationVolumeEdit edit = WarehouseEditFactory.getLocationVolumeEdit();
-                                Long height = locationVolume.getHeight();
-                                Conversion heightConversion = height == null? null: new Conversion(uomControl, volumeUnitOfMeasureKind, height).convertToHighestUnitOfMeasureType();
-                                Long width = locationVolume.getWidth();
-                                Conversion widthConversion = width == null? null: new Conversion(uomControl, volumeUnitOfMeasureKind, width).convertToHighestUnitOfMeasureType();
-                                Long depth = locationVolume.getDepth();
-                                Conversion depthConversion = depth == null? null: new Conversion(uomControl, volumeUnitOfMeasureKind, depth).convertToHighestUnitOfMeasureType();
+                                var edit = WarehouseEditFactory.getLocationVolumeEdit();
+                                var height = locationVolume.getHeight();
+                                var heightConversion = height == null? null: new Conversion(uomControl, volumeUnitOfMeasureKind, height).convertToHighestUnitOfMeasureType();
+                                var width = locationVolume.getWidth();
+                                var widthConversion = width == null? null: new Conversion(uomControl, volumeUnitOfMeasureKind, width).convertToHighestUnitOfMeasureType();
+                                var depth = locationVolume.getDepth();
+                                var depthConversion = depth == null? null: new Conversion(uomControl, volumeUnitOfMeasureKind, depth).convertToHighestUnitOfMeasureType();
                                 
                                 result.setEdit(edit);
                                 edit.setHeight(heightConversion.getQuantity().toString());
@@ -132,38 +125,38 @@ public class EditLocationVolumeCommand
                             addExecutionError(ExecutionErrors.UnknownLocationVolume.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        LocationVolumeValue locationVolumeValue = warehouseControl.getLocationVolumeValueForUpdate(location);
+                        var locationVolumeValue = warehouseControl.getLocationVolumeValueForUpdate(location);
                         
                         if(locationVolumeValue != null) {
-                            String heightUnitOfMeasureTypeName = edit.getHeightUnitOfMeasureTypeName();
-                            UnitOfMeasureType heightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
+                            var heightUnitOfMeasureTypeName = edit.getHeightUnitOfMeasureTypeName();
+                            var heightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
                                     heightUnitOfMeasureTypeName);
                             
                             if(heightUnitOfMeasureType != null) {
-                                Long height = Long.valueOf(edit.getHeight());
+                                var height = Long.valueOf(edit.getHeight());
                                 
                                 if(height > 0) {
-                                    String widthUnitOfMeasureTypeName = edit.getWidthUnitOfMeasureTypeName();
-                                    UnitOfMeasureType widthUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
+                                    var widthUnitOfMeasureTypeName = edit.getWidthUnitOfMeasureTypeName();
+                                    var widthUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
                                             widthUnitOfMeasureTypeName);
                                     
                                     if(widthUnitOfMeasureType != null) {
-                                        Long width = Long.valueOf(edit.getWidth());
+                                        var width = Long.valueOf(edit.getWidth());
                                         
                                         if(width > 0) {
-                                            String depthUnitOfMeasureTypeName = edit.getDepthUnitOfMeasureTypeName();
-                                            UnitOfMeasureType depthUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
+                                            var depthUnitOfMeasureTypeName = edit.getDepthUnitOfMeasureTypeName();
+                                            var depthUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
                                                     depthUnitOfMeasureTypeName);
                                             
                                             if(depthUnitOfMeasureType != null) {
-                                                Long depth = Long.valueOf(edit.getDepth());
+                                                var depth = Long.valueOf(edit.getDepth());
                                                 
                                                 if(depth > 0) {
                                                     if(lockEntityForUpdate(location)) {
                                                         try {
-                                                            Conversion heightConversion = new Conversion(uomControl, heightUnitOfMeasureType, height).convertToLowestUnitOfMeasureType();
-                                                            Conversion widthConversion = new Conversion(uomControl, widthUnitOfMeasureType, width).convertToLowestUnitOfMeasureType();
-                                                            Conversion depthConversion = new Conversion(uomControl, depthUnitOfMeasureType, depth).convertToLowestUnitOfMeasureType();
+                                                            var heightConversion = new Conversion(uomControl, heightUnitOfMeasureType, height).convertToLowestUnitOfMeasureType();
+                                                            var widthConversion = new Conversion(uomControl, widthUnitOfMeasureType, width).convertToLowestUnitOfMeasureType();
+                                                            var depthConversion = new Conversion(uomControl, depthUnitOfMeasureType, depth).convertToLowestUnitOfMeasureType();
                                                             
                                                             locationVolumeValue.setHeight(heightConversion.getQuantity());
                                                             locationVolumeValue.setWidth(widthConversion.getQuantity());

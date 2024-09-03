@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.SetDefaultAppearanceForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.value.AppearanceDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -61,8 +60,8 @@ public class SetDefaultAppearanceCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String appearanceName = form.getAppearanceName();
-        AppearanceDetailValue appearanceDetailValue = coreControl.getAppearanceDetailValueByNameForUpdate(appearanceName);
+        var appearanceName = form.getAppearanceName();
+        var appearanceDetailValue = coreControl.getAppearanceDetailValueByNameForUpdate(appearanceName);
         
         if(appearanceDetailValue != null) {
             appearanceDetailValue.setIsDefault(Boolean.TRUE);

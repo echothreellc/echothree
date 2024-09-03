@@ -18,12 +18,10 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentWebAddressDescriptionsForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentWebAddressDescriptionsResult;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetContentWebAddressDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentWebAddressDescriptionsResult result = ContentResultFactory.getGetContentWebAddressDescriptionsResult();
-        String contentWebAddressName = form.getContentWebAddressName();
-        ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+        var result = ContentResultFactory.getGetContentWebAddressDescriptionsResult();
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
         
         if(contentWebAddress != null) {
             result.setContentWebAddress(contentControl.getContentWebAddressTransfer(getUserVisit(), contentWebAddress));

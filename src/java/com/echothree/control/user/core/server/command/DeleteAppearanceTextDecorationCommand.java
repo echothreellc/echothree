@@ -21,9 +21,6 @@ import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Appearance;
-import com.echothree.model.data.core.server.entity.AppearanceTextDecoration;
-import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,16 +61,16 @@ public class DeleteAppearanceTextDecorationCommand
     
     @Override
     protected BaseResult execute() {
-        String appearanceName = form.getAppearanceName();
-        Appearance appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
+        var appearanceName = form.getAppearanceName();
+        var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
         
         if(!hasExecutionErrors()) {
-            String textDecorationName = form.getTextDecorationName();
-            TextDecoration textDecoration = AppearanceLogic.getInstance().getTextDecorationByName(this, textDecorationName);
+            var textDecorationName = form.getTextDecorationName();
+            var textDecoration = AppearanceLogic.getInstance().getTextDecorationByName(this, textDecorationName);
             
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
-                AppearanceTextDecoration appearanceTextDecoration = coreControl.getAppearanceTextDecorationForUpdate(appearance, textDecoration);
+                var appearanceTextDecoration = coreControl.getAppearanceTextDecorationForUpdate(appearance, textDecoration);
                 
                 if(appearanceTextDecoration != null) {
                     coreControl.deleteAppearanceTextDecoration(appearanceTextDecoration, getPartyPK());

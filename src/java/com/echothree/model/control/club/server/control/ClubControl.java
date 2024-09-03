@@ -21,19 +21,11 @@ import com.echothree.model.control.club.common.transfer.ClubDescriptionTransfer;
 import com.echothree.model.control.club.common.transfer.ClubItemTransfer;
 import com.echothree.model.control.club.common.transfer.ClubItemTypeTransfer;
 import com.echothree.model.control.club.common.transfer.ClubTransfer;
-import com.echothree.model.control.club.server.transfer.ClubDescriptionTransferCache;
-import com.echothree.model.control.club.server.transfer.ClubItemTransferCache;
-import com.echothree.model.control.club.server.transfer.ClubItemTypeTransferCache;
-import com.echothree.model.control.club.server.transfer.ClubTransferCache;
 import com.echothree.model.control.club.server.transfer.ClubTransferCaches;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.club.common.pk.ClubItemTypePK;
-import com.echothree.model.data.club.common.pk.ClubPK;
 import com.echothree.model.data.club.server.entity.Club;
 import com.echothree.model.data.club.server.entity.ClubDescription;
-import com.echothree.model.data.club.server.entity.ClubDetail;
 import com.echothree.model.data.club.server.entity.ClubItem;
 import com.echothree.model.data.club.server.entity.ClubItemType;
 import com.echothree.model.data.club.server.entity.ClubItemTypeDescription;
@@ -46,12 +38,9 @@ import com.echothree.model.data.club.server.factory.ClubItemTypeFactory;
 import com.echothree.model.data.club.server.value.ClubDescriptionValue;
 import com.echothree.model.data.club.server.value.ClubDetailValue;
 import com.echothree.model.data.club.server.value.ClubItemValue;
-import com.echothree.model.data.filter.common.pk.FilterPK;
 import com.echothree.model.data.filter.server.entity.Filter;
-import com.echothree.model.data.item.common.pk.ItemPK;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.subscription.common.pk.SubscriptionTypePK;
 import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
@@ -59,11 +48,9 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -95,20 +82,20 @@ public class ClubControl
     
     public Club createClub(String clubName, SubscriptionType subscriptionType, Filter clubPriceFilter, Currency currency,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Club defaultClub = getDefaultClub();
-        boolean defaultFound = defaultClub != null;
+        var defaultClub = getDefaultClub();
+        var defaultFound = defaultClub != null;
         
         if(defaultFound && isDefault) {
-            ClubDetailValue defaultClubDetailValue = getDefaultClubDetailValueForUpdate();
+            var defaultClubDetailValue = getDefaultClubDetailValueForUpdate();
             
             defaultClubDetailValue.setIsDefault(Boolean.FALSE);
             updateClubFromValue(defaultClubDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        Club club = ClubFactory.getInstance().create();
-        ClubDetail clubDetail = ClubDetailFactory.getInstance().create(club, clubName, subscriptionType, clubPriceFilter,
+
+        var club = ClubFactory.getInstance().create();
+        var clubDetail = ClubDetailFactory.getInstance().create(club, clubName, subscriptionType, clubPriceFilter,
                 currency, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -160,8 +147,8 @@ public class ClubControl
                     "WHERE clb_activedetailid = clbdt_clubdetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = ClubFactory.getInstance().prepareStatement(query);
+
+        var ps = ClubFactory.getInstance().prepareStatement(query);
         
         return ClubFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -187,8 +174,8 @@ public class ClubControl
                     "WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = ClubFactory.getInstance().prepareStatement(query);
+
+        var ps = ClubFactory.getInstance().prepareStatement(query);
         
         return ClubFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -221,8 +208,8 @@ public class ClubControl
                         "WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_clubname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ClubFactory.getInstance().prepareStatement(query);
+
+            var ps = ClubFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, clubName);
             
@@ -266,8 +253,8 @@ public class ClubControl
                         "WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_subscrtyp_subscriptiontypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ClubFactory.getInstance().prepareStatement(query);
+
+            var ps = ClubFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
             
@@ -292,9 +279,9 @@ public class ClubControl
     }
     
     public List<ClubTransfer> getClubTransfers(UserVisit userVisit) {
-        List<Club> clubs = getClubs();
+        var clubs = getClubs();
         List<ClubTransfer> clubTransfers = new ArrayList<>(clubs.size());
-        ClubTransferCache clubTransferCache = getClubTransferCaches(userVisit).getClubTransferCache();
+        var clubTransferCache = getClubTransferCaches(userVisit).getClubTransferCache();
         
         clubs.forEach((club) ->
                 clubTransfers.add(clubTransferCache.getClubTransfer(club))
@@ -305,28 +292,28 @@ public class ClubControl
     
     private void updateClubFromValue(ClubDetailValue clubDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(clubDetailValue.hasBeenModified()) {
-            Club club = ClubFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var club = ClubFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      clubDetailValue.getClubPK());
-            ClubDetail clubDetail = club.getActiveDetailForUpdate();
+            var clubDetail = club.getActiveDetailForUpdate();
             
             clubDetail.setThruTime(session.START_TIME_LONG);
             clubDetail.store();
-            
-            ClubPK clubPK = clubDetail.getClubPK();
-            String clubName = clubDetailValue.getClubName();
-            SubscriptionTypePK subscriptionTypePK = clubDetailValue.getSubscriptionTypePK();
-            FilterPK clubPriceFilterPK = clubDetailValue.getClubPriceFilterPK();
-            CurrencyPK currencyPK = clubDetailValue.getCurrencyPK();
-            Boolean isDefault = clubDetailValue.getIsDefault();
-            Integer sortOrder = clubDetailValue.getSortOrder();
+
+            var clubPK = clubDetail.getClubPK();
+            var clubName = clubDetailValue.getClubName();
+            var subscriptionTypePK = clubDetailValue.getSubscriptionTypePK();
+            var clubPriceFilterPK = clubDetailValue.getClubPriceFilterPK();
+            var currencyPK = clubDetailValue.getCurrencyPK();
+            var isDefault = clubDetailValue.getIsDefault();
+            var sortOrder = clubDetailValue.getSortOrder();
             
             if(checkDefault) {
-                Club defaultClub = getDefaultClub();
-                boolean defaultFound = defaultClub != null && !defaultClub.equals(club);
+                var defaultClub = getDefaultClub();
+                var defaultFound = defaultClub != null && !defaultClub.equals(club);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ClubDetailValue defaultClubDetailValue = getDefaultClubDetailValueForUpdate();
+                    var defaultClubDetailValue = getDefaultClubDetailValueForUpdate();
                     
                     defaultClubDetailValue.setIsDefault(Boolean.FALSE);
                     updateClubFromValue(defaultClubDetailValue, false, updatedBy);
@@ -353,23 +340,23 @@ public class ClubControl
     public void deleteClub(Club club, BasePK deletedBy) {
         deleteClubDescriptionsByClub(club, deletedBy);
         deleteClubItemsByClub(club, deletedBy);
-        
-        ClubDetail clubDetail = club.getLastDetailForUpdate();
+
+        var clubDetail = club.getLastDetailForUpdate();
         clubDetail.setThruTime(session.START_TIME_LONG);
         club.setActiveDetail(null);
         club.store();
         
         // Check for default, and pick one if necessary
-        Club defaultClub = getDefaultClub();
+        var defaultClub = getDefaultClub();
         if(defaultClub == null) {
-            List<Club> clubs = getClubsForUpdate();
+            var clubs = getClubsForUpdate();
             
             if(!clubs.isEmpty()) {
-                Iterator<Club> iter = clubs.iterator();
+                var iter = clubs.iterator();
                 if(iter.hasNext()) {
                     defaultClub = iter.next();
                 }
-                ClubDetailValue clubDetailValue = Objects.requireNonNull(defaultClub).getLastDetailForUpdate().getClubDetailValue().clone();
+                var clubDetailValue = Objects.requireNonNull(defaultClub).getLastDetailForUpdate().getClubDetailValue().clone();
                 
                 clubDetailValue.setIsDefault(Boolean.TRUE);
                 updateClubFromValue(clubDetailValue, false, deletedBy);
@@ -380,7 +367,7 @@ public class ClubControl
     }
     
     public void deleteClubBySubscriptionType(SubscriptionType subscriptionType, BasePK deletedBy) {
-        Club club = getClubBySubscriptionType(subscriptionType);
+        var club = getClubBySubscriptionType(subscriptionType);
         
         if(club != null) {
             deleteClub(club, deletedBy);
@@ -392,7 +379,7 @@ public class ClubControl
     // --------------------------------------------------------------------------------
     
     public ClubDescription createClubDescription(Club club, Language language, String description, BasePK createdBy) {
-        ClubDescription clubDescription = ClubDescriptionFactory.getInstance().create(club,
+        var clubDescription = ClubDescriptionFactory.getInstance().create(club,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(club.getPrimaryKey(), EventTypes.MODIFY, clubDescription.getPrimaryKey(),
@@ -418,8 +405,8 @@ public class ClubControl
                         "WHERE clbd_clb_clubid = ? AND clbd_lang_languageid = ? AND clbd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ClubDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ClubDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, club.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -467,8 +454,8 @@ public class ClubControl
                         "WHERE clbd_clb_clubid = ? AND clbd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ClubDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ClubDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, club.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -491,7 +478,7 @@ public class ClubControl
     
     public String getBestClubDescription(Club club, Language language) {
         String description;
-        ClubDescription clubDescription = getClubDescription(club, language);
+        var clubDescription = getClubDescription(club, language);
         
         if(clubDescription == null && !language.getIsDefault()) {
             clubDescription = getClubDescription(club, getPartyControl().getDefaultLanguage());
@@ -513,9 +500,9 @@ public class ClubControl
     
     public List<ClubDescriptionTransfer> getClubDescriptionTransfersByClub(UserVisit userVisit,
             Club club) {
-        List<ClubDescription> clubDescriptions = getClubDescriptionsByClub(club);
+        var clubDescriptions = getClubDescriptionsByClub(club);
         List<ClubDescriptionTransfer> clubDescriptionTransfers = new ArrayList<>(clubDescriptions.size());
-        ClubDescriptionTransferCache clubDescriptionTransferCache = getClubTransferCaches(userVisit).getClubDescriptionTransferCache();
+        var clubDescriptionTransferCache = getClubTransferCaches(userVisit).getClubDescriptionTransferCache();
         
         clubDescriptions.forEach((clubDescription) ->
                 clubDescriptionTransfers.add(clubDescriptionTransferCache.getClubDescriptionTransfer(clubDescription))
@@ -526,15 +513,15 @@ public class ClubControl
     
     public void updateClubDescriptionFromValue(ClubDescriptionValue clubDescriptionValue, BasePK updatedBy) {
         if(clubDescriptionValue.hasBeenModified()) {
-            ClubDescription clubDescription = ClubDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var clubDescription = ClubDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      clubDescriptionValue.getPrimaryKey());
             
             clubDescription.setThruTime(session.START_TIME_LONG);
             clubDescription.store();
-            
-            Club club = clubDescription.getClub();
-            Language language = clubDescription.getLanguage();
-            String description = clubDescriptionValue.getDescription();
+
+            var club = clubDescription.getClub();
+            var language = clubDescription.getLanguage();
+            var description = clubDescriptionValue.getDescription();
             
             clubDescription = ClubDescriptionFactory.getInstance().create(club, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -551,7 +538,7 @@ public class ClubControl
     }
     
     public void deleteClubDescriptionsByClub(Club club, BasePK deletedBy) {
-        List<ClubDescription> clubDescriptions = getClubDescriptionsByClubForUpdate(club);
+        var clubDescriptions = getClubDescriptionsByClubForUpdate(club);
         
         clubDescriptions.forEach((clubDescription) -> 
                 deleteClubDescription(clubDescription, deletedBy)
@@ -567,7 +554,7 @@ public class ClubControl
     }
     
     public List<ClubItemType> getClubItemTypes() {
-        PreparedStatement ps = ClubItemTypeFactory.getInstance().prepareStatement(
+        var ps = ClubItemTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM clubitemtypes " +
                 "ORDER BY clbitmtyp_sortorder, clbitmtyp_clubitemtypename");
@@ -576,10 +563,10 @@ public class ClubControl
     }
     
     public ClubItemType getClubItemTypeByName(String clubItemTypeName) {
-        ClubItemType clubItemType = null;
+        ClubItemType clubItemType;
 
         try {
-            PreparedStatement ps = ClubItemTypeFactory.getInstance().prepareStatement(
+            var ps = ClubItemTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM clubitemtypes " +
                     "WHERE clbitmtyp_clubitemtypename = ?");
@@ -596,7 +583,7 @@ public class ClubControl
     
     public ClubItemTypeChoicesBean getClubItemTypeChoices(String defaultClubItemTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<ClubItemType> clubItemTypes = getClubItemTypes();
+        var clubItemTypes = getClubItemTypes();
         var size = clubItemTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -627,9 +614,9 @@ public class ClubControl
     }
     
     public List<ClubItemTypeTransfer> getClubItemTypeTransfers(UserVisit userVisit) {
-        List<ClubItemType> clubItemTypes = getClubItemTypes();
+        var clubItemTypes = getClubItemTypes();
         List<ClubItemTypeTransfer> clubItemTypeTransfers = new ArrayList<>(clubItemTypes.size());
-        ClubItemTypeTransferCache clubItemTypeTransferCache = getClubTransferCaches(userVisit).getClubItemTypeTransferCache();
+        var clubItemTypeTransferCache = getClubTransferCaches(userVisit).getClubItemTypeTransferCache();
         
         clubItemTypes.forEach((clubItemType) ->
                 clubItemTypeTransfers.add(clubItemTypeTransferCache.getClubItemTypeTransfer(clubItemType))
@@ -650,7 +637,7 @@ public class ClubControl
         ClubItemTypeDescription clubItemTypeDescription;
         
         try {
-            PreparedStatement ps = ClubItemTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = ClubItemTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM clubitemtypedescriptions " +
                     "WHERE clbitmtypd_clbitmtyp_clubitemtypeid = ? AND clbitmtypd_lang_languageid = ?");
@@ -668,7 +655,7 @@ public class ClubControl
     
     public String getBestClubItemTypeDescription(ClubItemType clubItemType, Language language) {
         String description;
-        ClubItemTypeDescription clubItemTypeDescription = getClubItemTypeDescription(clubItemType, language);
+        var clubItemTypeDescription = getClubItemTypeDescription(clubItemType, language);
         
         if(clubItemTypeDescription == null && !language.getIsDefault()) {
             clubItemTypeDescription = getClubItemTypeDescription(clubItemType, getPartyControl().getDefaultLanguage());
@@ -688,7 +675,7 @@ public class ClubControl
     // --------------------------------------------------------------------------------
     
     public ClubItem createClubItem(Club club, ClubItemType clubItemType, Item item, Long subscriptionTime, BasePK createdBy) {
-        ClubItem clubItem = ClubItemFactory.getInstance().create(club, clubItemType, item, subscriptionTime,
+        var clubItem = ClubItemFactory.getInstance().create(club, clubItemType, item, subscriptionTime,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(club.getPrimaryKey(), EventTypes.MODIFY, clubItem.getPrimaryKey(), null, createdBy);
@@ -714,8 +701,8 @@ public class ClubControl
                         "AND clbitm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ClubItemFactory.getInstance().prepareStatement(query);
+
+            var ps = ClubItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, club.getPrimaryKey().getEntityId());
             ps.setLong(2, clubItemType.getPrimaryKey().getEntityId());
@@ -757,8 +744,8 @@ public class ClubControl
                         "WHERE clbitm_clb_clubid = ? AND clbitm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ClubItemFactory.getInstance().prepareStatement(query);
+
+            var ps = ClubItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, club.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -798,8 +785,8 @@ public class ClubControl
                         "WHERE clbitm_itm_itemid = ? AND clbitm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ClubItemFactory.getInstance().prepareStatement(query);
+
+            var ps = ClubItemFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -826,7 +813,7 @@ public class ClubControl
     
     private List<ClubItemTransfer> getClubItemTransfers(UserVisit userVisit, Collection<ClubItem> clubItems) {
         List<ClubItemTransfer> clubItemTransfers = new ArrayList<>(clubItems.size());
-        ClubItemTransferCache clubItemTransferCache = getClubTransferCaches(userVisit).getClubItemTransferCache();
+        var clubItemTransferCache = getClubTransferCaches(userVisit).getClubItemTransferCache();
         
         clubItems.forEach((clubItem) ->
                 clubItemTransfers.add(clubItemTransferCache.getClubItemTransfer(clubItem))
@@ -845,16 +832,16 @@ public class ClubControl
     
     public void updateClubItemFromValue(ClubItemValue clubItemValue, BasePK updatedBy) {
         if(clubItemValue.hasBeenModified()) {
-            ClubItem clubItem = ClubItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var clubItem = ClubItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     clubItemValue.getPrimaryKey());
             
             clubItem.setThruTime(session.START_TIME_LONG);
             clubItem.store();
-            
-            ClubPK subscriptionTypePK = clubItem.getClubPK(); // Not updated
-            ClubItemTypePK clubItemTypePK = clubItem.getClubItemTypePK(); // Not updated
-            ItemPK itemPK = clubItem.getItemPK(); // Not updated
-            Long subscriptionTime = clubItemValue.getSubscriptionTime();
+
+            var subscriptionTypePK = clubItem.getClubPK(); // Not updated
+            var clubItemTypePK = clubItem.getClubItemTypePK(); // Not updated
+            var itemPK = clubItem.getItemPK(); // Not updated
+            var subscriptionTime = clubItemValue.getSubscriptionTime();
             
             clubItem = ClubItemFactory.getInstance().create(subscriptionTypePK, clubItemTypePK, itemPK,
                     subscriptionTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);

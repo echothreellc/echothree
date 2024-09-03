@@ -22,15 +22,11 @@ import com.echothree.model.control.document.server.logic.DocumentLogic;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.document.server.entity.Document;
-import com.echothree.model.data.document.server.entity.DocumentType;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.printer.server.entity.PrinterGroup;
 import com.echothree.model.data.printer.server.entity.PrinterGroupJob;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseLogic;
@@ -64,12 +60,12 @@ public class PrinterGroupJobLogic
             final PartyPK createdBy) {
         var documentControl = Session.getModelController(DocumentControl.class);
         PrinterGroupJob printerGroupJob = null;
-        DocumentType documentType = documentControl.getDocumentTypeByName(DocumentConstants.DocumentType_PRINTER_GROUP_JOB);
+        var documentType = documentControl.getDocumentTypeByName(DocumentConstants.DocumentType_PRINTER_GROUP_JOB);
 
         if(documentType == null) {
             addExecutionError(ema, ExecutionErrors.UnknownDocumentTypeName.name(), DocumentConstants.DocumentType_PRINTER_GROUP_JOB);
         } else {
-            Document document = DocumentLogic.getInstance().createDocument(ema, documentType, mimeType, preferredLanguage, description, blob, clob, createdBy);
+            var document = DocumentLogic.getInstance().createDocument(ema, documentType, mimeType, preferredLanguage, description, blob, clob, createdBy);
 
             if(document != null) {
                 var printerControl = Session.getModelController(PrinterControl.class);
@@ -84,21 +80,21 @@ public class PrinterGroupJobLogic
 
     public void deletePrinterGroupJob(final ExecutionErrorAccumulator ema, final PrinterGroupJob printerGroupJob, final PartyPK deletedBy) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(printerGroupJob);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS, entityInstance);
-        String workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
+        var entityInstance = getEntityInstanceByBaseEntity(printerGroupJob);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS, entityInstance);
+        var workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
 
         if(workflowStepName.equals(PrinterGroupJobStatusConstants.WorkflowStep_QUEUED)
                 || workflowStepName.equals(PrinterGroupJobStatusConstants.WorkflowStep_PRINTED)
                 || workflowStepName.equals(PrinterGroupJobStatusConstants.WorkflowStep_ERRORED)) {
-            Long keepPrintedJobsTime = printerGroupJob.getLastDetail().getPrinterGroup().getLastDetail().getKeepPrintedJobsTime();
+            var keepPrintedJobsTime = printerGroupJob.getLastDetail().getPrinterGroup().getLastDetail().getKeepPrintedJobsTime();
 
             if(keepPrintedJobsTime == null) {
                 var printerControl = Session.getModelController(PrinterControl.class);
                 
                 printerControl.removePrinterGroupJob(printerGroupJob);
             } else {
-                String workflowDestinationName = workflowStepName + "_TO_DELETED";
+                var workflowDestinationName = workflowStepName + "_TO_DELETED";
 
                 workflowControl.transitionEntityInWorkflowUsingNames(null, workflowEntityStatus, workflowDestinationName, keepPrintedJobsTime, deletedBy);
             }

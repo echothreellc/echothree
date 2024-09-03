@@ -17,16 +17,12 @@
 package com.echothree.control.user.training.server.command;
 
 import com.echothree.control.user.training.common.form.GetTrainingClassTranslationForm;
-import com.echothree.control.user.training.common.result.GetTrainingClassTranslationResult;
 import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClassTranslation;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetTrainingClassTranslationCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        GetTrainingClassTranslationResult result = TrainingResultFactory.getGetTrainingClassTranslationResult();
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var result = TrainingResultFactory.getGetTrainingClassTranslationResult();
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
         
         if(trainingClass != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                TrainingClassTranslation trainingClassTranslation = trainingControl.getTrainingClassTranslation(trainingClass, language);
+                var trainingClassTranslation = trainingControl.getTrainingClassTranslation(trainingClass, language);
                 
                 if(trainingClassTranslation != null) {
                     result.setTrainingClassTranslation(trainingControl.getTrainingClassTranslationTransfer(getUserVisit(), trainingClassTranslation));

@@ -21,7 +21,6 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.value.ContentPageLayoutDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultContentPageLayoutCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentPageLayoutName = form.getContentPageLayoutName();
-        ContentPageLayoutDetailValue contentPageLayoutDetailValue = contentControl.getContentPageLayoutDetailValueByNameForUpdate(contentPageLayoutName);
+        var contentPageLayoutName = form.getContentPageLayoutName();
+        var contentPageLayoutDetailValue = contentControl.getContentPageLayoutDetailValueByNameForUpdate(contentPageLayoutName);
         
         if(contentPageLayoutDetailValue != null) {
             contentPageLayoutDetailValue.setIsDefault(Boolean.TRUE);

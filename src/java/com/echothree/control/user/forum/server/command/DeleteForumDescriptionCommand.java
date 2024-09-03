@@ -19,9 +19,6 @@ package com.echothree.control.user.forum.server.command;
 import com.echothree.control.user.forum.common.form.DeleteForumDescriptionForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.forum.server.entity.ForumDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,16 +50,16 @@ public class DeleteForumDescriptionCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumName = form.getForumName();
-        Forum forum = forumControl.getForumByName(forumName);
+        var forumName = form.getForumName();
+        var forum = forumControl.getForumByName(forumName);
         
         if(forum != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ForumDescription forumDescription = forumControl.getForumDescriptionForUpdate(forum, language);
+                var forumDescription = forumControl.getForumDescriptionForUpdate(forum, language);
                 
                 if(forumDescription != null) {
                     forumControl.deleteForumDescription(forumDescription, getPartyPK());

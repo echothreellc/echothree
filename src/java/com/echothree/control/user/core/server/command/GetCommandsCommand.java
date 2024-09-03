@@ -18,8 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetCommandsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetCommandsResult;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,13 +47,13 @@ public class GetCommandsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetCommandsResult result = CoreResultFactory.getGetCommandsResult();
-        String componentVendorName = form.getComponentVendorName();
+        var result = CoreResultFactory.getGetCommandsResult();
+        var componentVendorName = form.getComponentVendorName();
         
         if(componentVendorName == null) {
             result.setCommands(coreControl.getCommandTransfers(getUserVisit()));
         } else {
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
             
             if(componentVendor != null) {
                 result.setCommands(coreControl.getCommandTransfersByComponentVendor(getUserVisit(), componentVendor));

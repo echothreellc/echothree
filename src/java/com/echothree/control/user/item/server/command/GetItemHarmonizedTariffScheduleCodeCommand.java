@@ -17,17 +17,12 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemHarmonizedTariffScheduleCodeForm;
-import com.echothree.control.user.item.common.result.GetItemHarmonizedTariffScheduleCodeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUseType;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemHarmonizedTariffScheduleCode;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -71,21 +66,21 @@ public class GetItemHarmonizedTariffScheduleCodeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemHarmonizedTariffScheduleCodeResult result = ItemResultFactory.getGetItemHarmonizedTariffScheduleCodeResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var result = ItemResultFactory.getGetItemHarmonizedTariffScheduleCodeResult();
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
             var geoControl = Session.getModelController(GeoControl.class);
-            String countryName = form.getCountryName();
-            GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
+            var countryName = form.getCountryName();
+            var countryGeoCode = geoControl.getCountryByAlias(countryName);
             
             if(countryGeoCode != null) {
-                String harmonizedTariffScheduleCodeUseTypeName = form.getHarmonizedTariffScheduleCodeUseTypeName();
-                HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
+                var harmonizedTariffScheduleCodeUseTypeName = form.getHarmonizedTariffScheduleCodeUseTypeName();
+                var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
 
                 if(harmonizedTariffScheduleCodeUseType != null) {
-                    ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode = itemControl.getItemHarmonizedTariffScheduleCode(item, countryGeoCode,
+                    var itemHarmonizedTariffScheduleCode = itemControl.getItemHarmonizedTariffScheduleCode(item, countryGeoCode,
                             harmonizedTariffScheduleCodeUseType);
 
                     if(itemHarmonizedTariffScheduleCode != null) {

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.payment.paymentmethod;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.SetDefaultPaymentMethodForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -47,7 +46,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultPaymentMethodForm commandForm = PaymentUtil.getHome().getSetDefaultPaymentMethodForm();
+        var commandForm = PaymentUtil.getHome().getSetDefaultPaymentMethodForm();
 
         commandForm.setPaymentMethodName(request.getParameter(ParameterConstants.PAYMENT_METHOD_NAME));
 

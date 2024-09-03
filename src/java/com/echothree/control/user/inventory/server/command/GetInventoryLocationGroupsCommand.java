@@ -17,13 +17,10 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryLocationGroupsForm;
-import com.echothree.control.user.inventory.common.result.GetInventoryLocationGroupsResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -53,13 +50,13 @@ public class GetInventoryLocationGroupsCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        GetInventoryLocationGroupsResult result = InventoryResultFactory.getGetInventoryLocationGroupsResult();
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = InventoryResultFactory.getGetInventoryLocationGroupsResult();
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            Party warehouseParty = warehouse.getParty();
+            var warehouseParty = warehouse.getParty();
             
             result.setWarehouse(warehouseControl.getWarehouseTransfer(getUserVisit(), warehouse));
             result.setInventoryLocationGroups(inventoryControl.getInventoryLocationGroupTransfersByWarehouseParty(getUserVisit(), warehouseParty));

@@ -19,7 +19,6 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.edit.OfferCustomerTypeEdit;
 import com.echothree.control.user.offer.common.edit.OfferEditFactory;
 import com.echothree.control.user.offer.common.form.EditOfferCustomerTypeForm;
-import com.echothree.control.user.offer.common.result.EditOfferCustomerTypeResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.OfferCustomerTypeSpec;
 import com.echothree.model.control.customer.server.control.CustomerControl;
@@ -27,10 +26,6 @@ import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.OfferCustomerType;
-import com.echothree.model.data.offer.server.value.OfferCustomerTypeValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -80,24 +75,24 @@ public class EditOfferCustomerTypeCommand
     @Override
     protected BaseResult execute() {
         var offerControl = Session.getModelController(OfferControl.class);
-        EditOfferCustomerTypeResult result = OfferResultFactory.getEditOfferCustomerTypeResult();
-        String offerName = spec.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
+        var result = OfferResultFactory.getEditOfferCustomerTypeResult();
+        var offerName = spec.getOfferName();
+        var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
             var customerControl = Session.getModelController(CustomerControl.class);
-            String customerTypeName = spec.getCustomerTypeName();
-            CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+            var customerTypeName = spec.getCustomerTypeName();
+            var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
             if(customerType != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    OfferCustomerType offerCustomerType = offerControl.getOfferCustomerType(offer, customerType);
+                    var offerCustomerType = offerControl.getOfferCustomerType(offer, customerType);
 
                     if(offerCustomerType != null) {
                         result.setOfferCustomerType(offerControl.getOfferCustomerTypeTransfer(getUserVisit(), offerCustomerType));
 
                         if(lockEntity(offer)) {
-                            OfferCustomerTypeEdit edit = OfferEditFactory.getOfferCustomerTypeEdit();
+                            var edit = OfferEditFactory.getOfferCustomerTypeEdit();
 
                             result.setEdit(edit);
                             edit.setIsDefault(offerCustomerType.getIsDefault().toString());
@@ -112,7 +107,7 @@ public class EditOfferCustomerTypeCommand
                         addExecutionError(ExecutionErrors.UnknownOfferCustomerType.name(), offerName, customerTypeName);
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    OfferCustomerTypeValue offerCustomerTypeValue = offerControl.getOfferCustomerTypeValueForUpdate(offer, customerType);
+                    var offerCustomerTypeValue = offerControl.getOfferCustomerTypeValueForUpdate(offer, customerType);
 
                     if(offerCustomerTypeValue != null) {
                         if(lockEntityForUpdate(offer)) {

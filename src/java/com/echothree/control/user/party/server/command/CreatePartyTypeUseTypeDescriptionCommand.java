@@ -18,9 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreatePartyTypeUseTypeDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.PartyTypeUseType;
-import com.echothree.model.data.party.server.entity.PartyTypeUseTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,15 +50,15 @@ public class CreatePartyTypeUseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyTypeUseTypeName = form.getPartyTypeUseTypeName();
-        PartyTypeUseType partyTypeUseType = partyControl.getPartyTypeUseTypeByName(partyTypeUseTypeName);
+        var partyTypeUseTypeName = form.getPartyTypeUseTypeName();
+        var partyTypeUseType = partyControl.getPartyTypeUseTypeByName(partyTypeUseTypeName);
         
         if(partyTypeUseType != null) {
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PartyTypeUseTypeDescription partyTypeUseTypeDescription = partyControl.getPartyTypeUseTypeDescription(partyTypeUseType, language);
+                var partyTypeUseTypeDescription = partyControl.getPartyTypeUseTypeDescription(partyTypeUseType, language);
                 
                 if(partyTypeUseTypeDescription == null) {
                     var description = form.getDescription();

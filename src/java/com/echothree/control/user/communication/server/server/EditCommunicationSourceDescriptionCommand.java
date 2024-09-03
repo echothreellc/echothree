@@ -20,14 +20,9 @@ import com.echothree.control.user.communication.common.edit.CommunicationEditFac
 import com.echothree.control.user.communication.common.edit.CommunicationSourceDescriptionEdit;
 import com.echothree.control.user.communication.common.form.EditCommunicationSourceDescriptionForm;
 import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
-import com.echothree.control.user.communication.common.result.EditCommunicationSourceDescriptionResult;
 import com.echothree.control.user.communication.common.spec.CommunicationSourceDescriptionSpec;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.communication.server.entity.CommunicationSource;
-import com.echothree.model.data.communication.server.entity.CommunicationSourceDescription;
-import com.echothree.model.data.communication.server.value.CommunicationSourceDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,24 +60,24 @@ public class EditCommunicationSourceDescriptionCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        EditCommunicationSourceDescriptionResult result = CommunicationResultFactory.getEditCommunicationSourceDescriptionResult();
-        String communicationSourceName = spec.getCommunicationSourceName();
-        CommunicationSource communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
+        var result = CommunicationResultFactory.getEditCommunicationSourceDescriptionResult();
+        var communicationSourceName = spec.getCommunicationSourceName();
+        var communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
         
         if(communicationSource != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    CommunicationSourceDescription communicationSourceDescription = communicationControl.getCommunicationSourceDescription(communicationSource, language);
+                    var communicationSourceDescription = communicationControl.getCommunicationSourceDescription(communicationSource, language);
                     
                     if(communicationSourceDescription != null) {
                         result.setCommunicationSourceDescription(communicationControl.getCommunicationSourceDescriptionTransfer(getUserVisit(), communicationSourceDescription));
                         
                         if(lockEntity(communicationSource)) {
-                            CommunicationSourceDescriptionEdit edit = CommunicationEditFactory.getCommunicationSourceDescriptionEdit();
+                            var edit = CommunicationEditFactory.getCommunicationSourceDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(communicationSourceDescription.getDescription());
@@ -95,12 +90,12 @@ public class EditCommunicationSourceDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownCommunicationSourceDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    CommunicationSourceDescriptionValue communicationSourceDescriptionValue = communicationControl.getCommunicationSourceDescriptionValueForUpdate(communicationSource, language);
+                    var communicationSourceDescriptionValue = communicationControl.getCommunicationSourceDescriptionValueForUpdate(communicationSource, language);
                     
                     if(communicationSourceDescriptionValue != null) {
                         if(lockEntityForUpdate(communicationSource)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 communicationSourceDescriptionValue.setDescription(description);
                                 

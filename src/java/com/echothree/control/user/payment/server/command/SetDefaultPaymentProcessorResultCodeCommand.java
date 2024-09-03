@@ -21,7 +21,6 @@ import com.echothree.model.control.payment.server.control.PaymentProcessorResult
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.payment.server.value.PaymentProcessorResultCodeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultPaymentProcessorResultCodeCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
-        String paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
-        PaymentProcessorResultCodeDetailValue paymentProcessorResultCodeDetailValue = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDetailValueByNameForUpdate(paymentProcessorResultCodeName);
+        var paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
+        var paymentProcessorResultCodeDetailValue = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDetailValueByNameForUpdate(paymentProcessorResultCodeName);
         
         if(paymentProcessorResultCodeDetailValue != null) {
             paymentProcessorResultCodeDetailValue.setIsDefault(Boolean.TRUE);

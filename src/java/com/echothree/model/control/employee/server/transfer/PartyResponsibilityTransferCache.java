@@ -17,9 +17,7 @@
 package com.echothree.model.control.employee.server.transfer;
 
 import com.echothree.model.control.employee.common.transfer.PartyResponsibilityTransfer;
-import com.echothree.model.control.employee.common.transfer.ResponsibilityTypeTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.employee.server.entity.PartyResponsibility;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -38,11 +36,11 @@ public class PartyResponsibilityTransferCache
     }
     
     public PartyResponsibilityTransfer getPartyResponsibilityTransfer(PartyResponsibility partyResponsibility) {
-        PartyResponsibilityTransfer partyResponsibilityTransfer = get(partyResponsibility);
+        var partyResponsibilityTransfer = get(partyResponsibility);
         
         if(partyResponsibilityTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyResponsibility.getParty());
-            ResponsibilityTypeTransfer responsibilityType = employeeControl.getResponsibilityTypeTransfer(userVisit, partyResponsibility.getResponsibilityType());
+            var party = partyControl.getPartyTransfer(userVisit, partyResponsibility.getParty());
+            var responsibilityType = employeeControl.getResponsibilityTypeTransfer(userVisit, partyResponsibility.getResponsibilityType());
             
             partyResponsibilityTransfer = new PartyResponsibilityTransfer(party, responsibilityType);
             put(partyResponsibility, partyResponsibilityTransfer);

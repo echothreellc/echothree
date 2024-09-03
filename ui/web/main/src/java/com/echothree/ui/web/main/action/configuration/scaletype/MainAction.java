@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.configuration.scaletype;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.GetScaleTypesForm;
 import com.echothree.control.user.scale.common.result.GetScaleTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -50,13 +47,13 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetScaleTypesForm commandForm = ScaleUtil.getHome().getGetScaleTypesForm();
+        String forwardKey;
+        var commandForm = ScaleUtil.getHome().getGetScaleTypesForm();
 
-        CommandResult commandResult = ScaleUtil.getHome().getScaleTypes(getUserVisitPK(request), commandForm);
+        var commandResult = ScaleUtil.getHome().getScaleTypes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetScaleTypesResult result = (GetScaleTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetScaleTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SCALE_TYPES, result.getScaleTypes());
             forwardKey = ForwardConstants.DISPLAY;

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.salesorder.salesorderbatch;
 
 import com.echothree.control.user.sales.common.SalesUtil;
-import com.echothree.control.user.sales.common.form.GetSalesOrderBatchForm;
 import com.echothree.control.user.sales.common.result.GetSalesOrderBatchResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetSalesOrderBatchForm commandForm = SalesUtil.getHome().getGetSalesOrderBatchForm();
-            String batchName = request.getParameter(ParameterConstants.BATCH_NAME);
+            var commandForm = SalesUtil.getHome().getGetSalesOrderBatchForm();
+            var batchName = request.getParameter(ParameterConstants.BATCH_NAME);
             
             commandForm.setBatchName(batchName);
-            
-            CommandResult commandResult = SalesUtil.getHome().getSalesOrderBatch(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSalesOrderBatchResult result = (GetSalesOrderBatchResult)executionResult.getResult();
+
+            var commandResult = SalesUtil.getHome().getSalesOrderBatch(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSalesOrderBatchResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SALES_ORDER_BATCH, result.getSalesOrderBatch());
             forwardKey = ForwardConstants.DISPLAY;

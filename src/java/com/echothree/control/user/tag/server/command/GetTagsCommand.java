@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.tag.server.command;
 
-import com.echothree.control.user.tag.common.form.GetTagScopesForm;
 import com.echothree.control.user.tag.common.form.GetTagsForm;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -31,7 +30,6 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;

@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.customer.customertypepaymentmethod;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.DeleteCustomerTypePaymentMethodForm;
-import com.echothree.control.user.customer.common.form.GetCustomerTypePaymentMethodForm;
 import com.echothree.control.user.customer.common.result.GetCustomerTypePaymentMethodResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerTypePaymentMethodForm commandForm = CustomerUtil.getHome().getGetCustomerTypePaymentMethodForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerTypePaymentMethodForm();
 
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());
         commandForm.setPaymentMethodName(actionForm.getPaymentMethodName());
-        
-        CommandResult commandResult = CustomerUtil.getHome().getCustomerTypePaymentMethod(getUserVisitPK(request), commandForm);
+
+        var commandResult = CustomerUtil.getHome().getCustomerTypePaymentMethod(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypePaymentMethodResult result = (GetCustomerTypePaymentMethodResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypePaymentMethodResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_PAYMENT_METHOD, result.getCustomerTypePaymentMethod());
         }
@@ -80,7 +77,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteCustomerTypePaymentMethodForm commandForm = CustomerUtil.getHome().getDeleteCustomerTypePaymentMethodForm();
+        var commandForm = CustomerUtil.getHome().getDeleteCustomerTypePaymentMethodForm();
 
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());
         commandForm.setPaymentMethodName(actionForm.getPaymentMethodName());

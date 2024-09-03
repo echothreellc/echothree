@@ -18,11 +18,8 @@ package com.echothree.model.control.cancellationpolicy.server.transfer;
 
 import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationKindTransfer;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
-import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKindDetail;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -39,16 +36,16 @@ public class CancellationKindTransferCache
     }
     
     public CancellationKindTransfer getCancellationKindTransfer(CancellationKind cancellationKind) {
-        CancellationKindTransfer cancellationKindTransfer = get(cancellationKind);
+        var cancellationKindTransfer = get(cancellationKind);
         
         if(cancellationKindTransfer == null) {
-            CancellationKindDetail cancellationKindDetail = cancellationKind.getLastDetail();
-            String cancellationKindName = cancellationKindDetail.getCancellationKindName();
-            SequenceType cancellationSequenceType = cancellationKindDetail.getCancellationSequenceType();
-            SequenceTypeTransfer cancellationSequenceTypeTransfer = cancellationSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, cancellationSequenceType);
-            Boolean isDefault = cancellationKindDetail.getIsDefault();
-            Integer sortOrder = cancellationKindDetail.getSortOrder();
-            String description = cancellationPolicyControl.getBestCancellationKindDescription(cancellationKind, getLanguage());
+            var cancellationKindDetail = cancellationKind.getLastDetail();
+            var cancellationKindName = cancellationKindDetail.getCancellationKindName();
+            var cancellationSequenceType = cancellationKindDetail.getCancellationSequenceType();
+            var cancellationSequenceTypeTransfer = cancellationSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, cancellationSequenceType);
+            var isDefault = cancellationKindDetail.getIsDefault();
+            var sortOrder = cancellationKindDetail.getSortOrder();
+            var description = cancellationPolicyControl.getBestCancellationKindDescription(cancellationKind, getLanguage());
             
             cancellationKindTransfer = new CancellationKindTransfer(cancellationKindName, cancellationSequenceTypeTransfer, isDefault, sortOrder, description);
             put(cancellationKind, cancellationKindTransfer);

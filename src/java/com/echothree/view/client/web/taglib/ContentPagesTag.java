@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentPagesForm;
 import com.echothree.control.user.content.common.result.GetContentPagesResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
 import javax.naming.NamingException;
@@ -123,7 +120,7 @@ public class ContentPagesTag
     public int doStartTag()
             throws JspException {
         try {
-            GetContentPagesForm commandForm = ContentUtil.getHome().getGetContentPagesForm();
+            var commandForm = ContentUtil.getHome().getGetContentPagesForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -136,7 +133,7 @@ public class ContentPagesTag
 
             commandForm.setTransferProperties(transferProperties);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentPages(getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().getContentPages(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -144,8 +141,8 @@ public class ContentPagesTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentPagesResult result = (GetContentPagesResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContentPagesResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getContentPages()), scope);
             }

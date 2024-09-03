@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.item.itemunitlimit;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.DeleteItemUnitLimitForm;
-import com.echothree.control.user.item.common.form.GetItemUnitLimitForm;
 import com.echothree.control.user.item.common.result.GetItemUnitLimitResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -64,15 +61,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemUnitLimitForm commandForm = ItemUtil.getHome().getGetItemUnitLimitForm();
+        var commandForm = ItemUtil.getHome().getGetItemUnitLimitForm();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setInventoryConditionName(actionForm.getInventoryConditionName());
         commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeName());
 
-        CommandResult commandResult = ItemUtil.getHome().getItemUnitLimit(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemUnitLimitResult result = (GetItemUnitLimitResult)executionResult.getResult();
+        var commandResult = ItemUtil.getHome().getItemUnitLimit(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemUnitLimitResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM_UNIT_LIMIT, result.getItemUnitLimit());
     }
@@ -80,7 +77,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteItemUnitLimitForm commandForm = ItemUtil.getHome().getDeleteItemUnitLimitForm();
+        var commandForm = ItemUtil.getHome().getDeleteItemUnitLimitForm();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setInventoryConditionName(actionForm.getInventoryConditionName());

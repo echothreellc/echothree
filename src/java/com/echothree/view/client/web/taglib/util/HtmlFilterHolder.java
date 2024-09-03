@@ -19,7 +19,6 @@ package com.echothree.view.client.web.taglib.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import org.cyberneko.html.filters.ElementRemover;
 
 public class HtmlFilterHolder {
@@ -72,13 +71,13 @@ public class HtmlFilterHolder {
     }
 
     public ElementRemover getElementRemover() {
-        ElementRemover elementRemover = new ElementRemover();
+        var elementRemover = new ElementRemover();
 
         for(var htmlTagHolder : htmlTagHolders) {
             switch(htmlTagHolder.getHtmlFilterAction()) {
                 case ACCEPT:
-                    Set<String> attributesSet = htmlTagHolder.getAttributes();
-                    String[] attributes = attributesSet.isEmpty() ? null : attributesSet.toArray(new String[attributesSet.size()]);
+                    var attributesSet = htmlTagHolder.getAttributes();
+                    var attributes = attributesSet.isEmpty() ? null : attributesSet.toArray(new String[attributesSet.size()]);
                     
                     elementRemover.acceptElement(htmlTagHolder.getTag(), attributes);
                     break;

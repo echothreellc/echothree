@@ -17,10 +17,8 @@
 package com.echothree.model.control.employee.server.control;
 
 import com.echothree.model.control.employee.common.transfer.LeaveResultTransfer;
-import com.echothree.model.control.employee.server.transfer.EmployeeTransferCaches;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.data.employee.common.pk.LeavePK;
-import com.echothree.model.data.employee.server.entity.Leave;
 import com.echothree.model.data.employee.server.factory.LeaveFactory;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.search.server.factory.SearchResultFactory;
@@ -68,7 +66,7 @@ public class LeaveControl
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    Leave leave = LeaveFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new LeavePK(rs.getLong(1)));
+                    var leave = LeaveFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new LeavePK(rs.getLong(1)));
 
                     leaveResultTransfers.add(new LeaveResultTransfer(leave.getLastDetail().getLeaveName(),
                             includeLeave ? employeeControl.getLeaveTransfer(userVisit, leave) : null));

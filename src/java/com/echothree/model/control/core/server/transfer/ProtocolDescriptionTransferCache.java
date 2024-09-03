@@ -17,9 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.ProtocolDescriptionTransfer;
-import com.echothree.model.control.core.common.transfer.ProtocolTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.core.server.entity.ProtocolDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -35,11 +33,11 @@ public class ProtocolDescriptionTransferCache
     }
     
     public ProtocolDescriptionTransfer getProtocolDescriptionTransfer(ProtocolDescription protocolDescription) {
-        ProtocolDescriptionTransfer protocolDescriptionTransfer = get(protocolDescription);
+        var protocolDescriptionTransfer = get(protocolDescription);
         
         if(protocolDescriptionTransfer == null) {
-            ProtocolTransfer protocolTransfer = coreControl.getProtocolTransfer(userVisit, protocolDescription.getProtocol());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, protocolDescription.getLanguage());
+            var protocolTransfer = coreControl.getProtocolTransfer(userVisit, protocolDescription.getProtocol());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, protocolDescription.getLanguage());
             
             protocolDescriptionTransfer = new ProtocolDescriptionTransfer(languageTransfer, protocolTransfer,
                     protocolDescription.getDescription());

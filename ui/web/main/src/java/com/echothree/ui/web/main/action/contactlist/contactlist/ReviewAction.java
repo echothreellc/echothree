@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.contactlist.contactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.GetContactListForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListResult;
 import com.echothree.model.control.contactlist.common.transfer.ContactListTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetContactListForm commandForm = ContactListUtil.getHome().getGetContactListForm();
+        String forwardKey;
+        var commandForm = ContactListUtil.getHome().getGetContactListForm();
 
         commandForm.setContactListName(request.getParameter(ParameterConstants.CONTACT_LIST_NAME));
-        
-        CommandResult commandResult = ContactListUtil.getHome().getContactList(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getContactList(getUserVisitPK(request), commandForm);
         ContactListTransfer contactList = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListResult result = (GetContactListResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListResult)executionResult.getResult();
             
             contactList = result.getContactList();
         }

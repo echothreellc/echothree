@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.configuration.communicationeventpurpose;
 
 import com.echothree.control.user.communication.common.CommunicationUtil;
-import com.echothree.control.user.communication.common.form.CreateCommunicationEventPurposeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,17 +52,17 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateCommunicationEventPurposeForm commandForm = CommunicationUtil.getHome().getCreateCommunicationEventPurposeForm();
+                    var commandForm = CommunicationUtil.getHome().getCreateCommunicationEventPurposeForm();
                     
                     commandForm.setCommunicationEventPurposeName(actionForm.getCommunicationEventPurposeName());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CommunicationUtil.getHome().createCommunicationEventPurpose(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CommunicationUtil.getHome().createCommunicationEventPurpose(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

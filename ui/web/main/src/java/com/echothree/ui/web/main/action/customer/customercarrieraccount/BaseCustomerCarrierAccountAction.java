@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.customer.customercarrieraccount;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.form.GetPartyCarrierAccountForm;
 import com.echothree.control.user.carrier.common.result.GetPartyCarrierAccountResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.model.control.carrier.common.transfer.PartyCarrierAccountTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionForm;
@@ -38,13 +34,13 @@ public abstract class BaseCustomerCarrierAccountAction<A
 
     public static void setupCustomer(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }
@@ -56,14 +52,14 @@ public abstract class BaseCustomerCarrierAccountAction<A
 
     public static PartyCarrierAccountTransfer getPartyCarrierAccountTransfer(HttpServletRequest request, String partyName, String carrierName)
             throws NamingException {
-        GetPartyCarrierAccountForm commandForm = CarrierUtil.getHome().getGetPartyCarrierAccountForm();
+        var commandForm = CarrierUtil.getHome().getGetPartyCarrierAccountForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setCarrierName(carrierName);
 
-        CommandResult commandResult = CarrierUtil.getHome().getPartyCarrierAccount(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyCarrierAccountResult result = (GetPartyCarrierAccountResult)executionResult.getResult();
+        var commandResult = CarrierUtil.getHome().getPartyCarrierAccount(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyCarrierAccountResult)executionResult.getResult();
 
         return result.getPartyCarrierAccount();
     }

@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.advertising.offerchaintype.Add;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.GetChainTypeForm;
 import com.echothree.control.user.chain.common.result.GetChainTypeResult;
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetOfferForm;
 import com.echothree.control.user.offer.common.result.GetOfferResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionForm;
@@ -36,12 +32,12 @@ public abstract class BaseAddAction
     
     protected void setupOffer(HttpServletRequest request, String offerName)
             throws NamingException {
-        GetOfferForm commandForm = OfferUtil.getHome().getGetOfferForm();
+        var commandForm = OfferUtil.getHome().getGetOfferForm();
         commandForm.setOfferName(offerName);
-        
-        CommandResult commandResult = OfferUtil.getHome().getOffer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetOfferResult result = (GetOfferResult)executionResult.getResult();
+
+        var commandResult = OfferUtil.getHome().getOffer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetOfferResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.OFFER, result.getOffer());
         
@@ -54,14 +50,14 @@ public abstract class BaseAddAction
     
     protected void setupChainType(final HttpServletRequest request, final String chainKindName, final String chainTypeName)
             throws NamingException {
-        GetChainTypeForm commandForm = ChainUtil.getHome().getGetChainTypeForm();
+        var commandForm = ChainUtil.getHome().getGetChainTypeForm();
         
         commandForm.setChainKindName(chainKindName);
         commandForm.setChainTypeName(chainTypeName);
-        
-        CommandResult commandResult = ChainUtil.getHome().getChainType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetChainTypeResult result = (GetChainTypeResult)executionResult.getResult();
+
+        var commandResult = ChainUtil.getHome().getChainType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetChainTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CHAIN_TYPE, result.getChainType());
     }

@@ -18,20 +18,17 @@ package com.echothree.cucumber.authentication;
 
 import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.cucumber.util.persona.AnonymousPersona;
 import com.echothree.cucumber.util.persona.AnonymousPersonas;
-import com.echothree.util.common.command.CommandResult;
 import io.cucumber.java8.En;
-import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AnonymousSteps implements En {
 
     public AnonymousSteps() {
         After(() -> {
-                    for(Map.Entry<String, AnonymousPersona> anonymousPersona : AnonymousPersonas.getPersonaEntries()) {
+                    for(var anonymousPersona : AnonymousPersonas.getPersonaEntries()) {
                         AuthenticationService authenticationService = AuthenticationUtil.getHome();
-                        CommandResult commandResult = authenticationService.logout(anonymousPersona.getValue().userVisitPK);
+                        var commandResult = authenticationService.logout(anonymousPersona.getValue().userVisitPK);
 
                         assertThat(commandResult.hasErrors()).isFalse();
                     }

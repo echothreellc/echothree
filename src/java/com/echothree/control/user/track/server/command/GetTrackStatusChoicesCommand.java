@@ -17,13 +17,11 @@
 package com.echothree.control.user.track.server.command;
 
 import com.echothree.control.user.track.common.form.GetTrackStatusChoicesForm;
-import com.echothree.control.user.track.common.result.GetTrackStatusChoicesResult;
 import com.echothree.control.user.track.common.result.TrackResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.track.server.control.TrackControl;
-import com.echothree.model.data.track.server.entity.Track;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,13 +64,13 @@ public class GetTrackStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var trackControl = Session.getModelController(TrackControl.class);
-        GetTrackStatusChoicesResult result = TrackResultFactory.getGetTrackStatusChoicesResult();
-        String trackName = form.getTrackName();
-        Track track = trackControl.getTrackByName(trackName);
+        var result = TrackResultFactory.getGetTrackStatusChoicesResult();
+        var trackName = form.getTrackName();
+        var track = trackControl.getTrackByName(trackName);
         
         if(track != null) {
-            String defaultTrackStatusChoice = form.getDefaultTrackStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultTrackStatusChoice = form.getDefaultTrackStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setTrackStatusChoices(trackControl.getTrackStatusChoices(defaultTrackStatusChoice,
                     getPreferredLanguage(), allowNullChoice, track, getPartyPK()));

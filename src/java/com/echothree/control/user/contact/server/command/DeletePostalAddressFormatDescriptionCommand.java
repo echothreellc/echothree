@@ -19,9 +19,6 @@ package com.echothree.control.user.contact.server.command;
 import com.echothree.control.user.contact.common.form.DeletePostalAddressFormatDescriptionForm;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
-import com.echothree.model.data.contact.server.entity.PostalAddressFormatDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,16 +50,16 @@ public class DeletePostalAddressFormatDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String postalAddressFormatName = form.getPostalAddressFormatName();
-        PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
+        var postalAddressFormatName = form.getPostalAddressFormatName();
+        var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
         
         if(postalAddressFormat != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PostalAddressFormatDescription postalAddressFormatDescription = contactControl.getPostalAddressFormatDescriptionForUpdate(postalAddressFormat, language);
+                var postalAddressFormatDescription = contactControl.getPostalAddressFormatDescriptionForUpdate(postalAddressFormat, language);
                 
                 if(postalAddressFormatDescription != null) {
                     contactControl.deletePostalAddressFormatDescription(postalAddressFormatDescription, getPartyPK());

@@ -23,21 +23,14 @@ import com.echothree.model.control.shipping.common.choice.ShippingMethodChoicesB
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodCarrierServiceTransfer;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodDescriptionTransfer;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
-import com.echothree.model.control.shipping.server.transfer.ShippingMethodCarrierServiceTransferCache;
-import com.echothree.model.control.shipping.server.transfer.ShippingMethodDescriptionTransferCache;
-import com.echothree.model.control.shipping.server.transfer.ShippingMethodTransferCache;
 import com.echothree.model.control.shipping.server.transfer.ShippingTransferCaches;
 import com.echothree.model.data.carrier.server.entity.CarrierService;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.selector.common.pk.SelectorPK;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
-import com.echothree.model.data.shipment.server.entity.ShipmentTypeShippingMethod;
-import com.echothree.model.data.shipping.common.pk.ShippingMethodPK;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodCarrierService;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodDescription;
-import com.echothree.model.data.shipping.server.entity.ShippingMethodDetail;
 import com.echothree.model.data.shipping.server.factory.ShippingMethodCarrierServiceFactory;
 import com.echothree.model.data.shipping.server.factory.ShippingMethodDescriptionFactory;
 import com.echothree.model.data.shipping.server.factory.ShippingMethodDetailFactory;
@@ -51,7 +44,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,8 +76,8 @@ public class ShippingControl
     
     public ShippingMethod createShippingMethod(String shippingMethodName, Selector geoCodeSelector, Selector itemSelector, Integer sortOrder,
             BasePK createdBy) {
-        ShippingMethod shippingMethod = ShippingMethodFactory.getInstance().create();
-        ShippingMethodDetail shippingMethodDetail = ShippingMethodDetailFactory.getInstance().create(session,
+        var shippingMethod = ShippingMethodFactory.getInstance().create();
+        var shippingMethodDetail = ShippingMethodDetailFactory.getInstance().create(session,
                 shippingMethod, shippingMethodName, geoCodeSelector, itemSelector, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -115,8 +107,8 @@ public class ShippingControl
                     "WHERE shm_activedetailid = shmdt_shippingmethoddetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = ShippingMethodFactory.getInstance().prepareStatement(query);
+
+        var ps = ShippingMethodFactory.getInstance().prepareStatement(query);
         
         return ShippingMethodFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -147,8 +139,8 @@ public class ShippingControl
                         "AND shmdt_shippingmethodname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ShippingMethodFactory.getInstance().prepareStatement(query);
+
+            var ps = ShippingMethodFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, shippingMethodName);
             
@@ -178,7 +170,7 @@ public class ShippingControl
     
     public ShippingMethodChoicesBean getShippingMethodChoices(String defaultShippingMethodChoice, Language language,
             boolean allowNullChoice) {
-        List<ShippingMethod> shippingMethods = getShippingMethods();
+        var shippingMethods = getShippingMethods();
         var size = shippingMethods.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -194,7 +186,7 @@ public class ShippingControl
         }
         
         for(var shippingMethod : shippingMethods) {
-            ShippingMethodDetail shippingMethodDetail = shippingMethod.getLastDetail();
+            var shippingMethodDetail = shippingMethod.getLastDetail();
             var label = getBestShippingMethodDescription(shippingMethod, language);
             var value = shippingMethodDetail.getShippingMethodName();
             
@@ -213,7 +205,7 @@ public class ShippingControl
     public ShippingMethodChoicesBean getShippingMethodChoices(String defaultShippingMethodChoice, Language language,
             boolean allowNullChoice, ShipmentType shipmentType) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods = shipmentControl.getShipmentTypeShippingMethodsByShipmentType(shipmentType);
+        var shipmentTypeShippingMethods = shipmentControl.getShipmentTypeShippingMethodsByShipmentType(shipmentType);
         var size = shipmentTypeShippingMethods.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -229,8 +221,8 @@ public class ShippingControl
         }
         
         for(var shipmentTypeShippingMethod : shipmentTypeShippingMethods) {
-            ShippingMethod shippingMethod = shipmentTypeShippingMethod.getShippingMethod();
-            ShippingMethodDetail shippingMethodDetail = shippingMethod.getLastDetail();
+            var shippingMethod = shipmentTypeShippingMethod.getShippingMethod();
+            var shippingMethodDetail = shippingMethod.getLastDetail();
             var label = getBestShippingMethodDescription(shippingMethod, language);
             var value = shippingMethodDetail.getShippingMethodName();
             
@@ -251,9 +243,9 @@ public class ShippingControl
     }
     
     public List<ShippingMethodTransfer> getShippingMethodTransfers(UserVisit userVisit) {
-        List<ShippingMethod> carrierPartyPriorities = getShippingMethods();
+        var carrierPartyPriorities = getShippingMethods();
         List<ShippingMethodTransfer> shippingMethodTransfers = new ArrayList<>(carrierPartyPriorities.size());
-        ShippingMethodTransferCache shippingMethodTransferCache = getShippingTransferCaches(userVisit).getShippingMethodTransferCache();
+        var shippingMethodTransferCache = getShippingTransferCaches(userVisit).getShippingMethodTransferCache();
         
         carrierPartyPriorities.forEach((shippingMethod) ->
                 shippingMethodTransfers.add(shippingMethodTransferCache.getShippingMethodTransfer(shippingMethod))
@@ -264,18 +256,18 @@ public class ShippingControl
     
     public void updateShippingMethodFromValue(ShippingMethodDetailValue shippingMethodDetailValue, BasePK updatedBy) {
         if(shippingMethodDetailValue.hasBeenModified()) {
-            ShippingMethod shippingMethod = ShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shippingMethod = ShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      shippingMethodDetailValue.getShippingMethodPK());
-            ShippingMethodDetail shippingMethodDetail = shippingMethod.getActiveDetailForUpdate();
+            var shippingMethodDetail = shippingMethod.getActiveDetailForUpdate();
             
             shippingMethodDetail.setThruTime(session.START_TIME_LONG);
             shippingMethodDetail.store();
-            
-            ShippingMethodPK shippingMethodPK = shippingMethodDetail.getShippingMethodPK();
-            String shippingMethodName = shippingMethodDetailValue.getShippingMethodName();
-            SelectorPK geoCodeSelectorPK = shippingMethodDetailValue.getGeoCodeSelectorPK();
-            SelectorPK itemSelectorPK = shippingMethodDetailValue.getItemSelectorPK();
-            Integer sortOrder = shippingMethodDetailValue.getSortOrder();
+
+            var shippingMethodPK = shippingMethodDetail.getShippingMethodPK();
+            var shippingMethodName = shippingMethodDetailValue.getShippingMethodName();
+            var geoCodeSelectorPK = shippingMethodDetailValue.getGeoCodeSelectorPK();
+            var itemSelectorPK = shippingMethodDetailValue.getItemSelectorPK();
+            var sortOrder = shippingMethodDetailValue.getSortOrder();
             
             shippingMethodDetail = ShippingMethodDetailFactory.getInstance().create(shippingMethodPK, shippingMethodName,
                     geoCodeSelectorPK, itemSelectorPK, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -295,8 +287,8 @@ public class ShippingControl
         shipmentControl.deleteShipmentTypeShippingMethodsByShippingMethod(shippingMethod, deletedBy);
         deleteShippingMethodDescriptionsByShippingMethod(shippingMethod, deletedBy);
         deleteShippingMethodCarrierServicesByShippingMethod(shippingMethod, deletedBy);
-        
-        ShippingMethodDetail shippingMethodDetail = shippingMethod.getLastDetailForUpdate();
+
+        var shippingMethodDetail = shippingMethod.getLastDetailForUpdate();
         shippingMethodDetail.setThruTime(session.START_TIME_LONG);
         shippingMethod.setActiveDetail(null);
         shippingMethod.store();
@@ -310,7 +302,7 @@ public class ShippingControl
     
     public ShippingMethodDescription createShippingMethodDescription(ShippingMethod shippingMethod, Language language, String description,
             BasePK createdBy) {
-        ShippingMethodDescription shippingMethodDescription = ShippingMethodDescriptionFactory.getInstance().create(shippingMethod,
+        var shippingMethodDescription = ShippingMethodDescriptionFactory.getInstance().create(shippingMethod,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodDescription.getPrimaryKey(),
@@ -335,8 +327,8 @@ public class ShippingControl
                         "WHERE shmd_shm_shippingmethodid = ? AND shmd_lang_languageid = ? AND shmd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ShippingMethodDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ShippingMethodDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -383,8 +375,8 @@ public class ShippingControl
                         "WHERE shmd_shm_shippingmethodid = ? AND shmd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ShippingMethodDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = ShippingMethodDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -407,7 +399,7 @@ public class ShippingControl
     
     public String getBestShippingMethodDescription(ShippingMethod shippingMethod, Language language) {
         String description;
-        ShippingMethodDescription shippingMethodDescription = getShippingMethodDescription(shippingMethod, language);
+        var shippingMethodDescription = getShippingMethodDescription(shippingMethod, language);
         
         if(shippingMethodDescription == null && !language.getIsDefault()) {
             shippingMethodDescription = getShippingMethodDescription(shippingMethod, getPartyControl().getDefaultLanguage());
@@ -427,9 +419,9 @@ public class ShippingControl
     }
     
     public List<ShippingMethodDescriptionTransfer> getShippingMethodDescriptionTransfers(UserVisit userVisit, ShippingMethod shippingMethod) {
-        List<ShippingMethodDescription> shippingMethodDescriptions = getShippingMethodDescriptionsByShippingMethod(shippingMethod);
+        var shippingMethodDescriptions = getShippingMethodDescriptionsByShippingMethod(shippingMethod);
         List<ShippingMethodDescriptionTransfer> shippingMethodDescriptionTransfers = new ArrayList<>(shippingMethodDescriptions.size());
-        ShippingMethodDescriptionTransferCache shippingMethodDescriptionTransferCache = getShippingTransferCaches(userVisit).getShippingMethodDescriptionTransferCache();
+        var shippingMethodDescriptionTransferCache = getShippingTransferCaches(userVisit).getShippingMethodDescriptionTransferCache();
         
         shippingMethodDescriptions.forEach((shippingMethodDescription) ->
                 shippingMethodDescriptionTransfers.add(shippingMethodDescriptionTransferCache.getShippingMethodDescriptionTransfer(shippingMethodDescription))
@@ -440,15 +432,15 @@ public class ShippingControl
     
     public void updateShippingMethodDescriptionFromValue(ShippingMethodDescriptionValue shippingMethodDescriptionValue, BasePK updatedBy) {
         if(shippingMethodDescriptionValue.hasBeenModified()) {
-            ShippingMethodDescription shippingMethodDescription = ShippingMethodDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shippingMethodDescription = ShippingMethodDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      shippingMethodDescriptionValue.getPrimaryKey());
             
             shippingMethodDescription.setThruTime(session.START_TIME_LONG);
             shippingMethodDescription.store();
-            
-            ShippingMethod shippingMethod = shippingMethodDescription.getShippingMethod();
-            Language language = shippingMethodDescription.getLanguage();
-            String description = shippingMethodDescriptionValue.getDescription();
+
+            var shippingMethod = shippingMethodDescription.getShippingMethod();
+            var language = shippingMethodDescription.getLanguage();
+            var description = shippingMethodDescriptionValue.getDescription();
             
             shippingMethodDescription = ShippingMethodDescriptionFactory.getInstance().create(shippingMethod, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -466,7 +458,7 @@ public class ShippingControl
     }
     
     public void deleteShippingMethodDescriptionsByShippingMethod(ShippingMethod shippingMethod, BasePK deletedBy) {
-        List<ShippingMethodDescription> shippingMethodDescriptions = getShippingMethodDescriptionsByShippingMethodForUpdate(shippingMethod);
+        var shippingMethodDescriptions = getShippingMethodDescriptionsByShippingMethodForUpdate(shippingMethod);
         
         shippingMethodDescriptions.forEach((shippingMethodDescription) -> 
                 deleteShippingMethodDescription(shippingMethodDescription, deletedBy)
@@ -479,7 +471,7 @@ public class ShippingControl
     
     public ShippingMethodCarrierService createShippingMethodCarrierService(ShippingMethod shippingMethod, CarrierService carrierService,
             BasePK createdBy) {
-        ShippingMethodCarrierService shippingMethodCarrierService = ShippingMethodCarrierServiceFactory.getInstance().create(session,
+        var shippingMethodCarrierService = ShippingMethodCarrierServiceFactory.getInstance().create(session,
                 shippingMethod, carrierService, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodCarrierService.getPrimaryKey(),
@@ -505,8 +497,8 @@ public class ShippingControl
                         "WHERE shmcrrsrv_shm_shippingmethodid = ? AND shmcrrsrv_crrsrv_carrierserviceid = ? AND shmcrrsrv_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ShippingMethodCarrierServiceFactory.getInstance().prepareStatement(query);
+
+            var ps = ShippingMethodCarrierServiceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, carrierService.getPrimaryKey().getEntityId());
@@ -554,8 +546,8 @@ public class ShippingControl
                         "WHERE shmcrrsrv_shm_shippingmethodid = ? AND shmcrrsrv_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ShippingMethodCarrierServiceFactory.getInstance().prepareStatement(query);
+
+            var ps = ShippingMethodCarrierServiceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -594,8 +586,8 @@ public class ShippingControl
                         "WHERE shmcrrsrv_crrsrv_carrierserviceid = ? AND shmcrrsrv_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ShippingMethodCarrierServiceFactory.getInstance().prepareStatement(query);
+
+            var ps = ShippingMethodCarrierServiceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, carrierService.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -624,7 +616,7 @@ public class ShippingControl
     public List<ShippingMethodCarrierServiceTransfer> getShippingMethodCarrierServiceTransfers(UserVisit userVisit,
             List<ShippingMethodCarrierService> shippingMethodCarrierServices) {
         List<ShippingMethodCarrierServiceTransfer> shippingMethodCarrierServiceTransfers = new ArrayList<>(shippingMethodCarrierServices.size());
-        ShippingMethodCarrierServiceTransferCache shippingMethodCarrierServiceTransferCache = getShippingTransferCaches(userVisit).getShippingMethodCarrierServiceTransferCache();
+        var shippingMethodCarrierServiceTransferCache = getShippingTransferCaches(userVisit).getShippingMethodCarrierServiceTransferCache();
         
         shippingMethodCarrierServices.forEach((shippingMethodCarrierService) ->
                 shippingMethodCarrierServiceTransfers.add(shippingMethodCarrierServiceTransferCache.getShippingMethodCarrierServiceTransfer(shippingMethodCarrierService))

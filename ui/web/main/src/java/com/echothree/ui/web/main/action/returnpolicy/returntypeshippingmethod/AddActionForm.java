@@ -17,12 +17,9 @@
 package com.echothree.ui.web.main.action.returnpolicy.returntypeshippingmethod;
 
 import com.echothree.control.user.shipping.common.ShippingUtil;
-import com.echothree.control.user.shipping.common.form.GetShippingMethodChoicesForm;
 import com.echothree.control.user.shipping.common.result.GetShippingMethodChoicesResult;
 import com.echothree.model.control.shipment.common.ShipmentTypes;
 import com.echothree.model.control.shipping.common.choice.ShippingMethodChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -46,15 +43,15 @@ public class AddActionForm
     private void setupShippingMethodChoices() {
         if(shippingMethodChoices == null) {
             try {
-                GetShippingMethodChoicesForm form = ShippingUtil.getHome().getGetShippingMethodChoicesForm();
+                var form = ShippingUtil.getHome().getGetShippingMethodChoicesForm();
                 
                 form.setShipmentTypeName(ShipmentTypes.CUSTOMER_RETURN.name());
                 form.setDefaultShippingMethodChoice(shippingMethodChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ShippingUtil.getHome().getShippingMethodChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetShippingMethodChoicesResult getShippingMethodChoicesResult = (GetShippingMethodChoicesResult)executionResult.getResult();
+
+                var commandResult = ShippingUtil.getHome().getShippingMethodChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getShippingMethodChoicesResult = (GetShippingMethodChoicesResult)executionResult.getResult();
                 shippingMethodChoices = getShippingMethodChoicesResult.getShippingMethodChoices();
                 
                 if(shippingMethodChoice == null) {

@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.glaccountclass;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetGlAccountClassDescriptionsForm;
 import com.echothree.control.user.accounting.common.result.GetGlAccountClassDescriptionsResult;
-import com.echothree.model.control.accounting.common.transfer.GlAccountClassTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String glAccountClassName = request.getParameter(ParameterConstants.GL_ACCOUNT_CLASS_NAME);
-            GetGlAccountClassDescriptionsForm commandForm = AccountingUtil.getHome().getGetGlAccountClassDescriptionsForm();
+            var glAccountClassName = request.getParameter(ParameterConstants.GL_ACCOUNT_CLASS_NAME);
+            var commandForm = AccountingUtil.getHome().getGetGlAccountClassDescriptionsForm();
             
             commandForm.setGlAccountClassName(glAccountClassName);
-            
-            CommandResult commandResult = AccountingUtil.getHome().getGlAccountClassDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGlAccountClassDescriptionsResult result = (GetGlAccountClassDescriptionsResult)executionResult.getResult();
-            GlAccountClassTransfer glAccountClassTransfer = result.getGlAccountClass();
+
+            var commandResult = AccountingUtil.getHome().getGlAccountClassDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGlAccountClassDescriptionsResult)executionResult.getResult();
+            var glAccountClassTransfer = result.getGlAccountClass();
             
             request.setAttribute(AttributeConstants.GL_ACCOUNT_CLASS, glAccountClassTransfer);
             request.setAttribute(AttributeConstants.GL_ACCOUNT_CLASS_NAME, glAccountClassTransfer.getGlAccountClassName());

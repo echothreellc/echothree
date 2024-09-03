@@ -32,7 +32,7 @@ public class DateFormatter {
         String result = null;
         
         if(date != null) {
-            LocalDate localDate = LocalDate.parse(date.toString(), inDateTimeFormatter);
+            var localDate = LocalDate.parse(date.toString(), inDateTimeFormatter);
 
             result = outDateTimeFormatter.format(localDate);
         }

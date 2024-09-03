@@ -21,11 +21,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.LocationNameElement;
-import com.echothree.model.data.warehouse.server.entity.LocationType;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,17 +64,17 @@ public class DeleteLocationNameElementCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
-            String locationTypeName = form.getLocationTypeName();
-            LocationType locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
+            var warehouseParty = warehouse.getParty();
+            var locationTypeName = form.getLocationTypeName();
+            var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
             
             if(locationType != null) {
-                String locationNameElementName = form.getLocationNameElementName();
-                LocationNameElement locationNameElement = warehouseControl.getLocationNameElementByNameForUpdate(locationType, locationNameElementName);
+                var locationNameElementName = form.getLocationNameElementName();
+                var locationNameElement = warehouseControl.getLocationNameElementByNameForUpdate(locationType, locationNameElementName);
                 
                 if(locationNameElement != null) {
                     warehouseControl.deleteLocationNameElement(locationNameElement, getPartyPK());

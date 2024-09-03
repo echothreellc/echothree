@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.core.event;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.edit.EntityAppearanceEdit;
-import com.echothree.control.user.core.common.form.EditEntityAppearanceForm;
 import com.echothree.control.user.core.common.result.EditEntityAppearanceResult;
-import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -59,9 +54,9 @@ public class EntityAppearanceEditAction
     public ActionForward executeAction(ActionMapping mapping, EntityAppearanceEditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
-        EditEntityAppearanceForm commandForm = CoreUtil.getHome().getEditEntityAppearanceForm();
-        EntityRefSpec spec = CoreUtil.getHome().getEntityRefSpec();
+        var entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
+        var commandForm = CoreUtil.getHome().getEditEntityAppearanceForm();
+        var spec = CoreUtil.getHome().getEntityRefSpec();
 
         if(entityRef == null)
             entityRef = actionForm.getEntityRef();
@@ -70,20 +65,20 @@ public class EntityAppearanceEditAction
         spec.setEntityRef(entityRef);
 
         if(wasPost(request)) {
-            EntityAppearanceEdit edit = CoreUtil.getHome().getEntityAppearanceEdit();
+            var edit = CoreUtil.getHome().getEntityAppearanceEdit();
 
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
 
             edit.setAppearanceName(actionForm.getAppearanceChoice());
 
-            CommandResult commandResult = CoreUtil.getHome().editEntityAppearance(getUserVisitPK(request), commandForm);
+            var commandResult = CoreUtil.getHome().editEntityAppearance(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {
-                    EditEntityAppearanceResult result = (EditEntityAppearanceResult)executionResult.getResult();
+                    var result = (EditEntityAppearanceResult)executionResult.getResult();
 
                     if(result != null) {
                         request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
@@ -99,12 +94,12 @@ public class EntityAppearanceEditAction
         } else {
             commandForm.setEditMode(EditMode.LOCK);
 
-            CommandResult commandResult = CoreUtil.getHome().editEntityAppearance(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditEntityAppearanceResult result = (EditEntityAppearanceResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().editEntityAppearance(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditEntityAppearanceResult)executionResult.getResult();
 
             if(result != null) {
-                EntityAppearanceEdit edit = result.getEdit();
+                var edit = result.getEdit();
 
                 if(edit != null) {
                     actionForm.setEntityRef(entityRef);
@@ -118,8 +113,8 @@ public class EntityAppearanceEditAction
 
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.ENTITY_REF, entityRef);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

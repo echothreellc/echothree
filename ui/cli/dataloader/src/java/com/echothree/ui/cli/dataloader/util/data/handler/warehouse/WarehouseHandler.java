@@ -18,15 +18,12 @@ package com.echothree.ui.cli.dataloader.util.data.handler.warehouse;
 
 import com.echothree.control.user.inventory.common.InventoryService;
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupForm;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.control.user.warehouse.common.WarehouseService;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.CreateLocationForm;
-import com.echothree.control.user.warehouse.common.form.CreateLocationTypeForm;
 import com.echothree.control.user.warehouse.common.form.WarehouseFormFactory;
 import com.echothree.control.user.warehouse.common.result.CreateLocationResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
@@ -34,8 +31,6 @@ import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.contact.ContactMechanismsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.tag.EntityTagsHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -71,7 +66,7 @@ public class WarehouseHandler
 
             partyService.createPartyAlias(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("inventoryLocationGroup")) {
-            CreateInventoryLocationGroupForm commandForm = InventoryFormFactory.getCreateInventoryLocationGroupForm();
+            var commandForm = InventoryFormFactory.getCreateInventoryLocationGroupForm();
 
             commandForm.setWarehouseName(warehouseName);
             commandForm.set(getAttrsMap(attrs));
@@ -80,7 +75,7 @@ public class WarehouseHandler
 
             initialDataParser.pushHandler(new InventoryLocationGroupHandler(initialDataParser, this, warehouseName, commandForm.getInventoryLocationGroupName()));
         } else if(localName.equals("locationType")) {
-            CreateLocationTypeForm commandForm = WarehouseFormFactory.getCreateLocationTypeForm();
+            var commandForm = WarehouseFormFactory.getCreateLocationTypeForm();
 
             commandForm.setWarehouseName(warehouseName);
             commandForm.set(getAttrsMap(attrs));
@@ -89,16 +84,16 @@ public class WarehouseHandler
 
             initialDataParser.pushHandler(new LocationTypeHandler(initialDataParser, this, warehouseName, commandForm.getLocationTypeName()));
         } else if(localName.equals("location")) {
-            CreateLocationForm commandForm = WarehouseFormFactory.getCreateLocationForm();
+            var commandForm = WarehouseFormFactory.getCreateLocationForm();
 
             commandForm.setWarehouseName(warehouseName);
             commandForm.set(getAttrsMap(attrs));
 
-            CommandResult commandResult = warehouseService.createLocation(initialDataParser.getUserVisit(), commandForm);
+            var commandResult = warehouseService.createLocation(initialDataParser.getUserVisit(), commandForm);
 
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateLocationResult result = (CreateLocationResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateLocationResult)executionResult.getResult();
 
                 initialDataParser.pushHandler(new LocationHandler(initialDataParser, this, warehouseName, result.getLocationName(), result.getEntityRef()));
             }

@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.humanresources.employeescaleuse;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetEmployeeForm;
 import com.echothree.control.user.employee.common.result.GetEmployeeResult;
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.GetPartyScaleUseForm;
 import com.echothree.control.user.scale.common.result.GetPartyScaleUseResult;
 import com.echothree.model.control.scale.common.transfer.PartyScaleUseTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionForm;
@@ -38,13 +34,13 @@ public abstract class BaseEmployeeScaleUseAction<A
 
     public static void setupEmployee(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetEmployeeForm commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
+        var commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEmployeeResult result = (GetEmployeeResult)executionResult.getResult();
+        var commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEmployeeResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.EMPLOYEE, result.getEmployee());
     }
@@ -56,14 +52,14 @@ public abstract class BaseEmployeeScaleUseAction<A
 
     public static PartyScaleUseTransfer getPartyScaleUseTransfer(HttpServletRequest request, String partyName, String scaleUseTypeName)
             throws NamingException {
-        GetPartyScaleUseForm commandForm = ScaleUtil.getHome().getGetPartyScaleUseForm();
+        var commandForm = ScaleUtil.getHome().getGetPartyScaleUseForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setScaleUseTypeName(scaleUseTypeName);
 
-        CommandResult commandResult = ScaleUtil.getHome().getPartyScaleUse(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyScaleUseResult result = (GetPartyScaleUseResult)executionResult.getResult();
+        var commandResult = ScaleUtil.getHome().getPartyScaleUse(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyScaleUseResult)executionResult.getResult();
 
         return result.getPartyScaleUse();
     }

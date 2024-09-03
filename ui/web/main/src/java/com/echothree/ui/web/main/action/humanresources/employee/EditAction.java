@@ -25,7 +25,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,8 +51,8 @@ public class EditAction
     @Override
     protected EmployeeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        EmployeeSpec spec = PartyUtil.getHome().getEmployeeSpec();
-        String employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
+        var spec = PartyUtil.getHome().getEmployeeSpec();
+        var employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
 
         if(employeeName == null) {
             employeeName = actionForm.getEmployeeName();
@@ -67,7 +66,7 @@ public class EditAction
     @Override
     protected EmployeeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        EmployeeEdit edit = PartyUtil.getHome().getEmployeeEdit();
+        var edit = PartyUtil.getHome().getEmployeeEdit();
 
         edit.setEmployeeTypeName(actionForm.getEmployeeTypeChoice());
         edit.setPersonalTitleId(actionForm.getPersonalTitleChoice());
@@ -109,9 +108,9 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditEmployeeForm commandForm)
             throws Exception {
-        CommandResult commandResult = PartyUtil.getHome().editEmployee(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditEmployeeResult result = (EditEmployeeResult)executionResult.getResult();
+        var commandResult = PartyUtil.getHome().editEmployee(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditEmployeeResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.EMPLOYEE, result.getEmployee());
         

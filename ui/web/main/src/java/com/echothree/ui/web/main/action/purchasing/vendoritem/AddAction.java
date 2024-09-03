@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.purchasing.vendoritem;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.CreateVendorItemForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -53,14 +51,14 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
+        String forwardKey;
+        var vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
         
         if(vendorName == null)
             vendorName = actionForm.getVendorName();
         
         if(wasPost(request)) {
-            CreateVendorItemForm commandForm = VendorUtil.getHome().getCreateVendorItemForm();
+            var commandForm = VendorUtil.getHome().getCreateVendorItemForm();
             
             commandForm.setItemName(actionForm.getItemName());
             commandForm.setVendorName(vendorName);
@@ -69,8 +67,8 @@ public class AddAction
             commandForm.setPriority(actionForm.getPriority());
             commandForm.setCancellationPolicyName(actionForm.getCancellationPolicyChoice());
             commandForm.setReturnPolicyName(actionForm.getReturnPolicyChoice());
-            
-            CommandResult commandResult = VendorUtil.getHome().createVendorItem(getUserVisitPK(request), commandForm);
+
+            var commandResult = VendorUtil.getHome().createVendorItem(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -83,8 +81,8 @@ public class AddAction
             actionForm.setPriority("1");
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.VENDOR_NAME, vendorName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

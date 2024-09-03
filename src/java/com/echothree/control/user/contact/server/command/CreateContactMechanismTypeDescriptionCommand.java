@@ -19,9 +19,6 @@ package com.echothree.control.user.contact.server.command;
 import com.echothree.control.user.contact.common.form.CreateContactMechanismTypeDescriptionForm;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.contact.server.entity.ContactMechanismType;
-import com.echothree.model.data.contact.server.entity.ContactMechanismTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,16 +51,16 @@ public class CreateContactMechanismTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String contactMechanismTypeName = form.getContactMechanismTypeName();
-        ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(contactMechanismTypeName);
+        var contactMechanismTypeName = form.getContactMechanismTypeName();
+        var contactMechanismType = contactControl.getContactMechanismTypeByName(contactMechanismTypeName);
         
         if(contactMechanismType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ContactMechanismTypeDescription contactMechanismTypeDescription = contactControl.getContactMechanismTypeDescription(contactMechanismType, language);
+                var contactMechanismTypeDescription = contactControl.getContactMechanismTypeDescription(contactMechanismType, language);
                 
                 if(contactMechanismTypeDescription == null) {
                     var description = form.getDescription();

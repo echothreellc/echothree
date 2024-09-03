@@ -16,13 +16,10 @@
 
 package com.echothree.util.common.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.common.transfer.BaseWrapper;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.logging.Log;
@@ -46,7 +43,7 @@ public class BaseTransferUtils {
 
     private void getEntityRefsFromBaseWrapper(EntityRefExclusions entityRefExclusions, Set<String> entityRefs, Set<Object> visitedObjects,
             BaseWrapper<?> baseWrapper, int indentCount) {
-        Collection<?> collection = baseWrapper.getCollection();
+        var collection = baseWrapper.getCollection();
 
         if(!collection.isEmpty()) {
             collection.stream().filter((nextDependsOn) -> !visitedObjects.contains(nextDependsOn)).forEach((nextDependsOn) -> {
@@ -63,11 +60,11 @@ public class BaseTransferUtils {
         visitedObjects.add(dependsOn);
         
         if(dependsOn instanceof BaseTransfer) {
-            EntityInstanceTransfer entityInstance = ((BaseTransfer)dependsOn).getEntityInstance();
-            boolean includeMethods = true;
+            var entityInstance = ((BaseTransfer)dependsOn).getEntityInstance();
+            var includeMethods = true;
             
             if(entityInstance != null) {
-                String nextDependsOnEntityRef = entityInstance.getEntityRef();
+                var nextDependsOnEntityRef = entityInstance.getEntityRef();
 
                 if(nextDependsOnEntityRef != null) {
                     if(entityRefExclusions != null && nextDependsOnEntityRef != null && entityRefExclusions.contains(nextDependsOnEntityRef)) {
@@ -87,18 +84,18 @@ public class BaseTransferUtils {
             }
             
             if(includeMethods) {
-                Method[] methods = dependsOn.getClass().getMethods();
+                var methods = dependsOn.getClass().getMethods();
                 
                 for(var method : methods) {
-                    String name = method.getName();
+                    var name = method.getName();
 
                     if(name.startsWith("get")) {
                         try {
-                            Class<?> returnType = method.getReturnType();
+                            var returnType = method.getReturnType();
 
                             if(BaseTransfer.class.isAssignableFrom(returnType)) {
                                 // If it's a BaseTransfer...
-                                BaseTransfer nextDependsOn = (BaseTransfer)method.invoke(dependsOn);
+                                var nextDependsOn = (BaseTransfer)method.invoke(dependsOn);
                                 
                                 if(nextDependsOn != null) {
                                     if(!visitedObjects.contains(nextDependsOn)) {
@@ -111,7 +108,7 @@ public class BaseTransferUtils {
                                 }
                             } else if(BaseWrapper.class.isAssignableFrom(returnType)) {
                                 // If it's a BaseWrapper
-                                BaseWrapper<?> baseWrapper = (BaseWrapper<?>)method.invoke(dependsOn);
+                                var baseWrapper = (BaseWrapper<?>)method.invoke(dependsOn);
 
                                 if(baseWrapper != null) {
                                     if(BaseTransferUtilsDebugFlags.LogGetEntityRefs) {
@@ -132,7 +129,7 @@ public class BaseTransferUtils {
                 }
             }
         } else if(dependsOn instanceof BaseWrapper) {
-            BaseWrapper<?> baseWrapper = (BaseWrapper<?>)dependsOn;
+            var baseWrapper = (BaseWrapper<?>)dependsOn;
             
             if(baseWrapper != null) {
                 if(BaseTransferUtilsDebugFlags.LogGetEntityRefs) {

@@ -21,8 +21,6 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.value.FilterTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,12 +62,12 @@ public class SetDefaultFilterTypeCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterTypeName = form.getFilterTypeName();
-            FilterTypeDetailValue filterTypeDetailValue = filterControl.getFilterTypeDetailValueByNameForUpdate(filterKind,
+            var filterTypeName = form.getFilterTypeName();
+            var filterTypeDetailValue = filterControl.getFilterTypeDetailValueByNameForUpdate(filterKind,
                     filterTypeName);
             
             if(filterTypeDetailValue != null) {

@@ -20,27 +20,18 @@ import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityBlobAttributeEdit;
 import com.echothree.control.user.core.common.form.EditEntityBlobAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.EditEntityBlobAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityBlobAttributeSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityBlobAttribute;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.core.server.value.EntityBlobAttributeValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -82,22 +73,22 @@ public class EditEntityBlobAttributeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        EditEntityBlobAttributeResult result = CoreResultFactory.getEditEntityBlobAttributeResult();
-        String entityRef = spec.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var result = CoreResultFactory.getEditEntityBlobAttributeResult();
+        var entityRef = spec.getEntityRef();
+        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
 
         if(entityInstance != null) {
-            String entityAttributeName = spec.getEntityAttributeName();
-            EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
+            var entityAttributeName = spec.getEntityAttributeName();
+            var entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
 
             if(entityAttribute != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     EntityBlobAttribute entityBlobAttribute = null;
-                    BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
+                    var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
                     
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                         entityBlobAttribute = coreControl.getEntityBlobAttribute(entityAttribute, entityInstance, language);
@@ -108,7 +99,7 @@ public class EditEntityBlobAttributeCommand
                                         entityBlobAttribute, entityInstance));
 
                                 if(lockEntity(basePK)) {
-                                    EntityBlobAttributeEdit edit = CoreEditFactory.getEntityBlobAttributeEdit();
+                                    var edit = CoreEditFactory.getEntityBlobAttributeEdit();
 
                                     result.setEdit(edit);
                                     edit.setMimeTypeName(entityBlobAttribute.getMimeType().getLastDetail().getMimeTypeName());
@@ -120,7 +111,7 @@ public class EditEntityBlobAttributeCommand
                                 basePK = null;
                             }
                         } else {
-                            EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+                            var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
 
                             addExecutionError(ExecutionErrors.UnknownEntityBlobAttribute.name(), entityRef,
                                     entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
@@ -130,16 +121,16 @@ public class EditEntityBlobAttributeCommand
                         entityBlobAttribute = coreControl.getEntityBlobAttributeForUpdate(entityAttribute, entityInstance, language);
 
                         if(entityBlobAttribute != null) {
-                            MimeType mimeType = MimeTypeLogic.getInstance().getMimeTypeByName(this, edit.getMimeTypeName());
+                            var mimeType = MimeTypeLogic.getInstance().getMimeTypeByName(this, edit.getMimeTypeName());
 
                             if(!hasExecutionErrors()) {
                                 if(mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName().equals(EntityAttributeTypes.BLOB.name())) {
-                                    ByteArray blobAttribute = edit.getBlobAttribute();
+                                    var blobAttribute = edit.getBlobAttribute();
 
                                     if(blobAttribute != null) {
                                         if(lockEntityForUpdate(basePK)) {
                                             try {
-                                                EntityBlobAttributeValue entityBlobAttributeValue = coreControl.getEntityBlobAttributeValueForUpdate(entityBlobAttribute);
+                                                var entityBlobAttributeValue = coreControl.getEntityBlobAttributeValueForUpdate(entityBlobAttribute);
 
                                                 entityBlobAttributeValue.setBlobAttribute(blobAttribute);
                                                 entityBlobAttributeValue.setMimeTypePK(mimeType.getPrimaryKey());
@@ -160,7 +151,7 @@ public class EditEntityBlobAttributeCommand
                                 }
                             }
                         } else {
-                            EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+                            var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
 
                             addExecutionError(ExecutionErrors.UnknownEntityBlobAttribute.name(), entityRef,
                                     entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
@@ -179,7 +170,7 @@ public class EditEntityBlobAttributeCommand
                     addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
                 }
             } else {
-                EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+                var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
 
                 addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
                         entityTypeDetail.getEntityTypeName(), entityAttributeName);

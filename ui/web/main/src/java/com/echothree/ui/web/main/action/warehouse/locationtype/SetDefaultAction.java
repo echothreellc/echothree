@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.warehouse.locationtype;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.SetDefaultLocationTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,11 +51,11 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-            String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
         
         try {
-            SetDefaultLocationTypeForm commandForm = WarehouseUtil.getHome().getSetDefaultLocationTypeForm();
-            String locationTypeName = request.getParameter(ParameterConstants.LOCATION_TYPE_NAME);
+            var commandForm = WarehouseUtil.getHome().getSetDefaultLocationTypeForm();
+            var locationTypeName = request.getParameter(ParameterConstants.LOCATION_TYPE_NAME);
             
             commandForm.setWarehouseName(warehouseName);
             commandForm.setLocationTypeName(locationTypeName);
@@ -67,8 +66,8 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

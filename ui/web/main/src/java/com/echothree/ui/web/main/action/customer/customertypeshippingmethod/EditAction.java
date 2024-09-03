@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected CustomerTypeShippingMethodSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        CustomerTypeShippingMethodSpec spec = CustomerUtil.getHome().getCustomerTypeShippingMethodSpec();
+        var spec = CustomerUtil.getHome().getCustomerTypeShippingMethodSpec();
         
         spec.setCustomerTypeName(findParameter(request, ParameterConstants.CUSTOMER_TYPE_NAME, actionForm.getCustomerTypeName()));
         spec.setShippingMethodName(findParameter(request, ParameterConstants.SHIPPING_METHOD_NAME, actionForm.getShippingMethodName()));
@@ -62,7 +62,7 @@ public class EditAction
     @Override
     protected CustomerTypeShippingMethodEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        CustomerTypeShippingMethodEdit edit = CustomerUtil.getHome().getCustomerTypeShippingMethodEdit();
+        var edit = CustomerUtil.getHome().getCustomerTypeShippingMethodEdit();
 
         edit.setDefaultSelectionPriority(actionForm.getDefaultSelectionPriority());
         edit.setIsDefault(actionForm.getIsDefault().toString());

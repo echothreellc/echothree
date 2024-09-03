@@ -19,13 +19,10 @@ package com.echothree.model.control.offer.server.control;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.offer.common.transfer.OfferNameElementDescriptionTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferNameElementTransfer;
-import com.echothree.model.control.offer.server.transfer.OfferNameElementDescriptionTransferCache;
-import com.echothree.model.control.offer.server.transfer.OfferNameElementTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.common.pk.OfferNameElementPK;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.offer.server.entity.OfferNameElementDescription;
-import com.echothree.model.data.offer.server.entity.OfferNameElementDetail;
 import com.echothree.model.data.offer.server.factory.OfferNameElementDescriptionFactory;
 import com.echothree.model.data.offer.server.factory.OfferNameElementDetailFactory;
 import com.echothree.model.data.offer.server.factory.OfferNameElementFactory;
@@ -37,7 +34,6 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -57,8 +53,8 @@ public class OfferNameElementControl
     
     public OfferNameElement createOfferNameElement(String offerNameElementName, Integer offset, Integer length,
             String validationPattern, BasePK createdBy) {
-        OfferNameElement offerNameElement = OfferNameElementFactory.getInstance().create();
-        OfferNameElementDetail offerNameElementDetail = OfferNameElementDetailFactory.getInstance().create(session,
+        var offerNameElement = OfferNameElementFactory.getInstance().create();
+        var offerNameElementDetail = OfferNameElementDetailFactory.getInstance().create(session,
                 offerNameElement, offerNameElementName, offset, length, validationPattern, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -113,8 +109,8 @@ public class OfferNameElementControl
                         "WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid AND ofrnedt_offernameelementname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OfferNameElementFactory.getInstance().prepareStatement(query);
+
+            var ps = OfferNameElementFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, offerNameElementName);
             
@@ -156,8 +152,8 @@ public class OfferNameElementControl
                     "WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = OfferNameElementFactory.getInstance().prepareStatement(query);
+
+        var ps = OfferNameElementFactory.getInstance().prepareStatement(query);
         
         return OfferNameElementFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -176,7 +172,7 @@ public class OfferNameElementControl
     
     public List<OfferNameElementTransfer> getOfferNameElementTransfers(UserVisit userVisit, Collection<OfferNameElement> offerNameElements) {
         List<OfferNameElementTransfer> offerNameElementTransfers = new ArrayList<>(offerNameElements.size());
-        OfferNameElementTransferCache offerNameElementTransferCache = getOfferTransferCaches(userVisit).getOfferNameElementTransferCache();
+        var offerNameElementTransferCache = getOfferTransferCaches(userVisit).getOfferNameElementTransferCache();
         
         for(var offerNameElement : offerNameElements) {
             offerNameElementTransfers.add(offerNameElementTransferCache.getOfferNameElementTransfer(offerNameElement));
@@ -191,18 +187,18 @@ public class OfferNameElementControl
     
     public void updateOfferNameElementFromValue(OfferNameElementDetailValue offerNameElementDetailValue, BasePK updatedBy) {
         if(offerNameElementDetailValue.hasBeenModified()) {
-            OfferNameElement offerNameElement = OfferNameElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var offerNameElement = OfferNameElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      offerNameElementDetailValue.getOfferNameElementPK());
-            OfferNameElementDetail offerNameElementDetail = offerNameElement.getActiveDetailForUpdate();
+            var offerNameElementDetail = offerNameElement.getActiveDetailForUpdate();
             
             offerNameElementDetail.setThruTime(session.START_TIME_LONG);
             offerNameElementDetail.store();
-            
-            OfferNameElementPK offerNameElementPK = offerNameElementDetail.getOfferNameElementPK();
-            String offerNameElementName = offerNameElementDetailValue.getOfferNameElementName();
-            Integer offset = offerNameElementDetailValue.getOffset();
-            Integer length = offerNameElementDetailValue.getLength();
-            String validationPattern = offerNameElementDetailValue.getValidationPattern();
+
+            var offerNameElementPK = offerNameElementDetail.getOfferNameElementPK();
+            var offerNameElementName = offerNameElementDetailValue.getOfferNameElementName();
+            var offset = offerNameElementDetailValue.getOffset();
+            var length = offerNameElementDetailValue.getLength();
+            var validationPattern = offerNameElementDetailValue.getValidationPattern();
             
             offerNameElementDetail = OfferNameElementDetailFactory.getInstance().create(offerNameElementPK,
                     offerNameElementName, offset, length, validationPattern, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -216,8 +212,8 @@ public class OfferNameElementControl
     
     public void deleteOfferNameElement(OfferNameElement offerNameElement, BasePK deletedBy) {
         deleteOfferNameElementDescriptionsByOfferNameElement(offerNameElement, deletedBy);
-        
-        OfferNameElementDetail offerNameElementDetail = offerNameElement.getLastDetailForUpdate();
+
+        var offerNameElementDetail = offerNameElement.getLastDetailForUpdate();
         offerNameElementDetail.setThruTime(session.START_TIME_LONG);
         offerNameElement.setActiveDetail(null);
         offerNameElement.store();
@@ -231,7 +227,7 @@ public class OfferNameElementControl
     
     public OfferNameElementDescription createOfferNameElementDescription(OfferNameElement offerNameElement, Language language,
             String description, BasePK createdBy) {
-        OfferNameElementDescription offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(session,
+        var offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(session,
                 offerNameElement, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(offerNameElement.getPrimaryKey(), EventTypes.MODIFY,
@@ -257,8 +253,8 @@ public class OfferNameElementControl
                         "WHERE ofrned_ofrne_offernameelementid = ? AND ofrned_lang_languageid = ? AND ofrned_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OfferNameElementDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = OfferNameElementDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, offerNameElement.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -306,8 +302,8 @@ public class OfferNameElementControl
                         "WHERE ofrned_ofrne_offernameelementid = ? AND ofrned_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OfferNameElementDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = OfferNameElementDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, offerNameElement.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -330,7 +326,7 @@ public class OfferNameElementControl
     
     public String getBestOfferNameElementDescription(OfferNameElement offerNameElement, Language language) {
         String description;
-        OfferNameElementDescription offerNameElementDescription = getOfferNameElementDescription(offerNameElement, language);
+        var offerNameElementDescription = getOfferNameElementDescription(offerNameElement, language);
         
         if(offerNameElementDescription == null && !language.getIsDefault()) {
             offerNameElementDescription = getOfferNameElementDescription(offerNameElement, getPartyControl().getDefaultLanguage());
@@ -351,9 +347,9 @@ public class OfferNameElementControl
     }
     
     public List<OfferNameElementDescriptionTransfer> getOfferNameElementDescriptionTransfersByOfferNameElement(UserVisit userVisit, OfferNameElement offerNameElement) {
-        List<OfferNameElementDescription> offerNameElementDescriptions = getOfferNameElementDescriptionsByOfferNameElement(offerNameElement);
+        var offerNameElementDescriptions = getOfferNameElementDescriptionsByOfferNameElement(offerNameElement);
         List<OfferNameElementDescriptionTransfer> offerNameElementDescriptionTransfers = new ArrayList<>(offerNameElementDescriptions.size());
-        OfferNameElementDescriptionTransferCache offerNameElementDescriptionTransferCache = getOfferTransferCaches(userVisit).getOfferNameElementDescriptionTransferCache();
+        var offerNameElementDescriptionTransferCache = getOfferTransferCaches(userVisit).getOfferNameElementDescriptionTransferCache();
         
         offerNameElementDescriptions.forEach((offerNameElementDescription) ->
                 offerNameElementDescriptionTransfers.add(offerNameElementDescriptionTransferCache.getOfferNameElementDescriptionTransfer(offerNameElementDescription))
@@ -364,15 +360,15 @@ public class OfferNameElementControl
     
     public void updateOfferNameElementDescriptionFromValue(OfferNameElementDescriptionValue offerNameElementDescriptionValue, BasePK updatedBy) {
         if(offerNameElementDescriptionValue.hasBeenModified()) {
-            OfferNameElementDescription offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      offerNameElementDescriptionValue.getPrimaryKey());
             
             offerNameElementDescription.setThruTime(session.START_TIME_LONG);
             offerNameElementDescription.store();
-            
-            OfferNameElement offerNameElement = offerNameElementDescription.getOfferNameElement();
-            Language language = offerNameElementDescription.getLanguage();
-            String description = offerNameElementDescriptionValue.getDescription();
+
+            var offerNameElement = offerNameElementDescription.getOfferNameElement();
+            var language = offerNameElementDescription.getLanguage();
+            var description = offerNameElementDescriptionValue.getDescription();
             
             offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(offerNameElement,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -390,7 +386,7 @@ public class OfferNameElementControl
     }
     
     public void deleteOfferNameElementDescriptionsByOfferNameElement(OfferNameElement offerNameElement, BasePK deletedBy) {
-        List<OfferNameElementDescription> offerNameElementDescriptions = getOfferNameElementDescriptionsByOfferNameElementForUpdate(offerNameElement);
+        var offerNameElementDescriptions = getOfferNameElementDescriptionsByOfferNameElementForUpdate(offerNameElement);
         
         offerNameElementDescriptions.forEach((offerNameElementDescription) -> 
                 deleteOfferNameElementDescription(offerNameElementDescription, deletedBy)

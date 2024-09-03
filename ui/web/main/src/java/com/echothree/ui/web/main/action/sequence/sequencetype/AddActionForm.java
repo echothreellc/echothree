@@ -17,14 +17,10 @@
 package com.echothree.ui.web.main.action.sequence.sequencetype;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.form.GetSequenceChecksumTypeChoicesForm;
-import com.echothree.control.user.sequence.common.form.GetSequenceEncoderTypeChoicesForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceChecksumTypeChoicesResult;
 import com.echothree.control.user.sequence.common.result.GetSequenceEncoderTypeChoicesResult;
 import com.echothree.model.control.sequence.common.choice.SequenceChecksumTypeChoicesBean;
 import com.echothree.model.control.sequence.common.choice.SequenceEncoderTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -53,14 +49,14 @@ public class AddActionForm
     public void setupSequenceEncoderTypeChoices() {
         if(sequenceEncoderTypeChoices == null) {
             try {
-                GetSequenceEncoderTypeChoicesForm form = SequenceUtil.getHome().getGetSequenceEncoderTypeChoicesForm();
+                var form = SequenceUtil.getHome().getGetSequenceEncoderTypeChoicesForm();
                 
                 form.setDefaultSequenceEncoderTypeChoice(sequenceEncoderTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceEncoderTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceEncoderTypeChoicesResult getSequenceEncoderTypeChoicesResult = (GetSequenceEncoderTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = SequenceUtil.getHome().getSequenceEncoderTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getSequenceEncoderTypeChoicesResult = (GetSequenceEncoderTypeChoicesResult)executionResult.getResult();
                 sequenceEncoderTypeChoices = getSequenceEncoderTypeChoicesResult.getSequenceEncoderTypeChoices();
                 
                 if(sequenceEncoderTypeChoice == null)
@@ -75,14 +71,14 @@ public class AddActionForm
     public void setupSequenceChecksumTypeChoices() {
         if(sequenceChecksumTypeChoices == null) {
             try {
-                GetSequenceChecksumTypeChoicesForm form = SequenceUtil.getHome().getGetSequenceChecksumTypeChoicesForm();
+                var form = SequenceUtil.getHome().getGetSequenceChecksumTypeChoicesForm();
                 
                 form.setDefaultSequenceChecksumTypeChoice(sequenceChecksumTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChecksumTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChecksumTypeChoicesResult getSequenceChecksumTypeChoicesResult = (GetSequenceChecksumTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = SequenceUtil.getHome().getSequenceChecksumTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getSequenceChecksumTypeChoicesResult = (GetSequenceChecksumTypeChoicesResult)executionResult.getResult();
                 sequenceChecksumTypeChoices = getSequenceChecksumTypeChoicesResult.getSequenceChecksumTypeChoices();
                 
                 if(sequenceChecksumTypeChoice == null)

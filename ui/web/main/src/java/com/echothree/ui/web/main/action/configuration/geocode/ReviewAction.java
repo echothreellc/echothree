@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.geocode;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetGeoCodeForm;
 import com.echothree.control.user.geo.common.result.GetGeoCodeResult;
 import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetGeoCodeForm commandForm = GeoUtil.getHome().getGetGeoCodeForm();
+        String forwardKey;
+        var commandForm = GeoUtil.getHome().getGetGeoCodeForm();
 
         commandForm.setGeoCodeName(request.getParameter(ParameterConstants.GEO_CODE_NAME));
-        
-        CommandResult commandResult = GeoUtil.getHome().getGeoCode(getUserVisitPK(request), commandForm);
+
+        var commandResult = GeoUtil.getHome().getGeoCode(getUserVisitPK(request), commandForm);
         GeoCodeTransfer geoCode = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeResult result = (GetGeoCodeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeResult)executionResult.getResult();
             
             geoCode = result.getGeoCode();
         }

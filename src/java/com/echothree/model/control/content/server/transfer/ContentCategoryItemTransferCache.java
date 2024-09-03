@@ -17,14 +17,11 @@
 package com.echothree.model.control.content.server.transfer;
 
 import com.echothree.model.control.content.common.ContentProperties;
-import com.echothree.model.control.content.common.transfer.ContentCatalogItemTransfer;
 import com.echothree.model.control.content.common.transfer.ContentCategoryItemTransfer;
-import com.echothree.model.control.content.common.transfer.ContentCategoryTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import java.util.Set;
 
 public class ContentCategoryItemTransferCache
         extends BaseContentTransferCache<ContentCategoryItem, ContentCategoryItemTransfer> {
@@ -53,13 +50,13 @@ public class ContentCategoryItemTransferCache
     }
     
     public ContentCategoryItemTransfer getContentCategoryItemTransfer(ContentCategoryItem contentCategoryItem) {
-        ContentCategoryItemTransfer contentCategoryItemTransfer = get(contentCategoryItem);
+        var contentCategoryItemTransfer = get(contentCategoryItem);
         
         if(contentCategoryItemTransfer == null) {
-            ContentCategoryTransfer contentCategory = filterContentCategory ? null : contentControl.getContentCategoryTransfer(userVisit, contentCategoryItem.getContentCategory());
-            ContentCatalogItemTransfer contentCatalogItem = filterContentCatalogItem ? null : contentControl.getContentCatalogItemTransfer(userVisit, contentCategoryItem.getContentCatalogItem());
-            Boolean isDefault = filterIsDefault ? null : contentCategoryItem.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : contentCategoryItem.getSortOrder();
+            var contentCategory = filterContentCategory ? null : contentControl.getContentCategoryTransfer(userVisit, contentCategoryItem.getContentCategory());
+            var contentCatalogItem = filterContentCatalogItem ? null : contentControl.getContentCatalogItemTransfer(userVisit, contentCategoryItem.getContentCatalogItem());
+            var isDefault = filterIsDefault ? null : contentCategoryItem.getIsDefault();
+            var sortOrder = filterSortOrder ? null : contentCategoryItem.getSortOrder();
             
             contentCategoryItemTransfer = new ContentCategoryItemTransfer(contentCategory, contentCatalogItem, isDefault, sortOrder);
             put(contentCategoryItem, contentCategoryItemTransfer);

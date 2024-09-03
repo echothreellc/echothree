@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.configuration.recoveryquestion;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.CreateRecoveryQuestionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,17 +52,17 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateRecoveryQuestionForm commandForm = UserUtil.getHome().getCreateRecoveryQuestionForm();
+                    var commandForm = UserUtil.getHome().getCreateRecoveryQuestionForm();
                     
                     commandForm.setRecoveryQuestionName(actionForm.getRecoveryQuestionName());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = UserUtil.getHome().createRecoveryQuestion(getUserVisitPK(request), commandForm);
+
+                    var commandResult = UserUtil.getHome().createRecoveryQuestion(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

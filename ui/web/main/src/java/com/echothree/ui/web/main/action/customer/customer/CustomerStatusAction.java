@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
-import com.echothree.control.user.customer.common.form.SetCustomerStatusForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,13 +51,13 @@ public class CustomerStatusAction
     
     public void setupCustomer(HttpServletRequest request, String customerName)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setCustomerName(customerName);
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }
@@ -69,9 +66,9 @@ public class CustomerStatusAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        CustomerStatusActionForm actionForm = (CustomerStatusActionForm)form;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
-        String customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
+        var actionForm = (CustomerStatusActionForm)form;
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
 
         if(returnUrl == null) {
             returnUrl = actionForm.getReturnUrl();
@@ -84,7 +81,7 @@ public class CustomerStatusAction
             CommandResult commandResult = null;
 
             if(!wasCanceled(request)) {
-                SetCustomerStatusForm commandForm = CustomerUtil.getHome().getSetCustomerStatusForm();
+                var commandForm = CustomerUtil.getHome().getSetCustomerStatusForm();
 
                 commandForm.setCustomerName(customerName);
                 commandForm.setCustomerStatusChoice(actionForm.getCustomerStatusChoice());

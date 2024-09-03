@@ -21,14 +21,10 @@ import com.echothree.model.control.campaign.common.transfer.CampaignTransfer;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.campaign.common.workflow.CampaignStatusConstants;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.campaign.server.entity.Campaign;
-import com.echothree.model.data.campaign.server.entity.CampaignDetail;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class CampaignTransferCache
         extends BaseCampaignTransferCache<Campaign, CampaignTransfer> {
@@ -50,19 +46,19 @@ public class CampaignTransferCache
     }
 
     public CampaignTransfer getCampaignTransfer(Campaign campaign) {
-        CampaignTransfer campaignTransfer = get(campaign);
+        var campaignTransfer = get(campaign);
 
         if(campaignTransfer == null) {
-            CampaignDetail campaignDetail = campaign.getLastDetail();
-            String campaignName = campaignDetail.getCampaignName();
-            String valueSha1Hash = campaignDetail.getValueSha1Hash();
-            String value = campaignDetail.getValue();
-            Boolean isDefault = campaignDetail.getIsDefault();
-            Integer sortOrder = campaignDetail.getSortOrder();
-            String description = campaignControl.getBestCampaignDescription(campaign, getLanguage());
+            var campaignDetail = campaign.getLastDetail();
+            var campaignName = campaignDetail.getCampaignName();
+            var valueSha1Hash = campaignDetail.getValueSha1Hash();
+            var value = campaignDetail.getValue();
+            var isDefault = campaignDetail.getIsDefault();
+            var sortOrder = campaignDetail.getSortOrder();
+            var description = campaignControl.getBestCampaignDescription(campaign, getLanguage());
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(campaign.getPrimaryKey());
-            WorkflowEntityStatusTransfer campaignStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(campaign.getPrimaryKey());
+            var campaignStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     CampaignStatusConstants.Workflow_CAMPAIGN_STATUS, entityInstance);
             
             campaignTransfer = new CampaignTransfer(campaignName, valueSha1Hash, value, isDefault, sortOrder, description,

@@ -17,13 +17,11 @@
 package com.echothree.control.user.track.server.command;
 
 import com.echothree.control.user.track.common.form.GetTrackDescriptionsForm;
-import com.echothree.control.user.track.common.result.GetTrackDescriptionsResult;
 import com.echothree.control.user.track.common.result.TrackResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.track.server.control.TrackControl;
-import com.echothree.model.data.track.server.entity.Track;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetTrackDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var trackControl = Session.getModelController(TrackControl.class);
-        GetTrackDescriptionsResult result = TrackResultFactory.getGetTrackDescriptionsResult();
-        String trackName = form.getTrackName();
-        Track track = trackControl.getTrackByName(trackName);
+        var result = TrackResultFactory.getGetTrackDescriptionsResult();
+        var trackName = form.getTrackName();
+        var track = trackControl.getTrackByName(trackName);
         
         if(track != null) {
             result.setTrack(trackControl.getTrackTransfer(getUserVisit(), track));

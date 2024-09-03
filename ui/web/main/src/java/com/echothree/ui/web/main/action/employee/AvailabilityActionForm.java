@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.employee;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetEmployeeAvailabilityChoicesForm;
 import com.echothree.control.user.party.common.result.GetEmployeeAvailabilityChoicesResult;
 import com.echothree.model.control.employee.common.choice.EmployeeAvailabilityChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -39,14 +36,14 @@ public class AvailabilityActionForm
     public void setupEmployeeAvailabilityChoices()
             throws NamingException {
         if(employeeAvailabilityChoices == null) {
-            GetEmployeeAvailabilityChoicesForm form = PartyUtil.getHome().getGetEmployeeAvailabilityChoicesForm();
+            var form = PartyUtil.getHome().getGetEmployeeAvailabilityChoicesForm();
 
             form.setDefaultEmployeeAvailabilityChoice(employeeAvailabilityChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getEmployeeAvailabilityChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmployeeAvailabilityChoicesResult result = (GetEmployeeAvailabilityChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getEmployeeAvailabilityChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmployeeAvailabilityChoicesResult)executionResult.getResult();
             employeeAvailabilityChoices = result.getEmployeeAvailabilityChoices();
 
             if(employeeAvailabilityChoice == null)

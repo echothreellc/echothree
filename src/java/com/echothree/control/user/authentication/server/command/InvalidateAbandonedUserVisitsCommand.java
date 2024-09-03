@@ -53,7 +53,7 @@ public class InvalidateAbandonedUserVisitsCommand
     
     @Override
     protected BaseResult execute() {
-        Long abandonedTime = Long.valueOf(form.getAbandonedTime());
+        var abandonedTime = Long.valueOf(form.getAbandonedTime());
         
         UserVisitLogic.getInstance().invalidateAbandonedUserVisits(abandonedTime, getPartyPK());
         

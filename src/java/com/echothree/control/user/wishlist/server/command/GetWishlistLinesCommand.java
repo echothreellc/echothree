@@ -17,15 +17,12 @@
 package com.echothree.control.user.wishlist.server.command;
 
 import com.echothree.control.user.wishlist.common.form.GetWishlistLinesForm;
-import com.echothree.control.user.wishlist.common.result.GetWishlistLinesResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -56,9 +53,9 @@ public class GetWishlistLinesCommand
     
     @Override
     protected BaseResult execute() {
-        GetWishlistLinesResult result = WishlistResultFactory.getGetWishlistLinesResult();
-        String wishlistName = form.getWishlistName();
-        String itemName = form.getItemName();
+        var result = WishlistResultFactory.getGetWishlistLinesResult();
+        var wishlistName = form.getWishlistName();
+        var itemName = form.getItemName();
         var parameterCount = (wishlistName == null ? 0 : 1) + (itemName == null ? 0 : 1);
         
         if(parameterCount == 1) {
@@ -67,7 +64,7 @@ public class GetWishlistLinesCommand
             if(wishlistName != null) {
                 var orderControl = Session.getModelController(OrderControl.class);
                 var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-                Order order = orderControl.getOrderByName(orderTypeControl.getOrderTypeByName(OrderTypes.WISHLIST.name()), wishlistName);
+                var order = orderControl.getOrderByName(orderTypeControl.getOrderTypeByName(OrderTypes.WISHLIST.name()), wishlistName);
                 
                 if(order != null && order.getLastDetail().getOrderType().getLastDetail().getOrderTypeName().equals(OrderTypes.WISHLIST.name())) {
                     result.setWishlistLines(wishlistControl.getWishlistLineTransfersByOrder(getUserVisit(), order));
@@ -78,7 +75,7 @@ public class GetWishlistLinesCommand
             
             if(itemName != null) {
                 var itemControl = Session.getModelController(ItemControl.class);
-                Item item = itemControl.getItemByName(itemName);
+                var item = itemControl.getItemByName(itemName);
                 
                 if(item != null) {
                     result.setWishlistLines(wishlistControl.getWishlistLineTransfersByItem(getUserVisit(), item));

@@ -27,7 +27,6 @@ import com.echothree.model.control.offer.common.exception.UnknownDefaultUseTypeE
 import com.echothree.model.control.offer.common.exception.UnknownUseTypeNameException;
 import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.offer.server.control.UseTypeControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;

@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.forum.forumgroupforum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.CreateForumGroupForumForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,24 +54,24 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+        var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(forumName == null)
                     forumName = actionForm.getForumName();
                 
                 if(wasPost(request)) {
-                    CreateForumGroupForumForm commandForm = ForumUtil.getHome().getCreateForumGroupForumForm();
+                    var commandForm = ForumUtil.getHome().getCreateForumGroupForumForm();
                     
                     commandForm.setForumGroupName(actionForm.getForumGroupChoice());
                     commandForm.setForumName(forumName);
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
-                    
-                    CommandResult commandResult = ForumUtil.getHome().createForumGroupForum(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ForumUtil.getHome().createForumGroupForum(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -90,8 +88,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.FORUM_NAME, forumName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

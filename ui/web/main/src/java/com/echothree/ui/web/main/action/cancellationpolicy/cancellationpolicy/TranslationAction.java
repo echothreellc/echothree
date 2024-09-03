@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationpolicy;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationPolicyTranslationsForm;
 import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationPolicyTranslationsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,16 +52,16 @@ public class TranslationAction
         String forwardKey;
         
         try {
-            String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
-            String cancellationPolicyName = request.getParameter(ParameterConstants.CANCELLATION_POLICY_NAME);
-            GetCancellationPolicyTranslationsForm commandForm = CancellationPolicyUtil.getHome().getGetCancellationPolicyTranslationsForm();
+            var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+            var cancellationPolicyName = request.getParameter(ParameterConstants.CANCELLATION_POLICY_NAME);
+            var commandForm = CancellationPolicyUtil.getHome().getGetCancellationPolicyTranslationsForm();
             
             commandForm.setCancellationKindName(cancellationKindName);
             commandForm.setCancellationPolicyName(cancellationPolicyName);
-            
-            CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyTranslations(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCancellationPolicyTranslationsResult result = (GetCancellationPolicyTranslationsResult)executionResult.getResult();
+
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyTranslations(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCancellationPolicyTranslationsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CANCELLATION_POLICY, result.getCancellationPolicy());
             request.setAttribute(AttributeConstants.CANCELLATION_POLICY_TRANSLATIONS, result.getCancellationPolicyTranslations());

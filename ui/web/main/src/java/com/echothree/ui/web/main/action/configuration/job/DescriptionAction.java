@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.job;
 
 import com.echothree.control.user.job.common.JobUtil;
-import com.echothree.control.user.job.common.form.GetJobDescriptionsForm;
 import com.echothree.control.user.job.common.result.GetJobDescriptionsResult;
-import com.echothree.model.control.job.common.transfer.JobTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String jobName = request.getParameter(ParameterConstants.JOB_NAME);
-            GetJobDescriptionsForm commandForm = JobUtil.getHome().getGetJobDescriptionsForm();
+            var jobName = request.getParameter(ParameterConstants.JOB_NAME);
+            var commandForm = JobUtil.getHome().getGetJobDescriptionsForm();
             
             commandForm.setJobName(jobName);
-            
-            CommandResult commandResult = JobUtil.getHome().getJobDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetJobDescriptionsResult result = (GetJobDescriptionsResult)executionResult.getResult();
-            JobTransfer jobTransfer = result.getJob();
+
+            var commandResult = JobUtil.getHome().getJobDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetJobDescriptionsResult)executionResult.getResult();
+            var jobTransfer = result.getJob();
             
             request.setAttribute(AttributeConstants.JOB, jobTransfer);
             request.setAttribute(AttributeConstants.JOB_NAME, jobTransfer.getJobName());

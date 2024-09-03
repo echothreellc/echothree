@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.recoveryquestion;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.SetDefaultRecoveryQuestionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultRecoveryQuestionForm commandForm = UserUtil.getHome().getSetDefaultRecoveryQuestionForm();
-            String recoveryQuestionName = request.getParameter(ParameterConstants.RECOVERY_QUESTION_NAME);
+            var commandForm = UserUtil.getHome().getSetDefaultRecoveryQuestionForm();
+            var recoveryQuestionName = request.getParameter(ParameterConstants.RECOVERY_QUESTION_NAME);
             
             commandForm.setRecoveryQuestionName(recoveryQuestionName);
             

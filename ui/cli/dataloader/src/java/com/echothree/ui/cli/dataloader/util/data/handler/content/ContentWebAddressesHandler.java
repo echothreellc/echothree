@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.content;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.ContentService;
 import com.echothree.control.user.content.common.form.ContentFormFactory;
-import com.echothree.control.user.content.common.form.CreateContentWebAddressForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -47,9 +46,9 @@ public class ContentWebAddressesHandler
         if(localName.equals("contentWebAddress")) {
             String contentWebAddressName = null;
             String contentCollectionName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("contentWebAddressName"))
                     contentWebAddressName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("contentCollectionName"))
@@ -57,7 +56,7 @@ public class ContentWebAddressesHandler
             }
             
             try {
-                CreateContentWebAddressForm createContentWebAddressForm = ContentFormFactory.getCreateContentWebAddressForm();
+                var createContentWebAddressForm = ContentFormFactory.getCreateContentWebAddressForm();
                 
                 createContentWebAddressForm.setContentWebAddressName(contentWebAddressName);
                 createContentWebAddressForm.setContentCollectionName(contentCollectionName);

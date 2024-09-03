@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.warehouse.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.warehouse.common.transfer.WarehouseTypeDescriptionTransfer;
-import com.echothree.model.control.warehouse.common.transfer.WarehouseTypeTransfer;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.WarehouseTypeDescription;
@@ -32,11 +30,11 @@ public class WarehouseTypeDescriptionTransferCache
     }
 
     public WarehouseTypeDescriptionTransfer getTransfer(WarehouseTypeDescription warehouseTypeDescription) {
-        WarehouseTypeDescriptionTransfer warehouseTypeDescriptionTransfer = get(warehouseTypeDescription);
+        var warehouseTypeDescriptionTransfer = get(warehouseTypeDescription);
         
         if(warehouseTypeDescriptionTransfer == null) {
-            WarehouseTypeTransfer warehouseTypeTransfer = warehouseControl.getWarehouseTypeTransfer(userVisit, warehouseTypeDescription.getWarehouseType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, warehouseTypeDescription.getLanguage());
+            var warehouseTypeTransfer = warehouseControl.getWarehouseTypeTransfer(userVisit, warehouseTypeDescription.getWarehouseType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, warehouseTypeDescription.getLanguage());
             
             warehouseTypeDescriptionTransfer = new WarehouseTypeDescriptionTransfer(languageTransfer, warehouseTypeTransfer, warehouseTypeDescription.getDescription());
             put(warehouseTypeDescription, warehouseTypeDescriptionTransfer);

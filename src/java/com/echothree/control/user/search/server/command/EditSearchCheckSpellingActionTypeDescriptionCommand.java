@@ -27,10 +27,8 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionTypeDescription;
-import com.echothree.model.data.search.server.value.SearchCheckSpellingActionTypeDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditSearchCheckSpellingActionTypeDescriptionCommand
     public SearchCheckSpellingActionTypeDescription getEntity(EditSearchCheckSpellingActionTypeDescriptionResult result) {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription = null;
-        String searchCheckSpellingActionTypeName = spec.getSearchCheckSpellingActionTypeName();
-        SearchCheckSpellingActionType searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
+        var searchCheckSpellingActionTypeName = spec.getSearchCheckSpellingActionTypeName();
+        var searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
 
         if(searchCheckSpellingActionType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditSearchCheckSpellingActionTypeDescriptionCommand
     @Override
     public void doUpdate(SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchCheckSpellingActionTypeDescriptionValue searchCheckSpellingActionTypeDescriptionValue = searchControl.getSearchCheckSpellingActionTypeDescriptionValue(searchCheckSpellingActionTypeDescription);
+        var searchCheckSpellingActionTypeDescriptionValue = searchControl.getSearchCheckSpellingActionTypeDescriptionValue(searchCheckSpellingActionTypeDescription);
         searchCheckSpellingActionTypeDescriptionValue.setDescription(edit.getDescription());
 
         searchControl.updateSearchCheckSpellingActionTypeDescriptionFromValue(searchCheckSpellingActionTypeDescriptionValue, getPartyPK());

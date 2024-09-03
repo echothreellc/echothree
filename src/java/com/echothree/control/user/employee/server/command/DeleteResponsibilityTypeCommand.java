@@ -18,7 +18,6 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.DeleteResponsibilityTypeForm;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.data.employee.server.entity.ResponsibilityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class DeleteResponsibilityTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String responsibilityTypeName = form.getResponsibilityTypeName();
-        ResponsibilityType responsibilityType = employeeControl.getResponsibilityTypeByNameForUpdate(responsibilityTypeName);
+        var responsibilityTypeName = form.getResponsibilityTypeName();
+        var responsibilityType = employeeControl.getResponsibilityTypeByNameForUpdate(responsibilityTypeName);
         
         if(responsibilityType != null) {
             employeeControl.deleteResponsibilityType(responsibilityType, getPartyPK());

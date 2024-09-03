@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.partysecurityroletemplatetrainingclass;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.CreatePartySecurityRoleTemplateTrainingClassForm;
-import com.echothree.control.user.security.common.form.GetPartySecurityRoleTemplateForm;
 import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplateResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartySecurityRoleTemplateForm commandForm = SecurityUtil.getHome().getGetPartySecurityRoleTemplateForm();
+        var commandForm = SecurityUtil.getHome().getGetPartySecurityRoleTemplateForm();
 
         commandForm.setPartySecurityRoleTemplateName(actionForm.getPartySecurityRoleTemplateName());
 
-        CommandResult commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplate(getUserVisitPK(request), commandForm);
+        var commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplate(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartySecurityRoleTemplateResult result = (GetPartySecurityRoleTemplateResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartySecurityRoleTemplateResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.PARTY_SECURITY_ROLE_TEMPLATE, result.getPartySecurityRoleTemplate());
         }
@@ -72,7 +69,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartySecurityRoleTemplateTrainingClassForm commandForm = SecurityUtil.getHome().getCreatePartySecurityRoleTemplateTrainingClassForm();
+        var commandForm = SecurityUtil.getHome().getCreatePartySecurityRoleTemplateTrainingClassForm();
 
         commandForm.setPartySecurityRoleTemplateName(actionForm.getPartySecurityRoleTemplateName());
         commandForm.setTrainingClassName(actionForm.getTrainingClassChoice());

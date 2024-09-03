@@ -18,7 +18,6 @@ package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.CreateSelectorBooleanTypeForm;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.entity.SelectorBooleanType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,9 +49,9 @@ public class CreateSelectorBooleanTypeCommand
     
     @Override
     protected BaseResult execute() {
-        String selectorBooleanTypeName = form.getSelectorBooleanTypeName();
+        var selectorBooleanTypeName = form.getSelectorBooleanTypeName();
         var selectorControl = Session.getModelController(SelectorControl.class);
-        SelectorBooleanType selectorBooleanType = selectorControl.getSelectorBooleanTypeByName(selectorBooleanTypeName);
+        var selectorBooleanType = selectorControl.getSelectorBooleanTypeByName(selectorBooleanTypeName);
         
         if(selectorBooleanType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

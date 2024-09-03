@@ -17,7 +17,6 @@
 package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.GetSelectorKindChoicesForm;
-import com.echothree.control.user.selector.common.result.GetSelectorKindChoicesResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetSelectorKindChoicesCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorKindChoicesResult result = SelectorResultFactory.getGetSelectorKindChoicesResult();
-        String defaultSelectorKindChoice = form.getDefaultSelectorKindChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = SelectorResultFactory.getGetSelectorKindChoicesResult();
+        var defaultSelectorKindChoice = form.getDefaultSelectorKindChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setSelectorKindChoices(selectorControl.getSelectorKindChoices(defaultSelectorKindChoice, getPreferredLanguage(),
                 allowNullChoice));

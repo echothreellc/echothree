@@ -99,7 +99,7 @@ public class SetCharacterEncodingFilter implements Filter {
     throws IOException, ServletException {
         // Conditionally select and set the character encoding to be used
         if(ignore || (request.getCharacterEncoding() == null)) {
-            String encoding = selectEncoding(request);
+            var encoding = selectEncoding(request);
             if(encoding != null) {
                 request.setCharacterEncoding(encoding);
             }
@@ -116,7 +116,7 @@ public class SetCharacterEncodingFilter implements Filter {
      */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        String value = filterConfig.getInitParameter("ignore");
+        var value = filterConfig.getInitParameter("ignore");
         
         this.filterConfig = filterConfig;
         this.encoding = filterConfig.getInitParameter("encoding");

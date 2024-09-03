@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityDateAttributeTransfer;
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -37,13 +35,13 @@ public class EntityDateAttributeTransferCache
     }
     
     public EntityDateAttributeTransfer getEntityDateAttributeTransfer(EntityDateAttribute entityDateAttribute, EntityInstance entityInstance) {
-        EntityDateAttributeTransfer entityDateAttributeTransfer = get(entityDateAttribute);
+        var entityDateAttributeTransfer = get(entityDateAttribute);
         
         if(entityDateAttributeTransfer == null) {
-            EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityDateAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityDateAttribute.getEntityInstance(), false, false, false, false, false, false);
-            Integer unformattedDateAttribute = entityDateAttribute.getDateAttribute();
-            String dateAttribute = DateUtils.getInstance().formatDate(userVisit, unformattedDateAttribute);
+            var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityDateAttribute.getEntityAttribute(), entityInstance) : null;
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityDateAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var unformattedDateAttribute = entityDateAttribute.getDateAttribute();
+            var dateAttribute = DateUtils.getInstance().formatDate(userVisit, unformattedDateAttribute);
             
             entityDateAttributeTransfer = new EntityDateAttributeTransfer(entityAttribute, entityInstanceTransfer, dateAttribute, unformattedDateAttribute);
             put(entityDateAttribute, entityDateAttributeTransfer);

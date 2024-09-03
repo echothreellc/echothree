@@ -19,12 +19,9 @@ package com.echothree.ui.cli.dataloader.util.data.handler.carrier;
 import com.echothree.control.user.carrier.common.CarrierUtil;
 import com.echothree.control.user.carrier.common.CarrierService;
 import com.echothree.control.user.carrier.common.form.CarrierFormFactory;
-import com.echothree.control.user.carrier.common.form.CreateCarrierForm;
 import com.echothree.control.user.carrier.common.result.CreateCarrierResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -49,15 +46,15 @@ public class CarriersHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("carrier")) {
-            CreateCarrierForm commandForm = CarrierFormFactory.getCreateCarrierForm();
+            var commandForm = CarrierFormFactory.getCreateCarrierForm();
 
             commandForm.set(getAttrsMap(attrs));
 
-            CommandResult commandResult = carrierService.createCarrier(initialDataParser.getUserVisit(), commandForm);
+            var commandResult = carrierService.createCarrier(initialDataParser.getUserVisit(), commandForm);
             
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateCarrierResult result = (CreateCarrierResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateCarrierResult)executionResult.getResult();
                 
                 initialDataParser.pushHandler(new CarrierHandler(initialDataParser, this, result.getPartyName(), result.getCarrierName(), result.getEntityRef()));
             }

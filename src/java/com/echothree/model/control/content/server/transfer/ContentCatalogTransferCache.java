@@ -20,18 +20,13 @@ import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.ContentProperties;
 import com.echothree.model.control.content.common.transfer.ContentCatalogTransfer;
 import com.echothree.model.control.content.common.transfer.ContentCategoryTransfer;
-import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
-import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
-import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
-import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class ContentCatalogTransferCache
         extends BaseContentTransferCache<ContentCatalog, ContentCatalogTransfer> {
@@ -84,17 +79,17 @@ public class ContentCatalogTransferCache
     }
 
     public ContentCatalogTransfer getContentCatalogTransfer(ContentCatalog contentCatalog) {
-        ContentCatalogTransfer contentCatalogTransfer = get(contentCatalog);
+        var contentCatalogTransfer = get(contentCatalog);
         
         if(contentCatalogTransfer == null) {
-            ContentCatalogDetail contentCatalogDetail = contentCatalog.getLastDetail();
-            ContentCollectionTransfer contentCollectionTransfer = filterContentCollection ? null : contentControl.getContentCollectionTransfer(userVisit, contentCatalogDetail.getContentCollection());
-            String contentCatalogName = filterContentCatalogName ? null : contentCatalogDetail.getContentCatalogName();
-            OfferUse defaultOfferUse = filterDefaultOfferUse ? null : contentCatalogDetail.getDefaultOfferUse();
-            OfferUseTransfer defaultOfferUseTransfer = defaultOfferUse == null ? null : offerUseControl.getOfferUseTransfer(userVisit, defaultOfferUse);
-            Boolean isDefault = filterIsDefault ? null : contentCatalogDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : contentCatalogDetail.getSortOrder();
-            String description = filterDescription ? null : contentControl.getBestContentCatalogDescription(contentCatalog, getLanguage());
+            var contentCatalogDetail = contentCatalog.getLastDetail();
+            var contentCollectionTransfer = filterContentCollection ? null : contentControl.getContentCollectionTransfer(userVisit, contentCatalogDetail.getContentCollection());
+            var contentCatalogName = filterContentCatalogName ? null : contentCatalogDetail.getContentCatalogName();
+            var defaultOfferUse = filterDefaultOfferUse ? null : contentCatalogDetail.getDefaultOfferUse();
+            var defaultOfferUseTransfer = defaultOfferUse == null ? null : offerUseControl.getOfferUseTransfer(userVisit, defaultOfferUse);
+            var isDefault = filterIsDefault ? null : contentCatalogDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : contentCatalogDetail.getSortOrder();
+            var description = filterDescription ? null : contentControl.getBestContentCatalogDescription(contentCatalog, getLanguage());
             
             contentCatalogTransfer = new ContentCatalogTransfer(contentCollectionTransfer, contentCatalogName, defaultOfferUseTransfer, isDefault, sortOrder,
                     description);

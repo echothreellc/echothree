@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.communicationeventpurpose;
 
 import com.echothree.control.user.communication.common.CommunicationUtil;
-import com.echothree.control.user.communication.common.form.GetCommunicationEventPurposeDescriptionsForm;
 import com.echothree.control.user.communication.common.result.GetCommunicationEventPurposeDescriptionsResult;
-import com.echothree.model.control.communication.common.transfer.CommunicationEventPurposeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String communicationEventPurposeName = request.getParameter(ParameterConstants.COMMUNICATION_EVENT_PURPOSE_NAME);
-            GetCommunicationEventPurposeDescriptionsForm commandForm = CommunicationUtil.getHome().getGetCommunicationEventPurposeDescriptionsForm();
+            var communicationEventPurposeName = request.getParameter(ParameterConstants.COMMUNICATION_EVENT_PURPOSE_NAME);
+            var commandForm = CommunicationUtil.getHome().getGetCommunicationEventPurposeDescriptionsForm();
             
             commandForm.setCommunicationEventPurposeName(communicationEventPurposeName);
-            
-            CommandResult commandResult = CommunicationUtil.getHome().getCommunicationEventPurposeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommunicationEventPurposeDescriptionsResult result = (GetCommunicationEventPurposeDescriptionsResult)executionResult.getResult();
-            CommunicationEventPurposeTransfer communicationEventPurposeTransfer = result.getCommunicationEventPurpose();
+
+            var commandResult = CommunicationUtil.getHome().getCommunicationEventPurposeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommunicationEventPurposeDescriptionsResult)executionResult.getResult();
+            var communicationEventPurposeTransfer = result.getCommunicationEventPurpose();
             
             request.setAttribute(AttributeConstants.COMMUNICATION_EVENT_PURPOSE, communicationEventPurposeTransfer);
             request.setAttribute(AttributeConstants.COMMUNICATION_EVENT_PURPOSE_NAME, communicationEventPurposeTransfer.getCommunicationEventPurposeName());

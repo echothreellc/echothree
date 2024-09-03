@@ -30,11 +30,11 @@ public class ContentPageAreaTypeTransferCache
     }
     
     public ContentPageAreaTypeTransfer getTransfer(ContentPageAreaType contentPageAreaType) {
-        ContentPageAreaTypeTransfer contentPageAreaTypeTransfer = get(contentPageAreaType);
+        var contentPageAreaTypeTransfer = get(contentPageAreaType);
         
         if(contentPageAreaTypeTransfer == null) {
-            String contentPageAreaTypeName = contentPageAreaType.getContentPageAreaTypeName();
-            String description = contentControl.getBestContentPageAreaTypeDescription(contentPageAreaType, getLanguage());
+            var contentPageAreaTypeName = contentPageAreaType.getContentPageAreaTypeName();
+            var description = contentControl.getBestContentPageAreaTypeDescription(contentPageAreaType, getLanguage());
             
             contentPageAreaTypeTransfer = new ContentPageAreaTypeTransfer(contentPageAreaTypeName, description);
             put(contentPageAreaType, contentPageAreaTypeTransfer);

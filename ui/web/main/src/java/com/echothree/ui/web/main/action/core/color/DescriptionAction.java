@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.core.color;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetColorDescriptionsForm;
 import com.echothree.control.user.core.common.result.GetColorDescriptionsResult;
-import com.echothree.model.control.core.common.transfer.ColorTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String colorName = request.getParameter(ParameterConstants.COLOR_NAME);
-        GetColorDescriptionsForm commandForm = CoreUtil.getHome().getGetColorDescriptionsForm();
+        var colorName = request.getParameter(ParameterConstants.COLOR_NAME);
+        var commandForm = CoreUtil.getHome().getGetColorDescriptionsForm();
 
         commandForm.setColorName(colorName);
 
-        CommandResult commandResult = CoreUtil.getHome().getColorDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getColorDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetColorDescriptionsResult result = (GetColorDescriptionsResult) executionResult.getResult();
-            ColorTransfer colorTransfer = result.getColor();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetColorDescriptionsResult) executionResult.getResult();
+            var colorTransfer = result.getColor();
 
             request.setAttribute(AttributeConstants.COLOR, colorTransfer);
             request.setAttribute(AttributeConstants.COLOR_DESCRIPTIONS, result.getColorDescriptions());

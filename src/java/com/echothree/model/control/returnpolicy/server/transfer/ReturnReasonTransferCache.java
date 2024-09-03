@@ -16,11 +16,9 @@
 
 package com.echothree.model.control.returnpolicy.server.transfer;
 
-import com.echothree.model.control.returnpolicy.common.transfer.ReturnKindTransfer;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnReasonTransfer;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnReason;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnReasonDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class ReturnReasonTransferCache
@@ -34,15 +32,15 @@ public class ReturnReasonTransferCache
     }
     
     public ReturnReasonTransfer getReturnReasonTransfer(ReturnReason returnReason) {
-        ReturnReasonTransfer returnReasonTransfer = get(returnReason);
+        var returnReasonTransfer = get(returnReason);
         
         if(returnReasonTransfer == null) {
-            ReturnReasonDetail returnReasonDetail = returnReason.getLastDetail();
-            ReturnKindTransfer returnKind = returnPolicyControl.getReturnKindTransfer(userVisit, returnReasonDetail.getReturnKind());
-            String returnReasonName = returnReasonDetail.getReturnReasonName();
-            Boolean isDefault = returnReasonDetail.getIsDefault();
-            Integer sortOrder = returnReasonDetail.getSortOrder();
-            String description = returnPolicyControl.getBestReturnReasonDescription(returnReason, getLanguage());
+            var returnReasonDetail = returnReason.getLastDetail();
+            var returnKind = returnPolicyControl.getReturnKindTransfer(userVisit, returnReasonDetail.getReturnKind());
+            var returnReasonName = returnReasonDetail.getReturnReasonName();
+            var isDefault = returnReasonDetail.getIsDefault();
+            var sortOrder = returnReasonDetail.getSortOrder();
+            var description = returnPolicyControl.getBestReturnReasonDescription(returnReason, getLanguage());
             
             returnReasonTransfer = new ReturnReasonTransfer(returnKind, returnReasonName, isDefault, sortOrder, description);
             put(returnReason, returnReasonTransfer);

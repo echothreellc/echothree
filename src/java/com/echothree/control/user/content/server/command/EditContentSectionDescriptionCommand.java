@@ -27,11 +27,8 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentSectionDescription;
-import com.echothree.model.data.content.server.value.ContentSectionDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -91,17 +88,17 @@ public class EditContentSectionDescriptionCommand
     public ContentSectionDescription getEntity(EditContentSectionDescriptionResult result) {
         var contentControl = Session.getModelController(ContentControl.class);
         ContentSectionDescription contentSectionDescription = null;
-        String contentCollectionName = spec.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = spec.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentSectionName = spec.getContentSectionName();
-            ContentSection contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
+            var contentSectionName = spec.getContentSectionName();
+            var contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
             
             if(contentSection != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 result.setContentSection(contentControl.getContentSectionTransfer(getUserVisit(), contentSection));
 
@@ -148,7 +145,7 @@ public class EditContentSectionDescriptionCommand
     @Override
     public void doUpdate(ContentSectionDescription contentSectionDescription) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentSectionDescriptionValue contentSectionDescriptionValue = contentControl.getContentSectionDescriptionValue(contentSectionDescription);
+        var contentSectionDescriptionValue = contentControl.getContentSectionDescriptionValue(contentSectionDescription);
         contentSectionDescriptionValue.setDescription(edit.getDescription());
 
         contentControl.updateContentSectionDescriptionFromValue(contentSectionDescriptionValue, getPartyPK());

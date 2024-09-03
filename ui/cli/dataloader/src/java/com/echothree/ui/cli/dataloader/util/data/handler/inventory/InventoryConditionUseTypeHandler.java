@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.inventory;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.InventoryService;
-import com.echothree.control.user.inventory.common.form.CreateInventoryConditionUseTypeDescriptionForm;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -50,9 +49,9 @@ public class InventoryConditionUseTypeHandler
         if(localName.equals("inventoryConditionUseTypeDescription")) {
             String attrLanguageIsoName = null;
             String attrDescription = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     attrLanguageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +59,7 @@ public class InventoryConditionUseTypeHandler
             }
             
             try {
-                CreateInventoryConditionUseTypeDescriptionForm commandForm = InventoryFormFactory.getCreateInventoryConditionUseTypeDescriptionForm();
+                var commandForm = InventoryFormFactory.getCreateInventoryConditionUseTypeDescriptionForm();
                 
                 commandForm.setInventoryConditionUseTypeName(inventoryConditionUseTypeName);
                 commandForm.setLanguageIsoName(attrLanguageIsoName);

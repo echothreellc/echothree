@@ -28,7 +28,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.logic.WarehouseLogic;
 import com.echothree.model.control.warehouse.server.logic.WarehouseTypeLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.command.BaseResult;
@@ -178,7 +177,7 @@ public class CreateWarehouseCommand
         }
 
         if(warehouse != null) {
-            Party party = warehouse.getParty();
+            var party = warehouse.getParty();
             
             result.setEntityRef(party.getPrimaryKey().getEntityRef());
             result.setWarehouseName(warehouse.getWarehouseName());

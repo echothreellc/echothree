@@ -18,10 +18,8 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.GetTelephoneStatusChoicesForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
-import com.echothree.control.user.contact.common.result.GetTelephoneStatusChoicesResult;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,16 +51,16 @@ public class GetTelephoneStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        GetTelephoneStatusChoicesResult result = ContactResultFactory.getGetTelephoneStatusChoicesResult();
-        String contactMechanismName = form.getContactMechanismName();
-        ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+        var result = ContactResultFactory.getGetTelephoneStatusChoicesResult();
+        var contactMechanismName = form.getContactMechanismName();
+        var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
         if(contactMechanism != null) {
-            String contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
+            var contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
 
             if(contactMechanismTypeName.equals(ContactMechanismTypes.TELECOM_ADDRESS.name())) {
-                String defaultTelephoneStatusChoice = form.getDefaultTelephoneStatusChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultTelephoneStatusChoice = form.getDefaultTelephoneStatusChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setTelephoneStatusChoices(contactControl.getTelephoneStatusChoices(defaultTelephoneStatusChoice, getPreferredLanguage(), allowNullChoice, contactMechanism,
                         getPartyPK()));

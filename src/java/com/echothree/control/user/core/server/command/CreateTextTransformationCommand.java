@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.CreateTextTransformationForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,8 +63,8 @@ public class CreateTextTransformationCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String textTransformationName = form.getTextTransformationName();
-        TextTransformation textTransformation = coreControl.getTextTransformationByName(textTransformationName);
+        var textTransformationName = form.getTextTransformationName();
+        var textTransformation = coreControl.getTextTransformationByName(textTransformationName);
         
         if(textTransformation == null) {
             var partyPK = getPartyPK();

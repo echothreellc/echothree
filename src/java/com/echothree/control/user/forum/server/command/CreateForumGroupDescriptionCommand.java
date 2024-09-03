@@ -19,9 +19,6 @@ package com.echothree.control.user.forum.server.command;
 import com.echothree.control.user.forum.common.form.CreateForumGroupDescriptionForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.forum.server.entity.ForumGroup;
-import com.echothree.model.data.forum.server.entity.ForumGroupDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,16 +51,16 @@ public class CreateForumGroupDescriptionCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumGroupName = form.getForumGroupName();
-        ForumGroup forumGroup = forumControl.getForumGroupByName(forumGroupName);
+        var forumGroupName = form.getForumGroupName();
+        var forumGroup = forumControl.getForumGroupByName(forumGroupName);
         
         if(forumGroup != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ForumGroupDescription forumGroupDescription = forumControl.getForumGroupDescription(forumGroup, language);
+                var forumGroupDescription = forumControl.getForumGroupDescription(forumGroup, language);
                 
                 if(forumGroupDescription == null) {
                     var description = form.getDescription();

@@ -16,13 +16,10 @@
 
 package com.echothree.model.control.subscription.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionTransfer;
-import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeTransfer;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.data.subscription.server.entity.Subscription;
-import com.echothree.model.data.subscription.server.entity.SubscriptionDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -39,17 +36,17 @@ public class SubscriptionTransferCache
     }
     
     public SubscriptionTransfer getSubscriptionTransfer(Subscription subscription) {
-        SubscriptionTransfer subscriptionTransfer = get(subscription);
+        var subscriptionTransfer = get(subscription);
 
         if(subscriptionTransfer == null) {
-            SubscriptionDetail subscriptionDetail = subscription.getLastDetail();
-            String subscriptionName = subscriptionDetail.getSubscriptionName();
-            SubscriptionTypeTransfer subscriptionType = subscriptionControl.getSubscriptionTypeTransfer(userVisit, subscriptionDetail.getSubscriptionType());
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, subscriptionDetail.getParty());
-            Long unformattedStartTime = subscriptionDetail.getStartTime();
-            String startTime = formatTypicalDateTime(unformattedStartTime);
-            Long unformattedEndTime = subscriptionDetail.getEndTime();
-            String endTime = formatTypicalDateTime(unformattedEndTime);
+            var subscriptionDetail = subscription.getLastDetail();
+            var subscriptionName = subscriptionDetail.getSubscriptionName();
+            var subscriptionType = subscriptionControl.getSubscriptionTypeTransfer(userVisit, subscriptionDetail.getSubscriptionType());
+            var party = partyControl.getPartyTransfer(userVisit, subscriptionDetail.getParty());
+            var unformattedStartTime = subscriptionDetail.getStartTime();
+            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var unformattedEndTime = subscriptionDetail.getEndTime();
+            var endTime = formatTypicalDateTime(unformattedEndTime);
 
             subscriptionTransfer = new SubscriptionTransfer(subscriptionName, subscriptionType, party, unformattedStartTime, startTime, unformattedEndTime,
                     endTime);

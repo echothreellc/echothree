@@ -17,10 +17,8 @@
 package com.echothree.model.control.rating.server.transfer;
 
 import com.echothree.model.control.rating.common.transfer.RatingTypeListItemTransfer;
-import com.echothree.model.control.rating.common.transfer.RatingTypeTransfer;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.data.rating.server.entity.RatingTypeListItem;
-import com.echothree.model.data.rating.server.entity.RatingTypeListItemDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class RatingTypeListItemTransferCache
@@ -34,15 +32,15 @@ public class RatingTypeListItemTransferCache
     }
     
     public RatingTypeListItemTransfer getRatingTypeListItemTransfer(RatingTypeListItem ratingTypeListItem) {
-        RatingTypeListItemTransfer ratingTypeListItemTransfer = get(ratingTypeListItem);
+        var ratingTypeListItemTransfer = get(ratingTypeListItem);
         
         if(ratingTypeListItemTransfer == null) {
-            RatingTypeListItemDetail ratingTypeListItemDetail = ratingTypeListItem.getLastDetail();
-            RatingTypeTransfer ratingType = ratingControl.getRatingTypeTransfer(userVisit, ratingTypeListItemDetail.getRatingType());
-            String ratingTypeListItemName = ratingTypeListItemDetail.getRatingTypeListItemName();
-            Boolean isDefault = ratingTypeListItemDetail.getIsDefault();
-            Integer sortOrder = ratingTypeListItemDetail.getSortOrder();
-            String description = ratingControl.getBestRatingTypeListItemDescription(ratingTypeListItem, getLanguage());
+            var ratingTypeListItemDetail = ratingTypeListItem.getLastDetail();
+            var ratingType = ratingControl.getRatingTypeTransfer(userVisit, ratingTypeListItemDetail.getRatingType());
+            var ratingTypeListItemName = ratingTypeListItemDetail.getRatingTypeListItemName();
+            var isDefault = ratingTypeListItemDetail.getIsDefault();
+            var sortOrder = ratingTypeListItemDetail.getSortOrder();
+            var description = ratingControl.getBestRatingTypeListItemDescription(ratingTypeListItem, getLanguage());
             
             ratingTypeListItemTransfer = new RatingTypeListItemTransfer(ratingType, ratingTypeListItemName, isDefault, sortOrder, description);
             put(ratingTypeListItem, ratingTypeListItemTransfer);

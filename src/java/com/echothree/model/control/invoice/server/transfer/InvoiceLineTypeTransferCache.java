@@ -17,10 +17,8 @@
 package com.echothree.model.control.invoice.server.transfer;
 
 import com.echothree.model.control.invoice.common.transfer.InvoiceLineTypeTransfer;
-import com.echothree.model.control.invoice.common.transfer.InvoiceTypeTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineType;
-import com.echothree.model.data.invoice.server.entity.InvoiceLineTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class InvoiceLineTypeTransferCache
@@ -34,17 +32,17 @@ public class InvoiceLineTypeTransferCache
     }
     
     public InvoiceLineTypeTransfer getInvoiceLineTypeTransfer(InvoiceLineType invoiceLineType) {
-        InvoiceLineTypeTransfer invoiceLineTypeTransfer = get(invoiceLineType);
+        var invoiceLineTypeTransfer = get(invoiceLineType);
         
         if(invoiceLineTypeTransfer == null) {
-            InvoiceLineTypeDetail invoiceLineTypeDetail = invoiceLineType.getLastDetail();
-            InvoiceTypeTransfer invoiceType = invoiceControl.getInvoiceTypeTransfer(userVisit, invoiceLineTypeDetail.getInvoiceType());
-            String invoiceLineTypeName = invoiceLineTypeDetail.getInvoiceLineTypeName();
-            InvoiceLineType parentInvoiceLineType = invoiceLineTypeDetail.getParentInvoiceLineType();
-            InvoiceLineTypeTransfer parentInvoiceLineTypeTransfer = parentInvoiceLineType == null? null: getInvoiceLineTypeTransfer(parentInvoiceLineType);
-            Boolean isDefault = invoiceLineTypeDetail.getIsDefault();
-            Integer sortOrder = invoiceLineTypeDetail.getSortOrder();
-            String description = invoiceControl.getBestInvoiceLineTypeDescription(invoiceLineType, getLanguage());
+            var invoiceLineTypeDetail = invoiceLineType.getLastDetail();
+            var invoiceType = invoiceControl.getInvoiceTypeTransfer(userVisit, invoiceLineTypeDetail.getInvoiceType());
+            var invoiceLineTypeName = invoiceLineTypeDetail.getInvoiceLineTypeName();
+            var parentInvoiceLineType = invoiceLineTypeDetail.getParentInvoiceLineType();
+            var parentInvoiceLineTypeTransfer = parentInvoiceLineType == null? null: getInvoiceLineTypeTransfer(parentInvoiceLineType);
+            var isDefault = invoiceLineTypeDetail.getIsDefault();
+            var sortOrder = invoiceLineTypeDetail.getSortOrder();
+            var description = invoiceControl.getBestInvoiceLineTypeDescription(invoiceLineType, getLanguage());
             
             invoiceLineTypeTransfer = new InvoiceLineTypeTransfer(invoiceType, invoiceLineTypeName, parentInvoiceLineTypeTransfer,
                     isDefault, sortOrder, description);

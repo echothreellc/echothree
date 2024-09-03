@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.inventory.inventorylocationgroup;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationGroupVolumeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,16 +49,16 @@ public class VolumeDeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
-        DeleteInventoryLocationGroupVolumeForm commandForm = InventoryUtil.getHome().getDeleteInventoryLocationGroupVolumeForm();
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
+        var commandForm = InventoryUtil.getHome().getDeleteInventoryLocationGroupVolumeForm();
         
         commandForm.setWarehouseName(warehouseName);
         commandForm.setInventoryLocationGroupName(inventoryLocationGroupName);
         
         InventoryUtil.getHome().deleteInventoryLocationGroupVolume(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.WAREHOUSE_NAME, warehouseName);

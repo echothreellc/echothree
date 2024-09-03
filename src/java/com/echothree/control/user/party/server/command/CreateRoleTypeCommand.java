@@ -49,11 +49,11 @@ public class CreateRoleTypeCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String roleTypeName = form.getRoleTypeName();
-        RoleType roleType = partyControl.getRoleTypeByName(roleTypeName);
+        var roleTypeName = form.getRoleTypeName();
+        var roleType = partyControl.getRoleTypeByName(roleTypeName);
         
         if(roleType == null) {
-            String parentRoleTypeName = form.getParentRoleTypeName();
+            var parentRoleTypeName = form.getParentRoleTypeName();
             RoleType parentRoleType = null;
             
             if(parentRoleTypeName != null)

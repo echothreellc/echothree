@@ -17,11 +17,8 @@
 package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.model.control.training.common.transfer.TrainingClassPageTransfer;
-import com.echothree.model.control.training.common.transfer.TrainingClassSectionTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassPage;
-import com.echothree.model.data.training.server.entity.TrainingClassPageDetail;
-import com.echothree.model.data.training.server.entity.TrainingClassPageTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class TrainingClassPageTransferCache
@@ -35,15 +32,15 @@ public class TrainingClassPageTransferCache
     }
     
     public TrainingClassPageTransfer getTrainingClassPageTransfer(TrainingClassPage trainingClassPage) {
-        TrainingClassPageTransfer trainingClassPageTransfer = get(trainingClassPage);
+        var trainingClassPageTransfer = get(trainingClassPage);
         
         if(trainingClassPageTransfer == null) {
-            TrainingClassPageDetail trainingClassPageDetail = trainingClassPage.getLastDetail();
-            TrainingClassSectionTransfer trainingClassSection = trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassPageDetail.getTrainingClassSection());
-            String trainingClassPageName = trainingClassPageDetail.getTrainingClassPageName();
-            Integer sortOrder = trainingClassPageDetail.getSortOrder();
-            TrainingClassPageTranslation trainingClassPageTranslation = trainingControl.getBestTrainingClassPageTranslation(trainingClassPage, getLanguage());
-            String description = trainingClassPageTranslation == null ? trainingClassPageName : trainingClassPageTranslation.getDescription();
+            var trainingClassPageDetail = trainingClassPage.getLastDetail();
+            var trainingClassSection = trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassPageDetail.getTrainingClassSection());
+            var trainingClassPageName = trainingClassPageDetail.getTrainingClassPageName();
+            var sortOrder = trainingClassPageDetail.getSortOrder();
+            var trainingClassPageTranslation = trainingControl.getBestTrainingClassPageTranslation(trainingClassPage, getLanguage());
+            var description = trainingClassPageTranslation == null ? trainingClassPageName : trainingClassPageTranslation.getDescription();
             
             trainingClassPageTransfer = new TrainingClassPageTransfer(trainingClassSection, trainingClassPageName, sortOrder, description);
             put(trainingClassPage, trainingClassPageTransfer);

@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.purchasing.itempurchasingcategory;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.edit.ItemPurchasingCategoryDescriptionEdit;
-import com.echothree.control.user.vendor.common.form.EditItemPurchasingCategoryDescriptionForm;
 import com.echothree.control.user.vendor.common.result.EditItemPurchasingCategoryDescriptionResult;
-import com.echothree.control.user.vendor.common.spec.ItemPurchasingCategoryDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String itemPurchasingCategoryName = request.getParameter(ParameterConstants.ITEM_PURCHASING_CATEGORY_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var itemPurchasingCategoryName = request.getParameter(ParameterConstants.ITEM_PURCHASING_CATEGORY_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditItemPurchasingCategoryDescriptionForm commandForm = VendorUtil.getHome().getEditItemPurchasingCategoryDescriptionForm();
-                ItemPurchasingCategoryDescriptionSpec spec = VendorUtil.getHome().getItemPurchasingCategoryDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = VendorUtil.getHome().getEditItemPurchasingCategoryDescriptionForm();
+                var spec = VendorUtil.getHome().getItemPurchasingCategoryDescriptionSpec();
                 
                 if(itemPurchasingCategoryName == null)
                     itemPurchasingCategoryName = actionForm.getItemPurchasingCategoryName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    ItemPurchasingCategoryDescriptionEdit edit = VendorUtil.getHome().getItemPurchasingCategoryDescriptionEdit();
+                    var edit = VendorUtil.getHome().getItemPurchasingCategoryDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = VendorUtil.getHome().editItemPurchasingCategoryDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = VendorUtil.getHome().editItemPurchasingCategoryDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditItemPurchasingCategoryDescriptionResult result = (EditItemPurchasingCategoryDescriptionResult)executionResult.getResult();
+                            var result = (EditItemPurchasingCategoryDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = VendorUtil.getHome().editItemPurchasingCategoryDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditItemPurchasingCategoryDescriptionResult result = (EditItemPurchasingCategoryDescriptionResult)executionResult.getResult();
+
+                    var commandResult = VendorUtil.getHome().editItemPurchasingCategoryDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditItemPurchasingCategoryDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        ItemPurchasingCategoryDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.ITEM_PURCHASING_CATEGORY_NAME, itemPurchasingCategoryName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

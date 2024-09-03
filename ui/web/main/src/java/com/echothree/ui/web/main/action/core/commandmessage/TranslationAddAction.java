@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.commandmessage;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.CreateCommandMessageTranslationForm;
-import com.echothree.control.user.core.common.form.GetCommandMessageForm;
 import com.echothree.control.user.core.common.result.GetCommandMessageResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -57,15 +54,15 @@ public class TranslationAddAction
     @Override
     public void setupTransfer(TranslationAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCommandMessageForm commandForm = CoreUtil.getHome().getGetCommandMessageForm();
+        var commandForm = CoreUtil.getHome().getGetCommandMessageForm();
 
         commandForm.setCommandMessageTypeName(actionForm.getCommandMessageTypeName());
         commandForm.setCommandMessageKey(actionForm.getCommandMessageKey());
-        
-        CommandResult commandResult = CoreUtil.getHome().getCommandMessage(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getCommandMessage(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommandMessageResult result = (GetCommandMessageResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommandMessageResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMMAND_MESSAGE, result.getCommandMessage());
         }
@@ -74,7 +71,7 @@ public class TranslationAddAction
     @Override
     public CommandResult doAdd(TranslationAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCommandMessageTranslationForm commandForm = CoreUtil.getHome().getCreateCommandMessageTranslationForm();
+        var commandForm = CoreUtil.getHome().getCreateCommandMessageTranslationForm();
 
         commandForm.setCommandMessageTypeName(actionForm.getCommandMessageTypeName());
         commandForm.setCommandMessageKey(actionForm.getCommandMessageKey());

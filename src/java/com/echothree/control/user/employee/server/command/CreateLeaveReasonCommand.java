@@ -21,9 +21,6 @@ import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.employee.server.entity.LeaveReason;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,19 +65,19 @@ public class CreateLeaveReasonCommand
    @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String leaveReasonName = form.getLeaveReasonName();
-        LeaveReason leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
+       var leaveReasonName = form.getLeaveReasonName();
+       var leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
         
         if(leaveReason == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
-            PartyPK createdBy = getPartyPK();
+            var createdBy = getPartyPK();
 
             leaveReason = employeeControl.createLeaveReason(leaveReasonName, isDefault, sortOrder, createdBy);
 
             if(description != null) {
-                Language language = getPreferredLanguage();
+                var language = getPreferredLanguage();
 
                 employeeControl.createLeaveReasonDescription(leaveReason, language, description, createdBy);
             }

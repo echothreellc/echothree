@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.shipping.carrier;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.form.GetCarrierForm;
 import com.echothree.control.user.carrier.common.result.GetCarrierResult;
 import com.echothree.model.control.carrier.common.CarrierOptions;
-import com.echothree.model.control.carrier.common.transfer.CarrierTransfer;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.party.common.PartyOptions;
@@ -29,8 +27,6 @@ import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -60,7 +56,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetCarrierForm commandForm = CarrierUtil.getHome().getGetCarrierForm();
+        var commandForm = CarrierUtil.getHome().getGetCarrierForm();
 
         commandForm.setCarrierName(request.getParameter(ParameterConstants.CARRIER_NAME));
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
@@ -77,10 +73,10 @@ public class ReviewAction
         options.add(CoreOptions.EntityInstanceIncludeNames);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
 
-        CommandResult commandResult = CarrierUtil.getHome().getCarrier(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCarrierResult result = (GetCarrierResult)executionResult.getResult();
-        CarrierTransfer carrier = result.getCarrier();
+        var commandResult = CarrierUtil.getHome().getCarrier(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCarrierResult)executionResult.getResult();
+        var carrier = result.getCarrier();
 
         if(carrier != null) {
             request.setAttribute(AttributeConstants.CARRIER, carrier);

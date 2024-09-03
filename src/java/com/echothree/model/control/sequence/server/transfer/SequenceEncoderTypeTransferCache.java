@@ -30,13 +30,13 @@ public class SequenceEncoderTypeTransferCache
     }
     
     public SequenceEncoderTypeTransfer getSequenceEncoderTypeTransfer(SequenceEncoderType sequenceEncoderType) {
-        SequenceEncoderTypeTransfer sequenceEncoderTypeTransfer = get(sequenceEncoderType);
+        var sequenceEncoderTypeTransfer = get(sequenceEncoderType);
         
         if(sequenceEncoderTypeTransfer == null) {
-            String sequenceEncoderTypeName = sequenceEncoderType.getSequenceEncoderTypeName();
-            Boolean isDefault = sequenceEncoderType.getIsDefault();
-            Integer sortOrder = sequenceEncoderType.getSortOrder();
-            String description = sequenceControl.getBestSequenceEncoderTypeDescription(sequenceEncoderType, getLanguage());
+            var sequenceEncoderTypeName = sequenceEncoderType.getSequenceEncoderTypeName();
+            var isDefault = sequenceEncoderType.getIsDefault();
+            var sortOrder = sequenceEncoderType.getSortOrder();
+            var description = sequenceControl.getBestSequenceEncoderTypeDescription(sequenceEncoderType, getLanguage());
             
             sequenceEncoderTypeTransfer = new SequenceEncoderTypeTransfer(sequenceEncoderTypeName, isDefault, sortOrder, description);
             put(sequenceEncoderType, sequenceEncoderTypeTransfer);

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.returnpolicy.returntype;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.form.GetReturnTypeForm;
 import com.echothree.control.user.returnpolicy.common.result.GetReturnTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,19 +49,19 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-            String returnTypeName = request.getParameter(ParameterConstants.RETURN_TYPE_NAME);
-            GetReturnTypeForm commandForm = ReturnPolicyUtil.getHome().getGetReturnTypeForm();
+            var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+            var returnTypeName = request.getParameter(ParameterConstants.RETURN_TYPE_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getGetReturnTypeForm();
             
             commandForm.setReturnKindName(returnKindName);
             commandForm.setReturnTypeName(returnTypeName);
-            
-            CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetReturnTypeResult result = (GetReturnTypeResult)executionResult.getResult();
+
+            var commandResult = ReturnPolicyUtil.getHome().getReturnType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RETURN_TYPE, result.getReturnType());
             forwardKey = ForwardConstants.DISPLAY;

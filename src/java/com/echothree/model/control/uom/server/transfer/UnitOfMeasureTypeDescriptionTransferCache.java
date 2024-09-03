@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.uom.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeDescriptionTransfer;
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,12 +30,12 @@ public class UnitOfMeasureTypeDescriptionTransferCache
     }
     
     public UnitOfMeasureTypeDescriptionTransfer getUnitOfMeasureTypeDescriptionTransfer(UnitOfMeasureTypeDescription unitOfMeasureTypeDescription) {
-        UnitOfMeasureTypeDescriptionTransfer unitOfMeasureTypeDescriptionTransfer = get(unitOfMeasureTypeDescription);
+        var unitOfMeasureTypeDescriptionTransfer = get(unitOfMeasureTypeDescription);
         
         if(unitOfMeasureTypeDescriptionTransfer == null) {
-            UnitOfMeasureTypeTransferCache unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
-            UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureTypeDescription.getUnitOfMeasureType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, unitOfMeasureTypeDescription.getLanguage());
+            var unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
+            var unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureTypeDescription.getUnitOfMeasureType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, unitOfMeasureTypeDescription.getLanguage());
             
             unitOfMeasureTypeDescriptionTransfer = new UnitOfMeasureTypeDescriptionTransfer(languageTransfer,
                     unitOfMeasureTypeTransfer, unitOfMeasureTypeDescription.getSingularDescription(),

@@ -20,11 +20,6 @@ import com.echothree.control.user.item.common.form.CreateItemTypeDescriptionForm
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.security.common.SecurityRoleGroups;
-import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.ItemType;
-import com.echothree.model.data.item.server.entity.ItemTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -33,7 +28,6 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -65,16 +59,16 @@ public class CreateItemTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemTypeName = form.getItemTypeName();
-        ItemType itemType = itemControl.getItemTypeByName(itemTypeName);
+        var itemTypeName = form.getItemTypeName();
+        var itemType = itemControl.getItemTypeByName(itemTypeName);
         
         if(itemType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemTypeDescription itemTypeDescription = itemControl.getItemTypeDescription(itemType, language);
+                var itemTypeDescription = itemControl.getItemTypeDescription(itemType, language);
                 
                 if(itemTypeDescription == null) {
                     var description = form.getDescription();

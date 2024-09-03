@@ -19,16 +19,13 @@ package com.echothree.ui.cli.dataloader.util.hts;
 import com.echothree.control.user.geo.common.GeoService;
 import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.edit.HarmonizedTariffScheduleCodeEdit;
-import com.echothree.control.user.item.common.edit.HarmonizedTariffScheduleCodeTranslationEdit;
 import com.echothree.control.user.item.common.form.CreateHarmonizedTariffScheduleCodeForm;
 import com.echothree.control.user.item.common.form.CreateHarmonizedTariffScheduleCodeUseForm;
-import com.echothree.control.user.item.common.form.DeleteHarmonizedTariffScheduleCodeForm;
 import com.echothree.control.user.item.common.form.DeleteHarmonizedTariffScheduleCodeUseForm;
 import com.echothree.control.user.item.common.form.EditHarmonizedTariffScheduleCodeForm;
 import com.echothree.control.user.item.common.form.EditHarmonizedTariffScheduleCodeTranslationForm;
 import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCodeTranslationForm;
 import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCodeUsesForm;
-import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCodesForm;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.control.user.item.common.result.EditHarmonizedTariffScheduleCodeResult;
 import com.echothree.control.user.item.common.result.EditHarmonizedTariffScheduleCodeTranslationResult;
@@ -42,16 +39,10 @@ import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeTransfer;
-import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeTranslationTransfer;
-import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeUnitTransfer;
-import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeUseTransfer;
 import com.echothree.model.control.party.common.Languages;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.string.StringUtils;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -94,7 +85,7 @@ public abstract class HtsCountryParser<H extends Object> {
     }
     
     public List<HarmonizedTariffScheduleCodeTransfer> getHarmonizedTariffScheduleCodes(String countryName) {
-        GetHarmonizedTariffScheduleCodesForm commandForm = ItemFormFactory.getGetHarmonizedTariffScheduleCodesForm();
+        var commandForm = ItemFormFactory.getGetHarmonizedTariffScheduleCodesForm();
         List<HarmonizedTariffScheduleCodeTransfer> harmonizedTariffScheduleCodes = null;
         
         commandForm.setCountryName(countryName);
@@ -103,10 +94,10 @@ public abstract class HtsCountryParser<H extends Object> {
         options.add(ItemOptions.HarmonizedTariffScheduleCodeIncludeHarmonizedTariffScheduleCodeUses);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = itemService.getHarmonizedTariffScheduleCodes(userVisitPK, commandForm);
+        var commandResult = itemService.getHarmonizedTariffScheduleCodes(userVisitPK, commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodesResult result = (GetHarmonizedTariffScheduleCodesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodesResult)executionResult.getResult();
             
             harmonizedTariffScheduleCodes = result.getHarmonizedTariffScheduleCodes();
         } else {
@@ -161,7 +152,7 @@ public abstract class HtsCountryParser<H extends Object> {
 
     private void createUses(CreateHarmonizedTariffScheduleCodeForm createHarmonizedTariffScheduleCodeForm, Set<String> harmonizedTariffScheduleCodeUseNames) {
         harmonizedTariffScheduleCodeUseNames.stream().map((harmonizedTariffScheduleCodeUseName) -> {
-            CreateHarmonizedTariffScheduleCodeUseForm commandForm = ItemFormFactory.getCreateHarmonizedTariffScheduleCodeUseForm();
+            var commandForm = ItemFormFactory.getCreateHarmonizedTariffScheduleCodeUseForm();
             commandForm.setCountryName(createHarmonizedTariffScheduleCodeForm.getCountryName());
             commandForm.setHarmonizedTariffScheduleCodeName(createHarmonizedTariffScheduleCodeForm.getHarmonizedTariffScheduleCodeName());
             commandForm.setHarmonizedTariffScheduleCodeUseTypeName(harmonizedTariffScheduleCodeUseName);
@@ -172,7 +163,7 @@ public abstract class HtsCountryParser<H extends Object> {
     }
     
     public void createCodes(Set<String> codesToCreate, Map<String, H> importCodes, Map<String, H> exportCodes, Map<String, H> uniqueCodes) {
-        CreateHarmonizedTariffScheduleCodeForm commandForm = ItemFormFactory.getCreateHarmonizedTariffScheduleCodeForm();
+        var commandForm = ItemFormFactory.getCreateHarmonizedTariffScheduleCodeForm();
 
         codesToCreate.stream().map((harmonizedTariffScheduleCode) -> uniqueCodes.get(harmonizedTariffScheduleCode)).map((htsc) -> {
             commandForm.reset();
@@ -180,7 +171,7 @@ public abstract class HtsCountryParser<H extends Object> {
             transferToEdit(commandForm, htsc);
             return htsc;            
         }).forEach((htsc) -> {
-            CommandResult commandResult = itemService.createHarmonizedTariffScheduleCode(userVisitPK, commandForm);
+            var commandResult = itemService.createHarmonizedTariffScheduleCode(userVisitPK, commandForm);
 
             if(commandResult.hasErrors()) {
                 logger.error(commandResult.toString());
@@ -191,7 +182,7 @@ public abstract class HtsCountryParser<H extends Object> {
     }
     
     public void deleteCodes(Set<String> codesToDelete) {
-        DeleteHarmonizedTariffScheduleCodeForm commandForm = ItemFormFactory.getDeleteHarmonizedTariffScheduleCodeForm();
+        var commandForm = ItemFormFactory.getDeleteHarmonizedTariffScheduleCodeForm();
         
         commandForm.setCountryName(countryName);
 
@@ -227,19 +218,19 @@ public abstract class HtsCountryParser<H extends Object> {
         getCodeTranslationForm.setCountryName(countryName);
         getCodeTranslationForm.setHarmonizedTariffScheduleCodeName(code);
         getCodeTranslationForm.setLanguageIsoName(Languages.en.name());
-        
-        CommandResult commandResult = itemService.getHarmonizedTariffScheduleCodeTranslation(userVisitPK, getCodeTranslationForm);
+
+        var commandResult = itemService.getHarmonizedTariffScheduleCodeTranslation(userVisitPK, getCodeTranslationForm);
         if(commandResult.hasErrors()) {
             logger.error(commandResult.toString());
         } else {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeTranslationResult editResult = (GetHarmonizedTariffScheduleCodeTranslationResult)executionResult.getResult();
-            HarmonizedTariffScheduleCodeTranslationTransfer harmonizedTariffScheduleCodeTranslation = editResult.getHarmonizedTariffScheduleCodeTranslation();
-            H htsc = uniqueCodes.get(code);
-            String description = getDescription(htsc);
-            String overview = getOverview(htsc);
-            String overviewMimeTypeName = getOverviewMimeTypeName(htsc);
-            boolean translationDifferent = !description.equals(harmonizedTariffScheduleCodeTranslation.getDescription())
+            var executionResult = commandResult.getExecutionResult();
+            var editResult = (GetHarmonizedTariffScheduleCodeTranslationResult)executionResult.getResult();
+            var harmonizedTariffScheduleCodeTranslation = editResult.getHarmonizedTariffScheduleCodeTranslation();
+            var htsc = uniqueCodes.get(code);
+            var description = getDescription(htsc);
+            var overview = getOverview(htsc);
+            var overviewMimeTypeName = getOverviewMimeTypeName(htsc);
+            var translationDifferent = !description.equals(harmonizedTariffScheduleCodeTranslation.getDescription())
                     || !overview.equals(harmonizedTariffScheduleCodeTranslation.getOverview())
                     || !overviewMimeTypeName.equals(harmonizedTariffScheduleCodeTranslation.getOverviewMimeType().getMimeTypeName());
             
@@ -252,8 +243,8 @@ public abstract class HtsCountryParser<H extends Object> {
 
                 if(!commandResult.hasErrors()) {
                     executionResult = commandResult.getExecutionResult();
-                    EditHarmonizedTariffScheduleCodeTranslationResult editTranslationResult = (EditHarmonizedTariffScheduleCodeTranslationResult)executionResult.getResult();
-                    HarmonizedTariffScheduleCodeTranslationEdit edit = editTranslationResult.getEdit();
+                    var editTranslationResult = (EditHarmonizedTariffScheduleCodeTranslationResult)executionResult.getResult();
+                    var edit = editTranslationResult.getEdit();
 
                     edit.setDescription(StringUtils.getInstance().left(description, 80));
                     edit.setOverview(overview);
@@ -283,7 +274,7 @@ public abstract class HtsCountryParser<H extends Object> {
                 createCodeUseForm.setHarmonizedTariffScheduleCodeName(code);
                 createCodeUseForm.setHarmonizedTariffScheduleCodeUseTypeName(harmonizedTariffScheduleCodeUseTypeName);
 
-                CommandResult commandResult = itemService.createHarmonizedTariffScheduleCodeUse(userVisitPK, createCodeUseForm);
+                var commandResult = itemService.createHarmonizedTariffScheduleCodeUse(userVisitPK, createCodeUseForm);
                 if(commandResult.hasErrors()) {
                     logger.error(commandResult.toString());
                 }
@@ -293,8 +284,8 @@ public abstract class HtsCountryParser<H extends Object> {
             deleteCodeUseForm.setCountryName(countryName);
             deleteCodeUseForm.setHarmonizedTariffScheduleCodeName(code);
             deleteCodeUseForm.setHarmonizedTariffScheduleCodeUseTypeName(harmonizedTariffScheduleCodeUseTypeName);
-            
-            CommandResult commandResult = itemService.deleteHarmonizedTariffScheduleCodeUse(userVisitPK, deleteCodeUseForm);
+
+            var commandResult = itemService.deleteHarmonizedTariffScheduleCodeUse(userVisitPK, deleteCodeUseForm);
             if(commandResult.hasErrors()) {
                 logger.error(commandResult.toString());
             }
@@ -307,18 +298,18 @@ public abstract class HtsCountryParser<H extends Object> {
         getCodeUsesForm.reset();
         getCodeUsesForm.setCountryName(countryName);
         getCodeUsesForm.setHarmonizedTariffScheduleCodeName(code);
-    
-        CommandResult commandResult = itemService.getHarmonizedTariffScheduleCodeUses(userVisitPK, getCodeUsesForm);
+
+        var commandResult = itemService.getHarmonizedTariffScheduleCodeUses(userVisitPK, getCodeUsesForm);
         if(commandResult.hasErrors()) {
             logger.error(commandResult.toString());
         } else {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeUsesResult editResult = (GetHarmonizedTariffScheduleCodeUsesResult)executionResult.getResult();
-            List<HarmonizedTariffScheduleCodeUseTransfer> harmonizedTariffScheduleCodeUses = editResult.getHarmonizedTariffScheduleCodeUses();
-            boolean isCurrentlyUsedForImport = false;
-            boolean isCurrentlyUsedForExport = false;
+            var executionResult = commandResult.getExecutionResult();
+            var editResult = (GetHarmonizedTariffScheduleCodeUsesResult)executionResult.getResult();
+            var harmonizedTariffScheduleCodeUses = editResult.getHarmonizedTariffScheduleCodeUses();
+            var isCurrentlyUsedForImport = false;
+            var isCurrentlyUsedForExport = false;
             
-            for(HarmonizedTariffScheduleCodeUseTransfer harmonizedTariffScheduleCodeUse : harmonizedTariffScheduleCodeUses) {
+            for(var harmonizedTariffScheduleCodeUse : harmonizedTariffScheduleCodeUses) {
                 if(harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCodeUseType().getHarmonizedTariffScheduleCodeUseTypeName().equals(ItemConstants.HarmonizedTariffScheduleCodeUseType_IMPORT)) {
                     isCurrentlyUsedForImport = true;
                 } else if(harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCodeUseType().getHarmonizedTariffScheduleCodeUseTypeName().equals(ItemConstants.HarmonizedTariffScheduleCodeUseType_EXPORT)) {
@@ -335,18 +326,18 @@ public abstract class HtsCountryParser<H extends Object> {
             GetHarmonizedTariffScheduleCodeUsesForm getCodeUsesForm, String code, Map<String, H> importCodes,
             Map<String, H> exportCodes, Map<String, H> uniqueCodes, CreateHarmonizedTariffScheduleCodeUseForm createCodeUseForm,
             DeleteHarmonizedTariffScheduleCodeUseForm deleteCodeUseForm) {
-        HarmonizedTariffScheduleCodeTransfer harmonizedTariffScheduleCode = existingCodes.get(code);
-        H htsc = uniqueCodes.get(code);
-        String firstHarmonizedTariffScheduleCodeUnitName = getFirstHarmonizedTariffScheduleCodeUnitName(htsc);
-        String secondHarmonizedTariffScheduleCodeUnitName = getSecondHarmonizedTariffScheduleCodeUnitName(htsc);
-        HarmonizedTariffScheduleCodeUnitTransfer currentFirstHarmonizedTariffScheduleCodeUnit = harmonizedTariffScheduleCode.getFirstHarmonizedTariffScheduleCodeUnit();
-        String currentFirstHarmonizedTariffScheduleCodeUnitName = currentFirstHarmonizedTariffScheduleCodeUnit == null ? null
+        var harmonizedTariffScheduleCode = existingCodes.get(code);
+        var htsc = uniqueCodes.get(code);
+        var firstHarmonizedTariffScheduleCodeUnitName = getFirstHarmonizedTariffScheduleCodeUnitName(htsc);
+        var secondHarmonizedTariffScheduleCodeUnitName = getSecondHarmonizedTariffScheduleCodeUnitName(htsc);
+        var currentFirstHarmonizedTariffScheduleCodeUnit = harmonizedTariffScheduleCode.getFirstHarmonizedTariffScheduleCodeUnit();
+        var currentFirstHarmonizedTariffScheduleCodeUnitName = currentFirstHarmonizedTariffScheduleCodeUnit == null ? null
                 : currentFirstHarmonizedTariffScheduleCodeUnit.getHarmonizedTariffScheduleCodeUnitName();
-        HarmonizedTariffScheduleCodeUnitTransfer currentSecondHarmonizedTariffScheduleCodeUnit = harmonizedTariffScheduleCode.getSecondHarmonizedTariffScheduleCodeUnit();
-        String currentSecondHarmonizedTariffScheduleCodeUnitName = currentSecondHarmonizedTariffScheduleCodeUnit == null ? null
+        var currentSecondHarmonizedTariffScheduleCodeUnit = harmonizedTariffScheduleCode.getSecondHarmonizedTariffScheduleCodeUnit();
+        var currentSecondHarmonizedTariffScheduleCodeUnitName = currentSecondHarmonizedTariffScheduleCodeUnit == null ? null
                 : currentSecondHarmonizedTariffScheduleCodeUnit.getHarmonizedTariffScheduleCodeUnitName();
 
-        boolean codeDifferent = StringUtils.getInstance().nullSafeCompareTo(firstHarmonizedTariffScheduleCodeUnitName, currentFirstHarmonizedTariffScheduleCodeUnitName) != 0
+        var codeDifferent = StringUtils.getInstance().nullSafeCompareTo(firstHarmonizedTariffScheduleCodeUnitName, currentFirstHarmonizedTariffScheduleCodeUnitName) != 0
                 || StringUtils.getInstance().nullSafeCompareTo(secondHarmonizedTariffScheduleCodeUnitName, currentSecondHarmonizedTariffScheduleCodeUnitName) != 0;
 
         if(codeDifferent) {
@@ -358,12 +349,12 @@ public abstract class HtsCountryParser<H extends Object> {
             editCodeForm.setEditMode(EditMode.LOCK);
             editCodeForm.setSpec(harmonizedTariffScheduleCodeSpec);
 
-            CommandResult commandResult = itemService.editHarmonizedTariffScheduleCode(userVisitPK, editCodeForm);
+            var commandResult = itemService.editHarmonizedTariffScheduleCode(userVisitPK, editCodeForm);
 
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditHarmonizedTariffScheduleCodeResult editTranslationResult = (EditHarmonizedTariffScheduleCodeResult)executionResult.getResult();
-                HarmonizedTariffScheduleCodeEdit edit = editTranslationResult.getEdit();
+                var executionResult = commandResult.getExecutionResult();
+                var editTranslationResult = (EditHarmonizedTariffScheduleCodeResult)executionResult.getResult();
+                var edit = editTranslationResult.getEdit();
 
                 edit.setFirstHarmonizedTariffScheduleCodeUnitName(firstHarmonizedTariffScheduleCodeUnitName);
                 edit.setSecondHarmonizedTariffScheduleCodeUnitName(secondHarmonizedTariffScheduleCodeUnitName);
@@ -385,13 +376,13 @@ public abstract class HtsCountryParser<H extends Object> {
     }
     
     public void checkCodes(Set<String> codesToCheck, Map<String, H> importCodes, Map<String, H> exportCodes, Map<String, H> uniqueCodes) {
-        HarmonizedTariffScheduleCodeSpec harmonizedTariffScheduleCodeSpec = ItemSpecFactory.getHarmonizedTariffScheduleCodeSpec();
-        EditHarmonizedTariffScheduleCodeForm editCodeForm = ItemFormFactory.getEditHarmonizedTariffScheduleCodeForm();
-        GetHarmonizedTariffScheduleCodeUsesForm getCodeUsesForm = ItemFormFactory.getGetHarmonizedTariffScheduleCodeUsesForm();
-        CreateHarmonizedTariffScheduleCodeUseForm createCodeUseForm = ItemFormFactory.getCreateHarmonizedTariffScheduleCodeUseForm();
-        DeleteHarmonizedTariffScheduleCodeUseForm deleteCodeUseForm = ItemFormFactory.getDeleteHarmonizedTariffScheduleCodeUseForm();
-        GetHarmonizedTariffScheduleCodeTranslationForm getCodeTranslationForm = ItemFormFactory.getGetHarmonizedTariffScheduleCodeTranslationForm();
-        EditHarmonizedTariffScheduleCodeTranslationForm editCodeTranslationForm = ItemFormFactory.getEditHarmonizedTariffScheduleCodeTranslationForm();
+        var harmonizedTariffScheduleCodeSpec = ItemSpecFactory.getHarmonizedTariffScheduleCodeSpec();
+        var editCodeForm = ItemFormFactory.getEditHarmonizedTariffScheduleCodeForm();
+        var getCodeUsesForm = ItemFormFactory.getGetHarmonizedTariffScheduleCodeUsesForm();
+        var createCodeUseForm = ItemFormFactory.getCreateHarmonizedTariffScheduleCodeUseForm();
+        var deleteCodeUseForm = ItemFormFactory.getDeleteHarmonizedTariffScheduleCodeUseForm();
+        var getCodeTranslationForm = ItemFormFactory.getGetHarmonizedTariffScheduleCodeTranslationForm();
+        var editCodeTranslationForm = ItemFormFactory.getEditHarmonizedTariffScheduleCodeTranslationForm();
         
         codesToCheck.stream().map((code) -> {
             checkCode(harmonizedTariffScheduleCodeSpec, editCodeForm, getCodeUsesForm, code, importCodes, exportCodes, uniqueCodes, createCodeUseForm,

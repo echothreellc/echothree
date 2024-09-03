@@ -25,7 +25,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.entity.GeoCodeRelationship;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -84,7 +83,7 @@ public class GetCityCommand
         GeoCode countryGeoCode = null;
         var stateRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
         for(var geoCodeRelationship : stateRelationships) {
-            GeoCode toGeoCode = geoCodeRelationship.getToGeoCode();
+            var toGeoCode = geoCodeRelationship.getToGeoCode();
             if(toGeoCode.getLastDetail().getGeoCodeType().equals(countryGeoCodeType)) {
                 countryGeoCode = toGeoCode;
                 break;

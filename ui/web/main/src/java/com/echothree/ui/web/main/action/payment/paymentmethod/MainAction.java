@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.payment.paymentmethod;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.GetPaymentMethodsForm;
 import com.echothree.control.user.payment.common.result.GetPaymentMethodsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -50,10 +47,10 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetPaymentMethodsForm commandForm = PaymentUtil.getHome().getGetPaymentMethodsForm();
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentMethods(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPaymentMethodsResult result = (GetPaymentMethodsResult)executionResult.getResult();
+        var commandForm = PaymentUtil.getHome().getGetPaymentMethodsForm();
+        var commandResult = PaymentUtil.getHome().getPaymentMethods(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPaymentMethodsResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PAYMENT_METHODS, result.getPaymentMethods());
         

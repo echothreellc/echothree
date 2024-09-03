@@ -26,18 +26,9 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.core.server.entity.MimeTypeUsage;
-import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
-import com.echothree.model.data.document.server.entity.Document;
 import com.echothree.model.data.document.server.entity.DocumentType;
-import com.echothree.model.data.document.server.entity.DocumentTypeUsage;
-import com.echothree.model.data.document.server.entity.DocumentTypeUsageType;
-import com.echothree.model.data.document.server.entity.PartyDocument;
-import com.echothree.model.data.document.server.entity.PartyTypeDocumentTypeUsageType;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -88,11 +79,11 @@ public class CreatePartyDocumentCommand
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        PartyDocument partyDocument = DocumentLogic.getInstance().createPartyDocument(this, party, documentType, mimeType, isDefault, sortOrder,
+        var partyDocument = DocumentLogic.getInstance().createPartyDocument(this, party, documentType, mimeType, isDefault, sortOrder,
                 getPreferredLanguage(), description, blob, clob, getPartyPK());
 
         if(!hasExecutionErrors()) {
-            Document document = partyDocument.getDocument();
+            var document = partyDocument.getDocument();
 
             result.setEntityRef(document.getPrimaryKey().getEntityRef());
             result.setDocumentName(document.getLastDetail().getDocumentName());
@@ -102,24 +93,24 @@ public class CreatePartyDocumentCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        CreatePartyDocumentResult result = DocumentResultFactory.getCreatePartyDocumentResult();
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var result = DocumentResultFactory.getCreatePartyDocumentResult();
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var documentControl = Session.getModelController(DocumentControl.class);
-            String documentTypeName = form.getDocumentTypeName();
-            DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
+            var documentTypeName = form.getDocumentTypeName();
+            var documentType = documentControl.getDocumentTypeByName(documentTypeName);
 
             if(documentType != null) {
-                List<DocumentTypeUsage> documentTypeUsages = documentControl.getDocumentTypeUsagesByDocumentType(documentType);
-                PartyType partyType = party.getLastDetail().getPartyType();
+                var documentTypeUsages = documentControl.getDocumentTypeUsagesByDocumentType(documentType);
+                var partyType = party.getLastDetail().getPartyType();
                 Integer maximumInstances = null;
-                boolean foundPartyTypeDocumentTypeUsageType = false;
+                var foundPartyTypeDocumentTypeUsageType = false;
 
                 for(var documentTypeUsage : documentTypeUsages) {
-                    DocumentTypeUsageType documentTypeUsageType = documentTypeUsage.getDocumentTypeUsageType();
-                    PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType = documentControl.getPartyTypeDocumentTypeUsageType(partyType, documentTypeUsageType);
+                    var documentTypeUsageType = documentTypeUsage.getDocumentTypeUsageType();
+                    var partyTypeDocumentTypeUsageType = documentControl.getPartyTypeDocumentTypeUsageType(partyType, documentTypeUsageType);
 
                     if(partyTypeDocumentTypeUsageType != null) {
                         foundPartyTypeDocumentTypeUsageType = true;
@@ -127,7 +118,7 @@ public class CreatePartyDocumentCommand
                         if(maximumInstances == null) {
                             maximumInstances = documentTypeUsage.getMaximumInstances();
                         } else {
-                            Integer foundMaximumInstances = documentTypeUsage.getMaximumInstances();
+                            var foundMaximumInstances = documentTypeUsage.getMaximumInstances();
 
                             if(foundMaximumInstances != null && foundMaximumInstances > maximumInstances) {
                                 maximumInstances = foundMaximumInstances;
@@ -147,19 +138,19 @@ public class CreatePartyDocumentCommand
 
                     if(!hasExecutionErrors()) {
                         var coreControl = getCoreControl();
-                        String mimeTypeName = form.getMimeTypeName();
-                        MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+                        var mimeTypeName = form.getMimeTypeName();
+                        var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
                         if(mimeType != null) {
-                            MimeTypeUsageType mimeTypeUsageType = documentType.getLastDetail().getMimeTypeUsageType();
-                            MimeTypeUsage mimeTypeUsage = mimeTypeUsageType == null ? null : coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
+                            var mimeTypeUsageType = documentType.getLastDetail().getMimeTypeUsageType();
+                            var mimeTypeUsage = mimeTypeUsageType == null ? null : coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
 
                             if(mimeTypeUsageType == null || mimeTypeUsage != null) {
-                                EntityAttributeType entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();
-                                String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+                                var entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();
+                                var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
 
                                 if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
-                                    ByteArray blob = form.getBlob();
+                                    var blob = form.getBlob();
 
                                     if(blob != null) {
                                         createPartyDocument(party, documentType, mimeType, blob, null, result);
@@ -167,7 +158,7 @@ public class CreatePartyDocumentCommand
                                         addExecutionError(ExecutionErrors.MissingBlob.name());
                                     }
                                 } else if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-                                    String clob = form.getClob();
+                                    var clob = form.getClob();
 
                                     if(clob != null) {
                                         createPartyDocument(party, documentType, mimeType, null, clob, result);

@@ -18,7 +18,6 @@ package com.echothree.control.user.club.server.command;
 
 import com.echothree.control.user.club.common.form.CreateClubItemTypeForm;
 import com.echothree.model.control.club.server.control.ClubControl;
-import com.echothree.model.data.club.server.entity.ClubItemType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,8 +51,8 @@ public class CreateClubItemTypeCommand
     @Override
     protected BaseResult execute() {
         var clubControl = Session.getModelController(ClubControl.class);
-        String clubItemTypeName = form.getClubItemTypeName();
-        ClubItemType clubItemType = clubControl.getClubItemTypeByName(clubItemTypeName);
+        var clubItemTypeName = form.getClubItemTypeName();
+        var clubItemType = clubControl.getClubItemTypeByName(clubItemTypeName);
         
         if(clubItemType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

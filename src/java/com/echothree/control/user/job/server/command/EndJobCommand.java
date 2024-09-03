@@ -19,8 +19,6 @@ package com.echothree.control.user.job.server.command;
 import com.echothree.control.user.job.common.form.EndJobForm;
 import com.echothree.model.control.job.server.control.JobControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.job.server.entity.Job;
-import com.echothree.model.data.job.server.entity.JobStatus;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -58,11 +56,11 @@ public class EndJobCommand
     @Override
     protected BaseResult execute() {
         var jobControl = Session.getModelController(JobControl.class);
-        String jobName = form.getJobName();
-        Job job = jobControl.getJobByName(jobName);
+        var jobName = form.getJobName();
+        var job = jobControl.getJobByName(jobName);
         
         if(job != null) {
-            JobStatus jobStatus = jobControl.getJobStatusForUpdate(job);
+            var jobStatus = jobControl.getJobStatusForUpdate(job);
             
             jobStatus.setLastEndTime(session.START_TIME);
         } else {

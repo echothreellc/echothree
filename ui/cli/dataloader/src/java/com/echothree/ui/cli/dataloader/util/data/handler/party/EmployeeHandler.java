@@ -18,13 +18,9 @@ package com.echothree.ui.cli.dataloader.util.data.handler.party;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.common.EmployeeService;
-import com.echothree.control.user.employee.common.form.CreateEmploymentForm;
-import com.echothree.control.user.employee.common.form.CreateLeaveForm;
 import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.PartyService;
-import com.echothree.control.user.party.common.form.AddEmployeeToCompanyForm;
-import com.echothree.control.user.party.common.form.CreateProfileForm;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -71,21 +67,21 @@ public class EmployeeHandler
 
             partyService.createPartyAlias(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("employeeCompany")) {
-            AddEmployeeToCompanyForm commandForm = PartyFormFactory.getAddEmployeeToCompanyForm();
+            var commandForm = PartyFormFactory.getAddEmployeeToCompanyForm();
             
             commandForm.setEmployeeName(employeeName);
             commandForm.set(getAttrsMap(attrs));
             
             partyService.addEmployeeToCompany(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("employment")) {
-            CreateEmploymentForm commandForm = EmployeeFormFactory.getCreateEmploymentForm();
+            var commandForm = EmployeeFormFactory.getCreateEmploymentForm();
 
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
 
             employeeService.createEmployment(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("leave")) {
-            CreateLeaveForm commandForm = EmployeeFormFactory.getCreateLeaveForm();
+            var commandForm = EmployeeFormFactory.getCreateLeaveForm();
 
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
@@ -98,7 +94,7 @@ public class EmployeeHandler
         } else if(localName.equals("partyTrainingClasses")) {
             initialDataParser.pushHandler(new PartyTrainingClassesHandler(initialDataParser, this, partyName));
         } else if(localName.equals("profile")) {
-            CreateProfileForm commandForm = PartyFormFactory.getCreateProfileForm();
+            var commandForm = PartyFormFactory.getCreateProfileForm();
             
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));

@@ -18,7 +18,6 @@ package com.echothree.control.user.accounting.common;
 
 import com.echothree.control.user.accounting.server.AccountingLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class AccountingUtil {
@@ -30,7 +29,7 @@ public class AccountingUtil {
     public static AccountingLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (AccountingLocal)ctx.lookup("ejb:echothree/echothree-server/AccountingBean!com.echothree.control.user.accounting.server.AccountingLocal");
         }
@@ -42,7 +41,7 @@ public class AccountingUtil {
     public static AccountingRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (AccountingRemote)ctx.lookup("ejb:echothree/echothree-server/AccountingBean!com.echothree.control.user.accounting.common.AccountingRemote");
         }

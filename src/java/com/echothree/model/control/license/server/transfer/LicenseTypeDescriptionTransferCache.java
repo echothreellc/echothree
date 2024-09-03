@@ -17,9 +17,7 @@
 package com.echothree.model.control.license.server.transfer;
 
 import com.echothree.model.control.license.common.transfer.LicenseTypeDescriptionTransfer;
-import com.echothree.model.control.license.common.transfer.LicenseTypeTransfer;
 import com.echothree.model.control.license.server.control.LicenseControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.license.server.entity.LicenseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class LicenseTypeDescriptionTransferCache
     }
     
     public LicenseTypeDescriptionTransfer getLicenseTypeDescriptionTransfer(LicenseTypeDescription licenseTypeDescription) {
-        LicenseTypeDescriptionTransfer licenseTypeDescriptionTransfer = get(licenseTypeDescription);
+        var licenseTypeDescriptionTransfer = get(licenseTypeDescription);
         
         if(licenseTypeDescriptionTransfer == null) {
-            LicenseTypeTransfer licenseTypeTransfer = licenseControl.getLicenseTypeTransfer(userVisit, licenseTypeDescription.getLicenseType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, licenseTypeDescription.getLanguage());
+            var licenseTypeTransfer = licenseControl.getLicenseTypeTransfer(userVisit, licenseTypeDescription.getLicenseType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, licenseTypeDescription.getLanguage());
             
             licenseTypeDescriptionTransfer = new LicenseTypeDescriptionTransfer(languageTransfer, licenseTypeTransfer, licenseTypeDescription.getDescription());
             put(licenseTypeDescription, licenseTypeDescriptionTransfer);

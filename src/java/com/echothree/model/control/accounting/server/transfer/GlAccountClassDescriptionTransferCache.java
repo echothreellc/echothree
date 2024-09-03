@@ -17,9 +17,7 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.GlAccountClassDescriptionTransfer;
-import com.echothree.model.control.accounting.common.transfer.GlAccountClassTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.accounting.server.entity.GlAccountClassDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -33,12 +31,12 @@ public class GlAccountClassDescriptionTransferCache
     
     @Override
     public GlAccountClassDescriptionTransfer getTransfer(GlAccountClassDescription glAccountClassDescription) {
-        GlAccountClassDescriptionTransfer glAccountClassDescriptionTransfer = get(glAccountClassDescription);
+        var glAccountClassDescriptionTransfer = get(glAccountClassDescription);
         
         if(glAccountClassDescriptionTransfer == null) {
-            GlAccountClassTransferCache glAccountClassTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlAccountClassTransferCache();
-            GlAccountClassTransfer glAccountClassTransfer = glAccountClassTransferCache.getTransfer(glAccountClassDescription.getGlAccountClass());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, glAccountClassDescription.getLanguage());
+            var glAccountClassTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlAccountClassTransferCache();
+            var glAccountClassTransfer = glAccountClassTransferCache.getTransfer(glAccountClassDescription.getGlAccountClass());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, glAccountClassDescription.getLanguage());
             
             glAccountClassDescriptionTransfer = new GlAccountClassDescriptionTransfer(languageTransfer, glAccountClassTransfer, glAccountClassDescription.getDescription());
             put(glAccountClassDescription, glAccountClassDescriptionTransfer);

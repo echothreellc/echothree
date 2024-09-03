@@ -16,15 +16,9 @@
 
 package com.echothree.model.control.accounting.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.GlAccountCategoryTransfer;
-import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.common.transfer.TransactionGlAccountCategoryTransfer;
-import com.echothree.model.control.accounting.common.transfer.TransactionTypeTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
-import com.echothree.model.data.accounting.server.entity.TransactionGlAccount;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategory;
-import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategoryDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class TransactionGlAccountCategoryTransferCache
@@ -39,18 +33,18 @@ public class TransactionGlAccountCategoryTransferCache
     
     @Override
     public TransactionGlAccountCategoryTransfer getTransfer(TransactionGlAccountCategory transactionGlAccountCategory) {
-        TransactionGlAccountCategoryTransfer transactionGlAccountCategoryTransfer = get(transactionGlAccountCategory);
+        var transactionGlAccountCategoryTransfer = get(transactionGlAccountCategory);
         
         if(transactionGlAccountCategoryTransfer == null) {
-            TransactionGlAccountCategoryDetail transactionGlAccountCategoryDetail = transactionGlAccountCategory.getLastDetail();
-            TransactionTypeTransfer transactionTypeTransfer = accountingControl.getTransactionTypeTransfer(userVisit, transactionGlAccountCategoryDetail.getTransactionType());
-            String transactionGlAccountCategoryName = transactionGlAccountCategoryDetail.getTransactionGlAccountCategoryName();
-            GlAccountCategory glAccountCategory = transactionGlAccountCategoryDetail.getGlAccountCategory();
-            GlAccountCategoryTransfer glAccountCategoryTransfer = glAccountCategory == null? null: accountingControl.getGlAccountCategoryTransfer(userVisit, glAccountCategory);
-            Integer sortOrder = transactionGlAccountCategoryDetail.getSortOrder();
-            TransactionGlAccount transactionGlAccount = accountingControl.getTransactionGlAccount(transactionGlAccountCategory);
-            GlAccountTransfer glAccountTransfer = transactionGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, transactionGlAccount.getGlAccount());
-            String description = accountingControl.getBestTransactionGlAccountCategoryDescription(transactionGlAccountCategory, getLanguage());
+            var transactionGlAccountCategoryDetail = transactionGlAccountCategory.getLastDetail();
+            var transactionTypeTransfer = accountingControl.getTransactionTypeTransfer(userVisit, transactionGlAccountCategoryDetail.getTransactionType());
+            var transactionGlAccountCategoryName = transactionGlAccountCategoryDetail.getTransactionGlAccountCategoryName();
+            var glAccountCategory = transactionGlAccountCategoryDetail.getGlAccountCategory();
+            var glAccountCategoryTransfer = glAccountCategory == null? null: accountingControl.getGlAccountCategoryTransfer(userVisit, glAccountCategory);
+            var sortOrder = transactionGlAccountCategoryDetail.getSortOrder();
+            var transactionGlAccount = accountingControl.getTransactionGlAccount(transactionGlAccountCategory);
+            var glAccountTransfer = transactionGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, transactionGlAccount.getGlAccount());
+            var description = accountingControl.getBestTransactionGlAccountCategoryDescription(transactionGlAccountCategory, getLanguage());
             
             transactionGlAccountCategoryTransfer = new TransactionGlAccountCategoryTransfer(transactionTypeTransfer, transactionGlAccountCategoryName,
                     glAccountCategoryTransfer, sortOrder, glAccountTransfer, description);

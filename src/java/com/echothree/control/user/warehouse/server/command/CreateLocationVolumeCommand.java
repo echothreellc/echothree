@@ -24,12 +24,7 @@ import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.Location;
-import com.echothree.model.data.warehouse.server.entity.LocationVolume;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -77,42 +72,42 @@ public class CreateLocationVolumeCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            String locationName = form.getLocationName();
-            Location location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
+            var locationName = form.getLocationName();
+            var location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
             
             if(location != null) {
-                LocationVolume locationVolume = warehouseControl.getLocationVolume(location);
+                var locationVolume = warehouseControl.getLocationVolume(location);
                 
                 if(locationVolume == null) {
                     var uomControl = Session.getModelController(UomControl.class);
-                    UnitOfMeasureKind volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
+                    var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
                     
                     if(volumeUnitOfMeasureKind != null) {
-                        String heightUnitOfMeasureTypeName = form.getHeightUnitOfMeasureTypeName();
-                        UnitOfMeasureType heightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
+                        var heightUnitOfMeasureTypeName = form.getHeightUnitOfMeasureTypeName();
+                        var heightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
                                 heightUnitOfMeasureTypeName);
                         
                         if(heightUnitOfMeasureType != null) {
-                            Long height = Long.valueOf(form.getHeight());
-                            String widthUnitOfMeasureTypeName = form.getWidthUnitOfMeasureTypeName();
-                            UnitOfMeasureType widthUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
+                            var height = Long.valueOf(form.getHeight());
+                            var widthUnitOfMeasureTypeName = form.getWidthUnitOfMeasureTypeName();
+                            var widthUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
                                     widthUnitOfMeasureTypeName);
                             
                             if(widthUnitOfMeasureType != null) {
-                                Long width = Long.valueOf(form.getWidth());
-                                String depthUnitOfMeasureTypeName = form.getDepthUnitOfMeasureTypeName();
-                                UnitOfMeasureType depthUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
+                                var width = Long.valueOf(form.getWidth());
+                                var depthUnitOfMeasureTypeName = form.getDepthUnitOfMeasureTypeName();
+                                var depthUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
                                         depthUnitOfMeasureTypeName);
                                 
                                 if(depthUnitOfMeasureType != null) {
-                                    Long depth = Long.valueOf(form.getDepth());
-                                    Conversion heightConversion = new Conversion(uomControl, heightUnitOfMeasureType, height).convertToLowestUnitOfMeasureType();
-                                    Conversion widthConversion = new Conversion(uomControl, widthUnitOfMeasureType, width).convertToLowestUnitOfMeasureType();
-                                    Conversion depthConversion = new Conversion(uomControl, depthUnitOfMeasureType, depth).convertToLowestUnitOfMeasureType();
+                                    var depth = Long.valueOf(form.getDepth());
+                                    var heightConversion = new Conversion(uomControl, heightUnitOfMeasureType, height).convertToLowestUnitOfMeasureType();
+                                    var widthConversion = new Conversion(uomControl, widthUnitOfMeasureType, width).convertToLowestUnitOfMeasureType();
+                                    var depthConversion = new Conversion(uomControl, depthUnitOfMeasureType, depth).convertToLowestUnitOfMeasureType();
                                     
                                     warehouseControl.createLocationVolume(location, heightConversion.getQuantity(),
                                             widthConversion.getQuantity(), depthConversion.getQuantity(), getPartyPK());

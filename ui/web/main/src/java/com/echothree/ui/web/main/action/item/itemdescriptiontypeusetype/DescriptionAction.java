@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.item.itemdescriptiontypeusetype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemDescriptionTypeUseTypeDescriptionsForm;
 import com.echothree.control.user.item.common.result.GetItemDescriptionTypeUseTypeDescriptionsResult;
-import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeUseTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String itemDescriptionTypeUseTypeName = request.getParameter(ParameterConstants.ITEM_DESCRIPTION_TYPE_USE_TYPE_NAME);
-        GetItemDescriptionTypeUseTypeDescriptionsForm commandForm = ItemUtil.getHome().getGetItemDescriptionTypeUseTypeDescriptionsForm();
+        var itemDescriptionTypeUseTypeName = request.getParameter(ParameterConstants.ITEM_DESCRIPTION_TYPE_USE_TYPE_NAME);
+        var commandForm = ItemUtil.getHome().getGetItemDescriptionTypeUseTypeDescriptionsForm();
 
         commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
 
-        CommandResult commandResult = ItemUtil.getHome().getItemDescriptionTypeUseTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getItemDescriptionTypeUseTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemDescriptionTypeUseTypeDescriptionsResult result = (GetItemDescriptionTypeUseTypeDescriptionsResult) executionResult.getResult();
-            ItemDescriptionTypeUseTypeTransfer itemDescriptionTypeUseTypeTransfer = result.getItemDescriptionTypeUseType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemDescriptionTypeUseTypeDescriptionsResult) executionResult.getResult();
+            var itemDescriptionTypeUseTypeTransfer = result.getItemDescriptionTypeUseType();
 
             request.setAttribute(AttributeConstants.ITEM_DESCRIPTION_TYPE_USE_TYPE, itemDescriptionTypeUseTypeTransfer);
             request.setAttribute(AttributeConstants.ITEM_DESCRIPTION_TYPE_USE_TYPE_DESCRIPTIONS, result.getItemDescriptionTypeUseTypeDescriptions());

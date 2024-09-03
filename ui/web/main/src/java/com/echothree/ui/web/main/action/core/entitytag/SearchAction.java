@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entitytag;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.form.GetEntityTagsForm;
 import com.echothree.control.user.tag.common.result.GetEntityTagsResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
@@ -27,8 +26,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -64,7 +61,7 @@ public class SearchAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetEntityTagsForm commandForm = TagUtil.getHome().getGetEntityTagsForm();
+        var commandForm = TagUtil.getHome().getGetEntityTagsForm();
 
         commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));
         commandForm.setTagScopeName(request.getParameter(ParameterConstants.TAG_SCOPE_NAME));
@@ -74,14 +71,14 @@ public class SearchAction
         options.add(CoreOptions.EntityInstanceIncludeNames);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = TagUtil.getHome().getEntityTags(getUserVisitPK(request), commandForm);
+        var commandResult = TagUtil.getHome().getEntityTags(getUserVisitPK(request), commandForm);
         EntityInstanceTransfer taggedEntityInstance = null;
         TagTransfer tag = null;
         List<EntityTagTransfer> entityTags = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityTagsResult result = (GetEntityTagsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityTagsResult)executionResult.getResult();
 
             taggedEntityInstance = result.getTaggedEntityInstance();
             tag = result.getTag();
@@ -108,8 +105,8 @@ public class SearchAction
             request.setAttribute(AttributeConstants.ENTITY_TAGS, new ListWrapper<>(entityTags));
             forwardKey = ForwardConstants.SEARCH;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.REVIEW)) {
             Map<String, String> parameters = new HashMap<>(1);
 

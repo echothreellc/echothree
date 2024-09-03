@@ -28,21 +28,8 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.control.wishlist.server.logic.WishlistLogic;
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.inventory.server.entity.InventoryConditionUse;
-import com.echothree.model.data.inventory.server.entity.InventoryConditionUseType;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.OfferItem;
-import com.echothree.model.data.offer.server.entity.OfferItemPrice;
-import com.echothree.model.data.offer.server.entity.Source;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -81,52 +68,52 @@ public class CreateWishlistLineCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyName == null? getParty(): partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyName == null? getParty(): partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
+            var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
             
             if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
                 var wishlistControl = Session.getModelController(WishlistControl.class);
-                String wishlistTypeName = form.getWishlistTypeName();
-                WishlistType wishlistType = wishlistTypeName == null? wishlistControl.getDefaultWishlistType():
+                var wishlistTypeName = form.getWishlistTypeName();
+                var wishlistType = wishlistTypeName == null? wishlistControl.getDefaultWishlistType():
                     wishlistControl.getWishlistTypeByName(wishlistTypeName);
                 
                 if(wishlistType != null) {
-                    String wishlistPriorityName = form.getWishlistPriorityName();
-                    WishlistPriority wishlistPriority = wishlistPriorityName == null? wishlistControl.getDefaultWishlistPriority(wishlistType):
+                    var wishlistPriorityName = form.getWishlistPriorityName();
+                    var wishlistPriority = wishlistPriorityName == null? wishlistControl.getDefaultWishlistPriority(wishlistType):
                         wishlistControl.getWishlistPriorityByName(wishlistType, wishlistPriorityName);
                     
                     if(wishlistPriority != null) {
                         var accountingControl = Session.getModelController(AccountingControl.class);
-                        String currencyIsoName = form.getCurrencyIsoName();
-                        Currency currency = currencyIsoName == null? accountingControl.getDefaultCurrency():
+                        var currencyIsoName = form.getCurrencyIsoName();
+                        var currency = currencyIsoName == null? accountingControl.getDefaultCurrency():
                             accountingControl.getCurrencyByIsoName(currencyIsoName);
                         
                         if(currency != null) {
                             var sourceControl = Session.getModelController(SourceControl.class);
-                            String sourceName = form.getSourceName();
-                            Source source = sourceName == null? sourceControl.getDefaultSource(): sourceControl.getSourceByName(sourceName);
+                            var sourceName = form.getSourceName();
+                            var source = sourceName == null? sourceControl.getDefaultSource(): sourceControl.getSourceByName(sourceName);
                             
                             if(source != null) {
                                 var itemControl = Session.getModelController(ItemControl.class);
-                                String itemName = form.getItemName();
-                                Item item = itemControl.getItemByName(itemName);
+                                var itemName = form.getItemName();
+                                var item = itemControl.getItemByName(itemName);
                                 
                                 if(item != null) {
                                     var offerItemControl = Session.getModelController(OfferItemControl.class);
-                                    Offer offer = source.getLastDetail().getOfferUse().getLastDetail().getOffer();
-                                    OfferItem offerItem = offerItemControl.getOfferItem(offer, item);
+                                    var offer = source.getLastDetail().getOfferUse().getLastDetail().getOffer();
+                                    var offerItem = offerItemControl.getOfferItem(offer, item);
                                     
                                     if(offerItem != null) {
                                         var inventoryControl = Session.getModelController(InventoryControl.class);
-                                        String inventoryConditionName = form.getInventoryConditionName();
-                                        InventoryConditionUseType inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConstants.InventoryConditionUseType_SALES_ORDER);
+                                        var inventoryConditionName = form.getInventoryConditionName();
+                                        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConstants.InventoryConditionUseType_SALES_ORDER);
                                         InventoryCondition inventoryCondition = null;
                                         
                                         if(inventoryConditionName == null) {
-                                            InventoryConditionUse inventoryConditionUse = inventoryControl.getDefaultInventoryConditionUse(inventoryConditionUseType);
+                                            var inventoryConditionUse = inventoryControl.getDefaultInventoryConditionUse(inventoryConditionUseType);
                                             
                                             if(inventoryConditionUse == null) {
                                                 addExecutionError(ExecutionErrors.MissingDefaultInventoryConditionUse.name());
@@ -143,18 +130,18 @@ public class CreateWishlistLineCommand
                                         
                                         if(!hasExecutionErrors()) {
                                             var uomControl = Session.getModelController(UomControl.class);
-                                            UnitOfMeasureKind unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-                                            String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                                            UnitOfMeasureType unitOfMeasureType = unitOfMeasureTypeName == null? uomControl.getDefaultUnitOfMeasureType(unitOfMeasureKind):
+                                            var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
+                                            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                                            var unitOfMeasureType = unitOfMeasureTypeName == null? uomControl.getDefaultUnitOfMeasureType(unitOfMeasureKind):
                                                 uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                                             
                                             if(unitOfMeasureType != null) {
-                                                OfferItemPrice offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency);
+                                                var offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency);
                                                 
                                                 if(offerItemPrice != null) {
-                                                    String strQuantity = form.getQuantity();
+                                                    var strQuantity = form.getQuantity();
                                                     Long quantity = strQuantity == null ? (long) 1 : Long.valueOf(strQuantity);
-                                                    String comment = form.getComment();
+                                                    var comment = form.getComment();
 
                                                     WishlistLogic.getInstance().createWishlistLine(session, this, getUserVisit(), party, source, offerItemPrice,
                                                             wishlistType, wishlistPriority, quantity, comment, getPartyPK());

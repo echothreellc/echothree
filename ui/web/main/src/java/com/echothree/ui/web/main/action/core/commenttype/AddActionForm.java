@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.core.commenttype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetMimeTypeUsageTypeChoicesForm;
 import com.echothree.control.user.core.common.result.GetMimeTypeUsageTypeChoicesResult;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.form.GetSequenceChoicesForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
 import com.echothree.model.control.core.common.choice.MimeTypeUsageTypeChoicesBean;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -51,15 +47,15 @@ public class AddActionForm
     public void setupCommentSequenceChoices()
             throws NamingException {
         if(commentSequenceChoices == null) {
-            GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
+            var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
 
             form.setSequenceTypeName(SequenceTypes.COMMENT.name());
             form.setDefaultSequenceChoice(commentSequenceChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+            var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceChoicesResult)executionResult.getResult();
             commentSequenceChoices = result.getSequenceChoices();
 
             if(commentSequenceChoice == null)
@@ -70,14 +66,14 @@ public class AddActionForm
     public void setupMimeTypeUsageTypeChoices()
             throws NamingException {
         if(mimeTypeUsageTypeChoices == null) {
-            GetMimeTypeUsageTypeChoicesForm form = CoreUtil.getHome().getGetMimeTypeUsageTypeChoicesForm();
+            var form = CoreUtil.getHome().getGetMimeTypeUsageTypeChoicesForm();
 
             form.setDefaultMimeTypeUsageTypeChoice(mimeTypeUsageTypeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getMimeTypeUsageTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeUsageTypeChoicesResult result = (GetMimeTypeUsageTypeChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getMimeTypeUsageTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeUsageTypeChoicesResult)executionResult.getResult();
             mimeTypeUsageTypeChoices = result.getMimeTypeUsageTypeChoices();
 
             if(mimeTypeUsageTypeChoice == null)

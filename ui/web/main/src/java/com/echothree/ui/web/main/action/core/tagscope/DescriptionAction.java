@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.core.tagscope;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.form.GetTagScopeDescriptionsForm;
 import com.echothree.control.user.tag.common.result.GetTagScopeDescriptionsResult;
-import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String tagScopeName = request.getParameter(ParameterConstants.TAG_SCOPE_NAME);
-        GetTagScopeDescriptionsForm commandForm = TagUtil.getHome().getGetTagScopeDescriptionsForm();
+        var tagScopeName = request.getParameter(ParameterConstants.TAG_SCOPE_NAME);
+        var commandForm = TagUtil.getHome().getGetTagScopeDescriptionsForm();
 
         commandForm.setTagScopeName(tagScopeName);
 
-        CommandResult commandResult = TagUtil.getHome().getTagScopeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = TagUtil.getHome().getTagScopeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTagScopeDescriptionsResult result = (GetTagScopeDescriptionsResult) executionResult.getResult();
-            TagScopeTransfer tagScopeTransfer = result.getTagScope();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTagScopeDescriptionsResult) executionResult.getResult();
+            var tagScopeTransfer = result.getTagScope();
 
             request.setAttribute(AttributeConstants.TAG_SCOPE, tagScopeTransfer);
             request.setAttribute(AttributeConstants.TAG_SCOPE_DESCRIPTIONS, result.getTagScopeDescriptions());

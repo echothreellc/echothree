@@ -17,13 +17,11 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetRelatedItemTypeDescriptionsForm;
-import com.echothree.control.user.item.common.result.GetRelatedItemTypeDescriptionsResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetRelatedItemTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetRelatedItemTypeDescriptionsResult result = ItemResultFactory.getGetRelatedItemTypeDescriptionsResult();
-        String relatedItemTypeName = form.getRelatedItemTypeName();
-        RelatedItemType relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
+        var result = ItemResultFactory.getGetRelatedItemTypeDescriptionsResult();
+        var relatedItemTypeName = form.getRelatedItemTypeName();
+        var relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
         
         if(relatedItemType != null) {
             result.setRelatedItemType(itemControl.getRelatedItemTypeTransfer(getUserVisit(), relatedItemType));

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.index;
 
 import com.echothree.control.user.index.common.IndexUtil;
-import com.echothree.control.user.index.common.form.ForceReindexForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -46,7 +45,7 @@ public class ForceReindexAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        ForceReindexForm commandForm = IndexUtil.getHome().getForceReindexForm();
+        var commandForm = IndexUtil.getHome().getForceReindexForm();
 
         IndexUtil.getHome().forceReindex(getUserVisitPK(request), commandForm);
 

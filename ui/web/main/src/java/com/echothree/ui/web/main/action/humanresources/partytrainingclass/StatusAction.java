@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.humanresources.partytrainingclass;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.form.GetPartyTrainingClassForm;
-import com.echothree.control.user.training.common.form.SetPartyTrainingClassStatusForm;
 import com.echothree.control.user.training.common.result.GetPartyTrainingClassResult;
 import com.echothree.control.user.training.common.result.SetPartyTrainingClassStatusResult;
-import com.echothree.model.control.training.common.transfer.PartyTrainingClassTransfer;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseStatusAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import static com.echothree.view.client.web.struts.BaseAction.getUserVisitPK;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +57,14 @@ public class StatusAction
    @Override
     public void setupTransfer(StatusActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartyTrainingClassForm commandForm = TrainingUtil.getHome().getGetPartyTrainingClassForm();
+       var commandForm = TrainingUtil.getHome().getGetPartyTrainingClassForm();
         
         commandForm.setPartyTrainingClassName(actionForm.getPartyTrainingClassName());
-        
-        CommandResult commandResult = TrainingUtil.getHome().getPartyTrainingClass(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyTrainingClassResult result = (GetPartyTrainingClassResult)executionResult.getResult();
-        PartyTrainingClassTransfer partyTrainingClass = result.getPartyTrainingClass();
+
+       var commandResult = TrainingUtil.getHome().getPartyTrainingClass(getUserVisitPK(request), commandForm);
+       var executionResult = commandResult.getExecutionResult();
+       var result = (GetPartyTrainingClassResult)executionResult.getResult();
+       var partyTrainingClass = result.getPartyTrainingClass();
         
         request.setAttribute(AttributeConstants.PARTY_TRAINING_CLASS, partyTrainingClass);
         request.setAttribute(AttributeConstants.EMPLOYEE, EmployeeUtils.getInstance().getEmployee(getUserVisitPK(request),
@@ -78,7 +74,7 @@ public class StatusAction
     @Override
     public CommandResult doStatus(StatusActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        SetPartyTrainingClassStatusForm commandForm = TrainingUtil.getHome().getSetPartyTrainingClassStatusForm();
+        var commandForm = TrainingUtil.getHome().getSetPartyTrainingClassStatusForm();
 
         commandForm.setPartyTrainingClassName(actionForm.getPartyTrainingClassName());
         commandForm.setPartyTrainingClassStatusChoice(actionForm.getPartyTrainingClassStatusChoice());

@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.SetDefaultProtocolForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.value.ProtocolDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -61,8 +60,8 @@ public class SetDefaultProtocolCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String protocolName = form.getProtocolName();
-        ProtocolDetailValue protocolDetailValue = coreControl.getProtocolDetailValueByNameForUpdate(protocolName);
+        var protocolName = form.getProtocolName();
+        var protocolDetailValue = coreControl.getProtocolDetailValueByNameForUpdate(protocolName);
         
         if(protocolDetailValue != null) {
             protocolDetailValue.setIsDefault(Boolean.TRUE);

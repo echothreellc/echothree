@@ -16,11 +16,8 @@
 
 package com.echothree.model.control.printer.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.common.transfer.PartyPrinterGroupUseTransfer;
-import com.echothree.model.control.printer.common.transfer.PrinterGroupTransfer;
-import com.echothree.model.control.printer.common.transfer.PrinterGroupUseTypeTransfer;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.printer.server.entity.PartyPrinterGroupUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -38,13 +35,13 @@ public class PartyPrinterGroupUseTransferCache
     }
     
     public PartyPrinterGroupUseTransfer getPartyPrinterGroupUseTransfer(PartyPrinterGroupUse partyPrinterGroupUse) {
-        PartyPrinterGroupUseTransfer partyPrinterGroupUseTransfer = get(partyPrinterGroupUse);
+        var partyPrinterGroupUseTransfer = get(partyPrinterGroupUse);
         
         if(partyPrinterGroupUseTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyPrinterGroupUse.getParty());
-            PrinterGroupUseTypeTransfer printerGroupUseType = printerControl.getPrinterGroupUseTypeTransfer(userVisit,
+            var party = partyControl.getPartyTransfer(userVisit, partyPrinterGroupUse.getParty());
+            var printerGroupUseType = printerControl.getPrinterGroupUseTypeTransfer(userVisit,
                     partyPrinterGroupUse.getPrinterGroupUseType());
-            PrinterGroupTransfer printerGroup = printerControl.getPrinterGroupTransfer(userVisit,
+            var printerGroup = printerControl.getPrinterGroupTransfer(userVisit,
                     partyPrinterGroupUse.getPrinterGroup());
             
             partyPrinterGroupUseTransfer = new PartyPrinterGroupUseTransfer(party, printerGroupUseType, printerGroup);

@@ -17,10 +17,7 @@
 package com.echothree.model.control.item.server.transfer;
 
 import com.echothree.model.control.item.common.transfer.ItemAliasTransfer;
-import com.echothree.model.control.item.common.transfer.ItemAliasTypeTransfer;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -40,13 +37,13 @@ public class ItemAliasTransferCache
     
     @Override
     public ItemAliasTransfer getTransfer(ItemAlias itemAlias) {
-        ItemAliasTransfer itemAliasTransfer = get(itemAlias);
+        var itemAliasTransfer = get(itemAlias);
         
         if(itemAliasTransfer == null) {
-            ItemTransfer item = itemControl.getItemTransfer(userVisit, itemAlias.getItem());
-            UnitOfMeasureTypeTransfer unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemAlias.getUnitOfMeasureType());
-            ItemAliasTypeTransfer itemAliasType = itemControl.getItemAliasTypeTransfer(userVisit, itemAlias.getItemAliasType());
-            String alias = itemAlias.getAlias();
+            var item = itemControl.getItemTransfer(userVisit, itemAlias.getItem());
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemAlias.getUnitOfMeasureType());
+            var itemAliasType = itemControl.getItemAliasTypeTransfer(userVisit, itemAlias.getItemAliasType());
+            var alias = itemAlias.getAlias();
             
             itemAliasTransfer = new ItemAliasTransfer(item, unitOfMeasureType, itemAliasType, alias);
             put(itemAlias, itemAliasTransfer);

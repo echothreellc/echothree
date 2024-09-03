@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.geocodescope;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.DeleteGeoCodeScopeDescriptionForm;
-import com.echothree.control.user.geo.common.form.GetGeoCodeScopeDescriptionForm;
 import com.echothree.control.user.geo.common.result.GetGeoCodeScopeDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetGeoCodeScopeDescriptionForm commandForm = GeoUtil.getHome().getGetGeoCodeScopeDescriptionForm();
+        var commandForm = GeoUtil.getHome().getGetGeoCodeScopeDescriptionForm();
         
         commandForm.setGeoCodeScopeName(actionForm.getGeoCodeScopeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeScopeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = GeoUtil.getHome().getGeoCodeScopeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeScopeDescriptionResult result = (GetGeoCodeScopeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeScopeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.GEO_CODE_SCOPE_DESCRIPTION, result.getGeoCodeScopeDescription());
         }
@@ -80,7 +77,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteGeoCodeScopeDescriptionForm commandForm = GeoUtil.getHome().getDeleteGeoCodeScopeDescriptionForm();
+        var commandForm = GeoUtil.getHome().getDeleteGeoCodeScopeDescriptionForm();
 
         commandForm.setGeoCodeScopeName(actionForm.getGeoCodeScopeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

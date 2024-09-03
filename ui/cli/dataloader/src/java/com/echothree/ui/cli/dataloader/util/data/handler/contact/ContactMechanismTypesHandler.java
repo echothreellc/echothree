@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.contact;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.ContactService;
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
-import com.echothree.control.user.contact.common.form.CreateContactMechanismTypeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -45,14 +44,14 @@ public class ContactMechanismTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("contactMechanismType")) {
-            CreateContactMechanismTypeForm commandForm = ContactFormFactory.getCreateContactMechanismTypeForm();
+            var commandForm = ContactFormFactory.getCreateContactMechanismTypeForm();
             String contactMechanismTypeName = null;
             String parentContactMechanismTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("contactMechanismTypeName"))
                     contactMechanismTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("parentContactMechanismTypeName"))

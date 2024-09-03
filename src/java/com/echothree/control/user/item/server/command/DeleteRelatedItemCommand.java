@@ -21,9 +21,6 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.RelatedItem;
-import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,19 +64,19 @@ public class DeleteRelatedItemCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String relatedItemTypeName = form.getRelatedItemTypeName();
-        RelatedItemType relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
+        var relatedItemTypeName = form.getRelatedItemTypeName();
+        var relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
         
         if(relatedItemType != null) {
-            String fromItemName = form.getFromItemName();
-            Item fromItem = itemControl.getItemByName(fromItemName);
+            var fromItemName = form.getFromItemName();
+            var fromItem = itemControl.getItemByName(fromItemName);
             
             if(fromItem != null) {
-                String toItemName = form.getToItemName();
-                Item toItem = itemControl.getItemByName(toItemName);
+                var toItemName = form.getToItemName();
+                var toItem = itemControl.getItemByName(toItemName);
                 
                 if(toItem != null) {
-                    RelatedItem relatedItem = itemControl.getRelatedItemForUpdate(relatedItemType, fromItem, toItem);
+                    var relatedItem = itemControl.getRelatedItemForUpdate(relatedItemType, fromItem, toItem);
                     
                     if(relatedItem != null) {
                         itemControl.deleteRelatedItem(relatedItem, getPartyPK());

@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.contactlist;
 import com.echothree.control.user.contactlist.common.ContactListUtil;
 import com.echothree.control.user.contactlist.common.ContactListService;
 import com.echothree.control.user.contactlist.common.form.ContactListFormFactory;
-import com.echothree.control.user.contactlist.common.form.CreateContactListGroupDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -50,7 +49,7 @@ public class ContactListGroupHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("contactListGroupDescription")) {
-            CreateContactListGroupDescriptionForm commandForm = ContactListFormFactory.getCreateContactListGroupDescriptionForm();
+            var commandForm = ContactListFormFactory.getCreateContactListGroupDescriptionForm();
             
             commandForm.setContactListGroupName(contactListGroupName);
             commandForm.set(getAttrsMap(attrs));

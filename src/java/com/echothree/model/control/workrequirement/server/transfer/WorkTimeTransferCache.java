@@ -17,18 +17,13 @@
 package com.echothree.model.control.workrequirement.server.transfer;
 
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workrequirement.common.workflow.WorkTimeStatusConstants;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementTransfer;
 import com.echothree.model.control.workrequirement.common.transfer.WorkTimeTransfer;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkTime;
-import com.echothree.model.data.workrequirement.server.entity.WorkTimeDetail;
 import com.echothree.util.server.persistence.Session;
 
 public class WorkTimeTransferCache
@@ -46,20 +41,20 @@ public class WorkTimeTransferCache
     }
     
     public WorkTimeTransfer getWorkTimeTransfer(WorkTime workTime) {
-        WorkTimeTransfer workTimeTransfer = get(workTime);
+        var workTimeTransfer = get(workTime);
         
         if(workTimeTransfer == null) {
-            WorkTimeDetail workTimeDetail = workTime.getLastDetail();
-            WorkRequirementTransfer workRequirement = workRequirementControl.getWorkRequirementTransfer(userVisit, workTimeDetail.getWorkRequirement());
-            Integer workTimeSequence = workTimeDetail.getWorkTimeSequence();
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, workTimeDetail.getParty());
-            Long unformattedStartTime = workTimeDetail.getStartTime();
-            String startTime = formatTypicalDateTime(unformattedStartTime);
-            Long unformattedEndTime = workTimeDetail.getEndTime();
-            String endTime = formatTypicalDateTime(unformattedEndTime);
+            var workTimeDetail = workTime.getLastDetail();
+            var workRequirement = workRequirementControl.getWorkRequirementTransfer(userVisit, workTimeDetail.getWorkRequirement());
+            var workTimeSequence = workTimeDetail.getWorkTimeSequence();
+            var party = partyControl.getPartyTransfer(userVisit, workTimeDetail.getParty());
+            var unformattedStartTime = workTimeDetail.getStartTime();
+            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var unformattedEndTime = workTimeDetail.getEndTime();
+            var endTime = formatTypicalDateTime(unformattedEndTime);
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(workTime.getPrimaryKey());
-            WorkflowEntityStatusTransfer workTimeStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(workTime.getPrimaryKey());
+            var workTimeStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     WorkTimeStatusConstants.Workflow_WORK_TIME_STATUS, entityInstance);
 
             workTimeTransfer = new WorkTimeTransfer(workRequirement, workTimeSequence, party, unformattedStartTime, startTime, unformattedEndTime, endTime,

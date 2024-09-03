@@ -17,13 +17,11 @@
 package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.form.GetShipmentTimeTypesForm;
-import com.echothree.control.user.shipment.common.result.GetShipmentTimeTypesResult;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.ShipmentControl;
-import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetShipmentTimeTypesCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        GetShipmentTimeTypesResult result = ShipmentResultFactory.getGetShipmentTimeTypesResult();
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var result = ShipmentResultFactory.getGetShipmentTimeTypesResult();
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
             result.setShipmentTimeTypes(shipmentControl.getShipmentTimeTypeTransfers(getUserVisit(), shipmentType));

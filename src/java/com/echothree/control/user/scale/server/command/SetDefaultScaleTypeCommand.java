@@ -18,7 +18,6 @@ package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.SetDefaultScaleTypeForm;
 import com.echothree.model.control.scale.server.control.ScaleControl;
-import com.echothree.model.data.scale.server.value.ScaleTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class SetDefaultScaleTypeCommand
    @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleTypeName = form.getScaleTypeName();
-        ScaleTypeDetailValue scaleTypeDetailValue = scaleControl.getScaleTypeDetailValueByNameForUpdate(scaleTypeName);
+       var scaleTypeName = form.getScaleTypeName();
+       var scaleTypeDetailValue = scaleControl.getScaleTypeDetailValueByNameForUpdate(scaleTypeName);
         
         if(scaleTypeDetailValue != null) {
             scaleTypeDetailValue.setIsDefault(Boolean.TRUE);

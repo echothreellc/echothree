@@ -17,13 +17,10 @@
 package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.GetCustomerTypeCreditLimitsForm;
-import com.echothree.control.user.term.common.result.GetCustomerTypeCreditLimitsResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -53,13 +50,13 @@ public class GetCustomerTypeCreditLimitsCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        GetCustomerTypeCreditLimitsResult result = TermResultFactory.getGetCustomerTypeCreditLimitsResult();
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var result = TermResultFactory.getGetCustomerTypeCreditLimitsResult();
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var termControl = Session.getModelController(TermControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setCustomerType(customerControl.getCustomerTypeTransfer(userVisit, customerType));
             result.setCustomerTypeCreditLimits(termControl.getCustomerTypeCreditLimitTransfersByCustomerType(getUserVisit(),

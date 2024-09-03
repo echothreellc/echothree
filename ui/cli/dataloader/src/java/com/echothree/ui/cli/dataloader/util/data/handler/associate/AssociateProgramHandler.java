@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.associate;
 import com.echothree.control.user.associate.common.AssociateUtil;
 import com.echothree.control.user.associate.common.AssociateService;
 import com.echothree.control.user.associate.common.form.AssociateFormFactory;
-import com.echothree.control.user.associate.common.form.CreateAssociateProgramDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -48,12 +47,12 @@ public class AssociateProgramHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("associateProgramDescription")) {
-            CreateAssociateProgramDescriptionForm commandForm = AssociateFormFactory.getCreateAssociateProgramDescriptionForm();
+            var commandForm = AssociateFormFactory.getCreateAssociateProgramDescriptionForm();
             String attrLanguageIsoName = null;
             String attrDescription = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     attrLanguageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))

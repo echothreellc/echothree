@@ -18,9 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.SetDefaultDivisionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyCompany;
-import com.echothree.model.data.party.server.value.PartyDivisionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,13 +49,13 @@ public class SetDefaultDivisionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String companyName = form.getCompanyName();
-        PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
+        var companyName = form.getCompanyName();
+        var partyCompany = partyControl.getPartyCompanyByName(companyName);
         
         if(partyCompany != null) {
-            String divisionName = form.getDivisionName();
-            Party partyCompanyParty = partyCompany.getParty();
-            PartyDivisionValue partyDivisionValue = partyControl.getPartyDivisionValueByNameForUpdate(partyCompanyParty,
+            var divisionName = form.getDivisionName();
+            var partyCompanyParty = partyCompany.getParty();
+            var partyDivisionValue = partyControl.getPartyDivisionValueByNameForUpdate(partyCompanyParty,
                     divisionName);
             
             if(partyDivisionValue != null) {

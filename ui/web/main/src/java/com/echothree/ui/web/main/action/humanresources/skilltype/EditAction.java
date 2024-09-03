@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.humanresources.skilltype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.edit.SkillTypeEdit;
-import com.echothree.control.user.employee.common.form.EditSkillTypeForm;
 import com.echothree.control.user.employee.common.result.EditSkillTypeResult;
-import com.echothree.control.user.employee.common.spec.SkillTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,13 +53,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalSkillTypeName = request.getParameter(ParameterConstants.ORIGINAL_SKILL_TYPE_NAME);
+        var originalSkillTypeName = request.getParameter(ParameterConstants.ORIGINAL_SKILL_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditSkillTypeForm commandForm = EmployeeUtil.getHome().getEditSkillTypeForm();
-                SkillTypeSpec spec = EmployeeUtil.getHome().getSkillTypeSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = EmployeeUtil.getHome().getEditSkillTypeForm();
+                var spec = EmployeeUtil.getHome().getSkillTypeSpec();
                 
                 if(originalSkillTypeName == null)
                     originalSkillTypeName = actionForm.getOriginalSkillTypeName();
@@ -73,7 +68,7 @@ public class EditAction
                 spec.setSkillTypeName(originalSkillTypeName);
                 
                 if(wasPost(request)) {
-                    SkillTypeEdit edit = EmployeeUtil.getHome().getSkillTypeEdit();
+                    var edit = EmployeeUtil.getHome().getSkillTypeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -82,14 +77,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().editSkillType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = EmployeeUtil.getHome().editSkillType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditSkillTypeResult result = (EditSkillTypeResult)executionResult.getResult();
+                            var result = (EditSkillTypeResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -102,13 +97,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().editSkillType(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditSkillTypeResult result = (EditSkillTypeResult)executionResult.getResult();
+
+                    var commandResult = EmployeeUtil.getHome().editSkillType(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditSkillTypeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        SkillTypeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalSkillTypeName(edit.getSkillTypeName());

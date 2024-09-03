@@ -17,13 +17,11 @@
 package com.echothree.control.user.index.server.command;
 
 import com.echothree.control.user.index.common.form.GetIndexFieldsForm;
-import com.echothree.control.user.index.common.result.GetIndexFieldsResult;
 import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.index.server.entity.IndexType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetIndexFieldsCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        GetIndexFieldsResult result = IndexResultFactory.getGetIndexFieldsResult();
-        String indexTypeName = form.getIndexTypeName();
-        IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
+        var result = IndexResultFactory.getGetIndexFieldsResult();
+        var indexTypeName = form.getIndexTypeName();
+        var indexType = indexControl.getIndexTypeByName(indexTypeName);
         
         if(indexType != null) {
             result.setIndexType(indexControl.getIndexTypeTransfer(getUserVisit(), indexType));

@@ -34,14 +34,14 @@ public class LocationUseTypeTransferCache
     }
     
     public LocationUseTypeTransfer getLocationUseTypeTransfer(LocationUseType locationUseType) {
-        LocationUseTypeTransfer locationUseTypeTransfer = get(locationUseType);
+        var locationUseTypeTransfer = get(locationUseType);
         
         if(locationUseTypeTransfer == null) {
-            String locationUseTypeName = locationUseType.getLocationUseTypeName();
-            Boolean allowMultiple = locationUseType.getAllowMultiple();
-            Boolean isDefault = locationUseType.getIsDefault();
-            Integer sortOrder = locationUseType.getSortOrder();
-            String description = locationUseTypeControl.getBestLocationUseTypeDescription(locationUseType, getLanguage());
+            var locationUseTypeName = locationUseType.getLocationUseTypeName();
+            var allowMultiple = locationUseType.getAllowMultiple();
+            var isDefault = locationUseType.getIsDefault();
+            var sortOrder = locationUseType.getSortOrder();
+            var description = locationUseTypeControl.getBestLocationUseTypeDescription(locationUseType, getLanguage());
             
             locationUseTypeTransfer = new LocationUseTypeTransfer(locationUseTypeName, allowMultiple, isDefault, sortOrder,
             description);

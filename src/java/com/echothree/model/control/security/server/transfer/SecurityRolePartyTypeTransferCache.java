@@ -16,15 +16,11 @@
 
 package com.echothree.model.control.security.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.transfer.SecurityRolePartyTypeTransfer;
-import com.echothree.model.control.security.common.transfer.SecurityRoleTransfer;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.security.server.entity.SecurityRolePartyType;
-import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -40,13 +36,13 @@ public class SecurityRolePartyTypeTransferCache
     }
     
     public SecurityRolePartyTypeTransfer getSecurityRolePartyTypeTransfer(SecurityRolePartyType securityRolePartyType) {
-        SecurityRolePartyTypeTransfer securityRolePartyTypeTransfer = get(securityRolePartyType);
+        var securityRolePartyTypeTransfer = get(securityRolePartyType);
         
         if(securityRolePartyTypeTransfer == null) {
-            SecurityRoleTransfer securityRoleTransfer = securityControl.getSecurityRoleTransfer(userVisit, securityRolePartyType.getSecurityRole());
-            PartyTypeTransfer partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, securityRolePartyType.getPartyType());
-            Selector partySelector = securityRolePartyType.getPartySelector();
-            SelectorTransfer partySelectorTransfer = partySelector == null? null: selectorControl.getSelectorTransfer(userVisit, partySelector);
+            var securityRoleTransfer = securityControl.getSecurityRoleTransfer(userVisit, securityRolePartyType.getSecurityRole());
+            var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, securityRolePartyType.getPartyType());
+            var partySelector = securityRolePartyType.getPartySelector();
+            var partySelectorTransfer = partySelector == null? null: selectorControl.getSelectorTransfer(userVisit, partySelector);
             
             securityRolePartyTypeTransfer = new SecurityRolePartyTypeTransfer(securityRoleTransfer, partyTypeTransfer, partySelectorTransfer);
             put(securityRolePartyType, securityRolePartyTypeTransfer);

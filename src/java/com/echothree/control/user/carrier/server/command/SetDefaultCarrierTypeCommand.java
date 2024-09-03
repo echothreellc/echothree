@@ -21,7 +21,6 @@ import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.carrier.server.value.CarrierTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,8 +62,8 @@ public class SetDefaultCarrierTypeCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        String carrierTypeName = form.getCarrierTypeName();
-        CarrierTypeDetailValue carrierTypeDetailValue = carrierControl.getCarrierTypeDetailValueByNameForUpdate(carrierTypeName);
+        var carrierTypeName = form.getCarrierTypeName();
+        var carrierTypeDetailValue = carrierControl.getCarrierTypeDetailValueByNameForUpdate(carrierTypeName);
         
         if(carrierTypeDetailValue != null) {
             carrierTypeDetailValue.setIsDefault(Boolean.TRUE);

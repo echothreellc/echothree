@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.associate.associateprogram;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.common.form.SetDefaultAssociateProgramForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultAssociateProgramForm commandForm = AssociateUtil.getHome().getSetDefaultAssociateProgramForm();
-            String associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
+            var commandForm = AssociateUtil.getHome().getSetDefaultAssociateProgramForm();
+            var associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
             
             commandForm.setAssociateProgramName(associateProgramName);
             

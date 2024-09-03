@@ -18,14 +18,10 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentPageDescriptionsForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentPageDescriptionsResult;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.content.server.entity.ContentPage;
-import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,19 +65,19 @@ public class GetContentPageDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentPageDescriptionsResult result = ContentResultFactory.getGetContentPageDescriptionsResult();
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var result = ContentResultFactory.getGetContentPageDescriptionsResult();
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentSectionName = form.getContentSectionName();
-            ContentSection contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
+            var contentSectionName = form.getContentSectionName();
+            var contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
             
             result.setContentCollection(contentControl.getContentCollectionTransfer(getUserVisit(), contentCollection));
             
             if(contentSection != null) {
-                String contentPageName = form.getContentPageName();
-                ContentPage contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
+                var contentPageName = form.getContentPageName();
+                var contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
                 
                 result.setContentSection(contentControl.getContentSectionTransfer(getUserVisit(), contentSection));
                 

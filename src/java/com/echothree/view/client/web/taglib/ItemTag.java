@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemForm;
 import com.echothree.control.user.item.common.result.GetItemResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -98,7 +95,7 @@ public class ItemTag
     public int doStartTag()
             throws JspException {
         try {
-            GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+            var commandForm = ItemUtil.getHome().getGetItemForm();
             
             commandForm.setItemName(itemName);
             commandForm.setItemNameOrAlias(itemNameOrAlias);
@@ -106,8 +103,8 @@ public class ItemTag
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(), commandForm);
+
+            var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -115,8 +112,8 @@ public class ItemTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemResult result = (GetItemResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getItem(), scope);
             }

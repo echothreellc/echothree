@@ -20,11 +20,7 @@ import com.echothree.control.user.warehouse.common.form.CreateLocationUseTypeDes
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.warehouse.server.control.LocationUseTypeControl;
-import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.LocationUseType;
-import com.echothree.model.data.warehouse.server.entity.LocationUseTypeDescription;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,16 +59,16 @@ public class CreateLocationUseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
-        String locationUseTypeName = form.getLocationUseTypeName();
-        LocationUseType locationUseType = locationUseTypeControl.getLocationUseTypeByName(locationUseTypeName);
+        var locationUseTypeName = form.getLocationUseTypeName();
+        var locationUseType = locationUseTypeControl.getLocationUseTypeByName(locationUseTypeName);
         
         if(locationUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                LocationUseTypeDescription locationUseTypeDescription = locationUseTypeControl.getLocationUseTypeDescription(locationUseType, language);
+                var locationUseTypeDescription = locationUseTypeControl.getLocationUseTypeDescription(locationUseType, language);
                 
                 if(locationUseTypeDescription == null) {
                     var description = form.getDescription();

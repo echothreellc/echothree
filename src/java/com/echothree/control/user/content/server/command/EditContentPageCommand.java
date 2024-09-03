@@ -26,14 +26,9 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentPage;
-import com.echothree.model.data.content.server.entity.ContentPageDescription;
-import com.echothree.model.data.content.server.entity.ContentPageDetail;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.content.server.entity.ContentSection;
-import com.echothree.model.data.content.server.value.ContentPageDescriptionValue;
-import com.echothree.model.data.content.server.value.ContentPageDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -99,16 +94,16 @@ public class EditContentPageCommand
     public ContentPage getEntity(EditContentPageResult result) {
         var contentControl = Session.getModelController(ContentControl.class);
         ContentPage contentPage = null;
-        String contentCollectionName = spec.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = spec.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentSectionName = spec.getContentSectionName();
+            var contentSectionName = spec.getContentSectionName();
             
             contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
             
             if(contentSection != null) {
-                String contentPageName = spec.getContentPageName();
+                var contentPageName = spec.getContentPageName();
                 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
@@ -146,8 +141,8 @@ public class EditContentPageCommand
     @Override
     public void doLock(ContentPageEdit edit, ContentPage contentPage) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentPageDescription contentPageDescription = contentControl.getContentPageDescription(contentPage, getPreferredLanguage());
-        ContentPageDetail contentPageDetail = contentPage.getLastDetail();
+        var contentPageDescription = contentControl.getContentPageDescription(contentPage, getPreferredLanguage());
+        var contentPageDetail = contentPage.getLastDetail();
 
         edit.setContentPageName(contentPageDetail.getContentPageName());
         edit.setContentPageLayoutName(contentPageDetail.getContentPageLayout().getLastDetail().getContentPageLayoutName());
@@ -164,11 +159,11 @@ public class EditContentPageCommand
     @Override
     public void canUpdate(ContentPage contentPage) {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentPageName = edit.getContentPageName();
-        ContentPage duplicateContentPage = contentControl.getContentPageByName(contentSection, contentPageName);
+        var contentPageName = edit.getContentPageName();
+        var duplicateContentPage = contentControl.getContentPageByName(contentSection, contentPageName);
 
         if(duplicateContentPage == null || contentPage.equals(duplicateContentPage)) {
-            String contentPageLayoutName = edit.getContentPageLayoutName();
+            var contentPageLayoutName = edit.getContentPageLayoutName();
             
             contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
 
@@ -184,9 +179,9 @@ public class EditContentPageCommand
     public void doUpdate(ContentPage contentPage) {
         var contentControl = Session.getModelController(ContentControl.class);
         var partyPK = getPartyPK();
-        ContentPageDetailValue contentPageDetailValue = contentControl.getContentPageDetailValueForUpdate(contentPage);
-        ContentPageDescription contentPageDescription = contentControl.getContentPageDescriptionForUpdate(contentPage, getPreferredLanguage());
-        String description = edit.getDescription();
+        var contentPageDetailValue = contentControl.getContentPageDetailValueForUpdate(contentPage);
+        var contentPageDescription = contentControl.getContentPageDescriptionForUpdate(contentPage, getPreferredLanguage());
+        var description = edit.getDescription();
 
         contentPageDetailValue.setContentPageName(edit.getContentPageName());
         contentPageDetailValue.setContentPageLayoutPK(contentPageLayout.getPrimaryKey());
@@ -200,7 +195,7 @@ public class EditContentPageCommand
         } else if(contentPageDescription != null && description == null) {
             contentControl.deleteContentPageDescription(contentPageDescription, partyPK);
         } else if(contentPageDescription != null && description != null) {
-            ContentPageDescriptionValue contentPageDescriptionValue = contentControl.getContentPageDescriptionValue(contentPageDescription);
+            var contentPageDescriptionValue = contentControl.getContentPageDescriptionValue(contentPageDescription);
 
             contentPageDescriptionValue.setDescription(description);
             contentControl.updateContentPageDescriptionFromValue(contentPageDescriptionValue, partyPK);

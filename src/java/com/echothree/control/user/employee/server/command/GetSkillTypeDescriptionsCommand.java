@@ -18,9 +18,7 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.GetSkillTypeDescriptionsForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.common.result.GetSkillTypeDescriptionsResult;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.data.employee.server.entity.SkillType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,9 +49,9 @@ public class GetSkillTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetSkillTypeDescriptionsResult result = EmployeeResultFactory.getGetSkillTypeDescriptionsResult();
-        String skillTypeName = form.getSkillTypeName();
-        SkillType skillType = employeeControl.getSkillTypeByName(skillTypeName);
+        var result = EmployeeResultFactory.getGetSkillTypeDescriptionsResult();
+        var skillTypeName = form.getSkillTypeName();
+        var skillType = employeeControl.getSkillTypeByName(skillTypeName);
         
         if(skillType != null) {
             result.setSkillType(employeeControl.getSkillTypeTransfer(getUserVisit(), skillType));

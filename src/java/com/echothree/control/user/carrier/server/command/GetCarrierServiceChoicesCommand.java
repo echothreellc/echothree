@@ -18,13 +18,10 @@ package com.echothree.control.user.carrier.server.command;
 
 import com.echothree.control.user.carrier.common.form.GetCarrierServiceChoicesForm;
 import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
-import com.echothree.control.user.carrier.common.result.GetCarrierServiceChoicesResult;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.carrier.server.entity.Carrier;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,14 +64,14 @@ public class GetCarrierServiceChoicesCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        GetCarrierServiceChoicesResult result = CarrierResultFactory.getGetCarrierServiceChoicesResult();
-        String carrierName = form.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var result = CarrierResultFactory.getGetCarrierServiceChoicesResult();
+        var carrierName = form.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
-            String defaultCarrierServiceChoice = form.getDefaultCarrierServiceChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var carrierParty = carrier.getParty();
+            var defaultCarrierServiceChoice = form.getDefaultCarrierServiceChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setCarrierServiceChoices(carrierControl.getCarrierServiceChoices(defaultCarrierServiceChoice, getPreferredLanguage(), allowNullChoice,
                     carrierParty));

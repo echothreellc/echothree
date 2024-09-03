@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.selector.selector;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.form.DeleteSelectorForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,12 +50,12 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        final String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-        final String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+        final var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+        final var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
         
         try {
-            String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
-            DeleteSelectorForm commandForm = SelectorUtil.getHome().getDeleteSelectorForm();
+            var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+            var commandForm = SelectorUtil.getHome().getDeleteSelectorForm();
             
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setSelectorTypeName(selectorTypeName);
@@ -68,8 +67,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             customActionForward.setParameters(Map.of(
                     ParameterConstants.SELECTOR_KIND_NAME, selectorKindName,

@@ -21,16 +21,10 @@ import com.echothree.model.control.inventory.common.choice.LotTimeTypeChoicesBea
 import com.echothree.model.control.inventory.common.transfer.LotTimeTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotTimeTypeDescriptionTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotTimeTypeTransfer;
-import com.echothree.model.control.inventory.server.transfer.LotTimeTransferCache;
-import com.echothree.model.control.inventory.server.transfer.LotTimeTypeDescriptionTransferCache;
-import com.echothree.model.control.inventory.server.transfer.LotTimeTypeTransferCache;
-import com.echothree.model.data.inventory.common.pk.LotPK;
-import com.echothree.model.data.inventory.common.pk.LotTimeTypePK;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.inventory.server.entity.LotTime;
 import com.echothree.model.data.inventory.server.entity.LotTimeType;
 import com.echothree.model.data.inventory.server.entity.LotTimeTypeDescription;
-import com.echothree.model.data.inventory.server.entity.LotTimeTypeDetail;
 import com.echothree.model.data.inventory.server.factory.LotTimeFactory;
 import com.echothree.model.data.inventory.server.factory.LotTimeTypeDescriptionFactory;
 import com.echothree.model.data.inventory.server.factory.LotTimeTypeDetailFactory;
@@ -47,7 +41,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -65,11 +58,11 @@ public class LotTimeControl
     // --------------------------------------------------------------------------------
 
     public LotTimeType createLotTimeType(String lotTimeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        LotTimeType defaultLotTimeType = getDefaultLotTimeType();
-        boolean defaultFound = defaultLotTimeType != null;
+        var defaultLotTimeType = getDefaultLotTimeType();
+        var defaultFound = defaultLotTimeType != null;
 
         if(defaultFound && isDefault) {
-            LotTimeTypeDetailValue defaultLotTimeTypeDetailValue = getDefaultLotTimeTypeDetailValueForUpdate();
+            var defaultLotTimeTypeDetailValue = getDefaultLotTimeTypeDetailValueForUpdate();
 
             defaultLotTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateLotTimeTypeFromValue(defaultLotTimeTypeDetailValue, false, createdBy);
@@ -77,8 +70,8 @@ public class LotTimeControl
             isDefault = Boolean.TRUE;
         }
 
-        LotTimeType lotTimeType = LotTimeTypeFactory.getInstance().create();
-        LotTimeTypeDetail lotTimeTypeDetail = LotTimeTypeDetailFactory.getInstance().create(lotTimeType, lotTimeTypeName, isDefault,
+        var lotTimeType = LotTimeTypeFactory.getInstance().create();
+        var lotTimeTypeDetail = LotTimeTypeDetailFactory.getInstance().create(lotTimeType, lotTimeTypeName, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -203,9 +196,9 @@ public class LotTimeControl
     }
 
     public List<LotTimeTypeTransfer> getLotTimeTypeTransfers(UserVisit userVisit) {
-        List<LotTimeType> lotTimeTypes = getLotTimeTypes();
+        var lotTimeTypes = getLotTimeTypes();
         List<LotTimeTypeTransfer> lotTimeTypeTransfers = new ArrayList<>(lotTimeTypes.size());
-        LotTimeTypeTransferCache lotTimeTypeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTypeTransferCache();
+        var lotTimeTypeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTypeTransferCache();
 
         lotTimeTypes.forEach((lotTimeType) ->
                 lotTimeTypeTransfers.add(lotTimeTypeTransferCache.getTransfer(lotTimeType))
@@ -215,7 +208,7 @@ public class LotTimeControl
     }
 
     public LotTimeTypeChoicesBean getLotTimeTypeChoices(String defaultLotTimeTypeChoice, Language language, boolean allowNullChoice) {
-        List<LotTimeType> lotTimeTypes = getLotTimeTypes();
+        var lotTimeTypes = getLotTimeTypes();
         var size = lotTimeTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -231,7 +224,7 @@ public class LotTimeControl
         }
 
         for(var lotTimeType : lotTimeTypes) {
-            LotTimeTypeDetail lotTimeTypeDetail = lotTimeType.getLastDetail();
+            var lotTimeTypeDetail = lotTimeType.getLastDetail();
 
             var label = getBestLotTimeTypeDescription(lotTimeType, language);
             var value = lotTimeTypeDetail.getLotTimeTypeName();
@@ -251,25 +244,25 @@ public class LotTimeControl
     private void updateLotTimeTypeFromValue(LotTimeTypeDetailValue lotTimeTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(lotTimeTypeDetailValue.hasBeenModified()) {
-            LotTimeType lotTimeType = LotTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var lotTimeType = LotTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      lotTimeTypeDetailValue.getLotTimeTypePK());
-            LotTimeTypeDetail lotTimeTypeDetail = lotTimeType.getActiveDetailForUpdate();
+            var lotTimeTypeDetail = lotTimeType.getActiveDetailForUpdate();
 
             lotTimeTypeDetail.setThruTime(session.START_TIME_LONG);
             lotTimeTypeDetail.store();
 
-            LotTimeTypePK lotTimeTypePK = lotTimeTypeDetail.getLotTimeTypePK(); // Not updated
-            String lotTimeTypeName = lotTimeTypeDetailValue.getLotTimeTypeName();
-            Boolean isDefault = lotTimeTypeDetailValue.getIsDefault();
-            Integer sortOrder = lotTimeTypeDetailValue.getSortOrder();
+            var lotTimeTypePK = lotTimeTypeDetail.getLotTimeTypePK(); // Not updated
+            var lotTimeTypeName = lotTimeTypeDetailValue.getLotTimeTypeName();
+            var isDefault = lotTimeTypeDetailValue.getIsDefault();
+            var sortOrder = lotTimeTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                LotTimeType defaultLotTimeType = getDefaultLotTimeType();
-                boolean defaultFound = defaultLotTimeType != null && !defaultLotTimeType.equals(lotTimeType);
+                var defaultLotTimeType = getDefaultLotTimeType();
+                var defaultFound = defaultLotTimeType != null && !defaultLotTimeType.equals(lotTimeType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    LotTimeTypeDetailValue defaultLotTimeTypeDetailValue = getDefaultLotTimeTypeDetailValueForUpdate();
+                    var defaultLotTimeTypeDetailValue = getDefaultLotTimeTypeDetailValueForUpdate();
 
                     defaultLotTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateLotTimeTypeFromValue(defaultLotTimeTypeDetailValue, false, updatedBy);
@@ -297,22 +290,22 @@ public class LotTimeControl
         deleteLotTimesByLotTimeType(lotTimeType, deletedBy);
         deleteLotTimeTypeDescriptionsByLotTimeType(lotTimeType, deletedBy);
 
-        LotTimeTypeDetail lotTimeTypeDetail = lotTimeType.getLastDetailForUpdate();
+        var lotTimeTypeDetail = lotTimeType.getLastDetailForUpdate();
         lotTimeTypeDetail.setThruTime(session.START_TIME_LONG);
         lotTimeType.setActiveDetail(null);
         lotTimeType.store();
 
         // Check for default, and pick one if necessary
-        LotTimeType defaultLotTimeType = getDefaultLotTimeType();
+        var defaultLotTimeType = getDefaultLotTimeType();
         if(defaultLotTimeType == null) {
-            List<LotTimeType> lotTimeTypes = getLotTimeTypesForUpdate();
+            var lotTimeTypes = getLotTimeTypesForUpdate();
 
             if(!lotTimeTypes.isEmpty()) {
-                Iterator<LotTimeType> iter = lotTimeTypes.iterator();
+                var iter = lotTimeTypes.iterator();
                 if(iter.hasNext()) {
                     defaultLotTimeType = iter.next();
                 }
-                LotTimeTypeDetailValue lotTimeTypeDetailValue = Objects.requireNonNull(defaultLotTimeType).getLastDetailForUpdate().getLotTimeTypeDetailValue().clone();
+                var lotTimeTypeDetailValue = Objects.requireNonNull(defaultLotTimeType).getLastDetailForUpdate().getLotTimeTypeDetailValue().clone();
 
                 lotTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateLotTimeTypeFromValue(lotTimeTypeDetailValue, false, deletedBy);
@@ -327,7 +320,7 @@ public class LotTimeControl
     // --------------------------------------------------------------------------------
 
     public LotTimeTypeDescription createLotTimeTypeDescription(LotTimeType lotTimeType, Language language, String description, BasePK createdBy) {
-        LotTimeTypeDescription lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().create(lotTimeType, language, description,
+        var lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().create(lotTimeType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(lotTimeType.getPrimaryKey(), EventTypes.MODIFY, lotTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -406,7 +399,7 @@ public class LotTimeControl
 
     public String getBestLotTimeTypeDescription(LotTimeType lotTimeType, Language language) {
         String description;
-        LotTimeTypeDescription lotTimeTypeDescription = getLotTimeTypeDescription(lotTimeType, language);
+        var lotTimeTypeDescription = getLotTimeTypeDescription(lotTimeType, language);
 
         if(lotTimeTypeDescription == null && !language.getIsDefault()) {
             lotTimeTypeDescription = getLotTimeTypeDescription(lotTimeType, getPartyControl().getDefaultLanguage());
@@ -426,9 +419,9 @@ public class LotTimeControl
     }
 
     public List<LotTimeTypeDescriptionTransfer> getLotTimeTypeDescriptionTransfersByLotTimeType(UserVisit userVisit, LotTimeType lotTimeType) {
-        List<LotTimeTypeDescription> lotTimeTypeDescriptions = getLotTimeTypeDescriptionsByLotTimeType(lotTimeType);
+        var lotTimeTypeDescriptions = getLotTimeTypeDescriptionsByLotTimeType(lotTimeType);
         List<LotTimeTypeDescriptionTransfer> lotTimeTypeDescriptionTransfers = new ArrayList<>(lotTimeTypeDescriptions.size());
-        LotTimeTypeDescriptionTransferCache lotTimeTypeDescriptionTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTypeDescriptionTransferCache();
+        var lotTimeTypeDescriptionTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTypeDescriptionTransferCache();
 
         lotTimeTypeDescriptions.forEach((lotTimeTypeDescription) ->
                 lotTimeTypeDescriptionTransfers.add(lotTimeTypeDescriptionTransferCache.getTransfer(lotTimeTypeDescription))
@@ -439,15 +432,15 @@ public class LotTimeControl
 
     public void updateLotTimeTypeDescriptionFromValue(LotTimeTypeDescriptionValue lotTimeTypeDescriptionValue, BasePK updatedBy) {
         if(lotTimeTypeDescriptionValue.hasBeenModified()) {
-            LotTimeTypeDescription lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     lotTimeTypeDescriptionValue.getPrimaryKey());
 
             lotTimeTypeDescription.setThruTime(session.START_TIME_LONG);
             lotTimeTypeDescription.store();
 
-            LotTimeType lotTimeType = lotTimeTypeDescription.getLotTimeType();
-            Language language = lotTimeTypeDescription.getLanguage();
-            String description = lotTimeTypeDescriptionValue.getDescription();
+            var lotTimeType = lotTimeTypeDescription.getLotTimeType();
+            var language = lotTimeTypeDescription.getLanguage();
+            var description = lotTimeTypeDescriptionValue.getDescription();
 
             lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().create(lotTimeType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -464,7 +457,7 @@ public class LotTimeControl
     }
 
     public void deleteLotTimeTypeDescriptionsByLotTimeType(LotTimeType lotTimeType, BasePK deletedBy) {
-        List<LotTimeTypeDescription> lotTimeTypeDescriptions = getLotTimeTypeDescriptionsByLotTimeTypeForUpdate(lotTimeType);
+        var lotTimeTypeDescriptions = getLotTimeTypeDescriptionsByLotTimeTypeForUpdate(lotTimeType);
 
         lotTimeTypeDescriptions.forEach((lotTimeTypeDescription) -> 
                 deleteLotTimeTypeDescription(lotTimeTypeDescription, deletedBy)
@@ -476,7 +469,7 @@ public class LotTimeControl
     // --------------------------------------------------------------------------------
 
     public LotTime createLotTime(Lot lot, LotTimeType lotTimeType, Long time, BasePK createdBy) {
-        LotTime lotTime = LotTimeFactory.getInstance().create(lot, lotTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var lotTime = LotTimeFactory.getInstance().create(lot, lotTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(lot.getPrimaryKey(), EventTypes.MODIFY, lotTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -604,7 +597,7 @@ public class LotTimeControl
 
     public List<LotTimeTransfer> getLotTimeTransfers(UserVisit userVisit, Collection<LotTime> lotTimes) {
         List<LotTimeTransfer> lotTimeTransfers = new ArrayList<>(lotTimes.size());
-        LotTimeTransferCache lotTimeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTransferCache();
+        var lotTimeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTransferCache();
 
         lotTimes.forEach((lotTime) ->
                 lotTimeTransfers.add(lotTimeTransferCache.getTransfer(lotTime))
@@ -623,15 +616,15 @@ public class LotTimeControl
 
     public void updateLotTimeFromValue(LotTimeValue lotTimeValue, BasePK updatedBy) {
         if(lotTimeValue.hasBeenModified()) {
-            LotTime lotTime = LotTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var lotTime = LotTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     lotTimeValue.getPrimaryKey());
 
             lotTime.setThruTime(session.START_TIME_LONG);
             lotTime.store();
 
-            LotPK lotPK = lotTime.getLotPK(); // Not updated
-            LotTimeTypePK lotTimeTypePK = lotTime.getLotTimeTypePK(); // Not updated
-            Long time = lotTimeValue.getTime();
+            var lotPK = lotTime.getLotPK(); // Not updated
+            var lotTimeTypePK = lotTime.getLotTimeTypePK(); // Not updated
+            var time = lotTimeValue.getTime();
 
             lotTime = LotTimeFactory.getInstance().create(lotPK, lotTimeTypePK, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 

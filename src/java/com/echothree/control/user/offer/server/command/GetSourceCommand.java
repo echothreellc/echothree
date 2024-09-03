@@ -17,7 +17,6 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetSourceForm;
-import com.echothree.control.user.offer.common.result.GetSourceResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -65,8 +64,8 @@ public class GetSourceCommand
     @Override
     protected Source getEntity() {
         var sourceControl = Session.getModelController(SourceControl.class);
-        String sourceName = form.getSourceName();
-        Source source = sourceControl.getSourceByName(sourceName);
+        var sourceName = form.getSourceName();
+        var source = sourceControl.getSourceByName(sourceName);
         
         if(source == null) {
             addExecutionError(ExecutionErrors.UnknownSourceName.name(), sourceName);
@@ -78,7 +77,7 @@ public class GetSourceCommand
     @Override
     protected BaseResult getResult(Source source) {
         var sourceControl = Session.getModelController(SourceControl.class);
-        GetSourceResult result = OfferResultFactory.getGetSourceResult();
+        var result = OfferResultFactory.getGetSourceResult();
         
         if(source != null) {
             result.setSource(sourceControl.getSourceTransfer(getUserVisit(), source));

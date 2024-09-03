@@ -17,11 +17,9 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetPreferredTimeZoneForm;
-import com.echothree.control.user.party.common.result.GetPreferredTimeZoneResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
@@ -49,8 +47,8 @@ public class GetPreferredTimeZoneCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPreferredTimeZoneResult result = PartyResultFactory.getGetPreferredTimeZoneResult();
-        TimeZone timeZone = getPreferredTimeZone();
+        var result = PartyResultFactory.getGetPreferredTimeZoneResult();
+        var timeZone = getPreferredTimeZone();
 
         result.setPreferredTimeZone(partyControl.getTimeZoneTransfer(getUserVisit(), timeZone));
         sendEvent(timeZone.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());

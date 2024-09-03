@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.subscription.common.SubscriptionUtil;
-import com.echothree.control.user.subscription.common.form.GetSubscriptionForm;
 import com.echothree.control.user.subscription.common.result.GetSubscriptionResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -92,15 +89,15 @@ public class SubscriptionTag
     public int doStartTag()
             throws JspException {
         try {
-            GetSubscriptionForm commandForm = SubscriptionUtil.getHome().getGetSubscriptionForm();
+            var commandForm = SubscriptionUtil.getHome().getGetSubscriptionForm();
             
             commandForm.setSubscriptionName(subscriptionName);
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = SubscriptionUtil.getHome().getSubscription(getUserVisitPK(), commandForm);
+
+            var commandResult = SubscriptionUtil.getHome().getSubscription(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -108,8 +105,8 @@ public class SubscriptionTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSubscriptionResult result = (GetSubscriptionResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSubscriptionResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getSubscription(), scope);
             }

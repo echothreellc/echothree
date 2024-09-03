@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.humanresources.partyskill;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetSkillTypeChoicesForm;
 import com.echothree.control.user.employee.common.result.GetSkillTypeChoicesResult;
 import com.echothree.model.control.employee.common.choice.SkillTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -40,14 +37,14 @@ public class AddActionForm
     public void setupSkillTypeChoices() {
         if(skillTypeChoices == null) {
             try {
-                GetSkillTypeChoicesForm form = EmployeeUtil.getHome().getGetSkillTypeChoicesForm();
+                var form = EmployeeUtil.getHome().getGetSkillTypeChoicesForm();
                 
                 form.setDefaultSkillTypeChoice(skillTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = EmployeeUtil.getHome().getSkillTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSkillTypeChoicesResult result = (GetSkillTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = EmployeeUtil.getHome().getSkillTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSkillTypeChoicesResult)executionResult.getResult();
                 skillTypeChoices = result.getSkillTypeChoices();
                 
                 if(skillTypeChoice == null)

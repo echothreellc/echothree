@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.humanresources.leavetype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetLeaveTypeDescriptionsForm;
 import com.echothree.control.user.employee.common.result.GetLeaveTypeDescriptionsResult;
-import com.echothree.model.control.employee.common.transfer.LeaveTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String leaveTypeName = request.getParameter(ParameterConstants.LEAVE_TYPE_NAME);
-        GetLeaveTypeDescriptionsForm commandForm = EmployeeUtil.getHome().getGetLeaveTypeDescriptionsForm();
+        var leaveTypeName = request.getParameter(ParameterConstants.LEAVE_TYPE_NAME);
+        var commandForm = EmployeeUtil.getHome().getGetLeaveTypeDescriptionsForm();
 
         commandForm.setLeaveTypeName(leaveTypeName);
 
-        CommandResult commandResult = EmployeeUtil.getHome().getLeaveTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = EmployeeUtil.getHome().getLeaveTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLeaveTypeDescriptionsResult result = (GetLeaveTypeDescriptionsResult) executionResult.getResult();
-            LeaveTypeTransfer leaveTypeTransfer = result.getLeaveType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveTypeDescriptionsResult) executionResult.getResult();
+            var leaveTypeTransfer = result.getLeaveType();
 
             request.setAttribute(AttributeConstants.LEAVE_TYPE, leaveTypeTransfer);
             request.setAttribute(AttributeConstants.LEAVE_TYPE_DESCRIPTIONS, result.getLeaveTypeDescriptions());

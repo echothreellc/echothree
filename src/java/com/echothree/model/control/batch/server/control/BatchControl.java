@@ -26,29 +26,16 @@ import com.echothree.model.control.batch.common.transfer.BatchTransfer;
 import com.echothree.model.control.batch.common.transfer.BatchTypeDescriptionTransfer;
 import com.echothree.model.control.batch.common.transfer.BatchTypeEntityTypeTransfer;
 import com.echothree.model.control.batch.common.transfer.BatchTypeTransfer;
-import com.echothree.model.control.batch.server.transfer.BatchAliasTransferCache;
-import com.echothree.model.control.batch.server.transfer.BatchAliasTypeDescriptionTransferCache;
-import com.echothree.model.control.batch.server.transfer.BatchAliasTypeTransferCache;
-import com.echothree.model.control.batch.server.transfer.BatchEntityTransferCache;
-import com.echothree.model.control.batch.server.transfer.BatchTransferCache;
 import com.echothree.model.control.batch.server.transfer.BatchTransferCaches;
-import com.echothree.model.control.batch.server.transfer.BatchTypeDescriptionTransferCache;
-import com.echothree.model.control.batch.server.transfer.BatchTypeEntityTypeTransferCache;
-import com.echothree.model.control.batch.server.transfer.BatchTypeTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.data.batch.common.pk.BatchAliasTypePK;
 import com.echothree.model.data.batch.common.pk.BatchPK;
-import com.echothree.model.data.batch.common.pk.BatchTypePK;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.batch.server.entity.BatchAlias;
 import com.echothree.model.data.batch.server.entity.BatchAliasType;
 import com.echothree.model.data.batch.server.entity.BatchAliasTypeDescription;
-import com.echothree.model.data.batch.server.entity.BatchAliasTypeDetail;
-import com.echothree.model.data.batch.server.entity.BatchDetail;
 import com.echothree.model.data.batch.server.entity.BatchEntity;
 import com.echothree.model.data.batch.server.entity.BatchType;
 import com.echothree.model.data.batch.server.entity.BatchTypeDescription;
-import com.echothree.model.data.batch.server.entity.BatchTypeDetail;
 import com.echothree.model.data.batch.server.entity.BatchTypeEntityType;
 import com.echothree.model.data.batch.server.factory.BatchAliasFactory;
 import com.echothree.model.data.batch.server.factory.BatchAliasTypeDescriptionFactory;
@@ -70,11 +57,8 @@ import com.echothree.model.data.batch.server.value.BatchTypeDetailValue;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.sequence.common.pk.SequenceTypePK;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.common.pk.WorkflowEntrancePK;
-import com.echothree.model.data.workflow.common.pk.WorkflowPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.persistence.BasePK;
@@ -86,7 +70,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -120,20 +103,20 @@ public class BatchControl
     
     public BatchType createBatchType(String batchTypeName, BatchType parentBatchType, SequenceType batchSequenceType, Workflow batchWorkflow,
             WorkflowEntrance batchWorkflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        BatchType defaultBatchType = getDefaultBatchType();
-        boolean defaultFound = defaultBatchType != null;
+        var defaultBatchType = getDefaultBatchType();
+        var defaultFound = defaultBatchType != null;
         
         if(defaultFound && isDefault) {
-            BatchTypeDetailValue defaultBatchTypeDetailValue = getDefaultBatchTypeDetailValueForUpdate();
+            var defaultBatchTypeDetailValue = getDefaultBatchTypeDetailValueForUpdate();
             
             defaultBatchTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateBatchTypeFromValue(defaultBatchTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        BatchType batchType = BatchTypeFactory.getInstance().create();
-        BatchTypeDetail batchTypeDetail = BatchTypeDetailFactory.getInstance().create(batchType, batchTypeName, parentBatchType, batchSequenceType,
+
+        var batchType = BatchTypeFactory.getInstance().create();
+        var batchTypeDetail = BatchTypeDetailFactory.getInstance().create(batchType, batchTypeName, parentBatchType, batchSequenceType,
                 batchWorkflow, batchWorkflowEntrance, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -292,9 +275,9 @@ public class BatchControl
     }
     
     public List<BatchTypeTransfer> getBatchTypeTransfers(UserVisit userVisit) {
-        List<BatchType> batchTypes = getBatchTypes();
+        var batchTypes = getBatchTypes();
         List<BatchTypeTransfer> batchTypeTransfers = new ArrayList<>(batchTypes.size());
-        BatchTypeTransferCache batchTypeTransferCache = getBatchTransferCaches(userVisit).getBatchTypeTransferCache();
+        var batchTypeTransferCache = getBatchTransferCaches(userVisit).getBatchTypeTransferCache();
         
         batchTypes.forEach((batchType) ->
                 batchTypeTransfers.add(batchTypeTransferCache.getTransfer(batchType))
@@ -305,7 +288,7 @@ public class BatchControl
     
     public BatchTypeChoicesBean getBatchTypeChoices(String defaultBatchTypeChoice,
             Language language, boolean allowNullChoice) {
-        List<BatchType> batchTypes = getBatchTypes();
+        var batchTypes = getBatchTypes();
         var size = batchTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -321,7 +304,7 @@ public class BatchControl
         }
         
         for(var batchType : batchTypes) {
-            BatchTypeDetail batchTypeDetail = batchType.getLastDetail();
+            var batchTypeDetail = batchType.getLastDetail();
             
             var label = getBestBatchTypeDescription(batchType, language);
             var value = batchTypeDetail.getBatchTypeName();
@@ -340,7 +323,7 @@ public class BatchControl
     
     public boolean isParentBatchTypeSafe(BatchType batchType,
             BatchType parentBatchType) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentBatchType != null) {
             Set<BatchType> parentBatchTypes = new HashSet<>();
@@ -363,29 +346,29 @@ public class BatchControl
     private void updateBatchTypeFromValue(BatchTypeDetailValue batchTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(batchTypeDetailValue.hasBeenModified()) {
-            BatchType batchType = BatchTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var batchType = BatchTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      batchTypeDetailValue.getBatchTypePK());
-            BatchTypeDetail batchTypeDetail = batchType.getActiveDetailForUpdate();
+            var batchTypeDetail = batchType.getActiveDetailForUpdate();
             
             batchTypeDetail.setThruTime(session.START_TIME_LONG);
             batchTypeDetail.store();
-            
-            BatchTypePK batchTypePK = batchTypeDetail.getBatchTypePK(); // Not updated
-            String batchTypeName = batchTypeDetailValue.getBatchTypeName();
-            BatchTypePK parentBatchTypePK = batchTypeDetailValue.getParentBatchTypePK();
-            SequenceTypePK batchSequenceTypePK = batchTypeDetailValue.getBatchSequenceTypePK();
-            WorkflowPK batchWorkflowPK = batchTypeDetailValue.getBatchWorkflowPK();
-            WorkflowEntrancePK batchWorkflowEntrancePK = batchTypeDetailValue.getBatchWorkflowEntrancePK();
-            Boolean isDefault = batchTypeDetailValue.getIsDefault();
-            Integer sortOrder = batchTypeDetailValue.getSortOrder();
+
+            var batchTypePK = batchTypeDetail.getBatchTypePK(); // Not updated
+            var batchTypeName = batchTypeDetailValue.getBatchTypeName();
+            var parentBatchTypePK = batchTypeDetailValue.getParentBatchTypePK();
+            var batchSequenceTypePK = batchTypeDetailValue.getBatchSequenceTypePK();
+            var batchWorkflowPK = batchTypeDetailValue.getBatchWorkflowPK();
+            var batchWorkflowEntrancePK = batchTypeDetailValue.getBatchWorkflowEntrancePK();
+            var isDefault = batchTypeDetailValue.getIsDefault();
+            var sortOrder = batchTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                BatchType defaultBatchType = getDefaultBatchType();
-                boolean defaultFound = defaultBatchType != null && !defaultBatchType.equals(batchType);
+                var defaultBatchType = getDefaultBatchType();
+                var defaultFound = defaultBatchType != null && !defaultBatchType.equals(batchType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    BatchTypeDetailValue defaultBatchTypeDetailValue = getDefaultBatchTypeDetailValueForUpdate();
+                    var defaultBatchTypeDetailValue = getDefaultBatchTypeDetailValueForUpdate();
                     
                     defaultBatchTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateBatchTypeFromValue(defaultBatchTypeDetailValue, false, updatedBy);
@@ -410,7 +393,7 @@ public class BatchControl
     }
     
     private void deleteBatchType(BatchType batchType, boolean checkDefault, BasePK deletedBy) {
-        BatchTypeDetail batchTypeDetail = batchType.getLastDetailForUpdate();
+        var batchTypeDetail = batchType.getLastDetailForUpdate();
 
         deleteBatchTypesByParentBatchType(batchType, deletedBy);
         deleteBatchTypeDescriptionsByBatchType(batchType, deletedBy);
@@ -424,17 +407,17 @@ public class BatchControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            BatchType defaultBatchType = getDefaultBatchType();
+            var defaultBatchType = getDefaultBatchType();
 
             if(defaultBatchType == null) {
-                List<BatchType> batchTypes = getBatchTypesForUpdate();
+                var batchTypes = getBatchTypesForUpdate();
 
                 if(!batchTypes.isEmpty()) {
-                    Iterator<BatchType> iter = batchTypes.iterator();
+                    var iter = batchTypes.iterator();
                     if(iter.hasNext()) {
                         defaultBatchType = iter.next();
                     }
-                    BatchTypeDetailValue batchTypeDetailValue = Objects.requireNonNull(defaultBatchType).getLastDetailForUpdate().getBatchTypeDetailValue().clone();
+                    var batchTypeDetailValue = Objects.requireNonNull(defaultBatchType).getLastDetailForUpdate().getBatchTypeDetailValue().clone();
 
                     batchTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateBatchTypeFromValue(batchTypeDetailValue, false, deletedBy);
@@ -466,7 +449,7 @@ public class BatchControl
     // --------------------------------------------------------------------------------
     
     public BatchTypeDescription createBatchTypeDescription(BatchType batchType, Language language, String description, BasePK createdBy) {
-        BatchTypeDescription batchTypeDescription = BatchTypeDescriptionFactory.getInstance().create(batchType, language, description,
+        var batchTypeDescription = BatchTypeDescriptionFactory.getInstance().create(batchType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(batchType.getPrimaryKey(), EventTypes.MODIFY, batchTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -545,7 +528,7 @@ public class BatchControl
     
     public String getBestBatchTypeDescription(BatchType batchType, Language language) {
         String description;
-        BatchTypeDescription batchTypeDescription = getBatchTypeDescription(batchType, language);
+        var batchTypeDescription = getBatchTypeDescription(batchType, language);
         
         if(batchTypeDescription == null && !language.getIsDefault()) {
             batchTypeDescription = getBatchTypeDescription(batchType, getPartyControl().getDefaultLanguage());
@@ -565,9 +548,9 @@ public class BatchControl
     }
     
     public List<BatchTypeDescriptionTransfer> getBatchTypeDescriptionTransfersByBatchType(UserVisit userVisit, BatchType batchType) {
-        List<BatchTypeDescription> batchTypeDescriptions = getBatchTypeDescriptionsByBatchType(batchType);
+        var batchTypeDescriptions = getBatchTypeDescriptionsByBatchType(batchType);
         List<BatchTypeDescriptionTransfer> batchTypeDescriptionTransfers = new ArrayList<>(batchTypeDescriptions.size());
-        BatchTypeDescriptionTransferCache batchTypeDescriptionTransferCache = getBatchTransferCaches(userVisit).getBatchTypeDescriptionTransferCache();
+        var batchTypeDescriptionTransferCache = getBatchTransferCaches(userVisit).getBatchTypeDescriptionTransferCache();
         
         batchTypeDescriptions.forEach((batchTypeDescription) ->
                 batchTypeDescriptionTransfers.add(batchTypeDescriptionTransferCache.getTransfer(batchTypeDescription))
@@ -578,15 +561,15 @@ public class BatchControl
     
     public void updateBatchTypeDescriptionFromValue(BatchTypeDescriptionValue batchTypeDescriptionValue, BasePK updatedBy) {
         if(batchTypeDescriptionValue.hasBeenModified()) {
-            BatchTypeDescription batchTypeDescription = BatchTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var batchTypeDescription = BatchTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     batchTypeDescriptionValue.getPrimaryKey());
             
             batchTypeDescription.setThruTime(session.START_TIME_LONG);
             batchTypeDescription.store();
-            
-            BatchType batchType = batchTypeDescription.getBatchType();
-            Language language = batchTypeDescription.getLanguage();
-            String description = batchTypeDescriptionValue.getDescription();
+
+            var batchType = batchTypeDescription.getBatchType();
+            var language = batchTypeDescription.getLanguage();
+            var description = batchTypeDescriptionValue.getDescription();
             
             batchTypeDescription = BatchTypeDescriptionFactory.getInstance().create(batchType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -603,7 +586,7 @@ public class BatchControl
     }
     
     public void deleteBatchTypeDescriptionsByBatchType(BatchType batchType, BasePK deletedBy) {
-        List<BatchTypeDescription> batchTypeDescriptions = getBatchTypeDescriptionsByBatchTypeForUpdate(batchType);
+        var batchTypeDescriptions = getBatchTypeDescriptionsByBatchTypeForUpdate(batchType);
         
         batchTypeDescriptions.forEach((batchTypeDescription) -> 
                 deleteBatchTypeDescription(batchTypeDescription, deletedBy)
@@ -615,7 +598,7 @@ public class BatchControl
     // --------------------------------------------------------------------------------
 
     public BatchTypeEntityType createBatchTypeEntityType(BatchType batchType, EntityType entityType, BasePK createdBy) {
-        BatchTypeEntityType batchTypeEntityType = BatchTypeEntityTypeFactory.getInstance().create(batchType, entityType,
+        var batchTypeEntityType = BatchTypeEntityTypeFactory.getInstance().create(batchType, entityType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(batchType.getPrimaryKey(), EventTypes.MODIFY, batchTypeEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -739,7 +722,7 @@ public class BatchControl
 
     public List<BatchTypeEntityTypeTransfer> getBatchTypeEntityTypeTransfers(UserVisit userVisit, Collection<BatchTypeEntityType> batchTypeEntityTypes) {
         List<BatchTypeEntityTypeTransfer> batchTypeEntityTypeTransfers = new ArrayList<>(batchTypeEntityTypes.size());
-        BatchTypeEntityTypeTransferCache batchTypeEntityTypeTransferCache = getBatchTransferCaches(userVisit).getBatchTypeEntityTypeTransferCache();
+        var batchTypeEntityTypeTransferCache = getBatchTransferCaches(userVisit).getBatchTypeEntityTypeTransferCache();
 
         batchTypeEntityTypes.forEach((batchTypeEntityType) ->
                 batchTypeEntityTypeTransfers.add(batchTypeEntityTypeTransferCache.getTransfer(batchTypeEntityType))
@@ -782,20 +765,20 @@ public class BatchControl
     
     public BatchAliasType createBatchAliasType(BatchType batchType, String batchAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        BatchAliasType defaultBatchAliasType = getDefaultBatchAliasType(batchType);
-        boolean defaultFound = defaultBatchAliasType != null;
+        var defaultBatchAliasType = getDefaultBatchAliasType(batchType);
+        var defaultFound = defaultBatchAliasType != null;
         
         if(defaultFound && isDefault) {
-            BatchAliasTypeDetailValue defaultBatchAliasTypeDetailValue = getDefaultBatchAliasTypeDetailValueForUpdate(batchType);
+            var defaultBatchAliasTypeDetailValue = getDefaultBatchAliasTypeDetailValueForUpdate(batchType);
             
             defaultBatchAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateBatchAliasTypeFromValue(defaultBatchAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        BatchAliasType batchAliasType = BatchAliasTypeFactory.getInstance().create();
-        BatchAliasTypeDetail batchAliasTypeDetail = BatchAliasTypeDetailFactory.getInstance().create(batchAliasType, batchType, batchAliasTypeName,
+
+        var batchAliasType = BatchAliasTypeFactory.getInstance().create();
+        var batchAliasTypeDetail = BatchAliasTypeDetailFactory.getInstance().create(batchAliasType, batchType, batchAliasTypeName,
                 validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -920,9 +903,9 @@ public class BatchControl
     }
     
     public List<BatchAliasTypeTransfer> getBatchAliasTypeTransfers(UserVisit userVisit, BatchType batchType) {
-        List<BatchAliasType> batchAliasTypes = getBatchAliasTypes(batchType);
+        var batchAliasTypes = getBatchAliasTypes(batchType);
         List<BatchAliasTypeTransfer> batchAliasTypeTransfers = new ArrayList<>(batchAliasTypes.size());
-        BatchAliasTypeTransferCache batchAliasTypeTransferCache = getBatchTransferCaches(userVisit).getBatchAliasTypeTransferCache();
+        var batchAliasTypeTransferCache = getBatchTransferCaches(userVisit).getBatchAliasTypeTransferCache();
         
         batchAliasTypes.forEach((batchAliasType) ->
                 batchAliasTypeTransfers.add(batchAliasTypeTransferCache.getTransfer(batchAliasType))
@@ -933,7 +916,7 @@ public class BatchControl
     
     public BatchAliasTypeChoicesBean getBatchAliasTypeChoices(String defaultBatchAliasTypeChoice, Language language,
             boolean allowNullChoice, BatchType batchType) {
-        List<BatchAliasType> batchAliasTypes = getBatchAliasTypes(batchType);
+        var batchAliasTypes = getBatchAliasTypes(batchType);
         var size = batchAliasTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -949,7 +932,7 @@ public class BatchControl
         }
         
         for(var batchAliasType : batchAliasTypes) {
-            BatchAliasTypeDetail batchAliasTypeDetail = batchAliasType.getLastDetail();
+            var batchAliasTypeDetail = batchAliasType.getLastDetail();
             
             var label = getBestBatchAliasTypeDescription(batchAliasType, language);
             var value = batchAliasTypeDetail.getBatchAliasTypeName();
@@ -969,28 +952,28 @@ public class BatchControl
     private void updateBatchAliasTypeFromValue(BatchAliasTypeDetailValue batchAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(batchAliasTypeDetailValue.hasBeenModified()) {
-            BatchAliasType batchAliasType = BatchAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var batchAliasType = BatchAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     batchAliasTypeDetailValue.getBatchAliasTypePK());
-            BatchAliasTypeDetail batchAliasTypeDetail = batchAliasType.getActiveDetailForUpdate();
+            var batchAliasTypeDetail = batchAliasType.getActiveDetailForUpdate();
             
             batchAliasTypeDetail.setThruTime(session.START_TIME_LONG);
             batchAliasTypeDetail.store();
-            
-            BatchAliasTypePK batchAliasTypePK = batchAliasTypeDetail.getBatchAliasTypePK();
-            BatchType batchType = batchAliasTypeDetail.getBatchType();
-            BatchTypePK batchTypePK = batchType.getPrimaryKey();
-            String batchAliasTypeName = batchAliasTypeDetailValue.getBatchAliasTypeName();
-            String validationPattern = batchAliasTypeDetailValue.getValidationPattern();
-            Boolean isDefault = batchAliasTypeDetailValue.getIsDefault();
-            Integer sortOrder = batchAliasTypeDetailValue.getSortOrder();
+
+            var batchAliasTypePK = batchAliasTypeDetail.getBatchAliasTypePK();
+            var batchType = batchAliasTypeDetail.getBatchType();
+            var batchTypePK = batchType.getPrimaryKey();
+            var batchAliasTypeName = batchAliasTypeDetailValue.getBatchAliasTypeName();
+            var validationPattern = batchAliasTypeDetailValue.getValidationPattern();
+            var isDefault = batchAliasTypeDetailValue.getIsDefault();
+            var sortOrder = batchAliasTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                BatchAliasType defaultBatchAliasType = getDefaultBatchAliasType(batchType);
-                boolean defaultFound = defaultBatchAliasType != null && !defaultBatchAliasType.equals(batchAliasType);
+                var defaultBatchAliasType = getDefaultBatchAliasType(batchType);
+                var defaultFound = defaultBatchAliasType != null && !defaultBatchAliasType.equals(batchAliasType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    BatchAliasTypeDetailValue defaultBatchAliasTypeDetailValue = getDefaultBatchAliasTypeDetailValueForUpdate(batchType);
+                    var defaultBatchAliasTypeDetailValue = getDefaultBatchAliasTypeDetailValueForUpdate(batchType);
                     
                     defaultBatchAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateBatchAliasTypeFromValue(defaultBatchAliasTypeDetailValue, false, updatedBy);
@@ -1017,24 +1000,24 @@ public class BatchControl
     public void deleteBatchAliasType(BatchAliasType batchAliasType, BasePK deletedBy) {
         deleteBatchAliasesByBatchAliasType(batchAliasType, deletedBy);
         deleteBatchAliasTypeDescriptionsByBatchAliasType(batchAliasType, deletedBy);
-        
-        BatchAliasTypeDetail batchAliasTypeDetail = batchAliasType.getLastDetailForUpdate();
+
+        var batchAliasTypeDetail = batchAliasType.getLastDetailForUpdate();
         batchAliasTypeDetail.setThruTime(session.START_TIME_LONG);
         batchAliasType.setActiveDetail(null);
         batchAliasType.store();
         
         // Check for default, and pick one if necessary
-        BatchType batchType = batchAliasTypeDetail.getBatchType();
-        BatchAliasType defaultBatchAliasType = getDefaultBatchAliasType(batchType);
+        var batchType = batchAliasTypeDetail.getBatchType();
+        var defaultBatchAliasType = getDefaultBatchAliasType(batchType);
         if(defaultBatchAliasType == null) {
-            List<BatchAliasType> batchAliasTypes = getBatchAliasTypesForUpdate(batchType);
+            var batchAliasTypes = getBatchAliasTypesForUpdate(batchType);
             
             if(!batchAliasTypes.isEmpty()) {
-                Iterator<BatchAliasType> iter = batchAliasTypes.iterator();
+                var iter = batchAliasTypes.iterator();
                 if(iter.hasNext()) {
                     defaultBatchAliasType = iter.next();
                 }
-                BatchAliasTypeDetailValue batchAliasTypeDetailValue = Objects.requireNonNull(defaultBatchAliasType).getLastDetailForUpdate().getBatchAliasTypeDetailValue().clone();
+                var batchAliasTypeDetailValue = Objects.requireNonNull(defaultBatchAliasType).getLastDetailForUpdate().getBatchAliasTypeDetailValue().clone();
                 
                 batchAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateBatchAliasTypeFromValue(batchAliasTypeDetailValue, false, deletedBy);
@@ -1059,7 +1042,7 @@ public class BatchControl
     // --------------------------------------------------------------------------------
     
     public BatchAliasTypeDescription createBatchAliasTypeDescription(BatchAliasType batchAliasType, Language language, String description, BasePK createdBy) {
-        BatchAliasTypeDescription batchAliasTypeDescription = BatchAliasTypeDescriptionFactory.getInstance().create(batchAliasType, language,
+        var batchAliasTypeDescription = BatchAliasTypeDescriptionFactory.getInstance().create(batchAliasType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(batchAliasType.getPrimaryKey(), EventTypes.MODIFY, batchAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1138,7 +1121,7 @@ public class BatchControl
     
     public String getBestBatchAliasTypeDescription(BatchAliasType batchAliasType, Language language) {
         String description;
-        BatchAliasTypeDescription batchAliasTypeDescription = getBatchAliasTypeDescription(batchAliasType, language);
+        var batchAliasTypeDescription = getBatchAliasTypeDescription(batchAliasType, language);
         
         if(batchAliasTypeDescription == null && !language.getIsDefault()) {
             batchAliasTypeDescription = getBatchAliasTypeDescription(batchAliasType, getPartyControl().getDefaultLanguage());
@@ -1158,9 +1141,9 @@ public class BatchControl
     }
     
     public List<BatchAliasTypeDescriptionTransfer> getBatchAliasTypeDescriptionTransfersByBatchAliasType(UserVisit userVisit, BatchAliasType batchAliasType) {
-        List<BatchAliasTypeDescription> batchAliasTypeDescriptions = getBatchAliasTypeDescriptionsByBatchAliasType(batchAliasType);
+        var batchAliasTypeDescriptions = getBatchAliasTypeDescriptionsByBatchAliasType(batchAliasType);
         List<BatchAliasTypeDescriptionTransfer> batchAliasTypeDescriptionTransfers = new ArrayList<>(batchAliasTypeDescriptions.size());
-        BatchAliasTypeDescriptionTransferCache batchAliasTypeDescriptionTransferCache = getBatchTransferCaches(userVisit).getBatchAliasTypeDescriptionTransferCache();
+        var batchAliasTypeDescriptionTransferCache = getBatchTransferCaches(userVisit).getBatchAliasTypeDescriptionTransferCache();
         
         batchAliasTypeDescriptions.forEach((batchAliasTypeDescription) ->
                 batchAliasTypeDescriptionTransfers.add(batchAliasTypeDescriptionTransferCache.getTransfer(batchAliasTypeDescription))
@@ -1171,15 +1154,15 @@ public class BatchControl
     
     public void updateBatchAliasTypeDescriptionFromValue(BatchAliasTypeDescriptionValue batchAliasTypeDescriptionValue, BasePK updatedBy) {
         if(batchAliasTypeDescriptionValue.hasBeenModified()) {
-            BatchAliasTypeDescription batchAliasTypeDescription = BatchAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var batchAliasTypeDescription = BatchAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      batchAliasTypeDescriptionValue.getPrimaryKey());
             
             batchAliasTypeDescription.setThruTime(session.START_TIME_LONG);
             batchAliasTypeDescription.store();
-            
-            BatchAliasType batchAliasType = batchAliasTypeDescription.getBatchAliasType();
-            Language language = batchAliasTypeDescription.getLanguage();
-            String description = batchAliasTypeDescriptionValue.getDescription();
+
+            var batchAliasType = batchAliasTypeDescription.getBatchAliasType();
+            var language = batchAliasTypeDescription.getLanguage();
+            var description = batchAliasTypeDescriptionValue.getDescription();
             
             batchAliasTypeDescription = BatchAliasTypeDescriptionFactory.getInstance().create(batchAliasType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1196,7 +1179,7 @@ public class BatchControl
     }
     
     public void deleteBatchAliasTypeDescriptionsByBatchAliasType(BatchAliasType batchAliasType, BasePK deletedBy) {
-        List<BatchAliasTypeDescription> batchAliasTypeDescriptions = getBatchAliasTypeDescriptionsByBatchAliasTypeForUpdate(batchAliasType);
+        var batchAliasTypeDescriptions = getBatchAliasTypeDescriptionsByBatchAliasTypeForUpdate(batchAliasType);
         
         batchAliasTypeDescriptions.forEach((batchAliasTypeDescription) -> 
                 deleteBatchAliasTypeDescription(batchAliasTypeDescription, deletedBy)
@@ -1208,8 +1191,8 @@ public class BatchControl
     // --------------------------------------------------------------------------------
     
     public Batch createBatch(BatchType batchType, String batchName, BasePK createdBy) {
-        Batch batch = BatchFactory.getInstance().create();
-        BatchDetail batchDetail = BatchDetailFactory.getInstance().create(batch, batchType, batchName, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var batch = BatchFactory.getInstance().create();
+        var batchDetail = BatchDetailFactory.getInstance().create(batch, batchType, batchName, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
         batch = BatchFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, batch.getPrimaryKey());
@@ -1343,9 +1326,9 @@ public class BatchControl
     }
     
     public List<BatchTransfer> getBatchTransfers(UserVisit userVisit, BatchType batchType) {
-        List<Batch> batches = getBatches(batchType);
+        var batches = getBatches(batchType);
         List<BatchTransfer> batchTransfers = new ArrayList<>(batches.size());
-        BatchTransferCache batchTransferCache = getBatchTransferCaches(userVisit).getBatchTransferCache();
+        var batchTransferCache = getBatchTransferCaches(userVisit).getBatchTransferCache();
         
         batches.forEach((batch) ->
                 batchTransfers.add(batchTransferCache.getTransfer(batch))
@@ -1356,17 +1339,17 @@ public class BatchControl
     
     public void updateBatchFromValue(BatchDetailValue batchDetailValue, BasePK updatedBy) {
         if(batchDetailValue.hasBeenModified()) {
-            Batch batch = BatchFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var batch = BatchFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     batchDetailValue.getBatchPK());
-            BatchDetail batchDetail = batch.getActiveDetailForUpdate();
+            var batchDetail = batch.getActiveDetailForUpdate();
             
             batchDetail.setThruTime(session.START_TIME_LONG);
             batchDetail.store();
-            
-            BatchPK batchPK = batchDetail.getBatchPK();
-            BatchType batchType = batchDetail.getBatchType();
-            BatchTypePK batchTypePK = batchType.getPrimaryKey();
-            String batchName = batchDetailValue.getBatchName();
+
+            var batchPK = batchDetail.getBatchPK();
+            var batchType = batchDetail.getBatchType();
+            var batchTypePK = batchType.getPrimaryKey();
+            var batchName = batchDetailValue.getBatchName();
             
             batchDetail = BatchDetailFactory.getInstance().create(batchPK, batchTypePK, batchName, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -1379,8 +1362,8 @@ public class BatchControl
     
     public void deleteBatch(Batch batch, BasePK deletedBy) {
         deleteBatchAliasesByBatch(batch, deletedBy);
-        
-        BatchDetail batchDetail = batch.getLastDetailForUpdate();
+
+        var batchDetail = batch.getLastDetailForUpdate();
         batchDetail.setThruTime(session.START_TIME_LONG);
         batch.setActiveDetail(null);
         batch.store();
@@ -1403,7 +1386,7 @@ public class BatchControl
     // --------------------------------------------------------------------------------
     
     public BatchAlias createBatchAlias(Batch batch, BatchAliasType batchAliasType, String alias, BasePK createdBy) {
-        BatchAlias batchAlias = BatchAliasFactory.getInstance().create(batch, batchAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var batchAlias = BatchAliasFactory.getInstance().create(batch, batchAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(batch.getPrimaryKey(), EventTypes.MODIFY, batchAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1547,9 +1530,9 @@ public class BatchControl
     }
     
     public List<BatchAliasTransfer> getBatchAliasTransfersByBatch(UserVisit userVisit, Batch batch) {
-        List<BatchAlias> batchaliases = getBatchAliasesByBatch(batch);
+        var batchaliases = getBatchAliasesByBatch(batch);
         List<BatchAliasTransfer> batchAliasTransfers = new ArrayList<>(batchaliases.size());
-        BatchAliasTransferCache batchAliasTransferCache = getBatchTransferCaches(userVisit).getBatchAliasTransferCache();
+        var batchAliasTransferCache = getBatchTransferCaches(userVisit).getBatchAliasTransferCache();
         
         batchaliases.forEach((batchAlias) ->
                 batchAliasTransfers.add(batchAliasTransferCache.getTransfer(batchAlias))
@@ -1560,14 +1543,14 @@ public class BatchControl
     
     public void updateBatchAliasFromValue(BatchAliasValue batchAliasValue, BasePK updatedBy) {
         if(batchAliasValue.hasBeenModified()) {
-            BatchAlias batchAlias = BatchAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, batchAliasValue.getPrimaryKey());
+            var batchAlias = BatchAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, batchAliasValue.getPrimaryKey());
             
             batchAlias.setThruTime(session.START_TIME_LONG);
             batchAlias.store();
-            
-            BatchPK batchPK = batchAlias.getBatchPK();
-            BatchAliasTypePK batchAliasTypePK = batchAlias.getBatchAliasTypePK();
-            String alias  = batchAliasValue.getAlias();
+
+            var batchPK = batchAlias.getBatchPK();
+            var batchAliasTypePK = batchAlias.getBatchAliasTypePK();
+            var alias  = batchAliasValue.getAlias();
             
             batchAlias = BatchAliasFactory.getInstance().create(batchPK, batchAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -1582,7 +1565,7 @@ public class BatchControl
     }
     
     public void deleteBatchAliasesByBatchAliasType(BatchAliasType batchAliasType, BasePK deletedBy) {
-        List<BatchAlias> batchaliases = getBatchAliasesByBatchAliasTypeForUpdate(batchAliasType);
+        var batchaliases = getBatchAliasesByBatchAliasTypeForUpdate(batchAliasType);
         
         batchaliases.forEach((batchAlias) -> 
                 deleteBatchAlias(batchAlias, deletedBy)
@@ -1590,7 +1573,7 @@ public class BatchControl
     }
     
     public void deleteBatchAliasesByBatch(Batch batch, BasePK deletedBy) {
-        List<BatchAlias> batchaliases = getBatchAliasesByBatchForUpdate(batch);
+        var batchaliases = getBatchAliasesByBatchForUpdate(batch);
         
         batchaliases.forEach((batchAlias) -> 
                 deleteBatchAlias(batchAlias, deletedBy)
@@ -1602,7 +1585,7 @@ public class BatchControl
     // --------------------------------------------------------------------------------
 
     public BatchEntity createBatchEntity(EntityInstance entityInstance, Batch batch, BasePK createdBy) {
-        BatchEntity batchEntity = BatchEntityFactory.getInstance().create(entityInstance, batch, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var batchEntity = BatchEntityFactory.getInstance().create(entityInstance, batch, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityInstance, EventTypes.MODIFY, batchEntity.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1725,7 +1708,7 @@ public class BatchControl
 
     public List<BatchEntityTransfer> getBatchEntityTransfers(UserVisit userVisit, Collection<BatchEntity> batchEntities) {
         List<BatchEntityTransfer> batchEntityTransfers = new ArrayList<>(batchEntities.size());
-        BatchEntityTransferCache batchEntityTransferCache = getBatchTransferCaches(userVisit).getBatchEntityTransferCache();
+        var batchEntityTransferCache = getBatchTransferCaches(userVisit).getBatchEntityTransferCache();
 
         batchEntities.forEach((batchEntity) ->
                 batchEntityTransfers.add(batchEntityTransferCache.getTransfer(batchEntity))

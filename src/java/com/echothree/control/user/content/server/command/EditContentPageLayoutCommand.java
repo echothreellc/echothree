@@ -28,10 +28,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
-import com.echothree.model.data.content.server.entity.ContentPageLayoutDescription;
-import com.echothree.model.data.content.server.entity.ContentPageLayoutDetail;
-import com.echothree.model.data.content.server.value.ContentPageLayoutDescriptionValue;
-import com.echothree.model.data.content.server.value.ContentPageLayoutDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -111,8 +107,8 @@ public class EditContentPageLayoutCommand
     @Override
     public void doLock(ContentPageLayoutEdit edit, ContentPageLayout contentPageLayout) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentPageLayoutDescription contentPageLayoutDescription = contentControl.getContentPageLayoutDescription(contentPageLayout, getPreferredLanguage());
-        ContentPageLayoutDetail contentPageLayoutDetail = contentPageLayout.getLastDetail();
+        var contentPageLayoutDescription = contentControl.getContentPageLayoutDescription(contentPageLayout, getPreferredLanguage());
+        var contentPageLayoutDetail = contentPageLayout.getLastDetail();
         
         edit.setContentPageLayoutName(contentPageLayoutDetail.getContentPageLayoutName());
         edit.setIsDefault(contentPageLayoutDetail.getIsDefault().toString());
@@ -126,8 +122,8 @@ public class EditContentPageLayoutCommand
     @Override
     public void canUpdate(ContentPageLayout contentPageLayout) {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentPageLayoutName = edit.getContentPageLayoutName();
-        ContentPageLayout duplicateContentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
+        var contentPageLayoutName = edit.getContentPageLayoutName();
+        var duplicateContentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
 
         if(duplicateContentPageLayout != null && !contentPageLayout.equals(duplicateContentPageLayout)) {
             addExecutionError(ExecutionErrors.DuplicateContentPageLayoutName.name(), contentPageLayoutName);
@@ -138,9 +134,9 @@ public class EditContentPageLayoutCommand
     public void doUpdate(ContentPageLayout contentPageLayout) {
         var contentControl = Session.getModelController(ContentControl.class);
         var partyPK = getPartyPK();
-        ContentPageLayoutDetailValue contentPageLayoutDetailValue = contentControl.getContentPageLayoutDetailValueForUpdate(contentPageLayout);
-        ContentPageLayoutDescription contentPageLayoutDescription = contentControl.getContentPageLayoutDescriptionForUpdate(contentPageLayout, getPreferredLanguage());
-        String description = edit.getDescription();
+        var contentPageLayoutDetailValue = contentControl.getContentPageLayoutDetailValueForUpdate(contentPageLayout);
+        var contentPageLayoutDescription = contentControl.getContentPageLayoutDescriptionForUpdate(contentPageLayout, getPreferredLanguage());
+        var description = edit.getDescription();
 
         contentPageLayoutDetailValue.setContentPageLayoutName(edit.getContentPageLayoutName());
         contentPageLayoutDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -153,7 +149,7 @@ public class EditContentPageLayoutCommand
         } else if(contentPageLayoutDescription != null && description == null) {
             contentControl.deleteContentPageLayoutDescription(contentPageLayoutDescription, partyPK);
         } else if(contentPageLayoutDescription != null && description != null) {
-            ContentPageLayoutDescriptionValue contentPageLayoutDescriptionValue = contentControl.getContentPageLayoutDescriptionValue(contentPageLayoutDescription);
+            var contentPageLayoutDescriptionValue = contentControl.getContentPageLayoutDescriptionValue(contentPageLayoutDescription);
 
             contentPageLayoutDescriptionValue.setDescription(description);
             contentControl.updateContentPageLayoutDescriptionFromValue(contentPageLayoutDescriptionValue, partyPK);

@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.OfferService;
-import com.echothree.control.user.offer.common.form.CreateOfferForm;
 import com.echothree.control.user.offer.common.form.OfferFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -45,7 +44,7 @@ public class OffersHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("offer")) {
-            CreateOfferForm form = OfferFormFactory.getCreateOfferForm();
+            var form = OfferFormFactory.getCreateOfferForm();
             
             form.set(getAttrsMap(attrs));
             

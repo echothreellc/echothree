@@ -21,9 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
-import com.echothree.model.data.sequence.server.entity.SequenceValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,17 +64,17 @@ public class SetSequenceValueCommand
     @Override
     protected BaseResult execute() {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        String sequenceTypeName = form.getSequenceTypeName();
-        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
+        var sequenceTypeName = form.getSequenceTypeName();
+        var sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
         
         if(sequenceType != null) {
-            String sequenceName = form.getSequenceName();
-            Sequence sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
+            var sequenceName = form.getSequenceName();
+            var sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
             
             if(sequence != null) {
-                String value = form.getValue();
+                var value = form.getValue();
                 if(value.length() == sequence.getLastDetail().getMask().length()) {
-                    SequenceValue sequenceValue = sequenceControl.getSequenceValueForUpdate(sequence);
+                    var sequenceValue = sequenceControl.getSequenceValueForUpdate(sequence);
                     
                     if(sequenceValue == null) {
                         sequenceControl.createSequenceValue(sequence, value);

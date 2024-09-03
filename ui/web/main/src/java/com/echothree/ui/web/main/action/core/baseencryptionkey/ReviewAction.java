@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.core.baseencryptionkey;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetBaseEncryptionKeyForm;
 import com.echothree.control.user.core.common.result.GetBaseEncryptionKeyResult;
-import com.echothree.model.control.core.common.transfer.BaseEncryptionKeyTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,16 +48,16 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetBaseEncryptionKeyForm commandForm = CoreUtil.getHome().getGetBaseEncryptionKeyForm();
-        String baseEncryptionKeyName = request.getParameter(ParameterConstants.BASE_ENCRYPTION_KEY_NAME);
+        String forwardKey;
+        var commandForm = CoreUtil.getHome().getGetBaseEncryptionKeyForm();
+        var baseEncryptionKeyName = request.getParameter(ParameterConstants.BASE_ENCRYPTION_KEY_NAME);
         
         commandForm.setBaseEncryptionKeyName(baseEncryptionKeyName);
-        
-        CommandResult commandResult = CoreUtil.getHome().getBaseEncryptionKey(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetBaseEncryptionKeyResult result = (GetBaseEncryptionKeyResult)executionResult.getResult();
-        BaseEncryptionKeyTransfer baseEncryptionKey = result.getBaseEncryptionKey();
+
+        var commandResult = CoreUtil.getHome().getBaseEncryptionKey(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetBaseEncryptionKeyResult)executionResult.getResult();
+        var baseEncryptionKey = result.getBaseEncryptionKey();
         
         if(baseEncryptionKey == null) {
             forwardKey = ForwardConstants.ERROR_404;

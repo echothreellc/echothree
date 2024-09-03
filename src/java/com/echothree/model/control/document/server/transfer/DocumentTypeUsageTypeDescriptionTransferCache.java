@@ -17,9 +17,7 @@
 package com.echothree.model.control.document.server.transfer;
 
 import com.echothree.model.control.document.common.transfer.DocumentTypeUsageTypeDescriptionTransfer;
-import com.echothree.model.control.document.common.transfer.DocumentTypeUsageTypeTransfer;
 import com.echothree.model.control.document.server.control.DocumentControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.document.server.entity.DocumentTypeUsageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class DocumentTypeUsageTypeDescriptionTransferCache
     }
     
     public DocumentTypeUsageTypeDescriptionTransfer getDocumentTypeUsageTypeDescriptionTransfer(DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription) {
-        DocumentTypeUsageTypeDescriptionTransfer documentTypeUsageTypeDescriptionTransfer = get(documentTypeUsageTypeDescription);
+        var documentTypeUsageTypeDescriptionTransfer = get(documentTypeUsageTypeDescription);
         
         if(documentTypeUsageTypeDescriptionTransfer == null) {
-            DocumentTypeUsageTypeTransfer documentTypeUsageTypeTransfer = documentControl.getDocumentTypeUsageTypeTransfer(userVisit, documentTypeUsageTypeDescription.getDocumentTypeUsageType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, documentTypeUsageTypeDescription.getLanguage());
+            var documentTypeUsageTypeTransfer = documentControl.getDocumentTypeUsageTypeTransfer(userVisit, documentTypeUsageTypeDescription.getDocumentTypeUsageType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, documentTypeUsageTypeDescription.getLanguage());
             
             documentTypeUsageTypeDescriptionTransfer = new DocumentTypeUsageTypeDescriptionTransfer(languageTransfer, documentTypeUsageTypeTransfer, documentTypeUsageTypeDescription.getDescription());
             put(documentTypeUsageTypeDescription, documentTypeUsageTypeDescriptionTransfer);

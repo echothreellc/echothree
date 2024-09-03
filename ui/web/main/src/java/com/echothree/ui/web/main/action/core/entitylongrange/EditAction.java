@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected EntityLongRangeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        EntityLongRangeSpec spec = CoreUtil.getHome().getEntityLongRangeSpec();
+        var spec = CoreUtil.getHome().getEntityLongRangeSpec();
         
         spec.setComponentVendorName(findParameter(request, ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName()));
         spec.setEntityTypeName(findParameter(request, ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName()));
@@ -63,7 +63,7 @@ public class EditAction
     @Override
     protected EntityLongRangeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        EntityLongRangeEdit edit = CoreUtil.getHome().getEntityLongRangeEdit();
+        var edit = CoreUtil.getHome().getEntityLongRangeEdit();
 
         edit.setEntityLongRangeName(actionForm.getEntityLongRangeName());
         edit.setMinimumLongValue(actionForm.getMinimumLongValue());

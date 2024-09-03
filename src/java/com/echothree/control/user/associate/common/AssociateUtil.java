@@ -18,7 +18,6 @@ package com.echothree.control.user.associate.common;
 
 import com.echothree.control.user.associate.server.AssociateLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class AssociateUtil {
@@ -30,7 +29,7 @@ public class AssociateUtil {
     public static AssociateLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (AssociateLocal)ctx.lookup("ejb:echothree/echothree-server/AssociateBean!com.echothree.control.user.associate.server.AssociateLocal");
         }
@@ -42,7 +41,7 @@ public class AssociateUtil {
     public static AssociateRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (AssociateRemote)ctx.lookup("ejb:echothree/echothree-server/AssociateBean!com.echothree.control.user.associate.common.AssociateRemote");
         }

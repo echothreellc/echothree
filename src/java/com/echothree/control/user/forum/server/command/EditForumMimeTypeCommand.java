@@ -23,10 +23,8 @@ import com.echothree.control.user.forum.common.result.EditForumMimeTypeResult;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.control.user.forum.common.spec.ForumMimeTypeSpec;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.forum.server.entity.ForumMimeType;
-import com.echothree.model.data.forum.server.value.ForumMimeTypeValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -75,13 +73,13 @@ public class EditForumMimeTypeCommand
     public ForumMimeType getEntity(EditForumMimeTypeResult result) {
         var forumControl = Session.getModelController(ForumControl.class);
         ForumMimeType forumMimeType = null;
-        String forumName = spec.getForumName();
-        Forum forum = forumControl.getForumByName(forumName);
+        var forumName = spec.getForumName();
+        var forum = forumControl.getForumByName(forumName);
 
         if(forum != null) {
             var coreControl = getCoreControl();
-            String mimeTypeName = spec.getMimeTypeName();
-            MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+            var mimeTypeName = spec.getMimeTypeName();
+            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
             if(mimeType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -124,7 +122,7 @@ public class EditForumMimeTypeCommand
     @Override
     public void doUpdate(ForumMimeType forumMimeType) {
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumMimeTypeValue forumMimeTypeValue = forumControl.getForumMimeTypeValue(forumMimeType);
+        var forumMimeTypeValue = forumControl.getForumMimeTypeValue(forumMimeType);
 
         forumMimeTypeValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         forumMimeTypeValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));

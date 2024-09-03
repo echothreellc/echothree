@@ -29,49 +29,27 @@ import com.echothree.model.control.workrequirement.common.transfer.WorkTimeTrans
 import com.echothree.model.control.workrequirement.common.workflow.WorkAssignmentStatusConstants;
 import com.echothree.model.control.workrequirement.common.workflow.WorkRequirementStatusConstants;
 import com.echothree.model.control.workrequirement.common.workflow.WorkTimeStatusConstants;
-import com.echothree.model.control.workrequirement.server.transfer.WorkAssignmentTransferCache;
-import com.echothree.model.control.workrequirement.server.transfer.WorkRequirementScopeTransferCache;
-import com.echothree.model.control.workrequirement.server.transfer.WorkRequirementTransferCache;
 import com.echothree.model.control.workrequirement.server.transfer.WorkRequirementTransferCaches;
-import com.echothree.model.control.workrequirement.server.transfer.WorkRequirementTypeDescriptionTransferCache;
-import com.echothree.model.control.workrequirement.server.transfer.WorkRequirementTypeTransferCache;
-import com.echothree.model.control.workrequirement.server.transfer.WorkTimeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.selector.common.pk.SelectorPK;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.sequence.common.pk.SequencePK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workeffort.common.pk.WorkEffortPK;
-import com.echothree.model.data.workeffort.common.pk.WorkEffortScopePK;
-import com.echothree.model.data.workeffort.common.pk.WorkEffortTypePK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffort;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
-import com.echothree.model.data.workflow.common.pk.WorkflowStepPK;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.model.data.workrequirement.common.pk.WorkAssignmentPK;
-import com.echothree.model.data.workrequirement.common.pk.WorkRequirementPK;
-import com.echothree.model.data.workrequirement.common.pk.WorkRequirementScopePK;
-import com.echothree.model.data.workrequirement.common.pk.WorkRequirementTypePK;
 import com.echothree.model.data.workrequirement.common.pk.WorkTimePK;
 import com.echothree.model.data.workrequirement.server.entity.WorkAssignment;
-import com.echothree.model.data.workrequirement.server.entity.WorkAssignmentDetail;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirement;
-import com.echothree.model.data.workrequirement.server.entity.WorkRequirementDetail;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirementScope;
-import com.echothree.model.data.workrequirement.server.entity.WorkRequirementScopeDetail;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirementStatus;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirementType;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirementTypeDescription;
-import com.echothree.model.data.workrequirement.server.entity.WorkRequirementTypeDetail;
 import com.echothree.model.data.workrequirement.server.entity.WorkTime;
-import com.echothree.model.data.workrequirement.server.entity.WorkTimeDetail;
 import com.echothree.model.data.workrequirement.server.entity.WorkTimeUserVisit;
 import com.echothree.model.data.workrequirement.server.factory.WorkAssignmentDetailFactory;
 import com.echothree.model.data.workrequirement.server.factory.WorkAssignmentFactory;
@@ -100,7 +78,6 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -137,8 +114,8 @@ public class WorkRequirementControl
     
     public WorkRequirementType createWorkRequirementType(WorkEffortType workEffortType, String workRequirementTypeName, Sequence workRequirementSequence,
             WorkflowStep workflowStep, Long estimatedTimeAllowed, Long maximumTimeAllowed, Boolean allowReassignment, Integer sortOrder, BasePK createdBy) {
-        WorkRequirementType workRequirementType = WorkRequirementTypeFactory.getInstance().create();
-        WorkRequirementTypeDetail workRequirementTypeDetail = WorkRequirementTypeDetailFactory.getInstance().create(session, workRequirementType,
+        var workRequirementType = WorkRequirementTypeFactory.getInstance().create();
+        var workRequirementTypeDetail = WorkRequirementTypeDetailFactory.getInstance().create(session, workRequirementType,
                 workEffortType, workRequirementTypeName, workRequirementSequence, workflowStep, estimatedTimeAllowed, maximumTimeAllowed, allowReassignment,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -170,8 +147,8 @@ public class WorkRequirementControl
                         "WHERE wrt_activedetailid = wrtdt_workrequirementtypedetailid AND wrtdt_wet_workefforttypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkRequirementTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkRequirementTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workEffortType.getPrimaryKey().getEntityId());
             
@@ -209,8 +186,8 @@ public class WorkRequirementControl
                         "WHERE wrt_activedetailid = wrtdt_workrequirementtypedetailid AND wrtdt_wkfls_workflowstepid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkRequirementTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkRequirementTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workflowStep.getPrimaryKey().getEntityId());
             
@@ -249,8 +226,8 @@ public class WorkRequirementControl
                         "AND wrtdt_wet_workefforttypeid = ? AND wrtdt_workrequirementtypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkRequirementTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkRequirementTypeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workEffortType.getPrimaryKey().getEntityId());
             ps.setString(2, workRequirementTypeName);
@@ -284,9 +261,9 @@ public class WorkRequirementControl
     }
     
     public List<WorkRequirementTypeTransfer> getWorkRequirementTypeTransfers(UserVisit userVisit, WorkEffortType workEffortType) {
-        List<WorkRequirementType> workRequirementTypes = getWorkRequirementTypes(workEffortType);
+        var workRequirementTypes = getWorkRequirementTypes(workEffortType);
         List<WorkRequirementTypeTransfer> workRequirementTypeTransfers = new ArrayList<>(workRequirementTypes.size());
-        WorkRequirementTypeTransferCache workRequirementTypeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTypeTransferCache();
+        var workRequirementTypeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTypeTransferCache();
         
         workRequirementTypes.forEach((workRequirementType) ->
                 workRequirementTypeTransfers.add(workRequirementTypeTransferCache.getWorkRequirementTypeTransfer(workRequirementType))
@@ -297,22 +274,22 @@ public class WorkRequirementControl
     
     public void updateWorkRequirementTypeFromValue(WorkRequirementTypeDetailValue workRequirementTypeDetailValue, BasePK updatedBy) {
         if(workRequirementTypeDetailValue.hasBeenModified()) {
-            WorkRequirementType workRequirementType = WorkRequirementTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workRequirementType = WorkRequirementTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      workRequirementTypeDetailValue.getWorkRequirementTypePK());
-            WorkRequirementTypeDetail workRequirementTypeDetail = workRequirementType.getActiveDetailForUpdate();
+            var workRequirementTypeDetail = workRequirementType.getActiveDetailForUpdate();
             
             workRequirementTypeDetail.setThruTime(session.START_TIME_LONG);
             workRequirementTypeDetail.store();
-            
-            WorkRequirementTypePK workRequirementTypePK = workRequirementTypeDetail.getWorkRequirementTypePK();
-            WorkEffortTypePK workEffortTypePK = workRequirementTypeDetail.getWorkEffortTypePK(); // Not updated
-            String workRequirementTypeName = workRequirementTypeDetailValue.getWorkRequirementTypeName();
-            SequencePK workRequirementSequencePK = workRequirementTypeDetailValue.getWorkRequirementSequencePK();
-            WorkflowStepPK workflowStepPK = workRequirementTypeDetailValue.getWorkflowStepPK();
-            Long estimatedTimeAllowed = workRequirementTypeDetailValue.getEstimatedTimeAllowed();
-            Long maximumTimeAllowed = workRequirementTypeDetailValue.getMaximumTimeAllowed();
-            Boolean allowReassignment = workRequirementTypeDetailValue.getAllowReassignment();
-            Integer sortOrder = workRequirementTypeDetailValue.getSortOrder();
+
+            var workRequirementTypePK = workRequirementTypeDetail.getWorkRequirementTypePK();
+            var workEffortTypePK = workRequirementTypeDetail.getWorkEffortTypePK(); // Not updated
+            var workRequirementTypeName = workRequirementTypeDetailValue.getWorkRequirementTypeName();
+            var workRequirementSequencePK = workRequirementTypeDetailValue.getWorkRequirementSequencePK();
+            var workflowStepPK = workRequirementTypeDetailValue.getWorkflowStepPK();
+            var estimatedTimeAllowed = workRequirementTypeDetailValue.getEstimatedTimeAllowed();
+            var maximumTimeAllowed = workRequirementTypeDetailValue.getMaximumTimeAllowed();
+            var allowReassignment = workRequirementTypeDetailValue.getAllowReassignment();
+            var sortOrder = workRequirementTypeDetailValue.getSortOrder();
             
             workRequirementTypeDetail = WorkRequirementTypeDetailFactory.getInstance().create(workRequirementTypePK, workEffortTypePK, workRequirementTypeName,
                     workRequirementSequencePK, workflowStepPK, estimatedTimeAllowed, maximumTimeAllowed, allowReassignment, sortOrder, session.START_TIME_LONG,
@@ -328,8 +305,8 @@ public class WorkRequirementControl
     public void deleteWorkRequirementType(WorkRequirementType workRequirementType, BasePK deletedBy) {
         deleteWorkRequirementTypeDescriptionsByWorkRequirementType(workRequirementType, deletedBy);
         deleteWorkRequirementScopesByWorkRequirementType(workRequirementType, deletedBy);
-        
-        WorkRequirementTypeDetail workRequirementTypeDetail = workRequirementType.getLastDetailForUpdate();
+
+        var workRequirementTypeDetail = workRequirementType.getLastDetailForUpdate();
         workRequirementTypeDetail.setThruTime(session.START_TIME_LONG);
         workRequirementType.setActiveDetail(null);
         workRequirementType.store();
@@ -338,7 +315,7 @@ public class WorkRequirementControl
     }
     
     public void deleteWorkRequirementTypesByWorkEffortType(WorkEffortType workEffortType, BasePK deletedBy) {
-        List<WorkRequirementType> workRequirementTypes = getWorkRequirementTypesForUpdate(workEffortType);
+        var workRequirementTypes = getWorkRequirementTypesForUpdate(workEffortType);
         
         workRequirementTypes.forEach((workRequirementType) -> 
                 deleteWorkRequirementType(workRequirementType, deletedBy)
@@ -346,7 +323,7 @@ public class WorkRequirementControl
     }
     
     public void deleteWorkRequirementTypesByWorkflowStep(WorkflowStep workflowStep, BasePK deletedBy) {
-        List<WorkRequirementType> workRequirementTypes = getWorkRequirementTypesByWorkflowStepForUpdate(workflowStep);
+        var workRequirementTypes = getWorkRequirementTypesByWorkflowStepForUpdate(workflowStep);
         
         workRequirementTypes.forEach((workRequirementType) -> 
                 deleteWorkRequirementType(workRequirementType, deletedBy)
@@ -359,7 +336,7 @@ public class WorkRequirementControl
     
     public WorkRequirementTypeDescription createWorkRequirementTypeDescription(WorkRequirementType workRequirementType, Language language,
             String description, BasePK createdBy) {
-        WorkRequirementTypeDescription workRequirementTypeDescription = WorkRequirementTypeDescriptionFactory.getInstance().create(workRequirementType,
+        var workRequirementTypeDescription = WorkRequirementTypeDescriptionFactory.getInstance().create(workRequirementType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(workRequirementType.getPrimaryKey(), EventTypes.MODIFY, workRequirementTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -384,8 +361,8 @@ public class WorkRequirementControl
                         "WHERE wrtd_wrt_workrequirementtypeid = ? AND wrtd_lang_languageid = ? AND wrtd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkRequirementTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkRequirementTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workRequirementType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -432,8 +409,8 @@ public class WorkRequirementControl
                         "WHERE wrtd_wrt_workrequirementtypeid = ? AND wrtd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkRequirementTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkRequirementTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workRequirementType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -456,7 +433,7 @@ public class WorkRequirementControl
     
     public String getBestWorkRequirementTypeDescription(WorkRequirementType workRequirementType, Language language) {
         String description;
-        WorkRequirementTypeDescription workRequirementTypeDescription = getWorkRequirementTypeDescription(workRequirementType, language);
+        var workRequirementTypeDescription = getWorkRequirementTypeDescription(workRequirementType, language);
         
         if(workRequirementTypeDescription == null && !language.getIsDefault()) {
             workRequirementTypeDescription = getWorkRequirementTypeDescription(workRequirementType, getPartyControl().getDefaultLanguage());
@@ -476,9 +453,9 @@ public class WorkRequirementControl
     }
     
     public List<WorkRequirementTypeDescriptionTransfer> getWorkRequirementTypeDescriptionTransfers(UserVisit userVisit, WorkRequirementType workRequirementType) {
-        List<WorkRequirementTypeDescription> workRequirementTypeDescriptions = getWorkRequirementTypeDescriptionsByWorkRequirementType(workRequirementType);
+        var workRequirementTypeDescriptions = getWorkRequirementTypeDescriptionsByWorkRequirementType(workRequirementType);
         List<WorkRequirementTypeDescriptionTransfer> workRequirementTypeDescriptionTransfers = new ArrayList<>(workRequirementTypeDescriptions.size());
-        WorkRequirementTypeDescriptionTransferCache workRequirementTypeDescriptionTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTypeDescriptionTransferCache();
+        var workRequirementTypeDescriptionTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTypeDescriptionTransferCache();
         
         workRequirementTypeDescriptions.forEach((workRequirementTypeDescription) ->
                 workRequirementTypeDescriptionTransfers.add(workRequirementTypeDescriptionTransferCache.getWorkRequirementTypeDescriptionTransfer(workRequirementTypeDescription))
@@ -489,15 +466,15 @@ public class WorkRequirementControl
     
     public void updateWorkRequirementTypeDescriptionFromValue(WorkRequirementTypeDescriptionValue workRequirementTypeDescriptionValue, BasePK updatedBy) {
         if(workRequirementTypeDescriptionValue.hasBeenModified()) {
-            WorkRequirementTypeDescription workRequirementTypeDescription = WorkRequirementTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workRequirementTypeDescription = WorkRequirementTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      workRequirementTypeDescriptionValue.getPrimaryKey());
             
             workRequirementTypeDescription.setThruTime(session.START_TIME_LONG);
             workRequirementTypeDescription.store();
-            
-            WorkRequirementType workRequirementType = workRequirementTypeDescription.getWorkRequirementType();
-            Language language = workRequirementTypeDescription.getLanguage();
-            String description = workRequirementTypeDescriptionValue.getDescription();
+
+            var workRequirementType = workRequirementTypeDescription.getWorkRequirementType();
+            var language = workRequirementTypeDescription.getLanguage();
+            var description = workRequirementTypeDescriptionValue.getDescription();
             
             workRequirementTypeDescription = WorkRequirementTypeDescriptionFactory.getInstance().create(workRequirementType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -513,7 +490,7 @@ public class WorkRequirementControl
     }
     
     public void deleteWorkRequirementTypeDescriptionsByWorkRequirementType(WorkRequirementType workRequirementType, BasePK deletedBy) {
-        List<WorkRequirementTypeDescription> workRequirementTypeDescriptions = getWorkRequirementTypeDescriptionsByWorkRequirementTypeForUpdate(workRequirementType);
+        var workRequirementTypeDescriptions = getWorkRequirementTypeDescriptionsByWorkRequirementTypeForUpdate(workRequirementType);
         
         workRequirementTypeDescriptions.forEach((workRequirementTypeDescription) -> 
                 deleteWorkRequirementTypeDescription(workRequirementTypeDescription, deletedBy)
@@ -527,8 +504,8 @@ public class WorkRequirementControl
     public WorkRequirementScope createWorkRequirementScope(WorkEffortScope workEffortScope, WorkRequirementType workRequirementType,
             Sequence workRequirementSequence, Sequence workTimeSequence, Selector workAssignmentSelector, Long estimatedTimeAllowed,
             Long maximumTimeAllowed, BasePK createdBy) {
-        WorkRequirementScope workRequirementScope = WorkRequirementScopeFactory.getInstance().create();
-        WorkRequirementScopeDetail workRequirementScopeDetail = WorkRequirementScopeDetailFactory.getInstance().create(session,
+        var workRequirementScope = WorkRequirementScopeFactory.getInstance().create();
+        var workRequirementScopeDetail = WorkRequirementScopeDetailFactory.getInstance().create(session,
                 workRequirementScope, workEffortScope, workRequirementType, workRequirementSequence, workTimeSequence,
                 workAssignmentSelector, estimatedTimeAllowed, maximumTimeAllowed, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -561,8 +538,8 @@ public class WorkRequirementControl
                         "WHERE wrs_activedetailid = wrsdt_workrequirementscopedetailid AND wrsdt_wes_workeffortscopeid = ? AND wrsdt_wrt_workrequirementtypeid = ?  " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkRequirementScopeFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkRequirementScopeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workEffortScope.getPrimaryKey().getEntityId());
             ps.setLong(2, workRequirementType.getPrimaryKey().getEntityId());
@@ -606,8 +583,8 @@ public class WorkRequirementControl
                         "AND wrt_workrequirementtypeid = wrsdt_wrt_workrequirementtypeid " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkRequirementScopeFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkRequirementScopeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workEffortScope.getPrimaryKey().getEntityId());
             ps.setLong(2, workflowStep.getPrimaryKey().getEntityId());
@@ -649,8 +626,8 @@ public class WorkRequirementControl
                         "WHERE wrs_activedetailid = wrsdt_workrequirementscopedetailid AND wrsdt_wrt_workrequirementtypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkRequirementScopeFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkRequirementScopeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workRequirementType.getPrimaryKey().getEntityId());
             
@@ -688,8 +665,8 @@ public class WorkRequirementControl
                         "WHERE wrs_activedetailid = wrsdt_workrequirementscopedetailid AND wrsdt_wes_workeffortscopeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkRequirementScopeFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkRequirementScopeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workEffortScope.getPrimaryKey().getEntityId());
             
@@ -719,7 +696,7 @@ public class WorkRequirementControl
     
     public List<WorkRequirementScopeTransfer> getWorkRequirementScopeTransfers(UserVisit userVisit, Collection<WorkRequirementScope> workRequirementScopes) {
         List<WorkRequirementScopeTransfer> workRequirementScopeTransfers = new ArrayList<>(workRequirementScopes.size());
-        WorkRequirementScopeTransferCache workRequirementScopeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementScopeTransferCache();
+        var workRequirementScopeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementScopeTransferCache();
         
         workRequirementScopes.forEach((workRequirementScope) ->
                 workRequirementScopeTransfers.add(workRequirementScopeTransferCache.getWorkRequirementScopeTransfer(workRequirementScope))
@@ -738,21 +715,21 @@ public class WorkRequirementControl
     
     public void updateWorkRequirementScopeFromValue(WorkRequirementScopeDetailValue workRequirementScopeDetailValue, BasePK updatedBy) {
         if(workRequirementScopeDetailValue.hasBeenModified()) {
-            WorkRequirementScope workRequirementScope = WorkRequirementScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workRequirementScope = WorkRequirementScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      workRequirementScopeDetailValue.getWorkRequirementScopePK());
-            WorkRequirementScopeDetail workRequirementScopeDetail = workRequirementScope.getActiveDetailForUpdate();
+            var workRequirementScopeDetail = workRequirementScope.getActiveDetailForUpdate();
             
             workRequirementScopeDetail.setThruTime(session.START_TIME_LONG);
             workRequirementScopeDetail.store();
-            
-            WorkRequirementScopePK workRequirementScopePK = workRequirementScopeDetail.getWorkRequirementScopePK();
-            WorkEffortScopePK workEffortScopePK = workRequirementScopeDetail.getWorkEffortScopePK(); // Not updated
-            WorkRequirementTypePK workRequirementTypePK = workRequirementScopeDetail.getWorkRequirementTypePK();
-            SequencePK workRequirementSequencePK = workRequirementScopeDetailValue.getWorkRequirementSequencePK();
-            SequencePK workTimeSequencePK = workRequirementScopeDetailValue.getWorkTimeSequencePK();
-            SelectorPK workAssignmentSelectorPK = workRequirementScopeDetailValue.getWorkAssignmentSelectorPK();
-            Long estimatedTimeAllowed = workRequirementScopeDetailValue.getEstimatedTimeAllowed();
-            Long maximumTimeAllowed = workRequirementScopeDetailValue.getMaximumTimeAllowed();
+
+            var workRequirementScopePK = workRequirementScopeDetail.getWorkRequirementScopePK();
+            var workEffortScopePK = workRequirementScopeDetail.getWorkEffortScopePK(); // Not updated
+            var workRequirementTypePK = workRequirementScopeDetail.getWorkRequirementTypePK();
+            var workRequirementSequencePK = workRequirementScopeDetailValue.getWorkRequirementSequencePK();
+            var workTimeSequencePK = workRequirementScopeDetailValue.getWorkTimeSequencePK();
+            var workAssignmentSelectorPK = workRequirementScopeDetailValue.getWorkAssignmentSelectorPK();
+            var estimatedTimeAllowed = workRequirementScopeDetailValue.getEstimatedTimeAllowed();
+            var maximumTimeAllowed = workRequirementScopeDetailValue.getMaximumTimeAllowed();
             
             workRequirementScopeDetail = WorkRequirementScopeDetailFactory.getInstance().create(workRequirementScopePK,
                     workEffortScopePK, workRequirementTypePK, workRequirementSequencePK, workTimeSequencePK,
@@ -768,8 +745,8 @@ public class WorkRequirementControl
     
     public void deleteWorkRequirementScope(WorkRequirementScope workRequirementScope, BasePK deletedBy) {
         deleteWorkRequirementsByWorkRequirementScope(workRequirementScope, deletedBy);
-        
-        WorkRequirementScopeDetail workRequirementScopeDetail = workRequirementScope.getLastDetailForUpdate();
+
+        var workRequirementScopeDetail = workRequirementScope.getLastDetailForUpdate();
         workRequirementScopeDetail.setThruTime(session.START_TIME_LONG);
         workRequirementScope.setActiveDetail(null);
         workRequirementScope.store();
@@ -778,7 +755,7 @@ public class WorkRequirementControl
     }
     
     public void deleteWorkRequirementScopesByWorkRequirementType(WorkRequirementType workRequirementType, BasePK deletedBy) {
-        List<WorkRequirementScope> workRequirementScopes = getWorkRequirementScopesByWorkRequirementTypeForUpdate(workRequirementType);
+        var workRequirementScopes = getWorkRequirementScopesByWorkRequirementTypeForUpdate(workRequirementType);
         
         workRequirementScopes.forEach((workRequirementScope) -> 
                 deleteWorkRequirementScope(workRequirementScope, deletedBy)
@@ -786,7 +763,7 @@ public class WorkRequirementControl
     }
     
     public void deleteWorkRequirementScopesByWorkEffortScope(WorkEffortScope workEffortScope, BasePK deletedBy) {
-        List<WorkRequirementScope> workRequirementScopes = getWorkRequirementScopesByWorkEffortScopeForUpdate(workEffortScope);
+        var workRequirementScopes = getWorkRequirementScopesByWorkEffortScopeForUpdate(workEffortScope);
         
         workRequirementScopes.forEach((workRequirementScope) -> 
                 deleteWorkRequirementScope(workRequirementScope, deletedBy)
@@ -799,8 +776,8 @@ public class WorkRequirementControl
     
     public WorkRequirement createWorkRequirement(String workRequirementName, WorkEffort workEffort, WorkRequirementScope workRequirementScope, Long startTime,
             Long requiredTime, BasePK createdBy) {
-        WorkRequirement workRequirement = WorkRequirementFactory.getInstance().create();
-        WorkRequirementDetail workRequirementDetail = WorkRequirementDetailFactory.getInstance().create(workRequirement,
+        var workRequirement = WorkRequirementFactory.getInstance().create();
+        var workRequirementDetail = WorkRequirementDetailFactory.getInstance().create(workRequirement,
                 workRequirementName, workEffort, workRequirementScope, startTime, requiredTime, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -835,8 +812,8 @@ public class WorkRequirementControl
                         "WHERE wr_activedetailid = wrdt_workrequirementdetailid AND wrdt_wrs_workrequirementscopeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkRequirementFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkRequirementFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workRequirementScope.getPrimaryKey().getEntityId());
             
@@ -873,8 +850,8 @@ public class WorkRequirementControl
                         "WHERE wr_activedetailid = wrdt_workrequirementdetailid AND wrdt_weff_workeffortid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkRequirementFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkRequirementFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, workEffort.getPrimaryKey().getEntityId());
             
@@ -912,8 +889,8 @@ public class WorkRequirementControl
                         "AND wrdt_workrequirementname = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = WorkRequirementFactory.getInstance().prepareStatement(query);
+
+            var ps = WorkRequirementFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, workRequirementName);
             
@@ -944,14 +921,14 @@ public class WorkRequirementControl
     public WorkRequirementStatusChoicesBean getWorkRequirementStatusChoices(String defaultWorkRequirementStatusChoice, Language language,
             boolean allowNullChoice, WorkRequirement workRequirement, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        WorkRequirementStatusChoicesBean workRequirementStatusChoicesBean = new WorkRequirementStatusChoicesBean();
+        var workRequirementStatusChoicesBean = new WorkRequirementStatusChoicesBean();
 
         if(workRequirement == null) {
             workflowControl.getWorkflowEntranceChoices(workRequirementStatusChoicesBean, defaultWorkRequirementStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(WorkRequirementStatusConstants.Workflow_WORK_REQUIREMENT_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(workRequirement.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(WorkRequirementStatusConstants.Workflow_WORK_REQUIREMENT_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(workRequirement.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(WorkRequirementStatusConstants.Workflow_WORK_REQUIREMENT_STATUS,
                     entityInstance);
 
             workflowControl.getWorkflowDestinationChoices(workRequirementStatusChoicesBean, defaultWorkRequirementStatusChoice, language, allowNullChoice,
@@ -963,10 +940,10 @@ public class WorkRequirementControl
 
     public void setWorkRequirementStatus(ExecutionErrorAccumulator eea, WorkRequirement workRequirement, String workRequirementStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(workRequirement);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WorkRequirementStatusConstants.Workflow_WORK_REQUIREMENT_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(workRequirement);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WorkRequirementStatusConstants.Workflow_WORK_REQUIREMENT_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = workRequirementStatusChoice == null ? null
+        var workflowDestination = workRequirementStatusChoice == null ? null
                 : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), workRequirementStatusChoice);
 
         if(workflowDestination != null || workRequirementStatusChoice == null) {
@@ -982,7 +959,7 @@ public class WorkRequirementControl
     
     public List<WorkRequirementTransfer> getWorkRequirementTransfers(UserVisit userVisit, Collection<WorkRequirement> workRequirements) {
         List<WorkRequirementTransfer> workRequirementTransfers = new ArrayList<>(workRequirements.size());
-        WorkRequirementTransferCache workRequirementTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTransferCache();
+        var workRequirementTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTransferCache();
         
         workRequirements.forEach((workRequirement) ->
                 workRequirementTransfers.add(workRequirementTransferCache.getWorkRequirementTransfer(workRequirement))
@@ -1001,19 +978,19 @@ public class WorkRequirementControl
     
     public void updateWorkRequirementFromValue(WorkRequirementDetailValue workRequirementDetailValue, BasePK updatedBy) {
         if(workRequirementDetailValue.hasBeenModified()) {
-            WorkRequirement workRequirement = WorkRequirementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workRequirement = WorkRequirementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      workRequirementDetailValue.getWorkRequirementPK());
-            WorkRequirementDetail workRequirementDetail = workRequirement.getActiveDetailForUpdate();
+            var workRequirementDetail = workRequirement.getActiveDetailForUpdate();
             
             workRequirementDetail.setThruTime(session.START_TIME_LONG);
             workRequirementDetail.store();
-            
-            WorkRequirementPK workRequirementPK = workRequirementDetail.getWorkRequirementPK();
-            String workRequirementName = workRequirementDetailValue.getWorkRequirementName();
-            WorkEffortPK workEffortPK = workRequirementDetail.getWorkEffortPK(); // Not updated
-            WorkRequirementScopePK workRequirementScopePK = workRequirementDetail.getWorkRequirementScopePK(); // Not updated
-            Long startTime = workRequirementDetail.getStartTime();
-            Long requiredTime = workRequirementDetail.getRequiredTime();
+
+            var workRequirementPK = workRequirementDetail.getWorkRequirementPK();
+            var workRequirementName = workRequirementDetailValue.getWorkRequirementName();
+            var workEffortPK = workRequirementDetail.getWorkEffortPK(); // Not updated
+            var workRequirementScopePK = workRequirementDetail.getWorkRequirementScopePK(); // Not updated
+            var startTime = workRequirementDetail.getStartTime();
+            var requiredTime = workRequirementDetail.getRequiredTime();
             
             workRequirementDetail = WorkRequirementDetailFactory.getInstance().create(workRequirementPK,
                     workRequirementName, workEffortPK, workRequirementScopePK, startTime, requiredTime, session.START_TIME_LONG,
@@ -1030,8 +1007,8 @@ public class WorkRequirementControl
         removeWorkRequirementStatusByWorkRequirement(workRequirement);
         deleteWorkAssignmentsByWorkRequirement(workRequirement, deletedBy);
         deleteWorkTimesByWorkRequirement(workRequirement, deletedBy);
-        
-        WorkRequirementDetail workRequirementDetail = workRequirement.getLastDetailForUpdate();
+
+        var workRequirementDetail = workRequirement.getLastDetailForUpdate();
         workRequirementDetail.setThruTime(session.START_TIME_LONG);
         workRequirement.setActiveDetail(null);
         workRequirement.store();
@@ -1040,7 +1017,7 @@ public class WorkRequirementControl
     }
     
     public void deleteWorkRequirementsByWorkRequirementScope(WorkRequirementScope workRequirementScope, BasePK deletedBy) {
-        List<WorkRequirement> workRequirements = getWorkRequirementsByWorkRequirementScopeForUpdate(workRequirementScope);
+        var workRequirements = getWorkRequirementsByWorkRequirementScopeForUpdate(workRequirementScope);
         
         workRequirements.forEach((workRequirement) -> 
                 deleteWorkRequirement(workRequirement, deletedBy)
@@ -1048,7 +1025,7 @@ public class WorkRequirementControl
     }
     
     public void deleteWorkRequirementsByWorkEffort(WorkEffort workEffort, BasePK deletedBy) {
-        List<WorkRequirement> workRequirements = getWorkRequirementsByWorkEffortForUpdate(workEffort);
+        var workRequirements = getWorkRequirementsByWorkEffortForUpdate(workEffort);
         
         workRequirements.forEach((workRequirement) -> 
                 deleteWorkRequirement(workRequirement, deletedBy)
@@ -1094,7 +1071,7 @@ public class WorkRequirementControl
     }
 
     public void removeWorkRequirementStatusByWorkRequirement(WorkRequirement workRequirement) {
-        WorkRequirementStatus workRequirementStatus = getWorkRequirementStatusForUpdate(workRequirement);
+        var workRequirementStatus = getWorkRequirementStatusForUpdate(workRequirement);
 
         if(workRequirementStatus != null) {
             workRequirementStatus.remove();
@@ -1106,7 +1083,7 @@ public class WorkRequirementControl
     // --------------------------------------------------------------------------------
     
     public WorkAssignment createWorkAssignment(WorkRequirement workRequirement, Party party, Long startTime, Long endTime, BasePK createdBy) {
-        WorkRequirementStatus workRequirementStatus = getWorkRequirementStatusForUpdate(workRequirement);
+        var workRequirementStatus = getWorkRequirementStatusForUpdate(workRequirement);
         Integer workAssignmentSequence = workRequirementStatus.getWorkAssignmentSequence() + 1;
 
         workRequirementStatus.setWorkAssignmentSequence(workAssignmentSequence);
@@ -1115,8 +1092,8 @@ public class WorkRequirementControl
     }
 
     public WorkAssignment createWorkAssignment(WorkRequirement workRequirement, Integer workAssignmentSequence, Party party, Long startTime, Long endTime, BasePK createdBy) {
-        WorkAssignment workAssignment = WorkAssignmentFactory.getInstance().create();
-        WorkAssignmentDetail workAssignmentDetail = WorkAssignmentDetailFactory.getInstance().create(workAssignment, workRequirement, workAssignmentSequence, party, startTime, endTime,
+        var workAssignment = WorkAssignmentFactory.getInstance().create();
+        var workAssignmentDetail = WorkAssignmentDetailFactory.getInstance().create(workAssignment, workRequirement, workAssignmentSequence, party, startTime, endTime,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1132,8 +1109,8 @@ public class WorkRequirementControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.WorkAssignment */
     public WorkAssignment getWorkAssignmentByEntityInstance(EntityInstance entityInstance) {
-        WorkAssignmentPK pk = new WorkAssignmentPK(entityInstance.getEntityUniqueId());
-        WorkAssignment workAssignment = WorkAssignmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new WorkAssignmentPK(entityInstance.getEntityUniqueId());
+        var workAssignment = WorkAssignmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return workAssignment;
     }
@@ -1250,14 +1227,14 @@ public class WorkRequirementControl
     public WorkAssignmentStatusChoicesBean getWorkAssignmentStatusChoices(String defaultWorkAssignmentStatusChoice, Language language,
             boolean allowNullChoice, WorkAssignment workAssignment, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        WorkAssignmentStatusChoicesBean workAssignmentStatusChoicesBean = new WorkAssignmentStatusChoicesBean();
+        var workAssignmentStatusChoicesBean = new WorkAssignmentStatusChoicesBean();
 
         if(workAssignment == null) {
             workflowControl.getWorkflowEntranceChoices(workAssignmentStatusChoicesBean, defaultWorkAssignmentStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(WorkAssignmentStatusConstants.Workflow_WORK_ASSIGNMENT_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(workAssignment.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(WorkAssignmentStatusConstants.Workflow_WORK_ASSIGNMENT_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(workAssignment.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(WorkAssignmentStatusConstants.Workflow_WORK_ASSIGNMENT_STATUS,
                     entityInstance);
 
             workflowControl.getWorkflowDestinationChoices(workAssignmentStatusChoicesBean, defaultWorkAssignmentStatusChoice, language, allowNullChoice,
@@ -1269,10 +1246,10 @@ public class WorkRequirementControl
 
     public void setWorkAssignmentStatus(ExecutionErrorAccumulator eea, WorkAssignment workAssignment, String workAssignmentStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(workAssignment);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WorkAssignmentStatusConstants.Workflow_WORK_ASSIGNMENT_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(workAssignment);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WorkAssignmentStatusConstants.Workflow_WORK_ASSIGNMENT_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = workAssignmentStatusChoice == null ? null
+        var workflowDestination = workAssignmentStatusChoice == null ? null
                 : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), workAssignmentStatusChoice);
 
         if(workflowDestination != null || workAssignmentStatusChoice == null) {
@@ -1288,7 +1265,7 @@ public class WorkRequirementControl
 
     public List<WorkAssignmentTransfer> getWorkAssignmentTransfers(UserVisit userVisit, Collection<WorkAssignment> workAssignments) {
         List<WorkAssignmentTransfer> workAssignmentTransfers = new ArrayList<>(workAssignments.size());
-        WorkAssignmentTransferCache workAssignmentTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkAssignmentTransferCache();
+        var workAssignmentTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkAssignmentTransferCache();
 
         workAssignments.forEach((workAssignment) ->
                 workAssignmentTransfers.add(workAssignmentTransferCache.getWorkAssignmentTransfer(workAssignment))
@@ -1307,19 +1284,19 @@ public class WorkRequirementControl
 
     public void updateWorkAssignmentFromValue(WorkAssignmentDetailValue workAssignmentDetailValue, BasePK updatedBy) {
         if(workAssignmentDetailValue.hasBeenModified()) {
-            WorkAssignment workAssignment = WorkAssignmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workAssignment = WorkAssignmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      workAssignmentDetailValue.getWorkAssignmentPK());
-            WorkAssignmentDetail workAssignmentDetail = workAssignment.getActiveDetailForUpdate();
+            var workAssignmentDetail = workAssignment.getActiveDetailForUpdate();
 
             workAssignmentDetail.setThruTime(session.START_TIME_LONG);
             workAssignmentDetail.store();
 
-            WorkAssignmentPK workAssignmentPK = workAssignmentDetailValue.getWorkAssignmentPK();
-            WorkRequirementPK workRequirementPK = workAssignmentDetailValue.getWorkRequirementPK();
-            Integer workAssignmentSequence = workAssignmentDetailValue.getWorkAssignmentSequence();
-            PartyPK partyPK = workAssignmentDetailValue.getPartyPK();
-            Long startTime = workAssignmentDetailValue.getStartTime();
-            Long endTime = workAssignmentDetailValue.getEndTime();
+            var workAssignmentPK = workAssignmentDetailValue.getWorkAssignmentPK();
+            var workRequirementPK = workAssignmentDetailValue.getWorkRequirementPK();
+            var workAssignmentSequence = workAssignmentDetailValue.getWorkAssignmentSequence();
+            var partyPK = workAssignmentDetailValue.getPartyPK();
+            var startTime = workAssignmentDetailValue.getStartTime();
+            var endTime = workAssignmentDetailValue.getEndTime();
 
             workAssignmentDetail = WorkAssignmentDetailFactory.getInstance().create(workAssignmentPK, workRequirementPK, workAssignmentSequence, partyPK, startTime, endTime,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1332,7 +1309,7 @@ public class WorkRequirementControl
     }
 
     public void deleteWorkAssignment(WorkAssignment workAssignment, BasePK deletedBy) {
-        WorkAssignmentDetail workAssignmentDetail = workAssignment.getLastDetailForUpdate();
+        var workAssignmentDetail = workAssignment.getLastDetailForUpdate();
         workAssignmentDetail.setThruTime(session.START_TIME_LONG);
         workAssignment.setActiveDetail(null);
         workAssignment.store();
@@ -1359,7 +1336,7 @@ public class WorkRequirementControl
     // --------------------------------------------------------------------------------
     
     public WorkTime createWorkTime(WorkRequirement workRequirement, Party party, Long startTime, Long endTime, BasePK createdBy) {
-        WorkRequirementStatus workRequirementStatus = getWorkRequirementStatusForUpdate(workRequirement);
+        var workRequirementStatus = getWorkRequirementStatusForUpdate(workRequirement);
         Integer workTimeSequence = workRequirementStatus.getWorkTimeSequence() + 1;
 
         workRequirementStatus.setWorkTimeSequence(workTimeSequence);
@@ -1368,8 +1345,8 @@ public class WorkRequirementControl
     }
 
     public WorkTime createWorkTime(WorkRequirement workRequirement, Integer workTimeSequence, Party party, Long startTime, Long endTime, BasePK createdBy) {
-        WorkTime workTime = WorkTimeFactory.getInstance().create();
-        WorkTimeDetail workTimeDetail = WorkTimeDetailFactory.getInstance().create(workTime, workRequirement, workTimeSequence, party, startTime, endTime,
+        var workTime = WorkTimeFactory.getInstance().create();
+        var workTimeDetail = WorkTimeDetailFactory.getInstance().create(workTime, workRequirement, workTimeSequence, party, startTime, endTime,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1385,8 +1362,8 @@ public class WorkRequirementControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.WorkTime */
     public WorkTime getWorkTimeByEntityInstance(EntityInstance entityInstance) {
-        WorkTimePK pk = new WorkTimePK(entityInstance.getEntityUniqueId());
-        WorkTime workTime = WorkTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new WorkTimePK(entityInstance.getEntityUniqueId());
+        var workTime = WorkTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return workTime;
     }
@@ -1501,14 +1478,14 @@ public class WorkRequirementControl
     public WorkTimeStatusChoicesBean getWorkTimeStatusChoices(String defaultWorkTimeStatusChoice, Language language,
             boolean allowNullChoice, WorkTime workTime, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        WorkTimeStatusChoicesBean workTimeStatusChoicesBean = new WorkTimeStatusChoicesBean();
+        var workTimeStatusChoicesBean = new WorkTimeStatusChoicesBean();
 
         if(workTime == null) {
             workflowControl.getWorkflowEntranceChoices(workTimeStatusChoicesBean, defaultWorkTimeStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(WorkTimeStatusConstants.Workflow_WORK_TIME_STATUS), partyPK);
         } else {
-            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(workTime.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(WorkTimeStatusConstants.Workflow_WORK_TIME_STATUS,
+            var entityInstance = getCoreControl().getEntityInstanceByBasePK(workTime.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(WorkTimeStatusConstants.Workflow_WORK_TIME_STATUS,
                     entityInstance);
 
             workflowControl.getWorkflowDestinationChoices(workTimeStatusChoicesBean, defaultWorkTimeStatusChoice, language, allowNullChoice,
@@ -1520,10 +1497,10 @@ public class WorkRequirementControl
 
     public void setWorkTimeStatus(ExecutionErrorAccumulator eea, WorkTime workTime, String workTimeStatusChoice, PartyPK modifiedBy) {
         var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getEntityInstanceByBaseEntity(workTime);
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WorkTimeStatusConstants.Workflow_WORK_TIME_STATUS,
+        var entityInstance = getEntityInstanceByBaseEntity(workTime);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WorkTimeStatusConstants.Workflow_WORK_TIME_STATUS,
                 entityInstance);
-        WorkflowDestination workflowDestination = workTimeStatusChoice == null ? null
+        var workflowDestination = workTimeStatusChoice == null ? null
                 : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), workTimeStatusChoice);
 
         if(workflowDestination != null || workTimeStatusChoice == null) {
@@ -1539,7 +1516,7 @@ public class WorkRequirementControl
     
     public List<WorkTimeTransfer> getWorkTimeTransfers(UserVisit userVisit, Collection<WorkTime> workTimes) {
         List<WorkTimeTransfer> workTimeTransfers = new ArrayList<>(workTimes.size());
-        WorkTimeTransferCache workTimeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkTimeTransferCache();
+        var workTimeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkTimeTransferCache();
 
         workTimes.forEach((workTime) ->
                 workTimeTransfers.add(workTimeTransferCache.getWorkTimeTransfer(workTime))
@@ -1554,19 +1531,19 @@ public class WorkRequirementControl
 
     public void updateWorkTimeFromValue(WorkTimeDetailValue workTimeDetailValue, BasePK updatedBy) {
         if(workTimeDetailValue.hasBeenModified()) {
-            WorkTime workTime = WorkTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workTime = WorkTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      workTimeDetailValue.getWorkTimePK());
-            WorkTimeDetail workTimeDetail = workTime.getActiveDetailForUpdate();
+            var workTimeDetail = workTime.getActiveDetailForUpdate();
 
             workTimeDetail.setThruTime(session.START_TIME_LONG);
             workTimeDetail.store();
 
-            WorkTimePK workTimePK = workTimeDetailValue.getWorkTimePK();
-            WorkRequirementPK workRequirementPK = workTimeDetailValue.getWorkRequirementPK();
-            Integer workTimeSequence = workTimeDetailValue.getWorkTimeSequence();
-            PartyPK partyPK = workTimeDetailValue.getPartyPK();
-            Long startTime = workTimeDetailValue.getStartTime();
-            Long endTime = workTimeDetailValue.getEndTime();
+            var workTimePK = workTimeDetailValue.getWorkTimePK();
+            var workRequirementPK = workTimeDetailValue.getWorkRequirementPK();
+            var workTimeSequence = workTimeDetailValue.getWorkTimeSequence();
+            var partyPK = workTimeDetailValue.getPartyPK();
+            var startTime = workTimeDetailValue.getStartTime();
+            var endTime = workTimeDetailValue.getEndTime();
 
             workTimeDetail = WorkTimeDetailFactory.getInstance().create(workTimePK, workRequirementPK, workTimeSequence, partyPK, startTime, endTime,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1580,8 +1557,8 @@ public class WorkRequirementControl
 
     public void deleteWorkTime(WorkTime workTime, BasePK deletedBy) {
         removeWorkTimeUserVisitsByWorkTime(workTime);
-        
-        WorkTimeDetail workTimeDetail = workTime.getLastDetailForUpdate();
+
+        var workTimeDetail = workTime.getLastDetailForUpdate();
         workTimeDetail.setThruTime(session.START_TIME_LONG);
         workTime.setActiveDetail(null);
         workTime.store();

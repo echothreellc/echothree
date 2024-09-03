@@ -20,14 +20,12 @@ import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityGeoPointAttributeEdit;
 import com.echothree.control.user.core.common.form.EditEntityGeoPointAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.EditEntityGeoPointAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityGeoPointAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityGeoPointAttribute;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -84,20 +82,20 @@ public class EditEntityGeoPointAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        EditEntityGeoPointAttributeResult result = CoreResultFactory.getEditEntityGeoPointAttributeResult();
+        var result = CoreResultFactory.getEditEntityGeoPointAttributeResult();
         var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
 
             if(!hasExecutionErrors()) {
-                String entityAttributeName = spec.getEntityAttributeName();
-                String entityAttributeUlid = spec.getEntityAttributeUlid();
+                var entityAttributeName = spec.getEntityAttributeName();
+                var entityAttributeUlid = spec.getEntityAttributeUlid();
 
                 parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
 
                 if(parameterCount == 1) {
-                    EntityAttribute entityAttribute = entityAttributeName == null ?
+                    var entityAttribute = entityAttributeName == null ?
                             EntityAttributeLogic.getInstance().getEntityAttributeByUlid(this, entityAttributeUlid) :
                             EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 

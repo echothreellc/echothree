@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.spec.PartySpec;
@@ -29,7 +28,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,7 +54,7 @@ public class CustomerRecoveryAnswerEditAction
     @Override
     protected PartySpec getSpec(HttpServletRequest request, CustomerRecoveryAnswerEditActionForm actionForm)
             throws NamingException {
-        PartySpec spec = PartyUtil.getHome().getPartySpec();
+        var spec = PartyUtil.getHome().getPartySpec();
         
         spec.setPartyName(findParameter(request, ParameterConstants.PARTY_NAME, actionForm.getPartyName()));
         
@@ -66,7 +64,7 @@ public class CustomerRecoveryAnswerEditAction
     @Override
     protected RecoveryAnswerEdit getEdit(HttpServletRequest request, CustomerRecoveryAnswerEditActionForm actionForm)
             throws NamingException {
-        RecoveryAnswerEdit edit = UserUtil.getHome().getRecoveryAnswerEdit();
+        var edit = UserUtil.getHome().getRecoveryAnswerEdit();
 
         edit.setRecoveryQuestionName(actionForm.getRecoveryQuestionChoice());
         edit.setAnswer(actionForm.getAnswer());
@@ -90,9 +88,9 @@ public class CustomerRecoveryAnswerEditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditRecoveryAnswerForm commandForm)
             throws Exception {
-        CommandResult commandResult = UserUtil.getHome().editRecoveryAnswer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditRecoveryAnswerResult result = (EditRecoveryAnswerResult)executionResult.getResult();
+        var commandResult = UserUtil.getHome().editRecoveryAnswer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditRecoveryAnswerResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.RECOVERY_ANSWER, result.getRecoveryAnswer());
         
@@ -107,13 +105,13 @@ public class CustomerRecoveryAnswerEditAction
     @Override
     public void setupTransfer(CustomerRecoveryAnswerEditActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
         
         commandForm.setPartyName(actionForm.getPartyName());
-        
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
+
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }

@@ -18,13 +18,10 @@ package com.echothree.ui.cli.dataloader.util.data.handler.party;
 
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.PartyService;
-import com.echothree.control.user.party.common.form.CreateCompanyForm;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.control.user.party.common.result.CreateCompanyResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -48,18 +45,18 @@ public class CompaniesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("company")) {
-            CreateCompanyForm commandForm = PartyFormFactory.getCreateCompanyForm();
+            var commandForm = PartyFormFactory.getCreateCompanyForm();
             
             commandForm.set(getAttrsMap(attrs));
-            
-            CommandResult commandResult = partyService.createCompany(initialDataParser.getUserVisit(), commandForm);
+
+            var commandResult = partyService.createCompany(initialDataParser.getUserVisit(), commandForm);
             
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateCompanyResult result = (CreateCompanyResult)executionResult.getResult();
-                String partyName = result.getPartyName();
-                String companyName = result.getCompanyName();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateCompanyResult)executionResult.getResult();
+                var partyName = result.getPartyName();
+                var companyName = result.getCompanyName();
+                var entityRef = result.getEntityRef();
                 
                 initialDataParser.pushHandler(new CompanyHandler(initialDataParser, this, partyName, companyName, entityRef));
             }

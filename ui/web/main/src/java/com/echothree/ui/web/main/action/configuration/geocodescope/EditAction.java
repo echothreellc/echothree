@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected GeoCodeScopeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        GeoCodeScopeSpec spec = GeoUtil.getHome().getGeoCodeScopeSpec();
+        var spec = GeoUtil.getHome().getGeoCodeScopeSpec();
         
         spec.setGeoCodeScopeName(findParameter(request, ParameterConstants.ORIGINAL_GEO_CODE_SCOPE_NAME, actionForm.getOriginalGeoCodeScopeName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected GeoCodeScopeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        GeoCodeScopeEdit edit = GeoUtil.getHome().getGeoCodeScopeEdit();
+        var edit = GeoUtil.getHome().getGeoCodeScopeEdit();
 
         edit.setGeoCodeScopeName(actionForm.getGeoCodeScopeName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

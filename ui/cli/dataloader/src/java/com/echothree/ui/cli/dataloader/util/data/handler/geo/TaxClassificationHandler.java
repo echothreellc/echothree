@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.geo;
 
 import com.echothree.control.user.tax.common.TaxUtil;
 import com.echothree.control.user.tax.common.TaxService;
-import com.echothree.control.user.tax.common.form.CreateTaxClassificationTranslationForm;
 import com.echothree.control.user.tax.common.form.TaxFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -54,7 +53,7 @@ public class TaxClassificationHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("taxClassificationTranslation")) {
-            CreateTaxClassificationTranslationForm commandForm = TaxFormFactory.getCreateTaxClassificationTranslationForm();
+            var commandForm = TaxFormFactory.getCreateTaxClassificationTranslationForm();
 
             commandForm.setCountryName(countryGeoCodeName);
             commandForm.setTaxClassificationName(taxClassificationName);

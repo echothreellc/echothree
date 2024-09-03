@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.OfferService;
-import com.echothree.control.user.offer.common.form.CreateSourceForm;
 import com.echothree.control.user.offer.common.form.OfferFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -53,9 +52,9 @@ public class OfferUseHandler
             String sourceName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("sourceName"))
                     sourceName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -65,7 +64,7 @@ public class OfferUseHandler
             }
             
             try {
-                CreateSourceForm form = OfferFormFactory.getCreateSourceForm();
+                var form = OfferFormFactory.getCreateSourceForm();
                 
                 form.setOfferName(offerName);
                 form.setUseName(useName);

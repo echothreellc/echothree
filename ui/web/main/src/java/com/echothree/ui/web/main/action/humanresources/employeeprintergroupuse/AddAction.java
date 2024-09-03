@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employeeprintergroupuse;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.CreatePartyPrinterGroupUseForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
@@ -58,7 +57,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyPrinterGroupUseForm commandForm = PrinterUtil.getHome().getCreatePartyPrinterGroupUseForm();
+        var commandForm = PrinterUtil.getHome().getCreatePartyPrinterGroupUseForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setPrinterGroupUseTypeName(actionForm.getPrinterGroupUseTypeChoice());

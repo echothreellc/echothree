@@ -17,10 +17,8 @@
 package com.echothree.model.control.chain.server.transfer;
 
 import com.echothree.model.control.chain.common.transfer.ChainActionSetTransfer;
-import com.echothree.model.control.chain.common.transfer.ChainTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainActionSet;
-import com.echothree.model.data.chain.server.entity.ChainActionSetDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class ChainActionSetTransferCache
@@ -34,15 +32,15 @@ public class ChainActionSetTransferCache
     }
 
     public ChainActionSetTransfer getChainActionSetTransfer(ChainActionSet chainActionSet) {
-        ChainActionSetTransfer chainActionSetTransfer = get(chainActionSet);
+        var chainActionSetTransfer = get(chainActionSet);
 
         if(chainActionSetTransfer == null) {
-            ChainActionSetDetail chainActionSetDetail = chainActionSet.getLastDetail();
-            ChainTransfer chainTransfer = chainControl.getChainTransfer(userVisit, chainActionSetDetail.getChain());
-            String chainActionSetName = chainActionSetDetail.getChainActionSetName();
-            Boolean isDefault = chainActionSetDetail.getIsDefault();
-            Integer sortOrder = chainActionSetDetail.getSortOrder();
-            String description = chainControl.getBestChainActionSetDescription(chainActionSet, getLanguage());
+            var chainActionSetDetail = chainActionSet.getLastDetail();
+            var chainTransfer = chainControl.getChainTransfer(userVisit, chainActionSetDetail.getChain());
+            var chainActionSetName = chainActionSetDetail.getChainActionSetName();
+            var isDefault = chainActionSetDetail.getIsDefault();
+            var sortOrder = chainActionSetDetail.getSortOrder();
+            var description = chainControl.getBestChainActionSetDescription(chainActionSet, getLanguage());
 
             chainActionSetTransfer = new ChainActionSetTransfer(chainTransfer, chainActionSetName, isDefault, sortOrder, description);
             put(chainActionSet, chainActionSetTransfer);

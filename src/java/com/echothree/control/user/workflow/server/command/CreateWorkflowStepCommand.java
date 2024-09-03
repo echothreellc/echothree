@@ -23,9 +23,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
-import com.echothree.model.data.workflow.server.entity.WorkflowStepType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -72,18 +70,18 @@ public class CreateWorkflowStepCommand
     protected BaseResult execute() {
         var result = WorkflowResultFactory.getCreateWorkflowStepResult();
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         WorkflowStep workflowStep = null;
         
         if(workflow != null) {
-            String workflowStepName = form.getWorkflowStepName();
+            var workflowStepName = form.getWorkflowStepName();
 
             workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             if(workflowStep == null) {
-                String workflowStepTypeName = form.getWorkflowStepTypeName();
-                WorkflowStepType workflowStepType = workflowControl.getWorkflowStepTypeByName(workflowStepTypeName);
+                var workflowStepTypeName = form.getWorkflowStepTypeName();
+                var workflowStepType = workflowControl.getWorkflowStepTypeByName(workflowStepTypeName);
                 
                 if(workflowStepType != null) {
                     var partyPK = getPartyPK();

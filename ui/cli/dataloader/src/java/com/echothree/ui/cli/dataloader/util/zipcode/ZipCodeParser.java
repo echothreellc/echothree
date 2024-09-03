@@ -21,12 +21,9 @@ import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.GeoService;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
-import com.echothree.control.user.geo.common.form.GetCountryForm;
 import com.echothree.control.user.geo.common.result.GetCountryResult;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.collection.SmartQueue;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -67,18 +64,18 @@ public class ZipCodeParser {
     }
     
     public void setupCountryGeoCodeName() {
-        GetCountryForm getCountryForm = GeoFormFactory.getGetCountryForm();
+        var getCountryForm = GeoFormFactory.getGetCountryForm();
         
         getCountryForm.setIso2Letter("US");
-        
-        CommandResult commandResult = getGeoService().getCountry(getUserVisit(), getCountryForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCountryResult getCountryResult = (GetCountryResult)executionResult.getResult();
+
+        var commandResult = getGeoService().getCountry(getUserVisit(), getCountryForm);
+        var executionResult = commandResult.getExecutionResult();
+        var getCountryResult = (GetCountryResult)executionResult.getResult();
         setCountryGeoCodeName(getCountryResult.getCountry().getGeoCodeName());
     }
     
     public boolean setup() {
-        boolean result = true;
+        var result = true;
         
         try {
             setAuthenticationService(AuthenticationUtil.getHome());

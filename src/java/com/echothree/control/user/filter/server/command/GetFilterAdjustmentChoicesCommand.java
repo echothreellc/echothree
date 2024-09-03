@@ -18,12 +18,10 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterAdjustmentChoicesForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.control.user.filter.common.result.GetFilterAdjustmentChoicesResult;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -34,8 +32,6 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetFilterAdjustmentChoicesCommand
@@ -67,13 +63,13 @@ public class GetFilterAdjustmentChoicesCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        GetFilterAdjustmentChoicesResult result = FilterResultFactory.getGetFilterAdjustmentChoicesResult();
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var result = FilterResultFactory.getGetFilterAdjustmentChoicesResult();
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String defaultFilterAdjustmentChoice = form.getDefaultFilterAdjustmentChoice();
-            boolean initialAdjustmentsOnly = Boolean.parseBoolean(form.getInitialAdjustmentsOnly());
+            var defaultFilterAdjustmentChoice = form.getDefaultFilterAdjustmentChoice();
+            var initialAdjustmentsOnly = Boolean.parseBoolean(form.getInitialAdjustmentsOnly());
             
             result.setFilterAdjustmentChoices(filterControl.getFilterAdjustmentChoices(defaultFilterAdjustmentChoice, getPreferredLanguage(), filterKind, initialAdjustmentsOnly));
         } else {

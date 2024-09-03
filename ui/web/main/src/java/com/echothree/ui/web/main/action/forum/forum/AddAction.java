@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.forum.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.CreateForumForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,10 +52,10 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateForumForm commandForm = ForumUtil.getHome().getCreateForumForm();
+                    var commandForm = ForumUtil.getHome().getCreateForumForm();
                     
                     commandForm.setForumName(actionForm.getForumName());
                     commandForm.setForumTypeName(actionForm.getForumTypeChoice());
@@ -66,8 +64,8 @@ public class AddAction
                     commandForm.setForumMessageSequenceName(actionForm.getForumMessageSequenceChoice());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ForumUtil.getHome().createForum(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ForumUtil.getHome().createForum(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

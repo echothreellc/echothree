@@ -16,11 +16,9 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.search.common.form.GetSearchResultActionTypeForm;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchResultActionTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;

@@ -25,18 +25,12 @@ import com.echothree.model.control.track.common.workflow.TrackStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.track.server.entity.Track;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
-import java.util.Map;
-import java.util.Set;
 
 public class TrackLogic
         extends BaseLogic {
@@ -55,7 +49,7 @@ public class TrackLogic
     
     public Track getTrackByName(final ExecutionErrorAccumulator eea, final String trackName) {
         var trackControl = Session.getModelController(TrackControl.class);
-        Track track = trackControl.getTrackByName(trackName);
+        var track = trackControl.getTrackByName(trackName);
 
         if(track == null) {
             handleExecutionError(UnknownTrackNameException.class, eea, ExecutionErrors.UnknownTrackName.name(), trackName);
@@ -66,7 +60,7 @@ public class TrackLogic
     
     public Track getTrackByValue(final ExecutionErrorAccumulator eea, final String trackValue) {
         var trackControl = Session.getModelController(TrackControl.class);
-        Track track = trackControl.getTrackByValue(trackValue);
+        var track = trackControl.getTrackByValue(trackValue);
 
         if(track == null) {
             handleExecutionError(UnknownTrackValueException.class, eea, ExecutionErrors.UnknownTrackValue.name(), trackValue);
@@ -79,14 +73,14 @@ public class TrackLogic
         var coreControl = Session.getModelController(CoreControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, TrackStatusConstants.Workflow_TRACK_STATUS);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(track.getPrimaryKey());
-        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
-        WorkflowDestination workflowDestination = trackStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), trackStatusChoice);
+        var entityInstance = coreControl.getEntityInstanceByBasePK(track.getPrimaryKey());
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
+        var workflowDestination = trackStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), trackStatusChoice);
 
         if(workflowDestination != null || trackStatusChoice == null) {
             var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
-            String currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
-            Map<String, Set<String>> map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
+            var currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
+            var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             Long triggerTime = null;
 
             if(currentWorkflowStepName.equals(TrackStatusConstants.WorkflowStep_ACTIVE)) {

@@ -16,24 +16,16 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.common.ItemProperties;
 import com.echothree.model.control.item.common.transfer.ItemPriceTransfer;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemFixedPrice;
 import com.echothree.model.data.item.server.entity.ItemPrice;
 import com.echothree.model.data.item.server.entity.ItemVariablePrice;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.HistoryTransfer;
@@ -43,7 +35,6 @@ import com.echothree.util.server.string.AmountUtils;
 import com.echothree.util.server.transfer.HistoryCache;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class ItemPriceTransferCache
         extends BaseItemTransferCache<ItemPrice, ItemPriceTransfer>
@@ -101,14 +92,14 @@ public class ItemPriceTransferCache
     }
 
     private ItemPriceTransfer getItemPriceTransfer(ItemPrice itemPrice, ItemFixedPrice itemFixedPrice, ItemVariablePrice itemVariablePrice) {
-        Item item = itemPrice.getItem();
-        ItemTransfer itemTransfer = filterItem ? null : itemControl.getItemTransfer(userVisit, item);
-        InventoryCondition inventoryCondition = filterInventoryCondition ? null : itemPrice.getInventoryCondition();
-        InventoryConditionTransfer inventoryConditionTransfer = inventoryCondition == null ? null : inventoryControl.getInventoryConditionTransfer(userVisit, inventoryCondition);
-        UnitOfMeasureType unitOfMeasureType = filterUnitOfMeasureType ? null : itemPrice.getUnitOfMeasureType();
-        UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = unitOfMeasureType == null ? null : uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType);
-        Currency currency = itemPrice.getCurrency();
-        CurrencyTransfer currencyTransfer = filterCurrency ? null : accountingControl.getCurrencyTransfer(userVisit, currency);
+        var item = itemPrice.getItem();
+        var itemTransfer = filterItem ? null : itemControl.getItemTransfer(userVisit, item);
+        var inventoryCondition = filterInventoryCondition ? null : itemPrice.getInventoryCondition();
+        var inventoryConditionTransfer = inventoryCondition == null ? null : inventoryControl.getInventoryConditionTransfer(userVisit, inventoryCondition);
+        var unitOfMeasureType = filterUnitOfMeasureType ? null : itemPrice.getUnitOfMeasureType();
+        var unitOfMeasureTypeTransfer = unitOfMeasureType == null ? null : uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType);
+        var currency = itemPrice.getCurrency();
+        var currencyTransfer = filterCurrency ? null : accountingControl.getCurrencyTransfer(userVisit, currency);
         Long unformattedUnitPrice = null;
         String unitPrice = null;
         Long unformattedMinimumUnitPrice = null;
@@ -140,32 +131,32 @@ public class ItemPriceTransferCache
     @Override
     public ListWrapper<HistoryTransfer<ItemPriceTransfer>> getHistory(ItemPrice itemPrice) {
         List<HistoryTransfer<ItemPriceTransfer>> historyTransfers = null;
-        String itemPriceTypeName = itemPrice.getItem().getLastDetail().getItemPriceType().getItemPriceTypeName();
+        var itemPriceTypeName = itemPrice.getItem().getLastDetail().getItemPriceType().getItemPriceTypeName();
         
         if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
-            List<ItemFixedPrice> itemFixedPriceHistory = itemControl.getItemFixedPriceHistory(itemPrice);
+            var itemFixedPriceHistory = itemControl.getItemFixedPriceHistory(itemPrice);
             
             historyTransfers = new ArrayList<>(itemFixedPriceHistory.size());
             
             for(var itemFixedPrice : itemFixedPriceHistory) {
-                Long unformattedFromTime = filterUnformattedFromTime ? null : itemFixedPrice.getFromTime();
-                String fromTime = filterFromTime ? null : formatTypicalDateTime(itemFixedPrice.getFromTime());
-                Long unformattedThruTime = filterUnformattedThruTime ? null : itemFixedPrice.getThruTime();
-                String thruTime = filterThruTime ? null : formatTypicalDateTime(itemFixedPrice.getThruTime());
+                var unformattedFromTime = filterUnformattedFromTime ? null : itemFixedPrice.getFromTime();
+                var fromTime = filterFromTime ? null : formatTypicalDateTime(itemFixedPrice.getFromTime());
+                var unformattedThruTime = filterUnformattedThruTime ? null : itemFixedPrice.getThruTime();
+                var thruTime = filterThruTime ? null : formatTypicalDateTime(itemFixedPrice.getThruTime());
                 
                 historyTransfers.add(new HistoryTransfer<>(getItemPriceTransfer(itemPrice, itemFixedPrice, null),
                         unformattedFromTime, fromTime, unformattedThruTime, thruTime));
             }
         } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
-            List<ItemVariablePrice> itemVariablePriceHistory = itemControl.getItemVariablePriceHistory(itemPrice);
+            var itemVariablePriceHistory = itemControl.getItemVariablePriceHistory(itemPrice);
             
             historyTransfers = new ArrayList<>(itemVariablePriceHistory.size());
             
             for(var itemVariablePrice : itemVariablePriceHistory) {
-                Long unformattedFromTime = filterUnformattedFromTime ? null : itemVariablePrice.getFromTime();
-                String fromTime = filterFromTime ? null : formatTypicalDateTime(itemVariablePrice.getFromTime());
-                Long unformattedThruTime = filterUnformattedThruTime ? null : itemVariablePrice.getThruTime();
-                String thruTime = filterThruTime ? null : formatTypicalDateTime(itemVariablePrice.getThruTime());
+                var unformattedFromTime = filterUnformattedFromTime ? null : itemVariablePrice.getFromTime();
+                var fromTime = filterFromTime ? null : formatTypicalDateTime(itemVariablePrice.getFromTime());
+                var unformattedThruTime = filterUnformattedThruTime ? null : itemVariablePrice.getThruTime();
+                var thruTime = filterThruTime ? null : formatTypicalDateTime(itemVariablePrice.getThruTime());
                 
                 historyTransfers.add(new HistoryTransfer<>(getItemPriceTransfer(itemPrice, null, itemVariablePrice),
                         unformattedFromTime, fromTime, unformattedThruTime, thruTime));
@@ -177,12 +168,12 @@ public class ItemPriceTransferCache
     
     @Override
     public ItemPriceTransfer getTransfer(ItemPrice itemPrice) {
-        ItemPriceTransfer itemPriceTransfer = get(itemPrice);
+        var itemPriceTransfer = get(itemPrice);
         
         if(itemPriceTransfer == null) {
             ItemFixedPrice itemFixedPrice = null;
             ItemVariablePrice itemVariablePrice = null;
-            String itemPriceTypeName = itemPrice.getItem().getLastDetail().getItemPriceType().getItemPriceTypeName();
+            var itemPriceTypeName = itemPrice.getItem().getLastDetail().getItemPriceType().getItemPriceTypeName();
 
             if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
                 itemFixedPrice = itemControl.getItemFixedPrice(itemPrice);

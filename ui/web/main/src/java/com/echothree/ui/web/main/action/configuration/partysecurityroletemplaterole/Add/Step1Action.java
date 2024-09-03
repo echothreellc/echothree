@@ -18,10 +18,6 @@ package com.echothree.ui.web.main.action.configuration.partysecurityroletemplate
 
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.GetPartySecurityRoleTemplateForm;
-import com.echothree.control.user.security.common.form.GetSecurityRoleGroupForm;
-import com.echothree.control.user.security.common.form.GetSecurityRoleGroupsForm;
-import com.echothree.control.user.security.common.form.GetSecurityRolesForm;
 import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplateResult;
 import com.echothree.control.user.security.common.result.GetSecurityRoleGroupResult;
 import com.echothree.control.user.security.common.result.GetSecurityRoleGroupsResult;
@@ -35,8 +31,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -66,33 +60,33 @@ public class Step1Action
     
     public PartySecurityRoleTemplateTransfer getPartySecurityRoleTemplate(UserVisitPK userVisitPK, String partySecurityRoleTemplateName)
             throws NamingException {
-        GetPartySecurityRoleTemplateForm commandForm = SecurityUtil.getHome().getGetPartySecurityRoleTemplateForm();
+        var commandForm = SecurityUtil.getHome().getGetPartySecurityRoleTemplateForm();
 
         commandForm.setPartySecurityRoleTemplateName(partySecurityRoleTemplateName);
 
-        CommandResult commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplate(userVisitPK, commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartySecurityRoleTemplateResult result = (GetPartySecurityRoleTemplateResult)executionResult.getResult();
+        var commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplate(userVisitPK, commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartySecurityRoleTemplateResult)executionResult.getResult();
 
         return result.getPartySecurityRoleTemplate();
     }
 
     public SecurityRoleGroupTransfer getSecurityRoleGroup(UserVisitPK userVisitPK, String securityRoleGroupName)
             throws NamingException {
-        GetSecurityRoleGroupForm commandForm = SecurityUtil.getHome().getGetSecurityRoleGroupForm();
+        var commandForm = SecurityUtil.getHome().getGetSecurityRoleGroupForm();
 
         commandForm.setSecurityRoleGroupName(securityRoleGroupName);
 
-        CommandResult commandResult = SecurityUtil.getHome().getSecurityRoleGroup(userVisitPK, commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetSecurityRoleGroupResult result = (GetSecurityRoleGroupResult)executionResult.getResult();
+        var commandResult = SecurityUtil.getHome().getSecurityRoleGroup(userVisitPK, commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetSecurityRoleGroupResult)executionResult.getResult();
 
         return result.getSecurityRoleGroup();
     }
 
     public List<SecurityRoleGroupTransfer> getSecurityRoleGroups(UserVisitPK userVisitPK, String parentSecrurityRoleGroupName)
             throws NamingException {
-        GetSecurityRoleGroupsForm commandForm = SecurityUtil.getHome().getGetSecurityRoleGroupsForm();
+        var commandForm = SecurityUtil.getHome().getGetSecurityRoleGroupsForm();
 
         commandForm.setParentSecurityRoleGroupName(parentSecrurityRoleGroupName);
 
@@ -100,22 +94,22 @@ public class Step1Action
         options.add(SecurityOptions.SecurityRoleGroupIncludeSecurityRolesCount);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = SecurityUtil.getHome().getSecurityRoleGroups(userVisitPK, commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetSecurityRoleGroupsResult result = (GetSecurityRoleGroupsResult)executionResult.getResult();
+        var commandResult = SecurityUtil.getHome().getSecurityRoleGroups(userVisitPK, commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetSecurityRoleGroupsResult)executionResult.getResult();
 
         return result.getSecurityRoleGroups();
     }
 
     public List<SecurityRoleTransfer> getSecurityRoles(UserVisitPK userVisitPK, String securityRoleGroupName)
             throws NamingException {
-        GetSecurityRolesForm commandForm = SecurityUtil.getHome().getGetSecurityRolesForm();
+        var commandForm = SecurityUtil.getHome().getGetSecurityRolesForm();
         
         commandForm.setSecurityRoleGroupName(securityRoleGroupName);
-        
-        CommandResult commandResult = SecurityUtil.getHome().getSecurityRoles(userVisitPK, commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetSecurityRolesResult result = (GetSecurityRolesResult)executionResult.getResult();
+
+        var commandResult = SecurityUtil.getHome().getSecurityRoles(userVisitPK, commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetSecurityRolesResult)executionResult.getResult();
         
         return result.getSecurityRoles();
     }
@@ -126,11 +120,11 @@ public class Step1Action
         String forwardKey;
         
         try {
-            UserVisitPK userVisitPK = getUserVisitPK(request);
-            String partySecurityRoleTemplateName = request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME);
-            String parentSecurityRoleGroupName = request.getParameter(ParameterConstants.PARENT_SECURITY_ROLE_GROUP_NAME);
-            List<SecurityRoleGroupTransfer> securityRoleGroups = getSecurityRoleGroups(userVisitPK, parentSecurityRoleGroupName);
-            List<SecurityRoleTransfer> securityRoles = getSecurityRoles(userVisitPK, parentSecurityRoleGroupName);
+            var userVisitPK = getUserVisitPK(request);
+            var partySecurityRoleTemplateName = request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME);
+            var parentSecurityRoleGroupName = request.getParameter(ParameterConstants.PARENT_SECURITY_ROLE_GROUP_NAME);
+            var securityRoleGroups = getSecurityRoleGroups(userVisitPK, parentSecurityRoleGroupName);
+            var securityRoles = getSecurityRoles(userVisitPK, parentSecurityRoleGroupName);
             
             request.setAttribute(AttributeConstants.PARTY_SECURITY_ROLE_TEMPLATE, getPartySecurityRoleTemplate(userVisitPK, partySecurityRoleTemplateName));
             request.setAttribute(AttributeConstants.PARENT_SECURITY_ROLE_GROUP, getSecurityRoleGroup(userVisitPK, parentSecurityRoleGroupName));

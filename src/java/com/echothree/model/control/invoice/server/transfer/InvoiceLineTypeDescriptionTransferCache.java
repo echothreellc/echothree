@@ -17,9 +17,7 @@
 package com.echothree.model.control.invoice.server.transfer;
 
 import com.echothree.model.control.invoice.common.transfer.InvoiceLineTypeDescriptionTransfer;
-import com.echothree.model.control.invoice.common.transfer.InvoiceLineTypeTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class InvoiceLineTypeDescriptionTransferCache
     }
     
     public InvoiceLineTypeDescriptionTransfer getInvoiceLineTypeDescriptionTransfer(InvoiceLineTypeDescription invoiceLineTypeDescription) {
-        InvoiceLineTypeDescriptionTransfer invoiceLineTypeDescriptionTransfer = get(invoiceLineTypeDescription);
+        var invoiceLineTypeDescriptionTransfer = get(invoiceLineTypeDescription);
         
         if(invoiceLineTypeDescriptionTransfer == null) {
-            InvoiceLineTypeTransfer invoiceLineTypeTransfer = invoiceControl.getInvoiceLineTypeTransfer(userVisit, invoiceLineTypeDescription.getInvoiceLineType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, invoiceLineTypeDescription.getLanguage());
+            var invoiceLineTypeTransfer = invoiceControl.getInvoiceLineTypeTransfer(userVisit, invoiceLineTypeDescription.getInvoiceLineType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, invoiceLineTypeDescription.getLanguage());
             
             invoiceLineTypeDescriptionTransfer = new InvoiceLineTypeDescriptionTransfer(languageTransfer, invoiceLineTypeTransfer, invoiceLineTypeDescription.getDescription());
             put(invoiceLineTypeDescription, invoiceLineTypeDescriptionTransfer);

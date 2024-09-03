@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.commandmessage;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteCommandMessageTranslationForm;
-import com.echothree.control.user.core.common.form.GetCommandMessageTranslationForm;
 import com.echothree.control.user.core.common.result.GetCommandMessageTranslationResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -64,16 +61,16 @@ public class TranslationDeleteAction
     @Override
     public void setupTransfer(TranslationDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCommandMessageTranslationForm commandForm = CoreUtil.getHome().getGetCommandMessageTranslationForm();
+        var commandForm = CoreUtil.getHome().getGetCommandMessageTranslationForm();
         
         commandForm.setCommandMessageTypeName(actionForm.getCommandMessageTypeName());
         commandForm.setCommandMessageKey(actionForm.getCommandMessageKey());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getCommandMessageTranslation(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getCommandMessageTranslation(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommandMessageTranslationResult result = (GetCommandMessageTranslationResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommandMessageTranslationResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.COMMAND_MESSAGE_TRANSLATION, result.getCommandMessageTranslation());
         }
@@ -82,7 +79,7 @@ public class TranslationDeleteAction
     @Override
     public CommandResult doDelete(TranslationDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteCommandMessageTranslationForm commandForm = CoreUtil.getHome().getDeleteCommandMessageTranslationForm();
+        var commandForm = CoreUtil.getHome().getDeleteCommandMessageTranslationForm();
 
         commandForm.setCommandMessageTypeName(actionForm.getCommandMessageTypeName());
         commandForm.setCommandMessageKey(actionForm.getCommandMessageKey());

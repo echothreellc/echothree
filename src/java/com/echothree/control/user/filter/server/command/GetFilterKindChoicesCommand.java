@@ -18,7 +18,6 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterKindChoicesForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.control.user.filter.common.result.GetFilterKindChoicesResult;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetFilterKindChoicesCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        GetFilterKindChoicesResult result = FilterResultFactory.getGetFilterKindChoicesResult();
-        String defaultFilterKindChoice = form.getDefaultFilterKindChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = FilterResultFactory.getGetFilterKindChoicesResult();
+        var defaultFilterKindChoice = form.getDefaultFilterKindChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setFilterKindChoices(filterControl.getFilterKindChoices(defaultFilterKindChoice, getPreferredLanguage(),
                 allowNullChoice));

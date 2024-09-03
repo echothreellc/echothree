@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.harmonizedtariffschedulecode;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCodeTranslationForm;
 import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeTranslationResult;
 import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeTranslationTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,18 +50,18 @@ public class TranslationReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetHarmonizedTariffScheduleCodeTranslationForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeTranslationForm();
+        var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeTranslationForm();
 
         commandForm.setCountryName(request.getParameter(ParameterConstants.COUNTRY_NAME));
         commandForm.setHarmonizedTariffScheduleCodeName(request.getParameter(ParameterConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_NAME));
         commandForm.setLanguageIsoName(request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME));
-        
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeTranslation(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeTranslation(getUserVisitPK(request), commandForm);
         HarmonizedTariffScheduleCodeTranslationTransfer harmonizedTariffScheduleCodeTranslation = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeTranslationResult result = (GetHarmonizedTariffScheduleCodeTranslationResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodeTranslationResult)executionResult.getResult();
             
             harmonizedTariffScheduleCodeTranslation = result.getHarmonizedTariffScheduleCodeTranslation();
         }

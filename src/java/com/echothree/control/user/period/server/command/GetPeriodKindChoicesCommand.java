@@ -17,7 +17,6 @@
 package com.echothree.control.user.period.server.command;
 
 import com.echothree.control.user.period.common.form.GetPeriodKindChoicesForm;
-import com.echothree.control.user.period.common.result.GetPeriodKindChoicesResult;
 import com.echothree.control.user.period.common.result.PeriodResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.period.server.control.PeriodControl;
@@ -63,9 +62,9 @@ public class GetPeriodKindChoicesCommand
     @Override
     protected BaseResult execute() {
         var periodControl = Session.getModelController(PeriodControl.class);
-        GetPeriodKindChoicesResult result = PeriodResultFactory.getGetPeriodKindChoicesResult();
-        String defaultPeriodKindChoice = form.getDefaultPeriodKindChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = PeriodResultFactory.getGetPeriodKindChoicesResult();
+        var defaultPeriodKindChoice = form.getDefaultPeriodKindChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setPeriodKindChoices(periodControl.getPeriodKindChoices(defaultPeriodKindChoice, getPreferredLanguage(),
                 allowNullChoice));

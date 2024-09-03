@@ -17,17 +17,12 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetSearchSortDirectionChoicesForm;
-import com.echothree.control.user.search.common.result.GetSearchSortDirectionChoicesResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.search.server.entity.PartySearchTypePreference;
-import com.echothree.model.data.search.server.entity.SearchSortDirection;
-import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -70,25 +65,25 @@ public class GetSearchSortDirectionChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetSearchSortDirectionChoicesResult result = SearchResultFactory.getGetSearchSortDirectionChoicesResult();
-        String searchKindName = form.getSearchKindName();
-        String searchTypeName = form.getSearchTypeName();
+        var result = SearchResultFactory.getGetSearchSortDirectionChoicesResult();
+        var searchKindName = form.getSearchKindName();
+        var searchTypeName = form.getSearchTypeName();
         var parameterCount = (searchKindName == null ? 0 : 1) + (searchTypeName == null ? 0 : 1);
 
         if(parameterCount == 0 || parameterCount == 2) {
-            String defaultSearchSortDirectionChoice = form.getDefaultSearchSortDirectionChoice();
-            Party party = getParty();
-            SearchType searchType = defaultSearchSortDirectionChoice == null && party != null ? SearchLogic.getInstance().getSearchTypeByName(this, searchKindName, searchTypeName) : null;
+            var defaultSearchSortDirectionChoice = form.getDefaultSearchSortDirectionChoice();
+            var party = getParty();
+            var searchType = defaultSearchSortDirectionChoice == null && party != null ? SearchLogic.getInstance().getSearchTypeByName(this, searchKindName, searchTypeName) : null;
 
             if(!hasExecutionErrors()) {
                 var searchControl = Session.getModelController(SearchControl.class);
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 if(searchType != null) {
-                    PartySearchTypePreference partySearchTypePreference = searchControl.getPartySearchTypePreference(party, searchType);
+                    var partySearchTypePreference = searchControl.getPartySearchTypePreference(party, searchType);
 
                     if(partySearchTypePreference != null) {
-                        SearchSortDirection searchSortDirection = partySearchTypePreference.getLastDetail().getSearchSortDirection();
+                        var searchSortDirection = partySearchTypePreference.getLastDetail().getSearchSortDirection();
 
                         if(searchSortDirection != null) {
                             defaultSearchSortDirectionChoice = searchSortDirection.getLastDetail().getSearchSortDirectionName();

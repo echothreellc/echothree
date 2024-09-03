@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.configuration.scaleusetype;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.GetScaleUseTypesForm;
 import com.echothree.control.user.scale.common.result.GetScaleUseTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -50,13 +47,13 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetScaleUseTypesForm commandForm = ScaleUtil.getHome().getGetScaleUseTypesForm();
+        String forwardKey;
+        var commandForm = ScaleUtil.getHome().getGetScaleUseTypesForm();
 
-        CommandResult commandResult = ScaleUtil.getHome().getScaleUseTypes(getUserVisitPK(request), commandForm);
+        var commandResult = ScaleUtil.getHome().getScaleUseTypes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetScaleUseTypesResult result = (GetScaleUseTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetScaleUseTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SCALE_USE_TYPES, result.getScaleUseTypes());
             forwardKey = ForwardConstants.DISPLAY;

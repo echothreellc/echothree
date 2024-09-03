@@ -23,9 +23,7 @@ import com.echothree.model.data.contact.common.pk.ContactMechanismPK;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.factory.ContactMechanismFactory;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.payment.common.pk.PartyPaymentMethodContactMechanismPK;
-import com.echothree.model.data.payment.server.entity.PartyPaymentMethodContactMechanism;
 import com.echothree.model.data.payment.server.factory.PartyPaymentMethodContactMechanismFactory;
 import com.echothree.model.data.selector.server.entity.SelectorNodeDetail;
 import com.echothree.util.common.persistence.BasePK;
@@ -63,18 +61,18 @@ public class BaseContactMechanismSelectorEvaluator
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactMechanism or a
      * ECHO_THREE.PartyPaymentMethodContactMechanism */
     protected ContactMechanism getContactMechanismFromEntityInstance(EntityInstance entityInstance) {
-        EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-        String componentVendorName = entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName();
-        String entityTypeName = entityTypeDetail.getEntityTypeName();
+        var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+        var componentVendorName = entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName();
+        var entityTypeName = entityTypeDetail.getEntityTypeName();
         ContactMechanism contactMechanism = null;
         
         if(componentVendorName.equals(ComponentVendors.ECHO_THREE.name())) {
             if(entityTypeName.equals(EntityTypes.ContactMechanism.name())) {
-                ContactMechanismPK pk = new ContactMechanismPK(entityInstance.getEntityUniqueId());
+                var pk = new ContactMechanismPK(entityInstance.getEntityUniqueId());
                 contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
             } else if(entityTypeName.equals(EntityTypes.PartyPaymentMethodContactMechanism.name())) {
-                PartyPaymentMethodContactMechanismPK pk = new PartyPaymentMethodContactMechanismPK(entityInstance.getEntityUniqueId());
-                PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism = PartyPaymentMethodContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+                var pk = new PartyPaymentMethodContactMechanismPK(entityInstance.getEntityUniqueId());
+                var partyPaymentMethodContactMechanism = PartyPaymentMethodContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
                 
                 contactMechanism = partyPaymentMethodContactMechanism.getPartyContactMechanismPurpose().getLastDetail().getPartyContactMechanism().getLastDetail().getContactMechanism();
             }
@@ -90,8 +88,8 @@ public class BaseContactMechanismSelectorEvaluator
         
         this.cachedSelector = cachedSelector;
         this.entityInstance = entityInstance;
-        
-        Boolean result = evaluateSelectorNode(cachedSelector.getRootSelectorNodeDetail());
+
+        var result = evaluateSelectorNode(cachedSelector.getRootSelectorNodeDetail());
         
         this.entityInstance = null;
         this.cachedSelector = null;

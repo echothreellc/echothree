@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationpolicyreason;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.form.CreateCancellationPolicyReasonForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,12 +54,12 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
-        String cancellationPolicyName = request.getParameter(ParameterConstants.CANCELLATION_POLICY_NAME);
+        var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+        var cancellationPolicyName = request.getParameter(ParameterConstants.CANCELLATION_POLICY_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(cancellationKindName == null)
                     cancellationKindName = actionForm.getCancellationKindName();
@@ -69,15 +67,15 @@ public class AddAction
                     cancellationPolicyName = actionForm.getCancellationPolicyName();
                 
                 if(wasPost(request)) {
-                    CreateCancellationPolicyReasonForm commandForm = CancellationPolicyUtil.getHome().getCreateCancellationPolicyReasonForm();
+                    var commandForm = CancellationPolicyUtil.getHome().getCreateCancellationPolicyReasonForm();
                     
                     commandForm.setCancellationKindName(cancellationKindName);
                     commandForm.setCancellationPolicyName(cancellationPolicyName);
                     commandForm.setCancellationReasonName(actionForm.getCancellationReasonChoice());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
-                    
-                    CommandResult commandResult = CancellationPolicyUtil.getHome().createCancellationPolicyReason(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CancellationPolicyUtil.getHome().createCancellationPolicyReason(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -95,8 +93,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CANCELLATION_KIND_NAME, cancellationKindName);
             request.setAttribute(AttributeConstants.CANCELLATION_POLICY_NAME, cancellationPolicyName);

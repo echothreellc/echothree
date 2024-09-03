@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.humanresources.trainingclasssection;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.form.CreateTrainingClassSectionForm;
-import com.echothree.control.user.training.common.form.GetTrainingClassForm;
 import com.echothree.control.user.training.common.result.GetTrainingClassResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -62,14 +59,14 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTrainingClassForm commandForm = TrainingUtil.getHome().getGetTrainingClassForm();
+        var commandForm = TrainingUtil.getHome().getGetTrainingClassForm();
 
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
-        
-        CommandResult commandResult = TrainingUtil.getHome().getTrainingClass(getUserVisitPK(request), commandForm);
+
+        var commandResult = TrainingUtil.getHome().getTrainingClass(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTrainingClassResult result = (GetTrainingClassResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTrainingClassResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRAINING_CLASS, result.getTrainingClass());
         }
@@ -78,7 +75,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateTrainingClassSectionForm commandForm = TrainingUtil.getHome().getCreateTrainingClassSectionForm();
+        var commandForm = TrainingUtil.getHome().getCreateTrainingClassSectionForm();
 
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());

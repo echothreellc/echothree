@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected ItemImageTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemImageTypeEdit edit = ItemUtil.getHome().getItemImageTypeEdit();
+        var edit = ItemUtil.getHome().getItemImageTypeEdit();
 
         edit.setItemImageTypeName(actionForm.getItemImageTypeName());
         edit.setPreferredMimeTypeName(actionForm.getPreferredMimeTypeChoice());

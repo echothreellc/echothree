@@ -16,18 +16,13 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.security.common.transfer.SecurityRoleGroupTransfer;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.control.selector.common.transfer.SelectorTypeTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.workflow.common.WorkflowProperties;
 import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowDetail;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
 
@@ -67,17 +62,17 @@ public class WorkflowTransferCache
     }
     
     public WorkflowTransfer getWorkflowTransfer(Workflow workflow) {
-        WorkflowTransfer workflowTransfer = get(workflow);
+        var workflowTransfer = get(workflow);
         
         if(workflowTransfer == null) {
-            WorkflowDetail workflowDetail = workflow.getLastDetail();
-            String workflowName = filterWorkflowName ? null : workflowDetail.getWorkflowName();
-            SelectorType selectorType = filterSelectorType ? null : workflowDetail.getSelectorType();
-            SelectorTypeTransfer selectorTypeTransfer = selectorType == null? null: selectorControl.getSelectorTypeTransfer(userVisit, selectorType);
-            SecurityRoleGroup securityRoleGroup = filterSecurityRoleGroup ? null : workflowDetail.getSecurityRoleGroup();
-            SecurityRoleGroupTransfer securityRoleGroupTransfer = securityRoleGroup == null? null: securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleGroup);
-            Integer sortOrder = filterSortOrder ? null : workflowDetail.getSortOrder();
-            String description = filterDescription ? null : workflowControl.getBestWorkflowDescription(workflow, getLanguage());
+            var workflowDetail = workflow.getLastDetail();
+            var workflowName = filterWorkflowName ? null : workflowDetail.getWorkflowName();
+            var selectorType = filterSelectorType ? null : workflowDetail.getSelectorType();
+            var selectorTypeTransfer = selectorType == null? null: selectorControl.getSelectorTypeTransfer(userVisit, selectorType);
+            var securityRoleGroup = filterSecurityRoleGroup ? null : workflowDetail.getSecurityRoleGroup();
+            var securityRoleGroupTransfer = securityRoleGroup == null? null: securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleGroup);
+            var sortOrder = filterSortOrder ? null : workflowDetail.getSortOrder();
+            var description = filterDescription ? null : workflowControl.getBestWorkflowDescription(workflow, getLanguage());
             
             workflowTransfer = new WorkflowTransfer(workflowName, selectorTypeTransfer,
                     securityRoleGroupTransfer, sortOrder, description);

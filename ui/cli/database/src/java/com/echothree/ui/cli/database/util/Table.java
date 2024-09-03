@@ -130,8 +130,8 @@ public class Table {
             throws Exception {
         if(myColumns.get(attrName) != null)
             throw new Exception("Duplicate column " + attrName + " in table " + namePlural);
-        
-        Column newColumn = new Column(this, attrName, attrType, attrMaxLength, attrDefaultValue, attrSequenceSource, attrNullAllowed, description,
+
+        var newColumn = new Column(this, attrName, attrType, attrMaxLength, attrDefaultValue, attrSequenceSource, attrNullAllowed, description,
                 destinationTable, destinationColumn, onParentDelete);
         
         columns.add(newColumn);
@@ -148,7 +148,7 @@ public class Table {
     }
     
     public Column getColumn(String columnName) throws Exception {
-        Column result = myColumns.get(columnName);
+        var result = myColumns.get(columnName);
         
         if(result == null)
             throw new Exception("Column " + columnName + " not found in table " + namePlural);
@@ -161,7 +161,7 @@ public class Table {
     }
     
     public Column getColumnLowerCase(String columnName) throws Exception {
-        Column result = myColumnsByLowerCase.get(columnName);
+        var result = myColumnsByLowerCase.get(columnName);
         
         if(result == null)
             throw new Exception("Column " + columnName + " not found in table " + namePlural);
@@ -176,8 +176,8 @@ public class Table {
     public Index addIndex(String type, String name) throws Exception {
         if(name != null && myIndexes.get(name) != null)
             throw new Exception("Duplicate index " + name + " in table " + namePlural);
-        
-        Index newIndex = new Index(this, type, name);
+
+        var newIndex = new Index(this, type, name);
         
         if(newIndex.getType() == Index.indexPrimaryKey) {
             if(primaryKey == null) {
@@ -211,10 +211,10 @@ public class Table {
     }
     
     public boolean isColumnValid(String dbColumnName) {
-        boolean columnValid = true;
+        var columnValid = true;
         String columnBaseName;
-        
-        int underscore = dbColumnName.indexOf('_');
+
+        var underscore = dbColumnName.indexOf('_');
         if(underscore != 0) {
             columnBaseName = dbColumnName.substring(underscore + 1);
         } else {
@@ -238,7 +238,7 @@ public class Table {
     }
     
     public int countColumnsWithDestinationTable(String destinationTable) {
-        int totalColumns = 0;
+        var totalColumns = 0;
         
         totalColumns = columns.stream().filter((theColumn) -> (theColumn.getType() == ColumnType.columnForeignKey)).filter((theColumn) -> theColumn.getDestinationTable().equals(destinationTable)).map((_item) -> 1).reduce(totalColumns, Integer::sum);
         
@@ -246,9 +246,9 @@ public class Table {
     }
     
     public boolean isColumnInMultipleIndex(Column destinationColumn) {
-        for(Index theIndex: indexes) {
+        for(var theIndex: indexes) {
             if(theIndex.isColumnInIndex(destinationColumn)) {
-                int indexType = theIndex.getType();
+                var indexType = theIndex.getType();
                 if(indexType == Index.indexMultiple)
                     return true;
                 else if(indexType == Index.indexUnique && (theIndex.countIndexColumns() > 1))
@@ -270,7 +270,7 @@ public class Table {
     public Column getEID() {
         Column result = null;
         
-        for(Column theColumn: columns) {
+        for(var theColumn: columns) {
             if(theColumn.getType() == ColumnType.columnEID) {
                 result = theColumn;
                 break;
@@ -293,9 +293,9 @@ public class Table {
     }
     
     public boolean hasColumnOfType(int columnType) {
-        boolean result = false;
+        var result = false;
         
-        for(Column theColumn: columns) {
+        for(var theColumn: columns) {
             if(theColumn.getType() == columnType) {
                 result = true;
                 break;
@@ -306,9 +306,9 @@ public class Table {
     }
     
     public boolean hasNotNullColumn() {
-        boolean result = true;
+        var result = true;
         
-        for(Column theColumn: columns) {
+        for(var theColumn: columns) {
             if((theColumn.getType() != ColumnType.columnEID) && !theColumn.getNullAllowed()) {
                 result = false;
                 break;

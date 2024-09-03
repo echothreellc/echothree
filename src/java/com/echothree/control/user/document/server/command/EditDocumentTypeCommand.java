@@ -28,10 +28,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.document.server.entity.DocumentType;
-import com.echothree.model.data.document.server.entity.DocumentTypeDescription;
-import com.echothree.model.data.document.server.entity.DocumentTypeDetail;
-import com.echothree.model.data.document.server.value.DocumentTypeDescriptionValue;
-import com.echothree.model.data.document.server.value.DocumentTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -94,8 +90,8 @@ public class EditDocumentTypeCommand
     @Override
     public DocumentType getEntity(EditDocumentTypeResult result) {
         var documentControl = Session.getModelController(DocumentControl.class);
-        DocumentType documentType = null;
-        String documentTypeName = spec.getDocumentTypeName();
+        DocumentType documentType;
+        var documentTypeName = spec.getDocumentTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             documentType = documentControl.getDocumentTypeByName(documentTypeName);
@@ -130,8 +126,8 @@ public class EditDocumentTypeCommand
     @Override
     public void doLock(DocumentTypeEdit edit, DocumentType documentType) {
         var documentControl = Session.getModelController(DocumentControl.class);
-        DocumentTypeDescription documentTypeDescription = documentControl.getDocumentTypeDescription(documentType, getPreferredLanguage());
-        DocumentTypeDetail documentTypeDetail = documentType.getLastDetail();
+        var documentTypeDescription = documentControl.getDocumentTypeDescription(documentType, getPreferredLanguage());
+        var documentTypeDetail = documentType.getLastDetail();
 
         parentDocumentType = documentTypeDetail.getParentDocumentType();
         mimeTypeUsageType = documentTypeDetail.getMimeTypeUsageType();
@@ -151,11 +147,11 @@ public class EditDocumentTypeCommand
     @Override
     public void canUpdate(DocumentType documentType) {
         var documentControl = Session.getModelController(DocumentControl.class);
-        String documentTypeName = edit.getDocumentTypeName();
-        DocumentType duplicateDocumentType = documentControl.getDocumentTypeByName(documentTypeName);
+        var documentTypeName = edit.getDocumentTypeName();
+        var duplicateDocumentType = documentControl.getDocumentTypeByName(documentTypeName);
 
         if(duplicateDocumentType == null || documentType.equals(duplicateDocumentType)) {
-            String parentDocumentTypeName = edit.getParentDocumentTypeName();
+            var parentDocumentTypeName = edit.getParentDocumentTypeName();
 
             if(parentDocumentTypeName != null) {
                 parentDocumentType = documentControl.getDocumentTypeByName(parentDocumentTypeName);
@@ -163,7 +159,7 @@ public class EditDocumentTypeCommand
 
             if(parentDocumentTypeName == null || parentDocumentType != null) {
                 if(documentControl.isParentDocumentTypeSafe(documentType, parentDocumentType)) {
-                    String mimeTypeUsageTypeName = edit.getMimeTypeUsageTypeName();
+                    var mimeTypeUsageTypeName = edit.getMimeTypeUsageTypeName();
 
                     if(mimeTypeUsageTypeName != null) {
                         var coreControl = getCoreControl();
@@ -189,9 +185,9 @@ public class EditDocumentTypeCommand
     public void doUpdate(DocumentType documentType) {
         var documentControl = Session.getModelController(DocumentControl.class);
         var partyPK = getPartyPK();
-        DocumentTypeDetailValue documentTypeDetailValue = documentControl.getDocumentTypeDetailValueForUpdate(documentType);
-        DocumentTypeDescription documentTypeDescription = documentControl.getDocumentTypeDescriptionForUpdate(documentType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var documentTypeDetailValue = documentControl.getDocumentTypeDetailValueForUpdate(documentType);
+        var documentTypeDescription = documentControl.getDocumentTypeDescriptionForUpdate(documentType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         documentTypeDetailValue.setDocumentTypeName(edit.getDocumentTypeName());
         documentTypeDetailValue.setParentDocumentTypePK(parentDocumentType == null ? null : parentDocumentType.getPrimaryKey());
@@ -209,7 +205,7 @@ public class EditDocumentTypeCommand
                 documentControl.deleteDocumentTypeDescription(documentTypeDescription, partyPK);
             } else {
                 if(documentTypeDescription != null && description != null) {
-                    DocumentTypeDescriptionValue documentTypeDescriptionValue = documentControl.getDocumentTypeDescriptionValue(documentTypeDescription);
+                    var documentTypeDescriptionValue = documentControl.getDocumentTypeDescriptionValue(documentTypeDescription);
 
                     documentTypeDescriptionValue.setDescription(description);
                     documentControl.updateDocumentTypeDescriptionFromValue(documentTypeDescriptionValue, partyPK);

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationreasontype;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationReasonTypesForm;
 import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationReasonTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,19 +49,19 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetCancellationReasonTypesForm commandForm = CancellationPolicyUtil.getHome().getGetCancellationReasonTypesForm();
-            String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
-            String cancellationReasonName = request.getParameter(ParameterConstants.CANCELLATION_REASON_NAME);
+            var commandForm = CancellationPolicyUtil.getHome().getGetCancellationReasonTypesForm();
+            var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+            var cancellationReasonName = request.getParameter(ParameterConstants.CANCELLATION_REASON_NAME);
             
             commandForm.setCancellationKindName(cancellationKindName);
             commandForm.setCancellationReasonName(cancellationReasonName);
 
-            CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationReasonTypes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCancellationReasonTypesResult result = (GetCancellationReasonTypesResult)executionResult.getResult();
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationReasonTypes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCancellationReasonTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CANCELLATION_REASON, result.getCancellationReason());
             request.setAttribute(AttributeConstants.CANCELLATION_REASON_TYPES, result.getCancellationReasonTypes());

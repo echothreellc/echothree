@@ -17,13 +17,11 @@
 package com.echothree.control.user.period.server.command;
 
 import com.echothree.control.user.period.common.form.GetPeriodTypeChoicesForm;
-import com.echothree.control.user.period.common.result.GetPeriodTypeChoicesResult;
 import com.echothree.control.user.period.common.result.PeriodResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.period.server.entity.PeriodKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,13 +64,13 @@ public class GetPeriodTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var periodControl = Session.getModelController(PeriodControl.class);
-        GetPeriodTypeChoicesResult result = PeriodResultFactory.getGetPeriodTypeChoicesResult();
-        String periodKindName = form.getPeriodKindName();
-        PeriodKind periodKind = periodControl.getPeriodKindByName(periodKindName);
+        var result = PeriodResultFactory.getGetPeriodTypeChoicesResult();
+        var periodKindName = form.getPeriodKindName();
+        var periodKind = periodControl.getPeriodKindByName(periodKindName);
         
         if(periodKind != null) {
-            String defaultPeriodTypeChoice = form.getDefaultPeriodTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultPeriodTypeChoice = form.getDefaultPeriodTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setPeriodTypeChoices(periodControl.getPeriodTypeChoices(defaultPeriodTypeChoice, getPreferredLanguage(),
                     allowNullChoice, periodKind));

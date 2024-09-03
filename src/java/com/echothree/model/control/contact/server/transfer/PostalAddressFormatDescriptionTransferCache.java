@@ -17,9 +17,7 @@
 package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.PostalAddressFormatDescriptionTransfer;
-import com.echothree.model.control.contact.common.transfer.PostalAddressFormatTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.contact.server.entity.PostalAddressFormatDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class PostalAddressFormatDescriptionTransferCache
     }
     
     public PostalAddressFormatDescriptionTransfer getPostalAddressFormatDescriptionTransfer(PostalAddressFormatDescription postalAddressFormatDescription) {
-        PostalAddressFormatDescriptionTransfer postalAddressFormatDescriptionTransfer = get(postalAddressFormatDescription);
+        var postalAddressFormatDescriptionTransfer = get(postalAddressFormatDescription);
         
         if(postalAddressFormatDescriptionTransfer == null) {
-            PostalAddressFormatTransfer postalAddressFormatTransfer = contactControl.getPostalAddressFormatTransfer(userVisit, postalAddressFormatDescription.getPostalAddressFormat());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, postalAddressFormatDescription.getLanguage());
+            var postalAddressFormatTransfer = contactControl.getPostalAddressFormatTransfer(userVisit, postalAddressFormatDescription.getPostalAddressFormat());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, postalAddressFormatDescription.getLanguage());
             
             postalAddressFormatDescriptionTransfer = new PostalAddressFormatDescriptionTransfer(languageTransfer, postalAddressFormatTransfer, postalAddressFormatDescription.getDescription());
             put(postalAddressFormatDescription, postalAddressFormatDescriptionTransfer);

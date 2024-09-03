@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.filter.filterstep;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.form.GetFilterStepForm;
 import com.echothree.control.user.filter.common.result.GetFilterStepResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,23 +49,23 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetFilterStepForm commandForm = FilterUtil.getHome().getGetFilterStepForm();
-            String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-            String filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
-            String filterName = request.getParameter(ParameterConstants.FILTER_NAME);
-            String filterStepName = request.getParameter(ParameterConstants.FILTER_STEP_NAME);
+            var commandForm = FilterUtil.getHome().getGetFilterStepForm();
+            var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+            var filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
+            var filterName = request.getParameter(ParameterConstants.FILTER_NAME);
+            var filterStepName = request.getParameter(ParameterConstants.FILTER_STEP_NAME);
             
             commandForm.setFilterKindName(filterKindName);
             commandForm.setFilterTypeName(filterTypeName);
             commandForm.setFilterName(filterName);
             commandForm.setFilterStepName(filterStepName);
-            
-            CommandResult commandResult = FilterUtil.getHome().getFilterStep(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterStepResult result = (GetFilterStepResult)executionResult.getResult();
+
+            var commandResult = FilterUtil.getHome().getFilterStep(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetFilterStepResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FILTER_STEP, result.getFilterStep());
             forwardKey = ForwardConstants.DISPLAY;

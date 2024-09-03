@@ -25,17 +25,10 @@ import com.echothree.model.control.uom.server.util.Conversion;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
-import com.echothree.model.data.workrequirement.server.entity.WorkRequirementType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -76,32 +69,32 @@ public class CreateWorkRequirementTypeCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
             var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
-            String workRequirementTypeName = form.getWorkRequirementTypeName();
-            WorkRequirementType workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
+            var workRequirementTypeName = form.getWorkRequirementTypeName();
+            var workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
             
             if(workRequirementType == null) {
                 var sequenceControl = Session.getModelController(SequenceControl.class);
-                String workRequirementSequenceName = form.getWorkRequirementSequenceName();
-                Sequence workRequirementSequence = resolveWorkRequirementSequence(sequenceControl, workRequirementSequenceName);
+                var workRequirementSequenceName = form.getWorkRequirementSequenceName();
+                var workRequirementSequence = resolveWorkRequirementSequence(sequenceControl, workRequirementSequenceName);
                 
                 if(workRequirementSequenceName == null || workRequirementSequence != null) {
-                    String workflowName = form.getWorkflowName();
-                    String workflowStepName = form.getWorkflowStepName();
-                    WorkflowStep workflowStep  = resolveWorkflowStep(workflowStepName, workflowName);
+                    var workflowName = form.getWorkflowName();
+                    var workflowStepName = form.getWorkflowStepName();
+                    var workflowStep  = resolveWorkflowStep(workflowStepName, workflowName);
 
                     if(!hasExecutionErrors()) {
                         var uomControl = Session.getModelController(UomControl.class);
-                        UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+                        var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                         if(timeUnitOfMeasureKind != null) {
-                            String estimatedTimeAllowedUnitOfMeasureTypeName = form.getEstimatedTimeAllowedUnitOfMeasureTypeName();
+                            var estimatedTimeAllowedUnitOfMeasureTypeName = form.getEstimatedTimeAllowedUnitOfMeasureTypeName();
                             UnitOfMeasureType estimatedTimeAllowedUnitOfMeasureType = null;
-                            String estimatedTimeAllowed = form.getEstimatedTimeAllowed();
+                            var estimatedTimeAllowed = form.getEstimatedTimeAllowed();
 
                             if(estimatedTimeAllowedUnitOfMeasureTypeName != null && estimatedTimeAllowed != null) {
                                 estimatedTimeAllowedUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
@@ -116,9 +109,9 @@ public class CreateWorkRequirementTypeCommand
                             }
 
                             if(!hasExecutionErrors()) {
-                                String maximumTimeAllowedUnitOfMeasureTypeName = form.getMaximumTimeAllowedUnitOfMeasureTypeName();
+                                var maximumTimeAllowedUnitOfMeasureTypeName = form.getMaximumTimeAllowedUnitOfMeasureTypeName();
                                 UnitOfMeasureType maximumTimeAllowedUnitOfMeasureType = null;
-                                String maximumTimeAllowed = form.getMaximumTimeAllowed();
+                                var maximumTimeAllowed = form.getMaximumTimeAllowed();
 
                                 if(maximumTimeAllowedUnitOfMeasureTypeName != null && maximumTimeAllowed != null) {
                                     maximumTimeAllowedUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind,
@@ -133,14 +126,14 @@ public class CreateWorkRequirementTypeCommand
                                 }
 
                                 if(!hasExecutionErrors()) {
-                                    Conversion estimatedTimeAllowedConversion = estimatedTimeAllowedUnitOfMeasureType == null? null:
+                                    var estimatedTimeAllowedConversion = estimatedTimeAllowedUnitOfMeasureType == null? null:
                                         new Conversion(uomControl, estimatedTimeAllowedUnitOfMeasureType,
                                             Long.valueOf(estimatedTimeAllowed)).convertToLowestUnitOfMeasureType();
-                                    Conversion maximumTimeAllowedConversion = maximumTimeAllowedUnitOfMeasureType == null? null:
+                                    var maximumTimeAllowedConversion = maximumTimeAllowedUnitOfMeasureType == null? null:
                                         new Conversion(uomControl, maximumTimeAllowedUnitOfMeasureType,
                                             Long.valueOf(maximumTimeAllowed)).convertToLowestUnitOfMeasureType();
-                                    PartyPK createdBy = getPartyPK();
-                                    Boolean allowReassignment = Boolean.valueOf(form.getAllowReassignment());
+                                    var createdBy = getPartyPK();
+                                    var allowReassignment = Boolean.valueOf(form.getAllowReassignment());
                                     var sortOrder = Integer.valueOf(form.getSortOrder());
                                     var description = form.getDescription();
 
@@ -154,7 +147,7 @@ public class CreateWorkRequirementTypeCommand
                                         workRequirementControl.createWorkRequirementTypeDescription(workRequirementType, getPreferredLanguage(), description, createdBy);
                                     }
 
-                                    List<WorkEffortScope> workEffortScopes = workEffortControl.getWorkEffortScopes(workEffortType);
+                                    var workEffortScopes = workEffortControl.getWorkEffortScopes(workEffortType);
                                     for(var workEffortScope : workEffortScopes) {
                                         workRequirementControl.createWorkRequirementScope(workEffortScope, workRequirementType, null,
                                                 null, null, null, null, createdBy);
@@ -206,7 +199,7 @@ public class CreateWorkRequirementTypeCommand
         Sequence workRequirementSequence = null;
         
         if(workRequirementSequenceName != null) {
-            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_REQUIREMENT.name());
+            var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_REQUIREMENT.name());
             
             if(sequenceType != null) {
                 workRequirementSequence = sequenceControl.getSequenceByName(sequenceType, workRequirementSequenceName);

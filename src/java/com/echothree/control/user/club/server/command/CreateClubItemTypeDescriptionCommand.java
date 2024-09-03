@@ -19,9 +19,6 @@ package com.echothree.control.user.club.server.command;
 import com.echothree.control.user.club.common.form.CreateClubItemTypeDescriptionForm;
 import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.club.server.entity.ClubItemType;
-import com.echothree.model.data.club.server.entity.ClubItemTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,16 +51,16 @@ public class CreateClubItemTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var clubControl = Session.getModelController(ClubControl.class);
-        String clubItemTypeName = form.getClubItemTypeName();
-        ClubItemType clubItemType = clubControl.getClubItemTypeByName(clubItemTypeName);
+        var clubItemTypeName = form.getClubItemTypeName();
+        var clubItemType = clubControl.getClubItemTypeByName(clubItemTypeName);
         
         if(clubItemType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ClubItemTypeDescription clubItemTypeDescription = clubControl.getClubItemTypeDescription(clubItemType, language);
+                var clubItemTypeDescription = clubControl.getClubItemTypeDescription(clubItemType, language);
                 
                 if(clubItemTypeDescription == null) {
                     var description = form.getDescription();

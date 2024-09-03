@@ -18,15 +18,12 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentPagesForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentPagesResult;
 import com.echothree.model.control.associate.server.logic.AssociateReferralLogic;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.content.server.entity.ContentSection;
-import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -64,8 +61,8 @@ public class GetContentPagesCommand
     
     @Override
     protected Collection<ContentPage> getEntities() {
-        String contentWebAddressName = form.getContentWebAddressName();
-        String contentCollectionName = form.getContentCollectionName();
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentCollectionName = form.getContentCollectionName();
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
         Collection<ContentPage> contentPages = null;
 
@@ -74,7 +71,7 @@ public class GetContentPagesCommand
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
-                ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+                var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
 
                 if(contentWebAddress != null) {
                     contentCollection = contentWebAddress.getLastDetail().getContentCollection();
@@ -90,9 +87,9 @@ public class GetContentPagesCommand
             }
 
             if(!hasExecutionErrors()) {
-                String contentSectionName = form.getContentSectionName();
+                var contentSectionName = form.getContentSectionName();
                 var partyPK = getPartyPK();
-                UserVisit userVisit = getUserVisitForUpdate();
+                var userVisit = getUserVisitForUpdate();
                 
                 contentSection = contentSectionName == null ? contentControl.getDefaultContentSection(contentCollection)
                         : contentControl.getContentSectionByName(contentCollection, contentSectionName);
@@ -117,11 +114,11 @@ public class GetContentPagesCommand
     
     @Override
     protected BaseResult getResult(Collection<ContentPage> entities) {
-        GetContentPagesResult result = ContentResultFactory.getGetContentPagesResult();
+        var result = ContentResultFactory.getGetContentPagesResult();
 
         if(entities != null) {
             var contentControl = Session.getModelController(ContentControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             result.setContentSection(contentControl.getContentSectionTransfer(userVisit, contentSection));
             result.setContentPages(contentControl.getContentPageTransfers(userVisit, entities));

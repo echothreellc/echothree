@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.chain.chaininstance;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.GetChainInstanceForm;
 import com.echothree.control.user.chain.common.result.GetChainInstanceResult;
 import com.echothree.model.control.chain.common.ChainOptions;
-import com.echothree.model.control.chain.common.transfer.ChainInstanceTransfer;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,8 +52,8 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetChainInstanceForm commandForm = ChainUtil.getHome().getGetChainInstanceForm();
+        String forwardKey;
+        var commandForm = ChainUtil.getHome().getGetChainInstanceForm();
         
         commandForm.setChainInstanceName(request.getParameter(ParameterConstants.CHAIN_INSTANCE_NAME));
         
@@ -67,10 +63,10 @@ public class ReviewAction
         options.add(CoreOptions.EntityInstanceIncludeNames);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ChainUtil.getHome().getChainInstance(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetChainInstanceResult result = (GetChainInstanceResult)executionResult.getResult();
-        ChainInstanceTransfer chainInstance = result.getChainInstance();
+        var commandResult = ChainUtil.getHome().getChainInstance(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetChainInstanceResult)executionResult.getResult();
+        var chainInstance = result.getChainInstance();
         
         if(chainInstance == null) {
             forwardKey = ForwardConstants.ERROR_404;

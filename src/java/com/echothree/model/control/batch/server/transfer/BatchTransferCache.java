@@ -17,13 +17,9 @@
 package com.echothree.model.control.batch.server.transfer;
 
 import com.echothree.model.control.batch.common.transfer.BatchTransfer;
-import com.echothree.model.control.batch.common.transfer.BatchTypeTransfer;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.batch.server.entity.Batch;
-import com.echothree.model.data.batch.server.entity.BatchDetail;
-import com.echothree.model.data.batch.server.entity.BatchType;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -41,14 +37,14 @@ public class BatchTransferCache
     
     @Override
     public BatchTransfer getTransfer(Batch batch) {
-        BatchTransfer batchTransfer = get(batch);
+        var batchTransfer = get(batch);
         
         if(batchTransfer == null) {
-            BatchDetail batchDetail = batch.getLastDetail();
-            BatchType batchType = batchDetail.getBatchType();
-            BatchTypeTransfer batchTypeTransfer = batchControl.getBatchTypeTransfer(userVisit, batchType);
-            String batchName = batchDetail.getBatchName();
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
+            var batchDetail = batch.getLastDetail();
+            var batchType = batchDetail.getBatchType();
+            var batchTypeTransfer = batchControl.getBatchTypeTransfer(userVisit, batchType);
+            var batchName = batchDetail.getBatchName();
+            var entityInstance = coreControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
             
             batchTransfer = new BatchTransfer(batchTypeTransfer, batchName, getBatchStatus(batch, entityInstance));
             put(batch, batchTransfer, entityInstance);

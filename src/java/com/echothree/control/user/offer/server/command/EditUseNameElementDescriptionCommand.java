@@ -20,17 +20,12 @@ import com.echothree.control.user.offer.common.edit.OfferEditFactory;
 import com.echothree.control.user.offer.common.edit.UseNameElementDescriptionEdit;
 import com.echothree.control.user.offer.common.form.EditUseNameElementDescriptionForm;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.control.user.offer.common.result.EditUseNameElementDescriptionResult;
 import com.echothree.control.user.offer.common.spec.UseNameElementDescriptionSpec;
 import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.entity.UseNameElement;
-import com.echothree.model.data.offer.server.entity.UseNameElementDescription;
-import com.echothree.model.data.offer.server.value.UseNameElementDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -79,25 +74,25 @@ public class EditUseNameElementDescriptionCommand
     @Override
     protected BaseResult execute() {
         var useNameElementControl = Session.getModelController(UseNameElementControl.class);
-        EditUseNameElementDescriptionResult result = OfferResultFactory.getEditUseNameElementDescriptionResult();
-        String useNameElementName = spec.getUseNameElementName();
-        UseNameElement useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
+        var result = OfferResultFactory.getEditUseNameElementDescriptionResult();
+        var useNameElementName = spec.getUseNameElementName();
+        var useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
         
         if(useNameElement != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement, language);
+                    var useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement, language);
                     
                     if(useNameElementDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setUseNameElementDescription(useNameElementControl.getUseNameElementDescriptionTransfer(getUserVisit(), useNameElementDescription));
 
                             if(lockEntity(useNameElement)) {
-                                UseNameElementDescriptionEdit edit = OfferEditFactory.getUseNameElementDescriptionEdit();
+                                var edit = OfferEditFactory.getUseNameElementDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(useNameElementDescription.getDescription());
@@ -113,12 +108,12 @@ public class EditUseNameElementDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownUseNameElementDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    UseNameElementDescriptionValue useNameElementDescriptionValue = useNameElementControl.getUseNameElementDescriptionValueForUpdate(useNameElement, language);
+                    var useNameElementDescriptionValue = useNameElementControl.getUseNameElementDescriptionValueForUpdate(useNameElement, language);
                     
                     if(useNameElementDescriptionValue != null) {
                         if(lockEntityForUpdate(useNameElement)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 useNameElementDescriptionValue.setDescription(description);
                                 

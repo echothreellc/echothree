@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.item.itemharmonizedtariffschedulecode;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetCountryChoicesForm;
 import com.echothree.control.user.geo.common.result.GetCountryChoicesResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCodeUseTypeChoicesForm;
 import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeUseTypeChoicesResult;
 import com.echothree.model.control.geo.common.choice.CountryChoicesBean;
 import com.echothree.model.control.item.common.choice.HarmonizedTariffScheduleCodeUseTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -47,14 +43,14 @@ public class AddActionForm
     private void setupCountryChoices() {
         if(countryChoices == null) {
             try {
-                GetCountryChoicesForm commandForm = GeoUtil.getHome().getGetCountryChoicesForm();
+                var commandForm = GeoUtil.getHome().getGetCountryChoicesForm();
 
                 commandForm.setDefaultCountryChoice(countryChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = GeoUtil.getHome().getCountryChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCountryChoicesResult result = (GetCountryChoicesResult)executionResult.getResult();
+                var commandResult = GeoUtil.getHome().getCountryChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCountryChoicesResult)executionResult.getResult();
                 countryChoices = result.getCountryChoices();
 
                 if(countryChoice == null) {
@@ -69,14 +65,14 @@ public class AddActionForm
     private void setupHarmonizedTariffScheduleCodeUseTypeChoices() {
         if(harmonizedTariffScheduleCodeUseTypeChoices == null) {
             try {
-                GetHarmonizedTariffScheduleCodeUseTypeChoicesForm form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseTypeChoicesForm();
+                var form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseTypeChoicesForm();
                 
                 form.setDefaultHarmonizedTariffScheduleCodeUseTypeChoice(harmonizedTariffScheduleCodeUseTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetHarmonizedTariffScheduleCodeUseTypeChoicesResult result = (GetHarmonizedTariffScheduleCodeUseTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetHarmonizedTariffScheduleCodeUseTypeChoicesResult)executionResult.getResult();
                 harmonizedTariffScheduleCodeUseTypeChoices = result.getHarmonizedTariffScheduleCodeUseTypeChoices();
                 
                 if(harmonizedTariffScheduleCodeUseTypeChoice == null) {

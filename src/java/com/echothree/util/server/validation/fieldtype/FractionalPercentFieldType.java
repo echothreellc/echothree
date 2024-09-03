@@ -23,7 +23,6 @@ import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
 import com.echothree.util.server.validation.Patterns;
 import com.echothree.util.server.validation.Validator;
-import java.util.regex.Matcher;
 
 public class FractionalPercentFieldType
         extends BaseCurrencyFieldType {
@@ -39,9 +38,9 @@ public class FractionalPercentFieldType
     
     @Override
     public String validate() {
-        boolean hadErrors = false;
-        
-        Matcher m = Patterns.FractionalPercent.matcher(fieldValue);
+        var hadErrors = false;
+
+        var m = Patterns.FractionalPercent.matcher(fieldValue);
         if(!m.matches()) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
             hadErrors = true;
@@ -49,8 +48,8 @@ public class FractionalPercentFieldType
         
         if(!hadErrors) {
             fieldValue = DecimalUtils.getInstance().parse(minusSign, separator, fractionDigits, fieldValue);
-            
-            Integer testPercent = Integer.valueOf(fieldValue);
+
+            var testPercent = Integer.valueOf(fieldValue);
             if(testPercent > 100000) {
                 validationMessages.add(fieldName, new Message(Validator.ERROR_MAXIMUM_VALUE, "100.000%"));
                 hadErrors = true;

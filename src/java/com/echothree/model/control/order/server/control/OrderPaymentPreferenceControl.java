@@ -18,17 +18,11 @@ package com.echothree.model.control.order.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.order.common.transfer.OrderPaymentPreferenceTransfer;
-import com.echothree.model.control.order.server.transfer.OrderPaymentPreferenceTransferCache;
-import com.echothree.model.data.order.common.pk.OrderPK;
-import com.echothree.model.data.order.common.pk.OrderPaymentPreferencePK;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
-import com.echothree.model.data.order.server.entity.OrderPaymentPreferenceDetail;
 import com.echothree.model.data.order.server.factory.OrderPaymentPreferenceDetailFactory;
 import com.echothree.model.data.order.server.factory.OrderPaymentPreferenceFactory;
 import com.echothree.model.data.order.server.value.OrderPaymentPreferenceDetailValue;
-import com.echothree.model.data.payment.common.pk.PartyPaymentMethodPK;
-import com.echothree.model.data.payment.common.pk.PaymentMethodPK;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,7 +30,6 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,8 +49,8 @@ public class OrderPaymentPreferenceControl
 
     public OrderPaymentPreference createOrderPaymentPreference(Order order, Integer orderPaymentPreferenceSequence, PaymentMethod paymentMethod,
             PartyPaymentMethod partyPaymentMethod, Boolean wasPresent, Long maximumAmount, Integer sortOrder, BasePK createdBy) {
-        OrderPaymentPreference orderPaymentPreference = OrderPaymentPreferenceFactory.getInstance().create();
-        OrderPaymentPreferenceDetail orderPaymentPreferenceDetail = OrderPaymentPreferenceDetailFactory.getInstance().create(orderPaymentPreference, order,
+        var orderPaymentPreference = OrderPaymentPreferenceFactory.getInstance().create();
+        var orderPaymentPreferenceDetail = OrderPaymentPreferenceDetailFactory.getInstance().create(orderPaymentPreference, order,
                 orderPaymentPreferenceSequence, paymentMethod, partyPaymentMethod, wasPresent, maximumAmount, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -97,7 +90,7 @@ public class OrderPaymentPreferenceControl
     }
 
     public OrderPaymentPreference getOrderPaymentPreferenceBySequence(Order order, Integer orderPaymentPreferenceSequence, EntityPermission entityPermission) {
-        OrderPaymentPreference orderPaymentPreference = null;
+        OrderPaymentPreference orderPaymentPreference;
 
         try {
             String query = null;
@@ -113,7 +106,7 @@ public class OrderPaymentPreferenceControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
+            var ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             ps.setInt(2, orderPaymentPreferenceSequence);
@@ -143,7 +136,7 @@ public class OrderPaymentPreferenceControl
     }
 
     private List<OrderPaymentPreference> getOrderPaymentPreferencesByOrder(Order order, EntityPermission entityPermission) {
-        List<OrderPaymentPreference> orderPaymentPreferences = null;
+        List<OrderPaymentPreference> orderPaymentPreferences;
 
         try {
             String query = null;
@@ -161,7 +154,7 @@ public class OrderPaymentPreferenceControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
+            var ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, order.getPrimaryKey().getEntityId());
 
@@ -182,7 +175,7 @@ public class OrderPaymentPreferenceControl
     }
 
     private List<OrderPaymentPreference> getOrderPaymentPreferencesByPaymentMethod(PaymentMethod paymentMethod, EntityPermission entityPermission) {
-        List<OrderPaymentPreference> orderPaymentPreferences = null;
+        List<OrderPaymentPreference> orderPaymentPreferences;
 
         try {
             String query = null;
@@ -199,7 +192,7 @@ public class OrderPaymentPreferenceControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
+            var ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, paymentMethod.getPrimaryKey().getEntityId());
 
@@ -220,7 +213,7 @@ public class OrderPaymentPreferenceControl
     }
 
     private List<OrderPaymentPreference> getOrderPaymentPreferencesByPartyPaymentMethod(PartyPaymentMethod partyPaymentMethod, EntityPermission entityPermission) {
-        List<OrderPaymentPreference> orderPaymentPreferences = null;
+        List<OrderPaymentPreference> orderPaymentPreferences;
 
         try {
             String query = null;
@@ -237,7 +230,7 @@ public class OrderPaymentPreferenceControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
+            var ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, partyPaymentMethod.getPrimaryKey().getEntityId());
 
@@ -263,7 +256,7 @@ public class OrderPaymentPreferenceControl
 
     public List<OrderPaymentPreferenceTransfer> getOrderPaymentPreferenceTransfers(UserVisit userVisit, Collection<OrderPaymentPreference> orderPaymentPreferences) {
         List<OrderPaymentPreferenceTransfer> orderPaymentPreferenceTransfers = new ArrayList<>(orderPaymentPreferences.size());
-        OrderPaymentPreferenceTransferCache orderPaymentPreferenceTransferCache = getOrderTransferCaches(userVisit).getOrderPaymentPreferenceTransferCache();
+        var orderPaymentPreferenceTransferCache = getOrderTransferCaches(userVisit).getOrderPaymentPreferenceTransferCache();
 
         orderPaymentPreferences.forEach((orderPaymentPreference) ->
                 orderPaymentPreferenceTransfers.add(orderPaymentPreferenceTransferCache.getOrderPaymentPreferenceTransfer(orderPaymentPreference))
@@ -286,21 +279,21 @@ public class OrderPaymentPreferenceControl
 
     public void updateOrderPaymentPreferenceFromValue(OrderPaymentPreferenceDetailValue orderPaymentPreferenceDetailValue, BasePK updatedBy) {
         if(orderPaymentPreferenceDetailValue.hasBeenModified()) {
-            OrderPaymentPreference orderPaymentPreference = OrderPaymentPreferenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderPaymentPreference = OrderPaymentPreferenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderPaymentPreferenceDetailValue.getOrderPaymentPreferencePK());
-            OrderPaymentPreferenceDetail orderPaymentPreferenceDetail = orderPaymentPreference.getActiveDetailForUpdate();
+            var orderPaymentPreferenceDetail = orderPaymentPreference.getActiveDetailForUpdate();
 
             orderPaymentPreferenceDetail.setThruTime(session.START_TIME_LONG);
             orderPaymentPreferenceDetail.store();
 
-            OrderPaymentPreferencePK orderPaymentPreferencePK = orderPaymentPreferenceDetail.getOrderPaymentPreferencePK(); // Not updated
-            OrderPK orderPK = orderPaymentPreferenceDetail.getOrderPK(); // Not updated
-            Integer orderPaymentPreferenceSequence = orderPaymentPreferenceDetail.getOrderPaymentPreferenceSequence(); // Not updated
-            PaymentMethodPK paymentMethodPK = orderPaymentPreferenceDetailValue.getPaymentMethodPK();
-            PartyPaymentMethodPK partyPaymentMethodPK = orderPaymentPreferenceDetailValue.getPartyPaymentMethodPK();
-            Boolean wasPresent = orderPaymentPreferenceDetailValue.getWasPresent();
-            Long maximumAmount = orderPaymentPreferenceDetailValue.getMaximumAmount();
-            Integer sortOrder = orderPaymentPreferenceDetailValue.getSortOrder();
+            var orderPaymentPreferencePK = orderPaymentPreferenceDetail.getOrderPaymentPreferencePK(); // Not updated
+            var orderPK = orderPaymentPreferenceDetail.getOrderPK(); // Not updated
+            var orderPaymentPreferenceSequence = orderPaymentPreferenceDetail.getOrderPaymentPreferenceSequence(); // Not updated
+            var paymentMethodPK = orderPaymentPreferenceDetailValue.getPaymentMethodPK();
+            var partyPaymentMethodPK = orderPaymentPreferenceDetailValue.getPartyPaymentMethodPK();
+            var wasPresent = orderPaymentPreferenceDetailValue.getWasPresent();
+            var maximumAmount = orderPaymentPreferenceDetailValue.getMaximumAmount();
+            var sortOrder = orderPaymentPreferenceDetailValue.getSortOrder();
 
             orderPaymentPreferenceDetail = OrderPaymentPreferenceDetailFactory.getInstance().create(orderPaymentPreferencePK, orderPK,
                     orderPaymentPreferenceSequence, paymentMethodPK, partyPaymentMethodPK, wasPresent, maximumAmount, sortOrder, session.START_TIME_LONG,
@@ -314,7 +307,7 @@ public class OrderPaymentPreferenceControl
     }
 
     public void deleteOrderPaymentPreference(OrderPaymentPreference orderPaymentPreference, BasePK deletedBy) {
-        OrderPaymentPreferenceDetail orderPaymentPreferenceDetail = orderPaymentPreference.getLastDetailForUpdate();
+        var orderPaymentPreferenceDetail = orderPaymentPreference.getLastDetailForUpdate();
 
         orderPaymentPreferenceDetail.setThruTime(session.START_TIME_LONG);
         orderPaymentPreference.setActiveDetail(null);

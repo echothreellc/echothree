@@ -44,8 +44,8 @@ public class AmountUtils {
                 result = amount.toString();
             } else {
                 long rawAmount = amount;
-                int i = IntMath.checkedPow(10, fractionDigits);
-                StringBuilder builtResult = new StringBuilder().append(rawAmount / i).append(currency.getFractionSeparator());
+                var i = IntMath.checkedPow(10, fractionDigits);
+                var builtResult = new StringBuilder().append(rawAmount / i).append(currency.getFractionSeparator());
 
                 new Formatter(builtResult).format("%0" + fractionDigits + "d", Math.abs(rawAmount) % i);
                 result = builtResult.toString();
@@ -59,15 +59,15 @@ public class AmountUtils {
         String result = null;
 
         if(priceUnit != null) {
-            Integer priceUnitFractionDigits = currency.getPriceUnitFractionDigits();
-            int fractionDigits = priceUnitFractionDigits == null ? 0 : priceUnitFractionDigits;
+            var priceUnitFractionDigits = currency.getPriceUnitFractionDigits();
+            var fractionDigits = priceUnitFractionDigits == null ? 0 : priceUnitFractionDigits;
 
             if(fractionDigits == 0) {
                 result = priceUnit.toString();
             } else {
                 long rawPriceUnit = priceUnit;
-                int i = IntMath.checkedPow(10, fractionDigits);
-                StringBuilder builtResult = new StringBuilder().append(rawPriceUnit / i).append(currency.getFractionSeparator());
+                var i = IntMath.checkedPow(10, fractionDigits);
+                var builtResult = new StringBuilder().append(rawPriceUnit / i).append(currency.getFractionSeparator());
 
                 new Formatter(builtResult).format("%0" + fractionDigits + "d", Math.abs(rawPriceUnit) % i);
                 result = builtResult.toString();
@@ -81,15 +81,15 @@ public class AmountUtils {
         String result = null;
 
         if(priceLine != null) {
-            Integer priceLineFractionDigits = currency.getPriceLineFractionDigits();
-            int fractionDigits = priceLineFractionDigits == null ? 0 : priceLineFractionDigits;
+            var priceLineFractionDigits = currency.getPriceLineFractionDigits();
+            var fractionDigits = priceLineFractionDigits == null ? 0 : priceLineFractionDigits;
 
             if(fractionDigits == 0) {
                 result = priceLine.toString();
             } else {
                 long rawPriceLine = priceLine;
-                int i = IntMath.checkedPow(10, fractionDigits);
-                StringBuilder builtResult = new StringBuilder().append(rawPriceLine / i).append(currency.getFractionSeparator());
+                var i = IntMath.checkedPow(10, fractionDigits);
+                var builtResult = new StringBuilder().append(rawPriceLine / i).append(currency.getFractionSeparator());
 
                 new Formatter(builtResult).format("%0" + fractionDigits + 'd', Math.abs(rawPriceLine) % i);
                 result = builtResult.toString();
@@ -103,15 +103,15 @@ public class AmountUtils {
         String result = null;
 
         if(costUnit != null) {
-            Integer costUnitFractionDigits = currency.getCostUnitFractionDigits();
-            int fractionDigits = costUnitFractionDigits == null ? 0 : costUnitFractionDigits;
+            var costUnitFractionDigits = currency.getCostUnitFractionDigits();
+            var fractionDigits = costUnitFractionDigits == null ? 0 : costUnitFractionDigits;
 
             if(fractionDigits == 0) {
                 result = costUnit.toString();
             } else {
                 long rawCostUnit = costUnit;
-                int i = IntMath.checkedPow(10, fractionDigits);
-                StringBuilder builtResult = new StringBuilder().append(rawCostUnit / i).append(currency.getFractionSeparator());
+                var i = IntMath.checkedPow(10, fractionDigits);
+                var builtResult = new StringBuilder().append(rawCostUnit / i).append(currency.getFractionSeparator());
 
                 new Formatter(builtResult).format("%0" + fractionDigits + 'd', Math.abs(rawCostUnit) % i);
                 result = builtResult.toString();
@@ -125,15 +125,15 @@ public class AmountUtils {
         String result = null;
 
         if(costLine != null) {
-            Integer costLineFractionDigits = currency.getCostLineFractionDigits();
-            int fractionDigits = costLineFractionDigits == null ? 0 : costLineFractionDigits;
+            var costLineFractionDigits = currency.getCostLineFractionDigits();
+            var fractionDigits = costLineFractionDigits == null ? 0 : costLineFractionDigits;
 
             if(fractionDigits == 0) {
                 result = costLine.toString();
             } else {
                 long rawCostLine = costLine;
-                int i = IntMath.checkedPow(10, fractionDigits);
-                StringBuilder builtResult = new StringBuilder().append(rawCostLine / i).append(currency.getFractionSeparator());
+                var i = IntMath.checkedPow(10, fractionDigits);
+                var builtResult = new StringBuilder().append(rawCostLine / i).append(currency.getFractionSeparator());
 
                 new Formatter(builtResult).format("%0" + fractionDigits + 'd', Math.abs(rawCostLine) % i);
                 result = builtResult.toString();

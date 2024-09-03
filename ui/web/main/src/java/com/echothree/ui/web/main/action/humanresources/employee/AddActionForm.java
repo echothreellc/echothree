@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetEmployeeTypeChoicesForm;
 import com.echothree.control.user.employee.common.result.GetEmployeeTypeChoicesResult;
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.GetPartySecurityRoleTemplateChoicesForm;
 import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplateChoicesResult;
 import com.echothree.model.control.employee.common.choice.EmployeeTypeChoicesBean;
 import com.echothree.model.control.security.common.choice.PartySecurityRoleTemplateChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BasePersonWithLoginActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -45,14 +41,14 @@ public class AddActionForm
     private void setupEmployeeTypeChoices() {
         if(employeeTypeChoices == null) {
             try {
-                GetEmployeeTypeChoicesForm form = EmployeeUtil.getHome().getGetEmployeeTypeChoicesForm();
+                var form = EmployeeUtil.getHome().getGetEmployeeTypeChoicesForm();
                 
                 form.setDefaultEmployeeTypeChoice(employeeTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = EmployeeUtil.getHome().getEmployeeTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetEmployeeTypeChoicesResult result = (GetEmployeeTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = EmployeeUtil.getHome().getEmployeeTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetEmployeeTypeChoicesResult)executionResult.getResult();
                 employeeTypeChoices = result.getEmployeeTypeChoices();
                 
                 if(employeeTypeChoice == null) {
@@ -67,14 +63,14 @@ public class AddActionForm
     private void setupPartySecurityRoleTemplateChoices() {
         if(partySecurityRoleTemplateChoices == null) {
             try {
-                GetPartySecurityRoleTemplateChoicesForm form = SecurityUtil.getHome().getGetPartySecurityRoleTemplateChoicesForm();
+                var form = SecurityUtil.getHome().getGetPartySecurityRoleTemplateChoicesForm();
                 
                 form.setDefaultPartySecurityRoleTemplateChoice(partySecurityRoleTemplateChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPartySecurityRoleTemplateChoicesResult result = (GetPartySecurityRoleTemplateChoicesResult)executionResult.getResult();
+
+                var commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPartySecurityRoleTemplateChoicesResult)executionResult.getResult();
                 partySecurityRoleTemplateChoices = result.getPartySecurityRoleTemplateChoices();
                 
                 if(partySecurityRoleTemplateChoice == null)

@@ -123,7 +123,7 @@ public class EditContactPostalAddressCommand
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, null);
         
         var partyTypeName = getPartyTypeName();
-        List<FieldDefinition> EDIT_FIELD_DEFINITIONS =
+        var EDIT_FIELD_DEFINITIONS =
                 partyTypeName.equals(PartyTypes.CUSTOMER.name()) ? editCustomerFieldDefinitions : editOtherFieldDefinitions;
         
         setEditFieldDefinitions(EDIT_FIELD_DEFINITIONS);

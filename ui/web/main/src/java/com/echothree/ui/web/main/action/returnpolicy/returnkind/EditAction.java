@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnkind;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.edit.ReturnKindEdit;
-import com.echothree.control.user.returnpolicy.common.form.EditReturnKindForm;
 import com.echothree.control.user.returnpolicy.common.result.EditReturnKindResult;
-import com.echothree.control.user.returnpolicy.common.spec.ReturnKindSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,13 +53,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String originalReturnKindName = request.getParameter(ParameterConstants.ORIGINAL_RETURN_KIND_NAME);
+        var originalReturnKindName = request.getParameter(ParameterConstants.ORIGINAL_RETURN_KIND_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditReturnKindForm commandForm = ReturnPolicyUtil.getHome().getEditReturnKindForm();
-                ReturnKindSpec spec = ReturnPolicyUtil.getHome().getReturnKindSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = ReturnPolicyUtil.getHome().getEditReturnKindForm();
+                var spec = ReturnPolicyUtil.getHome().getReturnKindSpec();
                 
                 if(originalReturnKindName == null)
                     originalReturnKindName = actionForm.getOriginalReturnKindName();
@@ -73,7 +68,7 @@ public class EditAction
                 spec.setReturnKindName(originalReturnKindName);
                 
                 if(wasPost(request)) {
-                    ReturnKindEdit edit = ReturnPolicyUtil.getHome().getReturnKindEdit();
+                    var edit = ReturnPolicyUtil.getHome().getReturnKindEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -83,14 +78,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ReturnPolicyUtil.getHome().editReturnKind(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ReturnPolicyUtil.getHome().editReturnKind(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditReturnKindResult result = (EditReturnKindResult)executionResult.getResult();
+                            var result = (EditReturnKindResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -103,13 +98,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = ReturnPolicyUtil.getHome().editReturnKind(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditReturnKindResult result = (EditReturnKindResult)executionResult.getResult();
+
+                    var commandResult = ReturnPolicyUtil.getHome().editReturnKind(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditReturnKindResult)executionResult.getResult();
                     
                     if(result != null) {
-                        ReturnKindEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalReturnKindName(edit.getReturnKindName());

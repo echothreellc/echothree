@@ -18,12 +18,10 @@ package com.echothree.control.user.campaign.server.command;
 
 import com.echothree.control.user.campaign.common.form.GetCampaignSourceStatusChoicesForm;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
-import com.echothree.control.user.campaign.common.result.GetCampaignSourceStatusChoicesResult;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.campaign.server.entity.CampaignSource;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,13 +64,13 @@ public class GetCampaignSourceStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        GetCampaignSourceStatusChoicesResult result = CampaignResultFactory.getGetCampaignSourceStatusChoicesResult();
-        String campaignSourceName = form.getCampaignSourceName();
-        CampaignSource campaignSource = campaignControl.getCampaignSourceByName(campaignSourceName);
+        var result = CampaignResultFactory.getGetCampaignSourceStatusChoicesResult();
+        var campaignSourceName = form.getCampaignSourceName();
+        var campaignSource = campaignControl.getCampaignSourceByName(campaignSourceName);
         
         if(campaignSource != null) {
-            String defaultCampaignSourceStatusChoice = form.getDefaultCampaignSourceStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultCampaignSourceStatusChoice = form.getDefaultCampaignSourceStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setCampaignSourceStatusChoices(campaignControl.getCampaignSourceStatusChoices(defaultCampaignSourceStatusChoice,
                     getPreferredLanguage(), allowNullChoice, campaignSource, getPartyPK()));

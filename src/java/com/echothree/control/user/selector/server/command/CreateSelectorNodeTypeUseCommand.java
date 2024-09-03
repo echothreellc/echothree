@@ -19,9 +19,6 @@ package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.CreateSelectorNodeTypeUseForm;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorNodeType;
-import com.echothree.model.data.selector.server.entity.SelectorNodeTypeUse;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,15 +51,15 @@ public class CreateSelectorNodeTypeUseCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var selectorKindName = form.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
         if(selectorKind != null) {
-            String selectorNodeTypeName = form.getSelectorNodeTypeName();
-            SelectorNodeType selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
+            var selectorNodeTypeName = form.getSelectorNodeTypeName();
+            var selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
             
             if(selectorNodeType != null) {
-                SelectorNodeTypeUse selectorNodeTypeUse = selectorControl.getSelectorNodeTypeUse(selectorKind, selectorNodeType);
+                var selectorNodeTypeUse = selectorControl.getSelectorNodeTypeUse(selectorKind, selectorNodeType);
                 
                 if(selectorNodeTypeUse == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());

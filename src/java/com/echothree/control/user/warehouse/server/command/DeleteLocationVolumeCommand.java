@@ -22,9 +22,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.Location;
-import com.echothree.model.data.warehouse.server.entity.LocationVolume;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,15 +63,15 @@ public class DeleteLocationVolumeCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            String locationName = form.getLocationName();
-            Location location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
+            var locationName = form.getLocationName();
+            var location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
             
             if(location != null) {
-                LocationVolume locationVolume = warehouseControl.getLocationVolumeForUpdate(location);
+                var locationVolume = warehouseControl.getLocationVolumeForUpdate(location);
                 
                 if(locationVolume != null) {
                     warehouseControl.deleteLocationVolume(locationVolume, getPartyPK());

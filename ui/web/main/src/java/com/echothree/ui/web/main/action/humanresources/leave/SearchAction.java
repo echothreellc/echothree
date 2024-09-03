@@ -17,25 +17,18 @@
 package com.echothree.ui.web.main.action.humanresources.leave;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetLeaveResultsForm;
-import com.echothree.control.user.search.common.form.SearchLeavesForm;
 import com.echothree.control.user.search.common.result.GetLeaveResultsResult;
 import com.echothree.control.user.search.common.result.SearchLeavesResult;
-import com.echothree.model.control.employee.common.transfer.LeaveResultTransfer;
 import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
@@ -61,16 +54,16 @@ public class SearchAction
     
     private String getLeaveName(HttpServletRequest request)
             throws NamingException {
-        GetLeaveResultsForm commandForm = SearchUtil.getHome().getGetLeaveResultsForm();
+        var commandForm = SearchUtil.getHome().getGetLeaveResultsForm();
         String leaveName = null;
         
         commandForm.setSearchTypeName(SearchTypes.LEAVE_MAINTENANCE.name());
-        
-        CommandResult commandResult = SearchUtil.getHome().getLeaveResults(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetLeaveResultsResult result = (GetLeaveResultsResult)executionResult.getResult();
-        List<LeaveResultTransfer> leaveResults = result.getLeaveResults();
-        Iterator<LeaveResultTransfer> iter = leaveResults.iterator();
+
+        var commandResult = SearchUtil.getHome().getLeaveResults(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetLeaveResultsResult)executionResult.getResult();
+        var leaveResults = result.getLeaveResults();
+        var iter = leaveResults.iterator();
         if(iter.hasNext()) {
             leaveName = iter.next().getLeaveName();
         }
@@ -85,7 +78,7 @@ public class SearchAction
         String leaveName = null;
 
         if(wasPost(request)) {
-            SearchLeavesForm commandForm = SearchUtil.getHome().getSearchLeavesForm();
+            var commandForm = SearchUtil.getHome().getSearchLeavesForm();
 
             commandForm.setSearchTypeName(SearchTypes.LEAVE_MAINTENANCE.name());
             commandForm.setLeaveName(actionForm.getLeaveName());
@@ -95,14 +88,14 @@ public class SearchAction
             commandForm.setCreatedSince(actionForm.getCreatedSince());
             commandForm.setModifiedSince(actionForm.getModifiedSince());
 
-            CommandResult commandResult = SearchUtil.getHome().searchLeaves(getUserVisitPK(request), commandForm);
+            var commandResult = SearchUtil.getHome().searchLeaves(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
                 forwardKey = ForwardConstants.FORM;
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                SearchLeavesResult result = (SearchLeavesResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (SearchLeavesResult)executionResult.getResult();
                 var count = result.getCount();
 
                 if(count == 0 || count > 1) {
@@ -115,8 +108,8 @@ public class SearchAction
         } else {
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.REVIEW)) {
             Map<String, String> parameters = new HashMap<>(1);
             

@@ -17,18 +17,13 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.form.GetCommentForm;
-import com.echothree.control.user.comment.common.form.SetCommentStatusForm;
 import com.echothree.control.user.comment.common.result.GetCommentResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemForm;
 import com.echothree.control.user.item.common.result.GetItemResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -59,26 +54,26 @@ public class CommentStatusAction
     
     public void setupItem(HttpServletRequest request, String itemName)
             throws NamingException {
-        GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+        var commandForm = ItemUtil.getHome().getGetItemForm();
 
         commandForm.setItemName(itemName);
 
-        CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemResult result = (GetItemResult)executionResult.getResult();
+        var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM, result.getItem());
     }
 
     public void setupComment(HttpServletRequest request, String commentName)
             throws NamingException {
-        GetCommentForm commandForm = CommentUtil.getHome().getGetCommentForm();
+        var commandForm = CommentUtil.getHome().getGetCommentForm();
 
         commandForm.setCommentName(commentName);
 
-        CommandResult commandResult = CommentUtil.getHome().getComment(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCommentResult result = (GetCommentResult)executionResult.getResult();
+        var commandResult = CommentUtil.getHome().getComment(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCommentResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.COMMENT, result.getComment());
     }
@@ -87,8 +82,8 @@ public class CommentStatusAction
     public ActionForward executeAction(ActionMapping mapping, CommentStatusActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
-        String commentName = request.getParameter(ParameterConstants.COMMENT_NAME);
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        var commentName = request.getParameter(ParameterConstants.COMMENT_NAME);
 
         if(itemName == null) {
             itemName = actionForm.getItemName();
@@ -98,12 +93,12 @@ public class CommentStatusAction
         }
 
         if(wasPost(request)) {
-            SetCommentStatusForm commandForm = CommentUtil.getHome().getSetCommentStatusForm();
+            var commandForm = CommentUtil.getHome().getSetCommentStatusForm();
         
             commandForm.setCommentName(commentName);
             commandForm.setCommentStatusChoice(actionForm.getCommentStatusChoice());
 
-            CommandResult commandResult = CommentUtil.getHome().setCommentStatus(getUserVisitPK(request), commandForm);
+            var commandResult = CommentUtil.getHome().setCommentStatus(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -118,7 +113,7 @@ public class CommentStatusAction
             forwardKey = ForwardConstants.FORM;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupItem(request, itemName);
             setupComment(request, commentName);

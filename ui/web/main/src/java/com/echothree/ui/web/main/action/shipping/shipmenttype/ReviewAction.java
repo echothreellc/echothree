@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.shipping.shipmenttype;
 
 import com.echothree.control.user.shipment.common.ShipmentUtil;
-import com.echothree.control.user.shipment.common.form.GetShipmentTypeForm;
 import com.echothree.control.user.shipment.common.result.GetShipmentTypeResult;
-import com.echothree.model.control.shipment.common.transfer.ShipmentTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,18 +49,18 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetShipmentTypeForm commandForm = ShipmentUtil.getHome().getGetShipmentTypeForm();
-            String shipmentTypeName = request.getParameter(ParameterConstants.SHIPMENT_TYPE_NAME);
+            var commandForm = ShipmentUtil.getHome().getGetShipmentTypeForm();
+            var shipmentTypeName = request.getParameter(ParameterConstants.SHIPMENT_TYPE_NAME);
             
             commandForm.setShipmentTypeName(shipmentTypeName);
-            
-            CommandResult commandResult = ShipmentUtil.getHome().getShipmentType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetShipmentTypeResult result = (GetShipmentTypeResult)executionResult.getResult();
-            ShipmentTypeTransfer shipmentType = result.getShipmentType();
+
+            var commandResult = ShipmentUtil.getHome().getShipmentType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetShipmentTypeResult)executionResult.getResult();
+            var shipmentType = result.getShipmentType();
             
             if(shipmentType == null) {
                 forwardKey = ForwardConstants.ERROR_404;

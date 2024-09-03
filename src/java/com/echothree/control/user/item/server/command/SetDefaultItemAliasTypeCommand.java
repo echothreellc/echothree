@@ -21,7 +21,6 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.value.ItemAliasTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultItemAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemAliasTypeName = form.getItemAliasTypeName();
-        ItemAliasTypeDetailValue itemAliasTypeDetailValue = itemControl.getItemAliasTypeDetailValueByNameForUpdate(itemAliasTypeName);
+        var itemAliasTypeName = form.getItemAliasTypeName();
+        var itemAliasTypeDetailValue = itemControl.getItemAliasTypeDetailValueByNameForUpdate(itemAliasTypeName);
         
         if(itemAliasTypeDetailValue != null) {
             itemAliasTypeDetailValue.setIsDefault(Boolean.TRUE);

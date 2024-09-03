@@ -28,8 +28,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.core.server.entity.FontStyleDescription;
-import com.echothree.model.data.core.server.value.FontStyleDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -88,13 +86,13 @@ public class EditFontStyleDescriptionCommand
     public FontStyleDescription getEntity(EditFontStyleDescriptionResult result) {
         var coreControl = getCoreControl();
         FontStyleDescription fontStyleDescription = null;
-        String fontStyleName = spec.getFontStyleName();
-        FontStyle fontStyle = coreControl.getFontStyleByName(fontStyleName);
+        var fontStyleName = spec.getFontStyleName();
+        var fontStyle = coreControl.getFontStyleByName(fontStyleName);
 
         if(fontStyle != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -136,7 +134,7 @@ public class EditFontStyleDescriptionCommand
     @Override
     public void doUpdate(FontStyleDescription fontStyleDescription) {
         var coreControl = getCoreControl();
-        FontStyleDescriptionValue fontStyleDescriptionValue = coreControl.getFontStyleDescriptionValue(fontStyleDescription);
+        var fontStyleDescriptionValue = coreControl.getFontStyleDescriptionValue(fontStyleDescription);
         fontStyleDescriptionValue.setDescription(edit.getDescription());
 
         coreControl.updateFontStyleDescriptionFromValue(fontStyleDescriptionValue, getPartyPK());

@@ -18,7 +18,6 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetSymbolPositionForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetSymbolPositionResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.logic.SymbolPositionLogic;
 import com.echothree.model.control.core.common.ComponentVendors;
@@ -26,7 +25,6 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,7 +61,7 @@ public class GetSymbolPositionCommand
     protected SymbolPosition getEntity() {
         var accountingControl = Session.getModelController(AccountingControl.class);
         SymbolPosition symbolPosition = null;
-        String symbolPositionName = form.getSymbolPositionName();
+        var symbolPositionName = form.getSymbolPositionName();
         var parameterCount = (symbolPositionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
@@ -97,7 +95,7 @@ public class GetSymbolPositionCommand
     @Override
     protected BaseResult getResult(SymbolPosition symbolPosition) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetSymbolPositionResult result = AccountingResultFactory.getGetSymbolPositionResult();
+        var result = AccountingResultFactory.getGetSymbolPositionResult();
 
         if(symbolPosition != null) {
             result.setSymbolPosition(accountingControl.getSymbolPositionTransfer(getUserVisit(), symbolPosition));

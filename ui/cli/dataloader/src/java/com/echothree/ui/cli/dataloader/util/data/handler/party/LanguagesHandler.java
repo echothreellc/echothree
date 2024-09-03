@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.party;
 
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.PartyService;
-import com.echothree.control.user.party.common.form.CreateLanguageForm;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -46,7 +45,7 @@ public class LanguagesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("language")) {
-            CreateLanguageForm commandForm = PartyFormFactory.getCreateLanguageForm();
+            var commandForm = PartyFormFactory.getCreateLanguageForm();
 
             commandForm.set(getAttrsMap(attrs));
 

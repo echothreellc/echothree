@@ -18,15 +18,11 @@ package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.GetContactListGroupDescriptionForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
-import com.echothree.control.user.contactlist.common.result.GetContactListGroupDescriptionResult;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
-import com.echothree.model.data.contactlist.server.entity.ContactListGroupDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetContactListGroupDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        GetContactListGroupDescriptionResult result = ContactListResultFactory.getGetContactListGroupDescriptionResult();
-        String contactListGroupName = form.getContactListGroupName();
-        ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+        var result = ContactListResultFactory.getGetContactListGroupDescriptionResult();
+        var contactListGroupName = form.getContactListGroupName();
+        var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
         
         if(contactListGroup != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ContactListGroupDescription contactListGroupDescription = contactListControl.getContactListGroupDescription(contactListGroup, language);
+                var contactListGroupDescription = contactListControl.getContactListGroupDescription(contactListGroup, language);
                 
                 if(contactListGroupDescription != null) {
                     result.setContactListGroupDescription(contactListControl.getContactListGroupDescriptionTransfer(getUserVisit(), contactListGroupDescription));

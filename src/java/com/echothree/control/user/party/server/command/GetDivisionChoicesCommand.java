@@ -17,13 +17,10 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetDivisionChoicesForm;
-import com.echothree.control.user.party.common.result.GetDivisionChoicesResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyCompany;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -56,9 +53,9 @@ public class GetDivisionChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetDivisionChoicesResult result = PartyResultFactory.getGetDivisionChoicesResult();
-        String companyName = form.getCompanyName();
-        String partyName = form.getPartyName();
+        var result = PartyResultFactory.getGetDivisionChoicesResult();
+        var companyName = form.getCompanyName();
+        var partyName = form.getPartyName();
         var parameterCount = (companyName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         
         if(parameterCount == 1) {
@@ -66,7 +63,7 @@ public class GetDivisionChoicesCommand
             Party party = null;
             
             if(companyName != null) {
-                PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
+                var partyCompany = partyControl.getPartyCompanyByName(companyName);
                 
                 if(partyCompany == null) {
                     addExecutionError(ExecutionErrors.UnknownCompanyName.name(), companyName);
@@ -77,7 +74,7 @@ public class GetDivisionChoicesCommand
                 party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
-                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.COMPANY.name());
+                    var partyType = partyControl.getPartyTypeByName(PartyTypes.COMPANY.name());
                     
                     if(!party.getLastDetail().getPartyType().equals(partyType)) {
                         addExecutionError(ExecutionErrors.InvalidPartyType.name());
@@ -88,8 +85,8 @@ public class GetDivisionChoicesCommand
             }
             
             if(!hasExecutionErrors()) {
-                String defaultDivisionChoice = form.getDefaultDivisionChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultDivisionChoice = form.getDefaultDivisionChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
                 
                 result.setDivisionChoices(partyControl.getDivisionChoices(party, defaultDivisionChoice, allowNullChoice));
             }

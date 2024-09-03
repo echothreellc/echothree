@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.content.contentwebaddress;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentWebAddressDescriptionsForm;
 import com.echothree.control.user.content.common.result.GetContentWebAddressDescriptionsResult;
-import com.echothree.model.control.content.common.transfer.ContentWebAddressTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String contentWebAddressName = request.getParameter(ParameterConstants.CONTENT_WEB_ADDRESS_NAME);
-            GetContentWebAddressDescriptionsForm commandForm = ContentUtil.getHome().getGetContentWebAddressDescriptionsForm();
+            var contentWebAddressName = request.getParameter(ParameterConstants.CONTENT_WEB_ADDRESS_NAME);
+            var commandForm = ContentUtil.getHome().getGetContentWebAddressDescriptionsForm();
             
             commandForm.setContentWebAddressName(contentWebAddressName);
-            
-            CommandResult commandResult = ContentUtil.getHome().getContentWebAddressDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentWebAddressDescriptionsResult result = (GetContentWebAddressDescriptionsResult)executionResult.getResult();
-            ContentWebAddressTransfer contentWebAddressTransfer = result.getContentWebAddress();
+
+            var commandResult = ContentUtil.getHome().getContentWebAddressDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentWebAddressDescriptionsResult)executionResult.getResult();
+            var contentWebAddressTransfer = result.getContentWebAddress();
             
             request.setAttribute(AttributeConstants.CONTENT_WEB_ADDRESS, contentWebAddressTransfer);
             request.setAttribute(AttributeConstants.CONTENT_WEB_ADDRESS_NAME, contentWebAddressTransfer.getContentWebAddressName());

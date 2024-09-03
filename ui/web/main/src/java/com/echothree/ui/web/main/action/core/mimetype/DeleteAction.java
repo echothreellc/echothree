@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.mimetype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteMimeTypeForm;
-import com.echothree.control.user.core.common.form.GetMimeTypeForm;
 import com.echothree.control.user.core.common.result.GetMimeTypeResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -61,13 +58,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetMimeTypeForm commandForm = CoreUtil.getHome().getGetMimeTypeForm();
+        var commandForm = CoreUtil.getHome().getGetMimeTypeForm();
         
         commandForm.setMimeTypeName(actionForm.getMimeTypeName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getMimeType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetMimeTypeResult result = (GetMimeTypeResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getMimeType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetMimeTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.MIME_TYPE, result.getMimeType());
     }
@@ -75,7 +72,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteMimeTypeForm commandForm = CoreUtil.getHome().getDeleteMimeTypeForm();
+        var commandForm = CoreUtil.getHome().getDeleteMimeTypeForm();
 
         commandForm.setMimeTypeName(actionForm.getMimeTypeName());
 

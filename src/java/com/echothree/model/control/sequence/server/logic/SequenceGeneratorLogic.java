@@ -335,7 +335,7 @@ public class SequenceGeneratorLogic
 
     private StringBuilder getPatternFromMask(final String mask) {
         var maskChars = mask.toCharArray();
-        StringBuilder pattern = new StringBuilder();
+        var pattern = new StringBuilder();
 
         for(var maskChar : maskChars) {
             switch(maskChar) {

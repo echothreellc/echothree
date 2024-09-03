@@ -27,7 +27,6 @@ import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
 import com.echothree.model.data.search.server.entity.SearchSortOrder;
 import com.echothree.model.data.search.server.entity.SearchType;
-import com.echothree.model.data.search.server.value.PartySearchTypePreferenceDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
@@ -48,14 +47,14 @@ public abstract class BaseSearchCommand<F extends BaseSearchForm, R extends Base
     }
     
     protected PartySearchTypePreference getPartySearchTypePreference(SearchControl searchControl, SearchType searchType) {
-        Party party = getParty();
+        var party = getParty();
         
         return party == null ? null : searchControl.getPartySearchTypePreference(party, searchType);
     }
     
     protected SearchDefaultOperator getDefaultSearchDefaultOperator(SearchLogic searchLogic, boolean rememberPreferences,
             PartySearchTypePreferenceDetail partySearchTypePreferenceDetail) {
-        SearchDefaultOperator searchDefaultOperator = partySearchTypePreferenceDetail == null || rememberPreferences ? null
+        var searchDefaultOperator = partySearchTypePreferenceDetail == null || rememberPreferences ? null
                 : partySearchTypePreferenceDetail.getSearchDefaultOperator();
         
         if(searchDefaultOperator == null) {
@@ -67,7 +66,7 @@ public abstract class BaseSearchCommand<F extends BaseSearchForm, R extends Base
     
     protected SearchSortOrder getDefaultSearchSortOrder(SearchLogic searchLogic, boolean rememberPreferences, SearchKind searchKind,
             PartySearchTypePreferenceDetail partySearchTypePreferenceDetail) {
-        SearchSortOrder searchSortOrder = partySearchTypePreferenceDetail == null || rememberPreferences ? null
+        var searchSortOrder = partySearchTypePreferenceDetail == null || rememberPreferences ? null
                 : partySearchTypePreferenceDetail.getSearchSortOrder();
         
         if(searchSortOrder == null) {
@@ -79,7 +78,7 @@ public abstract class BaseSearchCommand<F extends BaseSearchForm, R extends Base
     
     protected SearchSortDirection getDefaultSearchSortDirection(SearchLogic searchLogic, boolean rememberPreferences,
             PartySearchTypePreferenceDetail partySearchTypePreferenceDetail) {
-        SearchSortDirection searchSortDirection = partySearchTypePreferenceDetail == null || rememberPreferences ? null
+        var searchSortDirection = partySearchTypePreferenceDetail == null || rememberPreferences ? null
                 : partySearchTypePreferenceDetail.getSearchSortDirection();
         
         if(searchSortDirection == null) {
@@ -99,7 +98,7 @@ public abstract class BaseSearchCommand<F extends BaseSearchForm, R extends Base
         if(partySearchTypePreference == null) {
             searchControl.createPartySearchTypePreference(party, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, party.getPrimaryKey());
         } else {
-            PartySearchTypePreferenceDetailValue partySearchTypePreferenceDetailValue = searchControl.getPartySearchTypePreferenceDetailValueForUpdate(partySearchTypePreference);
+            var partySearchTypePreferenceDetailValue = searchControl.getPartySearchTypePreferenceDetailValueForUpdate(partySearchTypePreference);
 
             // Each of the following first check to see if we've fallen back onto the default for each, and will clear
             // the value if we have. Otherwise, it'll use the new value that the user has selected.

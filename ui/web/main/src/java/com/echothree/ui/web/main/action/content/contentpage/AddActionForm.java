@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.content.contentpage;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentPageLayoutChoicesForm;
 import com.echothree.control.user.content.common.result.GetContentPageLayoutChoicesResult;
 import com.echothree.model.control.content.common.choice.ContentPageLayoutChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -48,13 +45,13 @@ public class AddActionForm
     private void setupContentPageLayoutChoices()
             throws NamingException {
         if(contentPageLayoutChoices == null) {
-            GetContentPageLayoutChoicesForm getContentPageLayoutChoicesForm = ContentUtil.getHome().getGetContentPageLayoutChoicesForm();
+            var getContentPageLayoutChoicesForm = ContentUtil.getHome().getGetContentPageLayoutChoicesForm();
 
             getContentPageLayoutChoicesForm.setDefaultContentPageLayoutChoice(contentPageLayoutChoice);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentPageLayoutChoices(userVisitPK, getContentPageLayoutChoicesForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentPageLayoutChoicesResult getContentPageLayoutChoicesResult = (GetContentPageLayoutChoicesResult)executionResult.getResult();
+            var commandResult = ContentUtil.getHome().getContentPageLayoutChoices(userVisitPK, getContentPageLayoutChoicesForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getContentPageLayoutChoicesResult = (GetContentPageLayoutChoicesResult)executionResult.getResult();
             contentPageLayoutChoices = getContentPageLayoutChoicesResult.getContentPageLayoutChoices();
 
             if(contentPageLayoutChoice == null)

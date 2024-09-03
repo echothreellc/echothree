@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.chain.chainkind;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.CreateChainKindDescriptionForm;
-import com.echothree.control.user.chain.common.form.GetChainKindForm;
 import com.echothree.control.user.chain.common.result.GetChainKindResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetChainKindForm commandForm = ChainUtil.getHome().getGetChainKindForm();
+        var commandForm = ChainUtil.getHome().getGetChainKindForm();
 
         commandForm.setChainKindName(actionForm.getChainKindName());
-        
-        CommandResult commandResult = ChainUtil.getHome().getChainKind(getUserVisitPK(request), commandForm);
+
+        var commandResult = ChainUtil.getHome().getChainKind(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetChainKindResult result = (GetChainKindResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetChainKindResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CHAIN_KIND, result.getChainKind());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateChainKindDescriptionForm commandForm = ChainUtil.getHome().getCreateChainKindDescriptionForm();
+        var commandForm = ChainUtil.getHome().getCreateChainKindDescriptionForm();
 
         commandForm.setChainKindName(actionForm.getChainKindName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

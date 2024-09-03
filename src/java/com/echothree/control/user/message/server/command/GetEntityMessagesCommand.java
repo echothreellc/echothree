@@ -17,16 +17,9 @@
 package com.echothree.control.user.message.server.command;
 
 import com.echothree.control.user.message.common.form.GetEntityMessagesForm;
-import com.echothree.control.user.message.common.result.GetEntityMessagesResult;
 import com.echothree.control.user.message.common.result.MessageResultFactory;
 import com.echothree.model.control.message.server.control.MessageControl;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.message.server.entity.Message;
-import com.echothree.model.data.message.server.entity.MessageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -59,21 +52,21 @@ public class GetEntityMessagesCommand
     
     @Override
     protected BaseResult execute() {
-        GetEntityMessagesResult result = MessageResultFactory.getGetEntityMessagesResult();
-        String componentVendorName = form.getComponentVendorName();
-        String entityTypeName = form.getEntityTypeName();
-        String messageTypeName = form.getMessageTypeName();
-        String messageName = form.getMessageName();
-        String entityRef = form.getEntityRef();
+        var result = MessageResultFactory.getGetEntityMessagesResult();
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
+        var messageTypeName = form.getMessageTypeName();
+        var messageName = form.getMessageName();
+        var entityRef = form.getEntityRef();
         var parameterCount = (componentVendorName == null && entityTypeName == null && messageTypeName == null && messageName == null ? 0 : 1) + (entityRef == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var coreControl = getCoreControl();
             var messageControl = Session.getModelController(MessageControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             if(entityRef != null) {
-                EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+                var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
                 
                 if(entityInstance != null) {
                     result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false, false));
@@ -82,20 +75,20 @@ public class GetEntityMessagesCommand
                     addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
                 }
             } else {
-                ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
                 
                 result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
                 
                 if(componentVendor != null) {
-                    EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                    var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
                     
                     result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
                     
                     if(entityType != null) {
-                        MessageType messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
+                        var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                         
                         if(messageType != null) {
-                            Message message = messageControl.getMessageByName(messageType, messageName);
+                            var message = messageControl.getMessageByName(messageType, messageName);
                             
                             result.setMessageType(messageControl.getMessageTypeTransfer(userVisit, messageType));
                             

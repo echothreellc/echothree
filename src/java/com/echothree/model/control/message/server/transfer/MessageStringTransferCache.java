@@ -17,9 +17,7 @@
 package com.echothree.model.control.message.server.transfer;
 
 import com.echothree.model.control.message.common.transfer.MessageStringTransfer;
-import com.echothree.model.control.message.common.transfer.MessageTransfer;
 import com.echothree.model.control.message.server.control.MessageControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.message.server.entity.MessageString;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -38,12 +36,12 @@ public class MessageStringTransferCache
     }
     
     public MessageStringTransfer getMessageStringTransfer(MessageString messageString) {
-        MessageStringTransfer messageStringTransfer = get(messageString);
+        var messageStringTransfer = get(messageString);
         
         if(messageStringTransfer == null) {
-            MessageTransfer message = messageControl.getMessageTransfer(userVisit, messageString.getMessage());
-            LanguageTransfer language = partyControl.getLanguageTransfer(userVisit, messageString.getLanguage());
-            String string = messageString.getString();
+            var message = messageControl.getMessageTransfer(userVisit, messageString.getMessage());
+            var language = partyControl.getLanguageTransfer(userVisit, messageString.getLanguage());
+            var string = messageString.getString();
             
             messageStringTransfer = new MessageStringTransfer(message, language, string);
             put(messageString, messageStringTransfer);

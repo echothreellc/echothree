@@ -18,13 +18,11 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetFontStyleForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetFontStyleResult;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -61,7 +59,7 @@ public class GetFontStyleCommand
     protected FontStyle getEntity() {
         var coreControl = getCoreControl();
         FontStyle fontStyle = null;
-        String fontStyleName = form.getFontStyleName();
+        var fontStyleName = form.getFontStyleName();
         var parameterCount = (fontStyleName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -89,7 +87,7 @@ public class GetFontStyleCommand
     @Override
     protected BaseResult getResult(FontStyle fontStyle) {
         var coreControl = getCoreControl();
-        GetFontStyleResult result = CoreResultFactory.getGetFontStyleResult();
+        var result = CoreResultFactory.getGetFontStyleResult();
 
         if(fontStyle != null) {
             result.setFontStyle(coreControl.getFontStyleTransfer(getUserVisit(), fontStyle));

@@ -20,10 +20,8 @@ import com.echothree.model.control.contact.common.workflow.WebAddressStatusConst
 import com.echothree.model.control.contact.common.transfer.ContactWebAddressTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactWebAddress;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -39,13 +37,13 @@ public class ContactWebAddressTransferCache
     }
     
     public ContactWebAddressTransfer getContactWebAddressTransfer(ContactWebAddress contactWebAddress) {
-        ContactWebAddressTransfer contactWebAddressTransfer = get(contactWebAddress);
+        var contactWebAddressTransfer = get(contactWebAddress);
         
         if(contactWebAddressTransfer == null) {
-            String url = contactWebAddress.getUrl();
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(contactWebAddress.getContactMechanismPK());
-            WorkflowEntityStatusTransfer webAddressStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var url = contactWebAddress.getUrl();
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(contactWebAddress.getContactMechanismPK());
+            var webAddressStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS, entityInstance);
             
             contactWebAddressTransfer = new ContactWebAddressTransfer(url, webAddressStatusTransfer);

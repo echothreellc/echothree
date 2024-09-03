@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.tax;
 
 import com.echothree.control.user.tax.common.TaxUtil;
-import com.echothree.control.user.tax.common.form.GetTaxForm;
 import com.echothree.control.user.tax.common.result.GetTaxResult;
-import com.echothree.model.control.tax.common.transfer.TaxTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,16 +48,16 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetTaxForm commandForm = TaxUtil.getHome().getGetTaxForm();
-        String taxName = request.getParameter(ParameterConstants.TAX_NAME);
+        String forwardKey;
+        var commandForm = TaxUtil.getHome().getGetTaxForm();
+        var taxName = request.getParameter(ParameterConstants.TAX_NAME);
         
         commandForm.setTaxName(taxName);
-        
-        CommandResult commandResult = TaxUtil.getHome().getTax(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTaxResult result = (GetTaxResult)executionResult.getResult();
-        TaxTransfer tax = result.getTax();
+
+        var commandResult = TaxUtil.getHome().getTax(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTaxResult)executionResult.getResult();
+        var tax = result.getTax();
         
         if(tax == null) {
             forwardKey = ForwardConstants.ERROR_404;

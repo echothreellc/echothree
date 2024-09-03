@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.geocodescope;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.CreateGeoCodeScopeDescriptionForm;
-import com.echothree.control.user.geo.common.form.GetGeoCodeScopeForm;
 import com.echothree.control.user.geo.common.result.GetGeoCodeScopeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetGeoCodeScopeForm commandForm = GeoUtil.getHome().getGetGeoCodeScopeForm();
+        var commandForm = GeoUtil.getHome().getGetGeoCodeScopeForm();
 
         commandForm.setGeoCodeScopeName(actionForm.getGeoCodeScopeName());
-        
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeScope(getUserVisitPK(request), commandForm);
+
+        var commandResult = GeoUtil.getHome().getGeoCodeScope(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeScopeResult result = (GetGeoCodeScopeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeScopeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.GEO_CODE_SCOPE, result.getGeoCodeScope());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateGeoCodeScopeDescriptionForm commandForm = GeoUtil.getHome().getCreateGeoCodeScopeDescriptionForm();
+        var commandForm = GeoUtil.getHome().getCreateGeoCodeScopeDescriptionForm();
 
         commandForm.setGeoCodeScopeName( actionForm.getGeoCodeScopeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

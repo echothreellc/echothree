@@ -17,8 +17,6 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityAttributeEntityTypeTransfer;
-import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
-import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityAttributeEntityType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -36,11 +34,11 @@ public class EntityAttributeEntityTypeTransferCache
     }
     
     public EntityAttributeEntityTypeTransfer getEntityAttributeEntityTypeTransfer(EntityAttributeEntityType entityAttributeEntityType, EntityInstance entityInstance) {
-        EntityAttributeEntityTypeTransfer entityAttributeEntityTypeTransfer = get(entityAttributeEntityType);
+        var entityAttributeEntityTypeTransfer = get(entityAttributeEntityType);
         
         if(entityAttributeEntityTypeTransfer == null) {
-            EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityAttributeEntityType.getEntityAttribute(), entityInstance) : null;
-            EntityTypeTransfer allowedEntityType = coreControl.getEntityTypeTransfer(userVisit, entityAttributeEntityType.getAllowedEntityType());
+            var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityAttributeEntityType.getEntityAttribute(), entityInstance) : null;
+            var allowedEntityType = coreControl.getEntityTypeTransfer(userVisit, entityAttributeEntityType.getAllowedEntityType());
             
             entityAttributeEntityTypeTransfer = new EntityAttributeEntityTypeTransfer(entityAttribute, allowedEntityType);
             put(entityAttributeEntityType, entityAttributeEntityTypeTransfer);

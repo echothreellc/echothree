@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.sequence.sequence;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.form.GetSequencesForm;
 import com.echothree.control.user.sequence.common.result.GetSequencesResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,17 +48,17 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetSequencesForm getSequencesForm = SequenceUtil.getHome().getGetSequencesForm();
-            String sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
+            var getSequencesForm = SequenceUtil.getHome().getGetSequencesForm();
+            var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
             
             getSequencesForm.setSequenceTypeName(sequenceTypeName);
-            
-            CommandResult commandResult = SequenceUtil.getHome().getSequences(getUserVisitPK(request), getSequencesForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSequencesResult getSequencesResult = (GetSequencesResult)executionResult.getResult();
+
+            var commandResult = SequenceUtil.getHome().getSequences(getUserVisitPK(request), getSequencesForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getSequencesResult = (GetSequencesResult)executionResult.getResult();
             
             request.setAttribute("sequenceType", getSequencesResult.getSequenceType());
             request.setAttribute("sequences", getSequencesResult.getSequences());

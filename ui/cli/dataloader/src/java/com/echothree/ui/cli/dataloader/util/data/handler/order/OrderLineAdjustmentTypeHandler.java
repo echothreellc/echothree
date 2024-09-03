@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.order;
 
 import com.echothree.control.user.order.common.OrderUtil;
 import com.echothree.control.user.order.common.OrderService;
-import com.echothree.control.user.order.common.form.CreateOrderLineAdjustmentTypeDescriptionForm;
 import com.echothree.control.user.order.common.form.OrderFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -51,7 +50,7 @@ public class OrderLineAdjustmentTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("orderLineAdjustmentTypeDescription")) {
-            CreateOrderLineAdjustmentTypeDescriptionForm commandForm = OrderFormFactory.getCreateOrderLineAdjustmentTypeDescriptionForm();
+            var commandForm = OrderFormFactory.getCreateOrderLineAdjustmentTypeDescriptionForm();
             
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.setOrderLineAdjustmentTypeName(orderLineAdjustmentTypeName);

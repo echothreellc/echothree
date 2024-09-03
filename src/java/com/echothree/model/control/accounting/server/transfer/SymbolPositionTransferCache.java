@@ -19,7 +19,6 @@ package com.echothree.model.control.accounting.server.transfer;
 import com.echothree.model.control.accounting.common.transfer.SymbolPositionTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
-import com.echothree.model.data.accounting.server.entity.SymbolPositionDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class SymbolPositionTransferCache
@@ -34,14 +33,14 @@ public class SymbolPositionTransferCache
     
     @Override
     public SymbolPositionTransfer getTransfer(SymbolPosition symbolPosition) {
-        SymbolPositionTransfer symbolPositionTransfer = get(symbolPosition);
+        var symbolPositionTransfer = get(symbolPosition);
         
         if(symbolPositionTransfer == null) {
-            SymbolPositionDetail symbolPositionDetail = symbolPosition.getLastDetail();
-            String symbolPositionName = symbolPositionDetail.getSymbolPositionName();
-            Boolean isDefault = symbolPositionDetail.getIsDefault();
-            Integer sortOrder = symbolPositionDetail.getSortOrder();
-            String description = accountingControl.getBestSymbolPositionDescription(symbolPosition, getLanguage());
+            var symbolPositionDetail = symbolPosition.getLastDetail();
+            var symbolPositionName = symbolPositionDetail.getSymbolPositionName();
+            var isDefault = symbolPositionDetail.getIsDefault();
+            var sortOrder = symbolPositionDetail.getSortOrder();
+            var description = accountingControl.getBestSymbolPositionDescription(symbolPosition, getLanguage());
             
             symbolPositionTransfer = new SymbolPositionTransfer(symbolPositionName, isDefault, sortOrder, description);
             put(symbolPosition, symbolPositionTransfer);

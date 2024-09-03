@@ -17,16 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.workrequirementscope;
 
 import com.echothree.control.user.workrequirement.common.WorkRequirementUtil;
-import com.echothree.control.user.workrequirement.common.form.GetWorkRequirementScopesForm;
 import com.echothree.control.user.workrequirement.common.result.GetWorkRequirementScopesResult;
-import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;
-import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,23 +49,23 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetWorkRequirementScopesForm commandForm = WorkRequirementUtil.getHome().getGetWorkRequirementScopesForm();
-            String workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
-            String workRequirementTypeName = request.getParameter(ParameterConstants.WORK_REQUIREMENT_TYPE_NAME);
-            String workEffortScopeName = request.getParameter(ParameterConstants.WORK_EFFORT_SCOPE_NAME);
+            var commandForm = WorkRequirementUtil.getHome().getGetWorkRequirementScopesForm();
+            var workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
+            var workRequirementTypeName = request.getParameter(ParameterConstants.WORK_REQUIREMENT_TYPE_NAME);
+            var workEffortScopeName = request.getParameter(ParameterConstants.WORK_EFFORT_SCOPE_NAME);
             
             commandForm.setWorkEffortTypeName(workEffortTypeName);
             commandForm.setWorkRequirementTypeName(workRequirementTypeName);
             commandForm.setWorkEffortScopeName(workEffortScopeName);
-            
-            CommandResult commandResult = WorkRequirementUtil.getHome().getWorkRequirementScopes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkRequirementScopesResult result = (GetWorkRequirementScopesResult)executionResult.getResult();
-            WorkRequirementTypeTransfer workRequirementType = result.getWorkRequirementType();
-            WorkEffortScopeTransfer workEffortScope = result.getWorkEffortScope();
+
+            var commandResult = WorkRequirementUtil.getHome().getWorkRequirementScopes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkRequirementScopesResult)executionResult.getResult();
+            var workRequirementType = result.getWorkRequirementType();
+            var workEffortScope = result.getWorkEffortScope();
             
             if(workRequirementType != null) {
                 request.setAttribute(AttributeConstants.WORK_REQUIREMENT_TYPE, workRequirementType);

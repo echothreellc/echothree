@@ -37,9 +37,9 @@ public final class GraphQlCursorUtils {
 
     // Intended to be as "basic" as it appears - just to prevent casual tampering.
     private byte[] xorBytes(byte[] originalBytes) {
-        byte[] modifiedBytes = new byte[originalBytes.length];
+        var modifiedBytes = new byte[originalBytes.length];
 
-        for(int i = 0; i < originalBytes.length; i++) {
+        for(var i = 0; i < originalBytes.length; i++) {
             modifiedBytes[i] = (byte)(originalBytes[i] ^ xorValue);
         }
 

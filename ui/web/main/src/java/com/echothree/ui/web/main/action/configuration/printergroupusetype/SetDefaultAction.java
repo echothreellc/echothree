@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.printergroupusetype;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.SetDefaultPrinterGroupUseTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -48,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultPrinterGroupUseTypeForm commandForm = PrinterUtil.getHome().getSetDefaultPrinterGroupUseTypeForm();
+        var commandForm = PrinterUtil.getHome().getSetDefaultPrinterGroupUseTypeForm();
 
         commandForm.setPrinterGroupUseTypeName(request.getParameter(ParameterConstants.PRINTER_GROUP_USE_TYPE_NAME));
 

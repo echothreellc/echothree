@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.commandmessage;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteCommandMessageForm;
-import com.echothree.control.user.core.common.form.GetCommandMessageForm;
 import com.echothree.control.user.core.common.result.GetCommandMessageResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,14 +60,14 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCommandMessageForm commandForm = CoreUtil.getHome().getGetCommandMessageForm();
+        var commandForm = CoreUtil.getHome().getGetCommandMessageForm();
         
         commandForm.setCommandMessageTypeName(actionForm.getCommandMessageTypeName());
         commandForm.setCommandMessageKey(actionForm.getCommandMessageKey());
-        
-        CommandResult commandResult = CoreUtil.getHome().getCommandMessage(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCommandMessageResult result = (GetCommandMessageResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getCommandMessage(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCommandMessageResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.COMMAND_MESSAGE, result.getCommandMessage());
     }
@@ -78,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteCommandMessageForm commandForm = CoreUtil.getHome().getDeleteCommandMessageForm();
+        var commandForm = CoreUtil.getHome().getDeleteCommandMessageForm();
 
         commandForm.setCommandMessageTypeName(actionForm.getCommandMessageTypeName());
         commandForm.setCommandMessageKey(actionForm.getCommandMessageKey());

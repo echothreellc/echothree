@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.employee;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.common.EmployeeService;
-import com.echothree.control.user.employee.common.form.CreatePartyResponsibilityForm;
 import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -51,15 +50,15 @@ public class PartyResponsibilitiesHandler
             throws SAXException {
         if(localName.equals("partyResponsibility")) {
             String responsibilityTypeName = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("responsibilityTypeName"))
                     responsibilityTypeName = attrs.getValue(i);
             }
             
             try {
-                CreatePartyResponsibilityForm commandForm = EmployeeFormFactory.getCreatePartyResponsibilityForm();
+                var commandForm = EmployeeFormFactory.getCreatePartyResponsibilityForm();
                 
                 commandForm.setPartyName(partyName);
                 commandForm.setResponsibilityTypeName(responsibilityTypeName);

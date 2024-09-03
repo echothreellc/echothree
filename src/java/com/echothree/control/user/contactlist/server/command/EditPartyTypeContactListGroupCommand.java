@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
 import com.echothree.model.data.contactlist.server.entity.PartyTypeContactListGroup;
-import com.echothree.model.data.contactlist.server.value.PartyTypeContactListGroupValue;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditPartyTypeContactListGroupCommand
     public PartyTypeContactListGroup getEntity(EditPartyTypeContactListGroupResult result) {
         var partyControl = Session.getModelController(PartyControl.class);
         PartyTypeContactListGroup partyTypeContactListGroup = null;
-        String partyTypeName = spec.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var partyTypeName = spec.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            String contactListGroupName = spec.getContactListGroupName();
-            ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+            var contactListGroupName = spec.getContactListGroupName();
+            var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
             if(contactListGroup != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditPartyTypeContactListGroupCommand
     @Override
     public void doUpdate(PartyTypeContactListGroup partyTypeContactListGroup) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        PartyTypeContactListGroupValue partyTypeContactListGroupValue = contactListControl.getPartyTypeContactListGroupValue(partyTypeContactListGroup);
+        var partyTypeContactListGroupValue = contactListControl.getPartyTypeContactListGroupValue(partyTypeContactListGroup);
 
         partyTypeContactListGroupValue.setAddWhenCreated(Boolean.valueOf(edit.getAddWhenCreated()));
 

@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.chain.chainactionset;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.DeleteChainActionSetForm;
-import com.echothree.control.user.chain.common.form.GetChainActionSetForm;
 import com.echothree.control.user.chain.common.result.GetChainActionSetResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -65,16 +62,16 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetChainActionSetForm commandForm = ChainUtil.getHome().getGetChainActionSetForm();
+        var commandForm = ChainUtil.getHome().getGetChainActionSetForm();
         
         commandForm.setChainKindName(actionForm.getChainKindName());
         commandForm.setChainTypeName(actionForm.getChainTypeName());
         commandForm.setChainName(actionForm.getChainName());
         commandForm.setChainActionSetName(actionForm.getChainActionSetName());
-        
-        CommandResult commandResult = ChainUtil.getHome().getChainActionSet(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetChainActionSetResult result = (GetChainActionSetResult)executionResult.getResult();
+
+        var commandResult = ChainUtil.getHome().getChainActionSet(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetChainActionSetResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CHAIN_ACTION_SET, result.getChainActionSet());
     }
@@ -82,7 +79,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteChainActionSetForm commandForm = ChainUtil.getHome().getDeleteChainActionSetForm();
+        var commandForm = ChainUtil.getHome().getDeleteChainActionSetForm();
 
         commandForm.setChainKindName(actionForm.getChainKindName());
         commandForm.setChainTypeName(actionForm.getChainTypeName());

@@ -19,9 +19,6 @@ package com.echothree.control.user.customer.server.command;
 import com.echothree.control.user.customer.common.form.CreateCustomerTypeShippingMethodForm;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
-import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.customer.server.entity.CustomerTypeShippingMethod;
-import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -56,20 +53,20 @@ public class CreateCustomerTypeShippingMethodCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var shippingControl = Session.getModelController(ShippingControl.class);
-            String shippingMethodName = form.getShippingMethodName();
-            ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+            var shippingMethodName = form.getShippingMethodName();
+            var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
             
             if(shippingMethod != null) {
-                CustomerTypeShippingMethod customerTypeShippingMethod = customerControl.getCustomerTypeShippingMethod(customerType,
+                var customerTypeShippingMethod = customerControl.getCustomerTypeShippingMethod(customerType,
                         shippingMethod);
                 
                 if(customerTypeShippingMethod == null) {
-                    Integer defaultSelectionPriority = Integer.valueOf(form.getDefaultSelectionPriority());
+                    var defaultSelectionPriority = Integer.valueOf(form.getDefaultSelectionPriority());
                     var isDefault = Boolean.valueOf(form.getIsDefault());
                     var sortOrder = Integer.valueOf(form.getSortOrder());
                     

@@ -30,13 +30,10 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.icon.server.entity.Icon;
-import com.echothree.model.data.icon.server.entity.IconUsage;
-import com.echothree.model.data.icon.server.entity.IconUsageType;
 import com.echothree.model.data.party.server.entity.BirthdayFormat;
 import com.echothree.model.data.party.server.entity.Gender;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.Profile;
-import com.echothree.model.data.party.server.value.ProfileValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -103,7 +100,7 @@ public class EditProfileCommand
     
     @Override
     protected List<FieldDefinition> getEditFieldDefinitions() {
-        String partyTypeName = getPartyTypeName();
+        var partyTypeName = getPartyTypeName();
         
         return partyTypeName == null || partyTypeName.equals(PartyTypes.CUSTOMER.name()) ? customerEditFieldDefinitions : otherEditFieldDefinitions;
     }
@@ -122,9 +119,9 @@ public class EditProfileCommand
     public Profile getEntity(EditProfileResult result) {
         var partyControl = Session.getModelController(PartyControl.class);
         Profile profile = null;
-        String partyTypeName = getPartyTypeName();
-        String partyName = partyTypeName.equals(PartyTypes.CUSTOMER.name()) ? null : spec.getPartyName();
-        Party party = partyName == null ? null : partyControl.getPartyByName(partyName);
+        var partyTypeName = getPartyTypeName();
+        var partyName = partyTypeName.equals(PartyTypes.CUSTOMER.name()) ? null : spec.getPartyName();
+        var party = partyName == null ? null : partyControl.getPartyByName(partyName);
 
         if(partyName == null || party != null) {
             if(party == null) {
@@ -197,11 +194,11 @@ public class EditProfileCommand
     @Override
     protected void canUpdate(Profile profile) {
         var partyControl = Session.getModelController(PartyControl.class);
-        MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-        String bioMimeTypeName = edit.getBioMimeTypeName();
-        String bio = edit.getBio();
-        String signatureMimeTypeName = edit.getSignatureMimeTypeName();
-        String signature = edit.getSignature();
+        var mimeTypeLogic = MimeTypeLogic.getInstance();
+        var bioMimeTypeName = edit.getBioMimeTypeName();
+        var bio = edit.getBio();
+        var signatureMimeTypeName = edit.getSignatureMimeTypeName();
+        var signature = edit.getSignature();
 
         bioMimeType = mimeTypeLogic.checkMimeType(this, bioMimeTypeName, bio, MimeTypeUsageTypes.TEXT.name(),
                 ExecutionErrors.MissingRequiredBioMimeTypeName.name(), ExecutionErrors.MissingRequiredBio.name(),
@@ -210,20 +207,20 @@ public class EditProfileCommand
         signatureMimeType = mimeTypeLogic.checkMimeType(this, signatureMimeTypeName, signature, MimeTypeUsageTypes.TEXT.name(),
                 ExecutionErrors.MissingRequiredSignatureMimeTypeName.name(), ExecutionErrors.MissingRequiredSignature.name(),
                 ExecutionErrors.UnknownSignatureMimeTypeName.name(), ExecutionErrors.UnknownSignatureMimeTypeUsage.name());
-        
-        String nickname = edit.getNickname();
-        Profile duplicateProfile = nickname == null ? null : partyControl.getProfileByNickname(nickname);
+
+        var nickname = edit.getNickname();
+        var duplicateProfile = nickname == null ? null : partyControl.getProfileByNickname(nickname);
 
         if(duplicateProfile == null || duplicateProfile.getPrimaryKey().equals(profile.getPrimaryKey())) {
             var iconControl = Session.getModelController(IconControl.class);
-            String iconName = edit.getIconName();
+            var iconName = edit.getIconName();
 
             icon = iconName == null? null: iconControl.getIconByName(iconName);
 
             if(iconName == null || icon != null) {
                 if(icon != null) {
-                    IconUsageType iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_PROFILE);
-                    IconUsage iconUsage = iconControl.getIconUsage(iconUsageType, icon);
+                    var iconUsageType = iconControl.getIconUsageTypeByName(IconConstants.IconUsageType_PROFILE);
+                    var iconUsage = iconControl.getIconUsage(iconUsageType, icon);
 
                     if(iconUsage == null) {
                         addExecutionError(ExecutionErrors.UnknownIconUsage.name());
@@ -231,12 +228,12 @@ public class EditProfileCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    String genderName = edit.getGenderName();
+                    var genderName = edit.getGenderName();
 
                     gender = genderName == null? null: partyControl.getGenderByName(genderName);
 
                     if(genderName == null || gender != null) {
-                        String birthdayFormatName = edit.getBirthdayFormatName();
+                        var birthdayFormatName = edit.getBirthdayFormatName();
 
                         birthdayFormat = birthdayFormatName == null ? null : partyControl.getBirthdayFormatByName(birthdayFormatName);
 
@@ -258,11 +255,11 @@ public class EditProfileCommand
     @Override
     public void doUpdate(Profile profile) {
         var partyControl = Session.getModelController(PartyControl.class);
-        ProfileValue profileValue = partyControl.getProfileValue(profile);
-        String nickname = edit.getNickname();
-        String pronunciation = edit.getPronunciation();
-        String pronouns = edit.getPronouns();
-        String birthday = edit.getBirthday();
+        var profileValue = partyControl.getProfileValue(profile);
+        var nickname = edit.getNickname();
+        var pronunciation = edit.getPronunciation();
+        var pronouns = edit.getPronouns();
+        var birthday = edit.getBirthday();
 
         profileValue.setNickname(nickname);
         profileValue.setIconPK(icon == null ? null : icon.getPrimaryKey());

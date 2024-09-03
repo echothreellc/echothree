@@ -21,7 +21,6 @@ import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.value.InventoryConditionDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultInventoryConditionCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        String inventoryConditionName = form.getInventoryConditionName();
-        InventoryConditionDetailValue inventoryConditionDetailValue = inventoryControl.getInventoryConditionDetailValueByNameForUpdate(inventoryConditionName);
+        var inventoryConditionName = form.getInventoryConditionName();
+        var inventoryConditionDetailValue = inventoryControl.getInventoryConditionDetailValueByNameForUpdate(inventoryConditionName);
         
         if(inventoryConditionDetailValue != null) {
             inventoryConditionDetailValue.setIsDefault(Boolean.TRUE);

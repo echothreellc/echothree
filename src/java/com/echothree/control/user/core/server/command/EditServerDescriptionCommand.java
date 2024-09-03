@@ -28,8 +28,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Server;
 import com.echothree.model.data.core.server.entity.ServerDescription;
-import com.echothree.model.data.core.server.value.ServerDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -88,13 +86,13 @@ public class EditServerDescriptionCommand
     public ServerDescription getEntity(EditServerDescriptionResult result) {
         var coreControl = getCoreControl();
         ServerDescription serverDescription = null;
-        String serverName = spec.getServerName();
-        Server server = coreControl.getServerByName(serverName);
+        var serverName = spec.getServerName();
+        var server = coreControl.getServerByName(serverName);
 
         if(server != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -136,7 +134,7 @@ public class EditServerDescriptionCommand
     @Override
     public void doUpdate(ServerDescription serverDescription) {
         var coreControl = getCoreControl();
-        ServerDescriptionValue serverDescriptionValue = coreControl.getServerDescriptionValue(serverDescription);
+        var serverDescriptionValue = coreControl.getServerDescriptionValue(serverDescription);
         serverDescriptionValue.setDescription(edit.getDescription());
 
         coreControl.updateServerDescriptionFromValue(serverDescriptionValue, getPartyPK());

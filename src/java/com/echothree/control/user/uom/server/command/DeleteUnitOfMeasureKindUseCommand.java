@@ -19,9 +19,6 @@ package com.echothree.control.user.uom.server.command;
 import com.echothree.control.user.uom.common.form.DeleteUnitOfMeasureKindUseForm;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureKindUseLogic;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,18 +50,18 @@ public class DeleteUnitOfMeasureKindUseCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
+        var unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
+        var unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
         
         if(unitOfMeasureKindUseType != null) {
-            String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-            UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+            var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+            var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
             
             if(unitOfMeasureKind != null) {
-                UnitOfMeasureKindUse unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUseForUpdate(unitOfMeasureKindUseType, unitOfMeasureKind);
+                var unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUseForUpdate(unitOfMeasureKindUseType, unitOfMeasureKind);
                 
                 if(unitOfMeasureKindUse != null) {
-                    UnitOfMeasureKindUseLogic unitOfMeasureKindUseLogic = UnitOfMeasureKindUseLogic.getInstance();
+                    var unitOfMeasureKindUseLogic = UnitOfMeasureKindUseLogic.getInstance();
 
                     unitOfMeasureKindUseLogic.checkDeleteUnitOfMeasureKindUse(this, unitOfMeasureKindUse);
 

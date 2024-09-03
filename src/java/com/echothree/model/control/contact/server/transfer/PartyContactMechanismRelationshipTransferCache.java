@@ -17,7 +17,6 @@
 package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismRelationshipTransfer;
-import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismRelationship;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -31,11 +30,11 @@ public class PartyContactMechanismRelationshipTransferCache
     }
     
     public PartyContactMechanismRelationshipTransfer getPartyContactMechanismRelationshipTransfer(PartyContactMechanismRelationship partyContactMechanismRelationship) {
-        PartyContactMechanismRelationshipTransfer partyContactMechanismRelationshipTransfer = get(partyContactMechanismRelationship);
+        var partyContactMechanismRelationshipTransfer = get(partyContactMechanismRelationship);
         
         if(partyContactMechanismRelationshipTransfer == null) {
-            PartyContactMechanismTransfer fromPartyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanismRelationship.getFromPartyContactMechanism());
-            PartyContactMechanismTransfer toPartyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanismRelationship.getToPartyContactMechanism());
+            var fromPartyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanismRelationship.getFromPartyContactMechanism());
+            var toPartyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanismRelationship.getToPartyContactMechanism());
             
             partyContactMechanismRelationshipTransfer = new PartyContactMechanismRelationshipTransfer(fromPartyContactMechanism, toPartyContactMechanism);
             put(partyContactMechanismRelationship, partyContactMechanismRelationshipTransfer);

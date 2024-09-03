@@ -17,13 +17,11 @@
 package com.echothree.control.user.security.server.command;
 
 import com.echothree.control.user.security.common.form.GetPartySecurityRoleTemplateForm;
-import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplateResult;
 import com.echothree.control.user.security.common.result.SecurityResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplate;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetPartySecurityRoleTemplateCommand
     @Override
     protected BaseResult execute() {
         var securityControl = Session.getModelController(SecurityControl.class);
-        GetPartySecurityRoleTemplateResult result = SecurityResultFactory.getGetPartySecurityRoleTemplateResult();
-        String partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
-        PartySecurityRoleTemplate partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
+        var result = SecurityResultFactory.getGetPartySecurityRoleTemplateResult();
+        var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
+        var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
         
         if(partySecurityRoleTemplate != null) {
             result.setPartySecurityRoleTemplate(securityControl.getPartySecurityRoleTemplateTransfer(getUserVisit(), partySecurityRoleTemplate));

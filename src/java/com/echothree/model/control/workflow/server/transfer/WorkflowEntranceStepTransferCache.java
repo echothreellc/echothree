@@ -17,8 +17,6 @@
 package com.echothree.model.control.workflow.server.transfer;
 
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceStepTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowStepTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntranceStep;
@@ -32,11 +30,11 @@ public class WorkflowEntranceStepTransferCache
     }
     
     public WorkflowEntranceStepTransfer getWorkflowEntranceStepTransfer(WorkflowEntranceStep workflowEntranceStep) {
-        WorkflowEntranceStepTransfer workflowEntranceStepTransfer = get(workflowEntranceStep);
+        var workflowEntranceStepTransfer = get(workflowEntranceStep);
         
         if(workflowEntranceStepTransfer == null) {
-            WorkflowEntranceTransfer workflowEntrance = workflowControl.getWorkflowEntranceTransfer(userVisit, workflowEntranceStep.getWorkflowEntrance());
-            WorkflowStepTransfer workflowStep = workflowControl.getWorkflowStepTransfer(userVisit, workflowEntranceStep.getWorkflowStep());
+            var workflowEntrance = workflowControl.getWorkflowEntranceTransfer(userVisit, workflowEntranceStep.getWorkflowEntrance());
+            var workflowStep = workflowControl.getWorkflowStepTransfer(userVisit, workflowEntranceStep.getWorkflowStep());
             
             workflowEntranceStepTransfer = new WorkflowEntranceStepTransfer(workflowEntrance, workflowStep);
             put(workflowEntranceStep, workflowEntranceStepTransfer);

@@ -20,8 +20,6 @@ import com.echothree.control.user.workrequirement.common.form.DeleteWorkRequirem
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
-import com.echothree.model.data.workrequirement.server.entity.WorkRequirementType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -52,13 +50,13 @@ public class DeleteWorkRequirementTypeCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByNameForUpdate(workEffortTypeName);
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByNameForUpdate(workEffortTypeName);
         
         if(workEffortType != null) {
             var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
-            String workRequirementTypeName = form.getWorkRequirementTypeName();
-            WorkRequirementType workRequirementType = workRequirementControl.getWorkRequirementTypeByNameForUpdate(workEffortType, workRequirementTypeName);
+            var workRequirementTypeName = form.getWorkRequirementTypeName();
+            var workRequirementType = workRequirementControl.getWorkRequirementTypeByNameForUpdate(workEffortType, workRequirementTypeName);
             
             if(workRequirementType != null) {
                 workRequirementControl.deleteWorkRequirementType(workRequirementType, getPartyPK());

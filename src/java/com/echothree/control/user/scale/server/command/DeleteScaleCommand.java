@@ -18,7 +18,6 @@ package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.DeleteScaleForm;
 import com.echothree.model.control.scale.server.control.ScaleControl;
-import com.echothree.model.data.scale.server.entity.Scale;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class DeleteScaleCommand
    @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        String scaleName = form.getScaleName();
-        Scale scale = scaleControl.getScaleByNameForUpdate(scaleName);
+       var scaleName = form.getScaleName();
+       var scale = scaleControl.getScaleByNameForUpdate(scaleName);
         
         if(scale != null) {
             scaleControl.deleteScale(scale, getPartyPK());

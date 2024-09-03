@@ -17,7 +17,6 @@
 package com.echothree.control.user.invoice.server.command;
 
 import com.echothree.control.user.invoice.common.form.GetInvoiceTypesForm;
-import com.echothree.control.user.invoice.common.result.GetInvoiceTypesResult;
 import com.echothree.control.user.invoice.common.result.InvoiceResultFactory;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -61,7 +60,7 @@ public class GetInvoiceTypesCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        GetInvoiceTypesResult result = InvoiceResultFactory.getGetInvoiceTypesResult();
+        var result = InvoiceResultFactory.getGetInvoiceTypesResult();
         
         result.setInvoiceTypes(invoiceControl.getInvoiceTypeTransfers(getUserVisit()));
         

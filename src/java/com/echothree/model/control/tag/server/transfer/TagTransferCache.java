@@ -17,11 +17,9 @@
 package com.echothree.model.control.tag.server.transfer;
 
 import com.echothree.model.control.tag.common.TagOptions;
-import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
 import com.echothree.model.control.tag.common.transfer.TagTransfer;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.Tag;
-import com.echothree.model.data.tag.server.entity.TagDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -45,13 +43,13 @@ public class TagTransferCache
     }
     
     public TagTransfer getTagTransfer(Tag tag) {
-        TagTransfer tagTransfer = get(tag);
+        var tagTransfer = get(tag);
         
         if(tagTransfer == null) {
-            TagDetail tagDetail = tag.getLastDetail();
-            TagScopeTransfer tagScope = tagControl.getTagScopeTransfer(userVisit, tagDetail.getTagScope());
-            String tagName = tagDetail.getTagName();
-            Long usageCount = includeUsageCount ? tagControl.countEntityTagsByTag(tag) : null;
+            var tagDetail = tag.getLastDetail();
+            var tagScope = tagControl.getTagScopeTransfer(userVisit, tagDetail.getTagScope());
+            var tagName = tagDetail.getTagName();
+            var usageCount = includeUsageCount ? tagControl.countEntityTagsByTag(tag) : null;
             
             tagTransfer = new TagTransfer(tagScope, tagName, usageCount);
             put(tag, tagTransfer);

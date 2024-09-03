@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.item.relateditemtype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.CreateRelatedItemTypeDescriptionForm;
-import com.echothree.control.user.item.common.form.GetRelatedItemTypeForm;
 import com.echothree.control.user.item.common.result.GetRelatedItemTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetRelatedItemTypeForm commandForm = ItemUtil.getHome().getGetRelatedItemTypeForm();
+        var commandForm = ItemUtil.getHome().getGetRelatedItemTypeForm();
 
         commandForm.setRelatedItemTypeName(actionForm.getRelatedItemTypeName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getRelatedItemType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getRelatedItemType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetRelatedItemTypeResult result = (GetRelatedItemTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetRelatedItemTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RELATED_ITEM_TYPE, result.getRelatedItemType());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateRelatedItemTypeDescriptionForm commandForm = ItemUtil.getHome().getCreateRelatedItemTypeDescriptionForm();
+        var commandForm = ItemUtil.getHome().getCreateRelatedItemTypeDescriptionForm();
 
         commandForm.setRelatedItemTypeName( actionForm.getRelatedItemTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

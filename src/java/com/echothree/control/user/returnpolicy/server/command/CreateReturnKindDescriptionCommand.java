@@ -22,9 +22,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnKindDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,16 +65,16 @@ public class CreateReturnKindDescriptionCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ReturnKindDescription returnKindDescription = returnPolicyControl.getReturnKindDescription(returnKind, language);
+                var returnKindDescription = returnPolicyControl.getReturnKindDescription(returnKind, language);
                 
                 if(returnKindDescription == null) {
                     var description = form.getDescription();

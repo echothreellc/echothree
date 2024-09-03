@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationtype;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.form.SetDefaultCancellationTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,11 +51,11 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+        var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
         
         try {
-            SetDefaultCancellationTypeForm commandForm = CancellationPolicyUtil.getHome().getSetDefaultCancellationTypeForm();
-            String cancellationTypeName = request.getParameter(ParameterConstants.CANCELLATION_TYPE_NAME);
+            var commandForm = CancellationPolicyUtil.getHome().getSetDefaultCancellationTypeForm();
+            var cancellationTypeName = request.getParameter(ParameterConstants.CANCELLATION_TYPE_NAME);
             
             commandForm.setCancellationKindName(cancellationKindName);
             commandForm.setCancellationTypeName(cancellationTypeName);
@@ -67,8 +66,8 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

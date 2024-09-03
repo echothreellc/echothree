@@ -18,16 +18,13 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
-import com.echothree.model.control.core.common.transfer.EntityAttributeTypeTransfer;
 import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.core.server.entity.MimeTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class MimeTypeTransferCache
         extends BaseCoreTransferCache<MimeType, MimeTypeTransfer> {
@@ -71,15 +68,15 @@ public class MimeTypeTransferCache
     }
 
     public MimeTypeTransfer getMimeTypeTransfer(MimeType mimeType) {
-        MimeTypeTransfer mimeTypeTransfer = get(mimeType);
+        var mimeTypeTransfer = get(mimeType);
 
         if(mimeTypeTransfer == null) {
-            MimeTypeDetail mimeTypeDetail = mimeType.getLastDetail();
-            String mimeTypeName = filterMimeTypeName ? null : mimeTypeDetail.getMimeTypeName();
-            EntityAttributeTypeTransfer entityAttributeType = filterEntityAttributeType ? null : coreControl.getEntityAttributeTypeTransfer(userVisit, mimeTypeDetail.getEntityAttributeType());
-            Boolean isDefault = filterIsDefault ? null : mimeTypeDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : mimeTypeDetail.getSortOrder();
-            String description = filterDescription ? null : coreControl.getBestMimeTypeDescription(mimeType, getLanguage());
+            var mimeTypeDetail = mimeType.getLastDetail();
+            var mimeTypeName = filterMimeTypeName ? null : mimeTypeDetail.getMimeTypeName();
+            var entityAttributeType = filterEntityAttributeType ? null : coreControl.getEntityAttributeTypeTransfer(userVisit, mimeTypeDetail.getEntityAttributeType());
+            var isDefault = filterIsDefault ? null : mimeTypeDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : mimeTypeDetail.getSortOrder();
+            var description = filterDescription ? null : coreControl.getBestMimeTypeDescription(mimeType, getLanguage());
 
             mimeTypeTransfer = new MimeTypeTransfer(mimeTypeName, entityAttributeType, isDefault, sortOrder, description);
             put(mimeType, mimeTypeTransfer);

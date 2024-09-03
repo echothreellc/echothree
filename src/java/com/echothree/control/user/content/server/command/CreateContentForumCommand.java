@@ -22,9 +22,6 @@ import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.content.server.entity.ContentForum;
-import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,16 +65,16 @@ public class CreateContentForumCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
             var forumControl = Session.getModelController(ForumControl.class);
-            String forumName = form.getForumName();
-            Forum forum = forumControl.getForumByName(forumName);
+            var forumName = form.getForumName();
+            var forum = forumControl.getForumByName(forumName);
             
             if(forum != null) {
-                ContentForum contentForum = contentControl.getContentForum(contentCollection, forum);
+                var contentForum = contentControl.getContentForum(contentCollection, forum);
                 
                 if(contentForum == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());

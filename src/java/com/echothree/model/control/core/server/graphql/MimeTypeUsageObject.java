@@ -16,11 +16,8 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.control.user.core.server.command.GetMimeTypeCommand;
-import com.echothree.control.user.core.server.command.GetMimeTypeUsageTypeCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.MimeTypeUsage;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.leavetype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.SetDefaultLeaveTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -48,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultLeaveTypeForm commandForm = EmployeeUtil.getHome().getSetDefaultLeaveTypeForm();
+        var commandForm = EmployeeUtil.getHome().getSetDefaultLeaveTypeForm();
 
         commandForm.setLeaveTypeName(request.getParameter(ParameterConstants.LEAVE_TYPE_NAME));
 

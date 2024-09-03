@@ -37,7 +37,7 @@ public class ContactListServicePingTest
     }
     
     public static Test suite() {
-        TestSuite suite = new TestSuite();
+        var suite = new TestSuite();
         
         suite.addTest(new ContactListServicePingTest("testPingContactListService"));
         

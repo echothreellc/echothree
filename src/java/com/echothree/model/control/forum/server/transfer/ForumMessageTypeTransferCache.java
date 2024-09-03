@@ -30,13 +30,13 @@ public class ForumMessageTypeTransferCache
     }
     
     public ForumMessageTypeTransfer getForumMessageTypeTransfer(ForumMessageType forumMessageType) {
-        ForumMessageTypeTransfer forumMessageTypeTransfer = get(forumMessageType);
+        var forumMessageTypeTransfer = get(forumMessageType);
         
         if(forumMessageTypeTransfer == null) {
-            String forumMessageTypeName = forumMessageType.getForumMessageTypeName();
-            Boolean isDefault = forumMessageType.getIsDefault();
-            Integer sortOrder = forumMessageType.getSortOrder();
-            String description = forumControl.getBestForumMessageTypeDescription(forumMessageType, getLanguage());
+            var forumMessageTypeName = forumMessageType.getForumMessageTypeName();
+            var isDefault = forumMessageType.getIsDefault();
+            var sortOrder = forumMessageType.getSortOrder();
+            var description = forumControl.getBestForumMessageTypeDescription(forumMessageType, getLanguage());
             
             forumMessageTypeTransfer = new ForumMessageTypeTransfer(forumMessageTypeName, isDefault, sortOrder, description);
             put(forumMessageType, forumMessageTypeTransfer);

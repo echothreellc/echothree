@@ -18,13 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityClobAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEntityClobAttributeResult;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityClobAttribute;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -57,27 +51,27 @@ public class GetEntityClobAttributeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEntityClobAttributeResult result = CoreResultFactory.getGetEntityClobAttributeResult();
-        String entityRef = form.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var result = CoreResultFactory.getGetEntityClobAttributeResult();
+        var entityRef = form.getEntityRef();
+        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
         
         if(entityInstance != null) {
-            String entityAttributeName = form.getEntityAttributeName();
-            EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
+            var entityAttributeName = form.getEntityAttributeName();
+            var entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
             
             if(entityAttribute != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = languageIsoName == null ? null : partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = languageIsoName == null ? null : partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    EntityClobAttribute entityClobAttribute = language == null ? coreControl.getBestEntityClobAttribute(entityAttribute, entityInstance, getPreferredLanguage())
+                    var entityClobAttribute = language == null ? coreControl.getBestEntityClobAttribute(entityAttribute, entityInstance, getPreferredLanguage())
                             : coreControl.getEntityClobAttribute(entityAttribute, entityInstance, language);
                     
                     if(entityClobAttribute != null) {
                         result.setEntityClobAttribute(coreControl.getEntityClobAttributeTransfer(getUserVisit(), entityClobAttribute, entityInstance));
                     } else {
-                        EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+                        var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
 
                         addExecutionError(ExecutionErrors.UnknownEntityClobAttribute.name(), entityRef,
                                 entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
@@ -87,7 +81,7 @@ public class GetEntityClobAttributeCommand
                     addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
                 }
             } else {
-                EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+                var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
                 
                 addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
                         entityTypeDetail.getEntityTypeName(), entityAttributeName);

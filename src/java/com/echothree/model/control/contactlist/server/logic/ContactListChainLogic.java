@@ -21,10 +21,7 @@ import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.chain.server.logic.BaseChainLogic;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
-import com.echothree.model.data.chain.server.entity.ChainType;
-import com.echothree.model.data.contactlist.server.entity.ContactListTypeDetail;
 import com.echothree.model.data.contactlist.server.entity.PartyContactList;
-import com.echothree.model.data.contactlist.server.entity.PartyContactListDetail;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -52,9 +49,9 @@ public class ContactListChainLogic
      */
     protected ChainInstance createChainInstance(final ExecutionErrorAccumulator eea, final String chainKindName, final String chainTypeName,
             final PartyContactList partyContactList, final BasePK createdBy) {
-        PartyContactListDetail partyContactListDetail = partyContactList.getLastDetail();
-        Party party = partyContactListDetail.getParty();
-        ContactListTypeDetail contactListTypeDetail = partyContactListDetail.getContactList().getLastDetail().getContactListType().getLastDetail();
+        var partyContactListDetail = partyContactList.getLastDetail();
+        var party = partyContactListDetail.getParty();
+        var contactListTypeDetail = partyContactListDetail.getContactList().getLastDetail().getContactListType().getLastDetail();
         Chain chain = null;
         ChainInstance chainInstance = null;
         
@@ -67,7 +64,7 @@ public class ContactListChainLogic
         }
         
         if(chain == null) {
-            ChainType chainType = getChainTypeByName(eea, chainKindName, chainTypeName);
+            var chainType = getChainTypeByName(eea, chainKindName, chainTypeName);
             
             if(chain != null) {
                 chain = getChain(eea, chainType, party);
@@ -83,11 +80,11 @@ public class ContactListChainLogic
     
     protected ChainInstance createContactListChainInstance(final ExecutionErrorAccumulator eea, final String chainTypeName,
             final PartyContactList partyContactList, final BasePK createdBy) {
-        ChainInstance chainInstance = createChainInstance(eea, ChainConstants.ChainKind_CONTACT_LIST, chainTypeName, partyContactList, createdBy);
+        var chainInstance = createChainInstance(eea, ChainConstants.ChainKind_CONTACT_LIST, chainTypeName, partyContactList, createdBy);
         
         if(chainInstance != null) {
             var chainControl = Session.getModelController(ChainControl.class);
-            ChainType chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
+            var chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
             
             chainControl.createChainInstanceEntityRole(chainInstance, chainControl.getChainEntityRoleTypeByName(chainType,
                     ChainConstants.ChainEntityRoleType_PARTY_CONTACT_LIST), partyContactList.getPrimaryKey(), createdBy);

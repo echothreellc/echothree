@@ -18,7 +18,6 @@ package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.DeleteTermForm;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class DeleteTermCommand
     @Override
     protected BaseResult execute() {
         var termControl = Session.getModelController(TermControl.class);
-        String termName = form.getTermName();
-        Term term = termControl.getTermByNameForUpdate(termName);
+        var termName = form.getTermName();
+        var term = termControl.getTermByNameForUpdate(termName);
         
         if(term != null) {
             termControl.deleteTerm(term, getPartyPK());

@@ -17,13 +17,11 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetSearchSortOrdersForm;
-import com.echothree.control.user.search.common.result.GetSearchSortOrdersResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetSearchSortOrdersCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchSortOrdersResult result = SearchResultFactory.getGetSearchSortOrdersResult();
-        String searchKindName = form.getSearchKindName();
-        SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
+        var result = SearchResultFactory.getGetSearchSortOrdersResult();
+        var searchKindName = form.getSearchKindName();
+        var searchKind = searchControl.getSearchKindByName(searchKindName);
         
         if(searchKind != null) {
             result.setSearchKind(searchControl.getSearchKindTransfer(getUserVisit(), searchKind));

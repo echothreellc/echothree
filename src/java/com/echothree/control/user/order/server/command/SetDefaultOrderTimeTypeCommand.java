@@ -22,8 +22,6 @@ import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.order.server.entity.OrderType;
-import com.echothree.model.data.order.server.value.OrderTimeTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -70,8 +68,8 @@ public class SetDefaultOrderTimeTypeCommand
 
         if(orderType != null) {
             var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-            String orderTimeTypeName = form.getOrderTimeTypeName();
-            OrderTimeTypeDetailValue orderTimeTypeDetailValue = orderTimeControl.getOrderTimeTypeDetailValueByNameForUpdate(orderType, orderTimeTypeName);
+            var orderTimeTypeName = form.getOrderTimeTypeName();
+            var orderTimeTypeDetailValue = orderTimeControl.getOrderTimeTypeDetailValueByNameForUpdate(orderType, orderTimeTypeName);
 
             if(orderTimeTypeDetailValue != null) {
                 orderTimeTypeDetailValue.setIsDefault(Boolean.TRUE);

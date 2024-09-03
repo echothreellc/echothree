@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetServiceChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetServiceChoicesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,9 +60,9 @@ public class GetServiceChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetServiceChoicesResult result = CoreResultFactory.getGetServiceChoicesResult();
-        String defaultServiceChoice = form.getDefaultServiceChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CoreResultFactory.getGetServiceChoicesResult();
+        var defaultServiceChoice = form.getDefaultServiceChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setServiceChoices(coreControl.getServiceChoices(defaultServiceChoice, getPreferredLanguage(),
                 allowNullChoice));

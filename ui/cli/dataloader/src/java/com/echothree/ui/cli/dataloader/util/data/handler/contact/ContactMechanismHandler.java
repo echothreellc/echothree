@@ -19,9 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.contact;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.ContactService;
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
-import com.echothree.control.user.contact.common.form.CreateContactMechanismAliasForm;
-import com.echothree.control.user.contact.common.form.CreatePartyContactMechanismAliasForm;
-import com.echothree.control.user.contact.common.form.CreatePartyContactMechanismPurposeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.comment.CommentsHandler;
@@ -59,11 +56,11 @@ public class ContactMechanismHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("partyContactMechanismPurpose")) {
-            CreatePartyContactMechanismPurposeForm form = ContactFormFactory.getCreatePartyContactMechanismPurposeForm();
+            var form = ContactFormFactory.getCreatePartyContactMechanismPurposeForm();
             String contactMechanismPurposeName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("contactMechanismPurposeName"))
                     contactMechanismPurposeName = attrs.getValue(i);
             }
@@ -74,12 +71,12 @@ public class ContactMechanismHandler
             
             contactService.createPartyContactMechanismPurpose(initialDataParser.getUserVisit(), form);
         } else if(localName.equals("contactMechanismAlias")) {
-            CreateContactMechanismAliasForm form = ContactFormFactory.getCreateContactMechanismAliasForm();
+            var form = ContactFormFactory.getCreateContactMechanismAliasForm();
             String contactMechanismAliasTypeName = null;
             String alias = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("contactMechanismAliasTypeName"))
                     contactMechanismAliasTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("alias"))
@@ -92,12 +89,12 @@ public class ContactMechanismHandler
             
             contactService.createContactMechanismAlias(initialDataParser.getUserVisit(), form);
         } else if(localName.equals("partyContactMechanismAlias")) {
-            CreatePartyContactMechanismAliasForm form = ContactFormFactory.getCreatePartyContactMechanismAliasForm();
+            var form = ContactFormFactory.getCreatePartyContactMechanismAliasForm();
             String contactMechanismAliasTypeName = null;
             String alias = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("contactMechanismAliasTypeName"))
                     contactMechanismAliasTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("alias"))

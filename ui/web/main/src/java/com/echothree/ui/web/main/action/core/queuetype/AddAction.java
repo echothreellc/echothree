@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.queuetype;
 
 import com.echothree.control.user.queue.common.QueueUtil;
-import com.echothree.control.user.queue.common.form.CreateQueueTypeForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -51,7 +50,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateQueueTypeForm commandForm = QueueUtil.getHome().getCreateQueueTypeForm();
+        var commandForm = QueueUtil.getHome().getCreateQueueTypeForm();
 
         commandForm.setQueueTypeName(actionForm.getQueueTypeName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());

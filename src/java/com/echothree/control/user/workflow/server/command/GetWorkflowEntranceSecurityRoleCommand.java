@@ -66,10 +66,10 @@ public class GetWorkflowEntranceSecurityRoleCommand
 
     @Override
     protected WorkflowEntranceSecurityRole getEntity() {
-        String workflowName = form.getWorkflowName();
-        String workflowEntranceName = form.getWorkflowEntranceName();
-        String partyTypeName = form.getPartyTypeName();
-        String securityRoleName = form.getSecurityRoleName();
+        var workflowName = form.getWorkflowName();
+        var workflowEntranceName = form.getWorkflowEntranceName();
+        var partyTypeName = form.getPartyTypeName();
+        var securityRoleName = form.getSecurityRoleName();
 
         return WorkflowEntranceLogic.getInstance().getWorkflowEntranceSecurityRoleByName(this, workflowName, workflowEntranceName,
                 partyTypeName, securityRoleName);

@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.geocodealias;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetGeoCodeAliasesForm;
 import com.echothree.control.user.geo.common.result.GetGeoCodeAliasesResult;
-import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +48,17 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
-        GetGeoCodeAliasesForm commandForm = GeoUtil.getHome().getGetGeoCodeAliasesForm();
+        String forwardKey;
+        var geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
+        var commandForm = GeoUtil.getHome().getGetGeoCodeAliasesForm();
 
         commandForm.setGeoCodeName(geoCodeName);
 
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeAliases(getUserVisitPK(request), commandForm);
+        var commandResult = GeoUtil.getHome().getGeoCodeAliases(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeAliasesResult result = (GetGeoCodeAliasesResult) executionResult.getResult();
-            GeoCodeTransfer geoCodeTransfer = result.getGeoCode();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeAliasesResult) executionResult.getResult();
+            var geoCodeTransfer = result.getGeoCode();
 
             request.setAttribute(AttributeConstants.GEO_CODE, geoCodeTransfer);
             request.setAttribute(AttributeConstants.GEO_CODE_ALIASES, result.getGeoCodeAliases());

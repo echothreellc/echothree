@@ -17,9 +17,7 @@
 package com.echothree.model.control.geo.server.transfer;
 
 import com.echothree.model.control.geo.common.transfer.GeoCodeDateTimeFormatTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
-import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeDateTimeFormat;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -38,13 +36,13 @@ public class GeoCodeDateTimeFormatTransferCache
     }
     
     public GeoCodeDateTimeFormatTransfer getGeoCodeDateTimeFormatTransfer(GeoCodeDateTimeFormat geoCodeDateTimeFormat) {
-        GeoCodeDateTimeFormatTransfer geoCodeDateTimeFormatTransfer = get(geoCodeDateTimeFormat);
+        var geoCodeDateTimeFormatTransfer = get(geoCodeDateTimeFormat);
         
         if(geoCodeDateTimeFormatTransfer == null) {
-            GeoCodeTransfer geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeDateTimeFormat.getGeoCode());
-            DateTimeFormatTransfer dateTimeFormat = partyControl.getDateTimeFormatTransfer(userVisit, geoCodeDateTimeFormat.getDateTimeFormat());
-            Boolean isDefault = geoCodeDateTimeFormat.getIsDefault();
-            Integer sortOrder = geoCodeDateTimeFormat.getSortOrder();
+            var geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeDateTimeFormat.getGeoCode());
+            var dateTimeFormat = partyControl.getDateTimeFormatTransfer(userVisit, geoCodeDateTimeFormat.getDateTimeFormat());
+            var isDefault = geoCodeDateTimeFormat.getIsDefault();
+            var sortOrder = geoCodeDateTimeFormat.getSortOrder();
             
             geoCodeDateTimeFormatTransfer = new GeoCodeDateTimeFormatTransfer(geoCode, dateTimeFormat, isDefault, sortOrder);
             put(geoCodeDateTimeFormat, geoCodeDateTimeFormatTransfer);

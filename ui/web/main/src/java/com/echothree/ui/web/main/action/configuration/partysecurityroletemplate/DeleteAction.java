@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.partysecurityroletemplate;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.DeletePartySecurityRoleTemplateForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeletePartySecurityRoleTemplateForm commandForm = SecurityUtil.getHome().getDeletePartySecurityRoleTemplateForm();
-            String partySecurityRoleTemplateName = request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME);
+            var commandForm = SecurityUtil.getHome().getDeletePartySecurityRoleTemplateForm();
+            var partySecurityRoleTemplateName = request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME);
             
             commandForm.setPartySecurityRoleTemplateName(partySecurityRoleTemplateName);
             

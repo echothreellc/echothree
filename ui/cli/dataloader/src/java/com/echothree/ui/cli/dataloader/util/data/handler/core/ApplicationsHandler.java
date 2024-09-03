@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.core;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.form.CreateApplicationForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -47,7 +46,7 @@ public class ApplicationsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("application")) {
-            CreateApplicationForm commandForm = CoreFormFactory.getCreateApplicationForm();
+            var commandForm = CoreFormFactory.getCreateApplicationForm();
             
             commandForm.set(getAttrsMap(attrs));
             

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasurekind;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.form.DeleteUnitOfMeasureKindForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteUnitOfMeasureKindForm commandForm = UomUtil.getHome().getDeleteUnitOfMeasureKindForm();
-            String returnKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+            var commandForm = UomUtil.getHome().getDeleteUnitOfMeasureKindForm();
+            var returnKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
             
             commandForm.setUnitOfMeasureKindName(returnKindName);
             

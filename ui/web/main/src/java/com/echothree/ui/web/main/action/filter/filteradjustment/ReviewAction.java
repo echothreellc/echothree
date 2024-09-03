@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.filter.filteradjustment;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.form.GetFilterAdjustmentForm;
 import com.echothree.control.user.filter.common.result.GetFilterAdjustmentResult;
 import com.echothree.model.control.filter.common.FilterOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,12 +52,12 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetFilterAdjustmentForm commandForm = FilterUtil.getHome().getGetFilterAdjustmentForm();
-            String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-            String filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
+            var commandForm = FilterUtil.getHome().getGetFilterAdjustmentForm();
+            var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+            var filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
             
             commandForm.setFilterKindName(filterKindName);
             commandForm.setFilterAdjustmentName(filterAdjustmentName);
@@ -70,10 +67,10 @@ public class ReviewAction
             options.add(FilterOptions.FilterAdjustmentIncludeFilterAdjustmentFixedAmounts);
             options.add(FilterOptions.FilterAdjustmentIncludeFilterAdjustmentPercents);
             commandForm.setOptions(options);
-            
-            CommandResult commandResult = FilterUtil.getHome().getFilterAdjustment(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterAdjustmentResult result = (GetFilterAdjustmentResult)executionResult.getResult();
+
+            var commandResult = FilterUtil.getHome().getFilterAdjustment(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetFilterAdjustmentResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FILTER_ADJUSTMENT, result.getFilterAdjustment());
             forwardKey = ForwardConstants.DISPLAY;

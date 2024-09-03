@@ -18,16 +18,12 @@ package com.echothree.control.user.document.server.command;
 
 import com.echothree.control.user.document.common.form.GetPartyTypeDocumentTypeUsageTypesForm;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
-import com.echothree.control.user.document.common.result.GetPartyTypeDocumentTypeUsageTypesResult;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.document.server.entity.DocumentTypeUsageType;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -68,18 +64,18 @@ public class GetPartyTypeDocumentTypeUsageTypesCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyTypeDocumentTypeUsageTypesResult result = DocumentResultFactory.getGetPartyTypeDocumentTypeUsageTypesResult();
-        String partyTypeName = form.getPartyTypeName();
-        String documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
+        var result = DocumentResultFactory.getGetPartyTypeDocumentTypeUsageTypesResult();
+        var partyTypeName = form.getPartyTypeName();
+        var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
         var parameterCount = (partyTypeName == null ? 0 : 1) + (documentTypeUsageTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var documentControl = Session.getModelController(DocumentControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             if(partyTypeName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+                var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
                 if(partyType != null) {
                     result.setPartyType(partyControl.getPartyTypeTransfer(userVisit, partyType));
@@ -88,7 +84,7 @@ public class GetPartyTypeDocumentTypeUsageTypesCommand
                     addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), partyTypeName);
                 }
             } else if(documentTypeUsageTypeName != null) {
-                DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
+                var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
 
                 if(documentTypeUsageType != null) {
                     result.setDocumentTypeUsageType(documentControl.getDocumentTypeUsageTypeTransfer(userVisit, documentTypeUsageType));

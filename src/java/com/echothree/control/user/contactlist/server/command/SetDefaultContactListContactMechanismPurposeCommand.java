@@ -23,9 +23,6 @@ import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
-import com.echothree.model.data.contactlist.server.value.ContactListContactMechanismPurposeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,16 +64,16 @@ public class SetDefaultContactListContactMechanismPurposeCommand
     
     @Override
     protected BaseResult execute() {
-        String contactListName = form.getContactListName();
-        ContactList contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
+        var contactListName = form.getContactListName();
+        var contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
         
         if(!hasExecutionErrors()) {
-            String contactMechanismPurposeName = form.getContactMechanismPurposeName();
-            ContactMechanismPurpose contactMechanismPurpose = ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByName(this, contactMechanismPurposeName);
+            var contactMechanismPurposeName = form.getContactMechanismPurposeName();
+            var contactMechanismPurpose = ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByName(this, contactMechanismPurposeName);
             
             if(!hasExecutionErrors()) {
                 var contactListControl = Session.getModelController(ContactListControl.class);
-                ContactListContactMechanismPurposeDetailValue contactListContactMechanismPurposeDetailValue = contactListControl.getContactListContactMechanismPurposeDetailValueForUpdate(contactList, contactMechanismPurpose);
+                var contactListContactMechanismPurposeDetailValue = contactListControl.getContactListContactMechanismPurposeDetailValueForUpdate(contactList, contactMechanismPurpose);
                 
                 if(contactListContactMechanismPurposeDetailValue != null) {
                     contactListContactMechanismPurposeDetailValue.setIsDefault(Boolean.TRUE);

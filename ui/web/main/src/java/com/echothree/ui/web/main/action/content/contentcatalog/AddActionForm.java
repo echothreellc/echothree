@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.content.contentcatalog;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetSourceChoicesForm;
 import com.echothree.control.user.offer.common.result.GetSourceChoicesResult;
 import com.echothree.model.control.offer.common.choice.SourceChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -46,14 +43,14 @@ public class AddActionForm
     private void setupDefaultSourceChoices()
             throws NamingException {
         if(defaultSourceChoices == null) {
-            GetSourceChoicesForm getSourceChoicesForm = OfferUtil.getHome().getGetSourceChoicesForm();
+            var getSourceChoicesForm = OfferUtil.getHome().getGetSourceChoicesForm();
 
             getSourceChoicesForm.setDefaultSourceChoice(getDefaultSourceChoice());
             getSourceChoicesForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, getSourceChoicesForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSourceChoicesResult getSourceChoicesResult = (GetSourceChoicesResult)executionResult.getResult();
+            var commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, getSourceChoicesForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getSourceChoicesResult = (GetSourceChoicesResult)executionResult.getResult();
             defaultSourceChoices = getSourceChoicesResult.getSourceChoices();
 
             if(getDefaultSourceChoice() == null)

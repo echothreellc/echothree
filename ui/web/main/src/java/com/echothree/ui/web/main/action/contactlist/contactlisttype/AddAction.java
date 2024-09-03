@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.contactlist.contactlisttype;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.CreateContactListTypeForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -51,7 +50,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateContactListTypeForm commandForm = ContactListUtil.getHome().getCreateContactListTypeForm();
+        var commandForm = ContactListUtil.getHome().getCreateContactListTypeForm();
 
         commandForm.setContactListTypeName(actionForm.getContactListTypeName());
         commandForm.setConfirmationRequestChainName(actionForm.getConfirmationRequestChainChoice());

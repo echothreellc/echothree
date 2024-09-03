@@ -19,16 +19,12 @@ package com.echothree.control.user.forum.server.command;
 import com.echothree.control.user.forum.common.form.CreateForumMessageAttachmentForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.forum.server.entity.ForumMessageAttachment;
-import com.echothree.model.data.forum.server.entity.ForumMessageStatus;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -58,18 +54,18 @@ public class CreateForumMessageAttachmentCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumMessageName = form.getForumMessageName();
-        ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
+        var forumMessageName = form.getForumMessageName();
+        var forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
 
         if(forumMessage != null) {
             var coreControl = getCoreControl();
-            String mimeTypeName = form.getMimeTypeName();
-            MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+            var mimeTypeName = form.getMimeTypeName();
+            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
             if(mimeType != null) {
-                String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
-                ByteArray blob = form.getBlob();
-                String clob = form.getClob();
+                var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+                var blob = form.getBlob();
+                var clob = form.getClob();
 
                 if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name()) && blob == null) {
                     addExecutionError(ExecutionErrors.MissingBlob.name());
@@ -81,10 +77,10 @@ public class CreateForumMessageAttachmentCommand
 
                 if(!hasExecutionErrors()) {
                     var partyPK = getPartyPK();
-                    String strForumMessageAttachmentSequence = form.getForumMessageAttachmentSequence();
-                    Integer forumMessageAttachmentSequence = strForumMessageAttachmentSequence == null ? null : Integer.valueOf(strForumMessageAttachmentSequence);
-                    ForumMessageAttachment forumMessageAttachment = null;
-                    ForumMessageStatus forumMessageStatus = forumControl.getOrCreateForumMessageStatusForUpdate(forumMessage);
+                    var strForumMessageAttachmentSequence = form.getForumMessageAttachmentSequence();
+                    var forumMessageAttachmentSequence = strForumMessageAttachmentSequence == null ? null : Integer.valueOf(strForumMessageAttachmentSequence);
+                    ForumMessageAttachment forumMessageAttachment;
+                    var forumMessageStatus = forumControl.getOrCreateForumMessageStatusForUpdate(forumMessage);
 
                     if(forumMessageAttachmentSequence == null) {
                         forumMessageAttachmentSequence = forumMessageStatus.getForumMessageAttachmentSequence() + 1;

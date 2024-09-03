@@ -18,15 +18,12 @@ package com.echothree.model.control.content.server.transfer;
 
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.ContentProperties;
-import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
 import com.echothree.model.control.content.common.transfer.ContentSectionTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentSection;
-import com.echothree.model.data.content.server.entity.ContentSectionDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
-import java.util.Set;
 
 public class ContentSectionTransferCache
         extends BaseContentTransferCache<ContentSection, ContentSectionTransfer> {
@@ -74,17 +71,17 @@ public class ContentSectionTransferCache
     }
     
     public ContentSectionTransfer getContentSectionTransfer(ContentSection contentSection) {
-        ContentSectionTransfer contentSectionTransfer = get(contentSection);
+        var contentSectionTransfer = get(contentSection);
         
         if(contentSectionTransfer == null) {
-            ContentSectionDetail contentSectionDetail = contentSection.getLastDetail();
-            ContentCollectionTransfer contentCollectionTransfer = filterContentCollection ? null : contentControl.getContentCollectionTransfer(userVisit, contentSectionDetail.getContentCollection());
-            String contentSectionName = filterContentSectionName ? null : contentSectionDetail.getContentSectionName();
-            ContentSection parentContentSection = filterParentContentSection ? null : contentSectionDetail.getParentContentSection();
-            ContentSectionTransfer parentContentSectionTransfer = parentContentSection == null ? null : contentControl.getContentSectionTransfer(userVisit, parentContentSection);
-            Boolean isDefault = filterIsDefault ? null : contentSectionDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : contentSectionDetail.getSortOrder();
-            String description = filterDescription ? null : contentControl.getBestContentSectionDescription(contentSection, getLanguage());
+            var contentSectionDetail = contentSection.getLastDetail();
+            var contentCollectionTransfer = filterContentCollection ? null : contentControl.getContentCollectionTransfer(userVisit, contentSectionDetail.getContentCollection());
+            var contentSectionName = filterContentSectionName ? null : contentSectionDetail.getContentSectionName();
+            var parentContentSection = filterParentContentSection ? null : contentSectionDetail.getParentContentSection();
+            var parentContentSectionTransfer = parentContentSection == null ? null : contentControl.getContentSectionTransfer(userVisit, parentContentSection);
+            var isDefault = filterIsDefault ? null : contentSectionDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : contentSectionDetail.getSortOrder();
+            var description = filterDescription ? null : contentControl.getBestContentSectionDescription(contentSection, getLanguage());
             
             contentSectionTransfer = new ContentSectionTransfer(contentCollectionTransfer, contentSectionName, parentContentSectionTransfer, isDefault,
                     sortOrder, description);

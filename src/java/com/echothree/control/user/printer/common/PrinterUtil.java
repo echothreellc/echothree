@@ -18,7 +18,6 @@ package com.echothree.control.user.printer.common;
 
 import com.echothree.control.user.printer.server.PrinterLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class PrinterUtil {
@@ -30,7 +29,7 @@ public class PrinterUtil {
     public static PrinterLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (PrinterLocal)ctx.lookup("ejb:echothree/echothree-server/PrinterBean!com.echothree.control.user.printer.server.PrinterLocal");
         }
@@ -42,7 +41,7 @@ public class PrinterUtil {
     public static PrinterRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (PrinterRemote)ctx.lookup("ejb:echothree/echothree-server/PrinterBean!com.echothree.control.user.printer.common.PrinterRemote");
         }

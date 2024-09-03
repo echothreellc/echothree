@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.offerchaintype;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.DeleteOfferChainTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,18 +49,18 @@ public class DeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
-        DeleteOfferChainTypeForm commandForm = OfferUtil.getHome().getDeleteOfferChainTypeForm();
+        var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
+        var commandForm = OfferUtil.getHome().getDeleteOfferChainTypeForm();
         
         commandForm.setOfferName(offerName);
         commandForm.setChainKindName(chainKindName);
         commandForm.setChainTypeName(chainTypeName);
         
         OfferUtil.getHome().deleteOfferChainType(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.OFFER_NAME, offerName);

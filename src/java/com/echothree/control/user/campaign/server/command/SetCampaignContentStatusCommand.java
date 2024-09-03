@@ -22,7 +22,6 @@ import com.echothree.model.control.campaign.server.logic.CampaignContentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.campaign.server.entity.CampaignContent;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,11 +64,11 @@ public class SetCampaignContentStatusCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String campaignContentName = form.getCampaignContentName();
-        CampaignContent campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
+        var campaignContentName = form.getCampaignContentName();
+        var campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
         
         if(campaignContent != null) {
-            String campaignContentStatusChoice = form.getCampaignContentStatusChoice();
+            var campaignContentStatusChoice = form.getCampaignContentStatusChoice();
             
             CampaignContentLogic.getInstance().setCampaignContentStatus(session, this, campaignContent, campaignContentStatusChoice, getPartyPK());
         } else {

@@ -18,15 +18,11 @@ package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.GetPartyContactListStatusChoicesForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
-import com.echothree.control.user.contactlist.common.result.GetPartyContactListStatusChoicesResult;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
-import com.echothree.model.data.contactlist.server.entity.PartyContactList;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -70,24 +66,24 @@ public class GetPartyContactListStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyContactListStatusChoicesResult result = ContactListResultFactory.getGetPartyContactListStatusChoicesResult();
-        String partyName = form.getPartyName();
-        String contactListName = form.getContactListName();
+        var result = ContactListResultFactory.getGetPartyContactListStatusChoicesResult();
+        var partyName = form.getPartyName();
+        var contactListName = form.getContactListName();
         var parameterCount = (partyName == null ? 0 : 1) + (contactListName == null ? 0 : 1);
 
         if(parameterCount == 0 || parameterCount == 2) {
-            Party party = partyName == null ? null : partyControl.getPartyByName(partyName);
+            var party = partyName == null ? null : partyControl.getPartyByName(partyName);
 
             if(partyName == null || party != null) {
                 var contactListControl = Session.getModelController(ContactListControl.class);
-                ContactList contactList = contactListName == null ? null : contactListControl.getContactListByName(contactListName);
+                var contactList = contactListName == null ? null : contactListControl.getContactListByName(contactListName);
 
                 if(contactListName == null || contactList != null) {
-                    PartyContactList partyContactList = party == null && contactList == null ? null : contactListControl.getPartyContactList(party, contactList);
+                    var partyContactList = party == null && contactList == null ? null : contactListControl.getPartyContactList(party, contactList);
 
                     if((party == null && contactList == null) || partyContactList != null) {
-                        String defaultPartyContactListStatusChoice = form.getDefaultPartyContactListStatusChoice();
-                        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                        var defaultPartyContactListStatusChoice = form.getDefaultPartyContactListStatusChoice();
+                        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                         result.setPartyContactListStatusChoices(contactListControl.getPartyContactListStatusChoices(defaultPartyContactListStatusChoice,
                                 getPreferredLanguage(), allowNullChoice, partyContactList, getPartyPK()));

@@ -18,8 +18,6 @@ package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.SetUserVisitPreferredLanguageForm;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
-import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -47,10 +45,10 @@ public class SetUserVisitPreferredLanguageCommand
     
     @Override
     protected BaseResult execute() {
-        Language currency = LanguageLogic.getInstance().getLanguageByName(this, form.getLanguageIsoName());
+        var currency = LanguageLogic.getInstance().getLanguageByName(this, form.getLanguageIsoName());
 
         if(!hasExecutionErrors()) {
-            UserControl userControl = getUserControl();
+            var userControl = getUserControl();
 
             userControl.setUserVisitPreferredLanguage(getUserVisitForUpdate(), currency, getPartyPK());
         }

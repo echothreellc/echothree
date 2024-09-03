@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.warehouse.warehousealias;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.GetWarehouseForm;
 import com.echothree.control.user.warehouse.common.result.GetWarehouseResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetPartyAliasForm;
 import com.echothree.control.user.party.common.result.GetPartyAliasResult;
-import com.echothree.model.control.warehouse.common.transfer.WarehouseTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -47,16 +42,16 @@ public class WarehouseAliasUtil {
 
     public void setupWarehouse(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetWarehouseForm commandForm = WarehouseUtil.getHome().getGetWarehouseForm();
+        var commandForm = WarehouseUtil.getHome().getGetWarehouseForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = WarehouseUtil.getHome().getWarehouse(MainBaseAction.getUserVisitPK(request), commandForm);
+        var commandResult = WarehouseUtil.getHome().getWarehouse(MainBaseAction.getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWarehouseResult result = (GetWarehouseResult)executionResult.getResult();
-            WarehouseTransfer warehouse = result.getWarehouse();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWarehouseResult)executionResult.getResult();
+            var warehouse = result.getWarehouse();
 
             if(warehouse != null) {
                 request.setAttribute(AttributeConstants.WAREHOUSE, warehouse);
@@ -71,14 +66,14 @@ public class WarehouseAliasUtil {
 
     public void setupPartyAliasTransfer(HttpServletRequest request, String partyName, String partyAliasTypeName)
             throws NamingException {
-        GetPartyAliasForm commandForm = PartyUtil.getHome().getGetPartyAliasForm();
+        var commandForm = PartyUtil.getHome().getGetPartyAliasForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setPartyAliasTypeName(partyAliasTypeName);
 
-        CommandResult commandResult = PartyUtil.getHome().getPartyAlias(MainBaseAction.getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyAliasResult result = (GetPartyAliasResult)executionResult.getResult();
+        var commandResult = PartyUtil.getHome().getPartyAlias(MainBaseAction.getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyAliasResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_ALIAS, result.getPartyAlias());
     }

@@ -17,7 +17,6 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetAllocationPriorityChoicesForm;
-import com.echothree.control.user.inventory.common.result.GetAllocationPriorityChoicesResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -63,9 +62,9 @@ public class GetAllocationPriorityChoicesCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        GetAllocationPriorityChoicesResult result = InventoryResultFactory.getGetAllocationPriorityChoicesResult();
-        String defaultAllocationPriorityChoice = form.getDefaultAllocationPriorityChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = InventoryResultFactory.getGetAllocationPriorityChoicesResult();
+        var defaultAllocationPriorityChoice = form.getDefaultAllocationPriorityChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
         result.setAllocationPriorityChoices(inventoryControl.getAllocationPriorityChoices(defaultAllocationPriorityChoice, getPreferredLanguage(), allowNullChoice));
 

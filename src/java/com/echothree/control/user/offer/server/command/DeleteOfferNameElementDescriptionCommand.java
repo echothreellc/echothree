@@ -22,9 +22,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.entity.OfferNameElement;
-import com.echothree.model.data.offer.server.entity.OfferNameElementDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,16 +64,16 @@ public class DeleteOfferNameElementDescriptionCommand
     @Override
     protected BaseResult execute() {
         var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
-        String offerNameElementName = form.getOfferNameElementName();
-        OfferNameElement offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
+        var offerNameElementName = form.getOfferNameElementName();
+        var offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
         
         if(offerNameElement != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                OfferNameElementDescription offerNameElementDescription = offerNameElementControl.getOfferNameElementDescriptionForUpdate(offerNameElement, language);
+                var offerNameElementDescription = offerNameElementControl.getOfferNameElementDescriptionForUpdate(offerNameElement, language);
                 
                 if(offerNameElementDescription != null) {
                     offerNameElementControl.deleteOfferNameElementDescription(offerNameElementDescription, getPartyPK());

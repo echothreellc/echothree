@@ -17,11 +17,8 @@
 package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.GetRecoveryQuestionDescriptionsForm;
-import com.echothree.control.user.user.common.result.GetRecoveryQuestionDescriptionsResult;
 import com.echothree.control.user.user.common.result.UserResultFactory;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -49,10 +46,10 @@ public class GetRecoveryQuestionDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = getUserControl();
-        GetRecoveryQuestionDescriptionsResult result = UserResultFactory.getGetRecoveryQuestionDescriptionsResult();
-        String recoveryQuestionName = form.getRecoveryQuestionName();
-        RecoveryQuestion recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
+        var userControl = getUserControl();
+        var result = UserResultFactory.getGetRecoveryQuestionDescriptionsResult();
+        var recoveryQuestionName = form.getRecoveryQuestionName();
+        var recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
         
         if(recoveryQuestion != null) {
             result.setRecoveryQuestion(userControl.getRecoveryQuestionTransfer(getUserVisit(), recoveryQuestion));

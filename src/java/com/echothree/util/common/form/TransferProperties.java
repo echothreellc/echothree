@@ -29,7 +29,7 @@ public class TransferProperties
     private Map<Class, String> collectionFilters = new HashMap<>();
 
     public TransferProperties addClassAndProperty(Class clazz, String property) {
-        Set<String> properties = classesAndProperties.get(clazz);
+        var properties = classesAndProperties.get(clazz);
         
         if(properties == null) {
             properties = new HashSet<>();

@@ -19,9 +19,6 @@ package com.echothree.control.user.contact.server.command;
 import com.echothree.control.user.contact.common.form.CreatePostalAddressElementTypeDescriptionForm;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.contact.server.entity.PostalAddressElementType;
-import com.echothree.model.data.contact.server.entity.PostalAddressElementTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,16 +51,16 @@ public class CreatePostalAddressElementTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String postalAddressElementTypeName = form.getPostalAddressElementTypeName();
-        PostalAddressElementType postalAddressElementType = contactControl.getPostalAddressElementTypeByName(postalAddressElementTypeName);
+        var postalAddressElementTypeName = form.getPostalAddressElementTypeName();
+        var postalAddressElementType = contactControl.getPostalAddressElementTypeByName(postalAddressElementTypeName);
         
         if(postalAddressElementType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PostalAddressElementTypeDescription postalAddressElementTypeDescription = contactControl.getPostalAddressElementTypeDescription(postalAddressElementType, language);
+                var postalAddressElementTypeDescription = contactControl.getPostalAddressElementTypeDescription(postalAddressElementType, language);
                 
                 if(postalAddressElementTypeDescription == null) {
                     var description = form.getDescription();

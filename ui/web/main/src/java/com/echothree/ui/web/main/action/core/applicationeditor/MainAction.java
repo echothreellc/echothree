@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.applicationeditor;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetApplicationEditorsForm;
 import com.echothree.control.user.core.common.result.GetApplicationEditorsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,14 +49,14 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetApplicationEditorsForm commandForm = CoreUtil.getHome().getGetApplicationEditorsForm();
+        var commandForm = CoreUtil.getHome().getGetApplicationEditorsForm();
 
         commandForm.setApplicationName(request.getParameter(ParameterConstants.APPLICATION_NAME));
 
-        CommandResult commandResult = CoreUtil.getHome().getApplicationEditors(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getApplicationEditors(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetApplicationEditorsResult result = (GetApplicationEditorsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetApplicationEditorsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.APPLICATION, result.getApplication());
             request.setAttribute(AttributeConstants.APPLICATION_EDITORS, result.getApplicationEditors());

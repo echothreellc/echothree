@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.core.queuetype;
 
 import com.echothree.control.user.queue.common.QueueUtil;
-import com.echothree.control.user.queue.common.form.GetQueueTypeDescriptionsForm;
 import com.echothree.control.user.queue.common.result.GetQueueTypeDescriptionsResult;
-import com.echothree.model.control.queue.common.transfer.QueueTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String queueTypeName = request.getParameter(ParameterConstants.QUEUE_TYPE_NAME);
-        GetQueueTypeDescriptionsForm commandForm = QueueUtil.getHome().getGetQueueTypeDescriptionsForm();
+        var queueTypeName = request.getParameter(ParameterConstants.QUEUE_TYPE_NAME);
+        var commandForm = QueueUtil.getHome().getGetQueueTypeDescriptionsForm();
 
         commandForm.setQueueTypeName(queueTypeName);
 
-        CommandResult commandResult = QueueUtil.getHome().getQueueTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = QueueUtil.getHome().getQueueTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetQueueTypeDescriptionsResult result = (GetQueueTypeDescriptionsResult) executionResult.getResult();
-            QueueTypeTransfer queueTypeTransfer = result.getQueueType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetQueueTypeDescriptionsResult) executionResult.getResult();
+            var queueTypeTransfer = result.getQueueType();
 
             request.setAttribute(AttributeConstants.QUEUE_TYPE, queueTypeTransfer);
             request.setAttribute(AttributeConstants.QUEUE_TYPE_DESCRIPTIONS, result.getQueueTypeDescriptions());

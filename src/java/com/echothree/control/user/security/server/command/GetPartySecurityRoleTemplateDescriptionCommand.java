@@ -17,16 +17,12 @@
 package com.echothree.control.user.security.server.command;
 
 import com.echothree.control.user.security.common.form.GetPartySecurityRoleTemplateDescriptionForm;
-import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplateDescriptionResult;
 import com.echothree.control.user.security.common.result.SecurityResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplate;
-import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetPartySecurityRoleTemplateDescriptionCommand
     @Override
     protected BaseResult execute() {
         var securityControl = Session.getModelController(SecurityControl.class);
-        GetPartySecurityRoleTemplateDescriptionResult result = SecurityResultFactory.getGetPartySecurityRoleTemplateDescriptionResult();
-        String partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
-        PartySecurityRoleTemplate partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
+        var result = SecurityResultFactory.getGetPartySecurityRoleTemplateDescriptionResult();
+        var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
+        var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
         
         if(partySecurityRoleTemplate != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription = securityControl.getPartySecurityRoleTemplateDescription(partySecurityRoleTemplate,
+                var partySecurityRoleTemplateDescription = securityControl.getPartySecurityRoleTemplateDescription(partySecurityRoleTemplate,
                         language);
                 
                 if(partySecurityRoleTemplateDescription != null) {

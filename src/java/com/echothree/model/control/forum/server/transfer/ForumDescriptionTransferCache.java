@@ -17,9 +17,7 @@
 package com.echothree.model.control.forum.server.transfer;
 
 import com.echothree.model.control.forum.common.transfer.ForumDescriptionTransfer;
-import com.echothree.model.control.forum.common.transfer.ForumTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.forum.server.entity.ForumDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class ForumDescriptionTransferCache
     }
     
     public ForumDescriptionTransfer getForumDescriptionTransfer(ForumDescription forumDescription) {
-        ForumDescriptionTransfer forumDescriptionTransfer = get(forumDescription);
+        var forumDescriptionTransfer = get(forumDescription);
         
         if(forumDescriptionTransfer == null) {
-            ForumTransfer forumTransfer = forumControl.getForumTransfer(userVisit, forumDescription.getForum());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, forumDescription.getLanguage());
+            var forumTransfer = forumControl.getForumTransfer(userVisit, forumDescription.getForum());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, forumDescription.getLanguage());
             
             forumDescriptionTransfer = new ForumDescriptionTransfer(languageTransfer, forumTransfer, forumDescription.getDescription());
             put(forumDescription, forumDescriptionTransfer);

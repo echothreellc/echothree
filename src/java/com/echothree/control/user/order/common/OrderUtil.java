@@ -18,7 +18,6 @@ package com.echothree.control.user.order.common;
 
 import com.echothree.control.user.order.server.OrderLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class OrderUtil {
@@ -30,7 +29,7 @@ public class OrderUtil {
     public static OrderLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (OrderLocal)ctx.lookup("ejb:echothree/echothree-server/OrderBean!com.echothree.control.user.order.server.OrderLocal");
         }
@@ -42,7 +41,7 @@ public class OrderUtil {
     public static OrderRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (OrderRemote)ctx.lookup("ejb:echothree/echothree-server/OrderBean!com.echothree.control.user.order.common.OrderRemote");
         }

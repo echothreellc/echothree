@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.advertising.use;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.edit.UseEdit;
-import com.echothree.control.user.offer.common.form.EditUseForm;
 import com.echothree.control.user.offer.common.result.EditUseResult;
-import com.echothree.control.user.offer.common.spec.UseSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,13 +53,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalUseName = request.getParameter(ParameterConstants.ORIGINAL_USE_NAME);
+        var originalUseName = request.getParameter(ParameterConstants.ORIGINAL_USE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditUseForm commandForm = OfferUtil.getHome().getEditUseForm();
-                UseSpec spec = OfferUtil.getHome().getUseSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = OfferUtil.getHome().getEditUseForm();
+                var spec = OfferUtil.getHome().getUseSpec();
                 
                 if(originalUseName == null)
                     originalUseName = actionForm.getOriginalUseName();
@@ -73,7 +68,7 @@ public class EditAction
                 spec.setUseName(originalUseName);
                 
                 if(wasPost(request)) {
-                    UseEdit edit = OfferUtil.getHome().getUseEdit();
+                    var edit = OfferUtil.getHome().getUseEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -83,14 +78,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = OfferUtil.getHome().editUse(getUserVisitPK(request), commandForm);
+
+                    var commandResult = OfferUtil.getHome().editUse(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditUseResult result = (EditUseResult)executionResult.getResult();
+                            var result = (EditUseResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -103,13 +98,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = OfferUtil.getHome().editUse(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditUseResult result = (EditUseResult)executionResult.getResult();
+
+                    var commandResult = OfferUtil.getHome().editUse(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditUseResult)executionResult.getResult();
                     
                     if(result != null) {
-                        UseEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalUseName(edit.getUseName());

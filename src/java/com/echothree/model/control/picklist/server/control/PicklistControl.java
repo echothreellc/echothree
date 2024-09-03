@@ -29,32 +29,17 @@ import com.echothree.model.control.picklist.common.transfer.PicklistTimeTypeTran
 import com.echothree.model.control.picklist.common.transfer.PicklistTransfer;
 import com.echothree.model.control.picklist.common.transfer.PicklistTypeDescriptionTransfer;
 import com.echothree.model.control.picklist.common.transfer.PicklistTypeTransfer;
-import com.echothree.model.control.picklist.server.transfer.PicklistAliasTransferCache;
-import com.echothree.model.control.picklist.server.transfer.PicklistAliasTypeDescriptionTransferCache;
-import com.echothree.model.control.picklist.server.transfer.PicklistAliasTypeTransferCache;
-import com.echothree.model.control.picklist.server.transfer.PicklistTimeTransferCache;
-import com.echothree.model.control.picklist.server.transfer.PicklistTimeTypeDescriptionTransferCache;
-import com.echothree.model.control.picklist.server.transfer.PicklistTimeTypeTransferCache;
 import com.echothree.model.control.picklist.server.transfer.PicklistTransferCaches;
-import com.echothree.model.control.picklist.server.transfer.PicklistTypeDescriptionTransferCache;
-import com.echothree.model.control.picklist.server.transfer.PicklistTypeTransferCache;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.picklist.common.pk.PicklistAliasTypePK;
-import com.echothree.model.data.picklist.common.pk.PicklistPK;
-import com.echothree.model.data.picklist.common.pk.PicklistTimeTypePK;
-import com.echothree.model.data.picklist.common.pk.PicklistTypePK;
 import com.echothree.model.data.picklist.server.entity.Picklist;
 import com.echothree.model.data.picklist.server.entity.PicklistAlias;
 import com.echothree.model.data.picklist.server.entity.PicklistAliasType;
 import com.echothree.model.data.picklist.server.entity.PicklistAliasTypeDescription;
-import com.echothree.model.data.picklist.server.entity.PicklistAliasTypeDetail;
 import com.echothree.model.data.picklist.server.entity.PicklistTime;
 import com.echothree.model.data.picklist.server.entity.PicklistTimeType;
 import com.echothree.model.data.picklist.server.entity.PicklistTimeTypeDescription;
-import com.echothree.model.data.picklist.server.entity.PicklistTimeTypeDetail;
 import com.echothree.model.data.picklist.server.entity.PicklistType;
 import com.echothree.model.data.picklist.server.entity.PicklistTypeDescription;
-import com.echothree.model.data.picklist.server.entity.PicklistTypeDetail;
 import com.echothree.model.data.picklist.server.factory.PicklistAliasFactory;
 import com.echothree.model.data.picklist.server.factory.PicklistAliasTypeDescriptionFactory;
 import com.echothree.model.data.picklist.server.factory.PicklistAliasTypeDetailFactory;
@@ -74,11 +59,8 @@ import com.echothree.model.data.picklist.server.value.PicklistTimeTypeDetailValu
 import com.echothree.model.data.picklist.server.value.PicklistTimeValue;
 import com.echothree.model.data.picklist.server.value.PicklistTypeDescriptionValue;
 import com.echothree.model.data.picklist.server.value.PicklistTypeDetailValue;
-import com.echothree.model.data.sequence.common.pk.SequenceTypePK;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.common.pk.WorkflowEntrancePK;
-import com.echothree.model.data.workflow.common.pk.WorkflowPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.persistence.BasePK;
@@ -90,7 +72,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -124,11 +105,11 @@ public class PicklistControl
 
     public PicklistType createPicklistType(String picklistTypeName, PicklistType parentPicklistType, SequenceType picklistSequenceType, Workflow picklistWorkflow,
             WorkflowEntrance picklistWorkflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        PicklistType defaultPicklistType = getDefaultPicklistType();
-        boolean defaultFound = defaultPicklistType != null;
+        var defaultPicklistType = getDefaultPicklistType();
+        var defaultFound = defaultPicklistType != null;
 
         if(defaultFound && isDefault) {
-            PicklistTypeDetailValue defaultPicklistTypeDetailValue = getDefaultPicklistTypeDetailValueForUpdate();
+            var defaultPicklistTypeDetailValue = getDefaultPicklistTypeDetailValueForUpdate();
 
             defaultPicklistTypeDetailValue.setIsDefault(Boolean.FALSE);
             updatePicklistTypeFromValue(defaultPicklistTypeDetailValue, false, createdBy);
@@ -136,8 +117,8 @@ public class PicklistControl
             isDefault = Boolean.TRUE;
         }
 
-        PicklistType picklistType = PicklistTypeFactory.getInstance().create();
-        PicklistTypeDetail picklistTypeDetail = PicklistTypeDetailFactory.getInstance().create(picklistType, picklistTypeName, parentPicklistType, picklistSequenceType,
+        var picklistType = PicklistTypeFactory.getInstance().create();
+        var picklistTypeDetail = PicklistTypeDetailFactory.getInstance().create(picklistType, picklistTypeName, parentPicklistType, picklistSequenceType,
                 picklistWorkflow, picklistWorkflowEntrance, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
@@ -296,9 +277,9 @@ public class PicklistControl
     }
 
     public List<PicklistTypeTransfer> getPicklistTypeTransfers(UserVisit userVisit) {
-        List<PicklistType> picklistTypes = getPicklistTypes();
+        var picklistTypes = getPicklistTypes();
         List<PicklistTypeTransfer> picklistTypeTransfers = new ArrayList<>(picklistTypes.size());
-        PicklistTypeTransferCache picklistTypeTransferCache = getPicklistTransferCaches(userVisit).getPicklistTypeTransferCache();
+        var picklistTypeTransferCache = getPicklistTransferCaches(userVisit).getPicklistTypeTransferCache();
 
         picklistTypes.forEach((picklistType) ->
                 picklistTypeTransfers.add(picklistTypeTransferCache.getPicklistTypeTransfer(picklistType))
@@ -309,7 +290,7 @@ public class PicklistControl
 
     public PicklistTypeChoicesBean getPicklistTypeChoices(String defaultPicklistTypeChoice,
             Language language, boolean allowNullChoice) {
-        List<PicklistType> picklistTypes = getPicklistTypes();
+        var picklistTypes = getPicklistTypes();
         var size = picklistTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -325,7 +306,7 @@ public class PicklistControl
         }
 
         for(var picklistType : picklistTypes) {
-            PicklistTypeDetail picklistTypeDetail = picklistType.getLastDetail();
+            var picklistTypeDetail = picklistType.getLastDetail();
 
             var label = getBestPicklistTypeDescription(picklistType, language);
             var value = picklistTypeDetail.getPicklistTypeName();
@@ -344,7 +325,7 @@ public class PicklistControl
 
     public boolean isParentPicklistTypeSafe(PicklistType picklistType,
             PicklistType parentPicklistType) {
-        boolean safe = true;
+        var safe = true;
 
         if(parentPicklistType != null) {
             Set<PicklistType> parentPicklistTypes = new HashSet<>();
@@ -367,29 +348,29 @@ public class PicklistControl
     private void updatePicklistTypeFromValue(PicklistTypeDetailValue picklistTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(picklistTypeDetailValue.hasBeenModified()) {
-            PicklistType picklistType = PicklistTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var picklistType = PicklistTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      picklistTypeDetailValue.getPicklistTypePK());
-            PicklistTypeDetail picklistTypeDetail = picklistType.getActiveDetailForUpdate();
+            var picklistTypeDetail = picklistType.getActiveDetailForUpdate();
 
             picklistTypeDetail.setThruTime(session.START_TIME_LONG);
             picklistTypeDetail.store();
 
-            PicklistTypePK picklistTypePK = picklistTypeDetail.getPicklistTypePK(); // Not updated
-            String picklistTypeName = picklistTypeDetailValue.getPicklistTypeName();
-            PicklistTypePK parentPicklistTypePK = picklistTypeDetailValue.getParentPicklistTypePK();
-            SequenceTypePK picklistSequenceTypePK = picklistTypeDetailValue.getPicklistSequenceTypePK();
-            WorkflowPK picklistWorkflowPK = picklistTypeDetailValue.getPicklistWorkflowPK();
-            WorkflowEntrancePK picklistWorkflowEntrancePK = picklistTypeDetailValue.getPicklistWorkflowEntrancePK();
-            Boolean isDefault = picklistTypeDetailValue.getIsDefault();
-            Integer sortOrder = picklistTypeDetailValue.getSortOrder();
+            var picklistTypePK = picklistTypeDetail.getPicklistTypePK(); // Not updated
+            var picklistTypeName = picklistTypeDetailValue.getPicklistTypeName();
+            var parentPicklistTypePK = picklistTypeDetailValue.getParentPicklistTypePK();
+            var picklistSequenceTypePK = picklistTypeDetailValue.getPicklistSequenceTypePK();
+            var picklistWorkflowPK = picklistTypeDetailValue.getPicklistWorkflowPK();
+            var picklistWorkflowEntrancePK = picklistTypeDetailValue.getPicklistWorkflowEntrancePK();
+            var isDefault = picklistTypeDetailValue.getIsDefault();
+            var sortOrder = picklistTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                PicklistType defaultPicklistType = getDefaultPicklistType();
-                boolean defaultFound = defaultPicklistType != null && !defaultPicklistType.equals(picklistType);
+                var defaultPicklistType = getDefaultPicklistType();
+                var defaultFound = defaultPicklistType != null && !defaultPicklistType.equals(picklistType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PicklistTypeDetailValue defaultPicklistTypeDetailValue = getDefaultPicklistTypeDetailValueForUpdate();
+                    var defaultPicklistTypeDetailValue = getDefaultPicklistTypeDetailValueForUpdate();
 
                     defaultPicklistTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updatePicklistTypeFromValue(defaultPicklistTypeDetailValue, false, updatedBy);
@@ -414,7 +395,7 @@ public class PicklistControl
     }
 
     private void deletePicklistType(PicklistType picklistType, boolean checkDefault, BasePK deletedBy) {
-        PicklistTypeDetail picklistTypeDetail = picklistType.getLastDetailForUpdate();
+        var picklistTypeDetail = picklistType.getLastDetailForUpdate();
         
         deletePicklistTypesByParentPicklistType(picklistType, deletedBy);
         deletePicklistTypeDescriptionsByPicklistType(picklistType, deletedBy);
@@ -427,17 +408,17 @@ public class PicklistControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            PicklistType defaultPicklistType = getDefaultPicklistType();
+            var defaultPicklistType = getDefaultPicklistType();
 
             if(defaultPicklistType == null) {
-                List<PicklistType> picklistTypes = getPicklistTypesForUpdate();
+                var picklistTypes = getPicklistTypesForUpdate();
 
                 if(!picklistTypes.isEmpty()) {
-                    Iterator<PicklistType> iter = picklistTypes.iterator();
+                    var iter = picklistTypes.iterator();
                     if(iter.hasNext()) {
                         defaultPicklistType = iter.next();
                     }
-                    PicklistTypeDetailValue picklistTypeDetailValue = Objects.requireNonNull(defaultPicklistType).getLastDetailForUpdate().getPicklistTypeDetailValue().clone();
+                    var picklistTypeDetailValue = Objects.requireNonNull(defaultPicklistType).getLastDetailForUpdate().getPicklistTypeDetailValue().clone();
 
                     picklistTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updatePicklistTypeFromValue(picklistTypeDetailValue, false, deletedBy);
@@ -469,7 +450,7 @@ public class PicklistControl
     // --------------------------------------------------------------------------------
 
     public PicklistTypeDescription createPicklistTypeDescription(PicklistType picklistType, Language language, String description, BasePK createdBy) {
-        PicklistTypeDescription picklistTypeDescription = PicklistTypeDescriptionFactory.getInstance().create(picklistType, language, description,
+        var picklistTypeDescription = PicklistTypeDescriptionFactory.getInstance().create(picklistType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(picklistType.getPrimaryKey(), EventTypes.MODIFY, picklistTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -548,7 +529,7 @@ public class PicklistControl
 
     public String getBestPicklistTypeDescription(PicklistType picklistType, Language language) {
         String description;
-        PicklistTypeDescription picklistTypeDescription = getPicklistTypeDescription(picklistType, language);
+        var picklistTypeDescription = getPicklistTypeDescription(picklistType, language);
 
         if(picklistTypeDescription == null && !language.getIsDefault()) {
             picklistTypeDescription = getPicklistTypeDescription(picklistType, getPartyControl().getDefaultLanguage());
@@ -568,9 +549,9 @@ public class PicklistControl
     }
 
     public List<PicklistTypeDescriptionTransfer> getPicklistTypeDescriptionTransfersByPicklistType(UserVisit userVisit, PicklistType picklistType) {
-        List<PicklistTypeDescription> picklistTypeDescriptions = getPicklistTypeDescriptionsByPicklistType(picklistType);
+        var picklistTypeDescriptions = getPicklistTypeDescriptionsByPicklistType(picklistType);
         List<PicklistTypeDescriptionTransfer> picklistTypeDescriptionTransfers = new ArrayList<>(picklistTypeDescriptions.size());
-        PicklistTypeDescriptionTransferCache picklistTypeDescriptionTransferCache = getPicklistTransferCaches(userVisit).getPicklistTypeDescriptionTransferCache();
+        var picklistTypeDescriptionTransferCache = getPicklistTransferCaches(userVisit).getPicklistTypeDescriptionTransferCache();
 
         picklistTypeDescriptions.forEach((picklistTypeDescription) ->
                 picklistTypeDescriptionTransfers.add(picklistTypeDescriptionTransferCache.getPicklistTypeDescriptionTransfer(picklistTypeDescription))
@@ -581,15 +562,15 @@ public class PicklistControl
 
     public void updatePicklistTypeDescriptionFromValue(PicklistTypeDescriptionValue picklistTypeDescriptionValue, BasePK updatedBy) {
         if(picklistTypeDescriptionValue.hasBeenModified()) {
-            PicklistTypeDescription picklistTypeDescription = PicklistTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var picklistTypeDescription = PicklistTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     picklistTypeDescriptionValue.getPrimaryKey());
 
             picklistTypeDescription.setThruTime(session.START_TIME_LONG);
             picklistTypeDescription.store();
 
-            PicklistType picklistType = picklistTypeDescription.getPicklistType();
-            Language language = picklistTypeDescription.getLanguage();
-            String description = picklistTypeDescriptionValue.getDescription();
+            var picklistType = picklistTypeDescription.getPicklistType();
+            var language = picklistTypeDescription.getLanguage();
+            var description = picklistTypeDescriptionValue.getDescription();
 
             picklistTypeDescription = PicklistTypeDescriptionFactory.getInstance().create(picklistType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -606,7 +587,7 @@ public class PicklistControl
     }
 
     public void deletePicklistTypeDescriptionsByPicklistType(PicklistType picklistType, BasePK deletedBy) {
-        List<PicklistTypeDescription> picklistTypeDescriptions = getPicklistTypeDescriptionsByPicklistTypeForUpdate(picklistType);
+        var picklistTypeDescriptions = getPicklistTypeDescriptionsByPicklistTypeForUpdate(picklistType);
 
         picklistTypeDescriptions.forEach((picklistTypeDescription) -> 
                 deletePicklistTypeDescription(picklistTypeDescription, deletedBy)
@@ -618,11 +599,11 @@ public class PicklistControl
     // --------------------------------------------------------------------------------
 
     public PicklistTimeType createPicklistTimeType(PicklistType picklistType, String picklistTimeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        PicklistTimeType defaultPicklistTimeType = getDefaultPicklistTimeType(picklistType);
-        boolean defaultFound = defaultPicklistTimeType != null;
+        var defaultPicklistTimeType = getDefaultPicklistTimeType(picklistType);
+        var defaultFound = defaultPicklistTimeType != null;
 
         if(defaultFound && isDefault) {
-            PicklistTimeTypeDetailValue defaultPicklistTimeTypeDetailValue = getDefaultPicklistTimeTypeDetailValueForUpdate(picklistType);
+            var defaultPicklistTimeTypeDetailValue = getDefaultPicklistTimeTypeDetailValueForUpdate(picklistType);
 
             defaultPicklistTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
             updatePicklistTimeTypeFromValue(defaultPicklistTimeTypeDetailValue, false, createdBy);
@@ -630,8 +611,8 @@ public class PicklistControl
             isDefault = Boolean.TRUE;
         }
 
-        PicklistTimeType picklistTimeType = PicklistTimeTypeFactory.getInstance().create();
-        PicklistTimeTypeDetail picklistTimeTypeDetail = PicklistTimeTypeDetailFactory.getInstance().create(picklistTimeType, picklistType, picklistTimeTypeName, isDefault,
+        var picklistTimeType = PicklistTimeTypeFactory.getInstance().create();
+        var picklistTimeTypeDetail = PicklistTimeTypeDetailFactory.getInstance().create(picklistTimeType, picklistType, picklistTimeTypeName, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -760,9 +741,9 @@ public class PicklistControl
     }
 
     public List<PicklistTimeTypeTransfer> getPicklistTimeTypeTransfers(UserVisit userVisit, PicklistType picklistType) {
-        List<PicklistTimeType> picklistTimeTypes = getPicklistTimeTypes(picklistType);
+        var picklistTimeTypes = getPicklistTimeTypes(picklistType);
         List<PicklistTimeTypeTransfer> picklistTimeTypeTransfers = new ArrayList<>(picklistTimeTypes.size());
-        PicklistTimeTypeTransferCache picklistTimeTypeTransferCache = getPicklistTransferCaches(userVisit).getPicklistTimeTypeTransferCache();
+        var picklistTimeTypeTransferCache = getPicklistTransferCaches(userVisit).getPicklistTimeTypeTransferCache();
 
         picklistTimeTypes.forEach((picklistTimeType) ->
                 picklistTimeTypeTransfers.add(picklistTimeTypeTransferCache.getPicklistTimeTypeTransfer(picklistTimeType))
@@ -773,7 +754,7 @@ public class PicklistControl
 
     public PicklistTimeTypeChoicesBean getPicklistTimeTypeChoices(String defaultPicklistTimeTypeChoice, Language language, boolean allowNullChoice,
             PicklistType picklistType) {
-        List<PicklistTimeType> picklistTimeTypes = getPicklistTimeTypes(picklistType);
+        var picklistTimeTypes = getPicklistTimeTypes(picklistType);
         var size = picklistTimeTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -789,7 +770,7 @@ public class PicklistControl
         }
 
         for(var picklistTimeType : picklistTimeTypes) {
-            PicklistTimeTypeDetail picklistTimeTypeDetail = picklistTimeType.getLastDetail();
+            var picklistTimeTypeDetail = picklistTimeType.getLastDetail();
 
             var label = getBestPicklistTimeTypeDescription(picklistTimeType, language);
             var value = picklistTimeTypeDetail.getPicklistTimeTypeName();
@@ -809,27 +790,27 @@ public class PicklistControl
     private void updatePicklistTimeTypeFromValue(PicklistTimeTypeDetailValue picklistTimeTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(picklistTimeTypeDetailValue.hasBeenModified()) {
-            PicklistTimeType picklistTimeType = PicklistTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var picklistTimeType = PicklistTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      picklistTimeTypeDetailValue.getPicklistTimeTypePK());
-            PicklistTimeTypeDetail picklistTimeTypeDetail = picklistTimeType.getActiveDetailForUpdate();
+            var picklistTimeTypeDetail = picklistTimeType.getActiveDetailForUpdate();
 
             picklistTimeTypeDetail.setThruTime(session.START_TIME_LONG);
             picklistTimeTypeDetail.store();
 
-            PicklistType picklistType = picklistTimeTypeDetail.getPicklistType(); // Not updated
-            PicklistTypePK picklistTypePK = picklistType.getPrimaryKey(); // Not updated
-            PicklistTimeTypePK picklistTimeTypePK = picklistTimeTypeDetail.getPicklistTimeTypePK(); // Not updated
-            String picklistTimeTypeName = picklistTimeTypeDetailValue.getPicklistTimeTypeName();
-            Boolean isDefault = picklistTimeTypeDetailValue.getIsDefault();
-            Integer sortOrder = picklistTimeTypeDetailValue.getSortOrder();
+            var picklistType = picklistTimeTypeDetail.getPicklistType(); // Not updated
+            var picklistTypePK = picklistType.getPrimaryKey(); // Not updated
+            var picklistTimeTypePK = picklistTimeTypeDetail.getPicklistTimeTypePK(); // Not updated
+            var picklistTimeTypeName = picklistTimeTypeDetailValue.getPicklistTimeTypeName();
+            var isDefault = picklistTimeTypeDetailValue.getIsDefault();
+            var sortOrder = picklistTimeTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                PicklistTimeType defaultPicklistTimeType = getDefaultPicklistTimeType(picklistType);
-                boolean defaultFound = defaultPicklistTimeType != null && !defaultPicklistTimeType.equals(picklistTimeType);
+                var defaultPicklistTimeType = getDefaultPicklistTimeType(picklistType);
+                var defaultFound = defaultPicklistTimeType != null && !defaultPicklistTimeType.equals(picklistTimeType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PicklistTimeTypeDetailValue defaultPicklistTimeTypeDetailValue = getDefaultPicklistTimeTypeDetailValueForUpdate(picklistType);
+                    var defaultPicklistTimeTypeDetailValue = getDefaultPicklistTimeTypeDetailValueForUpdate(picklistType);
 
                     defaultPicklistTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updatePicklistTimeTypeFromValue(defaultPicklistTimeTypeDetailValue, false, updatedBy);
@@ -857,23 +838,23 @@ public class PicklistControl
         deletePicklistTimesByPicklistTimeType(picklistTimeType, deletedBy);
         deletePicklistTimeTypeDescriptionsByPicklistTimeType(picklistTimeType, deletedBy);
 
-        PicklistTimeTypeDetail picklistTimeTypeDetail = picklistTimeType.getLastDetailForUpdate();
+        var picklistTimeTypeDetail = picklistTimeType.getLastDetailForUpdate();
         picklistTimeTypeDetail.setThruTime(session.START_TIME_LONG);
         picklistTimeType.setActiveDetail(null);
         picklistTimeType.store();
 
         // Check for default, and pick one if necessary
-        PicklistType picklistType = picklistTimeTypeDetail.getPicklistType();
-        PicklistTimeType defaultPicklistTimeType = getDefaultPicklistTimeType(picklistType);
+        var picklistType = picklistTimeTypeDetail.getPicklistType();
+        var defaultPicklistTimeType = getDefaultPicklistTimeType(picklistType);
         if(defaultPicklistTimeType == null) {
-            List<PicklistTimeType> picklistTimeTypes = getPicklistTimeTypesForUpdate(picklistType);
+            var picklistTimeTypes = getPicklistTimeTypesForUpdate(picklistType);
 
             if(!picklistTimeTypes.isEmpty()) {
-                Iterator<PicklistTimeType> iter = picklistTimeTypes.iterator();
+                var iter = picklistTimeTypes.iterator();
                 if(iter.hasNext()) {
                     defaultPicklistTimeType = iter.next();
                 }
-                PicklistTimeTypeDetailValue picklistTimeTypeDetailValue = Objects.requireNonNull(defaultPicklistTimeType).getLastDetailForUpdate().getPicklistTimeTypeDetailValue().clone();
+                var picklistTimeTypeDetailValue = Objects.requireNonNull(defaultPicklistTimeType).getLastDetailForUpdate().getPicklistTimeTypeDetailValue().clone();
 
                 picklistTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePicklistTimeTypeFromValue(picklistTimeTypeDetailValue, false, deletedBy);
@@ -888,7 +869,7 @@ public class PicklistControl
     // --------------------------------------------------------------------------------
 
     public PicklistTimeTypeDescription createPicklistTimeTypeDescription(PicklistTimeType picklistTimeType, Language language, String description, BasePK createdBy) {
-        PicklistTimeTypeDescription picklistTimeTypeDescription = PicklistTimeTypeDescriptionFactory.getInstance().create(picklistTimeType, language, description,
+        var picklistTimeTypeDescription = PicklistTimeTypeDescriptionFactory.getInstance().create(picklistTimeType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(picklistTimeType.getPrimaryKey(), EventTypes.MODIFY, picklistTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -967,7 +948,7 @@ public class PicklistControl
 
     public String getBestPicklistTimeTypeDescription(PicklistTimeType picklistTimeType, Language language) {
         String description;
-        PicklistTimeTypeDescription picklistTimeTypeDescription = getPicklistTimeTypeDescription(picklistTimeType, language);
+        var picklistTimeTypeDescription = getPicklistTimeTypeDescription(picklistTimeType, language);
 
         if(picklistTimeTypeDescription == null && !language.getIsDefault()) {
             picklistTimeTypeDescription = getPicklistTimeTypeDescription(picklistTimeType, getPartyControl().getDefaultLanguage());
@@ -987,9 +968,9 @@ public class PicklistControl
     }
 
     public List<PicklistTimeTypeDescriptionTransfer> getPicklistTimeTypeDescriptionTransfersByPicklistTimeType(UserVisit userVisit, PicklistTimeType picklistTimeType) {
-        List<PicklistTimeTypeDescription> picklistTimeTypeDescriptions = getPicklistTimeTypeDescriptionsByPicklistTimeType(picklistTimeType);
+        var picklistTimeTypeDescriptions = getPicklistTimeTypeDescriptionsByPicklistTimeType(picklistTimeType);
         List<PicklistTimeTypeDescriptionTransfer> picklistTimeTypeDescriptionTransfers = new ArrayList<>(picklistTimeTypeDescriptions.size());
-        PicklistTimeTypeDescriptionTransferCache picklistTimeTypeDescriptionTransferCache = getPicklistTransferCaches(userVisit).getPicklistTimeTypeDescriptionTransferCache();
+        var picklistTimeTypeDescriptionTransferCache = getPicklistTransferCaches(userVisit).getPicklistTimeTypeDescriptionTransferCache();
 
         picklistTimeTypeDescriptions.forEach((picklistTimeTypeDescription) ->
                 picklistTimeTypeDescriptionTransfers.add(picklistTimeTypeDescriptionTransferCache.getPicklistTimeTypeDescriptionTransfer(picklistTimeTypeDescription))
@@ -1000,15 +981,15 @@ public class PicklistControl
 
     public void updatePicklistTimeTypeDescriptionFromValue(PicklistTimeTypeDescriptionValue picklistTimeTypeDescriptionValue, BasePK updatedBy) {
         if(picklistTimeTypeDescriptionValue.hasBeenModified()) {
-            PicklistTimeTypeDescription picklistTimeTypeDescription = PicklistTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var picklistTimeTypeDescription = PicklistTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     picklistTimeTypeDescriptionValue.getPrimaryKey());
 
             picklistTimeTypeDescription.setThruTime(session.START_TIME_LONG);
             picklistTimeTypeDescription.store();
 
-            PicklistTimeType picklistTimeType = picklistTimeTypeDescription.getPicklistTimeType();
-            Language language = picklistTimeTypeDescription.getLanguage();
-            String description = picklistTimeTypeDescriptionValue.getDescription();
+            var picklistTimeType = picklistTimeTypeDescription.getPicklistTimeType();
+            var language = picklistTimeTypeDescription.getLanguage();
+            var description = picklistTimeTypeDescriptionValue.getDescription();
 
             picklistTimeTypeDescription = PicklistTimeTypeDescriptionFactory.getInstance().create(picklistTimeType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1025,7 +1006,7 @@ public class PicklistControl
     }
 
     public void deletePicklistTimeTypeDescriptionsByPicklistTimeType(PicklistTimeType picklistTimeType, BasePK deletedBy) {
-        List<PicklistTimeTypeDescription> picklistTimeTypeDescriptions = getPicklistTimeTypeDescriptionsByPicklistTimeTypeForUpdate(picklistTimeType);
+        var picklistTimeTypeDescriptions = getPicklistTimeTypeDescriptionsByPicklistTimeTypeForUpdate(picklistTimeType);
 
         picklistTimeTypeDescriptions.forEach((picklistTimeTypeDescription) -> 
                 deletePicklistTimeTypeDescription(picklistTimeTypeDescription, deletedBy)
@@ -1038,11 +1019,11 @@ public class PicklistControl
 
     public PicklistAliasType createPicklistAliasType(PicklistType picklistType, String picklistAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        PicklistAliasType defaultPicklistAliasType = getDefaultPicklistAliasType(picklistType);
-        boolean defaultFound = defaultPicklistAliasType != null;
+        var defaultPicklistAliasType = getDefaultPicklistAliasType(picklistType);
+        var defaultFound = defaultPicklistAliasType != null;
 
         if(defaultFound && isDefault) {
-            PicklistAliasTypeDetailValue defaultPicklistAliasTypeDetailValue = getDefaultPicklistAliasTypeDetailValueForUpdate(picklistType);
+            var defaultPicklistAliasTypeDetailValue = getDefaultPicklistAliasTypeDetailValueForUpdate(picklistType);
 
             defaultPicklistAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
             updatePicklistAliasTypeFromValue(defaultPicklistAliasTypeDetailValue, false, createdBy);
@@ -1050,8 +1031,8 @@ public class PicklistControl
             isDefault = Boolean.TRUE;
         }
 
-        PicklistAliasType picklistAliasType = PicklistAliasTypeFactory.getInstance().create();
-        PicklistAliasTypeDetail picklistAliasTypeDetail = PicklistAliasTypeDetailFactory.getInstance().create(picklistAliasType, picklistType, picklistAliasTypeName,
+        var picklistAliasType = PicklistAliasTypeFactory.getInstance().create();
+        var picklistAliasTypeDetail = PicklistAliasTypeDetailFactory.getInstance().create(picklistAliasType, picklistType, picklistAliasTypeName,
                 validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1176,9 +1157,9 @@ public class PicklistControl
     }
 
     public List<PicklistAliasTypeTransfer> getPicklistAliasTypeTransfers(UserVisit userVisit, PicklistType picklistType) {
-        List<PicklistAliasType> picklistAliasTypes = getPicklistAliasTypes(picklistType);
+        var picklistAliasTypes = getPicklistAliasTypes(picklistType);
         List<PicklistAliasTypeTransfer> picklistAliasTypeTransfers = new ArrayList<>(picklistAliasTypes.size());
-        PicklistAliasTypeTransferCache picklistAliasTypeTransferCache = getPicklistTransferCaches(userVisit).getPicklistAliasTypeTransferCache();
+        var picklistAliasTypeTransferCache = getPicklistTransferCaches(userVisit).getPicklistAliasTypeTransferCache();
 
         picklistAliasTypes.forEach((picklistAliasType) ->
                 picklistAliasTypeTransfers.add(picklistAliasTypeTransferCache.getPicklistAliasTypeTransfer(picklistAliasType))
@@ -1189,7 +1170,7 @@ public class PicklistControl
 
     public PicklistAliasTypeChoicesBean getPicklistAliasTypeChoices(String defaultPicklistAliasTypeChoice, Language language,
             boolean allowNullChoice, PicklistType picklistType) {
-        List<PicklistAliasType> picklistAliasTypes = getPicklistAliasTypes(picklistType);
+        var picklistAliasTypes = getPicklistAliasTypes(picklistType);
         var size = picklistAliasTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1205,7 +1186,7 @@ public class PicklistControl
         }
 
         for(var picklistAliasType : picklistAliasTypes) {
-            PicklistAliasTypeDetail picklistAliasTypeDetail = picklistAliasType.getLastDetail();
+            var picklistAliasTypeDetail = picklistAliasType.getLastDetail();
 
             var label = getBestPicklistAliasTypeDescription(picklistAliasType, language);
             var value = picklistAliasTypeDetail.getPicklistAliasTypeName();
@@ -1225,28 +1206,28 @@ public class PicklistControl
     private void updatePicklistAliasTypeFromValue(PicklistAliasTypeDetailValue picklistAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(picklistAliasTypeDetailValue.hasBeenModified()) {
-            PicklistAliasType picklistAliasType = PicklistAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var picklistAliasType = PicklistAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     picklistAliasTypeDetailValue.getPicklistAliasTypePK());
-            PicklistAliasTypeDetail picklistAliasTypeDetail = picklistAliasType.getActiveDetailForUpdate();
+            var picklistAliasTypeDetail = picklistAliasType.getActiveDetailForUpdate();
 
             picklistAliasTypeDetail.setThruTime(session.START_TIME_LONG);
             picklistAliasTypeDetail.store();
 
-            PicklistAliasTypePK picklistAliasTypePK = picklistAliasTypeDetail.getPicklistAliasTypePK();
-            PicklistType picklistType = picklistAliasTypeDetail.getPicklistType();
-            PicklistTypePK picklistTypePK = picklistType.getPrimaryKey();
-            String picklistAliasTypeName = picklistAliasTypeDetailValue.getPicklistAliasTypeName();
-            String validationPattern = picklistAliasTypeDetailValue.getValidationPattern();
-            Boolean isDefault = picklistAliasTypeDetailValue.getIsDefault();
-            Integer sortOrder = picklistAliasTypeDetailValue.getSortOrder();
+            var picklistAliasTypePK = picklistAliasTypeDetail.getPicklistAliasTypePK();
+            var picklistType = picklistAliasTypeDetail.getPicklistType();
+            var picklistTypePK = picklistType.getPrimaryKey();
+            var picklistAliasTypeName = picklistAliasTypeDetailValue.getPicklistAliasTypeName();
+            var validationPattern = picklistAliasTypeDetailValue.getValidationPattern();
+            var isDefault = picklistAliasTypeDetailValue.getIsDefault();
+            var sortOrder = picklistAliasTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                PicklistAliasType defaultPicklistAliasType = getDefaultPicklistAliasType(picklistType);
-                boolean defaultFound = defaultPicklistAliasType != null && !defaultPicklistAliasType.equals(picklistAliasType);
+                var defaultPicklistAliasType = getDefaultPicklistAliasType(picklistType);
+                var defaultFound = defaultPicklistAliasType != null && !defaultPicklistAliasType.equals(picklistAliasType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PicklistAliasTypeDetailValue defaultPicklistAliasTypeDetailValue = getDefaultPicklistAliasTypeDetailValueForUpdate(picklistType);
+                    var defaultPicklistAliasTypeDetailValue = getDefaultPicklistAliasTypeDetailValueForUpdate(picklistType);
 
                     defaultPicklistAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updatePicklistAliasTypeFromValue(defaultPicklistAliasTypeDetailValue, false, updatedBy);
@@ -1274,23 +1255,23 @@ public class PicklistControl
         deletePicklistAliasesByPicklistAliasType(picklistAliasType, deletedBy);
         deletePicklistAliasTypeDescriptionsByPicklistAliasType(picklistAliasType, deletedBy);
 
-        PicklistAliasTypeDetail picklistAliasTypeDetail = picklistAliasType.getLastDetailForUpdate();
+        var picklistAliasTypeDetail = picklistAliasType.getLastDetailForUpdate();
         picklistAliasTypeDetail.setThruTime(session.START_TIME_LONG);
         picklistAliasType.setActiveDetail(null);
         picklistAliasType.store();
 
         // Check for default, and pick one if necessary
-        PicklistType picklistType = picklistAliasTypeDetail.getPicklistType();
-        PicklistAliasType defaultPicklistAliasType = getDefaultPicklistAliasType(picklistType);
+        var picklistType = picklistAliasTypeDetail.getPicklistType();
+        var defaultPicklistAliasType = getDefaultPicklistAliasType(picklistType);
         if(defaultPicklistAliasType == null) {
-            List<PicklistAliasType> picklistAliasTypes = getPicklistAliasTypesForUpdate(picklistType);
+            var picklistAliasTypes = getPicklistAliasTypesForUpdate(picklistType);
 
             if(!picklistAliasTypes.isEmpty()) {
-                Iterator<PicklistAliasType> iter = picklistAliasTypes.iterator();
+                var iter = picklistAliasTypes.iterator();
                 if(iter.hasNext()) {
                     defaultPicklistAliasType = iter.next();
                 }
-                PicklistAliasTypeDetailValue picklistAliasTypeDetailValue = Objects.requireNonNull(defaultPicklistAliasType).getLastDetailForUpdate().getPicklistAliasTypeDetailValue().clone();
+                var picklistAliasTypeDetailValue = Objects.requireNonNull(defaultPicklistAliasType).getLastDetailForUpdate().getPicklistAliasTypeDetailValue().clone();
 
                 picklistAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePicklistAliasTypeFromValue(picklistAliasTypeDetailValue, false, deletedBy);
@@ -1315,7 +1296,7 @@ public class PicklistControl
     // --------------------------------------------------------------------------------
 
     public PicklistAliasTypeDescription createPicklistAliasTypeDescription(PicklistAliasType picklistAliasType, Language language, String description, BasePK createdBy) {
-        PicklistAliasTypeDescription picklistAliasTypeDescription = PicklistAliasTypeDescriptionFactory.getInstance().create(picklistAliasType, language,
+        var picklistAliasTypeDescription = PicklistAliasTypeDescriptionFactory.getInstance().create(picklistAliasType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(picklistAliasType.getPrimaryKey(), EventTypes.MODIFY, picklistAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1394,7 +1375,7 @@ public class PicklistControl
 
     public String getBestPicklistAliasTypeDescription(PicklistAliasType picklistAliasType, Language language) {
         String description;
-        PicklistAliasTypeDescription picklistAliasTypeDescription = getPicklistAliasTypeDescription(picklistAliasType, language);
+        var picklistAliasTypeDescription = getPicklistAliasTypeDescription(picklistAliasType, language);
 
         if(picklistAliasTypeDescription == null && !language.getIsDefault()) {
             picklistAliasTypeDescription = getPicklistAliasTypeDescription(picklistAliasType, getPartyControl().getDefaultLanguage());
@@ -1414,9 +1395,9 @@ public class PicklistControl
     }
 
     public List<PicklistAliasTypeDescriptionTransfer> getPicklistAliasTypeDescriptionTransfersByPicklistAliasType(UserVisit userVisit, PicklistAliasType picklistAliasType) {
-        List<PicklistAliasTypeDescription> picklistAliasTypeDescriptions = getPicklistAliasTypeDescriptionsByPicklistAliasType(picklistAliasType);
+        var picklistAliasTypeDescriptions = getPicklistAliasTypeDescriptionsByPicklistAliasType(picklistAliasType);
         List<PicklistAliasTypeDescriptionTransfer> picklistAliasTypeDescriptionTransfers = new ArrayList<>(picklistAliasTypeDescriptions.size());
-        PicklistAliasTypeDescriptionTransferCache picklistAliasTypeDescriptionTransferCache = getPicklistTransferCaches(userVisit).getPicklistAliasTypeDescriptionTransferCache();
+        var picklistAliasTypeDescriptionTransferCache = getPicklistTransferCaches(userVisit).getPicklistAliasTypeDescriptionTransferCache();
 
         picklistAliasTypeDescriptions.forEach((picklistAliasTypeDescription) ->
                 picklistAliasTypeDescriptionTransfers.add(picklistAliasTypeDescriptionTransferCache.getPicklistAliasTypeDescriptionTransfer(picklistAliasTypeDescription))
@@ -1427,15 +1408,15 @@ public class PicklistControl
 
     public void updatePicklistAliasTypeDescriptionFromValue(PicklistAliasTypeDescriptionValue picklistAliasTypeDescriptionValue, BasePK updatedBy) {
         if(picklistAliasTypeDescriptionValue.hasBeenModified()) {
-            PicklistAliasTypeDescription picklistAliasTypeDescription = PicklistAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var picklistAliasTypeDescription = PicklistAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      picklistAliasTypeDescriptionValue.getPrimaryKey());
 
             picklistAliasTypeDescription.setThruTime(session.START_TIME_LONG);
             picklistAliasTypeDescription.store();
 
-            PicklistAliasType picklistAliasType = picklistAliasTypeDescription.getPicklistAliasType();
-            Language language = picklistAliasTypeDescription.getLanguage();
-            String description = picklistAliasTypeDescriptionValue.getDescription();
+            var picklistAliasType = picklistAliasTypeDescription.getPicklistAliasType();
+            var language = picklistAliasTypeDescription.getLanguage();
+            var description = picklistAliasTypeDescriptionValue.getDescription();
 
             picklistAliasTypeDescription = PicklistAliasTypeDescriptionFactory.getInstance().create(picklistAliasType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1452,7 +1433,7 @@ public class PicklistControl
     }
 
     public void deletePicklistAliasTypeDescriptionsByPicklistAliasType(PicklistAliasType picklistAliasType, BasePK deletedBy) {
-        List<PicklistAliasTypeDescription> picklistAliasTypeDescriptions = getPicklistAliasTypeDescriptionsByPicklistAliasTypeForUpdate(picklistAliasType);
+        var picklistAliasTypeDescriptions = getPicklistAliasTypeDescriptionsByPicklistAliasTypeForUpdate(picklistAliasType);
 
         picklistAliasTypeDescriptions.forEach((picklistAliasTypeDescription) -> 
                 deletePicklistAliasTypeDescription(picklistAliasTypeDescription, deletedBy)
@@ -1464,7 +1445,7 @@ public class PicklistControl
     // --------------------------------------------------------------------------------
 
     public PicklistTime createPicklistTime(Picklist picklist, PicklistTimeType picklistTimeType, Long time, BasePK createdBy) {
-        PicklistTime picklistTime = PicklistTimeFactory.getInstance().create(picklist, picklistTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var picklistTime = PicklistTimeFactory.getInstance().create(picklist, picklistTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(picklist.getPrimaryKey(), EventTypes.MODIFY, picklistTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1592,7 +1573,7 @@ public class PicklistControl
 
     public List<PicklistTimeTransfer> getPicklistTimeTransfers(UserVisit userVisit, Collection<PicklistTime> picklistTimes) {
         List<PicklistTimeTransfer> picklistTimeTransfers = new ArrayList<>(picklistTimes.size());
-        PicklistTimeTransferCache picklistTimeTransferCache = getPicklistTransferCaches(userVisit).getPicklistTimeTransferCache();
+        var picklistTimeTransferCache = getPicklistTransferCaches(userVisit).getPicklistTimeTransferCache();
 
         picklistTimes.forEach((picklistTime) ->
                 picklistTimeTransfers.add(picklistTimeTransferCache.getPicklistTimeTransfer(picklistTime))
@@ -1611,15 +1592,15 @@ public class PicklistControl
 
     public void updatePicklistTimeFromValue(PicklistTimeValue picklistTimeValue, BasePK updatedBy) {
         if(picklistTimeValue.hasBeenModified()) {
-            PicklistTime picklistTime = PicklistTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var picklistTime = PicklistTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     picklistTimeValue.getPrimaryKey());
 
             picklistTime.setThruTime(session.START_TIME_LONG);
             picklistTime.store();
 
-            PicklistPK picklistPK = picklistTime.getPicklistPK(); // Not updated
-            PicklistTimeTypePK picklistTimeTypePK = picklistTime.getPicklistTimeTypePK(); // Not updated
-            Long time = picklistTimeValue.getTime();
+            var picklistPK = picklistTime.getPicklistPK(); // Not updated
+            var picklistTimeTypePK = picklistTime.getPicklistTimeTypePK(); // Not updated
+            var time = picklistTimeValue.getTime();
 
             picklistTime = PicklistTimeFactory.getInstance().create(picklistPK, picklistTimeTypePK, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -1653,7 +1634,7 @@ public class PicklistControl
     // --------------------------------------------------------------------------------
 
     public PicklistAlias createPicklistAlias(Picklist picklist, PicklistAliasType picklistAliasType, String alias, BasePK createdBy) {
-        PicklistAlias picklistAlias = PicklistAliasFactory.getInstance().create(picklist, picklistAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var picklistAlias = PicklistAliasFactory.getInstance().create(picklist, picklistAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(picklist.getPrimaryKey(), EventTypes.MODIFY, picklistAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1796,9 +1777,9 @@ public class PicklistControl
     }
 
     public List<PicklistAliasTransfer> getPicklistAliasTransfersByPicklist(UserVisit userVisit, Picklist picklist) {
-        List<PicklistAlias> picklistaliases = getPicklistAliasesByPicklist(picklist);
+        var picklistaliases = getPicklistAliasesByPicklist(picklist);
         List<PicklistAliasTransfer> picklistAliasTransfers = new ArrayList<>(picklistaliases.size());
-        PicklistAliasTransferCache picklistAliasTransferCache = getPicklistTransferCaches(userVisit).getPicklistAliasTransferCache();
+        var picklistAliasTransferCache = getPicklistTransferCaches(userVisit).getPicklistAliasTransferCache();
 
         picklistaliases.forEach((picklistAlias) ->
                 picklistAliasTransfers.add(picklistAliasTransferCache.getPicklistAliasTransfer(picklistAlias))
@@ -1809,14 +1790,14 @@ public class PicklistControl
 
     public void updatePicklistAliasFromValue(PicklistAliasValue picklistAliasValue, BasePK updatedBy) {
         if(picklistAliasValue.hasBeenModified()) {
-            PicklistAlias picklistAlias = PicklistAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, picklistAliasValue.getPrimaryKey());
+            var picklistAlias = PicklistAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, picklistAliasValue.getPrimaryKey());
 
             picklistAlias.setThruTime(session.START_TIME_LONG);
             picklistAlias.store();
 
-            PicklistPK picklistPK = picklistAlias.getPicklistPK();
-            PicklistAliasTypePK picklistAliasTypePK = picklistAlias.getPicklistAliasTypePK();
-            String alias  = picklistAliasValue.getAlias();
+            var picklistPK = picklistAlias.getPicklistPK();
+            var picklistAliasTypePK = picklistAlias.getPicklistAliasTypePK();
+            var alias  = picklistAliasValue.getAlias();
 
             picklistAlias = PicklistAliasFactory.getInstance().create(picklistPK, picklistAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -1832,7 +1813,7 @@ public class PicklistControl
     }
 
     public void deletePicklistAliasesByPicklistAliasType(PicklistAliasType picklistAliasType, BasePK deletedBy) {
-        List<PicklistAlias> picklistaliases = getPicklistAliasesByPicklistAliasTypeForUpdate(picklistAliasType);
+        var picklistaliases = getPicklistAliasesByPicklistAliasTypeForUpdate(picklistAliasType);
 
         picklistaliases.forEach((picklistAlias) -> 
                 deletePicklistAlias(picklistAlias, deletedBy)
@@ -1840,7 +1821,7 @@ public class PicklistControl
     }
 
     public void deletePicklistAliasesByPicklist(Picklist picklist, BasePK deletedBy) {
-        List<PicklistAlias> picklistaliases = getPicklistAliasesByPicklistForUpdate(picklist);
+        var picklistaliases = getPicklistAliasesByPicklistForUpdate(picklist);
 
         picklistaliases.forEach((picklistAlias) -> 
                 deletePicklistAlias(picklistAlias, deletedBy)

@@ -18,7 +18,6 @@ package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.CreateOrderRoleTypeForm;
 import com.echothree.model.control.order.server.control.OrderRoleControl;
-import com.echothree.model.data.order.server.entity.OrderRoleType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,8 +49,8 @@ public class CreateOrderRoleTypeCommand
     @Override
     protected BaseResult execute() {
         var orderRoleControl = Session.getModelController(OrderRoleControl.class);
-        String orderRoleTypeName = form.getOrderRoleTypeName();
-        OrderRoleType orderRoleType = orderRoleControl.getOrderRoleTypeByName(orderRoleTypeName);
+        var orderRoleTypeName = form.getOrderRoleTypeName();
+        var orderRoleType = orderRoleControl.getOrderRoleTypeByName(orderRoleTypeName);
         
         if(orderRoleType == null) {
             var sortOrder = Integer.valueOf(form.getSortOrder());

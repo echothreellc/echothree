@@ -16,13 +16,10 @@
 
 package com.echothree.model.control.party.server.transfer;
 
-import com.echothree.model.control.icon.common.transfer.IconTransfer;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.common.transfer.MoodTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.party.server.entity.Mood;
-import com.echothree.model.data.party.server.entity.MoodDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -39,16 +36,16 @@ public class MoodTransferCache
     }
     
     public MoodTransfer getMoodTransfer(Mood mood) {
-        MoodTransfer moodTransfer = get(mood);
+        var moodTransfer = get(mood);
         
         if(moodTransfer == null) {
-            MoodDetail moodDetail = mood.getLastDetail();
-            String moodName = moodDetail.getMoodName();
-            Icon icon = moodDetail.getIcon();
-            IconTransfer iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
-            Boolean isDefault = moodDetail.getIsDefault();
-            Integer sortOrder = moodDetail.getSortOrder();
-            String description = partyControl.getBestMoodDescription(mood, getLanguage());
+            var moodDetail = mood.getLastDetail();
+            var moodName = moodDetail.getMoodName();
+            var icon = moodDetail.getIcon();
+            var iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
+            var isDefault = moodDetail.getIsDefault();
+            var sortOrder = moodDetail.getSortOrder();
+            var description = partyControl.getBestMoodDescription(mood, getLanguage());
             
             moodTransfer = new MoodTransfer(moodName, iconTransfer, isDefault, sortOrder, description);
             put(mood, moodTransfer);

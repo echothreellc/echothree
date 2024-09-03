@@ -30,11 +30,11 @@ public class SelectorNodeTypeTransferCache
     }
     
     public SelectorNodeTypeTransfer getSelectorNodeTypeTransfer(SelectorNodeType selectorNodeType) {
-        SelectorNodeTypeTransfer selectorNodeTypeTransfer = get(selectorNodeType);
+        var selectorNodeTypeTransfer = get(selectorNodeType);
         
         if(selectorNodeTypeTransfer == null) {
-            String selectorNodeTypeName = selectorNodeType.getSelectorNodeTypeName();
-            String description = selectorControl.getBestSelectorNodeTypeDescription(selectorNodeType, getLanguage());
+            var selectorNodeTypeName = selectorNodeType.getSelectorNodeTypeName();
+            var description = selectorControl.getBestSelectorNodeTypeDescription(selectorNodeType, getLanguage());
             
             selectorNodeTypeTransfer = new SelectorNodeTypeTransfer(selectorNodeTypeName, description);
             put(selectorNodeType, selectorNodeTypeTransfer);

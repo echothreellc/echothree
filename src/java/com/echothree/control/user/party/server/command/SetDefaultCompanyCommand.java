@@ -18,7 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.SetDefaultCompanyForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.value.PartyCompanyValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class SetDefaultCompanyCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String companyName = form.getCompanyName();
-        PartyCompanyValue partyCompanyValue = partyControl.getPartyCompanyValueByNameForUpdate(companyName);
+        var companyName = form.getCompanyName();
+        var partyCompanyValue = partyControl.getPartyCompanyValueByNameForUpdate(companyName);
         
         if(partyCompanyValue != null) {
             partyCompanyValue.setIsDefault(Boolean.TRUE);

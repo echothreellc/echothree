@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected RelatedItemTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        RelatedItemTypeEdit edit = ItemUtil.getHome().getRelatedItemTypeEdit();
+        var edit = ItemUtil.getHome().getRelatedItemTypeEdit();
 
         edit.setRelatedItemTypeName(actionForm.getRelatedItemTypeName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

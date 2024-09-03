@@ -16,15 +16,10 @@
 
 package com.echothree.model.control.subscription.server.transfer;
 
-import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.control.subscription.common.transfer.SubscriptionKindTransfer;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeTransfer;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
-import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
 import com.echothree.model.data.subscription.server.entity.SubscriptionType;
-import com.echothree.model.data.subscription.server.entity.SubscriptionTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -41,18 +36,18 @@ public class SubscriptionTypeTransferCache
     }
     
     public SubscriptionTypeTransfer getSubscriptionTypeTransfer(SubscriptionType subscriptionType) {
-        SubscriptionTypeTransfer subscriptionTypeTransfer = get(subscriptionType);
+        var subscriptionTypeTransfer = get(subscriptionType);
         
         if(subscriptionTypeTransfer == null) {
-            SubscriptionTypeDetail subscriptionTypeDetail = subscriptionType.getLastDetail();
-            SubscriptionKind subscriptionKind = subscriptionTypeDetail.getSubscriptionKind();
-            SubscriptionKindTransfer subscriptionKindTransfer = subscriptionKind == null? null: subscriptionControl.getSubscriptionKindTransfer(userVisit, subscriptionKind);
-            String subscriptionTypeName = subscriptionTypeDetail.getSubscriptionTypeName();
-            Sequence subscriptionSequence = subscriptionTypeDetail.getSubscriptionSequence();
-            SequenceTransfer subscriptionSequenceTransfer = subscriptionSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, subscriptionSequence);
-            Boolean isDefault = subscriptionTypeDetail.getIsDefault();
-            Integer sortOrder = subscriptionTypeDetail.getSortOrder();
-            String description = subscriptionControl.getBestSubscriptionTypeDescription(subscriptionType, getLanguage());
+            var subscriptionTypeDetail = subscriptionType.getLastDetail();
+            var subscriptionKind = subscriptionTypeDetail.getSubscriptionKind();
+            var subscriptionKindTransfer = subscriptionKind == null? null: subscriptionControl.getSubscriptionKindTransfer(userVisit, subscriptionKind);
+            var subscriptionTypeName = subscriptionTypeDetail.getSubscriptionTypeName();
+            var subscriptionSequence = subscriptionTypeDetail.getSubscriptionSequence();
+            var subscriptionSequenceTransfer = subscriptionSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, subscriptionSequence);
+            var isDefault = subscriptionTypeDetail.getIsDefault();
+            var sortOrder = subscriptionTypeDetail.getSortOrder();
+            var description = subscriptionControl.getBestSubscriptionTypeDescription(subscriptionType, getLanguage());
             
             subscriptionTypeTransfer = new SubscriptionTypeTransfer(subscriptionKindTransfer, subscriptionTypeName,
                     subscriptionSequenceTransfer, isDefault, sortOrder, description);

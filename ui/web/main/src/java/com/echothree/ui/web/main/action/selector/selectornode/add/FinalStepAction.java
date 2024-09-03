@@ -18,14 +18,10 @@ package com.echothree.ui.web.main.action.selector.selectornode.add;
 
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityListItemForm;
 import com.echothree.control.user.core.common.result.GetEntityListItemResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.form.CreateSelectorNodeForm;
-import com.echothree.control.user.selector.common.form.GetSelectorNodeTypeForm;
 import com.echothree.control.user.selector.common.result.GetSelectorNodeTypeResult;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.GetWorkflowStepForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowStepResult;
 import com.echothree.model.control.core.common.transfer.EntityListItemTransfer;
 import com.echothree.model.control.selector.common.transfer.SelectorNodeTypeTransfer;
@@ -35,8 +31,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -68,27 +62,27 @@ public class FinalStepAction
     
     private SelectorNodeTypeTransfer getSelectorNodeTypeTransfer(UserVisitPK userVisitPK, String selectorNodeTypeName)
             throws NamingException {
-        GetSelectorNodeTypeForm commandForm = SelectorUtil.getHome().getGetSelectorNodeTypeForm();
+        var commandForm = SelectorUtil.getHome().getGetSelectorNodeTypeForm();
         
         commandForm.setSelectorNodeTypeName(selectorNodeTypeName);
-        
-        CommandResult commandResult = SelectorUtil.getHome().getSelectorNodeType(userVisitPK, commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetSelectorNodeTypeResult result = (GetSelectorNodeTypeResult)executionResult.getResult();
+
+        var commandResult = SelectorUtil.getHome().getSelectorNodeType(userVisitPK, commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetSelectorNodeTypeResult)executionResult.getResult();
         
         return result.getSelectorNodeType();
     }
     
     private WorkflowStepTransfer getWorkflowStepTransfer(UserVisitPK userVisitPK, String workflowName, String workflowStepName)
             throws NamingException {
-        GetWorkflowStepForm commandForm = WorkflowUtil.getHome().getGetWorkflowStepForm();
+        var commandForm = WorkflowUtil.getHome().getGetWorkflowStepForm();
         
         commandForm.setWorkflowName(workflowName);
         commandForm.setWorkflowStepName(workflowStepName);
-        
-        CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStep(userVisitPK, commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetWorkflowStepResult result = (GetWorkflowStepResult)executionResult.getResult();
+
+        var commandResult = WorkflowUtil.getHome().getWorkflowStep(userVisitPK, commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetWorkflowStepResult)executionResult.getResult();
         
         return result.getWorkflowStep();
     }
@@ -96,16 +90,16 @@ public class FinalStepAction
     private EntityListItemTransfer getEntityListItemTransfer(UserVisitPK userVisitPK, String componentVendorName,
             String entityTypeName, String entityAttributeName, String entityListItemName)
             throws NamingException {
-        GetEntityListItemForm commandForm = CoreUtil.getHome().getGetEntityListItemForm();
+        var commandForm = CoreUtil.getHome().getGetEntityListItemForm();
         
         commandForm.setComponentVendorName(componentVendorName);
         commandForm.setEntityTypeName(entityTypeName);
         commandForm.setEntityAttributeName(entityAttributeName);
         commandForm.setEntityListItemName(entityListItemName);
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityListItem(userVisitPK, commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEntityListItemResult result = (GetEntityListItemResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getEntityListItem(userVisitPK, commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEntityListItemResult)executionResult.getResult();
         
         return result.getEntityListItem();
     }
@@ -114,23 +108,23 @@ public class FinalStepAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-        String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-        String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
-        String selectorNodeTypeName = request.getParameter(ParameterConstants.SELECTOR_NODE_TYPE_NAME);
+        var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+        var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+        var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+        var selectorNodeTypeName = request.getParameter(ParameterConstants.SELECTOR_NODE_TYPE_NAME);
         SelectorNodeTypeTransfer selectorNodeType = null;
         WorkflowStepTransfer workflowStep = null;
         EntityListItemTransfer entityListItem = null;
         
         try {
-            String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
-            String workflowStepName = request.getParameter(ParameterConstants.WORKFLOW_STEP_NAME);
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-            String entityListItemName = request.getParameter(ParameterConstants.ENTITY_LIST_ITEM_NAME);
-            UserVisitPK userVisitPK = getUserVisitPK(request);
-            FinalStepForm actionForm = (FinalStepForm)form;
+            var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+            var workflowStepName = request.getParameter(ParameterConstants.WORKFLOW_STEP_NAME);
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+            var entityListItemName = request.getParameter(ParameterConstants.ENTITY_LIST_ITEM_NAME);
+            var userVisitPK = getUserVisitPK(request);
+            var actionForm = (FinalStepForm)form;
             
             if(selectorKindName == null)
                 selectorKindName = actionForm.getSelectorKindName();
@@ -165,7 +159,7 @@ public class FinalStepAction
             }
             
             if(wasPost(request)) {
-                CreateSelectorNodeForm commandForm = SelectorUtil.getHome().getCreateSelectorNodeForm();
+                var commandForm = SelectorUtil.getHome().getCreateSelectorNodeForm();
                 
                 commandForm.setSelectorKindName(selectorKindName);
                 commandForm.setSelectorTypeName(selectorTypeName);
@@ -193,8 +187,8 @@ public class FinalStepAction
                 commandForm.setEntityListItemName(entityListItemName);
                 
                 commandForm.setCheckParents(actionForm.getCheckParents().toString());
-                
-                CommandResult commandResult = SelectorUtil.getHome().createSelectorNode(userVisitPK, commandForm);
+
+                var commandResult = SelectorUtil.getHome().createSelectorNode(userVisitPK, commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);
@@ -218,8 +212,8 @@ public class FinalStepAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SELECTOR_KIND_NAME, selectorKindName);
             request.setAttribute(AttributeConstants.SELECTOR_TYPE_NAME, selectorTypeName);

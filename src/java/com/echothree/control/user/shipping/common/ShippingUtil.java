@@ -18,7 +18,6 @@ package com.echothree.control.user.shipping.common;
 
 import com.echothree.control.user.shipping.server.ShippingLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class ShippingUtil {
@@ -30,7 +29,7 @@ public class ShippingUtil {
     public static ShippingLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (ShippingLocal)ctx.lookup("ejb:echothree/echothree-server/ShippingBean!com.echothree.control.user.shipping.server.ShippingLocal");
         }
@@ -42,7 +41,7 @@ public class ShippingUtil {
     public static ShippingRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (ShippingRemote)ctx.lookup("ejb:echothree/echothree-server/ShippingBean!com.echothree.control.user.shipping.common.ShippingRemote");
         }

@@ -18,12 +18,10 @@ package com.echothree.control.user.campaign.server.command;
 
 import com.echothree.control.user.campaign.common.form.GetCampaignTermStatusChoicesForm;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
-import com.echothree.control.user.campaign.common.result.GetCampaignTermStatusChoicesResult;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.campaign.server.entity.CampaignTerm;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,13 +64,13 @@ public class GetCampaignTermStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        GetCampaignTermStatusChoicesResult result = CampaignResultFactory.getGetCampaignTermStatusChoicesResult();
-        String campaignTermName = form.getCampaignTermName();
-        CampaignTerm campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
+        var result = CampaignResultFactory.getGetCampaignTermStatusChoicesResult();
+        var campaignTermName = form.getCampaignTermName();
+        var campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
         
         if(campaignTerm != null) {
-            String defaultCampaignTermStatusChoice = form.getDefaultCampaignTermStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultCampaignTermStatusChoice = form.getDefaultCampaignTermStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setCampaignTermStatusChoices(campaignControl.getCampaignTermStatusChoices(defaultCampaignTermStatusChoice,
                     getPreferredLanguage(), allowNullChoice, campaignTerm, getPartyPK()));

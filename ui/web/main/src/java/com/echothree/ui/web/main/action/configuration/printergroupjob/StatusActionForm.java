@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.configuration.printergroupjob;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.GetPrinterGroupJobStatusChoicesForm;
 import com.echothree.control.user.printer.common.result.GetPrinterGroupJobStatusChoicesResult;
 import com.echothree.model.control.printer.common.choice.PrinterGroupJobStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -43,14 +40,14 @@ public class StatusActionForm
     public void setupPrinterGroupJobStatusChoices() {
         if(printerGroupJobStatusChoices == null) {
             try {
-                GetPrinterGroupJobStatusChoicesForm form = PrinterUtil.getHome().getGetPrinterGroupJobStatusChoicesForm();
+                var form = PrinterUtil.getHome().getGetPrinterGroupJobStatusChoicesForm();
                 
                 form.setPrinterGroupJobName(printerGroupJobName);
                 form.setDefaultPrinterGroupJobStatusChoice(printerGroupJobStatusChoice);
-                
-                CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupJobStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPrinterGroupJobStatusChoicesResult getPrinterGroupJobStatusChoicesResult = (GetPrinterGroupJobStatusChoicesResult)executionResult.getResult();
+
+                var commandResult = PrinterUtil.getHome().getPrinterGroupJobStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getPrinterGroupJobStatusChoicesResult = (GetPrinterGroupJobStatusChoicesResult)executionResult.getResult();
                 printerGroupJobStatusChoices = getPrinterGroupJobStatusChoicesResult.getPrinterGroupJobStatusChoices();
                 
                 if(printerGroupJobStatusChoice == null)

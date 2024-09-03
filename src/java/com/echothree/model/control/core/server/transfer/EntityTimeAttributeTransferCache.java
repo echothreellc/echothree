@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTimeAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -36,13 +34,13 @@ public class EntityTimeAttributeTransferCache
     }
     
     public EntityTimeAttributeTransfer getEntityTimeAttributeTransfer(EntityTimeAttribute entityTimeAttribute, EntityInstance entityInstance) {
-        EntityTimeAttributeTransfer entityTimeAttributeTransfer = get(entityTimeAttribute);
+        var entityTimeAttributeTransfer = get(entityTimeAttribute);
         
         if(entityTimeAttributeTransfer == null) {
-            EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityTimeAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityTimeAttribute.getEntityInstance(), false, false, false, false, false, false);
-            Long unformattedTimeAttribute = entityTimeAttribute.getTimeAttribute();
-            String timeAttribute = formatTypicalDateTime(unformattedTimeAttribute);
+            var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityTimeAttribute.getEntityAttribute(), entityInstance) : null;
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityTimeAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var unformattedTimeAttribute = entityTimeAttribute.getTimeAttribute();
+            var timeAttribute = formatTypicalDateTime(unformattedTimeAttribute);
             
             entityTimeAttributeTransfer = new EntityTimeAttributeTransfer(entityAttribute, entityInstanceTransfer, timeAttribute, unformattedTimeAttribute);
             put(entityTimeAttribute, entityTimeAttributeTransfer);

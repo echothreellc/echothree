@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.job;
 
 import com.echothree.control.user.job.common.JobUtil;
-import com.echothree.control.user.job.common.form.DeleteJobForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteJobForm commandForm = JobUtil.getHome().getDeleteJobForm();
-            String jobName = request.getParameter(ParameterConstants.JOB_NAME);
+            var commandForm = JobUtil.getHome().getDeleteJobForm();
+            var jobName = request.getParameter(ParameterConstants.JOB_NAME);
             
             commandForm.setJobName(jobName);
             

@@ -23,10 +23,6 @@ import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.order.server.entity.Order;
-import com.echothree.model.data.order.server.entity.OrderAlias;
-import com.echothree.model.data.order.server.entity.OrderAliasType;
-import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -72,16 +68,16 @@ public class DeleteOrderAliasCommand
 
         if(orderType != null) {
             var orderControl = Session.getModelController(OrderControl.class);
-            String orderName = form.getOrderName();
-            Order order = orderControl.getOrderByName(orderType, orderName);
+            var orderName = form.getOrderName();
+            var order = orderControl.getOrderByName(orderType, orderName);
 
             if(order != null) {
                 var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-                String orderAliasTypeName = form.getOrderAliasTypeName();
-                OrderAliasType orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
+                var orderAliasTypeName = form.getOrderAliasTypeName();
+                var orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
                 if(orderAliasType != null) {
-                    OrderAlias orderAlias = orderAliasControl.getOrderAliasForUpdate(order, orderAliasType);
+                    var orderAlias = orderAliasControl.getOrderAliasForUpdate(order, orderAliasType);
 
                     if(orderAlias != null) {
                         orderAliasControl.deleteOrderAlias(orderAlias, getPartyPK());

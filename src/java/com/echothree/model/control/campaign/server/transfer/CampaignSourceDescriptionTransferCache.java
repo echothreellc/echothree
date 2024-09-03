@@ -17,9 +17,7 @@
 package com.echothree.model.control.campaign.server.transfer;
 
 import com.echothree.model.control.campaign.common.transfer.CampaignSourceDescriptionTransfer;
-import com.echothree.model.control.campaign.common.transfer.CampaignSourceTransfer;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.campaign.server.entity.CampaignSourceDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class CampaignSourceDescriptionTransferCache
     }
     
     public CampaignSourceDescriptionTransfer getCampaignSourceDescriptionTransfer(CampaignSourceDescription campaignSourceDescription) {
-        CampaignSourceDescriptionTransfer campaignSourceDescriptionTransfer = get(campaignSourceDescription);
+        var campaignSourceDescriptionTransfer = get(campaignSourceDescription);
         
         if(campaignSourceDescriptionTransfer == null) {
-            CampaignSourceTransfer campaignSourceTransfer = campaignControl.getCampaignSourceTransfer(userVisit, campaignSourceDescription.getCampaignSource());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, campaignSourceDescription.getLanguage());
+            var campaignSourceTransfer = campaignControl.getCampaignSourceTransfer(userVisit, campaignSourceDescription.getCampaignSource());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, campaignSourceDescription.getLanguage());
             
             campaignSourceDescriptionTransfer = new CampaignSourceDescriptionTransfer(languageTransfer, campaignSourceTransfer, campaignSourceDescription.getDescription());
             put(campaignSourceDescription, campaignSourceDescriptionTransfer);

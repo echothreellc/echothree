@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.SearchItemsForm;
 import com.echothree.control.user.search.common.result.SearchItemsResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -241,7 +238,7 @@ public class SearchItemsTag
     public int doStartTag()
             throws JspException {
         try {
-            SearchItemsForm commandForm = SearchUtil.getHome().getSearchItemsForm();
+            var commandForm = SearchUtil.getHome().getSearchItemsForm();
             
             commandForm.setLanguageIsoName(languageIsoName);
             commandForm.setSearchTypeName(searchTypeName);
@@ -260,7 +257,7 @@ public class SearchItemsTag
             commandForm.setFields(fields);
             commandForm.setSearchUseTypeName(searchUseTypeName);
 
-            CommandResult commandResult = SearchUtil.getHome().searchItems(getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().searchItems(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -268,8 +265,8 @@ public class SearchItemsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                SearchItemsResult result = (SearchItemsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (SearchItemsResult)executionResult.getResult();
 
                 if(countVar != null) {
                     pageContext.setAttribute(countVar, result.getCount(), scope);

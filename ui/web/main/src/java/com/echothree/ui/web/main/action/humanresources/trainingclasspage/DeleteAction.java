@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.humanresources.trainingclasspage;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.form.DeleteTrainingClassPageForm;
-import com.echothree.control.user.training.common.form.GetTrainingClassPageForm;
 import com.echothree.control.user.training.common.result.GetTrainingClassPageResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -64,15 +61,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTrainingClassPageForm commandForm = TrainingUtil.getHome().getGetTrainingClassPageForm();
+        var commandForm = TrainingUtil.getHome().getGetTrainingClassPageForm();
         
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());
         commandForm.setTrainingClassPageName(actionForm.getTrainingClassPageName());
-        
-        CommandResult commandResult = TrainingUtil.getHome().getTrainingClassPage(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTrainingClassPageResult result = (GetTrainingClassPageResult)executionResult.getResult();
+
+        var commandResult = TrainingUtil.getHome().getTrainingClassPage(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTrainingClassPageResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.TRAINING_CLASS_PAGE, result.getTrainingClassPage());
     }
@@ -80,7 +77,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteTrainingClassPageForm commandForm = TrainingUtil.getHome().getDeleteTrainingClassPageForm();
+        var commandForm = TrainingUtil.getHome().getDeleteTrainingClassPageForm();
 
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());

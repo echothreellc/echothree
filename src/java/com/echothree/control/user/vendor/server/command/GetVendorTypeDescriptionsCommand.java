@@ -17,14 +17,12 @@
 package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.form.GetVendorTypeDescriptionsForm;
-import com.echothree.control.user.vendor.common.result.GetVendorTypeDescriptionsResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -65,9 +63,9 @@ public class GetVendorTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
-        GetVendorTypeDescriptionsResult result = VendorResultFactory.getGetVendorTypeDescriptionsResult();
-        String vendorTypeName = form.getVendorTypeName();
-        VendorType vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
+        var result = VendorResultFactory.getGetVendorTypeDescriptionsResult();
+        var vendorTypeName = form.getVendorTypeName();
+        var vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
         
         if(vendorType != null) {
             result.setVendorType(vendorControl.getVendorTypeTransfer(getUserVisit(), vendorType));

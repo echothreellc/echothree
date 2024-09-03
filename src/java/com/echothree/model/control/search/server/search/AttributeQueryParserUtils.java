@@ -331,7 +331,7 @@ public class AttributeQueryParserUtils
         if(rawField == null) {
             var clauses = new ArrayList<BooleanClause>(rawFields.length);
             
-            for(int i = 0; i < rawFields.length; i++) {
+            for(var i = 0; i < rawFields.length; i++) {
                 var q = getFieldQuery(rawFields[i], rawFields, boosts, queryText, quoted);
                 
                 if(q != null) {
@@ -369,7 +369,7 @@ public class AttributeQueryParserUtils
 
                     // Do a case-sensative comparison vs. how the database handles the request. Lucene is case-sensative for field names.
                     if(entityAttributeDetail.getEntityAttributeName().equals(field)) {
-                        String entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
+                        var entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
 
                         if(entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())
                                 || entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())

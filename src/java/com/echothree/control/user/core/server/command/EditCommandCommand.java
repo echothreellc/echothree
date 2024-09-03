@@ -23,11 +23,7 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditCommandResult;
 import com.echothree.control.user.core.common.spec.CommandSpec;
 import com.echothree.model.data.core.server.entity.Command;
-import com.echothree.model.data.core.server.entity.CommandDescription;
-import com.echothree.model.data.core.server.entity.CommandDetail;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.value.CommandDescriptionValue;
-import com.echothree.model.data.core.server.value.CommandDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -78,12 +74,12 @@ public class EditCommandCommand
     public Command getEntity(EditCommandResult result) {
         var coreControl = getCoreControl();
         Command command = null;
-        String componentVendorName = spec.getComponentVendorName();
+        var componentVendorName = spec.getComponentVendorName();
         
         componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
-            String commandName = spec.getCommandName();
+            var commandName = spec.getCommandName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 command = coreControl.getCommandByName(componentVendor, commandName);
@@ -116,8 +112,8 @@ public class EditCommandCommand
     @Override
     public void doLock(CommandEdit edit, Command command) {
         var coreControl = getCoreControl();
-        CommandDescription commandDescription = coreControl.getCommandDescription(command, getPreferredLanguage());
-        CommandDetail commandDetail = command.getLastDetail();
+        var commandDescription = coreControl.getCommandDescription(command, getPreferredLanguage());
+        var commandDetail = command.getLastDetail();
 
         edit.setCommandName(commandDetail.getCommandName());
         edit.setSortOrder(commandDetail.getSortOrder().toString());
@@ -130,8 +126,8 @@ public class EditCommandCommand
     @Override
     public void canUpdate(Command command) {
         var coreControl = getCoreControl();
-        String commandName = edit.getCommandName();
-        Command duplicateCommand = coreControl.getCommandByName(componentVendor, commandName);
+        var commandName = edit.getCommandName();
+        var duplicateCommand = coreControl.getCommandByName(componentVendor, commandName);
 
         if(duplicateCommand != null && !command.equals(duplicateCommand)) {
             addExecutionError(ExecutionErrors.DuplicateCommandName.name(), commandName);
@@ -142,9 +138,9 @@ public class EditCommandCommand
     public void doUpdate(Command command) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        CommandDetailValue commandDetailValue = coreControl.getCommandDetailValueForUpdate(command);
-        CommandDescription commandDescription = coreControl.getCommandDescriptionForUpdate(command, getPreferredLanguage());
-        String description = edit.getDescription();
+        var commandDetailValue = coreControl.getCommandDetailValueForUpdate(command);
+        var commandDescription = coreControl.getCommandDescriptionForUpdate(command, getPreferredLanguage());
+        var description = edit.getDescription();
 
         commandDetailValue.setCommandName(edit.getCommandName());
         commandDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
@@ -158,7 +154,7 @@ public class EditCommandCommand
                 coreControl.deleteCommandDescription(commandDescription, partyPK);
             } else {
                 if(commandDescription != null && description != null) {
-                    CommandDescriptionValue commandDescriptionValue = coreControl.getCommandDescriptionValue(commandDescription);
+                    var commandDescriptionValue = coreControl.getCommandDescriptionValue(commandDescription);
 
                     commandDescriptionValue.setDescription(description);
                     coreControl.updateCommandDescriptionFromValue(commandDescriptionValue, partyPK);

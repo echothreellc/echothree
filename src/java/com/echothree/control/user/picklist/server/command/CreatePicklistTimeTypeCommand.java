@@ -21,8 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.picklist.server.entity.PicklistTimeType;
-import com.echothree.model.data.picklist.server.entity.PicklistType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,12 +66,12 @@ public class CreatePicklistTimeTypeCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String picklistTimeTypeName = form.getPicklistTimeTypeName();
-            PicklistTimeType picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
+            var picklistTimeTypeName = form.getPicklistTimeTypeName();
+            var picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
 
             if(picklistTimeType == null) {
                 var partyPK = getPartyPK();

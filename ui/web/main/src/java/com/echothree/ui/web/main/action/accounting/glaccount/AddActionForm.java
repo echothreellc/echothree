@@ -17,12 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.glaccount;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetCurrencyChoicesForm;
-import com.echothree.control.user.accounting.common.form.GetGlAccountCategoryChoicesForm;
-import com.echothree.control.user.accounting.common.form.GetGlAccountChoicesForm;
-import com.echothree.control.user.accounting.common.form.GetGlAccountClassChoicesForm;
-import com.echothree.control.user.accounting.common.form.GetGlAccountTypeChoicesForm;
-import com.echothree.control.user.accounting.common.form.GetGlResourceTypeChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetCurrencyChoicesResult;
 import com.echothree.control.user.accounting.common.result.GetGlAccountCategoryChoicesResult;
 import com.echothree.control.user.accounting.common.result.GetGlAccountChoicesResult;
@@ -35,8 +29,6 @@ import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean
 import com.echothree.model.control.accounting.common.choice.GlAccountClassChoicesBean;
 import com.echothree.model.control.accounting.common.choice.GlAccountTypeChoicesBean;
 import com.echothree.model.control.accounting.common.choice.GlResourceTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -69,14 +61,14 @@ public class AddActionForm
     private void setupParentGlAccountChoices() {
         if(parentGlAccountChoices == null) {
             try {
-                GetGlAccountChoicesForm form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
+                var form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
                 
                 form.setDefaultGlAccountChoice(parentGlAccountChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGlAccountChoicesResult getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
                 parentGlAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
                 
                 if(parentGlAccountChoice == null)
@@ -91,14 +83,14 @@ public class AddActionForm
     private void setupGlAccountTypeChoices() {
         if(glAccountTypeChoices == null) {
             try {
-                GetGlAccountTypeChoicesForm form = AccountingUtil.getHome().getGetGlAccountTypeChoicesForm();
+                var form = AccountingUtil.getHome().getGetGlAccountTypeChoicesForm();
                 
                 form.setDefaultGlAccountTypeChoice(glAccountTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getGlAccountTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGlAccountTypeChoicesResult getGlAccountTypeChoicesResult = (GetGlAccountTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getGlAccountTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getGlAccountTypeChoicesResult = (GetGlAccountTypeChoicesResult)executionResult.getResult();
                 glAccountTypeChoices = getGlAccountTypeChoicesResult.getGlAccountTypeChoices();
                 
                 if(glAccountTypeChoice == null)
@@ -113,14 +105,14 @@ public class AddActionForm
     private void setupGlAccountClassChoices() {
         if(glAccountClassChoices == null) {
             try {
-                GetGlAccountClassChoicesForm form = AccountingUtil.getHome().getGetGlAccountClassChoicesForm();
+                var form = AccountingUtil.getHome().getGetGlAccountClassChoicesForm();
                 
                 form.setDefaultGlAccountClassChoice(glAccountClassChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getGlAccountClassChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGlAccountClassChoicesResult getGlAccountClassChoicesResult = (GetGlAccountClassChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getGlAccountClassChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getGlAccountClassChoicesResult = (GetGlAccountClassChoicesResult)executionResult.getResult();
                 glAccountClassChoices = getGlAccountClassChoicesResult.getGlAccountClassChoices();
                 
                 if(glAccountClassChoice == null)
@@ -135,14 +127,14 @@ public class AddActionForm
     private void setupGlAccountCategoryChoices() {
         if(glAccountCategoryChoices == null) {
             try {
-                GetGlAccountCategoryChoicesForm form = AccountingUtil.getHome().getGetGlAccountCategoryChoicesForm();
+                var form = AccountingUtil.getHome().getGetGlAccountCategoryChoicesForm();
                 
                 form.setDefaultGlAccountCategoryChoice(glAccountCategoryChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getGlAccountCategoryChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGlAccountCategoryChoicesResult getGlAccountCategoryChoicesResult = (GetGlAccountCategoryChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getGlAccountCategoryChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getGlAccountCategoryChoicesResult = (GetGlAccountCategoryChoicesResult)executionResult.getResult();
                 glAccountCategoryChoices = getGlAccountCategoryChoicesResult.getGlAccountCategoryChoices();
                 
                 if(glAccountCategoryChoice == null)
@@ -157,14 +149,14 @@ public class AddActionForm
     private void setupGlResourceTypeChoices() {
         if(glResourceTypeChoices == null) {
             try {
-                GetGlResourceTypeChoicesForm form = AccountingUtil.getHome().getGetGlResourceTypeChoicesForm();
+                var form = AccountingUtil.getHome().getGetGlResourceTypeChoicesForm();
                 
                 form.setDefaultGlResourceTypeChoice(glResourceTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getGlResourceTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGlResourceTypeChoicesResult getGlResourceTypeChoicesResult = (GetGlResourceTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getGlResourceTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getGlResourceTypeChoicesResult = (GetGlResourceTypeChoicesResult)executionResult.getResult();
                 glResourceTypeChoices = getGlResourceTypeChoicesResult.getGlResourceTypeChoices();
                 
                 if(glResourceTypeChoice == null)
@@ -179,14 +171,14 @@ public class AddActionForm
     private void setupCurrencyChoices() {
         if(currencyChoices == null) {
             try {
-                GetCurrencyChoicesForm form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
+                var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
                 
                 form.setDefaultCurrencyChoice(currencyChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCurrencyChoicesResult getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
                 currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
                 
                 if(currencyChoice == null)

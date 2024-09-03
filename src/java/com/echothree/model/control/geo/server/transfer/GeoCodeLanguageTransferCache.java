@@ -17,9 +17,7 @@
 package com.echothree.model.control.geo.server.transfer;
 
 import com.echothree.model.control.geo.common.transfer.GeoCodeLanguageTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeLanguage;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -38,13 +36,13 @@ public class GeoCodeLanguageTransferCache
     }
     
     public GeoCodeLanguageTransfer getGeoCodeLanguageTransfer(GeoCodeLanguage geoCodeLanguage) {
-        GeoCodeLanguageTransfer geoCodeLanguageTransfer = get(geoCodeLanguage);
+        var geoCodeLanguageTransfer = get(geoCodeLanguage);
         
         if(geoCodeLanguageTransfer == null) {
-            GeoCodeTransfer geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeLanguage.getGeoCode());
-            LanguageTransfer language = partyControl.getLanguageTransfer(userVisit, geoCodeLanguage.getLanguage());
-            Boolean isDefault = geoCodeLanguage.getIsDefault();
-            Integer sortOrder = geoCodeLanguage.getSortOrder();
+            var geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeLanguage.getGeoCode());
+            var language = partyControl.getLanguageTransfer(userVisit, geoCodeLanguage.getLanguage());
+            var isDefault = geoCodeLanguage.getIsDefault();
+            var sortOrder = geoCodeLanguage.getSortOrder();
             
             geoCodeLanguageTransfer = new GeoCodeLanguageTransfer(geoCode, language, isDefault, sortOrder);
             put(geoCodeLanguage, geoCodeLanguageTransfer);

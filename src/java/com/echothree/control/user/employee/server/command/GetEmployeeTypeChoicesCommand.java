@@ -18,7 +18,6 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.GetEmployeeTypeChoicesForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.common.result.GetEmployeeTypeChoicesResult;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetEmployeeTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetEmployeeTypeChoicesResult result = EmployeeResultFactory.getGetEmployeeTypeChoicesResult();
-        String defaultEmployeeTypeChoice = form.getDefaultEmployeeTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = EmployeeResultFactory.getGetEmployeeTypeChoicesResult();
+        var defaultEmployeeTypeChoice = form.getDefaultEmployeeTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setEmployeeTypeChoices(employeeControl.getEmployeeTypeChoices(defaultEmployeeTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

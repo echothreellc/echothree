@@ -29,28 +29,19 @@ import com.echothree.model.control.sequence.common.transfer.SequenceEncoderTypeT
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeDescriptionTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
-import com.echothree.model.control.sequence.server.transfer.SequenceChecksumTypeTransferCache;
-import com.echothree.model.control.sequence.server.transfer.SequenceDescriptionTransferCache;
-import com.echothree.model.control.sequence.server.transfer.SequenceEncoderTypeTransferCache;
 import com.echothree.model.control.sequence.server.transfer.SequenceTransferCaches;
-import com.echothree.model.control.sequence.server.transfer.SequenceTypeDescriptionTransferCache;
-import com.echothree.model.control.sequence.server.transfer.SequenceTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.sequence.common.pk.SequenceChecksumTypePK;
-import com.echothree.model.data.sequence.common.pk.SequenceEncoderTypePK;
 import com.echothree.model.data.sequence.common.pk.SequencePK;
 import com.echothree.model.data.sequence.common.pk.SequenceTypePK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
 import com.echothree.model.data.sequence.server.entity.SequenceChecksumTypeDescription;
 import com.echothree.model.data.sequence.server.entity.SequenceDescription;
-import com.echothree.model.data.sequence.server.entity.SequenceDetail;
 import com.echothree.model.data.sequence.server.entity.SequenceEncoderType;
 import com.echothree.model.data.sequence.server.entity.SequenceEncoderTypeDescription;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.sequence.server.entity.SequenceTypeDescription;
-import com.echothree.model.data.sequence.server.entity.SequenceTypeDetail;
 import com.echothree.model.data.sequence.server.entity.SequenceValue;
 import com.echothree.model.data.sequence.server.factory.SequenceChecksumTypeDescriptionFactory;
 import com.echothree.model.data.sequence.server.factory.SequenceChecksumTypeFactory;
@@ -73,11 +64,9 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -110,20 +99,20 @@ public class SequenceControl
     public SequenceType createSequenceType(String sequenceTypeName, String prefix, String suffix,
             SequenceEncoderType sequenceEncoderType, SequenceChecksumType sequenceChecksumType, Integer chunkSize, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        SequenceType defaultSequenceType = getDefaultSequenceType();
-        boolean defaultFound = defaultSequenceType != null;
+        var defaultSequenceType = getDefaultSequenceType();
+        var defaultFound = defaultSequenceType != null;
         
         if(defaultFound && isDefault) {
-            SequenceTypeDetailValue defaultSequenceTypeDetailValue = getDefaultSequenceTypeDetailValueForUpdate();
+            var defaultSequenceTypeDetailValue = getDefaultSequenceTypeDetailValueForUpdate();
             
             defaultSequenceTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateSequenceTypeFromValue(defaultSequenceTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        SequenceType sequenceType = SequenceTypeFactory.getInstance().create();
-        SequenceTypeDetail sequenceTypeDetail = SequenceTypeDetailFactory.getInstance().create(sequenceType,
+
+        var sequenceType = SequenceTypeFactory.getInstance().create();
+        var sequenceTypeDetail = SequenceTypeDetailFactory.getInstance().create(sequenceType,
                 sequenceTypeName, prefix, suffix, sequenceEncoderType, sequenceChecksumType, chunkSize, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -176,8 +165,8 @@ public class SequenceControl
                     "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = SequenceTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = SequenceTypeFactory.getInstance().prepareStatement(query);
         
         return SequenceTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -203,8 +192,8 @@ public class SequenceControl
                     "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = SequenceTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = SequenceTypeFactory.getInstance().prepareStatement(query);
         
         return SequenceTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -237,8 +226,8 @@ public class SequenceControl
                         "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_sequencetypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SequenceTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = SequenceTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, sequenceTypeName);
             
@@ -274,8 +263,8 @@ public class SequenceControl
                         "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_prefix = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SequenceTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = SequenceTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, sequenceTypePrefix);
             
@@ -311,8 +300,8 @@ public class SequenceControl
                         "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_suffix = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SequenceTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = SequenceTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, sequenceTypeSuffix);
             
@@ -341,7 +330,7 @@ public class SequenceControl
     }
     
     public SequenceTypeChoicesBean getSequenceTypeChoices(String defaultSequenceTypeChoice, Language language, boolean allowNullChoice) {
-        List<SequenceType> sequenceTypes = getSequenceTypes();
+        var sequenceTypes = getSequenceTypes();
         var size = sequenceTypes.size() + (allowNullChoice? 1: 0);
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -357,7 +346,7 @@ public class SequenceControl
         }
         
         for(var sequenceType : sequenceTypes) {
-            SequenceTypeDetail sequenceTypeDetail = sequenceType.getLastDetail();
+            var sequenceTypeDetail = sequenceType.getLastDetail();
             var label = getBestSequenceTypeDescription(sequenceType, language);
             var value = sequenceTypeDetail.getSequenceTypeName();
             
@@ -379,7 +368,7 @@ public class SequenceControl
 
     public List<SequenceTypeTransfer> getSequenceTypeTransfers(UserVisit userVisit, Collection<SequenceType> sequenceTypes) {
         List<SequenceTypeTransfer> sequenceTypeTransfers = new ArrayList<>(sequenceTypes.size());
-        SequenceTypeTransferCache sequenceTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache();
+        var sequenceTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache();
 
         sequenceTypes.forEach((sequenceType) ->
                 sequenceTypeTransfers.add(sequenceTypeTransferCache.getSequenceTypeTransfer(sequenceType))
@@ -394,30 +383,30 @@ public class SequenceControl
 
     private void updateSequenceTypeFromValue(SequenceTypeDetailValue sequenceTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
-        SequenceType sequenceType = SequenceTypeFactory.getInstance().getEntityFromPK(session,
+        var sequenceType = SequenceTypeFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, sequenceTypeDetailValue.getSequenceTypePK());
-        SequenceTypeDetail sequenceTypeDetail = sequenceType.getActiveDetailForUpdate();
+        var sequenceTypeDetail = sequenceType.getActiveDetailForUpdate();
         
         sequenceTypeDetail.setThruTime(session.START_TIME_LONG);
         sequenceTypeDetail.store();
-        
-        SequenceTypePK sequenceTypePK = sequenceTypeDetail.getSequenceTypePK();
-        String sequenceTypeName = sequenceTypeDetailValue.getSequenceTypeName();
-        String prefix = sequenceTypeDetailValue.getPrefix();
-        String suffix = sequenceTypeDetailValue.getSuffix();
-        SequenceEncoderTypePK sequenceEncoderTypePK = sequenceTypeDetailValue.getSequenceEncoderTypePK();
-        SequenceChecksumTypePK sequenceChecksumTypePK = sequenceTypeDetailValue.getSequenceChecksumTypePK();
-        Integer chunkSize = sequenceTypeDetailValue.getChunkSize();
-        Boolean isDefault = sequenceTypeDetailValue.getIsDefault();
-        Integer sortOrder = sequenceTypeDetailValue.getSortOrder();
+
+        var sequenceTypePK = sequenceTypeDetail.getSequenceTypePK();
+        var sequenceTypeName = sequenceTypeDetailValue.getSequenceTypeName();
+        var prefix = sequenceTypeDetailValue.getPrefix();
+        var suffix = sequenceTypeDetailValue.getSuffix();
+        var sequenceEncoderTypePK = sequenceTypeDetailValue.getSequenceEncoderTypePK();
+        var sequenceChecksumTypePK = sequenceTypeDetailValue.getSequenceChecksumTypePK();
+        var chunkSize = sequenceTypeDetailValue.getChunkSize();
+        var isDefault = sequenceTypeDetailValue.getIsDefault();
+        var sortOrder = sequenceTypeDetailValue.getSortOrder();
         
         if(checkDefault) {
-            SequenceType defaultSequenceType = getDefaultSequenceType();
-            boolean defaultFound = defaultSequenceType != null && !defaultSequenceType.equals(sequenceType);
+            var defaultSequenceType = getDefaultSequenceType();
+            var defaultFound = defaultSequenceType != null && !defaultSequenceType.equals(sequenceType);
             
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                SequenceTypeDetailValue defaultSequenceTypeDetailValue = getDefaultSequenceTypeDetailValueForUpdate();
+                var defaultSequenceTypeDetailValue = getDefaultSequenceTypeDetailValueForUpdate();
                 
                 defaultSequenceTypeDetailValue.setIsDefault(Boolean.FALSE);
                 updateSequenceTypeFromValue(defaultSequenceTypeDetailValue, false, updatedBy);
@@ -445,23 +434,23 @@ public class SequenceControl
     public void deleteSequenceType(SequenceType sequenceType, BasePK deletedBy) {
         deleteSequencesBySequenceType(sequenceType, deletedBy);
         deleteSequenceTypeDescriptionsBySequenceType(sequenceType, deletedBy);
-        
-        SequenceTypeDetail sequenceTypeDetail = sequenceType.getLastDetailForUpdate();
+
+        var sequenceTypeDetail = sequenceType.getLastDetailForUpdate();
         sequenceTypeDetail.setThruTime(session.START_TIME_LONG);
         sequenceType.setActiveDetail(null);
         sequenceType.store();
         
         // Check for default, and pick one if necessary
-        SequenceType defaultSequenceType = getDefaultSequenceType();
+        var defaultSequenceType = getDefaultSequenceType();
         if(defaultSequenceType == null) {
-            List<SequenceType> sequenceTypes = getSequenceTypesForUpdate();
+            var sequenceTypes = getSequenceTypesForUpdate();
             
             if(!sequenceTypes.isEmpty()) {
-                Iterator<SequenceType> iter = sequenceTypes.iterator();
+                var iter = sequenceTypes.iterator();
                 if(iter.hasNext()) {
                     defaultSequenceType = iter.next();
                 }
-                SequenceTypeDetailValue sequenceTypeDetailValue = Objects.requireNonNull(defaultSequenceType).getLastDetailForUpdate().getSequenceTypeDetailValue().clone();
+                var sequenceTypeDetailValue = Objects.requireNonNull(defaultSequenceType).getLastDetailForUpdate().getSequenceTypeDetailValue().clone();
                 
                 sequenceTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateSequenceTypeFromValue(sequenceTypeDetailValue, false, deletedBy);
@@ -476,7 +465,7 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
     
     public SequenceTypeDescription createSequenceTypeDescription(SequenceType sequenceType, Language language, String description, BasePK createdBy) {
-        SequenceTypeDescription sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().create(sequenceType, language, description, session.START_TIME_LONG,
+        var sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().create(sequenceType, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(sequenceType.getPrimaryKey(), EventTypes.MODIFY, sequenceTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -501,8 +490,8 @@ public class SequenceControl
                         "WHERE sqtypd_sqtyp_sequencetypeid = ? AND sqtypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SequenceTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = SequenceTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, sequenceType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -539,8 +528,8 @@ public class SequenceControl
                         "WHERE sqtypd_sqtyp_sequencetypeid = ? AND sqtypd_lang_languageid = ? AND sqtypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SequenceTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = SequenceTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, sequenceType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -572,7 +561,7 @@ public class SequenceControl
     
     public String getBestSequenceTypeDescription(SequenceType sequenceType, Language language) {
         String description;
-        SequenceTypeDescription sequenceTypeDescription = getSequenceTypeDescription(sequenceType, language);
+        var sequenceTypeDescription = getSequenceTypeDescription(sequenceType, language);
         
         if(sequenceTypeDescription == null && !language.getIsDefault()) {
             sequenceTypeDescription = getSequenceTypeDescription(sequenceType, getPartyControl().getDefaultLanguage());
@@ -592,9 +581,9 @@ public class SequenceControl
     }
     
     public List<SequenceTypeDescriptionTransfer> getSequenceTypeDescriptionTransfers(UserVisit userVisit, SequenceType sequenceType) {
-        List<SequenceTypeDescription> sequenceTypeDescriptions = getSequenceTypeDescriptionsBySequenceType(sequenceType);
+        var sequenceTypeDescriptions = getSequenceTypeDescriptionsBySequenceType(sequenceType);
         List<SequenceTypeDescriptionTransfer> sequenceTypeDescriptionTransfers = new ArrayList<>(sequenceTypeDescriptions.size());
-        SequenceTypeDescriptionTransferCache sequenceTypeDescriptionTransferCache = getSequenceTransferCaches(userVisit).getSequenceTypeDescriptionTransferCache();
+        var sequenceTypeDescriptionTransferCache = getSequenceTransferCaches(userVisit).getSequenceTypeDescriptionTransferCache();
         
         sequenceTypeDescriptions.forEach((sequenceTypeDescription) ->
                 sequenceTypeDescriptionTransfers.add(sequenceTypeDescriptionTransferCache.getSequenceTypeDescriptionTransfer(sequenceTypeDescription))
@@ -605,14 +594,14 @@ public class SequenceControl
     
     public void updateSequenceTypeDescriptionFromValue(SequenceTypeDescriptionValue sequenceTypeDescriptionValue, BasePK updatedBy) {
         if(sequenceTypeDescriptionValue.hasBeenModified()) {
-            SequenceTypeDescription sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, sequenceTypeDescriptionValue.getPrimaryKey());
+            var sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, sequenceTypeDescriptionValue.getPrimaryKey());
             
             sequenceTypeDescription.setThruTime(session.START_TIME_LONG);
             sequenceTypeDescription.store();
-            
-            SequenceType sequenceType = sequenceTypeDescription.getSequenceType();
-            Language language = sequenceTypeDescription.getLanguage();
-            String description = sequenceTypeDescriptionValue.getDescription();
+
+            var sequenceType = sequenceTypeDescription.getSequenceType();
+            var language = sequenceTypeDescription.getLanguage();
+            var description = sequenceTypeDescriptionValue.getDescription();
             
             sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().create(sequenceType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -628,7 +617,7 @@ public class SequenceControl
     }
     
     public void deleteSequenceTypeDescriptionsBySequenceType(SequenceType sequenceType, BasePK deletedBy) {
-        List<SequenceTypeDescription> sequenceTypeDescriptions = getSequenceTypeDescriptionsBySequenceTypeForUpdate(sequenceType);
+        var sequenceTypeDescriptions = getSequenceTypeDescriptionsBySequenceTypeForUpdate(sequenceType);
         
         sequenceTypeDescriptions.forEach((sequenceTypeDescription) -> 
                 deleteSequenceTypeDescription(sequenceTypeDescription, deletedBy)
@@ -649,7 +638,7 @@ public class SequenceControl
     }
 
     public List<SequenceChecksumType> getSequenceChecksumTypes() {
-        PreparedStatement ps = SequenceChecksumTypeFactory.getInstance().prepareStatement(
+        var ps = SequenceChecksumTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM sequencechecksumtypes " +
                 "ORDER BY sqct_sortorder, sqct_sequencechecksumtypename");
@@ -661,7 +650,7 @@ public class SequenceControl
         SequenceChecksumType sequenceChecksumType;
         
         try {
-            PreparedStatement ps = SequenceChecksumTypeFactory.getInstance().prepareStatement(
+            var ps = SequenceChecksumTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM sequencechecksumtypes " +
                     "WHERE sqct_sequencechecksumtypename = ?");
@@ -682,7 +671,7 @@ public class SequenceControl
 
     public List<SequenceChecksumTypeTransfer> getSequenceChecksumTypeTransfers(UserVisit userVisit, Collection<SequenceChecksumType> sequenceChecksumTypes) {
         List<SequenceChecksumTypeTransfer> sequenceChecksumTypeTransfers = new ArrayList<>(sequenceChecksumTypes.size());
-        SequenceChecksumTypeTransferCache sequenceChecksumTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceChecksumTypeTransferCache();
+        var sequenceChecksumTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceChecksumTypeTransferCache();
 
         sequenceChecksumTypes.forEach((sequenceChecksumType) ->
                 sequenceChecksumTypeTransfers.add(sequenceChecksumTypeTransferCache.getSequenceChecksumTypeTransfer(sequenceChecksumType))
@@ -697,7 +686,7 @@ public class SequenceControl
 
     public SequenceChecksumTypeChoicesBean getSequenceChecksumTypeChoices(String defaultSequenceChecksumTypeChoice,
             Language language, boolean allowNullChoice) {
-        List<SequenceChecksumType> sequenceChecksumTypes = getSequenceChecksumTypes();
+        var sequenceChecksumTypes = getSequenceChecksumTypes();
         var size = sequenceChecksumTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -740,7 +729,7 @@ public class SequenceControl
         SequenceChecksumTypeDescription sequenceChecksumTypeDescription;
         
         try {
-            PreparedStatement ps = SequenceChecksumTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = SequenceChecksumTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM sequencechecksumtypedescriptions " +
                     "WHERE sqctd_sqct_sequencechecksumtypeid = ? AND sqctd_lang_languageid = ?");
@@ -758,7 +747,7 @@ public class SequenceControl
     
     public String getBestSequenceChecksumTypeDescription(SequenceChecksumType sequenceChecksumType, Language language) {
         String description;
-        SequenceChecksumTypeDescription sequenceChecksumTypeDescription = getSequenceChecksumTypeDescription(sequenceChecksumType, language);
+        var sequenceChecksumTypeDescription = getSequenceChecksumTypeDescription(sequenceChecksumType, language);
         
         if(sequenceChecksumTypeDescription == null && !language.getIsDefault()) {
             sequenceChecksumTypeDescription = getSequenceChecksumTypeDescription(sequenceChecksumType, getPartyControl().getDefaultLanguage());
@@ -787,7 +776,7 @@ public class SequenceControl
     }
 
     public List<SequenceEncoderType> getSequenceEncoderTypes() {
-        PreparedStatement ps = SequenceEncoderTypeFactory.getInstance().prepareStatement(
+        var ps = SequenceEncoderTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM sequenceencodertypes " +
                 "ORDER BY sqet_sortorder, sqet_sequenceencodertypename");
@@ -799,7 +788,7 @@ public class SequenceControl
         SequenceEncoderType sequenceEncoderType;
         
         try {
-            PreparedStatement ps = SequenceEncoderTypeFactory.getInstance().prepareStatement(
+            var ps = SequenceEncoderTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM sequenceencodertypes " +
                     "WHERE sqet_sequenceencodertypename = ?");
@@ -820,7 +809,7 @@ public class SequenceControl
 
     public List<SequenceEncoderTypeTransfer> getSequenceEncoderTypeTransfers(UserVisit userVisit, Collection<SequenceEncoderType> sequenceEncoderTypes) {
         List<SequenceEncoderTypeTransfer> sequenceEncoderTypeTransfers = new ArrayList<>(sequenceEncoderTypes.size());
-        SequenceEncoderTypeTransferCache sequenceEncoderTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceEncoderTypeTransferCache();
+        var sequenceEncoderTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceEncoderTypeTransferCache();
 
         sequenceEncoderTypes.forEach((sequenceEncoderType) ->
                 sequenceEncoderTypeTransfers.add(sequenceEncoderTypeTransferCache.getSequenceEncoderTypeTransfer(sequenceEncoderType))
@@ -835,7 +824,7 @@ public class SequenceControl
 
     public SequenceEncoderTypeChoicesBean getSequenceEncoderTypeChoices(String defaultSequenceEncoderTypeChoice, Language language,
             boolean allowNullChoice) {
-        List<SequenceEncoderType> sequenceEncoderTypes = getSequenceEncoderTypes();
+        var sequenceEncoderTypes = getSequenceEncoderTypes();
         var size = sequenceEncoderTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -877,7 +866,7 @@ public class SequenceControl
         SequenceEncoderTypeDescription sequenceEncoderTypeDescription;
         
         try {
-            PreparedStatement ps = SequenceEncoderTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = SequenceEncoderTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM sequenceencodertypedescriptions " +
                     "WHERE sqetd_sqet_sequenceencodertypeid = ? AND sqetd_lang_languageid = ?");
@@ -895,7 +884,7 @@ public class SequenceControl
     
     public String getBestSequenceEncoderTypeDescription(SequenceEncoderType sequenceEncoderType, Language language) {
         String description;
-        SequenceEncoderTypeDescription sequenceEncoderTypeDescription = getSequenceEncoderTypeDescription(sequenceEncoderType, language);
+        var sequenceEncoderTypeDescription = getSequenceEncoderTypeDescription(sequenceEncoderType, language);
         
         if(sequenceEncoderTypeDescription == null && !language.getIsDefault()) {
             sequenceEncoderTypeDescription = getSequenceEncoderTypeDescription(sequenceEncoderType, getPartyControl().getDefaultLanguage());
@@ -916,20 +905,20 @@ public class SequenceControl
     
     public Sequence createSequence(SequenceType sequenceType, String sequenceName, String mask, Integer chunkSize, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        Sequence defaultSequence = getDefaultSequence(sequenceType);
-        boolean defaultFound = defaultSequence != null;
+        var defaultSequence = getDefaultSequence(sequenceType);
+        var defaultFound = defaultSequence != null;
         
         if(defaultFound && isDefault) {
-            SequenceDetailValue defaultSequenceDetailValue = getDefaultSequenceDetailValueForUpdate(sequenceType);
+            var defaultSequenceDetailValue = getDefaultSequenceDetailValueForUpdate(sequenceType);
             
             defaultSequenceDetailValue.setIsDefault(Boolean.FALSE);
             updateSequenceFromValue(defaultSequenceDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        Sequence sequence = SequenceFactory.getInstance().create();
-        SequenceDetail sequenceDetail = SequenceDetailFactory.getInstance().create(sequence, sequenceType, sequenceName,
+
+        var sequence = SequenceFactory.getInstance().create();
+        var sequenceDetail = SequenceDetailFactory.getInstance().create(sequence, sequenceType, sequenceName,
                 mask, chunkSize, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -991,8 +980,8 @@ public class SequenceControl
                         "WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SequenceFactory.getInstance().prepareStatement(query);
+
+            var ps = SequenceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, sequenceType.getPrimaryKey().getEntityId());
             
@@ -1028,8 +1017,8 @@ public class SequenceControl
                         "WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ? AND sqdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SequenceFactory.getInstance().prepareStatement(query);
+
+            var ps = SequenceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, sequenceType.getPrimaryKey().getEntityId());
             
@@ -1054,7 +1043,7 @@ public class SequenceControl
     }
     
     public Sequence getDefaultSequenceUsingNames(String sequenceTypeName) {
-        SequenceType sequenceType = getSequenceTypeByName(sequenceTypeName);
+        var sequenceType = getSequenceTypeByName(sequenceTypeName);
         Sequence sequence = null;
         
         if(sequenceType != null) {
@@ -1082,8 +1071,8 @@ public class SequenceControl
                         "AND sqdt_sequencename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SequenceFactory.getInstance().prepareStatement(query);
+
+            var ps = SequenceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, sequenceType.getPrimaryKey().getEntityId());
             ps.setString(2, sequenceName);
@@ -1114,7 +1103,7 @@ public class SequenceControl
     
     public SequenceChoicesBean getSequenceChoices(String defaultSequenceChoice, Language language, boolean allowNullChoice,
             SequenceType sequenceType) {
-        List<Sequence> sequences = getSequencesBySequenceType(sequenceType);
+        var sequences = getSequencesBySequenceType(sequenceType);
         var size = sequences.size() + (allowNullChoice? 1: 0);
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1130,7 +1119,7 @@ public class SequenceControl
         }
         
         for(var sequence : sequences) {
-            SequenceDetail sequenceDetail = sequence.getLastDetail();
+            var sequenceDetail = sequence.getLastDetail();
             var label = getBestSequenceDescription(sequence, language);
             var value = sequenceDetail.getSequenceName();
             
@@ -1167,29 +1156,29 @@ public class SequenceControl
 
     private void updateSequenceFromValue(SequenceDetailValue sequenceDetailValue, boolean checkDefault,
             BasePK updatedBy) {
-        Sequence sequence = SequenceFactory.getInstance().getEntityFromPK(session,
+        var sequence = SequenceFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, sequenceDetailValue.getSequencePK());
-        SequenceDetail sequenceDetail = sequence.getActiveDetailForUpdate();
+        var sequenceDetail = sequence.getActiveDetailForUpdate();
         
         sequenceDetail.setThruTime(session.START_TIME_LONG);
         sequenceDetail.store();
-        
-        SequencePK sequencePK = sequenceDetail.getSequencePK();
-        SequenceTypePK sequenceTypePK = sequenceDetail.getSequenceTypePK();
-        SequenceType sequenceType = sequenceDetail.getSequenceType();
-        String sequenceName = sequenceDetailValue.getSequenceName();
-        String mask = sequenceDetailValue.getMask();
-        Integer chunkSize = sequenceDetailValue.getChunkSize();
-        Boolean isDefault = sequenceDetailValue.getIsDefault();
-        Integer sortOrder = sequenceDetailValue.getSortOrder();
+
+        var sequencePK = sequenceDetail.getSequencePK();
+        var sequenceTypePK = sequenceDetail.getSequenceTypePK();
+        var sequenceType = sequenceDetail.getSequenceType();
+        var sequenceName = sequenceDetailValue.getSequenceName();
+        var mask = sequenceDetailValue.getMask();
+        var chunkSize = sequenceDetailValue.getChunkSize();
+        var isDefault = sequenceDetailValue.getIsDefault();
+        var sortOrder = sequenceDetailValue.getSortOrder();
         
         if(checkDefault) {
-            Sequence defaultSequence = getDefaultSequence(sequenceType);
-            boolean defaultFound = defaultSequence != null && !defaultSequence.equals(sequence);
+            var defaultSequence = getDefaultSequence(sequenceType);
+            var defaultFound = defaultSequence != null && !defaultSequence.equals(sequence);
             
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
-                SequenceDetailValue defaultSequenceDetailValue = getDefaultSequenceDetailValueForUpdate(sequenceType);
+                var defaultSequenceDetailValue = getDefaultSequenceDetailValueForUpdate(sequenceType);
                 
                 defaultSequenceDetailValue.setIsDefault(Boolean.FALSE);
                 updateSequenceFromValue(defaultSequenceDetailValue, false, updatedBy);
@@ -1214,8 +1203,8 @@ public class SequenceControl
     }
     
     public void deleteSequence(Sequence sequence, BasePK deletedBy) {
-        SequenceDetail sequenceDetail = sequence.getLastDetailForUpdate();
-        String sequenceTypeName = sequenceDetail.getSequenceType().getLastDetail().getSequenceTypeName();
+        var sequenceDetail = sequence.getLastDetailForUpdate();
+        var sequenceTypeName = sequenceDetail.getSequenceType().getLastDetail().getSequenceTypeName();
         
         if(SequenceTypes.SALES_ORDER.name().equals(sequenceTypeName)) {
             var offerUseControl = Session.getModelController(OfferUseControl.class);
@@ -1230,17 +1219,17 @@ public class SequenceControl
         sequence.store();
         
         // Check for default, and pick one if necessary
-        SequenceType sequenceType = sequenceDetail.getSequenceType();
-        Sequence defaultSequence = getDefaultSequence(sequenceType);
+        var sequenceType = sequenceDetail.getSequenceType();
+        var defaultSequence = getDefaultSequence(sequenceType);
         if(defaultSequence == null) {
-            List<Sequence> sequences = getSequencesBySequenceTypeForUpdate(sequenceType);
+            var sequences = getSequencesBySequenceTypeForUpdate(sequenceType);
             
             if(!sequences.isEmpty()) {
-                Iterator<Sequence> iter = sequences.iterator();
+                var iter = sequences.iterator();
                 if(iter.hasNext()) {
                     defaultSequence = iter.next();
                 }
-                SequenceDetailValue sequenceDetailValue = Objects.requireNonNull(defaultSequence).getLastDetailForUpdate().getSequenceDetailValue().clone();
+                var sequenceDetailValue = Objects.requireNonNull(defaultSequence).getLastDetailForUpdate().getSequenceDetailValue().clone();
                 
                 sequenceDetailValue.setIsDefault(Boolean.TRUE);
                 updateSequenceFromValue(sequenceDetailValue, false, deletedBy);
@@ -1251,7 +1240,7 @@ public class SequenceControl
     }
     
     public void deleteSequencesBySequenceType(SequenceType sequenceType, BasePK deletedBy) {
-        List<Sequence> sequences = getSequencesBySequenceTypeForUpdate(sequenceType);
+        var sequences = getSequencesBySequenceTypeForUpdate(sequenceType);
         
         sequences.forEach((sequence) -> 
                 deleteSequence(sequence, deletedBy)
@@ -1263,7 +1252,7 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
 
     public SequenceDescription createSequenceDescription(Sequence sequence, Language language, String description, BasePK createdBy) {
-        SequenceDescription sequenceDescription = SequenceDescriptionFactory.getInstance().create(sequence, language,
+        var sequenceDescription = SequenceDescriptionFactory.getInstance().create(sequence, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(sequence.getPrimaryKey(), EventTypes.MODIFY, sequenceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1288,8 +1277,8 @@ public class SequenceControl
                         "WHERE sqd_sq_sequenceid = ? AND sqd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SequenceDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = SequenceDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, sequence.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1326,8 +1315,8 @@ public class SequenceControl
                         "WHERE sqd_sq_sequenceid = ? AND sqd_lang_languageid = ? AND sqd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SequenceDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = SequenceDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, sequence.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1359,7 +1348,7 @@ public class SequenceControl
     
     public String getBestSequenceDescription(Sequence sequence, Language language) {
         String description;
-        SequenceDescription sequenceDescription = getSequenceDescription(sequence, language);
+        var sequenceDescription = getSequenceDescription(sequence, language);
         
         if(sequenceDescription == null && !language.getIsDefault()) {
             sequenceDescription = getSequenceDescription(sequence, getPartyControl().getDefaultLanguage());
@@ -1379,9 +1368,9 @@ public class SequenceControl
     }
     
     public List<SequenceDescriptionTransfer> getSequenceDescriptionTransfers(UserVisit userVisit, Sequence sequence) {
-        List<SequenceDescription> sequenceDescriptions = getSequenceDescriptionsBySequence(sequence);
+        var sequenceDescriptions = getSequenceDescriptionsBySequence(sequence);
         List<SequenceDescriptionTransfer> sequenceDescriptionTransfers = new ArrayList<>(sequenceDescriptions.size());
-        SequenceDescriptionTransferCache sequenceDescriptionTransferCache = getSequenceTransferCaches(userVisit).getSequenceDescriptionTransferCache();
+        var sequenceDescriptionTransferCache = getSequenceTransferCaches(userVisit).getSequenceDescriptionTransferCache();
         
         sequenceDescriptions.forEach((sequenceDescription) ->
                 sequenceDescriptionTransfers.add(sequenceDescriptionTransferCache.getSequenceDescriptionTransfer(sequenceDescription))
@@ -1392,14 +1381,14 @@ public class SequenceControl
     
     public void updateSequenceDescriptionFromValue(SequenceDescriptionValue sequenceDescriptionValue, BasePK updatedBy) {
         if(sequenceDescriptionValue.hasBeenModified()) {
-            SequenceDescription sequenceDescription = SequenceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, sequenceDescriptionValue.getPrimaryKey());
+            var sequenceDescription = SequenceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, sequenceDescriptionValue.getPrimaryKey());
             
             sequenceDescription.setThruTime(session.START_TIME_LONG);
             sequenceDescription.store();
-            
-            Sequence sequence = sequenceDescription.getSequence();
-            Language language = sequenceDescription.getLanguage();
-            String description = sequenceDescriptionValue.getDescription();
+
+            var sequence = sequenceDescription.getSequence();
+            var language = sequenceDescription.getLanguage();
+            var description = sequenceDescriptionValue.getDescription();
             
             sequenceDescription = SequenceDescriptionFactory.getInstance().create(sequence, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -1414,7 +1403,7 @@ public class SequenceControl
     }
     
     public void deleteSequenceDescriptionsBySequence(Sequence sequence, BasePK deletedBy) {
-        List<SequenceDescription> sequenceDescriptions = getSequenceDescriptionsBySequenceForUpdate(sequence);
+        var sequenceDescriptions = getSequenceDescriptionsBySequenceForUpdate(sequence);
         
         sequenceDescriptions.forEach((sequenceDescription) -> 
                 deleteSequenceDescription(sequenceDescription, deletedBy)
@@ -1433,7 +1422,7 @@ public class SequenceControl
         SequenceValue sequenceValue;
         
         try {
-            PreparedStatement ps = SequenceValueFactory.getInstance().prepareStatement(
+            var ps = SequenceValueFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM sequencevalues " +
                     "WHERE sqv_sq_sequenceid = ?");
@@ -1452,7 +1441,7 @@ public class SequenceControl
         SequenceValue sequenceValue;
         
         try {
-            PreparedStatement ps = sequenceSession.prepareStatement(SequenceValueFactory.class,
+            var ps = sequenceSession.prepareStatement(SequenceValueFactory.class,
                     "SELECT _ALL_ " +
                     "FROM sequencevalues " +
                     "WHERE sqv_sq_sequenceid = ? " +

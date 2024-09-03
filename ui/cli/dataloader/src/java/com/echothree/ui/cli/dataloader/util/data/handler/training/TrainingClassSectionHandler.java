@@ -18,9 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.training;
 
 import com.echothree.control.user.training.common.TrainingUtil;
 import com.echothree.control.user.training.common.TrainingService;
-import com.echothree.control.user.training.common.form.CreateTrainingClassPageForm;
-import com.echothree.control.user.training.common.form.CreateTrainingClassQuestionForm;
-import com.echothree.control.user.training.common.form.CreateTrainingClassSectionTranslationForm;
 import com.echothree.control.user.training.common.form.TrainingFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -54,7 +51,7 @@ public class TrainingClassSectionHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("trainingClassSectionTranslation")) {
-            CreateTrainingClassSectionTranslationForm commandForm = TrainingFormFactory.getCreateTrainingClassSectionTranslationForm();
+            var commandForm = TrainingFormFactory.getCreateTrainingClassSectionTranslationForm();
 
             commandForm.setTrainingClassName(trainingClassName);
             commandForm.setTrainingClassSectionName(trainingClassSectionName);
@@ -62,7 +59,7 @@ public class TrainingClassSectionHandler
 
             trainingService.createTrainingClassSectionTranslation(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("trainingClassPage")) {
-            CreateTrainingClassPageForm commandForm = TrainingFormFactory.getCreateTrainingClassPageForm();
+            var commandForm = TrainingFormFactory.getCreateTrainingClassPageForm();
 
             commandForm.setTrainingClassName(trainingClassName);
             commandForm.setTrainingClassSectionName(trainingClassSectionName);
@@ -73,7 +70,7 @@ public class TrainingClassSectionHandler
             initialDataParser.pushHandler(new TrainingClassPageHandler(initialDataParser, this, trainingClassName, trainingClassSectionName,
                     commandForm.getTrainingClassPageName()));
         } else if(localName.equals("trainingClassQuestion")) {
-            CreateTrainingClassQuestionForm commandForm = TrainingFormFactory.getCreateTrainingClassQuestionForm();
+            var commandForm = TrainingFormFactory.getCreateTrainingClassQuestionForm();
 
             commandForm.setTrainingClassName(trainingClassName);
             commandForm.setTrainingClassSectionName(trainingClassSectionName);

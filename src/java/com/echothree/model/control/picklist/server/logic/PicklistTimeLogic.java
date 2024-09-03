@@ -18,11 +18,7 @@ package com.echothree.model.control.picklist.server.logic;
 
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.Picklist;
-import com.echothree.model.data.picklist.server.entity.PicklistDetail;
-import com.echothree.model.data.picklist.server.entity.PicklistTime;
-import com.echothree.model.data.picklist.server.entity.PicklistTimeType;
 import com.echothree.model.data.picklist.server.entity.PicklistType;
-import com.echothree.model.data.picklist.server.value.PicklistTimeValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -56,16 +52,16 @@ public class PicklistTimeLogic {
     public void createOrUpdatePicklistTime(final ExecutionErrorAccumulator ema, final Picklist picklist, final String picklistTimeTypeName, final Long time,
             final BasePK partyPK) {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        PicklistDetail picklistDetail = picklist.getLastDetail();
-        PicklistType picklistType = picklistDetail.getPicklistType();
-        PicklistTimeType picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
+        var picklistDetail = picklist.getLastDetail();
+        var picklistType = picklistDetail.getPicklistType();
+        var picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
 
         if(picklistTimeType == null) {
             if(ema != null) {
                 ema.addExecutionError(ExecutionErrors.UnknownPicklistTimeTypeName.name(), getPicklistTypeName(picklistType), picklistTimeTypeName);
             }
         } else {
-            PicklistTimeValue picklistTimeValue = picklistControl.getPicklistTimeValueForUpdate(picklist, picklistTimeType);
+            var picklistTimeValue = picklistControl.getPicklistTimeValueForUpdate(picklist, picklistTimeType);
 
             if(picklistTimeValue == null) {
                 picklistControl.createPicklistTime(picklist, picklistTimeType, time, partyPK);
@@ -78,9 +74,9 @@ public class PicklistTimeLogic {
 
     public Long getPicklistTime(final ExecutionErrorAccumulator ema, final Picklist picklist, final String picklistTimeTypeName) {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        PicklistDetail picklistDetail = picklist.getLastDetail();
-        PicklistType picklistType = picklistDetail.getPicklistType();
-        PicklistTimeType picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
+        var picklistDetail = picklist.getLastDetail();
+        var picklistType = picklistDetail.getPicklistType();
+        var picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
         Long result = null;
 
         if(picklistTimeType == null) {
@@ -88,7 +84,7 @@ public class PicklistTimeLogic {
                 ema.addExecutionError(ExecutionErrors.UnknownPicklistTimeTypeName.name(), getPicklistTypeName(picklistType), picklistTimeTypeName);
             }
         } else {
-            PicklistTime picklistTime = picklistControl.getPicklistTimeForUpdate(picklist, picklistTimeType);
+            var picklistTime = picklistControl.getPicklistTimeForUpdate(picklist, picklistTimeType);
 
             if(picklistTime == null) {
                 if(ema != null) {
@@ -104,16 +100,16 @@ public class PicklistTimeLogic {
 
     public void deletePicklistTime(final ExecutionErrorAccumulator ema, final Picklist picklist, final String picklistTimeTypeName, final BasePK deletedBy) {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        PicklistDetail picklistDetail = picklist.getLastDetail();
-        PicklistType picklistType = picklistDetail.getPicklistType();
-        PicklistTimeType picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
+        var picklistDetail = picklist.getLastDetail();
+        var picklistType = picklistDetail.getPicklistType();
+        var picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
 
         if(picklistTimeType == null) {
             if(ema != null) {
                 ema.addExecutionError(ExecutionErrors.UnknownPicklistTimeTypeName.name(), getPicklistTypeName(picklistType), picklistTimeTypeName);
             }
         } else {
-            PicklistTime picklistTime = picklistControl.getPicklistTimeForUpdate(picklist, picklistTimeType);
+            var picklistTime = picklistControl.getPicklistTimeForUpdate(picklist, picklistTimeType);
 
             if(picklistTime == null) {
                 if(ema != null) {

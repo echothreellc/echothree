@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.geocodealiastype;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.SetDefaultGeoCodeAliasTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,15 +49,15 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String geoCodeTypeName = request.getParameter(ParameterConstants.GEO_CODE_TYPE_NAME);
-        SetDefaultGeoCodeAliasTypeForm commandForm = GeoUtil.getHome().getSetDefaultGeoCodeAliasTypeForm();
+        var geoCodeTypeName = request.getParameter(ParameterConstants.GEO_CODE_TYPE_NAME);
+        var commandForm = GeoUtil.getHome().getSetDefaultGeoCodeAliasTypeForm();
 
         commandForm.setGeoCodeTypeName(geoCodeTypeName);
         commandForm.setGeoCodeAliasTypeName(request.getParameter(ParameterConstants.GEO_CODE_ALIAS_TYPE_NAME));
 
         GeoUtil.getHome().setDefaultGeoCodeAliasType(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
 
         parameters.put(ParameterConstants.GEO_CODE_TYPE_NAME, geoCodeTypeName);

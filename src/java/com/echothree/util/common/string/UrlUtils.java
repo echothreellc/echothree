@@ -19,7 +19,6 @@ package com.echothree.util.common.string;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
-import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -38,22 +37,22 @@ public class UrlUtils {
     }
     
     public StringBuilder buildBaseUrl(HttpServletRequest request) {
-        String scheme = request.getScheme();
-        String serverName = request.getServerName();
-        int serverPort = request.getServerPort();
-        String contextPath = request.getContextPath();
-        String servletPath = request.getServletPath();
-        boolean includeServerPort = (scheme.equals("http") && serverPort != 80) || (scheme.equals("https") && serverPort != 443);
+        var scheme = request.getScheme();
+        var serverName = request.getServerName();
+        var serverPort = request.getServerPort();
+        var contextPath = request.getContextPath();
+        var servletPath = request.getServletPath();
+        var includeServerPort = (scheme.equals("http") && serverPort != 80) || (scheme.equals("https") && serverPort != 443);
         
         return new StringBuilder(scheme).append("://").append(serverName).append(includeServerPort? ":" + serverPort: "").append(contextPath).append(servletPath);
     }
 
     public StringBuilder buildParams(StringBuilder url, Map<String, String> params) {
         if(params != null && params.size() > 0) {
-            Set<Map.Entry<String, String>> entrySet = params.entrySet();
-            boolean isFirst = true;
+            var entrySet = params.entrySet();
+            var isFirst = true;
 
-            for(Map.Entry<String, String> entry : entrySet) {
+            for(var entry : entrySet) {
                 url.append(isFirst ? '?' : '&');
                 try {
                     url.append(entry.getKey()).append('=').append(URLEncoder.encode(entry.getValue(), "UTF-8"));

@@ -18,7 +18,6 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.GetTerminationReasonsForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.common.result.GetTerminationReasonsResult;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -60,7 +59,7 @@ public class GetTerminationReasonsCommand
     
     @Override
     protected BaseResult execute() {
-        GetTerminationReasonsResult result = EmployeeResultFactory.getGetTerminationReasonsResult();
+        var result = EmployeeResultFactory.getGetTerminationReasonsResult();
         var employeeControl = Session.getModelController(EmployeeControl.class);
         
         result.setTerminationReasons(employeeControl.getTerminationReasonTransfers(getUserVisit()));

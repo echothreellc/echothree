@@ -21,7 +21,6 @@ import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.geo.server.value.GeoCodeTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultGeoCodeTypeCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeTypeName = form.getGeoCodeTypeName();
-        GeoCodeTypeDetailValue geoCodeTypeDetailValue = geoControl.getGeoCodeTypeDetailValueByNameForUpdate(geoCodeTypeName);
+        var geoCodeTypeName = form.getGeoCodeTypeName();
+        var geoCodeTypeDetailValue = geoControl.getGeoCodeTypeDetailValueByNameForUpdate(geoCodeTypeName);
         
         if(geoCodeTypeDetailValue != null) {
             geoCodeTypeDetailValue.setIsDefault(Boolean.TRUE);

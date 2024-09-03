@@ -19,7 +19,6 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.BirthdayFormatTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.BirthdayFormat;
-import com.echothree.model.data.party.server.entity.BirthdayFormatDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class BirthdayFormatTransferCache
@@ -33,14 +32,14 @@ public class BirthdayFormatTransferCache
     }
     
     public BirthdayFormatTransfer getBirthdayFormatTransfer(BirthdayFormat birthdayFormat) {
-        BirthdayFormatTransfer birthdayFormatTransfer = get(birthdayFormat);
+        var birthdayFormatTransfer = get(birthdayFormat);
         
         if(birthdayFormatTransfer == null) {
-            BirthdayFormatDetail birthdayFormatDetail = birthdayFormat.getLastDetail();
-            String birthdayFormatName = birthdayFormatDetail.getBirthdayFormatName();
-            Boolean isDefault = birthdayFormatDetail.getIsDefault();
-            Integer sortOrder = birthdayFormatDetail.getSortOrder();
-            String description = partyControl.getBestBirthdayFormatDescription(birthdayFormat, getLanguage());
+            var birthdayFormatDetail = birthdayFormat.getLastDetail();
+            var birthdayFormatName = birthdayFormatDetail.getBirthdayFormatName();
+            var isDefault = birthdayFormatDetail.getIsDefault();
+            var sortOrder = birthdayFormatDetail.getSortOrder();
+            var description = partyControl.getBestBirthdayFormatDescription(birthdayFormat, getLanguage());
             
             birthdayFormatTransfer = new BirthdayFormatTransfer(birthdayFormatName, isDefault, sortOrder, description);
             put(birthdayFormat, birthdayFormatTransfer);

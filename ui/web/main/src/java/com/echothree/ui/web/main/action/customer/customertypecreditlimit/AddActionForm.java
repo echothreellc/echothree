@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.customer.customertypecreditlimit;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetCurrencyChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetCurrencyChoicesResult;
 import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -42,14 +39,14 @@ public class AddActionForm
     public void setupCurrencyChoices()
             throws NamingException {
         if(currencyChoices == null) {
-            GetCurrencyChoicesForm form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
+            var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
 
             form.setDefaultCurrencyChoice(currencyChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCurrencyChoicesResult getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+            var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
             currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
 
             if(currencyChoice == null)

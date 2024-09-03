@@ -19,9 +19,6 @@ package com.echothree.control.user.employee.server.command;
 import com.echothree.control.user.employee.common.form.CreatePartySkillForm;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.employee.server.entity.PartySkill;
-import com.echothree.model.data.employee.server.entity.SkillType;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,16 +50,16 @@ public class CreatePartySkillCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var employeeControl = Session.getModelController(EmployeeControl.class);
-            String skillTypeName = form.getSkillTypeName();
-            SkillType skillType = employeeControl.getSkillTypeByName(skillTypeName);
+            var skillTypeName = form.getSkillTypeName();
+            var skillType = employeeControl.getSkillTypeByName(skillTypeName);
             
             if(skillType != null) {
-                PartySkill partySkill = employeeControl.getPartySkill(party, skillType);
+                var partySkill = employeeControl.getPartySkill(party, skillType);
                 
                 if(partySkill == null) {
                     employeeControl.createPartySkill(party, skillType, getPartyPK());

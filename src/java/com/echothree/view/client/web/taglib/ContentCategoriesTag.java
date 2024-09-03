@@ -18,11 +18,8 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentCategoriesForm;
 import com.echothree.control.user.content.common.result.GetContentCategoriesResult;
 import com.echothree.model.data.content.common.ContentCategoryItemConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -165,7 +162,7 @@ public class ContentCategoriesTag
     public int doStartTag()
             throws JspException {
         try {
-            GetContentCategoriesForm commandForm = ContentUtil.getHome().getGetContentCategoriesForm();
+            var commandForm = ContentUtil.getHome().getGetContentCategoriesForm();
             Map<String, Limit> limits = new HashMap<>();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -185,7 +182,7 @@ public class ContentCategoriesTag
             }
             commandForm.setLimits(limits);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentCategories(getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().getContentCategories(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -193,8 +190,8 @@ public class ContentCategoriesTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentCategoriesResult result = (GetContentCategoriesResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContentCategoriesResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getContentCategories()), scope);
                 

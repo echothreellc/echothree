@@ -18,17 +18,12 @@ package com.echothree.ui.web.main.action.inventory.inventorylocationgroupcapacit
 
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupCapacityEdit;
-import com.echothree.control.user.inventory.common.form.EditInventoryLocationGroupCapacityForm;
 import com.echothree.control.user.inventory.common.result.EditInventoryLocationGroupCapacityResult;
-import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupCapacitySpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -60,14 +55,14 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, EditActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-        String unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
         
         if(forwardKey == null) {
-            EditInventoryLocationGroupCapacityForm commandForm = InventoryUtil.getHome().getEditInventoryLocationGroupCapacityForm();
-            InventoryLocationGroupCapacitySpec spec = InventoryUtil.getHome().getInventoryLocationGroupCapacitySpec();
+            var commandForm = InventoryUtil.getHome().getEditInventoryLocationGroupCapacityForm();
+            var spec = InventoryUtil.getHome().getInventoryLocationGroupCapacitySpec();
             
             if(warehouseName == null)
                 warehouseName = form.getWarehouseName();
@@ -85,20 +80,20 @@ public class EditAction
             spec.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
             
             if(wasPost(request)) {
-                InventoryLocationGroupCapacityEdit edit = InventoryUtil.getHome().getInventoryLocationGroupCapacityEdit();
+                var edit = InventoryUtil.getHome().getInventoryLocationGroupCapacityEdit();
                 
                 commandForm.setEditMode(EditMode.UPDATE);
                 commandForm.setEdit(edit);
                 
                 edit.setCapacity(form.getCapacity());
-                
-                CommandResult commandResult = InventoryUtil.getHome().editInventoryLocationGroupCapacity(getUserVisitPK(request), commandForm);
+
+                var commandResult = InventoryUtil.getHome().editInventoryLocationGroupCapacity(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
+                    var executionResult = commandResult.getExecutionResult();
                     
                     if(executionResult != null) {
-                        EditInventoryLocationGroupCapacityResult result = (EditInventoryLocationGroupCapacityResult)executionResult.getResult();
+                        var result = (EditInventoryLocationGroupCapacityResult)executionResult.getResult();
                         
                         request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                     }
@@ -111,13 +106,13 @@ public class EditAction
                 }
             } else {
                 commandForm.setEditMode(EditMode.LOCK);
-                
-                CommandResult commandResult = InventoryUtil.getHome().editInventoryLocationGroupCapacity(getUserVisitPK(request), commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditInventoryLocationGroupCapacityResult result = (EditInventoryLocationGroupCapacityResult)executionResult.getResult();
+
+                var commandResult = InventoryUtil.getHome().editInventoryLocationGroupCapacity(getUserVisitPK(request), commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditInventoryLocationGroupCapacityResult)executionResult.getResult();
                 
                 if(result != null) {
-                    InventoryLocationGroupCapacityEdit edit = result.getEdit();
+                    var edit = result.getEdit();
                     
                     if(edit != null) {
                         form.setWarehouseName(warehouseName);
@@ -135,8 +130,8 @@ public class EditAction
                 forwardKey = ForwardConstants.FORM;
             }
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WAREHOUSE_NAME, warehouseName);
             request.setAttribute(AttributeConstants.INVENTORY_LOCATION_GROUP_NAME, inventoryLocationGroupName);

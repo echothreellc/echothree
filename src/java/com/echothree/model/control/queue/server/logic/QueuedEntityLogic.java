@@ -19,7 +19,6 @@ package com.echothree.model.control.queue.server.logic;
 import com.echothree.model.control.queue.common.QueueTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.queue.server.entity.QueuedEntity;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -41,7 +40,7 @@ public class QueuedEntityLogic
     }
     
     public QueuedEntity createQueuedEntityUsingNames(final ExecutionErrorAccumulator eea, final String queueTypeName, final EntityInstance entityInstance) {
-        QueueType queueType = QueueTypeLogic.getInstance().getQueueTypeByName(eea, QueueTypes.INDEXING.name());
+        var queueType = QueueTypeLogic.getInstance().getQueueTypeByName(eea, QueueTypes.INDEXING.name());
         QueuedEntity queuedEntity = null;
         
         if(!hasExecutionErrors(eea)) {

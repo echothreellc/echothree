@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.order.common.exception;
 
-import com.echothree.model.control.wishlist.common.exception.BaseWishlistException;
 import com.echothree.util.common.message.Message;
 
 public class UnknownDefaultOrderTypeException

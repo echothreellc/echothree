@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemaliastype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.SetDefaultItemAliasTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -48,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultItemAliasTypeForm commandForm = ItemUtil.getHome().getSetDefaultItemAliasTypeForm();
+        var commandForm = ItemUtil.getHome().getSetDefaultItemAliasTypeForm();
 
         commandForm.setItemAliasTypeName(request.getParameter(ParameterConstants.ITEM_ALIAS_TYPE_NAME));
 

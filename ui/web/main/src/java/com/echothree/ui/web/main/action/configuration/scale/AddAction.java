@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.scale;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.CreateScaleForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -51,7 +50,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateScaleForm commandForm = ScaleUtil.getHome().getCreateScaleForm();
+        var commandForm = ScaleUtil.getHome().getCreateScaleForm();
 
         commandForm.setScaleName(actionForm.getScaleName());
         commandForm.setScaleTypeName(actionForm.getScaleTypeChoice());

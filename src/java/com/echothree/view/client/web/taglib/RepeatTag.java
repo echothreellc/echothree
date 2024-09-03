@@ -39,7 +39,7 @@ public class RepeatTag
     @Override
     public int doStartTag()
             throws JspException {
-        RepeatHolder repeatHolder = (RepeatHolder)pageContext.getAttribute(WebConstants.Attribute_REPEAT_HOLDER, PageContext.REQUEST_SCOPE);
+        var repeatHolder = (RepeatHolder)pageContext.getAttribute(WebConstants.Attribute_REPEAT_HOLDER, PageContext.REQUEST_SCOPE);
 
         pageContext.setAttribute(WebConstants.Attribute_REPEAT_HOLDER, new RepeatHolder(repeatHolder), PageContext.REQUEST_SCOPE);
 
@@ -49,7 +49,7 @@ public class RepeatTag
     @Override
     public int doAfterBody()
     throws JspException {
-        RepeatHolder repeatHolder = (RepeatHolder)pageContext.getAttribute(WebConstants.Attribute_REPEAT_HOLDER, PageContext.REQUEST_SCOPE);
+        var repeatHolder = (RepeatHolder)pageContext.getAttribute(WebConstants.Attribute_REPEAT_HOLDER, PageContext.REQUEST_SCOPE);
         int result;
         
         if(repeatHolder.isBroken()) {

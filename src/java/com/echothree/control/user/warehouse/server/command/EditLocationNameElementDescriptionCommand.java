@@ -19,7 +19,6 @@ package com.echothree.control.user.warehouse.server.command;
 import com.echothree.control.user.warehouse.common.edit.LocationNameElementDescriptionEdit;
 import com.echothree.control.user.warehouse.common.edit.WarehouseEditFactory;
 import com.echothree.control.user.warehouse.common.form.EditLocationNameElementDescriptionForm;
-import com.echothree.control.user.warehouse.common.result.EditLocationNameElementDescriptionResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.control.user.warehouse.common.spec.LocationNameElementDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -27,14 +26,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.LocationNameElement;
-import com.echothree.model.data.warehouse.server.entity.LocationNameElementDescription;
-import com.echothree.model.data.warehouse.server.entity.LocationType;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
-import com.echothree.model.data.warehouse.server.value.LocationNameElementDescriptionValue;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -84,33 +76,33 @@ public class EditLocationNameElementDescriptionCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        EditLocationNameElementDescriptionResult result = WarehouseResultFactory.getEditLocationNameElementDescriptionResult();
-        String warehouseName = spec.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = WarehouseResultFactory.getEditLocationNameElementDescriptionResult();
+        var warehouseName = spec.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            Party warehouseParty = warehouse.getParty();
-            String locationTypeName = spec.getLocationTypeName();
-            LocationType locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
+            var warehouseParty = warehouse.getParty();
+            var locationTypeName = spec.getLocationTypeName();
+            var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
             
             if(locationType != null) {
-                String locationNameElementName = spec.getLocationNameElementName();
-                LocationNameElement locationNameElement = warehouseControl.getLocationNameElementByName(locationType, locationNameElementName);
+                var locationNameElementName = spec.getLocationNameElementName();
+                var locationNameElement = warehouseControl.getLocationNameElementByName(locationType, locationNameElementName);
                 
                 if(locationNameElement != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = spec.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = spec.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
                     if(language != null) {
                         if(editMode.equals(EditMode.LOCK)) {
-                            LocationNameElementDescription locationTypeDescription = warehouseControl.getLocationNameElementDescription(locationNameElement, language);
+                            var locationTypeDescription = warehouseControl.getLocationNameElementDescription(locationNameElement, language);
                             
                             if(locationTypeDescription != null) {
                                 result.setLocationNameElementDescription(warehouseControl.getLocationNameElementDescriptionTransfer(getUserVisit(), locationTypeDescription));
                                 
                                 if(lockEntity(locationType)) {
-                                    LocationNameElementDescriptionEdit edit = WarehouseEditFactory.getLocationNameElementDescriptionEdit();
+                                    var edit = WarehouseEditFactory.getLocationNameElementDescriptionEdit();
                                     
                                     result.setEdit(edit);
                                     edit.setDescription(locationTypeDescription.getDescription());
@@ -123,12 +115,12 @@ public class EditLocationNameElementDescriptionCommand
                                 addExecutionError(ExecutionErrors.UnknownLocationNameElementDescription.name());
                             }
                         } else if(editMode.equals(EditMode.UPDATE)) {
-                            LocationNameElementDescriptionValue locationTypeDescriptionValue = warehouseControl.getLocationNameElementDescriptionValueForUpdate(locationNameElement, language);
+                            var locationTypeDescriptionValue = warehouseControl.getLocationNameElementDescriptionValueForUpdate(locationNameElement, language);
                             
                             if(locationTypeDescriptionValue != null) {
                                 if(lockEntityForUpdate(locationType)) {
                                     try {
-                                        String description = edit.getDescription();
+                                        var description = edit.getDescription();
                                         
                                         locationTypeDescriptionValue.setDescription(description);
                                         

@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.chain.chaininstance;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.GetChainInstancesForm;
 import com.echothree.control.user.chain.common.result.GetChainInstancesResult;
 import com.echothree.model.control.chain.common.ChainOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,7 +51,7 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetChainInstancesForm commandForm = ChainUtil.getHome().getGetChainInstancesForm();
+        var commandForm = ChainUtil.getHome().getGetChainInstancesForm();
         
         commandForm.setChainKindName(request.getParameter(ParameterConstants.CHAIN_KIND_NAME));
         commandForm.setChainTypeName(request.getParameter(ParameterConstants.CHAIN_TYPE_NAME));
@@ -64,9 +61,9 @@ public class MainAction
         options.add(ChainOptions.ChainInstanceIncludeChainInstanceStatus);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ChainUtil.getHome().getChainInstances(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetChainInstancesResult result = (GetChainInstancesResult)executionResult.getResult();
+        var commandResult = ChainUtil.getHome().getChainInstances(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetChainInstancesResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CHAIN, result.getChain());
         request.setAttribute(AttributeConstants.CHAIN_INSTANCES, result.getChainInstances());

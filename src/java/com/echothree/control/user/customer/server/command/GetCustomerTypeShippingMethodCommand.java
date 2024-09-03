@@ -18,12 +18,8 @@ package com.echothree.control.user.customer.server.command;
 
 import com.echothree.control.user.customer.common.form.GetCustomerTypeShippingMethodForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
-import com.echothree.control.user.customer.common.result.GetCustomerTypeShippingMethodResult;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
-import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.customer.server.entity.CustomerTypeShippingMethod;
-import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -55,17 +51,17 @@ public class GetCustomerTypeShippingMethodCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        GetCustomerTypeShippingMethodResult result = CustomerResultFactory.getGetCustomerTypeShippingMethodResult();
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var result = CustomerResultFactory.getGetCustomerTypeShippingMethodResult();
+        var customerTypeName = form.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
             var shippingControl = Session.getModelController(ShippingControl.class);
-            String shippingMethodName = form.getShippingMethodName();
-            ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+            var shippingMethodName = form.getShippingMethodName();
+            var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
             
             if(shippingMethod != null) {
-                CustomerTypeShippingMethod customerTypeShippingMethod = customerControl.getCustomerTypeShippingMethod(customerType, shippingMethod);
+                var customerTypeShippingMethod = customerControl.getCustomerTypeShippingMethod(customerType, shippingMethod);
                 
                 if(customerTypeShippingMethod != null) {
                     result.setCustomerTypeShippingMethod(customerControl.getCustomerTypeShippingMethodTransfer(getUserVisit(), customerTypeShippingMethod));

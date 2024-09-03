@@ -17,8 +17,6 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.ServerServiceTransfer;
-import com.echothree.model.control.core.common.transfer.ServerTransfer;
-import com.echothree.model.control.core.common.transfer.ServiceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.ServerService;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -35,11 +33,11 @@ public class ServerServiceTransferCache
     }
     
     public ServerServiceTransfer getServerServiceTransfer(ServerService serverService) {
-        ServerServiceTransfer serverServiceTransfer = get(serverService);
+        var serverServiceTransfer = get(serverService);
         
         if(serverServiceTransfer == null) {
-            ServerTransfer server = coreControl.getServerTransfer(userVisit, serverService.getServer());
-            ServiceTransfer service = coreControl.getServiceTransfer(userVisit, serverService.getService());
+            var server = coreControl.getServerTransfer(userVisit, serverService.getServer());
+            var service = coreControl.getServiceTransfer(userVisit, serverService.getService());
             
             serverServiceTransfer = new ServerServiceTransfer(server, service);
             put(serverService, serverServiceTransfer);

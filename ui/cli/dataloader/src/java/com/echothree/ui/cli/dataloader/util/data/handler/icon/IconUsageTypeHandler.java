@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.icon;
 
 import com.echothree.control.user.icon.common.IconUtil;
 import com.echothree.control.user.icon.common.IconService;
-import com.echothree.control.user.icon.common.form.CreateIconUsageTypeDescriptionForm;
 import com.echothree.control.user.icon.common.form.IconFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -50,9 +49,9 @@ public class IconUsageTypeHandler
         if(localName.equals("iconUsageTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +59,7 @@ public class IconUsageTypeHandler
             }
             
             try {
-                CreateIconUsageTypeDescriptionForm form = IconFormFactory.getCreateIconUsageTypeDescriptionForm();
+                var form = IconFormFactory.getCreateIconUsageTypeDescriptionForm();
                 
                 form.setIconUsageTypeName(iconUsageTypeName);
                 form.setLanguageIsoName(languageIsoName);

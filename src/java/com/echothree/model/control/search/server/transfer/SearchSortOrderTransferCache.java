@@ -16,11 +16,9 @@
 
 package com.echothree.model.control.search.server.transfer;
 
-import com.echothree.model.control.search.common.transfer.SearchKindTransfer;
 import com.echothree.model.control.search.common.transfer.SearchSortOrderTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchSortOrder;
-import com.echothree.model.data.search.server.entity.SearchSortOrderDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class SearchSortOrderTransferCache
@@ -34,15 +32,15 @@ public class SearchSortOrderTransferCache
     }
     
     public SearchSortOrderTransfer getSearchSortOrderTransfer(SearchSortOrder searchSortOrder) {
-        SearchSortOrderTransfer searchSortOrderTransfer = get(searchSortOrder);
+        var searchSortOrderTransfer = get(searchSortOrder);
         
         if(searchSortOrderTransfer == null) {
-            SearchSortOrderDetail searchSortOrderDetail = searchSortOrder.getLastDetail();
-            SearchKindTransfer searchKindTransfer = searchControl.getSearchKindTransfer(userVisit, searchSortOrderDetail.getSearchKind());
-            String searchSortOrderName = searchSortOrderDetail.getSearchSortOrderName();
-            Boolean isDefault = searchSortOrderDetail.getIsDefault();
-            Integer sortOrder = searchSortOrderDetail.getSortOrder();
-            String description = searchControl.getBestSearchSortOrderDescription(searchSortOrder, getLanguage());
+            var searchSortOrderDetail = searchSortOrder.getLastDetail();
+            var searchKindTransfer = searchControl.getSearchKindTransfer(userVisit, searchSortOrderDetail.getSearchKind());
+            var searchSortOrderName = searchSortOrderDetail.getSearchSortOrderName();
+            var isDefault = searchSortOrderDetail.getIsDefault();
+            var sortOrder = searchSortOrderDetail.getSortOrder();
+            var description = searchControl.getBestSearchSortOrderDescription(searchSortOrder, getLanguage());
             
             searchSortOrderTransfer = new SearchSortOrderTransfer(searchKindTransfer, searchSortOrderName, isDefault, sortOrder, description);
             put(searchSortOrder, searchSortOrderTransfer);

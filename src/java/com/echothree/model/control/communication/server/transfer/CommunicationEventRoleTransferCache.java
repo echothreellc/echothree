@@ -17,10 +17,7 @@
 package com.echothree.model.control.communication.server.transfer;
 
 import com.echothree.model.control.communication.common.transfer.CommunicationEventRoleTransfer;
-import com.echothree.model.control.communication.common.transfer.CommunicationEventRoleTypeTransfer;
-import com.echothree.model.control.communication.common.transfer.CommunicationEventTransfer;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEventRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -39,13 +36,13 @@ public class CommunicationEventRoleTransferCache
     }
     
     public CommunicationEventRoleTransfer getCommunicationEventRoleTransfer(CommunicationEventRole communicationEventRole) {
-        CommunicationEventRoleTransfer communicationEventRoleTransfer = get(communicationEventRole);
+        var communicationEventRoleTransfer = get(communicationEventRole);
         
         if(communicationEventRoleTransfer == null) {
-            CommunicationEventTransfer communicationEvent = communicationControl.getCommunicationEventTransfer(userVisit,
+            var communicationEvent = communicationControl.getCommunicationEventTransfer(userVisit,
                     communicationEventRole.getCommunicationEvent());
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, communicationEventRole.getParty());
-            CommunicationEventRoleTypeTransfer communicationEventRoleType = communicationControl.getCommunicationEventRoleTypeTransfer(userVisit,
+            var party = partyControl.getPartyTransfer(userVisit, communicationEventRole.getParty());
+            var communicationEventRoleType = communicationControl.getCommunicationEventRoleTypeTransfer(userVisit,
                     communicationEventRole.getCommunicationEventRoleType());
             
             communicationEventRoleTransfer = new CommunicationEventRoleTransfer(communicationEvent, party,

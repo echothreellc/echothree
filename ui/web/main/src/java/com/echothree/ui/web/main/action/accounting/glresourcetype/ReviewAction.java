@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.glresourcetype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetGlResourceTypeForm;
 import com.echothree.control.user.accounting.common.result.GetGlResourceTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetGlResourceTypeForm commandForm = AccountingUtil.getHome().getGetGlResourceTypeForm();
-            String glResourceTypeName = request.getParameter(ParameterConstants.GL_RESOURCE_TYPE_NAME);
+            var commandForm = AccountingUtil.getHome().getGetGlResourceTypeForm();
+            var glResourceTypeName = request.getParameter(ParameterConstants.GL_RESOURCE_TYPE_NAME);
             
             commandForm.setGlResourceTypeName(glResourceTypeName);
-            
-            CommandResult commandResult = AccountingUtil.getHome().getGlResourceType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGlResourceTypeResult result = (GetGlResourceTypeResult)executionResult.getResult();
+
+            var commandResult = AccountingUtil.getHome().getGlResourceType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGlResourceTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.GL_RESOURCE_TYPE, result.getGlResourceType());
             forwardKey = ForwardConstants.DISPLAY;

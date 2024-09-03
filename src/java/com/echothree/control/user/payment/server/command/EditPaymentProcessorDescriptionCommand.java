@@ -27,10 +27,8 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorDescription;
-import com.echothree.model.data.payment.server.value.PaymentProcessorDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -89,13 +87,13 @@ public class EditPaymentProcessorDescriptionCommand
     public PaymentProcessorDescription getEntity(EditPaymentProcessorDescriptionResult result) {
         var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         PaymentProcessorDescription paymentProcessorDescription = null;
-        String paymentProcessorName = spec.getPaymentProcessorName();
-        PaymentProcessor paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
+        var paymentProcessorName = spec.getPaymentProcessorName();
+        var paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
 
         if(paymentProcessor != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditPaymentProcessorDescriptionCommand
     @Override
     public void doUpdate(PaymentProcessorDescription paymentProcessorDescription) {
         var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
-        PaymentProcessorDescriptionValue paymentProcessorDescriptionValue = paymentProcessorControl.getPaymentProcessorDescriptionValue(paymentProcessorDescription);
+        var paymentProcessorDescriptionValue = paymentProcessorControl.getPaymentProcessorDescriptionValue(paymentProcessorDescription);
         paymentProcessorDescriptionValue.setDescription(edit.getDescription());
 
         paymentProcessorControl.updatePaymentProcessorDescriptionFromValue(paymentProcessorDescriptionValue, getPartyPK());

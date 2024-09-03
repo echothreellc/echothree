@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.geocode;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetGeoCodeDescriptionsForm;
 import com.echothree.control.user.geo.common.result.GetGeoCodeDescriptionsResult;
-import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
-        GetGeoCodeDescriptionsForm commandForm = GeoUtil.getHome().getGetGeoCodeDescriptionsForm();
+        var geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
+        var commandForm = GeoUtil.getHome().getGetGeoCodeDescriptionsForm();
 
         commandForm.setGeoCodeName(geoCodeName);
 
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = GeoUtil.getHome().getGeoCodeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeDescriptionsResult result = (GetGeoCodeDescriptionsResult) executionResult.getResult();
-            GeoCodeTransfer geoCodeTransfer = result.getGeoCode();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeDescriptionsResult) executionResult.getResult();
+            var geoCodeTransfer = result.getGeoCode();
 
             request.setAttribute(AttributeConstants.GEO_CODE, geoCodeTransfer);
             request.setAttribute(AttributeConstants.GEO_CODE_DESCRIPTIONS, result.getGeoCodeDescriptions());

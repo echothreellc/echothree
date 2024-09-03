@@ -18,7 +18,6 @@ package com.echothree.control.user.purchase.common.result;
 
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.control.user.purchase.common.spec.PurchaseOrderSpec;
-import com.echothree.control.user.sales.common.spec.SalesOrderSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreatePurchaseOrderResult

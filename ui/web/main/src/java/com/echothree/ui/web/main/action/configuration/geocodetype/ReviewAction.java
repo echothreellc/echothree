@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.geocodetype;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetGeoCodeTypeForm;
 import com.echothree.control.user.geo.common.result.GetGeoCodeTypeResult;
 import com.echothree.model.control.geo.common.transfer.GeoCodeTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetGeoCodeTypeForm commandForm = GeoUtil.getHome().getGetGeoCodeTypeForm();
+        String forwardKey;
+        var commandForm = GeoUtil.getHome().getGetGeoCodeTypeForm();
 
         commandForm.setGeoCodeTypeName(request.getParameter(ParameterConstants.GEO_CODE_TYPE_NAME));
-        
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeType(getUserVisitPK(request), commandForm);
+
+        var commandResult = GeoUtil.getHome().getGeoCodeType(getUserVisitPK(request), commandForm);
         GeoCodeTypeTransfer geoCodeType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeTypeResult result = (GetGeoCodeTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeTypeResult)executionResult.getResult();
             
             geoCodeType = result.getGeoCodeType();
         }

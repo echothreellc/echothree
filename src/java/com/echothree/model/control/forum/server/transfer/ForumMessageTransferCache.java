@@ -19,20 +19,13 @@ package com.echothree.model.control.forum.server.transfer;
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.control.forum.common.transfer.ForumMessagePartTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumMessageTransfer;
-import com.echothree.model.control.forum.common.transfer.ForumMessageTypeTransfer;
-import com.echothree.model.control.forum.common.transfer.ForumThreadTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.icon.common.transfer.IconTransfer;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
-import com.echothree.model.data.forum.server.entity.ForumMessageDetail;
-import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.List;
-import java.util.Set;
 
 public class ForumMessageTransferCache
         extends BaseForumTransferCache<ForumMessage, ForumMessageTransfer> {
@@ -60,19 +53,19 @@ public class ForumMessageTransferCache
     }
 
     public ForumMessageTransfer getForumMessageTransfer(ForumMessage forumMessage) {
-        ForumMessageTransfer forumMessageTransfer = get(forumMessage);
+        var forumMessageTransfer = get(forumMessage);
 
         if(forumMessageTransfer == null) {
-            ForumMessageDetail forumMessageDetail = forumMessage.getLastDetail();
-            String forumMessageName = forumMessageDetail.getForumMessageName();
-            ForumThreadTransfer forumThreadTransfer = forumControl.getForumThreadTransfer(userVisit, forumMessageDetail.getForumThread());
-            ForumMessageTypeTransfer forumMessageTypeTransfer = forumControl.getForumMessageTypeTransfer(userVisit, forumMessageDetail.getForumMessageType());
-            ForumMessage parentForumMessage = forumMessageDetail.getParentForumMessage();
-            ForumMessageTransfer parentForumMessageTransfer = parentForumMessage == null ? null : forumControl.getForumMessageTransfer(userVisit, parentForumMessage);
-            Icon icon = forumMessageDetail.getIcon();
-            IconTransfer iconTransfer = icon == null ? null : iconControl.getIconTransfer(userVisit, icon);
-            Long unformattedPostedTime = forumMessageDetail.getPostedTime();
-            String postedTime = formatTypicalDateTime(unformattedPostedTime);
+            var forumMessageDetail = forumMessage.getLastDetail();
+            var forumMessageName = forumMessageDetail.getForumMessageName();
+            var forumThreadTransfer = forumControl.getForumThreadTransfer(userVisit, forumMessageDetail.getForumThread());
+            var forumMessageTypeTransfer = forumControl.getForumMessageTypeTransfer(userVisit, forumMessageDetail.getForumMessageType());
+            var parentForumMessage = forumMessageDetail.getParentForumMessage();
+            var parentForumMessageTransfer = parentForumMessage == null ? null : forumControl.getForumMessageTransfer(userVisit, parentForumMessage);
+            var icon = forumMessageDetail.getIcon();
+            var iconTransfer = icon == null ? null : iconControl.getIconTransfer(userVisit, icon);
+            var unformattedPostedTime = forumMessageDetail.getPostedTime();
+            var postedTime = formatTypicalDateTime(unformattedPostedTime);
 
             forumMessageTransfer = new ForumMessageTransfer(forumMessageName, forumThreadTransfer, forumMessageTypeTransfer, parentForumMessageTransfer, iconTransfer, unformattedPostedTime, postedTime);
             put(forumMessage, forumMessageTransfer);
@@ -82,8 +75,8 @@ public class ForumMessageTransferCache
             }
 
             if(includeForumMessageParts) {
-                List<ForumMessagePartTransfer> forumMessagePartTransfers = forumControl.getForumMessagePartTransfersByForumMessageAndLanguage(userVisit, forumMessage, getLanguage());
-                MapWrapper<ForumMessagePartTransfer> forumMessageParts = new MapWrapper<>(forumMessagePartTransfers.size());
+                var forumMessagePartTransfers = forumControl.getForumMessagePartTransfersByForumMessageAndLanguage(userVisit, forumMessage, getLanguage());
+                var forumMessageParts = new MapWrapper<ForumMessagePartTransfer>(forumMessagePartTransfers.size());
 
                 forumMessagePartTransfers.forEach((forumMessagePartTransfer) -> {
                     forumMessageParts.put(forumMessagePartTransfer.getForumMessagePartType().getForumMessagePartTypeName(), forumMessagePartTransfer);

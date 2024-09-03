@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.common.edit.PartyTermEdit;
-import com.echothree.control.user.term.common.form.EditPartyTermForm;
 import com.echothree.control.user.term.common.result.EditPartyTermResult;
-import com.echothree.control.user.term.common.spec.PartyTermSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,15 +56,15 @@ public class PartyTermEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
+        var customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
         
         try {
-            String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+            var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
 
             if(forwardKey == null) {
-                PartyTermEditActionForm actionForm = (PartyTermEditActionForm)form;
-                EditPartyTermForm commandForm = TermUtil.getHome().getEditPartyTermForm();
-                PartyTermSpec spec = TermUtil.getHome().getPartyTermSpec();
+                var actionForm = (PartyTermEditActionForm)form;
+                var commandForm = TermUtil.getHome().getEditPartyTermForm();
+                var spec = TermUtil.getHome().getPartyTermSpec();
                 
                 if(partyName == null)
                     partyName = actionForm.getPartyName();
@@ -80,20 +75,20 @@ public class PartyTermEditAction
                 spec.setPartyName(partyName);
                 
                 if(wasPost(request)) {
-                    PartyTermEdit edit = TermUtil.getHome().getPartyTermEdit();
+                    var edit = TermUtil.getHome().getPartyTermEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setTermName(actionForm.getTermChoice());
                     edit.setTaxable(actionForm.getTaxable().toString());
-                    
-                    CommandResult commandResult = TermUtil.getHome().editPartyTerm(getUserVisitPK(request), commandForm);
+
+                    var commandResult = TermUtil.getHome().editPartyTerm(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditPartyTermResult result = (EditPartyTermResult)executionResult.getResult();
+                            var result = (EditPartyTermResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -106,13 +101,13 @@ public class PartyTermEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = TermUtil.getHome().editPartyTerm(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditPartyTermResult result = (EditPartyTermResult)executionResult.getResult();
+
+                    var commandResult = TermUtil.getHome().editPartyTerm(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditPartyTermResult)executionResult.getResult();
                     
                     if(result != null) {
-                        PartyTermEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setPartyName(partyName);
@@ -132,8 +127,8 @@ public class PartyTermEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CUSTOMER_NAME, customerName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

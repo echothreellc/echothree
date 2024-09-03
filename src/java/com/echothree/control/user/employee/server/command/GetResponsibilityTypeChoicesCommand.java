@@ -19,7 +19,6 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.GetResponsibilityTypeChoicesForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.common.result.GetResponsibilityTypeChoicesResult;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,9 +50,9 @@ public class GetResponsibilityTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetResponsibilityTypeChoicesResult result = EmployeeResultFactory.getGetResponsibilityTypeChoicesResult();
-        String defaultResponsibilityTypeChoice = form.getDefaultResponsibilityTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = EmployeeResultFactory.getGetResponsibilityTypeChoicesResult();
+        var defaultResponsibilityTypeChoice = form.getDefaultResponsibilityTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setResponsibilityTypeChoices(employeeControl.getResponsibilityTypeChoices(defaultResponsibilityTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

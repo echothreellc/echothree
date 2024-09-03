@@ -27,10 +27,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.warehouse.server.entity.WarehouseType;
-import com.echothree.model.data.warehouse.server.entity.WarehouseTypeDescription;
-import com.echothree.model.data.warehouse.server.entity.WarehouseTypeDetail;
-import com.echothree.model.data.warehouse.server.value.WarehouseTypeDescriptionValue;
-import com.echothree.model.data.warehouse.server.value.WarehouseTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -91,8 +87,8 @@ public class EditWarehouseTypeCommand
     @Override
     public WarehouseType getEntity(EditWarehouseTypeResult result) {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        WarehouseType warehouseType = null;
-        String warehouseTypeName = spec.getWarehouseTypeName();
+        WarehouseType warehouseType;
+        var warehouseTypeName = spec.getWarehouseTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             warehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName);
@@ -122,8 +118,8 @@ public class EditWarehouseTypeCommand
     @Override
     public void doLock(WarehouseTypeEdit edit, WarehouseType warehouseType) {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        WarehouseTypeDescription warehouseTypeDescription = warehouseControl.getWarehouseTypeDescription(warehouseType, getPreferredLanguage());
-        WarehouseTypeDetail warehouseTypeDetail = warehouseType.getLastDetail();
+        var warehouseTypeDescription = warehouseControl.getWarehouseTypeDescription(warehouseType, getPreferredLanguage());
+        var warehouseTypeDetail = warehouseType.getLastDetail();
 
         edit.setWarehouseTypeName(warehouseTypeDetail.getWarehouseTypeName());
         edit.setPriority(warehouseTypeDetail.getPriority().toString());
@@ -138,8 +134,8 @@ public class EditWarehouseTypeCommand
     @Override
     public void canUpdate(WarehouseType warehouseType) {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseTypeName = edit.getWarehouseTypeName();
-        WarehouseType duplicateWarehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName);
+        var warehouseTypeName = edit.getWarehouseTypeName();
+        var duplicateWarehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName);
 
         if(duplicateWarehouseType != null && !warehouseType.equals(duplicateWarehouseType)) {
             addExecutionError(ExecutionErrors.DuplicateWarehouseTypeName.name(), warehouseTypeName);
@@ -150,9 +146,9 @@ public class EditWarehouseTypeCommand
     public void doUpdate(WarehouseType warehouseType) {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
         var partyPK = getPartyPK();
-        WarehouseTypeDetailValue warehouseTypeDetailValue = warehouseControl.getWarehouseTypeDetailValueForUpdate(warehouseType);
-        WarehouseTypeDescription warehouseTypeDescription = warehouseControl.getWarehouseTypeDescriptionForUpdate(warehouseType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var warehouseTypeDetailValue = warehouseControl.getWarehouseTypeDetailValueForUpdate(warehouseType);
+        var warehouseTypeDescription = warehouseControl.getWarehouseTypeDescriptionForUpdate(warehouseType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         warehouseTypeDetailValue.setWarehouseTypeName(edit.getWarehouseTypeName());
         warehouseTypeDetailValue.setPriority(Integer.valueOf(edit.getPriority()));
@@ -166,7 +162,7 @@ public class EditWarehouseTypeCommand
         } else if(warehouseTypeDescription != null && description == null) {
             warehouseControl.deleteWarehouseTypeDescription(warehouseTypeDescription, partyPK);
         } else if(warehouseTypeDescription != null && description != null) {
-            WarehouseTypeDescriptionValue warehouseTypeDescriptionValue = warehouseControl.getWarehouseTypeDescriptionValue(warehouseTypeDescription);
+            var warehouseTypeDescriptionValue = warehouseControl.getWarehouseTypeDescriptionValue(warehouseTypeDescription);
 
             warehouseTypeDescriptionValue.setDescription(description);
             warehouseControl.updateWarehouseTypeDescriptionFromValue(warehouseTypeDescriptionValue, partyPK);

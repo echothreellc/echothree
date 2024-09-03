@@ -25,10 +25,6 @@ import com.echothree.control.user.forum.common.spec.ForumGroupSpec;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.data.forum.server.entity.ForumGroup;
-import com.echothree.model.data.forum.server.entity.ForumGroupDescription;
-import com.echothree.model.data.forum.server.entity.ForumGroupDetail;
-import com.echothree.model.data.forum.server.value.ForumGroupDescriptionValue;
-import com.echothree.model.data.forum.server.value.ForumGroupDetailValue;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -78,8 +74,8 @@ public class EditForumGroupCommand
     @Override
     public ForumGroup getEntity(EditForumGroupResult result) {
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumGroup forumGroup = null;
-        String forumGroupName = spec.getForumGroupName();
+        ForumGroup forumGroup;
+        var forumGroupName = spec.getForumGroupName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             forumGroup = forumControl.getForumGroupByName(forumGroupName);
@@ -109,8 +105,8 @@ public class EditForumGroupCommand
     @Override
     public void doLock(ForumGroupEdit edit, ForumGroup forumGroup) {
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumGroupDescription forumGroupDescription = forumControl.getForumGroupDescription(forumGroup, getPreferredLanguage());
-        ForumGroupDetail forumGroupDetail = forumGroup.getLastDetail();
+        var forumGroupDescription = forumControl.getForumGroupDescription(forumGroup, getPreferredLanguage());
+        var forumGroupDetail = forumGroup.getLastDetail();
 
         icon = forumGroupDetail.getIcon();
 
@@ -128,12 +124,12 @@ public class EditForumGroupCommand
     @Override
     public void canUpdate(ForumGroup forumGroup) {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumGroupName = edit.getForumGroupName();
-        ForumGroup duplicateForumGroup = forumControl.getForumGroupByName(forumGroupName);
+        var forumGroupName = edit.getForumGroupName();
+        var duplicateForumGroup = forumControl.getForumGroupByName(forumGroupName);
 
         if(duplicateForumGroup == null || forumGroup.equals(duplicateForumGroup)) {
             var iconControl = Session.getModelController(IconControl.class);
-            String iconName = edit.getIconName();
+            var iconName = edit.getIconName();
 
             icon = iconName == null? null: iconControl.getIconByName(iconName);
 
@@ -149,9 +145,9 @@ public class EditForumGroupCommand
     public void doUpdate(ForumGroup forumGroup) {
         var forumControl = Session.getModelController(ForumControl.class);
         var partyPK = getPartyPK();
-        ForumGroupDetailValue forumGroupDetailValue = forumControl.getForumGroupDetailValueForUpdate(forumGroup);
-        ForumGroupDescription forumGroupDescription = forumControl.getForumGroupDescriptionForUpdate(forumGroup, getPreferredLanguage());
-        String description = edit.getDescription();
+        var forumGroupDetailValue = forumControl.getForumGroupDetailValueForUpdate(forumGroup);
+        var forumGroupDescription = forumControl.getForumGroupDescriptionForUpdate(forumGroup, getPreferredLanguage());
+        var description = edit.getDescription();
 
         forumGroupDetailValue.setForumGroupName(edit.getForumGroupName());
         forumGroupDetailValue.setIconPK(icon == null? null: icon.getPrimaryKey());
@@ -164,7 +160,7 @@ public class EditForumGroupCommand
         } else if(forumGroupDescription != null && description == null) {
             forumControl.deleteForumGroupDescription(forumGroupDescription, partyPK);
         } else if(forumGroupDescription != null && description != null) {
-            ForumGroupDescriptionValue forumGroupDescriptionValue = forumControl.getForumGroupDescriptionValue(forumGroupDescription);
+            var forumGroupDescriptionValue = forumControl.getForumGroupDescriptionValue(forumGroupDescription);
 
             forumGroupDescriptionValue.setDescription(description);
             forumControl.updateForumGroupDescriptionFromValue(forumGroupDescriptionValue, partyPK);

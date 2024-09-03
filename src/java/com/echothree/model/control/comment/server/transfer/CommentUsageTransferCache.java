@@ -30,7 +30,7 @@ public class CommentUsageTransferCache
     }
     
     public CommentUsageTransfer getCommentUsageTransfer(CommentUsage commentUsage) {
-        CommentUsageTransfer commentUsageTransfer = get(commentUsage);
+        var commentUsageTransfer = get(commentUsage);
         
         if(commentUsageTransfer == null) {
             commentUsageTransfer = new CommentUsageTransfer();

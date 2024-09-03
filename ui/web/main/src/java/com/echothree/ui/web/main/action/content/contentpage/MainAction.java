@@ -17,15 +17,10 @@
 package com.echothree.ui.web.main.action.content.contentpage;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentPagesForm;
 import com.echothree.control.user.content.common.result.GetContentPagesResult;
-import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
-import com.echothree.model.control.content.common.transfer.ContentSectionTransfer;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,19 +51,19 @@ public class MainAction
         String forwardKey;
         
         try {
-            GetContentPagesForm getContentPagesForm = ContentUtil.getHome().getGetContentPagesForm();
-            String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-            String contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
+            var getContentPagesForm = ContentUtil.getHome().getGetContentPagesForm();
+            var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+            var contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
 
             getContentPagesForm.setContentCollectionName(contentCollectionName);
             getContentPagesForm.setContentSectionName(contentSectionName);
-            
-            CommandResult commandResult = ContentUtil.getHome().getContentPages(getUserVisitPK(request), getContentPagesForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentPagesResult getContentPagesResult = (GetContentPagesResult)executionResult.getResult();
-            ContentSectionTransfer contentSectionTransfer = getContentPagesResult.getContentSection();
-            ContentCollectionTransfer contentCollectionTransfer = contentSectionTransfer.getContentCollection();
-            ContentSectionTransfer parentContentSectionTransfer = contentSectionTransfer.getParentContentSection();
+
+            var commandResult = ContentUtil.getHome().getContentPages(getUserVisitPK(request), getContentPagesForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getContentPagesResult = (GetContentPagesResult)executionResult.getResult();
+            var contentSectionTransfer = getContentPagesResult.getContentSection();
+            var contentCollectionTransfer = contentSectionTransfer.getContentCollection();
+            var parentContentSectionTransfer = contentSectionTransfer.getParentContentSection();
             
             request.setAttribute("contentCollection", contentCollectionTransfer);
             request.setAttribute("contentCollectionName", contentCollectionTransfer.getContentCollectionName());

@@ -18,7 +18,6 @@ package com.echothree.control.user.warehouse.common;
 
 import com.echothree.control.user.warehouse.server.WarehouseLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class WarehouseUtil {
@@ -30,7 +29,7 @@ public class WarehouseUtil {
     public static WarehouseLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (WarehouseLocal)ctx.lookup("ejb:echothree/echothree-server/WarehouseBean!com.echothree.control.user.warehouse.server.WarehouseLocal");
         }
@@ -42,7 +41,7 @@ public class WarehouseUtil {
     public static WarehouseRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (WarehouseRemote)ctx.lookup("ejb:echothree/echothree-server/WarehouseBean!com.echothree.control.user.warehouse.common.WarehouseRemote");
         }

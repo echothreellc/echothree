@@ -19,7 +19,6 @@ package com.echothree.model.control.employee.server.transfer;
 import com.echothree.model.control.employee.common.transfer.SkillTypeTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.SkillType;
-import com.echothree.model.data.employee.server.entity.SkillTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class SkillTypeTransferCache
@@ -33,14 +32,14 @@ public class SkillTypeTransferCache
     }
     
     public SkillTypeTransfer getSkillTypeTransfer(SkillType skillType) {
-        SkillTypeTransfer skillTypeTransfer = get(skillType);
+        var skillTypeTransfer = get(skillType);
         
         if(skillTypeTransfer == null) {
-            SkillTypeDetail skillTypeDetail = skillType.getLastDetail();
-            String skillTypeName = skillTypeDetail.getSkillTypeName();
-            Boolean isDefault = skillTypeDetail.getIsDefault();
-            Integer sortOrder = skillTypeDetail.getSortOrder();
-            String description = employeeControl.getBestSkillTypeDescription(skillType, getLanguage());
+            var skillTypeDetail = skillType.getLastDetail();
+            var skillTypeName = skillTypeDetail.getSkillTypeName();
+            var isDefault = skillTypeDetail.getIsDefault();
+            var sortOrder = skillTypeDetail.getSortOrder();
+            var description = employeeControl.getBestSkillTypeDescription(skillType, getLanguage());
             
             skillTypeTransfer = new SkillTypeTransfer(skillTypeName, isDefault, sortOrder, description);
             put(skillType, skillTypeTransfer);

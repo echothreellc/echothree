@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.CreateApplicationForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Application;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,8 +63,8 @@ public class CreateApplicationCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String applicationName = form.getApplicationName();
-        Application application = coreControl.getApplicationByName(applicationName);
+        var applicationName = form.getApplicationName();
+        var application = coreControl.getApplicationByName(applicationName);
         
         if(application == null) {
             var partyPK = getPartyPK();

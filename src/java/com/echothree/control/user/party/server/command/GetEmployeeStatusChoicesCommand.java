@@ -17,13 +17,11 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetEmployeeStatusChoicesForm;
-import com.echothree.control.user.party.common.result.GetEmployeeStatusChoicesResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,13 +64,13 @@ public class GetEmployeeStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetEmployeeStatusChoicesResult result = PartyResultFactory.getGetEmployeeStatusChoicesResult();
-        String employeeName = form.getEmployeeName();
-        PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
+        var result = PartyResultFactory.getGetEmployeeStatusChoicesResult();
+        var employeeName = form.getEmployeeName();
+        var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
         
         if(partyEmployee != null) {
-            String defaultEmployeeStatusChoice = form.getDefaultEmployeeStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultEmployeeStatusChoice = form.getDefaultEmployeeStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setEmployeeStatusChoices(employeeControl.getEmployeeStatusChoices(defaultEmployeeStatusChoice,
                     getPreferredLanguage(), allowNullChoice, partyEmployee.getParty(), getPartyPK()));

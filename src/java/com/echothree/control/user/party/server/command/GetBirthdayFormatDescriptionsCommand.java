@@ -17,13 +17,11 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetBirthdayFormatDescriptionsForm;
-import com.echothree.control.user.party.common.result.GetBirthdayFormatDescriptionsResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.BirthdayFormat;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,9 +64,9 @@ public class GetBirthdayFormatDescriptionsCommand
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
 
-        GetBirthdayFormatDescriptionsResult result = PartyResultFactory.getGetBirthdayFormatDescriptionsResult();
-        String birthdayFormatName = form.getBirthdayFormatName();
-        BirthdayFormat birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
+        var result = PartyResultFactory.getGetBirthdayFormatDescriptionsResult();
+        var birthdayFormatName = form.getBirthdayFormatName();
+        var birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
         
         if(birthdayFormat != null) {
             result.setBirthdayFormat(partyControl.getBirthdayFormatTransfer(getUserVisit(), birthdayFormat));

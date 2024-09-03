@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.configuration.geocodetimezone;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetTimeZoneChoicesForm;
 import com.echothree.control.user.party.common.result.GetTimeZoneChoicesResult;
 import com.echothree.model.control.party.common.choice.TimeZoneChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -44,14 +41,14 @@ public class AddActionForm
     private void setupTimeZoneChoices() {
         if(timeZoneChoices == null) {
             try {
-                GetTimeZoneChoicesForm commandForm = PartyUtil.getHome().getGetTimeZoneChoicesForm();
+                var commandForm = PartyUtil.getHome().getGetTimeZoneChoicesForm();
                 
                 commandForm.setDefaultTimeZoneChoice(timeZoneChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getTimeZoneChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetTimeZoneChoicesResult getTimeZoneChoicesResult = (GetTimeZoneChoicesResult)executionResult.getResult();
+
+                var commandResult = PartyUtil.getHome().getTimeZoneChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getTimeZoneChoicesResult = (GetTimeZoneChoicesResult)executionResult.getResult();
                 timeZoneChoices = getTimeZoneChoicesResult.getTimeZoneChoices();
                 
                 if(timeZoneChoice == null)

@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.core.appearance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetTextDecorationChoicesForm;
 import com.echothree.control.user.core.common.result.GetTextDecorationChoicesResult;
 import com.echothree.model.control.core.common.choice.TextDecorationChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -40,14 +37,14 @@ public class TextDecorationAddActionForm
     private void setupTextDecorationChoices()
             throws NamingException {
         if(textDecorationChoices == null) {
-            GetTextDecorationChoicesForm commandForm = CoreUtil.getHome().getGetTextDecorationChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetTextDecorationChoicesForm();
 
             commandForm.setDefaultTextDecorationChoice(textDecorationChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getTextDecorationChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTextDecorationChoicesResult getTextDecorationChoicesResult = (GetTextDecorationChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getTextDecorationChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getTextDecorationChoicesResult = (GetTextDecorationChoicesResult)executionResult.getResult();
             textDecorationChoices = getTextDecorationChoicesResult.getTextDecorationChoices();
 
             if(textDecorationChoice == null) {

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.companycarrier;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.form.CreatePartyCarrierForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
@@ -58,7 +57,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyCarrierForm commandForm = CarrierUtil.getHome().getCreatePartyCarrierForm();
+        var commandForm = CarrierUtil.getHome().getCreatePartyCarrierForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setCarrierName(actionForm.getCarrierChoice());

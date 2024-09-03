@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.securityrole;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.GetSecurityRolesForm;
 import com.echothree.control.user.security.common.result.GetSecurityRolesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,15 +48,15 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetSecurityRolesForm commandForm = SecurityUtil.getHome().getGetSecurityRolesForm();
+        String forwardKey;
+        var commandForm = SecurityUtil.getHome().getGetSecurityRolesForm();
 
         commandForm.setSecurityRoleGroupName(request.getParameter(ParameterConstants.SECURITY_ROLE_GROUP_NAME));
 
-        CommandResult commandResult = SecurityUtil.getHome().getSecurityRoles(getUserVisitPK(request), commandForm);
+        var commandResult = SecurityUtil.getHome().getSecurityRoles(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSecurityRolesResult result = (GetSecurityRolesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSecurityRolesResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.SECURITY_ROLE_GROUP, result.getSecurityRoleGroup());
             request.setAttribute(AttributeConstants.SECURITY_ROLES, result.getSecurityRoles());

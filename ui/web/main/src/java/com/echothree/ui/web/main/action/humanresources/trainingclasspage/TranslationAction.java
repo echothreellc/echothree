@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.humanresources.trainingclasspage;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.form.GetTrainingClassPageTranslationsForm;
 import com.echothree.control.user.training.common.result.GetTrainingClassPageTranslationsResult;
 import com.echothree.model.control.training.common.transfer.TrainingClassPageTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,18 +50,18 @@ public class TranslationAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetTrainingClassPageTranslationsForm commandForm = TrainingUtil.getHome().getGetTrainingClassPageTranslationsForm();
+        var commandForm = TrainingUtil.getHome().getGetTrainingClassPageTranslationsForm();
 
         commandForm.setTrainingClassName(request.getParameter(ParameterConstants.TRAINING_CLASS_NAME));
         commandForm.setTrainingClassSectionName(request.getParameter(ParameterConstants.TRAINING_CLASS_SECTION_NAME));
         commandForm.setTrainingClassPageName(request.getParameter(ParameterConstants.TRAINING_CLASS_PAGE_NAME));
 
-        CommandResult commandResult = TrainingUtil.getHome().getTrainingClassPageTranslations(getUserVisitPK(request), commandForm);
+        var commandResult = TrainingUtil.getHome().getTrainingClassPageTranslations(getUserVisitPK(request), commandForm);
         GetTrainingClassPageTranslationsResult result = null;
         TrainingClassPageTransfer trainingClassPage = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
+            var executionResult = commandResult.getExecutionResult();
             
             result = (GetTrainingClassPageTranslationsResult) executionResult.getResult();
             trainingClassPage = result.getTrainingClassPage();

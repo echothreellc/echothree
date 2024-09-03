@@ -18,10 +18,8 @@ package com.echothree.control.user.communication.server.server;
 
 import com.echothree.control.user.communication.common.form.GetCommunicationEventForm;
 import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
-import com.echothree.control.user.communication.common.result.GetCommunicationEventResult;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.data.communication.server.entity.CommunicationEvent;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,9 +50,9 @@ public class GetCommunicationEventCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        GetCommunicationEventResult result = CommunicationResultFactory.getGetCommunicationEventResult();
-        String communicationEventName = form.getCommunicationEventName();
-        CommunicationEvent communicationEvent = communicationControl.getCommunicationEventByName(communicationEventName);
+        var result = CommunicationResultFactory.getGetCommunicationEventResult();
+        var communicationEventName = form.getCommunicationEventName();
+        var communicationEvent = communicationControl.getCommunicationEventByName(communicationEventName);
         
         if(communicationEvent != null) {
             result.setCommunicationEvent(communicationControl.getCommunicationEventTransfer(getUserVisit(), communicationEvent));

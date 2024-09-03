@@ -29,29 +29,11 @@ import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.communication.server.entity.CommunicationEvent;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.forum.server.entity.ForumGroup;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
-import com.echothree.model.data.forum.server.entity.ForumMessagePart;
-import com.echothree.model.data.forum.server.entity.ForumMessagePartType;
-import com.echothree.model.data.forum.server.entity.ForumStringMessagePart;
-import com.echothree.model.data.forum.server.entity.ForumThread;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemDescription;
-import com.echothree.model.data.item.server.entity.ItemDescriptionDetail;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.training.server.entity.PartyTrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClassTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.vendor.server.entity.VendorItem;
-import com.echothree.model.data.vendor.server.entity.VendorItemDetail;
-import java.util.List;
 
 public class EntityDescriptionUtils {
     
@@ -68,14 +50,14 @@ public class EntityDescriptionUtils {
     }
 
     private ItemDescriptionType getItemDefaultDescriptionType() {
-        ItemControl itemControl = Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         // TODO: Context Cache
         return itemControl.getItemDescriptionTypeByName(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION);
     }
 
     private ItemDescriptionType getItemPurchaseOrderDescriptionType() {
-        ItemControl itemControl = Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         // TODO: Context Cache
         return itemControl.getItemDescriptionTypeByName(ItemConstants.ItemDescriptionType_PURCHASE_ORDER_DESCRIPTION);
@@ -85,11 +67,11 @@ public class EntityDescriptionUtils {
         var forumControl = Session.getModelController(ForumControl.class);
         String description = null;
 
-        ForumMessagePartType forumMessagePartType = forumControl.getForumMessagePartTypeByName(ForumConstants.ForumMessagePartType_TITLE);
-        ForumMessagePart forumMessagePart = forumControl.getBestForumMessagePart(forumMessage, forumMessagePartType, getLanguage(userVisit));
+        var forumMessagePartType = forumControl.getForumMessagePartTypeByName(ForumConstants.ForumMessagePartType_TITLE);
+        var forumMessagePart = forumControl.getBestForumMessagePart(forumMessage, forumMessagePartType, getLanguage(userVisit));
 
         if(forumMessagePart != null) {
-            ForumStringMessagePart forumStringMessagePart = forumControl.getForumStringMessagePart(forumMessagePart);
+            var forumStringMessagePart = forumControl.getForumStringMessagePart(forumMessagePart);
 
             description = forumStringMessagePart.getString();
         }
@@ -117,50 +99,50 @@ public class EntityDescriptionUtils {
 
                 if(entityTypeName.equals(EntityTypes.Party.name())) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    Party party = partyControl.getPartyByEntityInstance(entityInstance);
+                    var party = partyControl.getPartyByEntityInstance(entityInstance);
 
                     description = party == null ? null : partyControl.getBestPartyDescription(party, getLanguage(userVisit));
                 } else if(entityTypeName.equals(EntityTypes.CommunicationEvent.name())) {
                     var communicationControl = Session.getModelController(CommunicationControl.class);
-                    CommunicationEvent communicationEvent = communicationControl.getCommunicationEventByEntityInstance(entityInstance);
+                    var communicationEvent = communicationControl.getCommunicationEventByEntityInstance(entityInstance);
 
                     description = communicationEvent == null ? null : communicationEvent.getLastDetail().getCommunicationEventName();
                 } else if(entityTypeName.equals(EntityTypes.TrainingClass.name())) {
                     var trainingControl = Session.getModelController(TrainingControl.class);
-                    TrainingClass trainingClass = trainingControl.getTrainingClassByEntityInstance(entityInstance);
+                    var trainingClass = trainingControl.getTrainingClassByEntityInstance(entityInstance);
 
                     if(trainingClass != null) {
-                        TrainingClassTranslation trainingClassTranslation = trainingControl.getBestTrainingClassTranslation(trainingClass, getLanguage(userVisit));
+                        var trainingClassTranslation = trainingControl.getBestTrainingClassTranslation(trainingClass, getLanguage(userVisit));
 
                         description = trainingClassTranslation == null ? null : trainingClassTranslation.getDescription();
                     }
                 } else if(entityTypeName.equals(EntityTypes.PartyTrainingClass.name())) {
                     var trainingControl = Session.getModelController(TrainingControl.class);
-                    PartyTrainingClass partyTrainingClass = trainingControl.getPartyTrainingClassByEntityInstance(entityInstance);
+                    var partyTrainingClass = trainingControl.getPartyTrainingClassByEntityInstance(entityInstance);
 
                     description = partyTrainingClass == null ? null : partyTrainingClass.getLastDetail().getPartyTrainingClassName();
                 } else if(entityTypeName.equals(EntityTypes.Item.name())) {
                     var itemControl = Session.getModelController(ItemControl.class);
-                    Item item = itemControl.getItemByEntityInstance(entityInstance);
+                    var item = itemControl.getItemByEntityInstance(entityInstance);
 
                     description = item == null ? null : itemControl.getBestItemStringDescription(getItemDefaultDescriptionType(), item, getLanguage(userVisit));
                 } else if(entityTypeName.equals(EntityTypes.ItemDescription.name())) {
                     var itemControl = Session.getModelController(ItemControl.class);
-                    ItemDescription itemDescription = itemControl.getItemDescriptionByEntityInstance(entityInstance);
+                    var itemDescription = itemControl.getItemDescriptionByEntityInstance(entityInstance);
 
                     if(itemDescription != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        ItemDescriptionDetail itemDescriptionDetail = itemDescription.getLastDetail();
-                        Language language = getLanguage(userVisit);
+                        var itemDescriptionDetail = itemDescription.getLastDetail();
+                        var language = getLanguage(userVisit);
 
                         description = itemControl.getBestItemDescriptionTypeDescription(itemDescriptionDetail.getItemDescriptionType(), language) + ", " + itemControl.getBestItemStringDescription(getItemDefaultDescriptionType(), itemDescriptionDetail.getItem(), language) + ", " + partyControl.getBestLanguageDescription(itemDescriptionDetail.getLanguage(), language);
                     }
                 } else if(entityTypeName.equals(EntityTypes.VendorItem.name())) {
                     var vendorControl = Session.getModelController(VendorControl.class);
-                    VendorItem vendorItem = vendorControl.getVendorItemByEntityInstance(entityInstance);
+                    var vendorItem = vendorControl.getVendorItemByEntityInstance(entityInstance);
 
                     if(vendorItem != null) {
-                        VendorItemDetail vendorItemDetail = vendorItem.getLastDetail();
+                        var vendorItemDetail = vendorItem.getLastDetail();
 
                         description = vendorItemDetail.getDescription();
 
@@ -171,12 +153,12 @@ public class EntityDescriptionUtils {
                     }
                 } else if(entityTypeName.equals(EntityTypes.ForumGroup.name())) {
                     var forumControl = Session.getModelController(ForumControl.class);
-                    ForumGroup forumGroup = forumControl.getForumGroupByEntityInstance(entityInstance);
+                    var forumGroup = forumControl.getForumGroupByEntityInstance(entityInstance);
 
                     description = forumGroup == null ? null : forumControl.getBestForumGroupDescription(forumGroup, getLanguage(userVisit));
                 } else if(entityTypeName.equals(EntityTypes.Forum.name())) {
                     var forumControl = Session.getModelController(ForumControl.class);
-                    Forum forum = forumControl.getForumByEntityInstance(entityInstance);
+                    var forum = forumControl.getForumByEntityInstance(entityInstance);
 
                     description = forum == null ? null : forumControl.getBestForumDescription(forum, getLanguage(userVisit));
                 } else if(entityTypeName.equals(EntityTypes.ForumThread.name())) {
@@ -184,10 +166,10 @@ public class EntityDescriptionUtils {
                     // proved difficult due to the limitCache in the Session. Its key is the Class for the BaseFactory vs. a String used by
                     // the limits Map.
                     var forumControl = Session.getModelController(ForumControl.class);
-                    ForumThread forumThread = forumControl.getForumThreadByEntityInstance(entityInstance);
+                    var forumThread = forumControl.getForumThreadByEntityInstance(entityInstance);
 
                     if(forumThread != null) {
-                        List<ForumMessage> forumMessages = forumControl.getForumMessagesByForumThread(forumThread);
+                        var forumMessages = forumControl.getForumMessagesByForumThread(forumThread);
 
                         if(forumMessages.size() > 0) {
                             description = getDescriptionForForumMessage(userVisit, forumMessages.iterator().next());
@@ -195,11 +177,11 @@ public class EntityDescriptionUtils {
                     }
                 } else if(entityTypeName.equals(EntityTypes.ForumMessage.name())) {
                     var forumControl = Session.getModelController(ForumControl.class);
-                    ForumMessage forumMessage = forumControl.getForumMessageByEntityInstance(entityInstance);
+                    var forumMessage = forumControl.getForumMessageByEntityInstance(entityInstance);
 
                     description = forumMessage == null ? null : getDescriptionForForumMessage(userVisit, forumMessage);
                 } else if(entityTypeName.equals(EntityTypes.MimeType.name())) {
-                    MimeType mimeType = coreControl.getMimeTypeByEntityInstance(entityInstance);
+                    var mimeType = coreControl.getMimeTypeByEntityInstance(entityInstance);
 
                     description = mimeType == null ? null : coreControl.getBestMimeTypeDescription(mimeType, getLanguage(userVisit));
                 } else if(entityTypeName.equals(EntityTypes.Location.name())) {

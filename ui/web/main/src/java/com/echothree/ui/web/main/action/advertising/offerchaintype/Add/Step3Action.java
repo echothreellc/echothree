@@ -17,11 +17,9 @@
 package com.echothree.ui.web.main.action.advertising.offerchaintype.Add;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.CreateOfferChainTypeForm;
 import com.echothree.ui.web.main.action.advertising.offerchaintype.AddActionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -54,10 +52,10 @@ public class Step3Action
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
-        AddActionForm actionForm = (AddActionForm)form;
+        var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
+        var actionForm = (AddActionForm)form;
         
         if(offerName == null) {
             offerName = actionForm.getOfferName();
@@ -72,14 +70,14 @@ public class Step3Action
         }
         
         if(wasPost(request)) {
-            CreateOfferChainTypeForm commandForm = OfferUtil.getHome().getCreateOfferChainTypeForm();
+            var commandForm = OfferUtil.getHome().getCreateOfferChainTypeForm();
             
             commandForm.setOfferName(offerName);
             commandForm.setChainKindName(chainKindName);
             commandForm.setChainTypeName(chainTypeName);
             commandForm.setChainName(actionForm.getChainChoice());
-            
-            CommandResult commandResult = OfferUtil.getHome().createOfferChainType(getUserVisitPK(request), commandForm);
+
+            var commandResult = OfferUtil.getHome().createOfferChainType(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -93,8 +91,8 @@ public class Step3Action
             actionForm.setChainTypeName(chainTypeName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupChainType(request, chainKindName, chainTypeName);
             setupOffer(request, offerName);

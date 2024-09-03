@@ -18,7 +18,6 @@ package com.echothree.control.user.index.common;
 
 import com.echothree.control.user.index.server.IndexLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class IndexUtil {
@@ -30,7 +29,7 @@ public class IndexUtil {
     public static IndexLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (IndexLocal)ctx.lookup("ejb:echothree/echothree-server/IndexBean!com.echothree.control.user.index.server.IndexLocal");
         }
@@ -42,7 +41,7 @@ public class IndexUtil {
     public static IndexRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (IndexRemote)ctx.lookup("ejb:echothree/echothree-server/IndexBean!com.echothree.control.user.index.common.IndexRemote");
         }

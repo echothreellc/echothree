@@ -17,7 +17,6 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetUseNameElementsForm;
-import com.echothree.control.user.offer.common.result.GetUseNameElementsResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -70,7 +69,7 @@ public class GetUseNameElementsCommand
     
     @Override
     protected BaseResult getResult(Collection<UseNameElement> entities) {
-        GetUseNameElementsResult result = OfferResultFactory.getGetUseNameElementsResult();
+        var result = OfferResultFactory.getGetUseNameElementsResult();
         var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         
         if(session.hasLimit(UseNameElementFactory.class)) {

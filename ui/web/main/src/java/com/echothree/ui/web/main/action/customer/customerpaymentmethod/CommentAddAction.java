@@ -17,20 +17,15 @@
 package com.echothree.ui.web.main.action.customer.customerpaymentmethod;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.form.CreateCommentForm;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.GetPartyPaymentMethodForm;
 import com.echothree.control.user.payment.common.result.GetPartyPaymentMethodResult;
 import com.echothree.model.control.comment.common.CommentConstants;
-import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -62,14 +57,14 @@ public class CommentAddAction
     
     public String getPartyPaymentMethodEntityRef(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartyPaymentMethodForm commandForm = PaymentUtil.getHome().getGetPartyPaymentMethodForm();
+        var commandForm = PaymentUtil.getHome().getGetPartyPaymentMethodForm();
         
         commandForm.setPartyPaymentMethodName(actionForm.getPartyPaymentMethodName());
-        
-        CommandResult commandResult = PaymentUtil.getHome().getPartyPaymentMethod(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyPaymentMethodResult result = (GetPartyPaymentMethodResult)executionResult.getResult();
-        PartyPaymentMethodTransfer partyPaymentMethod = result.getPartyPaymentMethod();
+
+        var commandResult = PaymentUtil.getHome().getPartyPaymentMethod(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyPaymentMethodResult)executionResult.getResult();
+        var partyPaymentMethod = result.getPartyPaymentMethod();
         
         request.setAttribute(AttributeConstants.PARTY_PAYMENT_METHOD, partyPaymentMethod);
         
@@ -78,13 +73,13 @@ public class CommentAddAction
     
     public void setupCustomerTransfer(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }
@@ -102,7 +97,7 @@ public class CommentAddAction
     @Override
     public CommandResult doAdd(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCommentForm commandForm = CommentUtil.getHome().getCreateCommentForm();
+        var commandForm = CommentUtil.getHome().getCreateCommentForm();
 
         commandForm.setEntityRef(getPartyPaymentMethodEntityRef(actionForm, request));
         commandForm.setCommentTypeName(CommentConstants.CommentType_PARTY_PAYMENT_METHOD);

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.selector.selectornode;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.form.DeleteSelectorNodeDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,14 +51,14 @@ public class DescriptionDeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-        String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-        String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
-        String selectorNodeName = request.getParameter(ParameterConstants.SELECTOR_NODE_NAME);
+        var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+        var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+        var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+        var selectorNodeName = request.getParameter(ParameterConstants.SELECTOR_NODE_NAME);
         
         try {
-            String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-            DeleteSelectorNodeDescriptionForm commandForm = SelectorUtil.getHome().getDeleteSelectorNodeDescriptionForm();
+            var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+            var commandForm = SelectorUtil.getHome().getDeleteSelectorNodeDescriptionForm();
             
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setSelectorTypeName(selectorTypeName);
@@ -73,8 +72,8 @@ public class DescriptionDeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(4);
             

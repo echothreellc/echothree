@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.track.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.track.common.transfer.TrackDescriptionTransfer;
-import com.echothree.model.control.track.common.transfer.TrackTransfer;
 import com.echothree.model.control.track.server.control.TrackControl;
 import com.echothree.model.data.track.server.entity.TrackDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class TrackDescriptionTransferCache
     }
     
     public TrackDescriptionTransfer getTrackDescriptionTransfer(TrackDescription trackDescription) {
-        TrackDescriptionTransfer trackDescriptionTransfer = get(trackDescription);
+        var trackDescriptionTransfer = get(trackDescription);
         
         if(trackDescriptionTransfer == null) {
-            TrackTransfer trackTransfer = trackControl.getTrackTransfer(userVisit, trackDescription.getTrack());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, trackDescription.getLanguage());
+            var trackTransfer = trackControl.getTrackTransfer(userVisit, trackDescription.getTrack());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, trackDescription.getLanguage());
             
             trackDescriptionTransfer = new TrackDescriptionTransfer(languageTransfer, trackTransfer, trackDescription.getDescription());
             put(trackDescription, trackDescriptionTransfer);

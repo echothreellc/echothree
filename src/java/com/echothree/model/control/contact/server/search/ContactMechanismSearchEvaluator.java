@@ -53,7 +53,7 @@ public class ContactMechanismSearchEvaluator
     @Override
     protected SortField[] getSortFields(String searchSortOrderName) {
         SortField sortField = null;
-        boolean reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchSortDirections.DESCENDING.name());
+        var reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchSortDirections.DESCENDING.name());
         
         if(searchSortOrderName.equals(SearchSortOrders.SCORE.name())) {
             sortField = new SortField(null, SortField.Type.SCORE, reverse);
@@ -77,7 +77,7 @@ public class ContactMechanismSearchEvaluator
         if(resultSet == null || resultSet.size() > 0) {
             if(q != null) {
                 if(resultSet == null || resultSet.size() > 0) {
-                    EntityInstancePKHolder entityInstancePKHolder = executeQuery(eea);
+                    var entityInstancePKHolder = executeQuery(eea);
 
                     if(resultSet == null) {
                         resultSet = entityInstancePKHolder;
@@ -93,7 +93,7 @@ public class ContactMechanismSearchEvaluator
     
     @Override
     protected EntityInstancePKHolder executeSearch(final ExecutionErrorAccumulator eea) {
-        EntityInstancePKHolder resultSet = super.executeSearch(eea);
+        var resultSet = super.executeSearch(eea);
         
         resultSet = executeQSearch(eea, resultSet);
         

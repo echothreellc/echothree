@@ -18,7 +18,6 @@ package com.echothree.control.user.tax.server.command;
 
 import com.echothree.control.user.tax.common.form.SetDefaultTaxForm;
 import com.echothree.model.control.tax.server.control.TaxControl;
-import com.echothree.model.data.tax.server.value.TaxDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class SetDefaultTaxCommand
     @Override
     protected BaseResult execute() {
         var taxControl = Session.getModelController(TaxControl.class);
-        String taxName = form.getTaxName();
-        TaxDetailValue taxDetailValue = taxControl.getTaxDetailValueByNameForUpdate(taxName);
+        var taxName = form.getTaxName();
+        var taxDetailValue = taxControl.getTaxDetailValueByNameForUpdate(taxName);
         
         if(taxDetailValue != null) {
             taxDetailValue.setIsDefault(Boolean.TRUE);

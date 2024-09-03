@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.item.relateditem;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetRelatedItemForm;
 import com.echothree.control.user.item.common.result.GetRelatedItemResult;
-import com.echothree.model.control.item.common.transfer.RelatedItemTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +48,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetRelatedItemForm commandForm = ItemUtil.getHome().getGetRelatedItemForm();
+        String forwardKey;
+        var commandForm = ItemUtil.getHome().getGetRelatedItemForm();
 
         commandForm.setRelatedItemTypeName(request.getParameter(ParameterConstants.RELATED_ITEM_TYPE_NAME));
         commandForm.setFromItemName(request.getParameter(ParameterConstants.FROM_ITEM_NAME));
         commandForm.setToItemName(request.getParameter(ParameterConstants.TO_ITEM_NAME));
 
-        CommandResult commandResult = ItemUtil.getHome().getRelatedItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetRelatedItemResult result = (GetRelatedItemResult)executionResult.getResult();
-        RelatedItemTransfer relatedItem = result == null? null: result.getRelatedItem();
+        var commandResult = ItemUtil.getHome().getRelatedItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetRelatedItemResult)executionResult.getResult();
+        var relatedItem = result == null? null: result.getRelatedItem();
 
         if(relatedItem == null) {
             forwardKey = ForwardConstants.ERROR_404;

@@ -17,9 +17,7 @@
 package com.echothree.model.control.comment.server.transfer;
 
 import com.echothree.model.control.comment.common.transfer.CommentTypeDescriptionTransfer;
-import com.echothree.model.control.comment.common.transfer.CommentTypeTransfer;
 import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.comment.server.entity.CommentTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,12 +30,12 @@ public class CommentTypeDescriptionTransferCache
     }
     
     public CommentTypeDescriptionTransfer getCommentTypeDescriptionTransfer(CommentTypeDescription commentTypeDescription) {
-        CommentTypeDescriptionTransfer commentTypeDescriptionTransfer = get(commentTypeDescription);
+        var commentTypeDescriptionTransfer = get(commentTypeDescription);
         
         if(commentTypeDescriptionTransfer == null) {
-            CommentTypeTransferCache commentTypeTransferCache = commentControl.getCommentTransferCaches(userVisit).getCommentTypeTransferCache();
-            CommentTypeTransfer commentTypeTransfer = commentTypeTransferCache.getCommentTypeTransfer(commentTypeDescription.getCommentType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, commentTypeDescription.getLanguage());
+            var commentTypeTransferCache = commentControl.getCommentTransferCaches(userVisit).getCommentTypeTransferCache();
+            var commentTypeTransfer = commentTypeTransferCache.getCommentTypeTransfer(commentTypeDescription.getCommentType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, commentTypeDescription.getLanguage());
             
             commentTypeDescriptionTransfer = new CommentTypeDescriptionTransfer(languageTransfer, commentTypeTransfer, commentTypeDescription.getDescription());
             put(commentTypeDescription, commentTypeDescriptionTransfer);

@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.workrequirementtype;
 
 import com.echothree.control.user.workrequirement.common.WorkRequirementUtil;
-import com.echothree.control.user.workrequirement.common.edit.WorkRequirementTypeDescriptionEdit;
-import com.echothree.control.user.workrequirement.common.form.EditWorkRequirementTypeDescriptionForm;
 import com.echothree.control.user.workrequirement.common.result.EditWorkRequirementTypeDescriptionResult;
-import com.echothree.control.user.workrequirement.common.spec.WorkRequirementTypeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,15 +56,15 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
-        String workRequirementTypeName = request.getParameter(ParameterConstants.WORK_REQUIREMENT_TYPE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
+        var workRequirementTypeName = request.getParameter(ParameterConstants.WORK_REQUIREMENT_TYPE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditWorkRequirementTypeDescriptionForm commandForm = WorkRequirementUtil.getHome().getEditWorkRequirementTypeDescriptionForm();
-                WorkRequirementTypeDescriptionSpec spec = WorkRequirementUtil.getHome().getWorkRequirementTypeDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = WorkRequirementUtil.getHome().getEditWorkRequirementTypeDescriptionForm();
+                var spec = WorkRequirementUtil.getHome().getWorkRequirementTypeDescriptionSpec();
                 
                 if(workEffortTypeName == null)
                     workEffortTypeName = actionForm.getWorkEffortTypeName();
@@ -84,19 +79,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    WorkRequirementTypeDescriptionEdit edit = WorkRequirementUtil.getHome().getWorkRequirementTypeDescriptionEdit();
+                    var edit = WorkRequirementUtil.getHome().getWorkRequirementTypeDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = WorkRequirementUtil.getHome().editWorkRequirementTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = WorkRequirementUtil.getHome().editWorkRequirementTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditWorkRequirementTypeDescriptionResult result = (EditWorkRequirementTypeDescriptionResult)executionResult.getResult();
+                            var result = (EditWorkRequirementTypeDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -109,13 +104,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = WorkRequirementUtil.getHome().editWorkRequirementTypeDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditWorkRequirementTypeDescriptionResult result = (EditWorkRequirementTypeDescriptionResult)executionResult.getResult();
+
+                    var commandResult = WorkRequirementUtil.getHome().editWorkRequirementTypeDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditWorkRequirementTypeDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        WorkRequirementTypeDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setWorkEffortTypeName(workEffortTypeName);
@@ -135,8 +130,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WORK_EFFORT_TYPE_NAME, workEffortTypeName);
             request.setAttribute(AttributeConstants.WORK_REQUIREMENT_TYPE_NAME, workRequirementTypeName);

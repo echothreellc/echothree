@@ -16,13 +16,9 @@
 
 package com.echothree.model.control.invoice.server.transfer;
 
-import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.invoice.common.transfer.InvoiceRoleTransfer;
-import com.echothree.model.control.invoice.common.transfer.InvoiceRoleTypeTransfer;
-import com.echothree.model.control.invoice.common.transfer.InvoiceTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -43,13 +39,13 @@ public class InvoiceRoleTransferCache
     }
 
     public InvoiceRoleTransfer getInvoiceRoleTransfer(InvoiceRole invoiceRole) {
-        InvoiceRoleTransfer invoiceRoleTransfer = get(invoiceRole);
+        var invoiceRoleTransfer = get(invoiceRole);
 
         if(invoiceRoleTransfer == null) {
-            InvoiceTransfer invoice = invoiceControl.getInvoiceTransfer(userVisit, invoiceRole.getInvoice());
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, invoiceRole.getParty());
-            PartyContactMechanismTransfer partyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, invoiceRole.getPartyContactMechanism());
-            InvoiceRoleTypeTransfer invoiceRoleType = invoiceControl.getInvoiceRoleTypeTransfer(userVisit, invoiceRole.getInvoiceRoleType());
+            var invoice = invoiceControl.getInvoiceTransfer(userVisit, invoiceRole.getInvoice());
+            var party = partyControl.getPartyTransfer(userVisit, invoiceRole.getParty());
+            var partyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, invoiceRole.getPartyContactMechanism());
+            var invoiceRoleType = invoiceControl.getInvoiceRoleTypeTransfer(userVisit, invoiceRole.getInvoiceRoleType());
 
             invoiceRoleTransfer = new InvoiceRoleTransfer(invoice, party, partyContactMechanism, invoiceRoleType);
             put(invoiceRole, invoiceRoleTransfer);

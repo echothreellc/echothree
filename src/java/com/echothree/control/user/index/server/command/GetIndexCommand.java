@@ -17,14 +17,12 @@
 package com.echothree.control.user.index.server.command;
 
 import com.echothree.control.user.index.common.form.GetIndexForm;
-import com.echothree.control.user.index.common.result.GetIndexResult;
 import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.index.server.control.IndexControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -59,8 +57,8 @@ public class GetIndexCommand
     
     @Override
     protected BaseResult execute() {
-        GetIndexResult result = IndexResultFactory.getGetIndexResult();
-        String indexName = form.getIndexName();
+        var result = IndexResultFactory.getGetIndexResult();
+        var indexName = form.getIndexName();
         var parameterCount = (indexName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

@@ -22,21 +22,11 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.content.server.entity.ContentPage;
-import com.echothree.model.data.content.server.entity.ContentPageArea;
-import com.echothree.model.data.content.server.entity.ContentPageAreaDetail;
-import com.echothree.model.data.content.server.entity.ContentPageLayout;
-import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
-import com.echothree.model.data.content.server.entity.ContentSection;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -82,43 +72,43 @@ public class CreateContentPageAreaCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentSectionName = form.getContentSectionName();
-            ContentSection contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
+            var contentSectionName = form.getContentSectionName();
+            var contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
             
             if(contentSection != null) {
-                String contentPageName = form.getContentPageName();
-                ContentPage contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
+                var contentPageName = form.getContentPageName();
+                var contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
                 
                 if(contentPage != null) {
                     var sortOrder = Integer.valueOf(form.getSortOrder());
-                    ContentPageLayout contentPageLayout = contentPage.getLastDetail().getContentPageLayout();
-                    ContentPageLayoutArea contentPageLayoutArea = contentControl.getContentPageLayoutArea(contentPageLayout, sortOrder);
+                    var contentPageLayout = contentPage.getLastDetail().getContentPageLayout();
+                    var contentPageLayoutArea = contentControl.getContentPageLayoutArea(contentPageLayout, sortOrder);
                     
                     if(contentPageLayoutArea != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        String languageIsoName = form.getLanguageIsoName();
-                        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                        var languageIsoName = form.getLanguageIsoName();
+                        var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
                         if(language != null) {
-                            ContentPageArea contentPageArea = contentControl.getContentPageArea(contentPage, contentPageLayoutArea, language);
+                            var contentPageArea = contentControl.getContentPageArea(contentPage, contentPageLayoutArea, language);
                             
                             if(contentPageArea == null) {
                                 var coreControl = getCoreControl();
-                                String mimeTypeName = form.getMimeTypeName();
-                                MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+                                var mimeTypeName = form.getMimeTypeName();
+                                var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
                                 
                                 if(mimeType != null) {
                                     var description = form.getDescription();
-                                    ByteArray contentPageAreaBlob = form.getContentPageAreaBlob();
-                                    String contentPageAreaClob = form.getContentPageAreaClob();
-                                    String contentPageAreaUrl = form.getContentPageAreaUrl();
+                                    var contentPageAreaBlob = form.getContentPageAreaBlob();
+                                    var contentPageAreaClob = form.getContentPageAreaClob();
+                                    var contentPageAreaUrl = form.getContentPageAreaUrl();
                                     
                                     contentPageArea = contentControl.createContentPageArea(contentPage, contentPageLayoutArea, language, mimeType, getPartyPK());
-                                    ContentPageAreaDetail contentPageAreaDetail = contentPageArea.getLastDetail();
+                                    var contentPageAreaDetail = contentPageArea.getLastDetail();
                                     
                                     if(contentPageAreaBlob != null)
                                         contentControl.createContentPageAreaBlob(contentPageAreaDetail, contentPageAreaBlob);

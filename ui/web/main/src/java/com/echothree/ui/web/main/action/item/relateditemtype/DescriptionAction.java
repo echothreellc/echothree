@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.item.relateditemtype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetRelatedItemTypeDescriptionsForm;
 import com.echothree.control.user.item.common.result.GetRelatedItemTypeDescriptionsResult;
-import com.echothree.model.control.item.common.transfer.RelatedItemTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String relatedItemTypeName = request.getParameter(ParameterConstants.RELATED_ITEM_TYPE_NAME);
-        GetRelatedItemTypeDescriptionsForm commandForm = ItemUtil.getHome().getGetRelatedItemTypeDescriptionsForm();
+        var relatedItemTypeName = request.getParameter(ParameterConstants.RELATED_ITEM_TYPE_NAME);
+        var commandForm = ItemUtil.getHome().getGetRelatedItemTypeDescriptionsForm();
 
         commandForm.setRelatedItemTypeName(relatedItemTypeName);
 
-        CommandResult commandResult = ItemUtil.getHome().getRelatedItemTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getRelatedItemTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetRelatedItemTypeDescriptionsResult result = (GetRelatedItemTypeDescriptionsResult) executionResult.getResult();
-            RelatedItemTypeTransfer relatedItemTypeTransfer = result.getRelatedItemType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetRelatedItemTypeDescriptionsResult) executionResult.getResult();
+            var relatedItemTypeTransfer = result.getRelatedItemType();
 
             request.setAttribute(AttributeConstants.RELATED_ITEM_TYPE, relatedItemTypeTransfer);
             request.setAttribute(AttributeConstants.RELATED_ITEM_TYPE_DESCRIPTIONS, result.getRelatedItemTypeDescriptions());

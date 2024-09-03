@@ -18,15 +18,11 @@ package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.GetPartyContactListForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
-import com.echothree.control.user.contactlist.common.result.GetPartyContactListResult;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
-import com.echothree.model.data.contactlist.server.entity.PartyContactList;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetPartyContactListCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyContactListResult result = ContactListResultFactory.getGetPartyContactListResult();
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var result = ContactListResultFactory.getGetPartyContactListResult();
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            String contactListName = form.getContactListName();
-            ContactList contactList = contactListControl.getContactListByName(contactListName);
+            var contactListName = form.getContactListName();
+            var contactList = contactListControl.getContactListByName(contactListName);
 
             if(contactList != null) {
-                PartyContactList partyContactList = contactListControl.getPartyContactList(party, contactList);
+                var partyContactList = contactListControl.getPartyContactList(party, contactList);
 
                 if(partyContactList != null) {
                     result.setPartyContactList(contactListControl.getPartyContactListTransfer(getUserVisit(), partyContactList));

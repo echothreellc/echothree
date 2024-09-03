@@ -16,11 +16,9 @@
 
 package com.echothree.model.control.comment.server.transfer;
 
-import com.echothree.model.control.comment.common.transfer.CommentTypeTransfer;
 import com.echothree.model.control.comment.common.transfer.CommentUsageTypeTransfer;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.data.comment.server.entity.CommentUsageType;
-import com.echothree.model.data.comment.server.entity.CommentUsageTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class CommentUsageTypeTransferCache
@@ -34,14 +32,14 @@ public class CommentUsageTypeTransferCache
     }
     
     public CommentUsageTypeTransfer getCommentUsageTypeTransfer(CommentUsageType commentUsageType) {
-        CommentUsageTypeTransfer commentUsageTypeTransfer = get(commentUsageType);
+        var commentUsageTypeTransfer = get(commentUsageType);
         
         if(commentUsageTypeTransfer == null) {
-            CommentUsageTypeDetail commentUsageTypeDetail = commentUsageType.getLastDetail();
-            CommentTypeTransfer commentType = commentControl.getCommentTypeTransfer(userVisit, commentUsageTypeDetail.getCommentType());
-            String commentUsageTypeName = commentUsageTypeDetail.getCommentUsageTypeName();
-            Boolean selectedByDefault = commentUsageTypeDetail.getSelectedByDefault();
-            String description = commentControl.getBestCommentUsageTypeDescription(commentUsageType, getLanguage());
+            var commentUsageTypeDetail = commentUsageType.getLastDetail();
+            var commentType = commentControl.getCommentTypeTransfer(userVisit, commentUsageTypeDetail.getCommentType());
+            var commentUsageTypeName = commentUsageTypeDetail.getCommentUsageTypeName();
+            var selectedByDefault = commentUsageTypeDetail.getSelectedByDefault();
+            var description = commentControl.getBestCommentUsageTypeDescription(commentUsageType, getLanguage());
             
             commentUsageTypeTransfer = new CommentUsageTypeTransfer(commentType, commentUsageTypeName, selectedByDefault, description);
             put(commentUsageType, commentUsageTypeTransfer);

@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.picklist;
 
 import com.echothree.control.user.picklist.common.PicklistUtil;
 import com.echothree.control.user.picklist.common.PicklistService;
-import com.echothree.control.user.picklist.common.form.CreatePicklistAliasTypeDescriptionForm;
 import com.echothree.control.user.picklist.common.form.PicklistFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -52,9 +51,9 @@ public class PicklistAliasTypeHandler
         if(localName.equals("picklistAliasTypeDescription")) {
             String attrLanguageIsoName = null;
             String attrDescription = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     attrLanguageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -62,7 +61,7 @@ public class PicklistAliasTypeHandler
             }
             
             try {
-                CreatePicklistAliasTypeDescriptionForm createPicklistAliasTypeDescriptionForm = PicklistFormFactory.getCreatePicklistAliasTypeDescriptionForm();
+                var createPicklistAliasTypeDescriptionForm = PicklistFormFactory.getCreatePicklistAliasTypeDescriptionForm();
                 
                 createPicklistAliasTypeDescriptionForm.setPicklistTypeName(picklistTypeName);
                 createPicklistAliasTypeDescriptionForm.setPicklistAliasTypeName(picklistAliasTypeName);

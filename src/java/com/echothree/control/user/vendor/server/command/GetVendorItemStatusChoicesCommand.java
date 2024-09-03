@@ -17,16 +17,12 @@
 package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.form.GetVendorItemStatusChoicesForm;
-import com.echothree.control.user.vendor.common.result.GetVendorItemStatusChoicesResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.entity.Vendor;
-import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -69,18 +65,18 @@ public class GetVendorItemStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
-        GetVendorItemStatusChoicesResult result = VendorResultFactory.getGetVendorItemStatusChoicesResult();
-        String vendorName = form.getVendorName();
-        Vendor vendor = vendorControl.getVendorByName(vendorName);
+        var result = VendorResultFactory.getGetVendorItemStatusChoicesResult();
+        var vendorName = form.getVendorName();
+        var vendor = vendorControl.getVendorByName(vendorName);
 
         if(vendor != null) {
-            Party vendorParty = vendor.getParty();
-            String vendorItemName = form.getVendorItemName();
-            VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
+            var vendorParty = vendor.getParty();
+            var vendorItemName = form.getVendorItemName();
+            var vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
 
             if(vendorItem != null) {
-                String defaultVendorItemStatusChoice = form.getDefaultVendorItemStatusChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultVendorItemStatusChoice = form.getDefaultVendorItemStatusChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setVendorItemStatusChoices(vendorControl.getVendorItemStatusChoices(defaultVendorItemStatusChoice, getPreferredLanguage(),
                         allowNullChoice, vendorItem, getPartyPK()));

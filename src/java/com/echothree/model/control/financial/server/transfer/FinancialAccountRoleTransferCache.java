@@ -17,10 +17,7 @@
 package com.echothree.model.control.financial.server.transfer;
 
 import com.echothree.model.control.financial.common.transfer.FinancialAccountRoleTransfer;
-import com.echothree.model.control.financial.common.transfer.FinancialAccountRoleTypeTransfer;
-import com.echothree.model.control.financial.common.transfer.FinancialAccountTransfer;
 import com.echothree.model.control.financial.server.control.FinancialControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -39,12 +36,12 @@ public class FinancialAccountRoleTransferCache
     }
 
     public FinancialAccountRoleTransfer getFinancialAccountRoleTransfer(FinancialAccountRole financialAccountRole) {
-        FinancialAccountRoleTransfer financialAccountRoleTransfer = get(financialAccountRole);
+        var financialAccountRoleTransfer = get(financialAccountRole);
 
         if(financialAccountRoleTransfer == null) {
-            FinancialAccountTransfer financialAccount = financialControl.getFinancialAccountTransfer(userVisit, financialAccountRole.getFinancialAccount());
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, financialAccountRole.getParty());
-            FinancialAccountRoleTypeTransfer financialAccountRoleType = financialControl.getFinancialAccountRoleTypeTransfer(userVisit, financialAccountRole.getFinancialAccountRoleType());
+            var financialAccount = financialControl.getFinancialAccountTransfer(userVisit, financialAccountRole.getFinancialAccount());
+            var party = partyControl.getPartyTransfer(userVisit, financialAccountRole.getParty());
+            var financialAccountRoleType = financialControl.getFinancialAccountRoleTypeTransfer(userVisit, financialAccountRole.getFinancialAccountRoleType());
 
             financialAccountRoleTransfer = new FinancialAccountRoleTransfer(financialAccount, party, financialAccountRoleType);
             put(financialAccountRole, financialAccountRoleTransfer);

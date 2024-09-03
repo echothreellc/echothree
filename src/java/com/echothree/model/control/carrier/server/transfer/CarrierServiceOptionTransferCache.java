@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.carrier.server.transfer;
 
-import com.echothree.model.control.carrier.common.transfer.CarrierOptionTransfer;
 import com.echothree.model.control.carrier.common.transfer.CarrierServiceOptionTransfer;
-import com.echothree.model.control.carrier.common.transfer.CarrierServiceTransfer;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.data.carrier.server.entity.CarrierServiceOption;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class CarrierServiceOptionTransferCache
     }
     
     public CarrierServiceOptionTransfer getCarrierServiceOptionTransfer(CarrierServiceOption carrierServiceOption) {
-        CarrierServiceOptionTransfer carrierServiceOptionTransfer = get(carrierServiceOption);
+        var carrierServiceOptionTransfer = get(carrierServiceOption);
         
         if(carrierServiceOptionTransfer == null) {
-            CarrierServiceTransfer carrierService = carrierControl.getCarrierServiceTransfer(userVisit, carrierServiceOption.getCarrierService());
-            CarrierOptionTransfer carrierOption = carrierControl.getCarrierOptionTransfer(userVisit, carrierServiceOption.getCarrierOption());
+            var carrierService = carrierControl.getCarrierServiceTransfer(userVisit, carrierServiceOption.getCarrierService());
+            var carrierOption = carrierControl.getCarrierOptionTransfer(userVisit, carrierServiceOption.getCarrierOption());
             
             carrierServiceOptionTransfer = new CarrierServiceOptionTransfer(carrierService, carrierOption);
             put(carrierServiceOption, carrierServiceOptionTransfer);

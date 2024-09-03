@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.chain.chain;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.CreateChainForm;
-import com.echothree.control.user.chain.common.form.GetChainTypeForm;
 import com.echothree.control.user.chain.common.result.GetChainTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,14 +55,14 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetChainTypeForm commandForm = ChainUtil.getHome().getGetChainTypeForm();
+        var commandForm = ChainUtil.getHome().getGetChainTypeForm();
         
         commandForm.setChainKindName(actionForm.getChainKindName());
         commandForm.setChainTypeName(actionForm.getChainTypeName());
 
-        CommandResult commandResult = ChainUtil.getHome().getChainType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetChainTypeResult result = (GetChainTypeResult)executionResult.getResult();
+        var commandResult = ChainUtil.getHome().getChainType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetChainTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CHAIN_TYPE, result.getChainType());
     }
@@ -79,7 +76,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateChainForm commandForm = ChainUtil.getHome().getCreateChainForm();
+        var commandForm = ChainUtil.getHome().getCreateChainForm();
 
         commandForm.setChainKindName(actionForm.getChainKindName());
         commandForm.setChainTypeName(actionForm.getChainTypeName());

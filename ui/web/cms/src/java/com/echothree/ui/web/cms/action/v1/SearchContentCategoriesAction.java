@@ -17,7 +17,6 @@
 package com.echothree.ui.web.cms.action.v1;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.SearchContentCategoriesForm;
 import com.echothree.ui.web.cms.framework.CmsBaseJsonAction;
 import com.echothree.ui.web.cms.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
@@ -44,7 +43,7 @@ public class SearchContentCategoriesAction
     @Override
     protected CommandResult getCommandResult(HttpServletRequest request)
             throws Exception {
-        SearchContentCategoriesForm commandForm = SearchUtil.getHome().getSearchContentCategoriesForm();
+        var commandForm = SearchUtil.getHome().getSearchContentCategoriesForm();
 
         commandForm.setSearchDefaultOperatorName(request.getParameter(ParameterConstants.SEARCH_DEFAULT_ORDERATOR_NAME));
         commandForm.setSearchSortDirectionName(request.getParameter(ParameterConstants.SEARCH_SORT_DIRECTION_NAME));

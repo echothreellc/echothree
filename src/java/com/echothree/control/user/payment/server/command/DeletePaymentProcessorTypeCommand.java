@@ -21,7 +21,6 @@ import com.echothree.model.control.payment.server.logic.PaymentProcessorTypeLogi
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -60,8 +59,8 @@ public class DeletePaymentProcessorTypeCommand
     
     @Override
     protected BaseResult execute() {
-        String paymentProcessorTypeName = form.getPaymentProcessorTypeName();
-        PaymentProcessorType paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByNameForUpdate(this, paymentProcessorTypeName);
+        var paymentProcessorTypeName = form.getPaymentProcessorTypeName();
+        var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByNameForUpdate(this, paymentProcessorTypeName);
         
         if(!hasExecutionErrors()) {
             PaymentProcessorTypeLogic.getInstance().deletePaymentProcessorType(this, paymentProcessorType, getPartyPK());

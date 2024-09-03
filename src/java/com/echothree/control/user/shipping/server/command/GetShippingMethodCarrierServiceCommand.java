@@ -17,18 +17,12 @@
 package com.echothree.control.user.shipping.server.command;
 
 import com.echothree.control.user.shipping.common.form.GetShippingMethodCarrierServiceForm;
-import com.echothree.control.user.shipping.common.result.GetShippingMethodCarrierServiceResult;
 import com.echothree.control.user.shipping.common.result.ShippingResultFactory;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
-import com.echothree.model.data.carrier.server.entity.Carrier;
-import com.echothree.model.data.carrier.server.entity.CarrierService;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.shipping.server.entity.ShippingMethod;
-import com.echothree.model.data.shipping.server.entity.ShippingMethodCarrierService;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -72,22 +66,22 @@ public class GetShippingMethodCarrierServiceCommand
     @Override
     protected BaseResult execute() {
         var shippingControl = Session.getModelController(ShippingControl.class);
-        GetShippingMethodCarrierServiceResult result = ShippingResultFactory.getGetShippingMethodCarrierServiceResult();
-        String shippingMethodName = form.getShippingMethodName();
-        ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+        var result = ShippingResultFactory.getGetShippingMethodCarrierServiceResult();
+        var shippingMethodName = form.getShippingMethodName();
+        var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
         
         if(shippingMethod != null) {
             var carrierControl = Session.getModelController(CarrierControl.class);
-            String carrierName = form.getCarrierName();
-            Carrier carrier = carrierControl.getCarrierByName(carrierName);
+            var carrierName = form.getCarrierName();
+            var carrier = carrierControl.getCarrierByName(carrierName);
 
             if(carrier != null) {
-                Party carrierParty = carrier.getParty();
-                String carrierServiceName = form.getCarrierServiceName();
-                CarrierService carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
+                var carrierParty = carrier.getParty();
+                var carrierServiceName = form.getCarrierServiceName();
+                var carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
 
                 if(carrierService != null) {
-                    ShippingMethodCarrierService shippingMethodCarrierService = shippingControl.getShippingMethodCarrierService(shippingMethod, carrierService);
+                    var shippingMethodCarrierService = shippingControl.getShippingMethodCarrierService(shippingMethod, carrierService);
 
                     if(shippingMethodCarrierService != null) {
                         result.setShippingMethodCarrierService(shippingControl.getShippingMethodCarrierServiceTransfer(getUserVisit(), shippingMethodCarrierService));

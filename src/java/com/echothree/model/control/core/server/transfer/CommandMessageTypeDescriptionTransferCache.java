@@ -17,9 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.CommandMessageTypeDescriptionTransfer;
-import com.echothree.model.control.core.common.transfer.CommandMessageTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.core.server.entity.CommandMessageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -35,11 +33,11 @@ public class CommandMessageTypeDescriptionTransferCache
     }
     
     public CommandMessageTypeDescriptionTransfer getCommandMessageTypeDescriptionTransfer(CommandMessageTypeDescription commandMessageTypeDescription) {
-        CommandMessageTypeDescriptionTransfer commandMessageTypeDescriptionTransfer = get(commandMessageTypeDescription);
+        var commandMessageTypeDescriptionTransfer = get(commandMessageTypeDescription);
         
         if(commandMessageTypeDescriptionTransfer == null) {
-            CommandMessageTypeTransfer commandMessageTypeTransfer = coreControl.getCommandMessageTypeTransfer(userVisit, commandMessageTypeDescription.getCommandMessageType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, commandMessageTypeDescription.getLanguage());
+            var commandMessageTypeTransfer = coreControl.getCommandMessageTypeTransfer(userVisit, commandMessageTypeDescription.getCommandMessageType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, commandMessageTypeDescription.getLanguage());
             
             commandMessageTypeDescriptionTransfer = new CommandMessageTypeDescriptionTransfer(languageTransfer, commandMessageTypeTransfer, commandMessageTypeDescription.getDescription());
             put(commandMessageTypeDescription, commandMessageTypeDescriptionTransfer);

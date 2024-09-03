@@ -17,9 +17,6 @@
 package com.echothree.ui.web.main.action.item.item.DescriptionAdd;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemDescriptionTypeForm;
-import com.echothree.control.user.item.common.form.GetItemDescriptionTypesForm;
-import com.echothree.control.user.item.common.form.GetItemForm;
 import com.echothree.control.user.item.common.result.GetItemDescriptionTypesResult;
 import com.echothree.control.user.item.common.result.GetItemResult;
 import com.echothree.model.control.core.common.CoreOptions;
@@ -28,7 +25,6 @@ import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -62,30 +58,30 @@ public class Step1Action
 
     private void setupItemTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+        var commandForm = ItemUtil.getHome().getGetItemForm();
 
         commandForm.setItemName(actionForm.getItemName());
 
-        CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemResult result = (GetItemResult)executionResult.getResult();
+        var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM, result.getItem());
     }
 
     private void setupItemDescriptionTypeTransfers(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemDescriptionTypesForm commandForm = ItemUtil.getHome().getGetItemDescriptionTypesForm();
+        var commandForm = ItemUtil.getHome().getGetItemDescriptionTypesForm();
         
         Set<String> options = new HashSet<>();
         options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
         options.add(CoreOptions.AppearanceIncludeTextDecorations);
         options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
-        
-        CommandResult commandResult = ItemUtil.getHome().getItemDescriptionTypes(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemDescriptionTypesResult result = (GetItemDescriptionTypesResult)executionResult.getResult();
+
+        var commandResult = ItemUtil.getHome().getItemDescriptionTypes(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemDescriptionTypesResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM_DESCRIPTION_TYPES, result.getItemDescriptionTypes());
     }
@@ -105,7 +101,7 @@ public class Step1Action
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemDescriptionTypeForm commandForm = ItemUtil.getHome().getGetItemDescriptionTypeForm();
+        var commandForm = ItemUtil.getHome().getGetItemDescriptionTypeForm();
 
         commandForm.setItemDescriptionTypeName(actionForm.getItemDescriptionTypeName());
 

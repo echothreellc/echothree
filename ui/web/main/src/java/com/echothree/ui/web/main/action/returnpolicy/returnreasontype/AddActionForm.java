@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnreasontype;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.form.GetReturnTypeChoicesForm;
 import com.echothree.control.user.returnpolicy.common.result.GetReturnTypeChoicesResult;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -45,15 +42,15 @@ public class AddActionForm
     private void setupReturnTypeChoices() {
         if(returnTypeChoices == null) {
             try {
-                GetReturnTypeChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnTypeChoicesForm();
+                var form = ReturnPolicyUtil.getHome().getGetReturnTypeChoicesForm();
                 
                 form.setReturnKindName(returnKindName);
                 form.setDefaultReturnTypeChoice(returnTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetReturnTypeChoicesResult getReturnTypeChoicesResult = (GetReturnTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = ReturnPolicyUtil.getHome().getReturnTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getReturnTypeChoicesResult = (GetReturnTypeChoicesResult)executionResult.getResult();
                 returnTypeChoices = getReturnTypeChoicesResult.getReturnTypeChoices();
                 
                 if(returnTypeChoice == null) {

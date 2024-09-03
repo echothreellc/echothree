@@ -19,7 +19,6 @@ package com.echothree.model.control.payment.server.transfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorActionTypeTransfer;
 import com.echothree.model.control.payment.server.control.PaymentProcessorActionTypeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorActionTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -37,14 +36,14 @@ public class PaymentProcessorActionTypeTransferCache
     
     @Override
     public PaymentProcessorActionTypeTransfer getTransfer(PaymentProcessorActionType paymentProcessorActionType) {
-        PaymentProcessorActionTypeTransfer paymentProcessorActionTypeTransfer = get(paymentProcessorActionType);
+        var paymentProcessorActionTypeTransfer = get(paymentProcessorActionType);
         
         if(paymentProcessorActionTypeTransfer == null) {
-            PaymentProcessorActionTypeDetail paymentProcessorActionTypeDetail = paymentProcessorActionType.getLastDetail();
-            String paymentProcessorActionTypeName = paymentProcessorActionTypeDetail.getPaymentProcessorActionTypeName();
-            Boolean isDefault = paymentProcessorActionTypeDetail.getIsDefault();
-            Integer sortOrder = paymentProcessorActionTypeDetail.getSortOrder();
-            String description = paymentProcessorActionTypeControl.getBestPaymentProcessorActionTypeDescription(paymentProcessorActionType, getLanguage());
+            var paymentProcessorActionTypeDetail = paymentProcessorActionType.getLastDetail();
+            var paymentProcessorActionTypeName = paymentProcessorActionTypeDetail.getPaymentProcessorActionTypeName();
+            var isDefault = paymentProcessorActionTypeDetail.getIsDefault();
+            var sortOrder = paymentProcessorActionTypeDetail.getSortOrder();
+            var description = paymentProcessorActionTypeControl.getBestPaymentProcessorActionTypeDescription(paymentProcessorActionType, getLanguage());
             
             paymentProcessorActionTypeTransfer = new PaymentProcessorActionTypeTransfer(paymentProcessorActionTypeName, isDefault, sortOrder, description);
             put(paymentProcessorActionType, paymentProcessorActionTypeTransfer);

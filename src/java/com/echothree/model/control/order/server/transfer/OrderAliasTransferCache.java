@@ -17,7 +17,6 @@
 package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderAliasTransfer;
-import com.echothree.model.control.order.common.transfer.OrderAliasTypeTransfer;
 import com.echothree.model.control.order.server.control.OrderAliasControl;
 import com.echothree.model.data.order.server.entity.OrderAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,11 +35,11 @@ public class OrderAliasTransferCache
     }
     
     public OrderAliasTransfer getOrderAliasTransfer(OrderAlias orderAlias) {
-        OrderAliasTransfer orderAliasTransfer = get(orderAlias);
+        var orderAliasTransfer = get(orderAlias);
         
         if(orderAliasTransfer == null) {
-            OrderAliasTypeTransfer orderAliasType = orderAliasControl.getOrderAliasTypeTransfer(userVisit, orderAlias.getOrderAliasType());
-            String alias = orderAlias.getAlias();
+            var orderAliasType = orderAliasControl.getOrderAliasTypeTransfer(userVisit, orderAlias.getOrderAliasType());
+            var alias = orderAlias.getAlias();
             
             orderAliasTransfer = new OrderAliasTransfer(orderAliasType, alias);
             put(orderAlias, orderAliasTransfer);

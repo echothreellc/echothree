@@ -22,10 +22,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
-import com.echothree.model.data.contactlist.server.entity.PartyContactList;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,20 +64,20 @@ public class SetPartyContactListStatusCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            String contactListName = form.getContactListName();
-            ContactList contactList = contactListControl.getContactListByName(contactListName);
+            var contactListName = form.getContactListName();
+            var contactList = contactListControl.getContactListByName(contactListName);
 
             if(contactList != null) {
-                PartyContactList partyContactList = contactListControl.getPartyContactList(party, contactList);
+                var partyContactList = contactListControl.getPartyContactList(party, contactList);
 
                 if(partyContactList != null) {
-                    String partyContactListStatusChoice = form.getPartyContactListStatusChoice();
-                    PartyPK updatedBy = getPartyPK();
+                    var partyContactListStatusChoice = form.getPartyContactListStatusChoice();
+                    var updatedBy = getPartyPK();
 
                     contactListControl.setPartyContactListStatus(this, partyContactList, partyContactListStatusChoice, updatedBy);
                 } else {

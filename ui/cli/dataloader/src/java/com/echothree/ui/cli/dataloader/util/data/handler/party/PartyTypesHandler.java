@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.party;
 
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.PartyService;
-import com.echothree.control.user.party.common.form.CreatePartyTypeForm;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -46,11 +45,11 @@ public class PartyTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("partyType")) {
-            CreatePartyTypeForm commandForm = PartyFormFactory.getCreatePartyTypeForm();
+            var commandForm = PartyFormFactory.getCreatePartyTypeForm();
             
             commandForm.set(getAttrsMap(attrs));
-            
-            String commandAction = (String)commandForm.get("CommandAction");
+
+            var commandAction = (String)commandForm.get("CommandAction");
             if(commandAction == null || commandAction.equals("create")) {
                 partyService.createPartyType(initialDataParser.getUserVisit(), commandForm);
             }

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.subscription.subscriptiontypechain;
 
 import com.echothree.control.user.subscription.common.SubscriptionUtil;
-import com.echothree.control.user.subscription.common.form.GetSubscriptionTypeChainsForm;
 import com.echothree.control.user.subscription.common.result.GetSubscriptionTypeChainsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,19 +49,19 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetSubscriptionTypeChainsForm getSubscriptionTypeChainsForm = SubscriptionUtil.getHome().getGetSubscriptionTypeChainsForm();
-            String subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
-            String subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
+            var getSubscriptionTypeChainsForm = SubscriptionUtil.getHome().getGetSubscriptionTypeChainsForm();
+            var subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
+            var subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
             
             getSubscriptionTypeChainsForm.setSubscriptionKindName(subscriptionKindName);
             getSubscriptionTypeChainsForm.setSubscriptionTypeName(subscriptionTypeName);
-            
-            CommandResult commandResult = SubscriptionUtil.getHome().getSubscriptionTypeChains(getUserVisitPK(request), getSubscriptionTypeChainsForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSubscriptionTypeChainsResult result = (GetSubscriptionTypeChainsResult)executionResult.getResult();
+
+            var commandResult = SubscriptionUtil.getHome().getSubscriptionTypeChains(getUserVisitPK(request), getSubscriptionTypeChainsForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSubscriptionTypeChainsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SUBSCRIPTION_KIND, result.getSubscriptionKind());
             request.setAttribute(AttributeConstants.SUBSCRIPTION_TYPE, result.getSubscriptionType());

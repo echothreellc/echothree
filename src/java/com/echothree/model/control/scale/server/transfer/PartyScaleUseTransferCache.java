@@ -16,11 +16,8 @@
 
 package com.echothree.model.control.scale.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.scale.common.transfer.PartyScaleUseTransfer;
-import com.echothree.model.control.scale.common.transfer.ScaleTransfer;
-import com.echothree.model.control.scale.common.transfer.ScaleUseTypeTransfer;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.scale.server.entity.PartyScaleUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -38,12 +35,12 @@ public class PartyScaleUseTransferCache
     }
     
     public PartyScaleUseTransfer getPartyScaleUseTransfer(PartyScaleUse partyScaleUse) {
-        PartyScaleUseTransfer partyScaleUseTransfer = get(partyScaleUse);
+        var partyScaleUseTransfer = get(partyScaleUse);
         
         if(partyScaleUseTransfer == null) {
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyScaleUse.getParty());
-            ScaleUseTypeTransfer scaleUseType = scaleControl.getScaleUseTypeTransfer(userVisit, partyScaleUse.getScaleUseType());
-            ScaleTransfer scale = scaleControl.getScaleTransfer(userVisit, partyScaleUse.getScale());
+            var party = partyControl.getPartyTransfer(userVisit, partyScaleUse.getParty());
+            var scaleUseType = scaleControl.getScaleUseTypeTransfer(userVisit, partyScaleUse.getScaleUseType());
+            var scale = scaleControl.getScaleTransfer(userVisit, partyScaleUse.getScale());
             
             partyScaleUseTransfer = new PartyScaleUseTransfer(party, scaleUseType, scale);
             put(partyScaleUse, partyScaleUseTransfer);

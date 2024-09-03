@@ -21,14 +21,10 @@ import com.echothree.model.control.campaign.common.transfer.CampaignSourceTransf
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.campaign.common.workflow.CampaignSourceStatusConstants;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.campaign.server.entity.CampaignSource;
-import com.echothree.model.data.campaign.server.entity.CampaignSourceDetail;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class CampaignSourceTransferCache
         extends BaseCampaignTransferCache<CampaignSource, CampaignSourceTransfer> {
@@ -50,19 +46,19 @@ public class CampaignSourceTransferCache
     }
 
     public CampaignSourceTransfer getCampaignSourceTransfer(CampaignSource campaignSource) {
-        CampaignSourceTransfer campaignSourceTransfer = get(campaignSource);
+        var campaignSourceTransfer = get(campaignSource);
 
         if(campaignSourceTransfer == null) {
-            CampaignSourceDetail campaignSourceDetail = campaignSource.getLastDetail();
-            String campaignSourceName = campaignSourceDetail.getCampaignSourceName();
-            String valueSha1Hash = campaignSourceDetail.getValueSha1Hash();
-            String value = campaignSourceDetail.getValue();
-            Boolean isDefault = campaignSourceDetail.getIsDefault();
-            Integer sortOrder = campaignSourceDetail.getSortOrder();
-            String description = campaignControl.getBestCampaignSourceDescription(campaignSource, getLanguage());
+            var campaignSourceDetail = campaignSource.getLastDetail();
+            var campaignSourceName = campaignSourceDetail.getCampaignSourceName();
+            var valueSha1Hash = campaignSourceDetail.getValueSha1Hash();
+            var value = campaignSourceDetail.getValue();
+            var isDefault = campaignSourceDetail.getIsDefault();
+            var sortOrder = campaignSourceDetail.getSortOrder();
+            var description = campaignControl.getBestCampaignSourceDescription(campaignSource, getLanguage());
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(campaignSource.getPrimaryKey());
-            WorkflowEntityStatusTransfer campaignSourceStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(campaignSource.getPrimaryKey());
+            var campaignSourceStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS, entityInstance);
             
             campaignSourceTransfer = new CampaignSourceTransfer(campaignSourceName, valueSha1Hash, value, isDefault, sortOrder, description,

@@ -16,21 +16,15 @@
 
 package com.echothree.model.control.uom.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.SymbolPositionTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.uom.common.UomOptions;
 import com.echothree.model.control.uom.common.UomProperties;
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureKindTransfer;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeDetail;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeVolume;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeWeight;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class UnitOfMeasureTypeTransferCache
         extends BaseUomTransferCache<UnitOfMeasureType, UnitOfMeasureTypeTransfer> {
@@ -80,24 +74,24 @@ public class UnitOfMeasureTypeTransferCache
     }
     
     public UnitOfMeasureTypeTransfer getUnitOfMeasureTypeTransfer(UnitOfMeasureType unitOfMeasureType) {
-        UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = get(unitOfMeasureType);
+        var unitOfMeasureTypeTransfer = get(unitOfMeasureType);
         
         if(unitOfMeasureTypeTransfer == null) {
-            UnitOfMeasureTypeDetail unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
-            UnitOfMeasureKindTransfer unitOfMeasureKind = filterUnitOfMeasureKind ? null : uomControl.getUnitOfMeasureKindTransfer(userVisit, unitOfMeasureTypeDetail.getUnitOfMeasureKind());
-            String unitOfMeasureTypeName = filterUnitOfMeasureTypeName ? null : unitOfMeasureTypeDetail.getUnitOfMeasureTypeName();
-            SymbolPositionTransfer symbolPosition = filterSymbolPosition ? null : accountingControl.getSymbolPositionTransfer(userVisit, unitOfMeasureTypeDetail.getSymbolPosition());
-            Boolean suppressSymbolSeparator = filterSuppressSymbolSeparator ? null : unitOfMeasureTypeDetail.getSuppressSymbolSeparator();
-            Boolean isDefault = filterIsDefault ? null : unitOfMeasureTypeDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : unitOfMeasureTypeDetail.getSortOrder();
-            String description = filterDescription ? null : uomControl.getBestSingularUnitOfMeasureTypeDescription(unitOfMeasureType, getLanguage());
+            var unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
+            var unitOfMeasureKind = filterUnitOfMeasureKind ? null : uomControl.getUnitOfMeasureKindTransfer(userVisit, unitOfMeasureTypeDetail.getUnitOfMeasureKind());
+            var unitOfMeasureTypeName = filterUnitOfMeasureTypeName ? null : unitOfMeasureTypeDetail.getUnitOfMeasureTypeName();
+            var symbolPosition = filterSymbolPosition ? null : accountingControl.getSymbolPositionTransfer(userVisit, unitOfMeasureTypeDetail.getSymbolPosition());
+            var suppressSymbolSeparator = filterSuppressSymbolSeparator ? null : unitOfMeasureTypeDetail.getSuppressSymbolSeparator();
+            var isDefault = filterIsDefault ? null : unitOfMeasureTypeDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : unitOfMeasureTypeDetail.getSortOrder();
+            var description = filterDescription ? null : uomControl.getBestSingularUnitOfMeasureTypeDescription(unitOfMeasureType, getLanguage());
             
             unitOfMeasureTypeTransfer = new UnitOfMeasureTypeTransfer(unitOfMeasureKind, unitOfMeasureTypeName, symbolPosition,
                     suppressSymbolSeparator, isDefault, sortOrder, description);
             put(unitOfMeasureType, unitOfMeasureTypeTransfer);
             
             if(includeVolume) {
-                UnitOfMeasureTypeVolume unitOfMeasureTypeVolume = uomControl.getUnitOfMeasureTypeVolume(unitOfMeasureType);
+                var unitOfMeasureTypeVolume = uomControl.getUnitOfMeasureTypeVolume(unitOfMeasureType);
                 
                 if(unitOfMeasureTypeVolume != null) {
                     unitOfMeasureTypeTransfer.setUnitOfMeasureTypeVolume(uomControl.getUnitOfMeasureTypeVolumeTransfer(userVisit, unitOfMeasureTypeVolume));
@@ -105,7 +99,7 @@ public class UnitOfMeasureTypeTransferCache
             }
             
             if(includeWeight) {
-                UnitOfMeasureTypeWeight unitOfMeasureTypeWeight = uomControl.getUnitOfMeasureTypeWeight(unitOfMeasureType);
+                var unitOfMeasureTypeWeight = uomControl.getUnitOfMeasureTypeWeight(unitOfMeasureType);
                 
                 if(unitOfMeasureTypeWeight != null) {
                     unitOfMeasureTypeTransfer.setUnitOfMeasureTypeWeight(uomControl.getUnitOfMeasureTypeWeightTransfer(userVisit, unitOfMeasureTypeWeight));

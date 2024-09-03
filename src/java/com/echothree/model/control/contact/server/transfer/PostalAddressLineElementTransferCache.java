@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.contact.server.transfer;
 
-import com.echothree.model.control.contact.common.transfer.PostalAddressElementTypeTransfer;
 import com.echothree.model.control.contact.common.transfer.PostalAddressLineElementTransfer;
-import com.echothree.model.control.contact.common.transfer.PostalAddressLineTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PostalAddressLineElement;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,18 +30,18 @@ public class PostalAddressLineElementTransferCache
     }
     
     public PostalAddressLineElementTransfer getPostalAddressLineElementTransfer(PostalAddressLineElement postalAddressLineElement) {
-        PostalAddressLineElementTransfer postalAddressLineElementTransfer = get(postalAddressLineElement);
+        var postalAddressLineElementTransfer = get(postalAddressLineElement);
         
         if(postalAddressLineElementTransfer == null) {
-            PostalAddressLineTransfer postalAddressLine = contactControl.getPostalAddressLineTransfer(userVisit,
+            var postalAddressLine = contactControl.getPostalAddressLineTransfer(userVisit,
                     postalAddressLineElement.getPostalAddressLine());
-            Integer postalAddressLineElementSortOrder = postalAddressLineElement.getPostalAddressLineElementSortOrder();
-            PostalAddressElementTypeTransfer postalAddressElementType = contactControl.getPostalAddressElementTypeTransfer(userVisit,
+            var postalAddressLineElementSortOrder = postalAddressLineElement.getPostalAddressLineElementSortOrder();
+            var postalAddressElementType = contactControl.getPostalAddressElementTypeTransfer(userVisit,
                     postalAddressLineElement.getPostalAddressElementType());
-            String prefix = postalAddressLineElement.getPrefix();
-            Boolean alwaysIncludePrefix = postalAddressLineElement.getAlwaysIncludePrefix();
-            String suffix = postalAddressLineElement.getSuffix();
-            Boolean alwaysIncludeSuffix = postalAddressLineElement.getAlwaysIncludeSuffix();
+            var prefix = postalAddressLineElement.getPrefix();
+            var alwaysIncludePrefix = postalAddressLineElement.getAlwaysIncludePrefix();
+            var suffix = postalAddressLineElement.getSuffix();
+            var alwaysIncludeSuffix = postalAddressLineElement.getAlwaysIncludeSuffix();
             
             postalAddressLineElementTransfer = new PostalAddressLineElementTransfer(postalAddressLine,
                     postalAddressLineElementSortOrder, postalAddressElementType, prefix, alwaysIncludePrefix, suffix,

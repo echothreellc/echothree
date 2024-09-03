@@ -18,35 +18,24 @@ package com.echothree.model.control.order.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
-import com.echothree.model.data.cancellationpolicy.common.pk.CancellationPolicyPK;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.inventory.common.pk.InventoryConditionPK;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.item.common.pk.ItemPK;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.order.common.pk.OrderLinePK;
-import com.echothree.model.data.order.common.pk.OrderPK;
-import com.echothree.model.data.order.common.pk.OrderShipmentGroupPK;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderLine;
-import com.echothree.model.data.order.server.entity.OrderLineDetail;
 import com.echothree.model.data.order.server.entity.OrderLineStatus;
 import com.echothree.model.data.order.server.entity.OrderShipmentGroup;
 import com.echothree.model.data.order.server.factory.OrderLineDetailFactory;
 import com.echothree.model.data.order.server.factory.OrderLineFactory;
 import com.echothree.model.data.order.server.factory.OrderLineStatusFactory;
 import com.echothree.model.data.order.server.value.OrderLineDetailValue;
-import com.echothree.model.data.returnpolicy.common.pk.ReturnPolicyPK;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
-import com.echothree.model.data.uom.common.pk.UnitOfMeasureTypePK;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.wishlist.server.entity.WishlistLine;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -65,8 +54,8 @@ public class OrderLineControl
     public OrderLine createOrderLine(Order order, Integer orderLineSequence, OrderLine parentOrderLine, OrderShipmentGroup orderShipmentGroup, Item item,
             InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType, Long quantity, Long unitAmount, String description,
             CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, Boolean taxable, BasePK createdBy) {
-        OrderLine orderLine = OrderLineFactory.getInstance().create();
-        OrderLineDetail orderLineDetail = OrderLineDetailFactory.getInstance().create(orderLine, order, orderLineSequence, parentOrderLine, orderShipmentGroup,
+        var orderLine = OrderLineFactory.getInstance().create();
+        var orderLineDetail = OrderLineDetailFactory.getInstance().create(orderLine, order, orderLineSequence, parentOrderLine, orderShipmentGroup,
                 item, inventoryCondition, unitOfMeasureType, quantity, unitAmount, description, cancellationPolicy, returnPolicy, taxable,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -156,8 +145,8 @@ public class OrderLineControl
                         "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? AND ordldt_orderlinesequence = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OrderLineFactory.getInstance().prepareStatement(query);
+
+            var ps = OrderLineFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             ps.setInt(2, orderLineSequence);
@@ -203,8 +192,8 @@ public class OrderLineControl
                         "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OrderLineFactory.getInstance().prepareStatement(query);
+
+            var ps = OrderLineFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             
@@ -241,8 +230,8 @@ public class OrderLineControl
                         "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ordshpgrp_ordershipmentgroupid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OrderLineFactory.getInstance().prepareStatement(query);
+
+            var ps = OrderLineFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, orderShipmentGroup.getPrimaryKey().getEntityId());
             
@@ -264,27 +253,27 @@ public class OrderLineControl
     
     public void updateOrderLineFromValue(OrderLineDetailValue orderLineDetailValue, BasePK updatedBy) {
         if(orderLineDetailValue.hasBeenModified()) {
-            OrderLine orderLine = OrderLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderLine = OrderLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderLineDetailValue.getOrderLinePK());
-            OrderLineDetail orderLineDetail = orderLine.getActiveDetailForUpdate();
+            var orderLineDetail = orderLine.getActiveDetailForUpdate();
             
             orderLineDetail.setThruTime(session.START_TIME_LONG);
             orderLineDetail.store();
-            
-            OrderLinePK orderLinePK = orderLineDetail.getOrderLinePK(); // Not updated
-            OrderPK orderPK = orderLineDetail.getOrderPK(); // Not updated
-            Integer orderLineSequence = orderLineDetail.getOrderLineSequence(); // Not updated
-            OrderLinePK parentOrderLinePK = orderLineDetail.getParentOrderLinePK(); // Not updated
-            OrderShipmentGroupPK orderShipmentGroupPK = orderLineDetailValue.getOrderShipmentGroupPK();
-            ItemPK itemPK = orderLineDetailValue.getItemPK();
-            InventoryConditionPK inventoryConditionPK = orderLineDetailValue.getInventoryConditionPK();
-            UnitOfMeasureTypePK unitOfMeasureTypePK = orderLineDetailValue.getUnitOfMeasureTypePK();
-            Long quantity = orderLineDetailValue.getQuantity();
-            Long unitAmount = orderLineDetailValue.getUnitAmount();
-            String description = orderLineDetailValue.getDescription();
-            CancellationPolicyPK cancellationPolicyPK = orderLineDetailValue.getCancellationPolicyPK();
-            ReturnPolicyPK returnPolicyPK = orderLineDetailValue.getReturnPolicyPK();
-            Boolean taxable = orderLineDetailValue.getTaxable();
+
+            var orderLinePK = orderLineDetail.getOrderLinePK(); // Not updated
+            var orderPK = orderLineDetail.getOrderPK(); // Not updated
+            var orderLineSequence = orderLineDetail.getOrderLineSequence(); // Not updated
+            var parentOrderLinePK = orderLineDetail.getParentOrderLinePK(); // Not updated
+            var orderShipmentGroupPK = orderLineDetailValue.getOrderShipmentGroupPK();
+            var itemPK = orderLineDetailValue.getItemPK();
+            var inventoryConditionPK = orderLineDetailValue.getInventoryConditionPK();
+            var unitOfMeasureTypePK = orderLineDetailValue.getUnitOfMeasureTypePK();
+            var quantity = orderLineDetailValue.getQuantity();
+            var unitAmount = orderLineDetailValue.getUnitAmount();
+            var description = orderLineDetailValue.getDescription();
+            var cancellationPolicyPK = orderLineDetailValue.getCancellationPolicyPK();
+            var returnPolicyPK = orderLineDetailValue.getReturnPolicyPK();
+            var taxable = orderLineDetailValue.getTaxable();
             
             orderLineDetail = OrderLineDetailFactory.getInstance().create(orderLinePK, orderPK, orderLineSequence, parentOrderLinePK, orderShipmentGroupPK,
                     itemPK, inventoryConditionPK, unitOfMeasureTypePK, quantity, unitAmount, description, cancellationPolicyPK, returnPolicyPK, taxable,
@@ -299,7 +288,7 @@ public class OrderLineControl
     
     public void deleteOrderLine(OrderLine orderLine, BasePK deletedBy) {
         var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
-        OrderLineDetail orderLineDetail = orderLine.getLastDetailForUpdate();
+        var orderLineDetail = orderLine.getLastDetailForUpdate();
 
         removeOrderLineStatusByOrderLine(orderLine);
         orderLineAdjustmentControl.deleteOrderLineAdjustmentsByOrderLine(orderLine, deletedBy);
@@ -327,7 +316,7 @@ public class OrderLineControl
     
     public void deleteOrderLinesByWishlistPriority(WishlistPriority wishlistPriority, BasePK deletedBy) {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        List<WishlistLine> wishlistLines = wishlistControl.getWishlistLinesByWishlistPriorityForUpdate(wishlistPriority);
+        var wishlistLines = wishlistControl.getWishlistLinesByWishlistPriorityForUpdate(wishlistPriority);
         
         wishlistLines.forEach((wishlistLine) -> {
             deleteOrderLine(wishlistLine.getOrderLineForUpdate(), deletedBy);
@@ -358,8 +347,8 @@ public class OrderLineControl
                         "WHERE ordlst_ordl_orderlineid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = OrderLineStatusFactory.getInstance().prepareStatement(query);
+
+            var ps = OrderLineStatusFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, orderLine.getPrimaryKey().getEntityId());
             
@@ -380,7 +369,7 @@ public class OrderLineControl
     }
     
     public void removeOrderLineStatusByOrderLine(OrderLine orderLine) {
-        OrderLineStatus orderLineStatus = getOrderLineStatusForUpdate(orderLine);
+        var orderLineStatus = getOrderLineStatusForUpdate(orderLine);
         
         if(orderLineStatus != null) {
             orderLineStatus.remove();

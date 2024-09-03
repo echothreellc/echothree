@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorResultCodeDescriptionTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentProcessorResultCodeTransfer;
 import com.echothree.model.control.payment.server.control.PaymentProcessorResultCodeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorResultCodeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,11 +34,11 @@ public class PaymentProcessorResultCodeDescriptionTransferCache
     
     @Override
     public PaymentProcessorResultCodeDescriptionTransfer getTransfer(PaymentProcessorResultCodeDescription paymentProcessorResultCodeDescription) {
-        PaymentProcessorResultCodeDescriptionTransfer paymentProcessorResultCodeDescriptionTransfer = get(paymentProcessorResultCodeDescription);
+        var paymentProcessorResultCodeDescriptionTransfer = get(paymentProcessorResultCodeDescription);
         
         if(paymentProcessorResultCodeDescriptionTransfer == null) {
-            PaymentProcessorResultCodeTransfer paymentProcessorResultCodeTransfer = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeTransfer(userVisit, paymentProcessorResultCodeDescription.getPaymentProcessorResultCode());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorResultCodeDescription.getLanguage());
+            var paymentProcessorResultCodeTransfer = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeTransfer(userVisit, paymentProcessorResultCodeDescription.getPaymentProcessorResultCode());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorResultCodeDescription.getLanguage());
             
             paymentProcessorResultCodeDescriptionTransfer = new PaymentProcessorResultCodeDescriptionTransfer(languageTransfer, paymentProcessorResultCodeTransfer, paymentProcessorResultCodeDescription.getDescription());
             put(paymentProcessorResultCodeDescription, paymentProcessorResultCodeDescriptionTransfer);

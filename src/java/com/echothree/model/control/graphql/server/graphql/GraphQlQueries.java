@@ -5915,7 +5915,7 @@ public interface GraphQlQueries {
             commandForm.setUsername(username);
             commandForm.setUlid(id);
 
-            GetUserLoginCommand getUserLoginCommand = new GetUserLoginCommand(getUserVisitPK(env), commandForm);
+            var getUserLoginCommand = new GetUserLoginCommand(getUserVisitPK(env), commandForm);
             userLogin = getUserLoginCommand.getEntityForGraphQl();
             foundByUsernameUserLogin = getUserLoginCommand.foundByUsernameUserLogin;
         } catch (NamingException ex) {

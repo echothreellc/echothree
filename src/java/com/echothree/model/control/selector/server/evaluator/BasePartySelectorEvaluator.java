@@ -22,14 +22,8 @@ import com.echothree.model.control.selector.common.SelectorNodeTypes;
 import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.employee.server.entity.PartyResponsibility;
-import com.echothree.model.data.employee.server.entity.PartySkill;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.selector.server.entity.SelectorNodeDetail;
-import com.echothree.model.data.selector.server.entity.SelectorNodeResponsibilityType;
-import com.echothree.model.data.selector.server.entity.SelectorNodeSkillType;
-import com.echothree.model.data.selector.server.entity.SelectorNodeTrainingClass;
-import com.echothree.model.data.selector.server.entity.SelectorNodeType;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 
@@ -47,25 +41,25 @@ public class BasePartySelectorEvaluator
     }
     
     private Boolean evaluateResponsibilityType(final SelectorNodeDetail snd) {
-        SelectorNodeResponsibilityType snrt = cachedSelector.getSelectorNodeResponsibilityTypeFromSelectorNodeDetail(snd);
-        PartyResponsibility pr = employeeControl.getPartyResponsibility(party, snrt.getResponsibilityType());
-        boolean result = !(pr == null);
+        var snrt = cachedSelector.getSelectorNodeResponsibilityTypeFromSelectorNodeDetail(snd);
+        var pr = employeeControl.getPartyResponsibility(party, snrt.getResponsibilityType());
+        var result = !(pr == null);
         
         return snd.getNegate()? !result: result;
     }
     
     private Boolean evaluateSkillType(final SelectorNodeDetail snd) {
-        SelectorNodeSkillType snst = cachedSelector.getSelectorNodeSkillTypeFromSelectorNodeDetail(snd);
-        PartySkill ps = employeeControl.getPartySkill(party, snst.getSkillType());
-        boolean result = !(ps == null);
+        var snst = cachedSelector.getSelectorNodeSkillTypeFromSelectorNodeDetail(snd);
+        var ps = employeeControl.getPartySkill(party, snst.getSkillType());
+        var result = !(ps == null);
         
         return snd.getNegate()? !result: result;
     }
     
     private Boolean evaluateTrainingClass(final SelectorNodeDetail snd) {
-        SelectorNodeTrainingClass sntct = cachedSelector.getSelectorNodeTrainingClassFromSelectorNodeDetail(snd);
-        long count = trainingControl.countPartyTrainingClassesUsingNames(party, sntct.getTrainingClass(), PartyTrainingClassStatusConstants.WorkflowStep_PASSED);
-        boolean result = count > 0;
+        var sntct = cachedSelector.getSelectorNodeTrainingClassFromSelectorNodeDetail(snd);
+        var count = trainingControl.countPartyTrainingClassesUsingNames(party, sntct.getTrainingClass(), PartyTrainingClassStatusConstants.WorkflowStep_PASSED);
+        var result = count > 0;
         
         return snd.getNegate()? !result: result;
     }
@@ -77,8 +71,8 @@ public class BasePartySelectorEvaluator
         Boolean result;
         
         if(snd != null) {
-            SelectorNodeType snt = snd.getSelectorNodeType();
-            String sntn = snt.getSelectorNodeTypeName();
+            var snt = snd.getSelectorNodeType();
+            var sntn = snt.getSelectorNodeTypeName();
             
             if(sntn.equals(SelectorNodeTypes.RESPONSIBILITY_TYPE.name())) {
                 result = evaluateResponsibilityType(snd);
@@ -107,8 +101,8 @@ public class BasePartySelectorEvaluator
         this.cachedSelector = cachedSelector;
         this.entityInstance = entityInstance;
         this.party = party;
-        
-        Boolean result = evaluateSelectorNode(cachedSelector.getRootSelectorNodeDetail());
+
+        var result = evaluateSelectorNode(cachedSelector.getRootSelectorNodeDetail());
         
         this.party = null;
         this.entityInstance = null;

@@ -17,13 +17,11 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetUseDescriptionsForm;
-import com.echothree.control.user.offer.common.result.GetUseDescriptionsResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetUseDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var useControl = Session.getModelController(UseControl.class);
-        GetUseDescriptionsResult result = OfferResultFactory.getGetUseDescriptionsResult();
-        String useName = form.getUseName();
-        Use use = useControl.getUseByName(useName);
+        var result = OfferResultFactory.getGetUseDescriptionsResult();
+        var useName = form.getUseName();
+        var use = useControl.getUseByName(useName);
         
         if(use != null) {
             result.setUse(useControl.getUseTransfer(getUserVisit(), use));

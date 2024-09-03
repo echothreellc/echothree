@@ -18,13 +18,11 @@ package com.echothree.control.user.chain.server.command;
 
 import com.echothree.control.user.chain.common.form.GetChainActionTypeForm;
 import com.echothree.control.user.chain.common.result.ChainResultFactory;
-import com.echothree.control.user.chain.common.result.GetChainActionTypeResult;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.chain.server.entity.ChainActionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,9 +64,9 @@ public class GetChainActionTypeCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetChainActionTypeResult result = ChainResultFactory.getGetChainActionTypeResult();
-        String chainActionTypeName = form.getChainActionTypeName();
-        ChainActionType chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
+        var result = ChainResultFactory.getGetChainActionTypeResult();
+        var chainActionTypeName = form.getChainActionTypeName();
+        var chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
         
         if(chainActionType != null) {
             result.setChainActionType(chainControl.getChainActionTypeTransfer(getUserVisit(), chainActionType));

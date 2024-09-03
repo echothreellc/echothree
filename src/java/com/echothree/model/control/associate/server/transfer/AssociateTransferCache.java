@@ -16,15 +16,11 @@
 
 package com.echothree.model.control.associate.server.transfer;
 
-import com.echothree.model.control.associate.common.transfer.AssociateProgramTransfer;
 import com.echothree.model.control.associate.common.transfer.AssociateTransfer;
 import com.echothree.model.control.associate.server.control.AssociateControl;
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.associate.server.entity.Associate;
-import com.echothree.model.data.associate.server.entity.AssociateDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -43,16 +39,16 @@ public class AssociateTransferCache
     
     @Override
     public AssociateTransfer getTransfer(Associate associate) {
-        AssociateTransfer associateTransfer = get(associate);
+        var associateTransfer = get(associate);
         
         if(associateTransfer == null) {
-            AssociateDetail associateDetail = associate.getLastDetail();
-            AssociateProgramTransfer associateProgram = associateControl.getAssociateProgramTransfer(userVisit, associateDetail.getAssociateProgram());
-            String associateName = associateDetail.getAssociateName();
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, associateDetail.getParty());
-            String description = associateDetail.getDescription();
-            MimeTypeTransfer summaryMimeType = coreControl.getMimeTypeTransfer(userVisit, associateDetail.getSummaryMimeType());
-            String summary = associateDetail.getSummary();
+            var associateDetail = associate.getLastDetail();
+            var associateProgram = associateControl.getAssociateProgramTransfer(userVisit, associateDetail.getAssociateProgram());
+            var associateName = associateDetail.getAssociateName();
+            var party = partyControl.getPartyTransfer(userVisit, associateDetail.getParty());
+            var description = associateDetail.getDescription();
+            var summaryMimeType = coreControl.getMimeTypeTransfer(userVisit, associateDetail.getSummaryMimeType());
+            var summary = associateDetail.getSummary();
             
             associateTransfer = new AssociateTransfer(associateProgram, associateName, party, description, summaryMimeType, summary);
             put(associate, associateTransfer);

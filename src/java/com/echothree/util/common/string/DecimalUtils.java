@@ -43,20 +43,20 @@ public class DecimalUtils {
         if(value.equalsIgnoreCase("MAX_VALUE") || value.equalsIgnoreCase("MIN_VALUE")) {
             result = value;
         } else {
-            char []rawValue = value.toCharArray();
-            int size = rawValue.length;
-            StringBuilder cleanWhole = new StringBuilder(size);
-            boolean checkMinusSign = minusSign != null;
-            char charMinusSign = checkMinusSign? minusSign.charAt(0): 0;
-            boolean minusSignFound = false;
-            char charFractionSeparator = fractionSeparator == null? '\u0000': fractionSeparator.charAt(0);
-            int intFractionDigits = fractionDigits == null? 0: fractionDigits;
-            StringBuilder cleanFraction = new StringBuilder(intFractionDigits);
-            boolean separatorFound = false;
-            StringBuilder parsedValue = new StringBuilder(size);
+            var rawValue = value.toCharArray();
+            var size = rawValue.length;
+            var cleanWhole = new StringBuilder(size);
+            var checkMinusSign = minusSign != null;
+            var charMinusSign = checkMinusSign? minusSign.charAt(0): 0;
+            var minusSignFound = false;
+            var charFractionSeparator = fractionSeparator == null? '\u0000': fractionSeparator.charAt(0);
+            var intFractionDigits = fractionDigits == null? 0: fractionDigits;
+            var cleanFraction = new StringBuilder(intFractionDigits);
+            var separatorFound = false;
+            var parsedValue = new StringBuilder(size);
 
-            for(int i = 0; i < size; i++) {
-                char testChar = rawValue[i];
+            for(var i = 0; i < size; i++) {
+                var testChar = rawValue[i];
 
                 if(testChar >= '\u0030' && testChar <= '\u0039') {
                     if(separatorFound) {
@@ -73,7 +73,7 @@ public class DecimalUtils {
                 }
             }
 
-            for(int i = cleanFraction.length(); i < intFractionDigits; i++) {
+            for(var i = cleanFraction.length(); i < intFractionDigits; i++) {
                 cleanFraction.append('0');
             }
 

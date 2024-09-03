@@ -19,9 +19,6 @@ package com.echothree.control.user.printer.server.command;
 import com.echothree.control.user.printer.common.form.DeletePrinterGroupDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.server.control.PrinterControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.printer.server.entity.PrinterGroup;
-import com.echothree.model.data.printer.server.entity.PrinterGroupDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,16 +50,16 @@ public class DeletePrinterGroupDescriptionCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerGroupName = form.getPrinterGroupName();
-        PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
+       var printerGroupName = form.getPrinterGroupName();
+       var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
         
         if(printerGroup != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PrinterGroupDescription printerGroupDescription = printerControl.getPrinterGroupDescriptionForUpdate(printerGroup, language);
+                var printerGroupDescription = printerControl.getPrinterGroupDescriptionForUpdate(printerGroup, language);
                 
                 if(printerGroupDescription != null) {
                     printerControl.deletePrinterGroupDescription(printerGroupDescription, getPartyPK());

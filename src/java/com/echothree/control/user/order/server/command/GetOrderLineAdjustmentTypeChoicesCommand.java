@@ -17,14 +17,12 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.GetOrderLineAdjustmentTypeChoicesForm;
-import com.echothree.control.user.order.common.result.GetOrderLineAdjustmentTypeChoicesResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.order.server.control.OrderLineAdjustmentControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -67,14 +65,14 @@ public class GetOrderLineAdjustmentTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        GetOrderLineAdjustmentTypeChoicesResult result = OrderResultFactory.getGetOrderLineAdjustmentTypeChoicesResult();
+        var result = OrderResultFactory.getGetOrderLineAdjustmentTypeChoicesResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
-            String defaultOrderLineAdjustmentTypeChoice = form.getDefaultOrderLineAdjustmentTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultOrderLineAdjustmentTypeChoice = form.getDefaultOrderLineAdjustmentTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setOrderLineAdjustmentTypeChoices(orderLineAdjustmentControl.getOrderLineAdjustmentTypeChoices(defaultOrderLineAdjustmentTypeChoice, getPreferredLanguage(), allowNullChoice,
                     orderType));

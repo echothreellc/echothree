@@ -37,16 +37,16 @@ public class CmsTransformFilter
     @Override
     public void emptyElement(QName element, XMLAttributes attributes, Augmentations augs)
             throws XNIException {
-        String eName = element.rawname.toLowerCase(Locale.getDefault());
+        var eName = element.rawname.toLowerCase(Locale.getDefault());
 
         if(eName.equals("img")) {
-            int attributeCount = attributes.getLength();
+            var attributeCount = attributes.getLength();
 
-            for(int i = 0; i < attributeCount; i++) {
-                String aname = attributes.getQName(i).toLowerCase(Locale.getDefault());
+            for(var i = 0; i < attributeCount; i++) {
+                var aname = attributes.getQName(i).toLowerCase(Locale.getDefault());
 
                 if(aname.equalsIgnoreCase("src")) {
-                    String imgSrc = attributes.getValue(i);
+                    var imgSrc = attributes.getValue(i);
 
                     if(imgSrc.startsWith("/cms/")) {
                         attributes.setValue(i, cmsBaseUrl + imgSrc);

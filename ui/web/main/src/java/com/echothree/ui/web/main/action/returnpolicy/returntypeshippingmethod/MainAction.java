@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.returnpolicy.returntypeshippingmethod;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.form.GetReturnTypeShippingMethodsForm;
 import com.echothree.control.user.returnpolicy.common.result.GetReturnTypeShippingMethodsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,19 +49,19 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetReturnTypeShippingMethodsForm commandForm = ReturnPolicyUtil.getHome().getGetReturnTypeShippingMethodsForm();
-            String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-            String returnTypeName = request.getParameter(ParameterConstants.RETURN_TYPE_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getGetReturnTypeShippingMethodsForm();
+            var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+            var returnTypeName = request.getParameter(ParameterConstants.RETURN_TYPE_NAME);
             
             commandForm.setReturnKindName(returnKindName);
             commandForm.setReturnTypeName(returnTypeName);
 
-            CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnTypeShippingMethods(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetReturnTypeShippingMethodsResult result = (GetReturnTypeShippingMethodsResult)executionResult.getResult();
+            var commandResult = ReturnPolicyUtil.getHome().getReturnTypeShippingMethods(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnTypeShippingMethodsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RETURN_TYPE, result.getReturnType());
             request.setAttribute(AttributeConstants.RETURN_TYPE_SHIPPING_METHODS, result.getReturnTypeShippingMethods());

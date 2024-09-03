@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.accounting.glaccountcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.edit.GlAccountCategoryEdit;
-import com.echothree.control.user.accounting.common.form.EditGlAccountCategoryForm;
 import com.echothree.control.user.accounting.common.result.EditGlAccountCategoryResult;
-import com.echothree.control.user.accounting.common.spec.GlAccountCategorySpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,13 +53,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalGlAccountCategoryName = request.getParameter(ParameterConstants.ORIGINAL_GL_ACCOUNT_CATEGORY_NAME);
+        var originalGlAccountCategoryName = request.getParameter(ParameterConstants.ORIGINAL_GL_ACCOUNT_CATEGORY_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditGlAccountCategoryForm commandForm = AccountingUtil.getHome().getEditGlAccountCategoryForm();
-                GlAccountCategorySpec spec = AccountingUtil.getHome().getGlAccountCategorySpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = AccountingUtil.getHome().getEditGlAccountCategoryForm();
+                var spec = AccountingUtil.getHome().getGlAccountCategorySpec();
                 
                 if(originalGlAccountCategoryName == null)
                     originalGlAccountCategoryName = actionForm.getOriginalGlAccountCategoryName();
@@ -73,7 +68,7 @@ public class EditAction
                 spec.setGlAccountCategoryName(originalGlAccountCategoryName);
                 
                 if(wasPost(request)) {
-                    GlAccountCategoryEdit edit = AccountingUtil.getHome().getGlAccountCategoryEdit();
+                    var edit = AccountingUtil.getHome().getGlAccountCategoryEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -83,14 +78,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().editGlAccountCategory(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AccountingUtil.getHome().editGlAccountCategory(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditGlAccountCategoryResult result = (EditGlAccountCategoryResult)executionResult.getResult();
+                            var result = (EditGlAccountCategoryResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -103,13 +98,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().editGlAccountCategory(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditGlAccountCategoryResult result = (EditGlAccountCategoryResult)executionResult.getResult();
+
+                    var commandResult = AccountingUtil.getHome().editGlAccountCategory(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditGlAccountCategoryResult)executionResult.getResult();
                     
                     if(result != null) {
-                        GlAccountCategoryEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalGlAccountCategoryName(edit.getGlAccountCategoryName());

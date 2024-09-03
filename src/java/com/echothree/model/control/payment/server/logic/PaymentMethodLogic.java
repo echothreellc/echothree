@@ -21,13 +21,11 @@ import com.echothree.model.control.payment.common.exception.UnknownPaymentMethod
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
-import com.echothree.model.control.selector.server.evaluator.CachedSelector;
 import com.echothree.model.control.selector.server.evaluator.PaymentMethodItemSelectorEvaluator;
 import com.echothree.model.control.selector.server.evaluator.SelectorCache;
 import com.echothree.model.control.selector.server.evaluator.SelectorCacheFactory;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
-import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -72,10 +70,10 @@ public class PaymentMethodLogic
     
     public void checkAcceptanceOfItem(final Session session, final ExecutionErrorAccumulator eea, final SelectorCache selectorCache,
             final PaymentMethod paymentMethod, final Item item, final BasePK evaluatedBy) {
-        Selector selector = paymentMethod.getLastDetail().getItemSelector();
+        var selector = paymentMethod.getLastDetail().getItemSelector();
         
         if(selector != null) {
-            CachedSelector cachedSelector = selectorCache.getSelector(selector);
+            var cachedSelector = selectorCache.getSelector(selector);
             
             if(!new PaymentMethodItemSelectorEvaluator(session, evaluatedBy).evaluate(cachedSelector, item)) {
                 handleExecutionError(ItemNotAcceptibleForPaymentMethodException.class, eea, ExecutionErrors.ItemNotAcceptibleForPaymentMethod.name(),
@@ -86,10 +84,10 @@ public class PaymentMethodLogic
     
     public void checkAcceptanceOfItem(final Session session, final ExecutionErrorAccumulator eea, final PaymentMethod paymentMethod, final Item item,
             final BasePK evaluatedBy) {
-        Selector selector = paymentMethod.getLastDetail().getItemSelector();
+        var selector = paymentMethod.getLastDetail().getItemSelector();
         
         if(selector != null) {
-            SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
+            var selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
                     SelectorTypes.PAYMENT_METHOD.name());
             
             checkAcceptanceOfItem(session, eea, selectorCache, paymentMethod, item, evaluatedBy);
@@ -98,10 +96,10 @@ public class PaymentMethodLogic
     
     public void checkAcceptanceOfItems(final Session session, final ExecutionErrorAccumulator eea, final PaymentMethod paymentMethod, final Set<Item> items,
             final BasePK evaluatedBy) {
-        Selector selector = paymentMethod.getLastDetail().getItemSelector();
+        var selector = paymentMethod.getLastDetail().getItemSelector();
         
         if(selector != null) {
-            SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
+            var selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
                     SelectorTypes.PAYMENT_METHOD.name());
             
             items.forEach((item) -> {

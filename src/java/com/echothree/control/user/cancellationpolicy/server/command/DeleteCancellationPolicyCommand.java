@@ -22,8 +22,6 @@ import com.echothree.model.control.cancellationpolicy.server.logic.CancellationP
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,15 +64,15 @@ public class DeleteCancellationPolicyCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
-            String cancellationPolicyName = form.getCancellationPolicyName();
-            CancellationPolicy cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByNameForUpdate(cancellationKind, cancellationPolicyName);
+            var cancellationPolicyName = form.getCancellationPolicyName();
+            var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByNameForUpdate(cancellationKind, cancellationPolicyName);
             
             if(cancellationPolicy != null) {
-                CancellationPolicyLogic cancellationPolicyLogic = CancellationPolicyLogic.getInstance();
+                var cancellationPolicyLogic = CancellationPolicyLogic.getInstance();
 
                 cancellationPolicyLogic.checkDeleteCancellationPolicy(this, cancellationPolicy);
 

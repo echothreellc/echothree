@@ -19,13 +19,9 @@ package com.echothree.ui.cli.dataloader.util.data.handler.comment;
 import com.echothree.control.user.comment.common.CommentUtil;
 import com.echothree.control.user.comment.common.CommentService;
 import com.echothree.control.user.comment.common.form.CommentFormFactory;
-import com.echothree.control.user.comment.common.form.CreateCommentForm;
-import com.echothree.control.user.comment.common.form.CreateCommentUsageForm;
 import com.echothree.control.user.comment.common.result.CreateCommentResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import java.util.HashSet;
 import java.util.Set;
 import javax.naming.NamingException;
@@ -63,8 +59,8 @@ public class CommentsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("comment")) {
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("commentedByUsername"))
                     commentedByUsername = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("commentTypeName"))
@@ -79,8 +75,8 @@ public class CommentsHandler
             
             inComment = true;
         } else if(inComment && localName.equals("commentUsage")) {
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("commentUsageTypeName"))
                     commentUsages.add(attrs.getValue(i));
             }
@@ -91,8 +87,8 @@ public class CommentsHandler
     public void characters(char ch[], int start, int length)
     throws SAXException {
         if(inComment) {
-            int oldLength = clobComment != null? clobComment.length: 0;
-            char []newClob = new char[oldLength + length];
+            var oldLength = clobComment != null? clobComment.length: 0;
+            var newClob = new char[oldLength + length];
             
             if(clobComment != null)
                 System.arraycopy(clobComment, 0, newClob, 0, clobComment.length);
@@ -105,7 +101,7 @@ public class CommentsHandler
     public void endElement(String namespaceURI, String localName, String qName)
     throws SAXException {
         if(localName.equals("comment")) {
-            CreateCommentForm form = CommentFormFactory.getCreateCommentForm();
+            var form = CommentFormFactory.getCreateCommentForm();
             
             form.setEntityRef(entityRef);
             form.setCommentedByUsername(commentedByUsername);
@@ -114,16 +110,16 @@ public class CommentsHandler
             form.setMimeTypeName(mimeTypeName);
             form.setClobComment(clobComment == null? null: new String(clobComment));
             form.setStringComment(stringComment);
-            
-            CommandResult commandResult = commentService.createComment(initialDataParser.getUserVisit(), form);
+
+            var commandResult = commentService.createComment(initialDataParser.getUserVisit(), form);
             
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateCommentResult result = (CreateCommentResult)executionResult.getResult();
-                String commentName = result.getCommentName();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateCommentResult)executionResult.getResult();
+                var commentName = result.getCommentName();
                 
-                for(String commentUsageTypeName : commentUsages) {
-                    CreateCommentUsageForm createCommentUsageForm = CommentFormFactory.getCreateCommentUsageForm();
+                for(var commentUsageTypeName : commentUsages) {
+                    var createCommentUsageForm = CommentFormFactory.getCreateCommentUsageForm();
                     
                     createCommentUsageForm.setCommentName(commentName);
                     createCommentUsageForm.setCommentUsageTypeName(commentUsageTypeName);

@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.tax;
 
 import com.echothree.control.user.tax.common.TaxUtil;
 import com.echothree.control.user.tax.common.TaxService;
-import com.echothree.control.user.tax.common.form.CreateTaxForm;
 import com.echothree.control.user.tax.common.form.TaxFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -54,9 +53,9 @@ public class TaxesHandler
             String percent = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("taxName"))
                     taxName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("contactMechanismPurposeName"))
@@ -78,7 +77,7 @@ public class TaxesHandler
             }
             
             try {
-                CreateTaxForm createTaxForm = TaxFormFactory.getCreateTaxForm();
+                var createTaxForm = TaxFormFactory.getCreateTaxForm();
                 
                 createTaxForm.setTaxName(taxName);
                 createTaxForm.setContactMechanismPurposeName(contactMechanismPurposeName);

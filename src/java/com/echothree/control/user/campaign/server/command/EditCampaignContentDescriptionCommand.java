@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.campaign.server.entity.CampaignContent;
 import com.echothree.model.data.campaign.server.entity.CampaignContentDescription;
-import com.echothree.model.data.campaign.server.value.CampaignContentDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditCampaignContentDescriptionCommand
     public CampaignContentDescription getEntity(EditCampaignContentDescriptionResult result) {
         var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignContentDescription campaignContentDescription = null;
-        String campaignContentName = spec.getCampaignContentName();
-        CampaignContent campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
+        var campaignContentName = spec.getCampaignContentName();
+        var campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
 
         if(campaignContent != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditCampaignContentDescriptionCommand
     @Override
     public void doUpdate(CampaignContentDescription campaignContentDescription) {
         var campaignControl = Session.getModelController(CampaignControl.class);
-        CampaignContentDescriptionValue campaignContentDescriptionValue = campaignControl.getCampaignContentDescriptionValue(campaignContentDescription);
+        var campaignContentDescriptionValue = campaignControl.getCampaignContentDescriptionValue(campaignContentDescription);
         campaignContentDescriptionValue.setDescription(edit.getDescription());
 
         campaignControl.updateCampaignContentDescriptionFromValue(campaignContentDescriptionValue, getPartyPK());

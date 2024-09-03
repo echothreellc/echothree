@@ -19,9 +19,6 @@ package com.echothree.control.user.club.server.command;
 import com.echothree.control.user.club.common.form.DeleteClubDescriptionForm;
 import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.club.server.entity.Club;
-import com.echothree.model.data.club.server.entity.ClubDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,16 +50,16 @@ public class DeleteClubDescriptionCommand
     @Override
     protected BaseResult execute() {
         var clubControl = Session.getModelController(ClubControl.class);
-        String clubName = form.getClubName();
-        Club club = clubControl.getClubByName(clubName);
+        var clubName = form.getClubName();
+        var club = clubControl.getClubByName(clubName);
         
         if(club != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ClubDescription clubDescription = clubControl.getClubDescriptionForUpdate(club, language);
+                var clubDescription = clubControl.getClubDescriptionForUpdate(club, language);
                 
                 if(clubDescription != null) {
                     clubControl.deleteClubDescription(clubDescription, getPartyPK());

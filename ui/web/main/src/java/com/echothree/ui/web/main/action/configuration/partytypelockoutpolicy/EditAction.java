@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.partytypelockoutpolicy;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.edit.PartyTypeLockoutPolicyEdit;
-import com.echothree.control.user.party.common.form.EditPartyTypeLockoutPolicyForm;
 import com.echothree.control.user.party.common.result.EditPartyTypeLockoutPolicyResult;
-import com.echothree.control.user.party.common.spec.PartyTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,11 +51,11 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
-        EditActionForm actionForm = (EditActionForm)form;
-        EditPartyTypeLockoutPolicyForm commandForm = PartyUtil.getHome().getEditPartyTypeLockoutPolicyForm();
-        PartyTypeSpec spec = PartyUtil.getHome().getPartyTypeSpec();
+        String forwardKey;
+        var partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
+        var actionForm = (EditActionForm)form;
+        var commandForm = PartyUtil.getHome().getEditPartyTypeLockoutPolicyForm();
+        var spec = PartyUtil.getHome().getPartyTypeSpec();
         
         if(partyTypeName == null)
             partyTypeName = actionForm.getPartyTypeName();
@@ -69,12 +64,12 @@ public class EditAction
         spec.setPartyTypeName(partyTypeName);
         
         if(wasPost(request)) {
-            boolean wasCanceled = wasCanceled(request);
+            var wasCanceled = wasCanceled(request);
             
             if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
-                PartyTypeLockoutPolicyEdit edit = PartyUtil.getHome().getPartyTypeLockoutPolicyEdit();
+                var edit = PartyUtil.getHome().getPartyTypeLockoutPolicyEdit();
 
                 commandForm.setEditMode(EditMode.UPDATE);
                 commandForm.setEdit(edit);
@@ -86,14 +81,14 @@ public class EditAction
                 edit.setLockoutInactiveTime(actionForm.getLockoutInactiveTime());
                 edit.setLockoutInactiveTimeUnitOfMeasureTypeName(actionForm.getLockoutInactiveTimeUnitOfMeasureTypeChoice());
             }
-            
-            CommandResult commandResult = PartyUtil.getHome().editPartyTypeLockoutPolicy(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().editPartyTypeLockoutPolicy(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors() && !wasCanceled) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditPartyTypeLockoutPolicyResult result = (EditPartyTypeLockoutPolicyResult)executionResult.getResult();
+                    var result = (EditPartyTypeLockoutPolicyResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -106,13 +101,13 @@ public class EditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = PartyUtil.getHome().editPartyTypeLockoutPolicy(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditPartyTypeLockoutPolicyResult result = (EditPartyTypeLockoutPolicyResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().editPartyTypeLockoutPolicy(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditPartyTypeLockoutPolicyResult)executionResult.getResult();
             
             if(result != null) {
-                PartyTypeLockoutPolicyEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setPartyTypeName(partyTypeName);

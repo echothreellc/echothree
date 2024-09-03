@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.warehouse.locationnameelement;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.DeleteLocationNameElementDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,13 +51,13 @@ public class DescriptionDeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String locationTypeName = request.getParameter(ParameterConstants.LOCATION_TYPE_NAME);
-        String locationNameElementName = request.getParameter(ParameterConstants.LOCATION_NAME_ELEMENT_NAME);
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var locationTypeName = request.getParameter(ParameterConstants.LOCATION_TYPE_NAME);
+        var locationNameElementName = request.getParameter(ParameterConstants.LOCATION_NAME_ELEMENT_NAME);
         
         try {
-            String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-            DeleteLocationNameElementDescriptionForm commandForm = WarehouseUtil.getHome().getDeleteLocationNameElementDescriptionForm();
+            var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+            var commandForm = WarehouseUtil.getHome().getDeleteLocationNameElementDescriptionForm();
             
             commandForm.setWarehouseName(warehouseName);
             commandForm.setLocationTypeName(locationTypeName);
@@ -71,8 +70,8 @@ public class DescriptionDeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(3);
             

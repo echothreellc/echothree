@@ -17,9 +17,7 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.SymbolPositionDescriptionTransfer;
-import com.echothree.model.control.accounting.common.transfer.SymbolPositionTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.accounting.server.entity.SymbolPositionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -33,12 +31,12 @@ public class SymbolPositionDescriptionTransferCache
     
     @Override
     public SymbolPositionDescriptionTransfer getTransfer(SymbolPositionDescription symbolPositionDescription) {
-        SymbolPositionDescriptionTransfer symbolPositionDescriptionTransfer = get(symbolPositionDescription);
+        var symbolPositionDescriptionTransfer = get(symbolPositionDescription);
         
         if(symbolPositionDescriptionTransfer == null) {
-            SymbolPositionTransferCache symbolPositionTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getSymbolPositionTransferCache();
-            SymbolPositionTransfer symbolPositionTransfer = symbolPositionTransferCache.getTransfer(symbolPositionDescription.getSymbolPosition());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, symbolPositionDescription.getLanguage());
+            var symbolPositionTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getSymbolPositionTransferCache();
+            var symbolPositionTransfer = symbolPositionTransferCache.getTransfer(symbolPositionDescription.getSymbolPosition());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, symbolPositionDescription.getLanguage());
             
             symbolPositionDescriptionTransfer = new SymbolPositionDescriptionTransfer(languageTransfer, symbolPositionTransfer, symbolPositionDescription.getDescription());
             put(symbolPositionDescription, symbolPositionDescriptionTransfer);

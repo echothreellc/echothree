@@ -18,10 +18,7 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.GetForumForumThreadsForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
-import com.echothree.control.user.forum.common.result.GetForumForumThreadsResult;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.forum.server.entity.ForumThread;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,14 +50,14 @@ public class GetForumForumThreadsCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        GetForumForumThreadsResult result = ForumResultFactory.getGetForumForumThreadsResult();
-        String forumName = form.getForumName();
-        String forumThreadName = form.getForumThreadName();
+        var result = ForumResultFactory.getGetForumForumThreadsResult();
+        var forumName = form.getForumName();
+        var forumThreadName = form.getForumThreadName();
         var parameterCount = (forumName != null? 1: 0) + (forumThreadName != null? 1: 0);
         
         if(parameterCount == 1) {
             if(forumName != null) {
-                Forum forum = forumControl.getForumByName(forumName);
+                var forum = forumControl.getForumByName(forumName);
                 
                 if(forum != null) {
                     result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));
@@ -69,7 +66,7 @@ public class GetForumForumThreadsCommand
                     addExecutionError(ExecutionErrors.UnknownForumName.name(), forumName);
                 }
             } else if(forumThreadName != null) {
-                ForumThread forumThread = forumControl.getForumThreadByName(forumThreadName);
+                var forumThread = forumControl.getForumThreadByName(forumThreadName);
                 
                 if(forumThread != null) {
                     result.setForumThread(forumControl.getForumThreadTransfer(getUserVisit(), forumThread));

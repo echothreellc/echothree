@@ -18,7 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreateGenderForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.Gender;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,8 +51,8 @@ public class CreateGenderCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String genderName = form.getGenderName();
-        Gender gender = partyControl.getGenderByName(genderName);
+        var genderName = form.getGenderName();
+        var gender = partyControl.getGenderByName(genderName);
         
         if(gender == null) {
                 var partyPK = getPartyPK();

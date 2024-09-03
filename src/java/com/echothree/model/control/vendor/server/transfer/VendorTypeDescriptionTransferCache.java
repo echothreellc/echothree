@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.vendor.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorTypeDescriptionTransfer;
-import com.echothree.model.control.vendor.common.transfer.VendorTypeTransfer;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorTypeDescription;
@@ -32,11 +30,11 @@ public class VendorTypeDescriptionTransferCache
     }
     
     public VendorTypeDescriptionTransfer getVendorTypeDescriptionTransfer(VendorTypeDescription vendorTypeDescription) {
-        VendorTypeDescriptionTransfer vendorTypeDescriptionTransfer = get(vendorTypeDescription);
+        var vendorTypeDescriptionTransfer = get(vendorTypeDescription);
         
         if(vendorTypeDescriptionTransfer == null) {
-            VendorTypeTransfer vendorTypeTransfer = vendorControl.getVendorTypeTransfer(userVisit, vendorTypeDescription.getVendorType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, vendorTypeDescription.getLanguage());
+            var vendorTypeTransfer = vendorControl.getVendorTypeTransfer(userVisit, vendorTypeDescription.getVendorType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, vendorTypeDescription.getLanguage());
             
             vendorTypeDescriptionTransfer = new VendorTypeDescriptionTransfer(languageTransfer, vendorTypeTransfer, vendorTypeDescription.getDescription());
             put(vendorTypeDescription, vendorTypeDescriptionTransfer);

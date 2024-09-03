@@ -17,12 +17,9 @@
 package com.echothree.model.control.warehouse.server.transfer;
 
 import com.echothree.model.control.warehouse.common.transfer.LocationTypeTransfer;
-import com.echothree.model.control.warehouse.common.transfer.WarehouseTransfer;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationType;
-import com.echothree.model.data.warehouse.server.entity.LocationTypeDetail;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
 
 public class LocationTypeTransferCache
         extends BaseWarehouseTransferCache<LocationType, LocationTypeTransfer> {
@@ -35,17 +32,17 @@ public class LocationTypeTransferCache
     }
     
     public LocationTypeTransfer getLocationTypeTransfer(LocationType locationType) {
-        LocationTypeTransfer locationTypeTransfer = get(locationType);
+        var locationTypeTransfer = get(locationType);
         
         if(locationTypeTransfer == null) {
-            LocationTypeDetail locationTypeDetail = locationType.getLastDetail();
-            WarehouseTransferCache warehouseTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getWarehouseTransferCache();
-            Warehouse warehouse = warehouseControl.getWarehouse(locationTypeDetail.getWarehouseParty());
-            WarehouseTransfer warehouseTransfer = warehouseTransferCache.getWarehouseTransfer(warehouse);
-            String locationTypeName = locationTypeDetail.getLocationTypeName();
-            Boolean isDefault = locationTypeDetail.getIsDefault();
-            Integer sortOrder = locationTypeDetail.getSortOrder();
-            String description = warehouseControl.getBestLocationTypeDescription(locationType, getLanguage());
+            var locationTypeDetail = locationType.getLastDetail();
+            var warehouseTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getWarehouseTransferCache();
+            var warehouse = warehouseControl.getWarehouse(locationTypeDetail.getWarehouseParty());
+            var warehouseTransfer = warehouseTransferCache.getWarehouseTransfer(warehouse);
+            var locationTypeName = locationTypeDetail.getLocationTypeName();
+            var isDefault = locationTypeDetail.getIsDefault();
+            var sortOrder = locationTypeDetail.getSortOrder();
+            var description = warehouseControl.getBestLocationTypeDescription(locationType, getLanguage());
             
             locationTypeTransfer = new LocationTypeTransfer(warehouseTransfer, locationTypeName, isDefault, sortOrder, description);
             put(locationType, locationTypeTransfer);

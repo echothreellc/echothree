@@ -26,10 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Application;
-import com.echothree.model.data.core.server.entity.ApplicationDescription;
-import com.echothree.model.data.core.server.entity.ApplicationDetail;
-import com.echothree.model.data.core.server.value.ApplicationDescriptionValue;
-import com.echothree.model.data.core.server.value.ApplicationDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,7 +85,7 @@ public class EditApplicationCommand
     public Application getEntity(EditApplicationResult result) {
         var coreControl = getCoreControl();
         Application application;
-        String applicationName = spec.getApplicationName();
+        var applicationName = spec.getApplicationName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             application = coreControl.getApplicationByName(applicationName);
@@ -119,8 +115,8 @@ public class EditApplicationCommand
     @Override
     public void doLock(ApplicationEdit edit, Application application) {
         var coreControl = getCoreControl();
-        ApplicationDescription applicationDescription = coreControl.getApplicationDescription(application, getPreferredLanguage());
-        ApplicationDetail applicationDetail = application.getLastDetail();
+        var applicationDescription = coreControl.getApplicationDescription(application, getPreferredLanguage());
+        var applicationDetail = application.getLastDetail();
 
         edit.setApplicationName(applicationDetail.getApplicationName());
         edit.setIsDefault(applicationDetail.getIsDefault().toString());
@@ -134,8 +130,8 @@ public class EditApplicationCommand
     @Override
     public void canUpdate(Application application) {
         var coreControl = getCoreControl();
-        String applicationName = edit.getApplicationName();
-        Application duplicateApplication = coreControl.getApplicationByName(applicationName);
+        var applicationName = edit.getApplicationName();
+        var duplicateApplication = coreControl.getApplicationByName(applicationName);
 
         if(duplicateApplication != null && !application.equals(duplicateApplication)) {
             addExecutionError(ExecutionErrors.DuplicateApplicationName.name(), applicationName);
@@ -146,9 +142,9 @@ public class EditApplicationCommand
     public void doUpdate(Application application) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        ApplicationDetailValue applicationDetailValue = coreControl.getApplicationDetailValueForUpdate(application);
-        ApplicationDescription applicationDescription = coreControl.getApplicationDescriptionForUpdate(application, getPreferredLanguage());
-        String description = edit.getDescription();
+        var applicationDetailValue = coreControl.getApplicationDetailValueForUpdate(application);
+        var applicationDescription = coreControl.getApplicationDescriptionForUpdate(application, getPreferredLanguage());
+        var description = edit.getDescription();
 
         applicationDetailValue.setApplicationName(edit.getApplicationName());
         applicationDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -163,7 +159,7 @@ public class EditApplicationCommand
                 coreControl.deleteApplicationDescription(applicationDescription, partyPK);
             } else {
                 if(applicationDescription != null && description != null) {
-                    ApplicationDescriptionValue applicationDescriptionValue = coreControl.getApplicationDescriptionValue(applicationDescription);
+                    var applicationDescriptionValue = coreControl.getApplicationDescriptionValue(applicationDescription);
 
                     applicationDescriptionValue.setDescription(description);
                     coreControl.updateApplicationDescriptionFromValue(applicationDescriptionValue, partyPK);

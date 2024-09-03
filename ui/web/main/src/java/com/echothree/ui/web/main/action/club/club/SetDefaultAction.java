@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.club.club;
 
 import com.echothree.control.user.club.common.ClubUtil;
-import com.echothree.control.user.club.common.form.SetDefaultClubForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultClubForm commandForm = ClubUtil.getHome().getSetDefaultClubForm();
-            String clubName = request.getParameter(ParameterConstants.CLUB_NAME);
+            var commandForm = ClubUtil.getHome().getSetDefaultClubForm();
+            var clubName = request.getParameter(ParameterConstants.CLUB_NAME);
             
             commandForm.setClubName(clubName);
             

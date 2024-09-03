@@ -58,7 +58,7 @@ public class OrderAliasUtil {
         String securityRoleGroupName = null;
 
         if(spec != null) {
-            String orderTypeName = spec.getOrderTypeName();
+            var orderTypeName = spec.getOrderTypeName();
             
             if(orderTypeName != null) {
                 securityRoleGroupName = getSecurityRoleGroupNameByOrderTypeName(orderTypeName);

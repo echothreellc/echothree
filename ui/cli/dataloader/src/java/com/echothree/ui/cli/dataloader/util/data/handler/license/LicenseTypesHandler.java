@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.license;
 
 import com.echothree.control.user.license.common.LicenseUtil;
 import com.echothree.control.user.license.common.LicenseService;
-import com.echothree.control.user.license.common.form.CreateLicenseTypeForm;
 import com.echothree.control.user.license.common.form.LicenseFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -46,7 +45,7 @@ public class LicenseTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("licenseType")) {
-            CreateLicenseTypeForm commandForm = LicenseFormFactory.getCreateLicenseTypeForm();
+            var commandForm = LicenseFormFactory.getCreateLicenseTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

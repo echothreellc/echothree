@@ -31,13 +31,13 @@ public class GlAccountTypeTransferCache
     
     @Override
     public GlAccountTypeTransfer getTransfer(GlAccountType glAccountType) {
-        GlAccountTypeTransfer glAccountTypeTransfer = get(glAccountType);
+        var glAccountTypeTransfer = get(glAccountType);
         
         if(glAccountTypeTransfer == null) {
-            String glAccountTypeName = glAccountType.getGlAccountTypeName();
-            Boolean isDefault = glAccountType.getIsDefault();
-            Integer sortOrder = glAccountType.getSortOrder();
-            String description = accountingControl.getBestGlAccountTypeDescription(glAccountType, getLanguage());
+            var glAccountTypeName = glAccountType.getGlAccountTypeName();
+            var isDefault = glAccountType.getIsDefault();
+            var sortOrder = glAccountType.getSortOrder();
+            var description = accountingControl.getBestGlAccountTypeDescription(glAccountType, getLanguage());
             
             glAccountTypeTransfer = new GlAccountTypeTransfer(glAccountTypeName, isDefault, sortOrder, description);
             put(glAccountType, glAccountTypeTransfer);

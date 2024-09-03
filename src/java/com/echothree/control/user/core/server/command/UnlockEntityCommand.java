@@ -19,13 +19,11 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.UnlockEntityForm;
 import com.echothree.model.control.core.server.control.EntityLockControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
@@ -61,7 +59,7 @@ public class UnlockEntityCommand
             
             if(partyPK != null) {
                 var entityLockControl = Session.getModelController(EntityLockControl.class);
-                BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
+                var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 
                 if(entityLockControl.lockEntityForUpdate(basePK, getPartyPK())) {
                     entityLockControl.unlockEntity(basePK, partyPK);

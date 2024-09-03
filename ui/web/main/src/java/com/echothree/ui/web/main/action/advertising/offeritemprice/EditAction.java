@@ -17,20 +17,14 @@
 package com.echothree.ui.web.main.action.advertising.offeritemprice;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemForm;
 import com.echothree.control.user.item.common.result.GetItemResult;
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.edit.OfferItemPriceEdit;
-import com.echothree.control.user.offer.common.form.EditOfferItemPriceForm;
 import com.echothree.control.user.offer.common.result.EditOfferItemPriceResult;
-import com.echothree.control.user.offer.common.spec.OfferItemPriceSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -64,18 +58,18 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
         
         try {
-            String inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
-            String unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
-            String currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
+            var inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
+            var unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
+            var currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
             
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditOfferItemPriceForm commandForm = OfferUtil.getHome().getEditOfferItemPriceForm();
-                OfferItemPriceSpec spec = OfferUtil.getHome().getOfferItemPriceSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = OfferUtil.getHome().getEditOfferItemPriceForm();
+                var spec = OfferUtil.getHome().getOfferItemPriceSpec();
                 
                 if(offerName == null)
                     offerName = actionForm.getOfferName();
@@ -96,7 +90,7 @@ public class EditAction
                 spec.setCurrencyIsoName(currencyIsoName);
                             
                 if(wasPost(request)) {
-                    OfferItemPriceEdit edit = OfferUtil.getHome().getOfferItemPriceEdit();
+                    var edit = OfferUtil.getHome().getOfferItemPriceEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -105,14 +99,14 @@ public class EditAction
                     edit.setMaximumUnitPrice(actionForm.getMaximumUnitPrice());
                     edit.setMinimumUnitPrice(actionForm.getMinimumUnitPrice());
                     edit.setUnitPriceIncrement(actionForm.getUnitPriceIncrement());
-                    
-                    CommandResult commandResult = OfferUtil.getHome().editOfferItemPrice(getUserVisitPK(request), commandForm);
+
+                    var commandResult = OfferUtil.getHome().editOfferItemPrice(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditOfferItemPriceResult result = (EditOfferItemPriceResult)executionResult.getResult();
+                            var result = (EditOfferItemPriceResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -125,13 +119,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = OfferUtil.getHome().editOfferItemPrice(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditOfferItemPriceResult result = (EditOfferItemPriceResult)executionResult.getResult();
+
+                    var commandResult = OfferUtil.getHome().editOfferItemPrice(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditOfferItemPriceResult)executionResult.getResult();
                     
                     if(result != null) {
-                        OfferItemPriceEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOfferName(offerName);
@@ -156,17 +150,17 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             if(itemName != null) {
-                GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+                var commandForm = ItemUtil.getHome().getGetItemForm();
                 
                 commandForm.setItemName(itemName);
-                
-                CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemResult result = (GetItemResult)executionResult.getResult();
+
+                var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemResult)executionResult.getResult();
                 
                 request.setAttribute(AttributeConstants.ITEM, result.getItem());
             }

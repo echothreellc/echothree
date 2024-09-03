@@ -17,9 +17,7 @@
 package com.echothree.model.control.communication.server.transfer;
 
 import com.echothree.model.control.communication.common.transfer.CommunicationSourceDescriptionTransfer;
-import com.echothree.model.control.communication.common.transfer.CommunicationSourceTransfer;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.communication.server.entity.CommunicationSourceDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,12 +30,12 @@ public class CommunicationSourceDescriptionTransferCache
     }
     
     public CommunicationSourceDescriptionTransfer getCommunicationSourceDescriptionTransfer(CommunicationSourceDescription communicationSourceDescription) {
-        CommunicationSourceDescriptionTransfer communicationSourceDescriptionTransfer = get(communicationSourceDescription);
+        var communicationSourceDescriptionTransfer = get(communicationSourceDescription);
         
         if(communicationSourceDescriptionTransfer == null) {
-            CommunicationSourceTransfer communicationSourceTransfer = communicationControl.getCommunicationSourceTransfer(userVisit,
+            var communicationSourceTransfer = communicationControl.getCommunicationSourceTransfer(userVisit,
                     communicationSourceDescription.getCommunicationSource());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, communicationSourceDescription.getLanguage());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, communicationSourceDescription.getLanguage());
             
             communicationSourceDescriptionTransfer = new CommunicationSourceDescriptionTransfer(languageTransfer, communicationSourceTransfer, communicationSourceDescription.getDescription());
             put(communicationSourceDescription, communicationSourceDescriptionTransfer);

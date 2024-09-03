@@ -19,7 +19,6 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.BaseCheckSpellingForm;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.search.server.entity.PartySearchTypePreference;
 import com.echothree.model.data.search.server.entity.PartySearchTypePreferenceDetail;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
@@ -44,14 +43,14 @@ public abstract class BaseCheckSpellingCommand<F extends BaseCheckSpellingForm, 
     }
     
     protected PartySearchTypePreference getPartySearchTypePreference(SearchControl searchControl, SearchType searchType) {
-        Party party = getParty();
+        var party = getParty();
         
         return party == null ? null : searchControl.getPartySearchTypePreference(party, searchType);
     }
     
     protected SearchDefaultOperator getDefaultSearchDefaultOperator(SearchLogic searchLogic, boolean rememberPreferences,
             PartySearchTypePreferenceDetail partySearchTypePreferenceDetail) {
-        SearchDefaultOperator searchDefaultOperator = partySearchTypePreferenceDetail == null || rememberPreferences ? null
+        var searchDefaultOperator = partySearchTypePreferenceDetail == null || rememberPreferences ? null
                 : partySearchTypePreferenceDetail.getSearchDefaultOperator();
         
         if(searchDefaultOperator == null) {

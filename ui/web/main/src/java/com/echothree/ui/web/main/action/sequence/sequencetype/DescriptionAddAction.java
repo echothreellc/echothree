@@ -17,11 +17,9 @@
 package com.echothree.ui.web.main.action.sequence.sequencetype;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.form.CreateSequenceTypeDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -55,14 +53,14 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
+        var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
                 if(wasPost(request)) {
-                    DescriptionAddActionForm descriptionAddActionForm = (DescriptionAddActionForm)form;
-                    
-                    CreateSequenceTypeDescriptionForm createSequenceTypeDescriptionForm = SequenceUtil.getHome().getCreateSequenceTypeDescriptionForm();
+                    var descriptionAddActionForm = (DescriptionAddActionForm)form;
+
+                    var createSequenceTypeDescriptionForm = SequenceUtil.getHome().getCreateSequenceTypeDescriptionForm();
                     
                     if(sequenceTypeName == null)
                         sequenceTypeName = descriptionAddActionForm.getSequenceTypeName();
@@ -70,8 +68,8 @@ public class DescriptionAddAction
                     createSequenceTypeDescriptionForm.setSequenceTypeName(sequenceTypeName);
                     createSequenceTypeDescriptionForm.setLanguageIsoName(descriptionAddActionForm.getLanguageChoice());
                     createSequenceTypeDescriptionForm.setDescription(descriptionAddActionForm.getDescription());
-                    
-                    CommandResult commandResult = SequenceUtil.getHome().createSequenceTypeDescription(getUserVisitPK(request), createSequenceTypeDescriptionForm);
+
+                    var commandResult = SequenceUtil.getHome().createSequenceTypeDescription(getUserVisitPK(request), createSequenceTypeDescriptionForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -85,8 +83,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM) || forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             parameters.put(ParameterConstants.SEQUENCE_TYPE_NAME, sequenceTypeName);

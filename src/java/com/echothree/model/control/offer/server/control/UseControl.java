@@ -24,10 +24,8 @@ import com.echothree.model.control.offer.common.transfer.UseTransfer;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.common.pk.UsePK;
-import com.echothree.model.data.offer.common.pk.UseTypePK;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.offer.server.entity.UseDescription;
-import com.echothree.model.data.offer.server.entity.UseDetail;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.offer.server.factory.UseDescriptionFactory;
 import com.echothree.model.data.offer.server.factory.UseDetailFactory;
@@ -42,11 +40,9 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,11 +59,11 @@ public class UseControl
     // --------------------------------------------------------------------------------
 
     public Use createUse(String useName, UseType useType, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Use defaultUse = getDefaultUse();
-        boolean defaultFound = defaultUse != null;
+        var defaultUse = getDefaultUse();
+        var defaultFound = defaultUse != null;
 
         if(defaultFound && isDefault) {
-            UseDetailValue defaultUseDetailValue = getDefaultUseDetailValueForUpdate();
+            var defaultUseDetailValue = getDefaultUseDetailValueForUpdate();
 
             defaultUseDetailValue.setIsDefault(Boolean.FALSE);
             updateUseFromValue(defaultUseDetailValue, false, createdBy);
@@ -75,8 +71,8 @@ public class UseControl
             isDefault = Boolean.TRUE;
         }
 
-        Use use = UseFactory.getInstance().create();
-        UseDetail useDetail = UseDetailFactory.getInstance().create(use, useName, useType, isDefault, sortOrder,
+        var use = UseFactory.getInstance().create();
+        var useDetail = UseDetailFactory.getInstance().create(use, useName, useType, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -137,7 +133,7 @@ public class UseControl
                     + "FOR UPDATE";
         }
 
-        PreparedStatement ps = UseFactory.getInstance().prepareStatement(query);
+        var ps = UseFactory.getInstance().prepareStatement(query);
 
         return UseFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -151,7 +147,7 @@ public class UseControl
     }
 
     public Use getUseByName(String useName, EntityPermission entityPermission) {
-        Use use = null;
+        Use use;
 
         try {
             String query = null;
@@ -167,7 +163,7 @@ public class UseControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = UseFactory.getInstance().prepareStatement(query);
+            var ps = UseFactory.getInstance().prepareStatement(query);
 
             ps.setString(1, useName);
 
@@ -209,7 +205,7 @@ public class UseControl
                     "FOR UPDATE";
         }
 
-        PreparedStatement ps = UseFactory.getInstance().prepareStatement(query);
+        var ps = UseFactory.getInstance().prepareStatement(query);
 
         return UseFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -227,7 +223,7 @@ public class UseControl
     }
 
     private List<Use> getUsesByUseType(UseType useType, EntityPermission entityPermission) {
-        List<Use> uses = null;
+        List<Use> uses;
 
         try {
             String query = null;
@@ -243,7 +239,7 @@ public class UseControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = UseFactory.getInstance().prepareStatement(query);
+            var ps = UseFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, useType.getPrimaryKey().getEntityId());
 
@@ -282,7 +278,7 @@ public class UseControl
     }
 
     public UseChoicesBean getUseChoices(String defaultUseChoice, Language language, boolean allowNullChoice) {
-        List<Use> uses = getUses();
+        var uses = getUses();
         var size = uses.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -298,7 +294,7 @@ public class UseControl
         }
 
         for(var use : uses) {
-            UseDetail useDetail = use.getLastDetail();
+            var useDetail = use.getLastDetail();
 
             var label = getBestUseDescription(use, language);
             var value = useDetail.getUseName();
@@ -317,26 +313,26 @@ public class UseControl
 
     private void updateUseFromValue(UseDetailValue useDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(useDetailValue.hasBeenModified()) {
-            Use use = UseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var use = UseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     useDetailValue.getUsePK());
-            UseDetail useDetail = use.getActiveDetailForUpdate();
+            var useDetail = use.getActiveDetailForUpdate();
 
             useDetail.setThruTime(session.START_TIME_LONG);
             useDetail.store();
 
-            UsePK usePK = useDetail.getUsePK();
-            String useName = useDetailValue.getUseName();
-            UseTypePK useTypePK = useDetailValue.getUseTypePK();
-            Boolean isDefault = useDetailValue.getIsDefault();
-            Integer sortOrder = useDetailValue.getSortOrder();
+            var usePK = useDetail.getUsePK();
+            var useName = useDetailValue.getUseName();
+            var useTypePK = useDetailValue.getUseTypePK();
+            var isDefault = useDetailValue.getIsDefault();
+            var sortOrder = useDetailValue.getSortOrder();
 
             if(checkDefault) {
-                Use defaultUse = getDefaultUse();
-                boolean defaultFound = defaultUse != null && !defaultUse.equals(use);
+                var defaultUse = getDefaultUse();
+                var defaultFound = defaultUse != null && !defaultUse.equals(use);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    UseDetailValue defaultUseDetailValue = getDefaultUseDetailValueForUpdate();
+                    var defaultUseDetailValue = getDefaultUseDetailValueForUpdate();
 
                     defaultUseDetailValue.setIsDefault(Boolean.FALSE);
                     updateUseFromValue(defaultUseDetailValue, false, updatedBy);
@@ -367,22 +363,22 @@ public class UseControl
         useControl.deleteUseDescriptionsByUse(use, deletedBy);
         offerUseControl.deleteOfferUsesByUse(use, deletedBy);
 
-        UseDetail useDetail = use.getLastDetailForUpdate();
+        var useDetail = use.getLastDetailForUpdate();
         useDetail.setThruTime(session.START_TIME_LONG);
         use.setActiveDetail(null);
         use.store();
 
         // Check for default, and pick one if necessary
-        Use defaultUse = getDefaultUse();
+        var defaultUse = getDefaultUse();
         if(defaultUse == null) {
-            List<Use> uses = getUsesForUpdate();
+            var uses = getUsesForUpdate();
 
             if(!uses.isEmpty()) {
-                Iterator<Use> iter = uses.iterator();
+                var iter = uses.iterator();
                 if(iter.hasNext()) {
                     defaultUse = iter.next();
                 }
-                UseDetailValue useDetailValue = Objects.requireNonNull(defaultUse).getLastDetailForUpdate().getUseDetailValue().clone();
+                var useDetailValue = Objects.requireNonNull(defaultUse).getLastDetailForUpdate().getUseDetailValue().clone();
 
                 useDetailValue.setIsDefault(Boolean.TRUE);
                 updateUseFromValue(useDetailValue, false, deletedBy);
@@ -407,7 +403,7 @@ public class UseControl
     // --------------------------------------------------------------------------------
 
     public UseDescription createUseDescription(Use use, Language language, String description, BasePK createdBy) {
-        UseDescription useDescription = UseDescriptionFactory.getInstance().create(use, language, description,
+        var useDescription = UseDescriptionFactory.getInstance().create(use, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(use.getPrimaryKey(), EventTypes.MODIFY, useDescription.getPrimaryKey(),
@@ -417,7 +413,7 @@ public class UseControl
     }
 
     private UseDescription getUseDescription(Use use, Language language, EntityPermission entityPermission) {
-        UseDescription useDescription = null;
+        UseDescription useDescription;
 
         try {
             String query = null;
@@ -433,7 +429,7 @@ public class UseControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = UseDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = UseDescriptionFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, use.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -481,7 +477,7 @@ public class UseControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = UseDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = UseDescriptionFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, use.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -504,7 +500,7 @@ public class UseControl
 
     public String getBestUseDescription(Use use, Language language) {
         String description;
-        UseDescription useDescription = getUseDescription(use, language);
+        var useDescription = getUseDescription(use, language);
 
         if(useDescription == null && !language.getIsDefault()) {
             useDescription = getUseDescription(use, getPartyControl().getDefaultLanguage());
@@ -524,7 +520,7 @@ public class UseControl
     }
 
     public List<UseDescriptionTransfer> getUseDescriptionTransfers(UserVisit userVisit, Use use) {
-        List<UseDescription> useDescriptions = getUseDescriptionsByUse(use);
+        var useDescriptions = getUseDescriptionsByUse(use);
         List<UseDescriptionTransfer> useDescriptionTransfers = new ArrayList<>(useDescriptions.size());
 
         useDescriptions.forEach((useDescription) -> {
@@ -536,15 +532,15 @@ public class UseControl
 
     public void updateUseDescriptionFromValue(UseDescriptionValue useDescriptionValue, BasePK updatedBy) {
         if(useDescriptionValue.hasBeenModified()) {
-            UseDescription useDescription = UseDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var useDescription = UseDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     useDescriptionValue.getPrimaryKey());
 
             useDescription.setThruTime(session.START_TIME_LONG);
             useDescription.store();
 
-            Use use = useDescription.getUse();
-            Language language = useDescription.getLanguage();
-            String description = useDescriptionValue.getDescription();
+            var use = useDescription.getUse();
+            var language = useDescription.getLanguage();
+            var description = useDescriptionValue.getDescription();
 
             useDescription = UseDescriptionFactory.getInstance().create(use, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -561,7 +557,7 @@ public class UseControl
     }
 
     public void deleteUseDescriptionsByUse(Use use, BasePK deletedBy) {
-        List<UseDescription> useDescriptions = getUseDescriptionsByUseForUpdate(use);
+        var useDescriptions = getUseDescriptionsByUseForUpdate(use);
 
         useDescriptions.forEach((useDescription) -> 
                 deleteUseDescription(useDescription, deletedBy)

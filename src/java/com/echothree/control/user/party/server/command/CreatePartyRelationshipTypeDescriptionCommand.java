@@ -18,9 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreatePartyRelationshipTypeDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.PartyRelationshipType;
-import com.echothree.model.data.party.server.entity.PartyRelationshipTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -52,15 +49,15 @@ public class CreatePartyRelationshipTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyRelationshipTypeName = form.getPartyRelationshipTypeName();
-        PartyRelationshipType partyRelationshipType = partyControl.getPartyRelationshipTypeByName(partyRelationshipTypeName);
+        var partyRelationshipTypeName = form.getPartyRelationshipTypeName();
+        var partyRelationshipType = partyControl.getPartyRelationshipTypeByName(partyRelationshipTypeName);
         
         if(partyRelationshipType != null) {
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PartyRelationshipTypeDescription partyRelationshipTypeDescription = partyControl.getPartyRelationshipTypeDescription(partyRelationshipType, language);
+                var partyRelationshipTypeDescription = partyControl.getPartyRelationshipTypeDescription(partyRelationshipType, language);
                 
                 if(partyRelationshipTypeDescription == null) {
                     var description = form.getDescription();

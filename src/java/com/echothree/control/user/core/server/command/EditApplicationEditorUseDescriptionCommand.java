@@ -27,11 +27,8 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Application;
 import com.echothree.model.data.core.server.entity.ApplicationEditorUse;
 import com.echothree.model.data.core.server.entity.ApplicationEditorUseDescription;
-import com.echothree.model.data.core.server.value.ApplicationEditorUseDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -91,17 +88,17 @@ public class EditApplicationEditorUseDescriptionCommand
     public ApplicationEditorUseDescription getEntity(EditApplicationEditorUseDescriptionResult result) {
         ApplicationEditorUseDescription applicationEditorUseDescription = null;
         var coreControl = getCoreControl();
-        String applicationName = spec.getApplicationName();
-        Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var applicationName = spec.getApplicationName();
+        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
 
         if(!hasExecutionErrors()) {
-            String applicationEditorUseName = spec.getApplicationEditorUseName();
-            ApplicationEditorUse applicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
+            var applicationEditorUseName = spec.getApplicationEditorUseName();
+            var applicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
             if(applicationEditorUse != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -144,7 +141,7 @@ public class EditApplicationEditorUseDescriptionCommand
     @Override
     public void doUpdate(ApplicationEditorUseDescription applicationEditorUseDescription) {
         var coreControl = getCoreControl();
-        ApplicationEditorUseDescriptionValue applicationEditorUseDescriptionValue = coreControl.getApplicationEditorUseDescriptionValue(applicationEditorUseDescription);
+        var applicationEditorUseDescriptionValue = coreControl.getApplicationEditorUseDescriptionValue(applicationEditorUseDescription);
         applicationEditorUseDescriptionValue.setDescription(edit.getDescription());
 
         coreControl.updateApplicationEditorUseDescriptionFromValue(applicationEditorUseDescriptionValue, getPartyPK());

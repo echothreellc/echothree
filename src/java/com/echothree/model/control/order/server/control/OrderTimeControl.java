@@ -22,22 +22,14 @@ import com.echothree.model.control.order.common.transfer.OrderLineTimeTransfer;
 import com.echothree.model.control.order.common.transfer.OrderTimeTransfer;
 import com.echothree.model.control.order.common.transfer.OrderTimeTypeDescriptionTransfer;
 import com.echothree.model.control.order.common.transfer.OrderTimeTypeTransfer;
-import com.echothree.model.control.order.server.transfer.OrderLineTimeTransferCache;
-import com.echothree.model.control.order.server.transfer.OrderTimeTransferCache;
-import com.echothree.model.control.order.server.transfer.OrderTimeTypeDescriptionTransferCache;
-import com.echothree.model.control.order.server.transfer.OrderTimeTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.order.common.pk.OrderLinePK;
-import com.echothree.model.data.order.common.pk.OrderPK;
 import com.echothree.model.data.order.common.pk.OrderTimeTypePK;
-import com.echothree.model.data.order.common.pk.OrderTypePK;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderLine;
 import com.echothree.model.data.order.server.entity.OrderLineTime;
 import com.echothree.model.data.order.server.entity.OrderTime;
 import com.echothree.model.data.order.server.entity.OrderTimeType;
 import com.echothree.model.data.order.server.entity.OrderTimeTypeDescription;
-import com.echothree.model.data.order.server.entity.OrderTimeTypeDetail;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.factory.OrderLineTimeFactory;
 import com.echothree.model.data.order.server.factory.OrderTimeFactory;
@@ -57,7 +49,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -75,11 +66,11 @@ public class OrderTimeControl
     // --------------------------------------------------------------------------------
 
     public OrderTimeType createOrderTimeType(OrderType orderType, String orderTimeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        OrderTimeType defaultOrderTimeType = getDefaultOrderTimeType(orderType);
-        boolean defaultFound = defaultOrderTimeType != null;
+        var defaultOrderTimeType = getDefaultOrderTimeType(orderType);
+        var defaultFound = defaultOrderTimeType != null;
 
         if(defaultFound && isDefault) {
-            OrderTimeTypeDetailValue defaultOrderTimeTypeDetailValue = getDefaultOrderTimeTypeDetailValueForUpdate(orderType);
+            var defaultOrderTimeTypeDetailValue = getDefaultOrderTimeTypeDetailValueForUpdate(orderType);
 
             defaultOrderTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateOrderTimeTypeFromValue(defaultOrderTimeTypeDetailValue, false, createdBy);
@@ -87,8 +78,8 @@ public class OrderTimeControl
             isDefault = Boolean.TRUE;
         }
 
-        OrderTimeType orderTimeType = OrderTimeTypeFactory.getInstance().create();
-        OrderTimeTypeDetail orderTimeTypeDetail = OrderTimeTypeDetailFactory.getInstance().create(orderTimeType, orderType, orderTimeTypeName, isDefault,
+        var orderTimeType = OrderTimeTypeFactory.getInstance().create();
+        var orderTimeTypeDetail = OrderTimeTypeDetailFactory.getInstance().create(orderTimeType, orderType, orderTimeTypeName, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -247,7 +238,7 @@ public class OrderTimeControl
 
     public List<OrderTimeTypeTransfer> getOrderTimeTypeTransfers(UserVisit userVisit, Collection<OrderTimeType> orderTimeTypes) {
         List<OrderTimeTypeTransfer> orderTimeTypeTransfers = new ArrayList<>(orderTimeTypes.size());
-        OrderTimeTypeTransferCache orderTimeTypeTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTypeTransferCache();
+        var orderTimeTypeTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTypeTransferCache();
 
         orderTimeTypes.forEach((orderTimeType) ->
                 orderTimeTypeTransfers.add(orderTimeTypeTransferCache.getOrderTimeTypeTransfer(orderTimeType))
@@ -262,7 +253,7 @@ public class OrderTimeControl
 
     public OrderTimeTypeChoicesBean getOrderTimeTypeChoices(String defaultOrderTimeTypeChoice, Language language, boolean allowNullChoice,
             OrderType orderType) {
-        List<OrderTimeType> orderTimeTypes = getOrderTimeTypes(orderType);
+        var orderTimeTypes = getOrderTimeTypes(orderType);
         var size = orderTimeTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -278,7 +269,7 @@ public class OrderTimeControl
         }
 
         for(var orderTimeType : orderTimeTypes) {
-            OrderTimeTypeDetail orderTimeTypeDetail = orderTimeType.getLastDetail();
+            var orderTimeTypeDetail = orderTimeType.getLastDetail();
 
             var label = getBestOrderTimeTypeDescription(orderTimeType, language);
             var value = orderTimeTypeDetail.getOrderTimeTypeName();
@@ -298,27 +289,27 @@ public class OrderTimeControl
     private void updateOrderTimeTypeFromValue(OrderTimeTypeDetailValue orderTimeTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(orderTimeTypeDetailValue.hasBeenModified()) {
-            OrderTimeType orderTimeType = OrderTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderTimeType = OrderTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      orderTimeTypeDetailValue.getOrderTimeTypePK());
-            OrderTimeTypeDetail orderTimeTypeDetail = orderTimeType.getActiveDetailForUpdate();
+            var orderTimeTypeDetail = orderTimeType.getActiveDetailForUpdate();
 
             orderTimeTypeDetail.setThruTime(session.START_TIME_LONG);
             orderTimeTypeDetail.store();
 
-            OrderType orderType = orderTimeTypeDetail.getOrderType(); // Not updated
-            OrderTypePK orderTypePK = orderType.getPrimaryKey(); // Not updated
-            OrderTimeTypePK orderTimeTypePK = orderTimeTypeDetail.getOrderTimeTypePK(); // Not updated
-            String orderTimeTypeName = orderTimeTypeDetailValue.getOrderTimeTypeName();
-            Boolean isDefault = orderTimeTypeDetailValue.getIsDefault();
-            Integer sortOrder = orderTimeTypeDetailValue.getSortOrder();
+            var orderType = orderTimeTypeDetail.getOrderType(); // Not updated
+            var orderTypePK = orderType.getPrimaryKey(); // Not updated
+            var orderTimeTypePK = orderTimeTypeDetail.getOrderTimeTypePK(); // Not updated
+            var orderTimeTypeName = orderTimeTypeDetailValue.getOrderTimeTypeName();
+            var isDefault = orderTimeTypeDetailValue.getIsDefault();
+            var sortOrder = orderTimeTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                OrderTimeType defaultOrderTimeType = getDefaultOrderTimeType(orderType);
-                boolean defaultFound = defaultOrderTimeType != null && !defaultOrderTimeType.equals(orderTimeType);
+                var defaultOrderTimeType = getDefaultOrderTimeType(orderType);
+                var defaultFound = defaultOrderTimeType != null && !defaultOrderTimeType.equals(orderTimeType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    OrderTimeTypeDetailValue defaultOrderTimeTypeDetailValue = getDefaultOrderTimeTypeDetailValueForUpdate(orderType);
+                    var defaultOrderTimeTypeDetailValue = getDefaultOrderTimeTypeDetailValueForUpdate(orderType);
 
                     defaultOrderTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateOrderTimeTypeFromValue(defaultOrderTimeTypeDetailValue, false, updatedBy);
@@ -346,23 +337,23 @@ public class OrderTimeControl
         deleteOrderTimesByOrderTimeType(orderTimeType, deletedBy);
         deleteOrderTimeTypeDescriptionsByOrderTimeType(orderTimeType, deletedBy);
 
-        OrderTimeTypeDetail orderTimeTypeDetail = orderTimeType.getLastDetailForUpdate();
+        var orderTimeTypeDetail = orderTimeType.getLastDetailForUpdate();
         orderTimeTypeDetail.setThruTime(session.START_TIME_LONG);
         orderTimeType.setActiveDetail(null);
         orderTimeType.store();
 
         // Check for default, and pick one if necessary
-        OrderType orderType = orderTimeTypeDetail.getOrderType();
-        OrderTimeType defaultOrderTimeType = getDefaultOrderTimeType(orderType);
+        var orderType = orderTimeTypeDetail.getOrderType();
+        var defaultOrderTimeType = getDefaultOrderTimeType(orderType);
         if(defaultOrderTimeType == null) {
-            List<OrderTimeType> orderTimeTypes = getOrderTimeTypesForUpdate(orderType);
+            var orderTimeTypes = getOrderTimeTypesForUpdate(orderType);
 
             if(!orderTimeTypes.isEmpty()) {
-                Iterator<OrderTimeType> iter = orderTimeTypes.iterator();
+                var iter = orderTimeTypes.iterator();
                 if(iter.hasNext()) {
                     defaultOrderTimeType = iter.next();
                 }
-                OrderTimeTypeDetailValue orderTimeTypeDetailValue = Objects.requireNonNull(defaultOrderTimeType).getLastDetailForUpdate().getOrderTimeTypeDetailValue().clone();
+                var orderTimeTypeDetailValue = Objects.requireNonNull(defaultOrderTimeType).getLastDetailForUpdate().getOrderTimeTypeDetailValue().clone();
 
                 orderTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateOrderTimeTypeFromValue(orderTimeTypeDetailValue, false, deletedBy);
@@ -377,7 +368,7 @@ public class OrderTimeControl
     // --------------------------------------------------------------------------------
 
     public OrderTimeTypeDescription createOrderTimeTypeDescription(OrderTimeType orderTimeType, Language language, String description, BasePK createdBy) {
-        OrderTimeTypeDescription orderTimeTypeDescription = OrderTimeTypeDescriptionFactory.getInstance().create(orderTimeType, language, description,
+        var orderTimeTypeDescription = OrderTimeTypeDescriptionFactory.getInstance().create(orderTimeType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(orderTimeType.getPrimaryKey(), EventTypes.MODIFY, orderTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -456,7 +447,7 @@ public class OrderTimeControl
 
     public String getBestOrderTimeTypeDescription(OrderTimeType orderTimeType, Language language) {
         String description;
-        OrderTimeTypeDescription orderTimeTypeDescription = getOrderTimeTypeDescription(orderTimeType, language);
+        var orderTimeTypeDescription = getOrderTimeTypeDescription(orderTimeType, language);
 
         if(orderTimeTypeDescription == null && !language.getIsDefault()) {
             orderTimeTypeDescription = getOrderTimeTypeDescription(orderTimeType, getPartyControl().getDefaultLanguage());
@@ -476,9 +467,9 @@ public class OrderTimeControl
     }
 
     public List<OrderTimeTypeDescriptionTransfer> getOrderTimeTypeDescriptionTransfersByOrderTimeType(UserVisit userVisit, OrderTimeType orderTimeType) {
-        List<OrderTimeTypeDescription> orderTimeTypeDescriptions = getOrderTimeTypeDescriptionsByOrderTimeType(orderTimeType);
+        var orderTimeTypeDescriptions = getOrderTimeTypeDescriptionsByOrderTimeType(orderTimeType);
         List<OrderTimeTypeDescriptionTransfer> orderTimeTypeDescriptionTransfers = new ArrayList<>(orderTimeTypeDescriptions.size());
-        OrderTimeTypeDescriptionTransferCache orderTimeTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTypeDescriptionTransferCache();
+        var orderTimeTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTypeDescriptionTransferCache();
 
         orderTimeTypeDescriptions.forEach((orderTimeTypeDescription) ->
                 orderTimeTypeDescriptionTransfers.add(orderTimeTypeDescriptionTransferCache.getOrderTimeTypeDescriptionTransfer(orderTimeTypeDescription))
@@ -489,15 +480,15 @@ public class OrderTimeControl
 
     public void updateOrderTimeTypeDescriptionFromValue(OrderTimeTypeDescriptionValue orderTimeTypeDescriptionValue, BasePK updatedBy) {
         if(orderTimeTypeDescriptionValue.hasBeenModified()) {
-            OrderTimeTypeDescription orderTimeTypeDescription = OrderTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderTimeTypeDescription = OrderTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderTimeTypeDescriptionValue.getPrimaryKey());
 
             orderTimeTypeDescription.setThruTime(session.START_TIME_LONG);
             orderTimeTypeDescription.store();
 
-            OrderTimeType orderTimeType = orderTimeTypeDescription.getOrderTimeType();
-            Language language = orderTimeTypeDescription.getLanguage();
-            String description = orderTimeTypeDescriptionValue.getDescription();
+            var orderTimeType = orderTimeTypeDescription.getOrderTimeType();
+            var language = orderTimeTypeDescription.getLanguage();
+            var description = orderTimeTypeDescriptionValue.getDescription();
 
             orderTimeTypeDescription = OrderTimeTypeDescriptionFactory.getInstance().create(orderTimeType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -514,7 +505,7 @@ public class OrderTimeControl
     }
 
     public void deleteOrderTimeTypeDescriptionsByOrderTimeType(OrderTimeType orderTimeType, BasePK deletedBy) {
-        List<OrderTimeTypeDescription> orderTimeTypeDescriptions = getOrderTimeTypeDescriptionsByOrderTimeTypeForUpdate(orderTimeType);
+        var orderTimeTypeDescriptions = getOrderTimeTypeDescriptionsByOrderTimeTypeForUpdate(orderTimeType);
 
         orderTimeTypeDescriptions.forEach((orderTimeTypeDescription) -> 
                 deleteOrderTimeTypeDescription(orderTimeTypeDescription, deletedBy)
@@ -526,7 +517,7 @@ public class OrderTimeControl
     // --------------------------------------------------------------------------------
 
     public OrderTime createOrderTime(Order order, OrderTimeType orderTimeType, Long time, BasePK createdBy) {
-        OrderTime orderTime = OrderTimeFactory.getInstance().create(order, orderTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var orderTime = OrderTimeFactory.getInstance().create(order, orderTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, orderTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -662,7 +653,7 @@ public class OrderTimeControl
 
     public List<OrderTimeTransfer> getOrderTimeTransfers(UserVisit userVisit, Collection<OrderTime> orderTimes) {
         List<OrderTimeTransfer> orderTimeTransfers = new ArrayList<>(orderTimes.size());
-        OrderTimeTransferCache orderTimeTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTransferCache();
+        var orderTimeTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTransferCache();
 
         orderTimes.forEach((orderTime) ->
                 orderTimeTransfers.add(orderTimeTransferCache.getOrderTimeTransfer(orderTime))
@@ -681,15 +672,15 @@ public class OrderTimeControl
 
     public void updateOrderTimeFromValue(OrderTimeValue orderTimeValue, BasePK updatedBy) {
         if(orderTimeValue.hasBeenModified()) {
-            OrderTime orderTime = OrderTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderTime = OrderTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderTimeValue.getPrimaryKey());
 
             orderTime.setThruTime(session.START_TIME_LONG);
             orderTime.store();
 
-            OrderPK orderPK = orderTime.getOrderPK(); // Not updated
-            OrderTimeTypePK orderTimeTypePK = orderTime.getOrderTimeTypePK(); // Not updated
-            Long time = orderTimeValue.getTime();
+            var orderPK = orderTime.getOrderPK(); // Not updated
+            var orderTimeTypePK = orderTime.getOrderTimeTypePK(); // Not updated
+            var time = orderTimeValue.getTime();
 
             orderTime = OrderTimeFactory.getInstance().create(orderPK, orderTimeTypePK, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -723,7 +714,7 @@ public class OrderTimeControl
     // --------------------------------------------------------------------------------
 
     public OrderLineTime createOrderLineTime(OrderLine orderLine, OrderTimeType orderTimeType, Long time, BasePK createdBy) {
-        OrderLineTime orderLineTime = OrderLineTimeFactory.getInstance().create(orderLine, orderTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var orderLineTime = OrderLineTimeFactory.getInstance().create(orderLine, orderTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(orderLine.getPrimaryKey(), EventTypes.MODIFY, orderLineTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -862,7 +853,7 @@ public class OrderTimeControl
 
     public List<OrderLineTimeTransfer> getOrderLineTimeTransfers(UserVisit userVisit, Collection<OrderLineTime> orderLineTimes) {
         List<OrderLineTimeTransfer> orderLineTimeTransfers = new ArrayList<>(orderLineTimes.size());
-        OrderLineTimeTransferCache orderLineTimeTransferCache = getOrderTransferCaches(userVisit).getOrderLineTimeTransferCache();
+        var orderLineTimeTransferCache = getOrderTransferCaches(userVisit).getOrderLineTimeTransferCache();
 
         orderLineTimes.forEach((orderLineTime) ->
                 orderLineTimeTransfers.add(orderLineTimeTransferCache.getOrderLineTimeTransfer(orderLineTime))
@@ -881,15 +872,15 @@ public class OrderTimeControl
 
     public void updateOrderLineTimeFromValue(OrderLineTimeValue orderLineTimeValue, BasePK updatedBy) {
         if(orderLineTimeValue.hasBeenModified()) {
-            OrderLineTime orderLineTime = OrderLineTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderLineTime = OrderLineTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderLineTimeValue.getPrimaryKey());
 
             orderLineTime.setThruTime(session.START_TIME_LONG);
             orderLineTime.store();
 
-            OrderLinePK orderLinePK = orderLineTime.getOrderLinePK(); // Not updated
-            OrderTimeTypePK orderTimeTypePK = orderLineTime.getOrderTimeTypePK(); // Not updated
-            Long time = orderLineTimeValue.getTime();
+            var orderLinePK = orderLineTime.getOrderLinePK(); // Not updated
+            var orderTimeTypePK = orderLineTime.getOrderTimeTypePK(); // Not updated
+            var time = orderLineTimeValue.getTime();
 
             orderLineTime = OrderLineTimeFactory.getInstance().create(orderLinePK, orderTimeTypePK, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 

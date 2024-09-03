@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.document.server.entity.Document;
 import com.echothree.model.data.document.server.entity.DocumentDescription;
-import com.echothree.model.data.document.server.value.DocumentDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditDocumentDescriptionCommand
     public DocumentDescription getEntity(EditDocumentDescriptionResult result) {
         var documentControl = Session.getModelController(DocumentControl.class);
         DocumentDescription documentDescription = null;
-        String documentName = spec.getDocumentName();
-        Document document = documentControl.getDocumentByName(documentName);
+        var documentName = spec.getDocumentName();
+        var document = documentControl.getDocumentByName(documentName);
 
         if(document != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditDocumentDescriptionCommand
     @Override
     public void doUpdate(DocumentDescription documentDescription) {
         var documentControl = Session.getModelController(DocumentControl.class);
-        DocumentDescriptionValue documentDescriptionValue = documentControl.getDocumentDescriptionValue(documentDescription);
+        var documentDescriptionValue = documentControl.getDocumentDescriptionValue(documentDescription);
         documentDescriptionValue.setDescription(edit.getDescription());
 
         documentControl.updateDocumentDescriptionFromValue(documentDescriptionValue, getPartyPK());

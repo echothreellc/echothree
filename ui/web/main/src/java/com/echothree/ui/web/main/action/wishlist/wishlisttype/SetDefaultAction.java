@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.wishlist.wishlisttype;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.form.SetDefaultWishlistTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultWishlistTypeForm commandForm = WishlistUtil.getHome().getSetDefaultWishlistTypeForm();
-            String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
+            var commandForm = WishlistUtil.getHome().getSetDefaultWishlistTypeForm();
+            var wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
             
             commandForm.setWishlistTypeName(wishlistTypeName);
             

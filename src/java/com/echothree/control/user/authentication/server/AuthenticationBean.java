@@ -23,10 +23,7 @@ import com.echothree.model.control.party.common.PartyNames;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.server.persistence.Session;
@@ -64,12 +61,12 @@ public class AuthenticationBean
         
         try {
             var userControl = Session.getModelController(UserControl.class);
-            UserVisit userVisit = userControl.createUserVisit(null, null, null, null, null, null, null, null);
+            var userVisit = userControl.createUserVisit(null, null, null, null, null, null, null, null);
             var partyControl = Session.getModelController(PartyControl.class);
-            Party party = partyControl.getPartyByName(PartyNames.DATA_LOADER.name());
+            var party = partyControl.getPartyByName(PartyNames.DATA_LOADER.name());
             
             if(party == null) {
-                PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.UTILITY.name());
+                var partyType = partyControl.getPartyTypeByName(PartyTypes.UTILITY.name());
                 
                 if(partyType != null) {
                     party = partyControl.createParty(PartyNames.DATA_LOADER.name(), partyType, null, null, null, null, null);

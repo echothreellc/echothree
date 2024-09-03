@@ -17,13 +17,9 @@
 package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderPaymentPreferenceTransfer;
-import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
-import com.echothree.model.data.order.server.entity.OrderPaymentPreferenceDetail;
-import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
@@ -42,18 +38,18 @@ public class OrderPaymentPreferenceTransferCache
     }
     
     public OrderPaymentPreferenceTransfer getOrderPaymentPreferenceTransfer(OrderPaymentPreference orderPaymentPreference) {
-        OrderPaymentPreferenceTransfer orderPaymentPreferenceTransfer = get(orderPaymentPreference);
+        var orderPaymentPreferenceTransfer = get(orderPaymentPreference);
         
         if(orderPaymentPreferenceTransfer == null) {
-            OrderPaymentPreferenceDetail orderPaymentPreferenceDetail = orderPaymentPreference.getLastDetail();
-            Integer orderPaymentPreferenceSequence = orderPaymentPreferenceDetail.getOrderPaymentPreferenceSequence();
-            PaymentMethodTransfer paymentMethodTransfer = paymentMethodControl.getPaymentMethodTransfer(userVisit, orderPaymentPreferenceDetail.getPaymentMethod());
-            PartyPaymentMethod partyPaymentMethod = orderPaymentPreferenceDetail.getPartyPaymentMethod();
-            PartyPaymentMethodTransfer partyPaymentMethodTransfer = partyPaymentMethod == null ? null : partyPaymentMethodControl.getPartyPaymentMethodTransfer(userVisit, partyPaymentMethod);
-            Boolean wasPresent = orderPaymentPreferenceDetail.getWasPresent();
-            Long unformattedMaximumAmount = orderPaymentPreferenceDetail.getMaximumAmount();
-            String maximumAmount = AmountUtils.getInstance().formatPriceUnit(orderPaymentPreferenceDetail.getOrder().getLastDetail().getCurrency(), unformattedMaximumAmount);
-            Integer sortOrder = orderPaymentPreferenceDetail.getSortOrder();
+            var orderPaymentPreferenceDetail = orderPaymentPreference.getLastDetail();
+            var orderPaymentPreferenceSequence = orderPaymentPreferenceDetail.getOrderPaymentPreferenceSequence();
+            var paymentMethodTransfer = paymentMethodControl.getPaymentMethodTransfer(userVisit, orderPaymentPreferenceDetail.getPaymentMethod());
+            var partyPaymentMethod = orderPaymentPreferenceDetail.getPartyPaymentMethod();
+            var partyPaymentMethodTransfer = partyPaymentMethod == null ? null : partyPaymentMethodControl.getPartyPaymentMethodTransfer(userVisit, partyPaymentMethod);
+            var wasPresent = orderPaymentPreferenceDetail.getWasPresent();
+            var unformattedMaximumAmount = orderPaymentPreferenceDetail.getMaximumAmount();
+            var maximumAmount = AmountUtils.getInstance().formatPriceUnit(orderPaymentPreferenceDetail.getOrder().getLastDetail().getCurrency(), unformattedMaximumAmount);
+            var sortOrder = orderPaymentPreferenceDetail.getSortOrder();
             
             orderPaymentPreferenceTransfer = new OrderPaymentPreferenceTransfer(orderPaymentPreferenceSequence, paymentMethodTransfer,
                     partyPaymentMethodTransfer, wasPresent, unformattedMaximumAmount, maximumAmount,sortOrder);

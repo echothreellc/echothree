@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.invoice.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.invoice.common.transfer.InvoiceLineGlAccountTransfer;
-import com.echothree.model.control.invoice.common.transfer.InvoiceLineTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineGlAccount;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -38,11 +36,11 @@ public class InvoiceLineGlAccountTransferCache
     }
 
     public InvoiceLineGlAccountTransfer getInvoiceLineGlAccountTransfer(InvoiceLineGlAccount invoiceLineGlAccount) {
-        InvoiceLineGlAccountTransfer invoiceLineGlAccountTransfer = get(invoiceLineGlAccount);
+        var invoiceLineGlAccountTransfer = get(invoiceLineGlAccount);
 
         if(invoiceLineGlAccountTransfer == null) {
-            InvoiceLineTransfer invoiceLine = invoiceControl.getInvoiceLineTransfer(userVisit, invoiceLineGlAccount.getInvoiceLine());
-            GlAccountTransfer glAccount = accountingControl.getGlAccountTransfer(userVisit, invoiceLineGlAccount.getGlAccount());
+            var invoiceLine = invoiceControl.getInvoiceLineTransfer(userVisit, invoiceLineGlAccount.getInvoiceLine());
+            var glAccount = accountingControl.getGlAccountTransfer(userVisit, invoiceLineGlAccount.getGlAccount());
 
             invoiceLineGlAccountTransfer = new InvoiceLineGlAccountTransfer(invoiceLine, glAccount);
             put(invoiceLineGlAccount, invoiceLineGlAccountTransfer);

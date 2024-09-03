@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.timezone;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetTimeZoneForm;
 import com.echothree.control.user.party.common.result.GetTimeZoneResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetTimeZoneForm commandForm = PartyUtil.getHome().getGetTimeZoneForm();
-            String javaTimeZoneName = request.getParameter(ParameterConstants.JAVA_TIME_ZONE_NAME);
+            var commandForm = PartyUtil.getHome().getGetTimeZoneForm();
+            var javaTimeZoneName = request.getParameter(ParameterConstants.JAVA_TIME_ZONE_NAME);
             
             commandForm.setJavaTimeZoneName(javaTimeZoneName);
-            
-            CommandResult commandResult = PartyUtil.getHome().getTimeZone(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTimeZoneResult result = (GetTimeZoneResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().getTimeZone(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTimeZoneResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TIME_ZONE, result.getTimeZone());
             forwardKey = ForwardConstants.DISPLAY;

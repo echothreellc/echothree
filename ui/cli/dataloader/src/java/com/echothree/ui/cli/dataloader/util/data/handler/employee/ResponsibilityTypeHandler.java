@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.employee;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.common.EmployeeService;
-import com.echothree.control.user.employee.common.form.CreateResponsibilityTypeDescriptionForm;
 import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -50,9 +49,9 @@ public class ResponsibilityTypeHandler
         if(localName.equals("responsibilityTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +59,7 @@ public class ResponsibilityTypeHandler
             }
             
             try {
-                CreateResponsibilityTypeDescriptionForm form = EmployeeFormFactory.getCreateResponsibilityTypeDescriptionForm();
+                var form = EmployeeFormFactory.getCreateResponsibilityTypeDescriptionForm();
                 
                 form.setResponsibilityTypeName(responsibilityTypeName);
                 form.setLanguageIsoName(languageIsoName);

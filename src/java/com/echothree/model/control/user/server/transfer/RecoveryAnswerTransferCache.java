@@ -16,13 +16,10 @@
 
 package com.echothree.model.control.user.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.common.transfer.RecoveryAnswerTransfer;
-import com.echothree.model.control.user.common.transfer.RecoveryQuestionTransfer;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.RecoveryAnswer;
-import com.echothree.model.data.user.server.entity.RecoveryAnswerDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -39,13 +36,13 @@ public class RecoveryAnswerTransferCache
     }
     
     public RecoveryAnswerTransfer getRecoveryAnswerTransfer(RecoveryAnswer recoveryAnswer) {
-        RecoveryAnswerTransfer recoveryAnswerTransfer = get(recoveryAnswer);
+        var recoveryAnswerTransfer = get(recoveryAnswer);
         
         if(recoveryAnswerTransfer == null) {
-            RecoveryAnswerDetail recoveryAnswerDetail = recoveryAnswer.getLastDetail();
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, recoveryAnswerDetail.getParty());
-            RecoveryQuestionTransfer recoveryQuestion = userControl.getRecoveryQuestionTransfer(userVisit, recoveryAnswerDetail.getRecoveryQuestion());
-            String answer = recoveryAnswerDetail.getAnswer();
+            var recoveryAnswerDetail = recoveryAnswer.getLastDetail();
+            var party = partyControl.getPartyTransfer(userVisit, recoveryAnswerDetail.getParty());
+            var recoveryQuestion = userControl.getRecoveryQuestionTransfer(userVisit, recoveryAnswerDetail.getRecoveryQuestion());
+            var answer = recoveryAnswerDetail.getAnswer();
             
             recoveryAnswerTransfer = new RecoveryAnswerTransfer(party, recoveryQuestion, answer);
             put(recoveryAnswer, recoveryAnswerTransfer);

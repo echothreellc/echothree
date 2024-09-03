@@ -28,13 +28,9 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
 import com.echothree.model.data.contactlist.server.entity.PartyContactList;
-import com.echothree.model.data.contactlist.server.entity.PartyContactListDetail;
-import com.echothree.model.data.contactlist.server.value.PartyContactListDetailValue;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -95,12 +91,12 @@ public class EditPartyContactListCommand
     public PartyContactList getEntity(EditPartyContactListResult result) {
         var partyControl = Session.getModelController(PartyControl.class);
         PartyContactList partyContactList = null;
-        String partyName = spec.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = spec.getPartyName();
+        var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            String contactListName = spec.getContactListName();
+            var contactListName = spec.getContactListName();
             
             contactList = contactListControl.getContactListByName(contactListName);
             
@@ -140,7 +136,7 @@ public class EditPartyContactListCommand
     
     @Override
     public void doLock(PartyContactListEdit edit, PartyContactList partyContactList) {
-        PartyContactListDetail partyContactListDetail = partyContactList.getLastDetail();
+        var partyContactListDetail = partyContactList.getLastDetail();
         
         preferredContactListContactMechanismPurpose = partyContactListDetail.getPreferredContactListContactMechanismPurpose();
         
@@ -150,8 +146,8 @@ public class EditPartyContactListCommand
     @Override
     public void canUpdate(PartyContactList partyContactList) {
         var contactControl = Session.getModelController(ContactControl.class);
-        String preferredContactMechanismPurposeName = edit.getPreferredContactMechanismPurposeName();
-        ContactMechanismPurpose preferredContactMechanismPurpose = preferredContactMechanismPurposeName == null ? null : contactControl.getContactMechanismPurposeByName(preferredContactMechanismPurposeName);
+        var preferredContactMechanismPurposeName = edit.getPreferredContactMechanismPurposeName();
+        var preferredContactMechanismPurpose = preferredContactMechanismPurposeName == null ? null : contactControl.getContactMechanismPurposeByName(preferredContactMechanismPurposeName);
 
         if(preferredContactMechanismPurposeName == null || preferredContactMechanismPurpose != null) {
             var contactListControl = Session.getModelController(ContactListControl.class);
@@ -171,7 +167,7 @@ public class EditPartyContactListCommand
     public void doUpdate(PartyContactList partyContactList) {
         var contactListControl = Session.getModelController(ContactListControl.class);
         var partyPK = getPartyPK();
-        PartyContactListDetailValue partyContactListDetailValue = contactListControl.getPartyContactListDetailValueForUpdate(partyContactList);
+        var partyContactListDetailValue = contactListControl.getPartyContactListDetailValueForUpdate(partyContactList);
 
         partyContactListDetailValue.setPreferredContactListContactMechanismPurposePK(preferredContactListContactMechanismPurpose == null ? null : preferredContactListContactMechanismPurpose.getPrimaryKey());
 

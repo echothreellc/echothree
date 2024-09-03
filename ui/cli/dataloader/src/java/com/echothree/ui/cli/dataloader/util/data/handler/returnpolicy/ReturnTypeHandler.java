@@ -18,9 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.returnpolicy;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyService;
-import com.echothree.control.user.returnpolicy.common.form.CreateReturnReasonTypeForm;
-import com.echothree.control.user.returnpolicy.common.form.CreateReturnTypeDescriptionForm;
-import com.echothree.control.user.returnpolicy.common.form.CreateReturnTypeShippingMethodForm;
 import com.echothree.control.user.returnpolicy.common.form.ReturnPolicyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -54,9 +51,9 @@ public class ReturnTypeHandler
         if(localName.equals("returnTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -64,7 +61,7 @@ public class ReturnTypeHandler
             }
             
             try {
-                CreateReturnTypeDescriptionForm commandForm = ReturnPolicyFormFactory.getCreateReturnTypeDescriptionForm();
+                var commandForm = ReturnPolicyFormFactory.getCreateReturnTypeDescriptionForm();
                 
                 commandForm.setReturnKindName(returnKindName);
                 commandForm.setReturnTypeName(returnTypeName);
@@ -79,9 +76,9 @@ public class ReturnTypeHandler
             String returnReasonName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("returnReasonName"))
                     returnReasonName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -91,7 +88,7 @@ public class ReturnTypeHandler
             }
             
             try {
-                CreateReturnReasonTypeForm commandForm = ReturnPolicyFormFactory.getCreateReturnReasonTypeForm();
+                var commandForm = ReturnPolicyFormFactory.getCreateReturnReasonTypeForm();
                 
                 commandForm.setReturnKindName(returnKindName);
                 commandForm.setReturnReasonName(returnReasonName);
@@ -107,9 +104,9 @@ public class ReturnTypeHandler
             String shippingMethodName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("shippingMethodName"))
                     shippingMethodName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -119,7 +116,7 @@ public class ReturnTypeHandler
             }
             
             try {
-                CreateReturnTypeShippingMethodForm commandForm = ReturnPolicyFormFactory.getCreateReturnTypeShippingMethodForm();
+                var commandForm = ReturnPolicyFormFactory.getCreateReturnTypeShippingMethodForm();
                 
                 commandForm.setReturnKindName(returnKindName);
                 commandForm.setReturnTypeName(returnTypeName);

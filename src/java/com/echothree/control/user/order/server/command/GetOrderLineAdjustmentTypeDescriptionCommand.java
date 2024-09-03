@@ -17,7 +17,6 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.GetOrderLineAdjustmentTypeDescriptionForm;
-import com.echothree.control.user.order.common.result.GetOrderLineAdjustmentTypeDescriptionResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.order.server.control.OrderLineAdjustmentControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
@@ -25,9 +24,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.order.server.entity.OrderLineAdjustmentType;
-import com.echothree.model.data.order.server.entity.OrderLineAdjustmentTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -71,22 +67,22 @@ public class GetOrderLineAdjustmentTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        GetOrderLineAdjustmentTypeDescriptionResult result = OrderResultFactory.getGetOrderLineAdjustmentTypeDescriptionResult();
+        var result = OrderResultFactory.getGetOrderLineAdjustmentTypeDescriptionResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
-            String orderLineAdjustmentTypeName = form.getOrderLineAdjustmentTypeName();
-            OrderLineAdjustmentType orderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
+            var orderLineAdjustmentTypeName = form.getOrderLineAdjustmentTypeName();
+            var orderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
 
             if(orderLineAdjustmentType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, language);
+                    var orderLineAdjustmentTypeDescription = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, language);
 
                     if(orderLineAdjustmentTypeDescription != null) {
                         result.setOrderLineAdjustmentTypeDescription(orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescriptionTransfer(getUserVisit(), orderLineAdjustmentTypeDescription));

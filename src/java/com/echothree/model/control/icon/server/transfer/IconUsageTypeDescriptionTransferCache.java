@@ -17,9 +17,7 @@
 package com.echothree.model.control.icon.server.transfer;
 
 import com.echothree.model.control.icon.common.transfer.IconUsageTypeDescriptionTransfer;
-import com.echothree.model.control.icon.common.transfer.IconUsageTypeTransfer;
 import com.echothree.model.control.icon.server.control.IconControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.icon.server.entity.IconUsageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class IconUsageTypeDescriptionTransferCache
     }
     
     public IconUsageTypeDescriptionTransfer getIconUsageTypeDescriptionTransfer(IconUsageTypeDescription iconUsageTypeDescription) {
-        IconUsageTypeDescriptionTransfer iconUsageTypeDescriptionTransfer = get(iconUsageTypeDescription);
+        var iconUsageTypeDescriptionTransfer = get(iconUsageTypeDescription);
         
         if(iconUsageTypeDescriptionTransfer == null) {
-            IconUsageTypeTransfer iconUsageTypeTransfer = iconControl.getIconUsageTypeTransfer(userVisit, iconUsageTypeDescription.getIconUsageType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, iconUsageTypeDescription.getLanguage());
+            var iconUsageTypeTransfer = iconControl.getIconUsageTypeTransfer(userVisit, iconUsageTypeDescription.getIconUsageType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, iconUsageTypeDescription.getLanguage());
             
             iconUsageTypeDescriptionTransfer = new IconUsageTypeDescriptionTransfer(languageTransfer, iconUsageTypeTransfer, iconUsageTypeDescription.getDescription());
             put(iconUsageTypeDescription, iconUsageTypeDescriptionTransfer);

@@ -70,7 +70,7 @@ public class EntityAliasTypeTransferCache
     }
     
     public EntityAliasTypeTransfer getEntityAliasTypeTransfer(EntityAliasType entityAliasType, EntityInstance entityInstance) {
-        EntityAliasTypeTransfer entityAliasTypeTransfer = get(entityAliasType);
+        var entityAliasTypeTransfer = get(entityAliasType);
         
         if(entityAliasTypeTransfer == null) {
             var entityAliasTypeDetail = entityAliasType.getLastDetail();

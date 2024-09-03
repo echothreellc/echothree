@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.customer.customertypeshippingmethod;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.DeleteCustomerTypeShippingMethodForm;
-import com.echothree.control.user.customer.common.form.GetCustomerTypeShippingMethodForm;
 import com.echothree.control.user.customer.common.result.GetCustomerTypeShippingMethodResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerTypeShippingMethodForm commandForm = CustomerUtil.getHome().getGetCustomerTypeShippingMethodForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerTypeShippingMethodForm();
 
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());
         commandForm.setShippingMethodName(actionForm.getShippingMethodName());
-        
-        CommandResult commandResult = CustomerUtil.getHome().getCustomerTypeShippingMethod(getUserVisitPK(request), commandForm);
+
+        var commandResult = CustomerUtil.getHome().getCustomerTypeShippingMethod(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypeShippingMethodResult result = (GetCustomerTypeShippingMethodResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypeShippingMethodResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_SHIPPING_METHOD, result.getCustomerTypeShippingMethod());
         }
@@ -80,7 +77,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteCustomerTypeShippingMethodForm commandForm = CustomerUtil.getHome().getDeleteCustomerTypeShippingMethodForm();
+        var commandForm = CustomerUtil.getHome().getDeleteCustomerTypeShippingMethodForm();
 
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());
         commandForm.setShippingMethodName(actionForm.getShippingMethodName());

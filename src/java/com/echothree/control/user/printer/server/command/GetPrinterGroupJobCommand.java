@@ -17,13 +17,11 @@
 package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.GetPrinterGroupJobForm;
-import com.echothree.control.user.printer.common.result.GetPrinterGroupJobResult;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.printer.server.entity.PrinterGroupJob;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetPrinterGroupJobCommand
     @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        GetPrinterGroupJobResult result = PrinterResultFactory.getGetPrinterGroupJobResult();
-        String printerGroupJobName = form.getPrinterGroupJobName();
-        PrinterGroupJob printerGroupJob = printerControl.getPrinterGroupJobByName(printerGroupJobName);
+        var result = PrinterResultFactory.getGetPrinterGroupJobResult();
+        var printerGroupJobName = form.getPrinterGroupJobName();
+        var printerGroupJob = printerControl.getPrinterGroupJobByName(printerGroupJobName);
         
         if(printerGroupJob != null) {
             result.setPrinterGroupJob(printerControl.getPrinterGroupJobTransfer(getUserVisit(), printerGroupJob));

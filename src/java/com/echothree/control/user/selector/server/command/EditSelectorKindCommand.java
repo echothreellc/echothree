@@ -27,10 +27,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorKindDescription;
-import com.echothree.model.data.selector.server.entity.SelectorKindDetail;
-import com.echothree.model.data.selector.server.value.SelectorKindDescriptionValue;
-import com.echothree.model.data.selector.server.value.SelectorKindDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -90,8 +86,8 @@ public class EditSelectorKindCommand
     @Override
     public SelectorKind getEntity(EditSelectorKindResult result) {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        SelectorKind selectorKind = null;
-        String selectorKindName = spec.getSelectorKindName();
+        SelectorKind selectorKind;
+        var selectorKindName = spec.getSelectorKindName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
@@ -121,8 +117,8 @@ public class EditSelectorKindCommand
     @Override
     public void doLock(SelectorKindEdit edit, SelectorKind selectorKind) {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        SelectorKindDescription selectorKindDescription = selectorControl.getSelectorKindDescription(selectorKind, getPreferredLanguage());
-        SelectorKindDetail selectorKindDetail = selectorKind.getLastDetail();
+        var selectorKindDescription = selectorControl.getSelectorKindDescription(selectorKind, getPreferredLanguage());
+        var selectorKindDetail = selectorKind.getLastDetail();
 
         edit.setSelectorKindName(selectorKindDetail.getSelectorKindName());
         edit.setIsDefault(selectorKindDetail.getIsDefault().toString());
@@ -136,8 +132,8 @@ public class EditSelectorKindCommand
     @Override
     public void canUpdate(SelectorKind selectorKind) {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorKindName = edit.getSelectorKindName();
-        SelectorKind duplicateSelectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var selectorKindName = edit.getSelectorKindName();
+        var duplicateSelectorKind = selectorControl.getSelectorKindByName(selectorKindName);
 
         if(duplicateSelectorKind != null && !selectorKind.equals(duplicateSelectorKind)) {
             addExecutionError(ExecutionErrors.DuplicateSelectorKindName.name(), selectorKindName);
@@ -148,9 +144,9 @@ public class EditSelectorKindCommand
     public void doUpdate(SelectorKind selectorKind) {
         var selectorControl = Session.getModelController(SelectorControl.class);
         var partyPK = getPartyPK();
-        SelectorKindDetailValue selectorKindDetailValue = selectorControl.getSelectorKindDetailValueForUpdate(selectorKind);
-        SelectorKindDescription selectorKindDescription = selectorControl.getSelectorKindDescriptionForUpdate(selectorKind, getPreferredLanguage());
-        String description = edit.getDescription();
+        var selectorKindDetailValue = selectorControl.getSelectorKindDetailValueForUpdate(selectorKind);
+        var selectorKindDescription = selectorControl.getSelectorKindDescriptionForUpdate(selectorKind, getPreferredLanguage());
+        var description = edit.getDescription();
 
         selectorKindDetailValue.setSelectorKindName(edit.getSelectorKindName());
         selectorKindDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -163,7 +159,7 @@ public class EditSelectorKindCommand
         } else if(selectorKindDescription != null && description == null) {
             selectorControl.deleteSelectorKindDescription(selectorKindDescription, partyPK);
         } else if(selectorKindDescription != null && description != null) {
-            SelectorKindDescriptionValue selectorKindDescriptionValue = selectorControl.getSelectorKindDescriptionValue(selectorKindDescription);
+            var selectorKindDescriptionValue = selectorControl.getSelectorKindDescriptionValue(selectorKindDescription);
 
             selectorKindDescriptionValue.setDescription(description);
             selectorControl.updateSelectorKindDescriptionFromValue(selectorKindDescriptionValue, partyPK);

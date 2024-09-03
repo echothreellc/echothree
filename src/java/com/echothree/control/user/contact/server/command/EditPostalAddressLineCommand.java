@@ -20,13 +20,8 @@ import com.echothree.control.user.contact.common.edit.ContactEditFactory;
 import com.echothree.control.user.contact.common.edit.PostalAddressLineEdit;
 import com.echothree.control.user.contact.common.form.EditPostalAddressLineForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
-import com.echothree.control.user.contact.common.result.EditPostalAddressLineResult;
 import com.echothree.control.user.contact.common.spec.PostalAddressLineSpec;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
-import com.echothree.model.data.contact.server.entity.PostalAddressLine;
-import com.echothree.model.data.contact.server.entity.PostalAddressLineDetail;
-import com.echothree.model.data.contact.server.value.PostalAddressLineDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,21 +64,21 @@ public class EditPostalAddressLineCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        EditPostalAddressLineResult result = ContactResultFactory.getEditPostalAddressLineResult();
-        String postalAddressFormatName = spec.getPostalAddressFormatName();
-        PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
+        var result = ContactResultFactory.getEditPostalAddressLineResult();
+        var postalAddressFormatName = spec.getPostalAddressFormatName();
+        var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
         
         if(postalAddressFormat != null) {
             if(editMode.equals(EditMode.LOCK)) {
-                Integer postalAddressLineSortOrder = Integer.valueOf(spec.getPostalAddressLineSortOrder());
-                PostalAddressLine postalAddressLine = contactControl.getPostalAddressLine(postalAddressFormat, postalAddressLineSortOrder);
+                var postalAddressLineSortOrder = Integer.valueOf(spec.getPostalAddressLineSortOrder());
+                var postalAddressLine = contactControl.getPostalAddressLine(postalAddressFormat, postalAddressLineSortOrder);
                 
                 if(postalAddressLine != null) {
                     result.setPostalAddressLine(contactControl.getPostalAddressLineTransfer(getUserVisit(), postalAddressLine));
                     
                     if(lockEntity(postalAddressLine)) {
-                        PostalAddressLineEdit edit = ContactEditFactory.getPostalAddressLineEdit();
-                        PostalAddressLineDetail postalAddressLineDetail = postalAddressLine.getLastDetail();
+                        var edit = ContactEditFactory.getPostalAddressLineEdit();
+                        var postalAddressLineDetail = postalAddressLine.getLastDetail();
                         
                         result.setEdit(edit);
                         edit.setPostalAddressLineSortOrder(postalAddressLineDetail.getPostalAddressLineSortOrder().toString());
@@ -101,17 +96,17 @@ public class EditPostalAddressLineCommand
                     addExecutionError(ExecutionErrors.UnknownPostalAddressLine.name(), postalAddressLineSortOrder.toString());
                 }
             } else if(editMode.equals(EditMode.UPDATE)) {
-                Integer postalAddressLineSortOrder = Integer.valueOf(spec.getPostalAddressLineSortOrder());
-                PostalAddressLine postalAddressLine = contactControl.getPostalAddressLineForUpdate(postalAddressFormat, postalAddressLineSortOrder);
+                var postalAddressLineSortOrder = Integer.valueOf(spec.getPostalAddressLineSortOrder());
+                var postalAddressLine = contactControl.getPostalAddressLineForUpdate(postalAddressFormat, postalAddressLineSortOrder);
                 
                 if(postalAddressLine != null) {
                     postalAddressLineSortOrder = Integer.valueOf(edit.getPostalAddressLineSortOrder());
-                    PostalAddressLine duplicatePostalAddressLine = contactControl.getPostalAddressLineForUpdate(postalAddressFormat, postalAddressLineSortOrder);
+                    var duplicatePostalAddressLine = contactControl.getPostalAddressLineForUpdate(postalAddressFormat, postalAddressLineSortOrder);
                     
                     if(duplicatePostalAddressLine == null || postalAddressLine.equals(duplicatePostalAddressLine)) {
                         if(lockEntityForUpdate(postalAddressLine)) {
                             try {
-                                PostalAddressLineDetailValue postalAddressLineDetailValue = contactControl.getPostalAddressLineDetailValueForUpdate(postalAddressLine);
+                                var postalAddressLineDetailValue = contactControl.getPostalAddressLineDetailValueForUpdate(postalAddressLine);
                                 
                                 postalAddressLineDetailValue.setPostalAddressLineSortOrder(Integer.valueOf(edit.getPostalAddressLineSortOrder()));
                                 postalAddressLineDetailValue.setPrefix(edit.getPrefix());

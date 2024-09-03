@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetCacheEntriesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetCacheEntriesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -60,7 +59,7 @@ public class GetCacheEntriesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetCacheEntriesResult result = CoreResultFactory.getGetCacheEntriesResult();
+        var result = CoreResultFactory.getGetCacheEntriesResult();
 
         if(session.hasLimit(CacheEntryFactory.class)) {
             result.setCacheEntryCount(coreControl.countCacheEntries());

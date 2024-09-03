@@ -17,15 +17,12 @@
 package com.echothree.control.user.training.server.command;
 
 import com.echothree.control.user.training.common.form.GetPartyTrainingClassSessionsForm;
-import com.echothree.control.user.training.common.result.GetPartyTrainingClassSessionsResult;
 import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.training.server.entity.PartyTrainingClass;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -66,12 +63,12 @@ public class GetPartyTrainingClassSessionsCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        GetPartyTrainingClassSessionsResult result = TrainingResultFactory.getGetPartyTrainingClassSessionsResult();
-        String partyTrainingClassName = form.getPartyTrainingClassName();
-        PartyTrainingClass partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
+        var result = TrainingResultFactory.getGetPartyTrainingClassSessionsResult();
+        var partyTrainingClassName = form.getPartyTrainingClassName();
+        var partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
 
         if(partyTrainingClass != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             result.setPartyTrainingClass(trainingControl.getPartyTrainingClassTransfer(userVisit, partyTrainingClass));
             result.setPartyTrainingClassSessions(trainingControl.getPartyTrainingClassSessionTransfersByPartyTrainingClass(userVisit, partyTrainingClass));

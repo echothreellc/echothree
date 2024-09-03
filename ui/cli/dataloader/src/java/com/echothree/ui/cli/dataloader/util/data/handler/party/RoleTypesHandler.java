@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.party;
 
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.PartyService;
-import com.echothree.control.user.party.common.form.CreateRoleTypeForm;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -47,9 +46,9 @@ public class RoleTypesHandler
         if(localName.equals("roleType")) {
             String roleTypeName = null;
             String parentRoleTypeName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("roleTypeName"))
                     roleTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("parentRoleTypeName"))
@@ -57,7 +56,7 @@ public class RoleTypesHandler
             }
             
             try {
-                CreateRoleTypeForm createRoleTypeForm = PartyFormFactory.getCreateRoleTypeForm();
+                var createRoleTypeForm = PartyFormFactory.getCreateRoleTypeForm();
                 
                 createRoleTypeForm.setRoleTypeName(roleTypeName);
                 createRoleTypeForm.setParentRoleTypeName(parentRoleTypeName);

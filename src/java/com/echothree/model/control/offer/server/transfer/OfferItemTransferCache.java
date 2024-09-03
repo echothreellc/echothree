@@ -16,12 +16,10 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.common.OfferOptions;
 import com.echothree.model.control.offer.common.OfferProperties;
 import com.echothree.model.control.offer.common.transfer.OfferItemTransfer;
-import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.data.offer.server.entity.OfferItem;
@@ -29,7 +27,6 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
-import java.util.Set;
 
 public class OfferItemTransferCache
         extends BaseOfferTransferCache<OfferItem, OfferItemTransfer> {
@@ -71,11 +68,11 @@ public class OfferItemTransferCache
     }
     
     public OfferItemTransfer getOfferItemTransfer(OfferItem offerItem) {
-        OfferItemTransfer offerItemTransfer = get(offerItem);
+        var offerItemTransfer = get(offerItem);
         
         if(offerItemTransfer == null) {
-            OfferTransfer offer = filterOffer ? null : offerControl.getOfferTransfer(userVisit, offerItem.getOffer());
-            ItemTransfer item = filterItem ? null : itemControl.getItemTransfer(userVisit, offerItem.getItem());
+            var offer = filterOffer ? null : offerControl.getOfferTransfer(userVisit, offerItem.getOffer());
+            var item = filterItem ? null : itemControl.getItemTransfer(userVisit, offerItem.getItem());
             
             offerItemTransfer = new OfferItemTransfer(offer, item);
             put(offerItem, offerItemTransfer);

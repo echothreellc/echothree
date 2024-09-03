@@ -17,11 +17,9 @@
 package com.echothree.ui.web.main.action.configuration.job;
 
 import com.echothree.control.user.job.common.JobUtil;
-import com.echothree.control.user.job.common.form.SetJobStatusForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,11 +50,11 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String jobName = request.getParameter(ParameterConstants.JOB_NAME);
+        var jobName = request.getParameter(ParameterConstants.JOB_NAME);
         
         try {
-            StatusActionForm actionForm = (StatusActionForm)form;
-            SetJobStatusForm commandForm = JobUtil.getHome().getSetJobStatusForm();
+            var actionForm = (StatusActionForm)form;
+            var commandForm = JobUtil.getHome().getSetJobStatusForm();
             
             if(jobName == null)
                 jobName = actionForm.getJobName();
@@ -64,8 +62,8 @@ public class StatusAction
             if(wasPost(request)) {
                 commandForm.setJobName(jobName);
                 commandForm.setJobStatusChoice(actionForm.getJobStatusChoice());
-                
-                CommandResult commandResult = JobUtil.getHome().setJobStatus(getUserVisitPK(request), commandForm);
+
+                var commandResult = JobUtil.getHome().setJobStatus(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);

@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.core.applicationeditor;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEditorChoicesForm;
 import com.echothree.control.user.core.common.result.GetEditorChoicesResult;
 import com.echothree.model.control.core.common.choice.EditorChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -44,14 +41,14 @@ public class AddActionForm
     private void setupEditorChoices()
             throws NamingException {
         if(editorChoices == null) {
-            GetEditorChoicesForm commandForm = CoreUtil.getHome().getGetEditorChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetEditorChoicesForm();
 
             commandForm.setDefaultEditorChoice(editorChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getEditorChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEditorChoicesResult getEditorChoicesResult = (GetEditorChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getEditorChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getEditorChoicesResult = (GetEditorChoicesResult)executionResult.getResult();
             editorChoices = getEditorChoicesResult.getEditorChoices();
 
             if(editorChoice == null) {

@@ -17,14 +17,12 @@
 package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.GetPartyPaymentMethodChoicesForm;
-import com.echothree.control.user.payment.common.result.GetPartyPaymentMethodChoicesResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -67,14 +65,14 @@ public class GetPartyPaymentMethodChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyPaymentMethodChoicesResult result = PaymentResultFactory.getGetPartyPaymentMethodChoicesResult();
-        Party party = getParty();
-        String partyTypeName = getParty().getLastDetail().getPartyType().getPartyTypeName();
+        var result = PaymentResultFactory.getGetPartyPaymentMethodChoicesResult();
+        var party = getParty();
+        var partyTypeName = getParty().getLastDetail().getPartyType().getPartyTypeName();
 
         // If the caller is a CUSTOMER, then they're the Party. If they're not, the PartyName parameter is
         // required, and we'll look them up.
         if(!partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
-            String partyName = form.getPartyName();
+            var partyName = form.getPartyName();
 
             if(partyName == null) {
                 addExecutionError(ExecutionErrors.PartyNameRequired.name());
@@ -91,8 +89,8 @@ public class GetPartyPaymentMethodChoicesCommand
 
         if(!hasExecutionErrors()) {
             var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-            String defaultPaymentMethodChoice = form.getDefaultPaymentMethodChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultPaymentMethodChoice = form.getDefaultPaymentMethodChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setPartyPaymentMethodChoices(partyPaymentMethodControl.getPartyPaymentMethodChoices(defaultPaymentMethodChoice, getPreferredLanguage(), allowNullChoice,
                     party));

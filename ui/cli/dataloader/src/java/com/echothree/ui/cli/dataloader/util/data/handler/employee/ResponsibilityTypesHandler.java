@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.employee;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.common.EmployeeService;
-import com.echothree.control.user.employee.common.form.CreateResponsibilityTypeForm;
 import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -48,9 +47,9 @@ public class ResponsibilityTypesHandler
             String responsibilityTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("responsibilityTypeName"))
                     responsibilityTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +59,7 @@ public class ResponsibilityTypesHandler
             }
             
             try {
-                CreateResponsibilityTypeForm form = EmployeeFormFactory.getCreateResponsibilityTypeForm();
+                var form = EmployeeFormFactory.getCreateResponsibilityTypeForm();
                 
                 form.setResponsibilityTypeName(responsibilityTypeName);
                 form.setIsDefault(isDefault);

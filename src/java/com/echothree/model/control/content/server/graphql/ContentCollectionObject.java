@@ -22,10 +22,8 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentCollectionDetail;
-import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -95,7 +93,7 @@ public class ContentCollectionObject
     @GraphQLDescription("content catalogs")
     public List<ContentCatalogObject> getContentCatalogs(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentCatalog> entities = ContentSecurityUtils.getHasContentCatalogsAccess(env) ? contentControl.getContentCatalogs(contentCollection) : null;
+        var entities = ContentSecurityUtils.getHasContentCatalogsAccess(env) ? contentControl.getContentCatalogs(contentCollection) : null;
         List<ContentCatalogObject> contentCatalogs = entities == null ? null : new ArrayList<>(entities.size());
         
         if(entities != null) {
@@ -119,7 +117,7 @@ public class ContentCollectionObject
     @GraphQLDescription("content sections")
     public List<ContentSectionObject> getContentSections(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentSection> entities = ContentSecurityUtils.getHasContentSectionsAccess(env) ? contentControl.getContentSections(contentCollection) : null;
+        var entities = ContentSecurityUtils.getHasContentSectionsAccess(env) ? contentControl.getContentSections(contentCollection) : null;
         List<ContentSectionObject> contentSections = entities == null ? null : new ArrayList<>(entities.size());
         
         if(entities != null) {

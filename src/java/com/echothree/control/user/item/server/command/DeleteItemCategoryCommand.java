@@ -25,7 +25,6 @@ import com.echothree.model.control.item.server.logic.ItemCategoryLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -71,7 +70,7 @@ public class DeleteItemCategoryCommand
     
     @Override
     protected BaseResult execute() {
-        String itemCategoryName = form.getItemCategoryName();
+        var itemCategoryName = form.getItemCategoryName();
         var parameterCount = (itemCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -90,7 +89,7 @@ public class DeleteItemCategoryCommand
             }
             
             if(!hasExecutionErrors()) {
-                ItemCategoryLogic itemCategoryLogic = ItemCategoryLogic.getInstance();
+                var itemCategoryLogic = ItemCategoryLogic.getInstance();
 
                 itemCategoryLogic.checkDeleteItemCategory(this, itemCategory);
 

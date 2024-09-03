@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.transaction;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetTransactionsForm;
 import com.echothree.control.user.accounting.common.result.GetTransactionsResult;
 import com.echothree.model.control.accounting.common.transfer.TransactionGroupTransfer;
 import com.echothree.model.control.party.common.PartyOptions;
@@ -25,8 +24,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,22 +52,22 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
-        GetTransactionsForm commandForm = AccountingUtil.getHome().getGetTransactionsForm();
-        String transactionGroupName = request.getParameter(ParameterConstants.TRANSACTION_GROUP_NAME);
+        String forwardKey;
+        var commandForm = AccountingUtil.getHome().getGetTransactionsForm();
+        var transactionGroupName = request.getParameter(ParameterConstants.TRANSACTION_GROUP_NAME);
 
         commandForm.setTransactionGroupName(transactionGroupName);
         
         Set<String> commandFormOptions = new HashSet<>();
         commandFormOptions.add(PartyOptions.PartyIncludeDescription);
         commandForm.setOptions(commandFormOptions);
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactions(getUserVisitPK(request), commandForm);
+
+        var commandResult = AccountingUtil.getHome().getTransactions(getUserVisitPK(request), commandForm);
         GetTransactionsResult result = null;
         TransactionGroupTransfer transactionGroup = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
+            var executionResult = commandResult.getExecutionResult();
             
             result = (GetTransactionsResult)executionResult.getResult();
             transactionGroup = result.getTransactionGroup();

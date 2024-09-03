@@ -18,15 +18,11 @@ package com.echothree.control.user.document.server.command;
 
 import com.echothree.control.user.document.common.form.GetDocumentTypeDescriptionForm;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
-import com.echothree.control.user.document.common.result.GetDocumentTypeDescriptionResult;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.document.server.entity.DocumentType;
-import com.echothree.model.data.document.server.entity.DocumentTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetDocumentTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        GetDocumentTypeDescriptionResult result = DocumentResultFactory.getGetDocumentTypeDescriptionResult();
-        String documentTypeName = form.getDocumentTypeName();
-        DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
+        var result = DocumentResultFactory.getGetDocumentTypeDescriptionResult();
+        var documentTypeName = form.getDocumentTypeName();
+        var documentType = documentControl.getDocumentTypeByName(documentTypeName);
         
         if(documentType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                DocumentTypeDescription documentTypeDescription = documentControl.getDocumentTypeDescription(documentType, language);
+                var documentTypeDescription = documentControl.getDocumentTypeDescription(documentType, language);
 
                 if(documentTypeDescription != null) {
                     result.setDocumentTypeDescription(documentControl.getDocumentTypeDescriptionTransfer(getUserVisit(), documentTypeDescription));

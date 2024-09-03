@@ -17,7 +17,6 @@
 package com.echothree.control.user.tax.server.command;
 
 import com.echothree.control.user.tax.common.form.GetTaxesForm;
-import com.echothree.control.user.tax.common.result.GetTaxesResult;
 import com.echothree.control.user.tax.common.result.TaxResultFactory;
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -47,7 +46,7 @@ public class GetTaxesCommand
     @Override
     protected BaseResult execute() {
         var taxControl = Session.getModelController(TaxControl.class);
-        GetTaxesResult result = TaxResultFactory.getGetTaxesResult();
+        var result = TaxResultFactory.getGetTaxesResult();
         
         result.setTaxes(taxControl.getTaxTransfers(getUserVisit()));
         

@@ -17,14 +17,12 @@
 package com.echothree.control.user.tax.server.command;
 
 import com.echothree.control.user.tax.common.form.GetTaxClassificationsForm;
-import com.echothree.control.user.tax.common.result.GetTaxClassificationsResult;
 import com.echothree.control.user.tax.common.result.TaxResultFactory;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tax.server.control.TaxControl;
-import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.tax.server.factory.TaxClassificationFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -67,9 +65,9 @@ public class GetTaxClassificationsCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetTaxClassificationsResult result = TaxResultFactory.getGetTaxClassificationsResult();
-        String countryName = form.getCountryName();
-        GeoCode geoCode = geoControl.getCountryByAlias(countryName);
+        var result = TaxResultFactory.getGetTaxClassificationsResult();
+        var countryName = form.getCountryName();
+        var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
             var taxControl = Session.getModelController(TaxControl.class);

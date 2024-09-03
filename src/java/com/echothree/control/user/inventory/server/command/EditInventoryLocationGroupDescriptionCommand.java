@@ -19,19 +19,12 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.edit.InventoryEditFactory;
 import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupDescriptionEdit;
 import com.echothree.control.user.inventory.common.form.EditInventoryLocationGroupDescriptionForm;
-import com.echothree.control.user.inventory.common.result.EditInventoryLocationGroupDescriptionResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupDescriptionSpec;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
-import com.echothree.model.data.inventory.server.entity.InventoryLocationGroupDescription;
-import com.echothree.model.data.inventory.server.value.InventoryLocationGroupDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -69,30 +62,30 @@ public class EditInventoryLocationGroupDescriptionCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        EditInventoryLocationGroupDescriptionResult result = InventoryResultFactory.getEditInventoryLocationGroupDescriptionResult();
-        String warehouseName = spec.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = InventoryResultFactory.getEditInventoryLocationGroupDescriptionResult();
+        var warehouseName = spec.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            Party warehouseParty = warehouse.getParty();
-            String inventoryLocationGroupName = spec.getInventoryLocationGroupName();
-            InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+            var warehouseParty = warehouse.getParty();
+            var inventoryLocationGroupName = spec.getInventoryLocationGroupName();
+            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
             
             if(inventoryLocationGroup != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        InventoryLocationGroupDescription inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescription(inventoryLocationGroup, language);
+                        var inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescription(inventoryLocationGroup, language);
                         
                         if(inventoryLocationGroupDescription != null) {
                             result.setInventoryLocationGroupDescription(inventoryControl.getInventoryLocationGroupDescriptionTransfer(getUserVisit(), inventoryLocationGroupDescription));
                             
                             if(lockEntity(inventoryLocationGroup)) {
-                                InventoryLocationGroupDescriptionEdit edit = InventoryEditFactory.getInventoryLocationGroupDescriptionEdit();
+                                var edit = InventoryEditFactory.getInventoryLocationGroupDescriptionEdit();
                                 
                                 result.setEdit(edit);
                                 edit.setDescription(inventoryLocationGroupDescription.getDescription());
@@ -105,12 +98,12 @@ public class EditInventoryLocationGroupDescriptionCommand
                             addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupDescription.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        InventoryLocationGroupDescriptionValue inventoryLocationGroupDescriptionValue = inventoryControl.getInventoryLocationGroupDescriptionValueForUpdate(inventoryLocationGroup, language);
+                        var inventoryLocationGroupDescriptionValue = inventoryControl.getInventoryLocationGroupDescriptionValueForUpdate(inventoryLocationGroup, language);
                         
                         if(inventoryLocationGroupDescriptionValue != null) {
                             if(lockEntityForUpdate(inventoryLocationGroup)) {
                                 try {
-                                    String description = edit.getDescription();
+                                    var description = edit.getDescription();
                                     
                                     inventoryLocationGroupDescriptionValue.setDescription(description);
                                     

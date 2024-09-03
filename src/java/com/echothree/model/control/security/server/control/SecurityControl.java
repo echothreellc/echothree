@@ -31,40 +31,26 @@ import com.echothree.model.control.security.common.transfer.SecurityRoleGroupTra
 import com.echothree.model.control.security.common.transfer.SecurityRolePartyTypeTransfer;
 import com.echothree.model.control.security.common.transfer.SecurityRoleTransfer;
 import com.echothree.model.control.security.server.logic.PartySecurityRoleTemplateLogic;
-import com.echothree.model.control.security.server.transfer.PartySecurityRoleTemplateDescriptionTransferCache;
-import com.echothree.model.control.security.server.transfer.PartySecurityRoleTemplateRoleTransferCache;
-import com.echothree.model.control.security.server.transfer.PartySecurityRoleTemplateTrainingClassTransferCache;
-import com.echothree.model.control.security.server.transfer.PartySecurityRoleTemplateTransferCache;
-import com.echothree.model.control.security.server.transfer.SecurityRoleDescriptionTransferCache;
-import com.echothree.model.control.security.server.transfer.SecurityRoleGroupDescriptionTransferCache;
-import com.echothree.model.control.security.server.transfer.SecurityRoleGroupTransferCache;
-import com.echothree.model.control.security.server.transfer.SecurityRolePartyTypeTransferCache;
-import com.echothree.model.control.security.server.transfer.SecurityRoleTransferCache;
 import com.echothree.model.control.security.server.transfer.SecurityTransferCaches;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.common.pk.PartyTypePK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.security.common.pk.PartySecurityRoleTemplatePK;
-import com.echothree.model.data.security.common.pk.PartySecurityRoleTemplateUsePK;
 import com.echothree.model.data.security.common.pk.SecurityRoleGroupPK;
 import com.echothree.model.data.security.common.pk.SecurityRolePK;
 import com.echothree.model.data.security.server.entity.PartyEntitySecurityRole;
 import com.echothree.model.data.security.server.entity.PartySecurityRole;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplate;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateDescription;
-import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateDetail;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateRole;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateTrainingClass;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateUse;
 import com.echothree.model.data.security.server.entity.SecurityRole;
 import com.echothree.model.data.security.server.entity.SecurityRoleDescription;
-import com.echothree.model.data.security.server.entity.SecurityRoleDetail;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroupDescription;
-import com.echothree.model.data.security.server.entity.SecurityRoleGroupDetail;
 import com.echothree.model.data.security.server.entity.SecurityRolePartyType;
 import com.echothree.model.data.security.server.factory.PartyEntitySecurityRoleFactory;
 import com.echothree.model.data.security.server.factory.PartySecurityRoleFactory;
@@ -89,7 +75,6 @@ import com.echothree.model.data.security.server.value.SecurityRoleDetailValue;
 import com.echothree.model.data.security.server.value.SecurityRoleGroupDescriptionValue;
 import com.echothree.model.data.security.server.value.SecurityRoleGroupDetailValue;
 import com.echothree.model.data.security.server.value.SecurityRolePartyTypeValue;
-import com.echothree.model.data.selector.common.pk.SelectorPK;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -98,14 +83,12 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -139,20 +122,20 @@ public class SecurityControl
     
     public SecurityRoleGroup createSecurityRoleGroup(String securityRoleGroupName, SecurityRoleGroup parentSecurityRoleGroup,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SecurityRoleGroup defaultSecurityRoleGroup = getDefaultSecurityRoleGroup();
-        boolean defaultFound = defaultSecurityRoleGroup != null;
+        var defaultSecurityRoleGroup = getDefaultSecurityRoleGroup();
+        var defaultFound = defaultSecurityRoleGroup != null;
         
         if(defaultFound && isDefault) {
-            SecurityRoleGroupDetailValue defaultSecurityRoleGroupDetailValue = getDefaultSecurityRoleGroupDetailValueForUpdate();
+            var defaultSecurityRoleGroupDetailValue = getDefaultSecurityRoleGroupDetailValueForUpdate();
             
             defaultSecurityRoleGroupDetailValue.setIsDefault(Boolean.FALSE);
             updateSecurityRoleGroupFromValue(defaultSecurityRoleGroupDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        SecurityRoleGroup securityRoleGroup = SecurityRoleGroupFactory.getInstance().create();
-        SecurityRoleGroupDetail securityRoleGroupDetail = SecurityRoleGroupDetailFactory.getInstance().create(session,
+
+        var securityRoleGroup = SecurityRoleGroupFactory.getInstance().create();
+        var securityRoleGroupDetail = SecurityRoleGroupDetailFactory.getInstance().create(session,
                 securityRoleGroup, securityRoleGroupName, parentSecurityRoleGroup, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -343,7 +326,7 @@ public class SecurityControl
     
     public List<SecurityRoleGroupTransfer> getSecurityRoleGroupTransfers(UserVisit userVisit, Collection<SecurityRoleGroup> securityRoleGroups) {
         List<SecurityRoleGroupTransfer> securityRoleGroupTransfers = new ArrayList<>(securityRoleGroups.size());
-        SecurityRoleGroupTransferCache securityRoleGroupTransferCache = getSecurityTransferCaches(userVisit).getSecurityRoleGroupTransferCache();
+        var securityRoleGroupTransferCache = getSecurityTransferCaches(userVisit).getSecurityRoleGroupTransferCache();
         
         securityRoleGroups.forEach((securityRoleGroup) ->
                 securityRoleGroupTransfers.add(securityRoleGroupTransferCache.getSecurityRoleGroupTransfer(securityRoleGroup))
@@ -363,7 +346,7 @@ public class SecurityControl
     
     public SecurityRoleGroupChoicesBean getSecurityRoleGroupChoices(String defaultSecurityRoleGroupChoice,
             Language language, boolean allowNullChoice) {
-        List<SecurityRoleGroup> securityRoleGroups = getSecurityRoleGroups();
+        var securityRoleGroups = getSecurityRoleGroups();
         var size = securityRoleGroups.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -379,7 +362,7 @@ public class SecurityControl
         }
         
         for(var securityRoleGroup : securityRoleGroups) {
-            SecurityRoleGroupDetail securityRoleGroupDetail = securityRoleGroup.getLastDetail();
+            var securityRoleGroupDetail = securityRoleGroup.getLastDetail();
             var value = securityRoleGroupDetail.getSecurityRoleGroupName();
             
             if(!value.equals(SecurityRoleGroups.ROOT.name())) {
@@ -400,7 +383,7 @@ public class SecurityControl
     
     public boolean isParentSecurityRoleGroupSafe(SecurityRoleGroup securityRoleGroup,
             SecurityRoleGroup parentSecurityRoleGroup) {
-        boolean safe = true;
+        var safe = true;
         
         if(parentSecurityRoleGroup != null) {
             Set<SecurityRoleGroup> parentSecurityRoleGroups = new HashSet<>();
@@ -423,26 +406,26 @@ public class SecurityControl
     private void updateSecurityRoleGroupFromValue(SecurityRoleGroupDetailValue securityRoleGroupDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(securityRoleGroupDetailValue.hasBeenModified()) {
-            SecurityRoleGroup securityRoleGroup = SecurityRoleGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var securityRoleGroup = SecurityRoleGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      securityRoleGroupDetailValue.getSecurityRoleGroupPK());
-            SecurityRoleGroupDetail securityRoleGroupDetail = securityRoleGroup.getActiveDetailForUpdate();
+            var securityRoleGroupDetail = securityRoleGroup.getActiveDetailForUpdate();
             
             securityRoleGroupDetail.setThruTime(session.START_TIME_LONG);
             securityRoleGroupDetail.store();
-            
-            SecurityRoleGroupPK securityRoleGroupPK = securityRoleGroupDetail.getSecurityRoleGroupPK();
-            String securityRoleGroupName = securityRoleGroupDetailValue.getSecurityRoleGroupName();
-            SecurityRoleGroupPK parentSecurityRoleGroupPK = securityRoleGroupDetailValue.getParentSecurityRoleGroupPK();
-            Boolean isDefault = securityRoleGroupDetailValue.getIsDefault();
-            Integer sortOrder = securityRoleGroupDetailValue.getSortOrder();
+
+            var securityRoleGroupPK = securityRoleGroupDetail.getSecurityRoleGroupPK();
+            var securityRoleGroupName = securityRoleGroupDetailValue.getSecurityRoleGroupName();
+            var parentSecurityRoleGroupPK = securityRoleGroupDetailValue.getParentSecurityRoleGroupPK();
+            var isDefault = securityRoleGroupDetailValue.getIsDefault();
+            var sortOrder = securityRoleGroupDetailValue.getSortOrder();
             
             if(checkDefault) {
-                SecurityRoleGroup defaultSecurityRoleGroup = getDefaultSecurityRoleGroup();
-                boolean defaultFound = defaultSecurityRoleGroup != null && !defaultSecurityRoleGroup.equals(securityRoleGroup);
+                var defaultSecurityRoleGroup = getDefaultSecurityRoleGroup();
+                var defaultFound = defaultSecurityRoleGroup != null && !defaultSecurityRoleGroup.equals(securityRoleGroup);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    SecurityRoleGroupDetailValue defaultSecurityRoleGroupDetailValue = getDefaultSecurityRoleGroupDetailValueForUpdate();
+                    var defaultSecurityRoleGroupDetailValue = getDefaultSecurityRoleGroupDetailValueForUpdate();
                     
                     defaultSecurityRoleGroupDetailValue.setIsDefault(Boolean.FALSE);
                     updateSecurityRoleGroupFromValue(defaultSecurityRoleGroupDetailValue, false, updatedBy);
@@ -468,7 +451,7 @@ public class SecurityControl
     }
     
     private void deleteSecurityRoleGroup(SecurityRoleGroup securityRoleGroup, boolean checkDefault, BasePK deletedBy) {
-        SecurityRoleGroupDetail securityRoleGroupDetail = securityRoleGroup.getLastDetailForUpdate();
+        var securityRoleGroupDetail = securityRoleGroup.getLastDetailForUpdate();
 
         deleteSecurityRoleGroupsByParentSecurityRoleGroup(securityRoleGroup, deletedBy);
         deleteSecurityRolesBySecurityRoleGroup(securityRoleGroup, deletedBy);
@@ -480,17 +463,17 @@ public class SecurityControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            SecurityRoleGroup defaultSecurityRoleGroup = getDefaultSecurityRoleGroup();
+            var defaultSecurityRoleGroup = getDefaultSecurityRoleGroup();
 
             if(defaultSecurityRoleGroup == null) {
-                List<SecurityRoleGroup> securityRoleGroups = getSecurityRoleGroupsForUpdate();
+                var securityRoleGroups = getSecurityRoleGroupsForUpdate();
 
                 if(!securityRoleGroups.isEmpty()) {
-                    Iterator<SecurityRoleGroup> iter = securityRoleGroups.iterator();
+                    var iter = securityRoleGroups.iterator();
                     if(iter.hasNext()) {
                         defaultSecurityRoleGroup = iter.next();
                     }
-                    SecurityRoleGroupDetailValue securityRoleGroupDetailValue = Objects.requireNonNull(defaultSecurityRoleGroup).getLastDetailForUpdate().getSecurityRoleGroupDetailValue().clone();
+                    var securityRoleGroupDetailValue = Objects.requireNonNull(defaultSecurityRoleGroup).getLastDetailForUpdate().getSecurityRoleGroupDetailValue().clone();
 
                     securityRoleGroupDetailValue.setIsDefault(Boolean.TRUE);
                     updateSecurityRoleGroupFromValue(securityRoleGroupDetailValue, false, deletedBy);
@@ -522,7 +505,7 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     
     public SecurityRoleGroupDescription createSecurityRoleGroupDescription(SecurityRoleGroup securityRoleGroup, Language language, String description, BasePK createdBy) {
-        SecurityRoleGroupDescription securityRoleGroupDescription = SecurityRoleGroupDescriptionFactory.getInstance().create(securityRoleGroup, language, description, session.START_TIME_LONG,
+        var securityRoleGroupDescription = SecurityRoleGroupDescriptionFactory.getInstance().create(securityRoleGroup, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(securityRoleGroup.getPrimaryKey(), EventTypes.MODIFY, securityRoleGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -546,8 +529,8 @@ public class SecurityControl
                         "WHERE srgd_srg_securityrolegroupid = ? AND srgd_lang_languageid = ? AND srgd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SecurityRoleGroupDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = SecurityRoleGroupDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, securityRoleGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -594,8 +577,8 @@ public class SecurityControl
                         "WHERE srgd_srg_securityrolegroupid = ? AND srgd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SecurityRoleGroupDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = SecurityRoleGroupDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, securityRoleGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -618,7 +601,7 @@ public class SecurityControl
     
     public String getBestSecurityRoleGroupDescription(SecurityRoleGroup securityRoleGroup, Language language) {
         String description;
-        SecurityRoleGroupDescription securityRoleGroupDescription = getSecurityRoleGroupDescription(securityRoleGroup, language);
+        var securityRoleGroupDescription = getSecurityRoleGroupDescription(securityRoleGroup, language);
         
         if(securityRoleGroupDescription == null && !language.getIsDefault()) {
             securityRoleGroupDescription = getSecurityRoleGroupDescription(securityRoleGroup, getPartyControl().getDefaultLanguage());
@@ -638,9 +621,9 @@ public class SecurityControl
     }
     
     public List<SecurityRoleGroupDescriptionTransfer> getSecurityRoleGroupDescriptionTransfersBySecurityRoleGroup(UserVisit userVisit, SecurityRoleGroup securityRoleGroup) {
-        List<SecurityRoleGroupDescription> securityRoleGroupDescriptions = getSecurityRoleGroupDescriptionsBySecurityRoleGroup(securityRoleGroup);
+        var securityRoleGroupDescriptions = getSecurityRoleGroupDescriptionsBySecurityRoleGroup(securityRoleGroup);
         List<SecurityRoleGroupDescriptionTransfer> securityRoleGroupDescriptionTransfers = new ArrayList<>(securityRoleGroupDescriptions.size());
-        SecurityRoleGroupDescriptionTransferCache securityRoleGroupDescriptionTransferCache = getSecurityTransferCaches(userVisit).getSecurityRoleGroupDescriptionTransferCache();
+        var securityRoleGroupDescriptionTransferCache = getSecurityTransferCaches(userVisit).getSecurityRoleGroupDescriptionTransferCache();
         
         securityRoleGroupDescriptions.forEach((securityRoleGroupDescription) ->
                 securityRoleGroupDescriptionTransfers.add(securityRoleGroupDescriptionTransferCache.getSecurityRoleGroupDescriptionTransfer(securityRoleGroupDescription))
@@ -651,14 +634,14 @@ public class SecurityControl
     
     public void updateSecurityRoleGroupDescriptionFromValue(SecurityRoleGroupDescriptionValue securityRoleGroupDescriptionValue, BasePK updatedBy) {
         if(securityRoleGroupDescriptionValue.hasBeenModified()) {
-            SecurityRoleGroupDescription securityRoleGroupDescription = SecurityRoleGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, securityRoleGroupDescriptionValue.getPrimaryKey());
+            var securityRoleGroupDescription = SecurityRoleGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, securityRoleGroupDescriptionValue.getPrimaryKey());
             
             securityRoleGroupDescription.setThruTime(session.START_TIME_LONG);
             securityRoleGroupDescription.store();
-            
-            SecurityRoleGroup securityRoleGroup = securityRoleGroupDescription.getSecurityRoleGroup();
-            Language language = securityRoleGroupDescription.getLanguage();
-            String description = securityRoleGroupDescriptionValue.getDescription();
+
+            var securityRoleGroup = securityRoleGroupDescription.getSecurityRoleGroup();
+            var language = securityRoleGroupDescription.getLanguage();
+            var description = securityRoleGroupDescriptionValue.getDescription();
             
             securityRoleGroupDescription = SecurityRoleGroupDescriptionFactory.getInstance().create(securityRoleGroup, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -675,7 +658,7 @@ public class SecurityControl
     }
     
     public void deleteSecurityRoleGroupDescriptionsBySecurityRoleGroup(SecurityRoleGroup securityRoleGroup, BasePK deletedBy) {
-        List<SecurityRoleGroupDescription> securityRoleGroupDescriptions = getSecurityRoleGroupDescriptionsBySecurityRoleGroupForUpdate(securityRoleGroup);
+        var securityRoleGroupDescriptions = getSecurityRoleGroupDescriptionsBySecurityRoleGroupForUpdate(securityRoleGroup);
         
         securityRoleGroupDescriptions.forEach((securityRoleGroupDescription) -> 
                 deleteSecurityRoleGroupDescription(securityRoleGroupDescription, deletedBy)
@@ -688,20 +671,20 @@ public class SecurityControl
     
     public SecurityRole createSecurityRole(SecurityRoleGroup securityRoleGroup, String securityRoleName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        SecurityRole defaultSecurityRole = getDefaultSecurityRole(securityRoleGroup);
-        boolean defaultFound = defaultSecurityRole != null;
+        var defaultSecurityRole = getDefaultSecurityRole(securityRoleGroup);
+        var defaultFound = defaultSecurityRole != null;
         
         if(defaultFound && isDefault) {
-            SecurityRoleDetailValue defaultSecurityRoleDetailValue = getDefaultSecurityRoleDetailValueForUpdate(securityRoleGroup);
+            var defaultSecurityRoleDetailValue = getDefaultSecurityRoleDetailValueForUpdate(securityRoleGroup);
             
             defaultSecurityRoleDetailValue.setIsDefault(Boolean.FALSE);
             updateSecurityRoleFromValue(defaultSecurityRoleDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        SecurityRole securityRole = SecurityRoleFactory.getInstance().create();
-        SecurityRoleDetail securityRoleDetail = SecurityRoleDetailFactory.getInstance().create(session,
+
+        var securityRole = SecurityRoleFactory.getInstance().create();
+        var securityRoleDetail = SecurityRoleDetailFactory.getInstance().create(session,
                 securityRole, securityRoleGroup, securityRoleName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -765,8 +748,8 @@ public class SecurityControl
                         "WHERE srol_activedetailid = sroldt_securityroledetailid AND sroldt_srg_securityrolegroupid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SecurityRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = SecurityRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, securityRoleGroup.getPrimaryKey().getEntityId());
             
@@ -813,8 +796,8 @@ public class SecurityControl
                         "AND sroldt_srg_securityrolegroupid = ? AND sroldt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SecurityRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = SecurityRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, securityRoleGroup.getPrimaryKey().getEntityId());
             
@@ -856,8 +839,8 @@ public class SecurityControl
                         "AND sroldt_srg_securityrolegroupid = ? AND sroldt_securityrolename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SecurityRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = SecurityRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, securityRoleGroup.getPrimaryKey().getEntityId());
             ps.setString(2, securityRoleName);
@@ -888,7 +871,7 @@ public class SecurityControl
     
     public SecurityRoleChoicesBean getSecurityRoleChoices(String defaultSecurityRoleChoice, Language language,
             boolean allowNullChoice, SecurityRoleGroup securityRoleGroup) {
-        List<SecurityRole> securityRoles = getSecurityRoles(securityRoleGroup);
+        var securityRoles = getSecurityRoles(securityRoleGroup);
         var size = securityRoles.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -904,7 +887,7 @@ public class SecurityControl
         }
         
         for(var securityRole : securityRoles) {
-            SecurityRoleDetail securityRoleDetail = securityRole.getLastDetail();
+            var securityRoleDetail = securityRole.getLastDetail();
             var label = getBestSecurityRoleDescription(securityRole, language);
             var value = securityRoleDetail.getSecurityRoleName();
             
@@ -926,7 +909,7 @@ public class SecurityControl
 
     public List<SecurityRoleTransfer> getSecurityRoleTransfers(UserVisit userVisit, Collection<SecurityRole> securityRoles) {
         List<SecurityRoleTransfer> securityRoleTransfers = new ArrayList<>(securityRoles.size());
-        SecurityRoleTransferCache securityRoleTransferCache = getSecurityTransferCaches(userVisit).getSecurityRoleTransferCache();
+        var securityRoleTransferCache = getSecurityTransferCaches(userVisit).getSecurityRoleTransferCache();
 
         securityRoles.forEach((securityRole) ->
                 securityRoleTransfers.add(securityRoleTransferCache.getSecurityRoleTransfer(securityRole))
@@ -942,27 +925,27 @@ public class SecurityControl
     private void updateSecurityRoleFromValue(SecurityRoleDetailValue securityRoleDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(securityRoleDetailValue.hasBeenModified()) {
-            SecurityRole securityRole = SecurityRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var securityRole = SecurityRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      securityRoleDetailValue.getSecurityRolePK());
-            SecurityRoleDetail securityRoleDetail = securityRole.getActiveDetailForUpdate();
+            var securityRoleDetail = securityRole.getActiveDetailForUpdate();
             
             securityRoleDetail.setThruTime(session.START_TIME_LONG);
             securityRoleDetail.store();
-            
-            SecurityRolePK securityRolePK = securityRoleDetail.getSecurityRolePK();
-            SecurityRoleGroup securityRoleGroup = securityRoleDetail.getSecurityRoleGroup();
-            SecurityRoleGroupPK securityRoleGroupPK = securityRoleGroup.getPrimaryKey();
-            String securityRoleName = securityRoleDetailValue.getSecurityRoleName();
-            Boolean isDefault = securityRoleDetailValue.getIsDefault();
-            Integer sortOrder = securityRoleDetailValue.getSortOrder();
+
+            var securityRolePK = securityRoleDetail.getSecurityRolePK();
+            var securityRoleGroup = securityRoleDetail.getSecurityRoleGroup();
+            var securityRoleGroupPK = securityRoleGroup.getPrimaryKey();
+            var securityRoleName = securityRoleDetailValue.getSecurityRoleName();
+            var isDefault = securityRoleDetailValue.getIsDefault();
+            var sortOrder = securityRoleDetailValue.getSortOrder();
             
             if(checkDefault) {
-                SecurityRole defaultSecurityRole = getDefaultSecurityRole(securityRoleGroup);
-                boolean defaultFound = defaultSecurityRole != null && !defaultSecurityRole.equals(securityRole);
+                var defaultSecurityRole = getDefaultSecurityRole(securityRoleGroup);
+                var defaultFound = defaultSecurityRole != null && !defaultSecurityRole.equals(securityRole);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    SecurityRoleDetailValue defaultSecurityRoleDetailValue = getDefaultSecurityRoleDetailValueForUpdate(securityRoleGroup);
+                    var defaultSecurityRoleDetailValue = getDefaultSecurityRoleDetailValueForUpdate(securityRoleGroup);
                     
                     defaultSecurityRoleDetailValue.setIsDefault(Boolean.FALSE);
                     updateSecurityRoleFromValue(defaultSecurityRoleDetailValue, false, updatedBy);
@@ -992,24 +975,24 @@ public class SecurityControl
         deletePartyEntitySecurityRolesBySecurityRole(securityRole, deletedBy);
         deleteSecurityRolePartyTypesBySecurityRole(securityRole, deletedBy);
         deleteSecurityRoleDescriptionsBySecurityRole(securityRole, deletedBy);
-        
-        SecurityRoleDetail securityRoleDetail = securityRole.getLastDetailForUpdate();
+
+        var securityRoleDetail = securityRole.getLastDetailForUpdate();
         securityRoleDetail.setThruTime(session.START_TIME_LONG);
         securityRole.setActiveDetail(null);
         securityRole.store();
         
         // Check for default, and pick one if necessary
-        SecurityRoleGroup securityRoleGroup = securityRoleDetail.getSecurityRoleGroup();
-        SecurityRole defaultSecurityRole = getDefaultSecurityRole(securityRoleGroup);
+        var securityRoleGroup = securityRoleDetail.getSecurityRoleGroup();
+        var defaultSecurityRole = getDefaultSecurityRole(securityRoleGroup);
         if(defaultSecurityRole == null) {
-            List<SecurityRole> securityRoles = getSecurityRolesForUpdate(securityRoleGroup);
+            var securityRoles = getSecurityRolesForUpdate(securityRoleGroup);
             
             if(!securityRoles.isEmpty()) {
-                Iterator<SecurityRole> iter = securityRoles.iterator();
+                var iter = securityRoles.iterator();
                 if(iter.hasNext()) {
                     defaultSecurityRole = iter.next();
                 }
-                SecurityRoleDetailValue securityRoleDetailValue = Objects.requireNonNull(defaultSecurityRole).getLastDetailForUpdate().getSecurityRoleDetailValue().clone();
+                var securityRoleDetailValue = Objects.requireNonNull(defaultSecurityRole).getLastDetailForUpdate().getSecurityRoleDetailValue().clone();
                 
                 securityRoleDetailValue.setIsDefault(Boolean.TRUE);
                 updateSecurityRoleFromValue(securityRoleDetailValue, false, deletedBy);
@@ -1020,7 +1003,7 @@ public class SecurityControl
     }
     
     public void deleteSecurityRolesBySecurityRoleGroup(SecurityRoleGroup securityRoleGroup, BasePK deletedBy) {
-        List<SecurityRole> securityRoles = getSecurityRolesForUpdate(securityRoleGroup);
+        var securityRoles = getSecurityRolesForUpdate(securityRoleGroup);
         
         securityRoles.forEach((securityRole) -> 
                 deleteSecurityRole(securityRole, deletedBy)
@@ -1032,7 +1015,7 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     
     public SecurityRoleDescription createSecurityRoleDescription(SecurityRole securityRole, Language language, String description, BasePK createdBy) {
-        SecurityRoleDescription securityRoleDescription = SecurityRoleDescriptionFactory.getInstance().create(securityRole, language, description, session.START_TIME_LONG,
+        var securityRoleDescription = SecurityRoleDescriptionFactory.getInstance().create(securityRole, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(securityRole.getPrimaryKey(), EventTypes.MODIFY, securityRoleDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1056,8 +1039,8 @@ public class SecurityControl
                         "WHERE srold_srol_securityroleid = ? AND srold_lang_languageid = ? AND srold_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SecurityRoleDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = SecurityRoleDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, securityRole.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1104,8 +1087,8 @@ public class SecurityControl
                         "WHERE srold_srol_securityroleid = ? AND srold_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = SecurityRoleDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = SecurityRoleDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, securityRole.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1128,7 +1111,7 @@ public class SecurityControl
     
     public String getBestSecurityRoleDescription(SecurityRole securityRole, Language language) {
         String description;
-        SecurityRoleDescription securityRoleDescription = getSecurityRoleDescription(securityRole, language);
+        var securityRoleDescription = getSecurityRoleDescription(securityRole, language);
         
         if(securityRoleDescription == null && !language.getIsDefault()) {
             securityRoleDescription = getSecurityRoleDescription(securityRole, getPartyControl().getDefaultLanguage());
@@ -1148,9 +1131,9 @@ public class SecurityControl
     }
     
     public List<SecurityRoleDescriptionTransfer> getSecurityRoleDescriptionTransfersBySecurityRole(UserVisit userVisit, SecurityRole securityRole) {
-        List<SecurityRoleDescription> securityRoleDescriptions = getSecurityRoleDescriptionsBySecurityRole(securityRole);
+        var securityRoleDescriptions = getSecurityRoleDescriptionsBySecurityRole(securityRole);
         List<SecurityRoleDescriptionTransfer> securityRoleDescriptionTransfers = new ArrayList<>(securityRoleDescriptions.size());
-        SecurityRoleDescriptionTransferCache securityRoleDescriptionTransferCache = getSecurityTransferCaches(userVisit).getSecurityRoleDescriptionTransferCache();
+        var securityRoleDescriptionTransferCache = getSecurityTransferCaches(userVisit).getSecurityRoleDescriptionTransferCache();
         
         securityRoleDescriptions.forEach((securityRoleDescription) ->
                 securityRoleDescriptionTransfers.add(securityRoleDescriptionTransferCache.getSecurityRoleDescriptionTransfer(securityRoleDescription))
@@ -1161,14 +1144,14 @@ public class SecurityControl
     
     public void updateSecurityRoleDescriptionFromValue(SecurityRoleDescriptionValue securityRoleDescriptionValue, BasePK updatedBy) {
         if(securityRoleDescriptionValue.hasBeenModified()) {
-            SecurityRoleDescription securityRoleDescription = SecurityRoleDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, securityRoleDescriptionValue.getPrimaryKey());
+            var securityRoleDescription = SecurityRoleDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, securityRoleDescriptionValue.getPrimaryKey());
             
             securityRoleDescription.setThruTime(session.START_TIME_LONG);
             securityRoleDescription.store();
-            
-            SecurityRole securityRole = securityRoleDescription.getSecurityRole();
-            Language language = securityRoleDescription.getLanguage();
-            String description = securityRoleDescriptionValue.getDescription();
+
+            var securityRole = securityRoleDescription.getSecurityRole();
+            var language = securityRoleDescription.getLanguage();
+            var description = securityRoleDescriptionValue.getDescription();
             
             securityRoleDescription = SecurityRoleDescriptionFactory.getInstance().create(securityRole, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1185,7 +1168,7 @@ public class SecurityControl
     }
     
     public void deleteSecurityRoleDescriptionsBySecurityRole(SecurityRole securityRole, BasePK deletedBy) {
-        List<SecurityRoleDescription> securityRoleDescriptions = getSecurityRoleDescriptionsBySecurityRoleForUpdate(securityRole);
+        var securityRoleDescriptions = getSecurityRoleDescriptionsBySecurityRoleForUpdate(securityRole);
         
         securityRoleDescriptions.forEach((securityRoleDescription) -> 
                 deleteSecurityRoleDescription(securityRoleDescription, deletedBy)
@@ -1197,7 +1180,7 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     
     public SecurityRolePartyType createSecurityRolePartyType(SecurityRole securityRole, PartyType partyType, Selector partySelector, BasePK createdBy) {
-        SecurityRolePartyType securityRolePartyType = SecurityRolePartyTypeFactory.getInstance().create(securityRole, partyType, partySelector,
+        var securityRolePartyType = SecurityRolePartyTypeFactory.getInstance().create(securityRole, partyType, partySelector,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(securityRole.getPrimaryKey(), EventTypes.MODIFY, securityRolePartyType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1313,7 +1296,7 @@ public class SecurityControl
     
     public List<SecurityRolePartyTypeTransfer> getSecurityRolePartyTypeTransfers(UserVisit userVisit, Collection<SecurityRolePartyType> securityRolePartyTypes) {
         List<SecurityRolePartyTypeTransfer> securityRolePartyTypeTransfers = new ArrayList<>(securityRolePartyTypes.size());
-        SecurityRolePartyTypeTransferCache securityRolePartyTypeTransferCache = getSecurityTransferCaches(userVisit).getSecurityRolePartyTypeTransferCache();
+        var securityRolePartyTypeTransferCache = getSecurityTransferCaches(userVisit).getSecurityRolePartyTypeTransferCache();
         
         securityRolePartyTypes.forEach((securityRolePartyType) ->
                 securityRolePartyTypeTransfers.add(securityRolePartyTypeTransferCache.getSecurityRolePartyTypeTransfer(securityRolePartyType))
@@ -1328,15 +1311,15 @@ public class SecurityControl
     
     public void updateSecurityRolePartyTypeFromValue(SecurityRolePartyTypeValue securityRolePartyTypeValue, BasePK updatedBy) {
         if(securityRolePartyTypeValue.hasBeenModified()) {
-            SecurityRolePartyType securityRolePartyType = SecurityRolePartyTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var securityRolePartyType = SecurityRolePartyTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     securityRolePartyTypeValue.getPrimaryKey());
             
             securityRolePartyType.setThruTime(session.START_TIME_LONG);
             securityRolePartyType.store();
-            
-            SecurityRolePK securityRolePK = securityRolePartyType.getSecurityRolePK();
-            PartyTypePK partyTypePK = securityRolePartyType.getPartyTypePK();
-            SelectorPK partySelectorPK = securityRolePartyTypeValue.getPartySelectorPK();
+
+            var securityRolePK = securityRolePartyType.getSecurityRolePK();
+            var partyTypePK = securityRolePartyType.getPartyTypePK();
+            var partySelectorPK = securityRolePartyTypeValue.getPartySelectorPK();
             
             securityRolePartyType = SecurityRolePartyTypeFactory.getInstance().create(securityRolePK, partyTypePK, partySelectorPK, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -1375,20 +1358,20 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     
     public PartySecurityRoleTemplate createPartySecurityRoleTemplate(String partySecurityRoleTemplateName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        PartySecurityRoleTemplate defaultPartySecurityRoleTemplate = getDefaultPartySecurityRoleTemplate();
-        boolean defaultFound = defaultPartySecurityRoleTemplate != null;
+        var defaultPartySecurityRoleTemplate = getDefaultPartySecurityRoleTemplate();
+        var defaultFound = defaultPartySecurityRoleTemplate != null;
         
         if(defaultFound && isDefault) {
-            PartySecurityRoleTemplateDetailValue defaultPartySecurityRoleTemplateDetailValue = getDefaultPartySecurityRoleTemplateDetailValueForUpdate();
+            var defaultPartySecurityRoleTemplateDetailValue = getDefaultPartySecurityRoleTemplateDetailValueForUpdate();
             
             defaultPartySecurityRoleTemplateDetailValue.setIsDefault(Boolean.FALSE);
             updatePartySecurityRoleTemplateFromValue(defaultPartySecurityRoleTemplateDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        PartySecurityRoleTemplate partySecurityRoleTemplate = PartySecurityRoleTemplateFactory.getInstance().create();
-        PartySecurityRoleTemplateDetail partySecurityRoleTemplateDetail = PartySecurityRoleTemplateDetailFactory.getInstance().create(partySecurityRoleTemplate,
+
+        var partySecurityRoleTemplate = PartySecurityRoleTemplateFactory.getInstance().create();
+        var partySecurityRoleTemplateDetail = PartySecurityRoleTemplateDetailFactory.getInstance().create(partySecurityRoleTemplate,
                 partySecurityRoleTemplateName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1417,8 +1400,8 @@ public class SecurityControl
                     "WHERE psrt_activedetailid = psrtdt_partysecurityroletemplatedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = PartySecurityRoleTemplateFactory.getInstance().prepareStatement(query);
+
+        var ps = PartySecurityRoleTemplateFactory.getInstance().prepareStatement(query);
         
         return PartySecurityRoleTemplateFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -1444,8 +1427,8 @@ public class SecurityControl
                     "WHERE psrt_activedetailid = psrtdt_partysecurityroletemplatedetailid AND psrtdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = PartySecurityRoleTemplateFactory.getInstance().prepareStatement(query);
+
+        var ps = PartySecurityRoleTemplateFactory.getInstance().prepareStatement(query);
         
         return PartySecurityRoleTemplateFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -1480,8 +1463,8 @@ public class SecurityControl
                         "AND psrtdt_partysecurityroletemplatename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartySecurityRoleTemplateFactory.getInstance().prepareStatement(query);
+
+            var ps = PartySecurityRoleTemplateFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, partySecurityRoleTemplateName);
             
@@ -1515,7 +1498,7 @@ public class SecurityControl
     
     public PartySecurityRoleTemplateChoicesBean getPartySecurityRoleTemplateChoices(String defaultPartySecurityRoleTemplateChoice, Language language,
             boolean allowNullChoice) {
-        List<PartySecurityRoleTemplate> partySecurityRoleTemplates = getPartySecurityRoleTemplates();
+        var partySecurityRoleTemplates = getPartySecurityRoleTemplates();
         var size = partySecurityRoleTemplates.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1531,7 +1514,7 @@ public class SecurityControl
         }
         
         for(var partySecurityRoleTemplate : partySecurityRoleTemplates) {
-            PartySecurityRoleTemplateDetail partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getLastDetail();
+            var partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getLastDetail();
             var label = getBestPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, language);
             var value = partySecurityRoleTemplateDetail.getPartySecurityRoleTemplateName();
             
@@ -1552,9 +1535,9 @@ public class SecurityControl
     }
     
     public List<PartySecurityRoleTemplateTransfer> getPartySecurityRoleTemplateTransfers(UserVisit userVisit) {
-        List<PartySecurityRoleTemplate> partySecurityRoleTemplates = getPartySecurityRoleTemplates();
+        var partySecurityRoleTemplates = getPartySecurityRoleTemplates();
         List<PartySecurityRoleTemplateTransfer> partySecurityRoleTemplateTransfers = new ArrayList<>(partySecurityRoleTemplates.size());
-        PartySecurityRoleTemplateTransferCache partySecurityRoleTemplateTransferCache = getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateTransferCache();
+        var partySecurityRoleTemplateTransferCache = getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateTransferCache();
         
         partySecurityRoleTemplates.forEach((partySecurityRoleTemplate) ->
                 partySecurityRoleTemplateTransfers.add(partySecurityRoleTemplateTransferCache.getPartySecurityRoleTemplateTransfer(partySecurityRoleTemplate))
@@ -1566,25 +1549,25 @@ public class SecurityControl
     private void updatePartySecurityRoleTemplateFromValue(PartySecurityRoleTemplateDetailValue partySecurityRoleTemplateDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(partySecurityRoleTemplateDetailValue.hasBeenModified()) {
-            PartySecurityRoleTemplate partySecurityRoleTemplate = PartySecurityRoleTemplateFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partySecurityRoleTemplate = PartySecurityRoleTemplateFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partySecurityRoleTemplateDetailValue.getPartySecurityRoleTemplatePK());
-            PartySecurityRoleTemplateDetail partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getActiveDetailForUpdate();
+            var partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getActiveDetailForUpdate();
             
             partySecurityRoleTemplateDetail.setThruTime(session.START_TIME_LONG);
             partySecurityRoleTemplateDetail.store();
-            
-            PartySecurityRoleTemplatePK partySecurityRoleTemplatePK = partySecurityRoleTemplateDetail.getPartySecurityRoleTemplatePK();
-            String partySecurityRoleTemplateName = partySecurityRoleTemplateDetailValue.getPartySecurityRoleTemplateName();
-            Boolean isDefault = partySecurityRoleTemplateDetailValue.getIsDefault();
-            Integer sortOrder = partySecurityRoleTemplateDetailValue.getSortOrder();
+
+            var partySecurityRoleTemplatePK = partySecurityRoleTemplateDetail.getPartySecurityRoleTemplatePK();
+            var partySecurityRoleTemplateName = partySecurityRoleTemplateDetailValue.getPartySecurityRoleTemplateName();
+            var isDefault = partySecurityRoleTemplateDetailValue.getIsDefault();
+            var sortOrder = partySecurityRoleTemplateDetailValue.getSortOrder();
             
             if(checkDefault) {
-                PartySecurityRoleTemplate defaultPartySecurityRoleTemplate = getDefaultPartySecurityRoleTemplate();
-                boolean defaultFound = defaultPartySecurityRoleTemplate != null && !defaultPartySecurityRoleTemplate.equals(partySecurityRoleTemplate);
+                var defaultPartySecurityRoleTemplate = getDefaultPartySecurityRoleTemplate();
+                var defaultFound = defaultPartySecurityRoleTemplate != null && !defaultPartySecurityRoleTemplate.equals(partySecurityRoleTemplate);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    PartySecurityRoleTemplateDetailValue defaultPartySecurityRoleTemplateDetailValue = getDefaultPartySecurityRoleTemplateDetailValueForUpdate();
+                    var defaultPartySecurityRoleTemplateDetailValue = getDefaultPartySecurityRoleTemplateDetailValueForUpdate();
                     
                     defaultPartySecurityRoleTemplateDetailValue.setIsDefault(Boolean.FALSE);
                     updatePartySecurityRoleTemplateFromValue(defaultPartySecurityRoleTemplateDetailValue, false, updatedBy);
@@ -1612,23 +1595,23 @@ public class SecurityControl
         deletePartySecurityRoleTemplateDescriptionsByPartySecurityRoleTemplate(partySecurityRoleTemplate, deletedBy);
         PartySecurityRoleTemplateLogic.getInstance().deletePartySecurityRoleTemplateRoleByPartySecurityRoleTemplate(partySecurityRoleTemplate, deletedBy);
         PartySecurityRoleTemplateLogic.getInstance().deletePartySecurityRoleTemplateTrainingClassByPartySecurityRoleTemplate(partySecurityRoleTemplate, deletedBy);
-        
-        PartySecurityRoleTemplateDetail partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getLastDetailForUpdate();
+
+        var partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getLastDetailForUpdate();
         partySecurityRoleTemplateDetail.setThruTime(session.START_TIME_LONG);
         partySecurityRoleTemplate.setActiveDetail(null);
         partySecurityRoleTemplate.store();
         
         // Check for default, and pick one if necessary
-        PartySecurityRoleTemplate defaultPartySecurityRoleTemplate = getDefaultPartySecurityRoleTemplate();
+        var defaultPartySecurityRoleTemplate = getDefaultPartySecurityRoleTemplate();
         if(defaultPartySecurityRoleTemplate == null) {
-            List<PartySecurityRoleTemplate> partySecurityRoleTemplates = getPartySecurityRoleTemplatesForUpdate();
+            var partySecurityRoleTemplates = getPartySecurityRoleTemplatesForUpdate();
             
             if(!partySecurityRoleTemplates.isEmpty()) {
-                Iterator<PartySecurityRoleTemplate> iter = partySecurityRoleTemplates.iterator();
+                var iter = partySecurityRoleTemplates.iterator();
                 if(iter.hasNext()) {
                     defaultPartySecurityRoleTemplate = iter.next();
                 }
-                PartySecurityRoleTemplateDetailValue partySecurityRoleTemplateDetailValue = Objects.requireNonNull(defaultPartySecurityRoleTemplate).getLastDetailForUpdate().getPartySecurityRoleTemplateDetailValue().clone();
+                var partySecurityRoleTemplateDetailValue = Objects.requireNonNull(defaultPartySecurityRoleTemplate).getLastDetailForUpdate().getPartySecurityRoleTemplateDetailValue().clone();
                 
                 partySecurityRoleTemplateDetailValue.setIsDefault(Boolean.TRUE);
                 updatePartySecurityRoleTemplateFromValue(partySecurityRoleTemplateDetailValue, false, deletedBy);
@@ -1644,7 +1627,7 @@ public class SecurityControl
     
     public PartySecurityRoleTemplateDescription createPartySecurityRoleTemplateDescription(PartySecurityRoleTemplate partySecurityRoleTemplate,
             Language language, String description, BasePK createdBy) {
-        PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription = PartySecurityRoleTemplateDescriptionFactory.getInstance().create(session,
+        var partySecurityRoleTemplateDescription = PartySecurityRoleTemplateDescriptionFactory.getInstance().create(session,
                 partySecurityRoleTemplate, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY, partySecurityRoleTemplateDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1669,8 +1652,8 @@ public class SecurityControl
                         "WHERE psrtd_psrt_partysecurityroletemplateid = ? AND psrtd_lang_languageid = ? AND psrtd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartySecurityRoleTemplateDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = PartySecurityRoleTemplateDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partySecurityRoleTemplate.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1718,8 +1701,8 @@ public class SecurityControl
                         "WHERE psrtd_psrt_partysecurityroletemplateid = ? AND psrtd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartySecurityRoleTemplateDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = PartySecurityRoleTemplateDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partySecurityRoleTemplate.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1742,7 +1725,7 @@ public class SecurityControl
     
     public String getBestPartySecurityRoleTemplateDescription(PartySecurityRoleTemplate partySecurityRoleTemplate, Language language) {
         String description;
-        PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription = getPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, language);
+        var partySecurityRoleTemplateDescription = getPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, language);
         
         if(partySecurityRoleTemplateDescription == null && !language.getIsDefault()) {
             partySecurityRoleTemplateDescription = getPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, getPartyControl().getDefaultLanguage());
@@ -1764,9 +1747,9 @@ public class SecurityControl
     
     public List<PartySecurityRoleTemplateDescriptionTransfer> getPartySecurityRoleTemplateDescriptionTransfersByPartySecurityRoleTemplate(UserVisit userVisit,
             PartySecurityRoleTemplate partySecurityRoleTemplate) {
-        List<PartySecurityRoleTemplateDescription> partySecurityRoleTemplateDescriptions = getPartySecurityRoleTemplateDescriptionsByPartySecurityRoleTemplate(partySecurityRoleTemplate);
+        var partySecurityRoleTemplateDescriptions = getPartySecurityRoleTemplateDescriptionsByPartySecurityRoleTemplate(partySecurityRoleTemplate);
         List<PartySecurityRoleTemplateDescriptionTransfer> partySecurityRoleTemplateDescriptionTransfers = new ArrayList<>(partySecurityRoleTemplateDescriptions.size());
-        PartySecurityRoleTemplateDescriptionTransferCache partySecurityRoleTemplateDescriptionTransferCache = getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateDescriptionTransferCache();
+        var partySecurityRoleTemplateDescriptionTransferCache = getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateDescriptionTransferCache();
         
         partySecurityRoleTemplateDescriptions.forEach((partySecurityRoleTemplateDescription) ->
                 partySecurityRoleTemplateDescriptionTransfers.add(partySecurityRoleTemplateDescriptionTransferCache.getPartySecurityRoleTemplateDescriptionTransfer(partySecurityRoleTemplateDescription))
@@ -1777,15 +1760,15 @@ public class SecurityControl
     
     public void updatePartySecurityRoleTemplateDescriptionFromValue(PartySecurityRoleTemplateDescriptionValue partySecurityRoleTemplateDescriptionValue, BasePK updatedBy) {
         if(partySecurityRoleTemplateDescriptionValue.hasBeenModified()) {
-            PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription = PartySecurityRoleTemplateDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partySecurityRoleTemplateDescription = PartySecurityRoleTemplateDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partySecurityRoleTemplateDescriptionValue.getPrimaryKey());
             
             partySecurityRoleTemplateDescription.setThruTime(session.START_TIME_LONG);
             partySecurityRoleTemplateDescription.store();
-            
-            PartySecurityRoleTemplate partySecurityRoleTemplate = partySecurityRoleTemplateDescription.getPartySecurityRoleTemplate();
-            Language language = partySecurityRoleTemplateDescription.getLanguage();
-            String description = partySecurityRoleTemplateDescriptionValue.getDescription();
+
+            var partySecurityRoleTemplate = partySecurityRoleTemplateDescription.getPartySecurityRoleTemplate();
+            var language = partySecurityRoleTemplateDescription.getLanguage();
+            var description = partySecurityRoleTemplateDescriptionValue.getDescription();
             
             partySecurityRoleTemplateDescription = PartySecurityRoleTemplateDescriptionFactory.getInstance().create(session,
                     partySecurityRoleTemplate, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1801,7 +1784,7 @@ public class SecurityControl
     }
     
     public void deletePartySecurityRoleTemplateDescriptionsByPartySecurityRoleTemplate(PartySecurityRoleTemplate partySecurityRoleTemplate, BasePK deletedBy) {
-        List<PartySecurityRoleTemplateDescription> partySecurityRoleTemplateDescriptions = getPartySecurityRoleTemplateDescriptionsByPartySecurityRoleTemplateForUpdate(partySecurityRoleTemplate);
+        var partySecurityRoleTemplateDescriptions = getPartySecurityRoleTemplateDescriptionsByPartySecurityRoleTemplateForUpdate(partySecurityRoleTemplate);
         
         partySecurityRoleTemplateDescriptions.forEach((partySecurityRoleTemplateDescription) -> 
                 deletePartySecurityRoleTemplateDescription(partySecurityRoleTemplateDescription, deletedBy)
@@ -1814,7 +1797,7 @@ public class SecurityControl
     
     public PartySecurityRoleTemplateRole createPartySecurityRoleTemplateRole(PartySecurityRoleTemplate partySecurityRoleTemplate, SecurityRole securityRole,
             BasePK createdBy) {
-        PartySecurityRoleTemplateRole partySecurityRoleTemplateRole = PartySecurityRoleTemplateRoleFactory.getInstance().create(partySecurityRoleTemplate,
+        var partySecurityRoleTemplateRole = PartySecurityRoleTemplateRoleFactory.getInstance().create(partySecurityRoleTemplate,
                 securityRole, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY, partySecurityRoleTemplateRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1839,8 +1822,8 @@ public class SecurityControl
                         "WHERE psrtr_psrt_partysecurityroletemplateid = ? AND psrtr_srol_securityroleid = ? AND psrtr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartySecurityRoleTemplateRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = PartySecurityRoleTemplateRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partySecurityRoleTemplate.getPrimaryKey().getEntityId());
             ps.setLong(2, securityRole.getPrimaryKey().getEntityId());
@@ -1886,8 +1869,8 @@ public class SecurityControl
                         "WHERE psrtr_psrt_partysecurityroletemplateid = ? AND psrtr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartySecurityRoleTemplateRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = PartySecurityRoleTemplateRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partySecurityRoleTemplate.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1925,8 +1908,8 @@ public class SecurityControl
                         "WHERE psrtr_srol_securityroleid = ? AND psrtr_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartySecurityRoleTemplateRoleFactory.getInstance().prepareStatement(query);
+
+            var ps = PartySecurityRoleTemplateRoleFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, securityRole.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1953,7 +1936,7 @@ public class SecurityControl
     
     public List<PartySecurityRoleTemplateRoleTransfer> getPartySecurityRoleTemplateRoleTransfers(UserVisit userVisit, Collection<PartySecurityRoleTemplateRole> partySecurityRoleTemplateRoles) {
         List<PartySecurityRoleTemplateRoleTransfer> partySecurityRoleTemplateRoleTransfers = new ArrayList<>(partySecurityRoleTemplateRoles.size());
-        PartySecurityRoleTemplateRoleTransferCache partySecurityRoleTemplateRoleTransferCache = getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateRoleTransferCache();
+        var partySecurityRoleTemplateRoleTransferCache = getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateRoleTransferCache();
 
         partySecurityRoleTemplateRoles.forEach((partySecurityRoleTemplateRole) ->
                 partySecurityRoleTemplateRoleTransfers.add(partySecurityRoleTemplateRoleTransferCache.getPartySecurityRoleTemplateRoleTransfer(partySecurityRoleTemplateRole))
@@ -1979,7 +1962,7 @@ public class SecurityControl
     
     public PartySecurityRoleTemplateTrainingClass createPartySecurityRoleTemplateTrainingClass(PartySecurityRoleTemplate partySecurityRoleTemplate,
             TrainingClass trainingClass, BasePK createdBy) {
-        PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass = PartySecurityRoleTemplateTrainingClassFactory.getInstance().create(partySecurityRoleTemplate,
+        var partySecurityRoleTemplateTrainingClass = PartySecurityRoleTemplateTrainingClassFactory.getInstance().create(partySecurityRoleTemplate,
                 trainingClass, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY, partySecurityRoleTemplateTrainingClass.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2004,8 +1987,8 @@ public class SecurityControl
                         "WHERE psrtrncls_psrt_partysecurityroletemplateid = ? AND psrtrncls_trncls_trainingclassid = ? AND psrtrncls_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartySecurityRoleTemplateTrainingClassFactory.getInstance().prepareStatement(query);
+
+            var ps = PartySecurityRoleTemplateTrainingClassFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partySecurityRoleTemplate.getPrimaryKey().getEntityId());
             ps.setLong(2, trainingClass.getPrimaryKey().getEntityId());
@@ -2050,8 +2033,8 @@ public class SecurityControl
                         "WHERE psrtrncls_psrt_partysecurityroletemplateid = ? AND psrtrncls_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartySecurityRoleTemplateTrainingClassFactory.getInstance().prepareStatement(query);
+
+            var ps = PartySecurityRoleTemplateTrainingClassFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, partySecurityRoleTemplate.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2091,8 +2074,8 @@ public class SecurityControl
                         "WHERE psrtrncls_trncls_trainingclassid = ? AND psrtrncls_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = PartySecurityRoleTemplateTrainingClassFactory.getInstance().prepareStatement(query);
+
+            var ps = PartySecurityRoleTemplateTrainingClassFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, trainingClass.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2119,7 +2102,7 @@ public class SecurityControl
     
     public List<PartySecurityRoleTemplateTrainingClassTransfer> getPartySecurityRoleTemplateTrainingClassTransfers(UserVisit userVisit, Collection<PartySecurityRoleTemplateTrainingClass> partySecurityRoleTemplateTrainingClasses) {
         List<PartySecurityRoleTemplateTrainingClassTransfer> partySecurityRoleTemplateTrainingClassTransfers = new ArrayList<>(partySecurityRoleTemplateTrainingClasses.size());
-        PartySecurityRoleTemplateTrainingClassTransferCache partySecurityRoleTemplateTrainingClassTransferCache = getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateTrainingClassTransferCache();
+        var partySecurityRoleTemplateTrainingClassTransferCache = getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateTrainingClassTransferCache();
 
         partySecurityRoleTemplateTrainingClasses.forEach((partySecurityRoleTemplateTrainingClass) ->
                 partySecurityRoleTemplateTrainingClassTransfers.add(partySecurityRoleTemplateTrainingClassTransferCache.getPartySecurityRoleTemplateTrainingClassTransfer(partySecurityRoleTemplateTrainingClass))
@@ -2148,7 +2131,7 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     
     public PartySecurityRoleTemplateUse createPartySecurityRoleTemplateUse(Party party, PartySecurityRoleTemplate partySecurityRoleTemplate, BasePK createdBy) {
-        PartySecurityRoleTemplateUse partySecurityRoleTemplateUse = PartySecurityRoleTemplateUseFactory.getInstance().create(party, partySecurityRoleTemplate,
+        var partySecurityRoleTemplateUse = PartySecurityRoleTemplateUseFactory.getInstance().create(party, partySecurityRoleTemplate,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partySecurityRoleTemplate.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2162,15 +2145,15 @@ public class SecurityControl
         PartySecurityRoleTemplateUse partySecurityRoleTemplateUse;
         
         try {
-            final String queryReadOnly = "SELECT _ALL_ " +
+            final var queryReadOnly = "SELECT _ALL_ " +
                     "FROM partysecurityroletemplateuses " +
                     "WHERE psrtu_par_partyid = ? AND psrtu_thrutime = ?";
-            final String queryReadWrite = "SELECT _ALL_ " +
+            final var queryReadWrite = "SELECT _ALL_ " +
                     "FROM partysecurityroletemplateuses " +
                     "WHERE psrtu_par_partyid = ? AND psrtu_thrutime = ? " +
                     "FOR UPDATE";
-            
-            PreparedStatement ps = PartySecurityRoleTemplateUseFactory.getInstance().prepareStatement(
+
+            var ps = PartySecurityRoleTemplateUseFactory.getInstance().prepareStatement(
                     entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
@@ -2198,15 +2181,15 @@ public class SecurityControl
     
     public void updatePartySecurityRoleTemplateUseFromValue(PartySecurityRoleTemplateUseValue partySecurityRoleTemplateUseValue, BasePK updatedBy) {
         if(partySecurityRoleTemplateUseValue.hasBeenModified()) {
-            PartySecurityRoleTemplateUsePK partySecurityRoleTemplateUsePK = partySecurityRoleTemplateUseValue.getPrimaryKey();
-            PartySecurityRoleTemplateUse partySecurityRoleTemplateUse = PartySecurityRoleTemplateUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partySecurityRoleTemplateUsePK = partySecurityRoleTemplateUseValue.getPrimaryKey();
+            var partySecurityRoleTemplateUse = PartySecurityRoleTemplateUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partySecurityRoleTemplateUsePK);
 
             partySecurityRoleTemplateUse.setThruTime(session.START_TIME_LONG);
             partySecurityRoleTemplateUse.store();
 
-            PartyPK partyPK = partySecurityRoleTemplateUse.getPartyPK();
-            PartySecurityRoleTemplatePK partySecurityRoleTemplatePK = partySecurityRoleTemplateUseValue.getPartySecurityRoleTemplatePK();
+            var partyPK = partySecurityRoleTemplateUse.getPartyPK();
+            var partySecurityRoleTemplatePK = partySecurityRoleTemplateUseValue.getPartySecurityRoleTemplatePK();
 
             partySecurityRoleTemplateUse = PartySecurityRoleTemplateUseFactory.getInstance().create(partyPK,
                     partySecurityRoleTemplatePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2222,15 +2205,15 @@ public class SecurityControl
         List<PartySecurityRoleTemplateUse> partySecurityRoleTemplateUses;
         
         try {
-            final String queryReadOnly = "SELECT _ALL_ " +
+            final var queryReadOnly = "SELECT _ALL_ " +
                     "FROM partysecurityroletemplateuses " +
                     "WHERE psrtu_psrt_partysecurityroletemplateid = ? AND psrtu_thrutime = ?";
-            final String queryReadWrite = "SELECT _ALL_ " +
+            final var queryReadWrite = "SELECT _ALL_ " +
                     "FROM partysecurityroletemplateuses " +
                     "WHERE psrtu_psrt_partysecurityroletemplateid = ? AND psrtu_thrutime = ? " +
                     "FOR UPDATE";
-            
-            PreparedStatement ps = PartySecurityRoleTemplateUseFactory.getInstance().prepareStatement(
+
+            var ps = PartySecurityRoleTemplateUseFactory.getInstance().prepareStatement(
                     entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
             
             ps.setLong(1, partySecurityRoleTemplate.getPrimaryKey().getEntityId());
@@ -2259,7 +2242,7 @@ public class SecurityControl
     }
     
     public void deletePartySecurityRoleTemplateUseByParty(Party party, BasePK deletedBy) {
-        PartySecurityRoleTemplateUse partySecurityRoleTemplateUse = getPartySecurityRoleTemplateUseForUpdate(party);
+        var partySecurityRoleTemplateUse = getPartySecurityRoleTemplateUseForUpdate(party);
         
         if(partySecurityRoleTemplateUse != null) {
             deletePartySecurityRoleTemplateUse(partySecurityRoleTemplateUse, deletedBy);
@@ -2267,15 +2250,15 @@ public class SecurityControl
     }
     
     private void syncPartySecurityRoles(PartyPK partyPK, PartySecurityRoleTemplatePK partySecurityRoleTemplatePK, BasePK syncedBy) {
-        Party party = getPartyControl().getPartyByPK(partyPK);
-        PartySecurityRoleTemplate partySecurityRoleTemplate = getPartySecurityRoleTemplateFromPK(partySecurityRoleTemplatePK);
+        var party = getPartyControl().getPartyByPK(partyPK);
+        var partySecurityRoleTemplate = getPartySecurityRoleTemplateFromPK(partySecurityRoleTemplatePK);
         
         syncPartySecurityRoles(party, partySecurityRoleTemplate, syncedBy);
     }
     
     private void syncPartySecurityRoles(Party party, PartySecurityRoleTemplate partySecurityRoleTemplate, BasePK syncedBy) {
-        List<PartySecurityRole> partySecurityRoles = getPartySecurityRolesForUpdate(party);
-        List<PartySecurityRoleTemplateRole> partySecurityRoleTemplateRoles = getPartySecurityRoleTemplateRoles(partySecurityRoleTemplate);
+        var partySecurityRoles = getPartySecurityRolesForUpdate(party);
+        var partySecurityRoleTemplateRoles = getPartySecurityRoleTemplateRoles(partySecurityRoleTemplate);
         
         List<SecurityRole> currentSecurityRoles = new ArrayList<>(partySecurityRoles.size());
         partySecurityRoles.forEach((partySecurityRole) -> {
@@ -2305,7 +2288,7 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     
     public PartySecurityRole createPartySecurityRole(Party party, SecurityRole securityRole, BasePK createdBy) {
-        PartySecurityRole partySecurityRole = PartySecurityRoleFactory.getInstance().create(party, securityRole,
+        var partySecurityRole = PartySecurityRoleFactory.getInstance().create(party, securityRole,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partySecurityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2317,14 +2300,14 @@ public class SecurityControl
         PartySecurityRole partySecurityRole;
         
         try {
-            final String queryReadOnly = "SELECT _ALL_ " +
+            final var queryReadOnly = "SELECT _ALL_ " +
                     "FROM partysecurityroles " +
                     "WHERE psrol_par_partyid = ? AND psrol_srol_securityroleid = ? AND psrol_thrutime = ?";
-            final String queryReadWrite = "SELECT _ALL_ " +
+            final var queryReadWrite = "SELECT _ALL_ " +
                     "FROM partysecurityroles " +
                     "WHERE psrol_par_partyid = ? AND psrol_srol_securityroleid = ? AND psrol_thrutime = ? " +
                     "FOR UPDATE";
-            PreparedStatement ps = PartySecurityRoleFactory.getInstance().prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
+            var ps = PartySecurityRoleFactory.getInstance().prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, securityRole.getPrimaryKey().getEntityId());
@@ -2358,18 +2341,18 @@ public class SecurityControl
         List<PartySecurityRole> partySecurityRoles;
         
         try {
-            final String queryReadOnly = "SELECT _ALL_ " +
+            final var queryReadOnly = "SELECT _ALL_ " +
                     "FROM partysecurityroles, securityroles, securityroledetails, securityrolegroups, securityrolegroupdetails " +
                     "WHERE psrol_par_partyid = ? AND psrol_thrutime = ? " +
                     "AND psrol_srol_securityroleid = srol_securityroleid AND srol_lastdetailid = sroldt_securityroledetailid " +
                     "AND sroldt_srg_securityrolegroupid = srg_securityrolegroupid AND srg_lastdetailid = srgdt_securityrolegroupdetailid " +
                     "ORDER BY srgdt_sortorder, srgdt_securityrolegroupname, sroldt_sortorder, sroldt_securityrolename";
-            final String queryReadWrite = "SELECT _ALL_ " +
+            final var queryReadWrite = "SELECT _ALL_ " +
                     "FROM partysecurityroles " +
                     "WHERE psrol_par_partyid = ? AND psrol_thrutime = ? " +
                     "FOR UPDATE";
-            
-            PreparedStatement ps = PartySecurityRoleFactory.getInstance().prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
+
+            var ps = PartySecurityRoleFactory.getInstance().prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2394,18 +2377,18 @@ public class SecurityControl
         List<PartySecurityRole> partySecurityRoles;
         
         try {
-            final String queryReadOnly = "SELECT _ALL_ " +
+            final var queryReadOnly = "SELECT _ALL_ " +
                     "FROM partysecurityroles, parties, partydetails, partytypes " +
                     "WHERE psrol_srol_securityroleid = ? AND psrol_thrutime = ? " +
                     "AND psrol_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
                     "AND pardt_ptyp_partytypeid = ptyp_partytypeid " +
                     "ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname";
-            final String queryReadWrite = "SELECT _ALL_ " +
+            final var queryReadWrite = "SELECT _ALL_ " +
                     "FROM partysecurityroles " +
                     "WHERE psrol_srol_securityroleid = ? AND psrol_thrutime = ? " +
                     "FOR UPDATE";
-            
-            PreparedStatement ps = PartySecurityRoleFactory.getInstance().prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
+
+            var ps = PartySecurityRoleFactory.getInstance().prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
             
             ps.setLong(1, securityRole.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2449,7 +2432,7 @@ public class SecurityControl
     
     public PartyEntitySecurityRole createPartyEntitySecurityRole(Party party, EntityInstance entityInstance, SecurityRole securityRole,
             BasePK createdBy) {
-        PartyEntitySecurityRole partyEntitySecurityRole = PartyEntitySecurityRoleFactory.getInstance().create(party, entityInstance,
+        var partyEntitySecurityRole = PartyEntitySecurityRoleFactory.getInstance().create(party, entityInstance,
                 securityRole, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyEntitySecurityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2462,14 +2445,14 @@ public class SecurityControl
         PartyEntitySecurityRole partyEntitySecurityRole;
         
         try {
-            final String queryReadOnly = "SELECT _ALL_ " +
+            final var queryReadOnly = "SELECT _ALL_ " +
                     "FROM partyentitysecurityroles " +
                     "WHERE pensrol_par_partyid = ? AND pensrol_eni_entityinstanceid = ? AND pensrol_srol_securityroleid = ? AND pensrol_thrutime = ?";
-            final String queryReadWrite = "SELECT _ALL_ " +
+            final var queryReadWrite = "SELECT _ALL_ " +
                     "FROM partyentitysecurityroles " +
                     "WHERE pensrol_par_partyid = ? AND pensrol_eni_entityinstanceid = ? AND pensrol_srol_securityroleid = ? AND pensrol_thrutime = ? " +
                     "FOR UPDATE";
-            PreparedStatement ps = PartyEntitySecurityRoleFactory.getInstance().prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
+            var ps = PartyEntitySecurityRoleFactory.getInstance().prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -2504,7 +2487,7 @@ public class SecurityControl
         List<PartyEntitySecurityRole> partyEntitySecurityRoles;
         
         try {
-            final String queryReadOnly = "SELECT _ALL_ " +
+            final var queryReadOnly = "SELECT _ALL_ " +
                     "FROM partyentitysecurityroles, entityinstances, entitytypes, entitytypedetails, componentvendors, componentvendordetails, securityroles, securityroledetails, securityrolegroups, securityrolegroupdetails " +
                     "WHERE pensrol_par_partyid = ? AND pensrol_thrutime = ? " +
                     "AND pensrol_eni_entityinstanceid = ? AND pensrol_thrutime = ? " +
@@ -2518,12 +2501,12 @@ public class SecurityControl
                     "AND sroldt_srg_securityrolegroupid = srg_securityrolegroupid " +
                     "AND srg_lastdetailid = srgdt_securityrolegroupdetailid " +
                     "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, sroldt_sortorder, sroldt_securityrolename, srgdt_sortorder, srgdt_securityrolegroupname";
-            final String queryReadWrite = "SELECT _ALL_ " +
+            final var queryReadWrite = "SELECT _ALL_ " +
                     "FROM partyentitysecurityroles " +
                     "WHERE pensrol_par_partyid = ? AND pensrol_thrutime = ? " +
                     "FOR UPDATE";
-            
-            PreparedStatement ps = PartyEntitySecurityRoleFactory.getInstance().prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
+
+            var ps = PartyEntitySecurityRoleFactory.getInstance().prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2548,7 +2531,7 @@ public class SecurityControl
         List<PartyEntitySecurityRole> partyEntitySecurityRoles;
         
         try {
-            final String queryReadOnly = "SELECT _ALL_ " +
+            final var queryReadOnly = "SELECT _ALL_ " +
                     "FROM partyentitysecurityroles, parties, partydetails, partytypes, securityroles, securityroledetails, securityrolegroups, securityrolegroupdetails " +
                     "WHERE pensrol_srol_securityroleid = ? AND pensrol_thrutime = ? " +
                     "AND pensrol_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
@@ -2558,12 +2541,12 @@ public class SecurityControl
                     "AND sroldt_srg_securityrolegroupid = srg_securityrolegroupid " +
                     "AND srg_lastdetailid = srgdt_securityrolegroupdetailid " +
                     "ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname, sroldt_sortorder, sroldt_securityrolename, srgdt_sortorder, srgdt_securityrolegroupname";
-            final String queryReadWrite = "SELECT _ALL_ " +
+            final var queryReadWrite = "SELECT _ALL_ " +
                     "FROM partyentitysecurityroles " +
                     "WHERE pensrol_eni_entityinstanceid = ? AND pensrol_thrutime = ? " +
                     "FOR UPDATE";
-            
-            PreparedStatement ps = PartyEntitySecurityRoleFactory.getInstance().prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
+
+            var ps = PartyEntitySecurityRoleFactory.getInstance().prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2588,7 +2571,7 @@ public class SecurityControl
         List<PartyEntitySecurityRole> partyEntitySecurityRoles;
         
         try {
-            final String queryReadOnly = "SELECT _ALL_ " +
+            final var queryReadOnly = "SELECT _ALL_ " +
                     "FROM partyentitysecurityroles, parties, partydetails, partytypes, entityinstances, entitytypes, entitytypedetails, componentvendors, componentvendordetails " +
                     "WHERE pensrol_srol_securityroleid = ? AND pensrol_thrutime = ? " +
                     "AND pensrol_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
@@ -2599,12 +2582,12 @@ public class SecurityControl
                     "AND entdt_cvnd_componentvendorid = cvnd_componentvendorid " +
                     "AND cvnd_lastdetailid = cvndd_componentvendordetailid " + 
                     "ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname, cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename";
-            final String queryReadWrite = "SELECT _ALL_ " +
+            final var queryReadWrite = "SELECT _ALL_ " +
                     "FROM partyentitysecurityroles " +
                     "WHERE pensrol_srol_securityroleid = ? AND pensrol_thrutime = ? " +
                     "FOR UPDATE";
-            
-            PreparedStatement ps = PartyEntitySecurityRoleFactory.getInstance().prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
+
+            var ps = PartyEntitySecurityRoleFactory.getInstance().prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
             
             ps.setLong(1, securityRole.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);

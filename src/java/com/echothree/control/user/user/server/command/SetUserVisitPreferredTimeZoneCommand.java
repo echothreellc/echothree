@@ -18,8 +18,6 @@ package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.SetUserVisitPreferredTimeZoneForm;
 import com.echothree.model.control.party.server.logic.TimeZoneLogic;
-import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -47,10 +45,10 @@ public class SetUserVisitPreferredTimeZoneCommand
     
     @Override
     protected BaseResult execute() {
-        TimeZone currency = TimeZoneLogic.getInstance().getTimeZoneByName(this, form.getJavaTimeZoneName());
+        var currency = TimeZoneLogic.getInstance().getTimeZoneByName(this, form.getJavaTimeZoneName());
 
         if(!hasExecutionErrors()) {
-            UserControl userControl = getUserControl();
+            var userControl = getUserControl();
 
             userControl.setUserVisitPreferredTimeZone(getUserVisitForUpdate(), currency, getPartyPK());
         }

@@ -17,15 +17,12 @@
 package com.echothree.control.user.workrequirement.server.command;
 
 import com.echothree.control.user.workrequirement.common.form.GetWorkAssignmentsForm;
-import com.echothree.control.user.workrequirement.common.result.GetWorkAssignmentsResult;
 import com.echothree.control.user.workrequirement.common.result.WorkRequirementResultFactory;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
-import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.factory.WorkAssignmentFactory;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -57,9 +54,9 @@ public class GetWorkAssignmentsCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetWorkAssignmentsResult result = WorkRequirementResultFactory.getGetWorkAssignmentsResult();
-        String employeeName = form.getEmployeeName();
-        String partyName = form.getPartyName();
+        var result = WorkRequirementResultFactory.getGetWorkAssignmentsResult();
+        var employeeName = form.getEmployeeName();
+        var partyName = form.getPartyName();
         var parameterCount = (employeeName == null ? 0 : 1) + (partyName == null ? 0 : 1);
 
         if(parameterCount < 2) {
@@ -67,7 +64,7 @@ public class GetWorkAssignmentsCommand
 
             if(employeeName != null) {
                 var employeeControl = Session.getModelController(EmployeeControl.class);
-                PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
+                var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
 
                 if(partyEmployee != null) {
                     party = partyEmployee.getParty();
@@ -86,7 +83,7 @@ public class GetWorkAssignmentsCommand
 
             if(!hasExecutionErrors()) {
                 var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
-                UserVisit userVisit = getUserVisit();
+                var userVisit = getUserVisit();
 
                 if(session.hasLimit(WorkAssignmentFactory.class)) {
                     result.setWorkAssignmentCount(workRequirementControl.countWorkAssignmentsByParty(party));

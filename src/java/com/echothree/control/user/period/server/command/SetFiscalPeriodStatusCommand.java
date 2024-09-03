@@ -22,7 +22,6 @@ import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.period.server.logic.FiscalPeriodLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -63,10 +62,10 @@ public class SetFiscalPeriodStatusCommand
     @Override
     protected BaseResult execute() {
         var periodControl = Session.getModelController(PeriodControl.class);
-        Period period = FiscalPeriodLogic.getInstance().getFiscalPeriodByName(this, form.getPeriodName());
+        var period = FiscalPeriodLogic.getInstance().getFiscalPeriodByName(this, form.getPeriodName());
         
         if(!hasExecutionErrors()) {
-            String fiscalPeriodStatusChoice = form.getFiscalPeriodStatusChoice();
+            var fiscalPeriodStatusChoice = form.getFiscalPeriodStatusChoice();
             
             periodControl.setFiscalPeriodStatus(this, period, fiscalPeriodStatusChoice, getPartyPK());
         }

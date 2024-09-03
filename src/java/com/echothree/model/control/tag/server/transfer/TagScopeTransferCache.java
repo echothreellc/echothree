@@ -20,7 +20,6 @@ import com.echothree.model.control.tag.common.TagOptions;
 import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.TagScope;
-import com.echothree.model.data.tag.server.entity.TagScopeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
@@ -45,14 +44,14 @@ public class TagScopeTransferCache
     }
     
     public TagScopeTransfer getTagScopeTransfer(TagScope tagScope) {
-        TagScopeTransfer tagScopeTransfer = get(tagScope);
+        var tagScopeTransfer = get(tagScope);
         
         if(tagScopeTransfer == null) {
-            TagScopeDetail tagScopeDetail = tagScope.getLastDetail();
-            String tagScopeName = tagScopeDetail.getTagScopeName();
-            Boolean isDefault = tagScopeDetail.getIsDefault();
-            Integer sortOrder = tagScopeDetail.getSortOrder();
-            String description = tagControl.getBestTagScopeDescription(tagScope, getLanguage());
+            var tagScopeDetail = tagScope.getLastDetail();
+            var tagScopeName = tagScopeDetail.getTagScopeName();
+            var isDefault = tagScopeDetail.getIsDefault();
+            var sortOrder = tagScopeDetail.getSortOrder();
+            var description = tagControl.getBestTagScopeDescription(tagScope, getLanguage());
             
             tagScopeTransfer = new TagScopeTransfer(tagScopeName, isDefault, sortOrder, description);
             put(tagScope, tagScopeTransfer);

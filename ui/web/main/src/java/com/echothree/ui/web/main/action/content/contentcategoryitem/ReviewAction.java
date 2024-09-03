@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.content.contentcategoryitem;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentCategoryItemForm;
 import com.echothree.control.user.content.common.result.GetContentCategoryItemResult;
-import com.echothree.model.control.content.common.transfer.ContentCategoryItemTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,8 +48,8 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetContentCategoryItemForm commandForm = ContentUtil.getHome().getGetContentCategoryItemForm();
+        String forwardKey;
+        var commandForm = ContentUtil.getHome().getGetContentCategoryItemForm();
 
         commandForm.setContentCollectionName(request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME));
         commandForm.setContentCatalogName(request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME));
@@ -63,10 +59,10 @@ public class ReviewAction
         commandForm.setUnitOfMeasureTypeName(request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME));
         commandForm.setCurrencyIsoName(request.getParameter(ParameterConstants.CURRENCY_ISO_NAME));
 
-        CommandResult commandResult = ContentUtil.getHome().getContentCategoryItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetContentCategoryItemResult result = (GetContentCategoryItemResult)executionResult.getResult();
-        ContentCategoryItemTransfer contentCategoryItem = result == null? null: result.getContentCategoryItem();
+        var commandResult = ContentUtil.getHome().getContentCategoryItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetContentCategoryItemResult)executionResult.getResult();
+        var contentCategoryItem = result == null? null: result.getContentCategoryItem();
 
         if(contentCategoryItem == null) {
             forwardKey = ForwardConstants.ERROR_404;

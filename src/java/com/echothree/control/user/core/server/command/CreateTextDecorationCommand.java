@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.CreateTextDecorationForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,8 +63,8 @@ public class CreateTextDecorationCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String textDecorationName = form.getTextDecorationName();
-        TextDecoration textDecoration = coreControl.getTextDecorationByName(textDecorationName);
+        var textDecorationName = form.getTextDecorationName();
+        var textDecoration = coreControl.getTextDecorationByName(textDecorationName);
         
         if(textDecoration == null) {
             var partyPK = getPartyPK();

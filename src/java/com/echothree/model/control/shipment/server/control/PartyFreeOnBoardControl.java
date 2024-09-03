@@ -18,9 +18,7 @@ package com.echothree.model.control.shipment.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.shipment.common.transfer.PartyFreeOnBoardTransfer;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.shipment.common.pk.FreeOnBoardPK;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.shipment.server.entity.PartyFreeOnBoard;
 import com.echothree.model.data.shipment.server.factory.PartyFreeOnBoardFactory;
@@ -30,7 +28,6 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -47,7 +44,7 @@ public class PartyFreeOnBoardControl
     // --------------------------------------------------------------------------------
 
     public PartyFreeOnBoard createPartyFreeOnBoard(Party party, FreeOnBoard freeOnBoard, BasePK createdBy) {
-        PartyFreeOnBoard partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().create(party, freeOnBoard, session.START_TIME_LONG,
+        var partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().create(party, freeOnBoard, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyFreeOnBoard.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -56,7 +53,7 @@ public class PartyFreeOnBoardControl
     }
 
     private PartyFreeOnBoard getPartyFreeOnBoard(Party party, EntityPermission entityPermission) {
-        PartyFreeOnBoard partyFreeOnBoard = null;
+        PartyFreeOnBoard partyFreeOnBoard;
 
         try {
             String query = null;
@@ -72,7 +69,7 @@ public class PartyFreeOnBoardControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = PartyFreeOnBoardFactory.getInstance().prepareStatement(query);
+            var ps = PartyFreeOnBoardFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -102,7 +99,7 @@ public class PartyFreeOnBoardControl
     }
 
     private List<PartyFreeOnBoard> getPartyFreeOnBoardsByFreeOnBoard(FreeOnBoard freeOnBoard, EntityPermission entityPermission) {
-        List<PartyFreeOnBoard> partyFreeOnBoards = null;
+        List<PartyFreeOnBoard> partyFreeOnBoards;
 
         try {
             String query = null;
@@ -120,7 +117,7 @@ public class PartyFreeOnBoardControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = PartyFreeOnBoardFactory.getInstance().prepareStatement(query);
+            var ps = PartyFreeOnBoardFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, freeOnBoard.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -142,7 +139,7 @@ public class PartyFreeOnBoardControl
     }
 
     public PartyFreeOnBoardTransfer getPartyFreeOnBoardTransfer(UserVisit userVisit, Party party) {
-        PartyFreeOnBoard partyFreeOnBoard = getPartyFreeOnBoard(party);
+        var partyFreeOnBoard = getPartyFreeOnBoard(party);
 
         return partyFreeOnBoard == null? null: getShipmentTransferCaches(userVisit).getPartyFreeOnBoardTransferCache().getTransfer(partyFreeOnBoard);
     }
@@ -153,14 +150,14 @@ public class PartyFreeOnBoardControl
 
     public void updatePartyFreeOnBoardFromValue(PartyFreeOnBoardValue partyFreeOnBoardValue, BasePK updatedBy) {
         if(partyFreeOnBoardValue.hasBeenModified()) {
-            PartyFreeOnBoard partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     partyFreeOnBoardValue.getPrimaryKey());
 
             partyFreeOnBoard.setThruTime(session.START_TIME_LONG);
             partyFreeOnBoard.store();
 
-            PartyPK partyPK = partyFreeOnBoard.getPartyPK(); // Not updated
-            FreeOnBoardPK freeOnBoardPK = partyFreeOnBoardValue.getFreeOnBoardPK();
+            var partyPK = partyFreeOnBoard.getPartyPK(); // Not updated
+            var freeOnBoardPK = partyFreeOnBoardValue.getFreeOnBoardPK();
 
             partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().create(partyPK, freeOnBoardPK, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
@@ -176,7 +173,7 @@ public class PartyFreeOnBoardControl
     }
 
     public void deletePartyFreeOnBoardByParty(Party party, BasePK deletedBy) {
-        PartyFreeOnBoard partyFreeOnBoard = getPartyFreeOnBoardForUpdate(party);
+        var partyFreeOnBoard = getPartyFreeOnBoardForUpdate(party);
 
         if(partyFreeOnBoard != null) {
             deletePartyFreeOnBoard(partyFreeOnBoard, deletedBy);
@@ -184,7 +181,7 @@ public class PartyFreeOnBoardControl
     }
 
     public void deletePartyFreeOnBoardsByFreeOnBoard(FreeOnBoard freeOnBoard, BasePK deletedBy) {
-        List<PartyFreeOnBoard> partyFreeOnBoards = getPartyFreeOnBoardsByFreeOnBoardForUpdate(freeOnBoard);
+        var partyFreeOnBoards = getPartyFreeOnBoardsByFreeOnBoardForUpdate(freeOnBoard);
 
         partyFreeOnBoards.forEach((partyFreeOnBoard) -> 
                 deletePartyFreeOnBoard(partyFreeOnBoard, deletedBy)

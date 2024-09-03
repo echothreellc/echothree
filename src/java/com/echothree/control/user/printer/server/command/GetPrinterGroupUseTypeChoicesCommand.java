@@ -17,7 +17,6 @@
 package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.GetPrinterGroupUseTypeChoicesForm;
-import com.echothree.control.user.printer.common.result.GetPrinterGroupUseTypeChoicesResult;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -50,9 +49,9 @@ public class GetPrinterGroupUseTypeChoicesCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        GetPrinterGroupUseTypeChoicesResult result = PrinterResultFactory.getGetPrinterGroupUseTypeChoicesResult();
-        String defaultPrinterGroupUseTypeChoice = form.getDefaultPrinterGroupUseTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+       var result = PrinterResultFactory.getGetPrinterGroupUseTypeChoicesResult();
+       var defaultPrinterGroupUseTypeChoice = form.getDefaultPrinterGroupUseTypeChoice();
+       var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setPrinterGroupUseTypeChoices(printerControl.getPrinterGroupUseTypeChoices(defaultPrinterGroupUseTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

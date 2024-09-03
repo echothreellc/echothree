@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.cancellationpolicy;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyService;
 import com.echothree.control.user.cancellationpolicy.common.form.CancellationPolicyFormFactory;
-import com.echothree.control.user.cancellationpolicy.common.form.CreateCancellationKindForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -49,9 +48,9 @@ public class CancellationKindsHandler
             String cancellationSequenceTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("cancellationKindName"))
                     cancellationKindName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("cancellationSequenceTypeName"))
@@ -63,7 +62,7 @@ public class CancellationKindsHandler
             }
             
             try {
-                CreateCancellationKindForm commandForm = CancellationPolicyFormFactory.getCreateCancellationKindForm();
+                var commandForm = CancellationPolicyFormFactory.getCreateCancellationKindForm();
                 
                 commandForm.setCancellationKindName(cancellationKindName);
                 commandForm.setCancellationSequenceTypeName(cancellationSequenceTypeName);

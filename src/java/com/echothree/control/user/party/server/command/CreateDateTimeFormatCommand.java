@@ -18,7 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreateDateTimeFormatForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,26 +67,26 @@ public class CreateDateTimeFormatCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String dateTimeFormatName = form.getDateTimeFormatName();
-        DateTimeFormat dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
+        var dateTimeFormatName = form.getDateTimeFormatName();
+        var dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
         
         if(dateTimeFormat == null ) {
-            String javaShortDateFormat = form.getJavaShortDateFormat();
-            String javaAbbrevDateFormat = form.getJavaAbbrevDateFormat();
-            String javaAbbrevDateFormatWeekday = form.getJavaAbbrevDateFormatWeekday();
-            String javaLongDateFormat = form.getJavaLongDateFormat();
-            String javaLongDateFormatWeekday = form.getJavaLongDateFormatWeekday();
-            String javaTimeFormat = form.getJavaTimeFormat();
-            String javaTimeFormatSeconds = form.getJavaTimeFormatSeconds();
-            String unixShortDateFormat = form.getUnixShortDateFormat();
-            String unixAbbrevDateFormat = form.getUnixAbbrevDateFormat();
-            String unixAbbrevDateFormatWeekday = form.getUnixAbbrevDateFormatWeekday();
-            String unixLongDateFormat = form.getUnixLongDateFormat();
-            String unixLongDateFormatWeekday = form.getUnixLongDateFormatWeekday();
-            String unixTimeFormat = form.getUnixTimeFormat();
-            String unixTimeFormatSeconds = form.getUnixTimeFormatSeconds();
-            String shortDateSeparator = form.getShortDateSeparator();
-            String timeSeparator = form.getTimeSeparator();
+            var javaShortDateFormat = form.getJavaShortDateFormat();
+            var javaAbbrevDateFormat = form.getJavaAbbrevDateFormat();
+            var javaAbbrevDateFormatWeekday = form.getJavaAbbrevDateFormatWeekday();
+            var javaLongDateFormat = form.getJavaLongDateFormat();
+            var javaLongDateFormatWeekday = form.getJavaLongDateFormatWeekday();
+            var javaTimeFormat = form.getJavaTimeFormat();
+            var javaTimeFormatSeconds = form.getJavaTimeFormatSeconds();
+            var unixShortDateFormat = form.getUnixShortDateFormat();
+            var unixAbbrevDateFormat = form.getUnixAbbrevDateFormat();
+            var unixAbbrevDateFormatWeekday = form.getUnixAbbrevDateFormatWeekday();
+            var unixLongDateFormat = form.getUnixLongDateFormat();
+            var unixLongDateFormatWeekday = form.getUnixLongDateFormatWeekday();
+            var unixTimeFormat = form.getUnixTimeFormat();
+            var unixTimeFormatSeconds = form.getUnixTimeFormatSeconds();
+            var shortDateSeparator = form.getShortDateSeparator();
+            var timeSeparator = form.getTimeSeparator();
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

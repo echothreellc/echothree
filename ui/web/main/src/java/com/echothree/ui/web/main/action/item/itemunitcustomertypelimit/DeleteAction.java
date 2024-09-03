@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.item.itemunitcustomertypelimit;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.DeleteItemUnitCustomerTypeLimitForm;
-import com.echothree.control.user.item.common.form.GetItemUnitCustomerTypeLimitForm;
 import com.echothree.control.user.item.common.result.GetItemUnitCustomerTypeLimitResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -65,16 +62,16 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemUnitCustomerTypeLimitForm commandForm = ItemUtil.getHome().getGetItemUnitCustomerTypeLimitForm();
+        var commandForm = ItemUtil.getHome().getGetItemUnitCustomerTypeLimitForm();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setInventoryConditionName(actionForm.getInventoryConditionName());
         commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeName());
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());
 
-        CommandResult commandResult = ItemUtil.getHome().getItemUnitCustomerTypeLimit(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemUnitCustomerTypeLimitResult result = (GetItemUnitCustomerTypeLimitResult)executionResult.getResult();
+        var commandResult = ItemUtil.getHome().getItemUnitCustomerTypeLimit(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemUnitCustomerTypeLimitResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM_UNIT_CUSTOMER_TYPE_LIMIT, result.getItemUnitCustomerTypeLimit());
     }
@@ -82,7 +79,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteItemUnitCustomerTypeLimitForm commandForm = ItemUtil.getHome().getDeleteItemUnitCustomerTypeLimitForm();
+        var commandForm = ItemUtil.getHome().getDeleteItemUnitCustomerTypeLimitForm();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setInventoryConditionName(actionForm.getInventoryConditionName());

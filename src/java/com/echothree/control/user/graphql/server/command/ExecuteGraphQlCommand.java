@@ -17,7 +17,6 @@
 package com.echothree.control.user.graphql.server.command;
 
 import com.echothree.control.user.graphql.common.form.ExecuteGraphQlForm;
-import com.echothree.control.user.graphql.common.result.ExecuteGraphQlResult;
 import com.echothree.control.user.graphql.common.result.GraphQlResultFactory;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.GraphQlExecutionContext;
@@ -33,7 +32,6 @@ import com.google.gson.JsonParseException;
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
-import graphql.GraphQLContext;
 import graphql.GraphQLException;
 import graphql.annotations.strategies.EnhancedExecutionStrategy;
 import java.util.Arrays;
@@ -85,16 +83,16 @@ public class ExecuteGraphQlCommand
     
     @Override
     protected BaseResult execute() {
-        ExecuteGraphQlResult result = GraphQlResultFactory.getExecuteGraphQlResult();
+        var result = GraphQlResultFactory.getExecuteGraphQlResult();
 
         try {
-            boolean readOnly = Boolean.parseBoolean(form.getReadOnly());
-            String query = form.getQuery();
-            String variables = form.getVariables();
-            String operationName = form.getOperationName();
-            String json = form.getJson();
+            var readOnly = Boolean.parseBoolean(form.getReadOnly());
+            var query = form.getQuery();
+            var variables = form.getVariables();
+            var operationName = form.getOperationName();
+            var json = form.getJson();
 
-            GraphQL graphQL = GraphQL
+            var graphQL = GraphQL
                     .newGraphQL(readOnly? GraphQlSchemaUtils.getInstance().getReadOnlySchema() : GraphQlSchemaUtils.getInstance().getSchema())
                     .queryExecutionStrategy(new EnhancedExecutionStrategy())
                     .build();
@@ -111,10 +109,10 @@ public class ExecuteGraphQlCommand
             }
 
             if(json != null) {
-                Map<String, Object> body = GraphQlUtils.getInstance().toMap(json);
-                Object possibleQuery = body.get(GRAPHQL_QUERY);
-                Object possibleOperationName = body.get(GRAPHQL_OPERATION_NAME);
-                Object possibleVariables = body.get(GRAPHQL_VARIABLES);
+                var body = GraphQlUtils.getInstance().toMap(json);
+                var possibleQuery = body.get(GRAPHQL_QUERY);
+                var possibleOperationName = body.get(GRAPHQL_OPERATION_NAME);
+                var possibleVariables = body.get(GRAPHQL_VARIABLES);
 
                 // Query form field takes priority of Json's query.
                 if(possibleQuery != null && query == null) {

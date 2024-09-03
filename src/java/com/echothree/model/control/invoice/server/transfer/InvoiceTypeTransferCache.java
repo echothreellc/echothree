@@ -19,7 +19,6 @@ package com.echothree.model.control.invoice.server.transfer;
 import com.echothree.model.control.invoice.common.transfer.InvoiceTypeTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceType;
-import com.echothree.model.data.invoice.server.entity.InvoiceTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class InvoiceTypeTransferCache
@@ -33,16 +32,16 @@ public class InvoiceTypeTransferCache
     }
     
     public InvoiceTypeTransfer getInvoiceTypeTransfer(InvoiceType invoiceType) {
-        InvoiceTypeTransfer invoiceTypeTransfer = get(invoiceType);
+        var invoiceTypeTransfer = get(invoiceType);
         
         if(invoiceTypeTransfer == null) {
-            InvoiceTypeDetail invoiceTypeDetail = invoiceType.getLastDetail();
-            String invoiceTypeName = invoiceTypeDetail.getInvoiceTypeName();
-            InvoiceType parentInvoiceType = invoiceTypeDetail.getParentInvoiceType();
-            InvoiceTypeTransfer parentInvoiceTypeTransfer = parentInvoiceType == null? null: getInvoiceTypeTransfer(parentInvoiceType);
-            Boolean isDefault = invoiceTypeDetail.getIsDefault();
-            Integer sortOrder = invoiceTypeDetail.getSortOrder();
-            String description = invoiceControl.getBestInvoiceTypeDescription(invoiceType, getLanguage());
+            var invoiceTypeDetail = invoiceType.getLastDetail();
+            var invoiceTypeName = invoiceTypeDetail.getInvoiceTypeName();
+            var parentInvoiceType = invoiceTypeDetail.getParentInvoiceType();
+            var parentInvoiceTypeTransfer = parentInvoiceType == null? null: getInvoiceTypeTransfer(parentInvoiceType);
+            var isDefault = invoiceTypeDetail.getIsDefault();
+            var sortOrder = invoiceTypeDetail.getSortOrder();
+            var description = invoiceControl.getBestInvoiceTypeDescription(invoiceType, getLanguage());
             
             invoiceTypeTransfer = new InvoiceTypeTransfer(invoiceTypeName, parentInvoiceTypeTransfer, isDefault, sortOrder,
                     description);

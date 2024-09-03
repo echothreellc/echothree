@@ -50,8 +50,8 @@ public class EditAction
     @Override
     protected PaymentProcessorSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PaymentProcessorSpec spec = PaymentUtil.getHome().getPaymentProcessorSpec();
-        String originalPaymentProcessorName = request.getParameter(ParameterConstants.ORIGINAL_PAYMENT_PROCESSOR_NAME);
+        var spec = PaymentUtil.getHome().getPaymentProcessorSpec();
+        var originalPaymentProcessorName = request.getParameter(ParameterConstants.ORIGINAL_PAYMENT_PROCESSOR_NAME);
 
         if(originalPaymentProcessorName == null) {
             originalPaymentProcessorName = actionForm.getOriginalPaymentProcessorName();
@@ -65,7 +65,7 @@ public class EditAction
     @Override
     protected PaymentProcessorEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PaymentProcessorEdit edit = PaymentUtil.getHome().getPaymentProcessorEdit();
+        var edit = PaymentUtil.getHome().getPaymentProcessorEdit();
 
         edit.setPaymentProcessorName(actionForm.getPaymentProcessorName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

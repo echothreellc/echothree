@@ -17,15 +17,12 @@
 package com.echothree.control.user.invoice.server.command;
 
 import com.echothree.control.user.invoice.common.form.GetInvoiceLineTypesForm;
-import com.echothree.control.user.invoice.common.result.GetInvoiceLineTypesResult;
 import com.echothree.control.user.invoice.common.result.InvoiceResultFactory;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.invoice.server.entity.InvoiceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -66,12 +63,12 @@ public class GetInvoiceLineTypesCommand
     @Override
     protected BaseResult execute() {
         var invoiceControl = Session.getModelController(InvoiceControl.class);
-        GetInvoiceLineTypesResult result = InvoiceResultFactory.getGetInvoiceLineTypesResult();
-        String invoiceTypeName = form.getInvoiceTypeName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var result = InvoiceResultFactory.getGetInvoiceLineTypesResult();
+        var invoiceTypeName = form.getInvoiceTypeName();
+        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
         
         if(invoiceType != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setInvoiceType(invoiceControl.getInvoiceTypeTransfer(userVisit, invoiceType));
             result.setInvoiceLineTypes(invoiceControl.getInvoiceLineTypeTransfersByInvoiceType(userVisit, invoiceType));

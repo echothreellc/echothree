@@ -19,7 +19,6 @@ package com.echothree.model.control.item.server.transfer;
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeUseTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseType;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class ItemDescriptionTypeUseTypeTransferCache
@@ -34,14 +33,14 @@ public class ItemDescriptionTypeUseTypeTransferCache
     
     @Override
     public ItemDescriptionTypeUseTypeTransfer getTransfer(ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
-        ItemDescriptionTypeUseTypeTransfer itemDescriptionTypeUseTypeTransfer = get(itemDescriptionTypeUseType);
+        var itemDescriptionTypeUseTypeTransfer = get(itemDescriptionTypeUseType);
         
         if(itemDescriptionTypeUseTypeTransfer == null) {
-            ItemDescriptionTypeUseTypeDetail itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseType.getLastDetail();
-            String itemDescriptionTypeUseTypeName = itemDescriptionTypeUseTypeDetail.getItemDescriptionTypeUseTypeName();
-            Boolean isDefault = itemDescriptionTypeUseTypeDetail.getIsDefault();
-            Integer sortOrder = itemDescriptionTypeUseTypeDetail.getSortOrder();
-            String description = itemControl.getBestItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, getLanguage());
+            var itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseType.getLastDetail();
+            var itemDescriptionTypeUseTypeName = itemDescriptionTypeUseTypeDetail.getItemDescriptionTypeUseTypeName();
+            var isDefault = itemDescriptionTypeUseTypeDetail.getIsDefault();
+            var sortOrder = itemDescriptionTypeUseTypeDetail.getSortOrder();
+            var description = itemControl.getBestItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, getLanguage());
             
             itemDescriptionTypeUseTypeTransfer = new ItemDescriptionTypeUseTypeTransfer(itemDescriptionTypeUseTypeName, isDefault, sortOrder, description);
             put(itemDescriptionTypeUseType, itemDescriptionTypeUseTypeTransfer);

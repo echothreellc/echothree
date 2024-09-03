@@ -82,8 +82,8 @@ public class Index {
         if(name == null) {
             name = columnName;
         }
-        
-        Column column = table.getColumn(columnName);
+
+        var column = table.getColumn(columnName);
         
         if(indexColumns.contains(column)) {
             throw new Exception("Index " + name + " trying to use the column " + columnName + " more than once in table " + table.getNamePlural());

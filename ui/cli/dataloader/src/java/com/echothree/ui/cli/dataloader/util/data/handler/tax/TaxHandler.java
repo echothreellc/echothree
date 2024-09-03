@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.tax;
 
 import com.echothree.control.user.tax.common.TaxUtil;
 import com.echothree.control.user.tax.common.TaxService;
-import com.echothree.control.user.tax.common.form.CreateTaxDescriptionForm;
 import com.echothree.control.user.tax.common.form.TaxFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -50,9 +49,9 @@ public class TaxHandler
         if(localName.equals("taxDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +59,7 @@ public class TaxHandler
             }
             
             try {
-                CreateTaxDescriptionForm createTaxDescriptionForm = TaxFormFactory.getCreateTaxDescriptionForm();
+                var createTaxDescriptionForm = TaxFormFactory.getCreateTaxDescriptionForm();
                 
                 createTaxDescriptionForm.setTaxName(taxName);
                 createTaxDescriptionForm.setLanguageIsoName(languageIsoName);

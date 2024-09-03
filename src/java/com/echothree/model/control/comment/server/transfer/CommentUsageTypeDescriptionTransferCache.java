@@ -17,9 +17,7 @@
 package com.echothree.model.control.comment.server.transfer;
 
 import com.echothree.model.control.comment.common.transfer.CommentUsageTypeDescriptionTransfer;
-import com.echothree.model.control.comment.common.transfer.CommentUsageTypeTransfer;
 import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.comment.server.entity.CommentUsageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,12 +30,12 @@ public class CommentUsageTypeDescriptionTransferCache
     }
     
     public CommentUsageTypeDescriptionTransfer getCommentUsageTypeDescriptionTransfer(CommentUsageTypeDescription commentUsageTypeDescription) {
-        CommentUsageTypeDescriptionTransfer commentUsageTypeDescriptionTransfer = get(commentUsageTypeDescription);
+        var commentUsageTypeDescriptionTransfer = get(commentUsageTypeDescription);
         
         if(commentUsageTypeDescriptionTransfer == null) {
-            CommentUsageTypeTransferCache commentUsageTypeTransferCache = commentControl.getCommentTransferCaches(userVisit).getCommentUsageTypeTransferCache();
-            CommentUsageTypeTransfer commentUsageTypeTransfer = commentUsageTypeTransferCache.getCommentUsageTypeTransfer(commentUsageTypeDescription.getCommentUsageType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, commentUsageTypeDescription.getLanguage());
+            var commentUsageTypeTransferCache = commentControl.getCommentTransferCaches(userVisit).getCommentUsageTypeTransferCache();
+            var commentUsageTypeTransfer = commentUsageTypeTransferCache.getCommentUsageTypeTransfer(commentUsageTypeDescription.getCommentUsageType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, commentUsageTypeDescription.getLanguage());
             
             commentUsageTypeDescriptionTransfer = new CommentUsageTypeDescriptionTransfer(languageTransfer, commentUsageTypeTransfer, commentUsageTypeDescription.getDescription());
             put(commentUsageTypeDescription, commentUsageTypeDescriptionTransfer);

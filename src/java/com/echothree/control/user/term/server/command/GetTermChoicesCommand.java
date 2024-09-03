@@ -17,7 +17,6 @@
 package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.GetTermChoicesForm;
-import com.echothree.control.user.term.common.result.GetTermChoicesResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -50,9 +49,9 @@ public class GetTermChoicesCommand
     @Override
     protected BaseResult execute() {
         var termControl = Session.getModelController(TermControl.class);
-        GetTermChoicesResult result = TermResultFactory.getGetTermChoicesResult();
-        String defaultTermChoice = form.getDefaultTermChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = TermResultFactory.getGetTermChoicesResult();
+        var defaultTermChoice = form.getDefaultTermChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setTermChoices(termControl.getTermChoices(defaultTermChoice, getPreferredLanguage(),
                 allowNullChoice));

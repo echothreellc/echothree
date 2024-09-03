@@ -30,8 +30,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.order.server.entity.OrderPriorityDescription;
-import com.echothree.model.data.order.server.value.OrderPriorityDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -91,18 +89,18 @@ public class EditOrderPriorityDescriptionCommand
     public OrderPriorityDescription getEntity(EditOrderPriorityDescriptionResult result) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderPriorityDescription orderPriorityDescription = null;
-        String orderTypeName = spec.getOrderTypeName();
+        var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
-            String orderPriorityName = spec.getOrderPriorityName();
-            OrderPriority orderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName);
+            var orderPriorityName = spec.getOrderPriorityName();
+            var orderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName);
 
             if(orderPriority != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -147,7 +145,7 @@ public class EditOrderPriorityDescriptionCommand
     @Override
     public void doUpdate(OrderPriorityDescription orderPriorityDescription) {
         var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
-        OrderPriorityDescriptionValue orderPriorityDescriptionValue = orderPriorityControl.getOrderPriorityDescriptionValue(orderPriorityDescription);
+        var orderPriorityDescriptionValue = orderPriorityControl.getOrderPriorityDescriptionValue(orderPriorityDescription);
         orderPriorityDescriptionValue.setDescription(edit.getDescription());
 
         orderPriorityControl.updateOrderPriorityDescriptionFromValue(orderPriorityDescriptionValue, getPartyPK());

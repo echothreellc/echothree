@@ -27,7 +27,6 @@ import com.echothree.model.control.payment.common.exception.UnknownDefaultPaymen
 import com.echothree.model.control.payment.common.exception.UnknownPaymentMethodTypePartyTypeException;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypePartyTypeControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.payment.server.entity.PaymentMethodTypePartyType;
@@ -93,7 +92,7 @@ public class PaymentMethodTypePartyTypeLogic
             final PaymentMethodType paymentMethodType, final PartyType partyType,
             final EntityPermission entityPermission) {
         var paymentMethodTypePartyTypeControl = Session.getModelController(PaymentMethodTypePartyTypeControl.class);
-        PaymentMethodTypePartyType paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getPaymentMethodTypePartyType(paymentMethodType,
+        var paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getPaymentMethodTypePartyType(paymentMethodType,
                 partyType, entityPermission);
 
         if(paymentMethodTypePartyType == null) {

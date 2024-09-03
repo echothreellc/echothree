@@ -21,7 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.track.server.control.TrackControl;
-import com.echothree.model.data.track.server.entity.Track;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,8 +62,8 @@ public class DeleteTrackCommand
     @Override
     protected BaseResult execute() {
         var trackControl = Session.getModelController(TrackControl.class);
-        String trackName = form.getTrackName();
-        Track track = trackControl.getTrackByNameForUpdate(trackName);
+        var trackName = form.getTrackName();
+        var track = trackControl.getTrackByNameForUpdate(trackName);
         
         if(track != null) {
             trackControl.deleteTrack(track, getPartyPK());

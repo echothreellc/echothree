@@ -27,10 +27,8 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.model.data.search.server.entity.SearchUseTypeDescription;
-import com.echothree.model.data.search.server.value.SearchUseTypeDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditSearchUseTypeDescriptionCommand
     public SearchUseTypeDescription getEntity(EditSearchUseTypeDescriptionResult result) {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchUseTypeDescription searchUseTypeDescription = null;
-        String searchUseTypeName = spec.getSearchUseTypeName();
-        SearchUseType searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
+        var searchUseTypeName = spec.getSearchUseTypeName();
+        var searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
 
         if(searchUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditSearchUseTypeDescriptionCommand
     @Override
     public void doUpdate(SearchUseTypeDescription searchUseTypeDescription) {
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchUseTypeDescriptionValue searchUseTypeDescriptionValue = searchControl.getSearchUseTypeDescriptionValue(searchUseTypeDescription);
+        var searchUseTypeDescriptionValue = searchControl.getSearchUseTypeDescriptionValue(searchUseTypeDescription);
         searchUseTypeDescriptionValue.setDescription(edit.getDescription());
 
         searchControl.updateSearchUseTypeDescriptionFromValue(searchUseTypeDescriptionValue, getPartyPK());

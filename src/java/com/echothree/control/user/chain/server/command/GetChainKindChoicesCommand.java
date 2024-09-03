@@ -18,7 +18,6 @@ package com.echothree.control.user.chain.server.command;
 
 import com.echothree.control.user.chain.common.form.GetChainKindChoicesForm;
 import com.echothree.control.user.chain.common.result.ChainResultFactory;
-import com.echothree.control.user.chain.common.result.GetChainKindChoicesResult;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetChainKindChoicesCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetChainKindChoicesResult result = ChainResultFactory.getGetChainKindChoicesResult();
-        String defaultChainKindChoice = form.getDefaultChainKindChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ChainResultFactory.getGetChainKindChoicesResult();
+        var defaultChainKindChoice = form.getDefaultChainKindChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setChainKindChoices(chainControl.getChainKindChoices(defaultChainKindChoice, getPreferredLanguage(),
                 allowNullChoice));

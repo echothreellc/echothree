@@ -17,7 +17,6 @@
 package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.GetPartyPrinterGroupUsesForm;
-import com.echothree.control.user.printer.common.result.GetPartyPrinterGroupUsesResult;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -66,9 +65,9 @@ public class GetPartyPrinterGroupUsesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyPrinterGroupUsesResult result = PrinterResultFactory.getGetPartyPrinterGroupUsesResult();
-        String partyName = form.getPartyName();
-        Party party = null;
+        var result = PrinterResultFactory.getGetPartyPrinterGroupUsesResult();
+        var partyName = form.getPartyName();
+        Party party;
 
         if(partyName != null) {
             party = partyControl.getPartyByName(partyName);

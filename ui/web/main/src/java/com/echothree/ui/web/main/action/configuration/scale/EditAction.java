@@ -49,8 +49,8 @@ public class EditAction
     @Override
     protected ScaleSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ScaleSpec spec = ScaleUtil.getHome().getScaleSpec();
-        String originalScaleName = request.getParameter(ParameterConstants.ORIGINAL_SCALE_NAME);
+        var spec = ScaleUtil.getHome().getScaleSpec();
+        var originalScaleName = request.getParameter(ParameterConstants.ORIGINAL_SCALE_NAME);
 
         if(originalScaleName == null) {
             originalScaleName = actionForm.getOriginalScaleName();
@@ -64,7 +64,7 @@ public class EditAction
     @Override
     protected ScaleEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ScaleEdit edit = ScaleUtil.getHome().getScaleEdit();
+        var edit = ScaleUtil.getHome().getScaleEdit();
 
         edit.setScaleName(actionForm.getScaleName());
         edit.setScaleTypeName(actionForm.getScaleTypeChoice());

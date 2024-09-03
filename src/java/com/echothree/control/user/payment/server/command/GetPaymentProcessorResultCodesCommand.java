@@ -18,7 +18,6 @@ package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.GetPaymentProcessorResultCodesForm;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
-import com.echothree.control.user.payment.common.result.GetPaymentProcessorResultCodesResult;
 import com.echothree.model.control.payment.server.control.PaymentProcessorResultCodeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorResultCode;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -56,7 +55,7 @@ public class GetPaymentProcessorResultCodesCommand
     
     @Override
     protected BaseResult getResult(Collection<PaymentProcessorResultCode> entities) {
-        GetPaymentProcessorResultCodesResult result = PaymentResultFactory.getGetPaymentProcessorResultCodesResult();
+        var result = PaymentResultFactory.getGetPaymentProcessorResultCodesResult();
         var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         
         result.setPaymentProcessorResultCodes(paymentProcessorResultCodeControl.getPaymentProcessorResultCodeTransfers(getUserVisit(), entities));

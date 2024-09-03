@@ -60,11 +60,11 @@ public abstract class BaseFieldType {
     }
     
     public Map<String, String> getSplitFieldNameParameters() {
-        int length = splitFieldName.length;
+        var length = splitFieldName.length;
         Map<String, String> parameters = new HashMap<>(length - 1);
         
-        for(int i = 1; i < length ; i++) {
-            String []split = Splitter.on(",").trimResults().omitEmptyStrings().splitToList(splitFieldName[i]).toArray(new String[0]);
+        for(var i = 1; i < length ; i++) {
+            var split = Splitter.on(",").trimResults().omitEmptyStrings().splitToList(splitFieldName[i]).toArray(new String[0]);
             parameters.put(split[0], split[1]);
         }
         
@@ -96,7 +96,7 @@ public abstract class BaseFieldType {
     }
     
     private boolean checkRange(final long testValue, Long minimumValue, Long maximumValue) {
-        boolean valid = true;
+        var valid = true;
         
         if(minimumValue == null) {
             minimumValue = fieldDefinition.getMinimumValue();
@@ -133,7 +133,7 @@ public abstract class BaseFieldType {
         }
         
         try {
-            Integer testInteger = Integer.valueOf(fieldValue);
+            var testInteger = Integer.valueOf(fieldValue);
 
             valid = checkRange(testInteger, minimumValue, maximumValue);
             fieldValue = testInteger.toString();
@@ -153,7 +153,7 @@ public abstract class BaseFieldType {
         }
 
         try {
-            Integer testInteger = Integer.valueOf(fieldValue);
+            var testInteger = Integer.valueOf(fieldValue);
 
             valid = checkRange(testInteger, minimumValue, maximumValue);
             fieldValue = testInteger.toString();
@@ -175,7 +175,7 @@ public abstract class BaseFieldType {
         }
         
         try {
-            Long testLong = Long.valueOf(fieldValue);
+            var testLong = Long.valueOf(fieldValue);
 
             valid = checkRange(testLong, minimumValue, maximumValue);
             fieldValue = testLong.toString();
@@ -195,7 +195,7 @@ public abstract class BaseFieldType {
         }
 
         try {
-            Long testLong = Long.valueOf(fieldValue);
+            var testLong = Long.valueOf(fieldValue);
 
             valid = checkRange(testLong, minimumValue, maximumValue);
             fieldValue = testLong.toString();

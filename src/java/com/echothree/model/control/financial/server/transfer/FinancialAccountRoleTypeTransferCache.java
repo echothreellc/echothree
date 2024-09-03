@@ -30,12 +30,12 @@ public class FinancialAccountRoleTypeTransferCache
     }
     
     public FinancialAccountRoleTypeTransfer getFinancialAccountRoleTypeTransfer(FinancialAccountRoleType financialAccountRoleType) {
-        FinancialAccountRoleTypeTransfer financialAccountRoleTypeTransfer = get(financialAccountRoleType);
+        var financialAccountRoleTypeTransfer = get(financialAccountRoleType);
         
         if(financialAccountRoleTypeTransfer == null) {
-            String financialAccountRoleTypeName = financialAccountRoleType.getFinancialAccountRoleTypeName();
-            Integer sortOrder = financialAccountRoleType.getSortOrder();
-            String description = financialControl.getBestFinancialAccountRoleTypeDescription(financialAccountRoleType, getLanguage());
+            var financialAccountRoleTypeName = financialAccountRoleType.getFinancialAccountRoleTypeName();
+            var sortOrder = financialAccountRoleType.getSortOrder();
+            var description = financialControl.getBestFinancialAccountRoleTypeDescription(financialAccountRoleType, getLanguage());
             
             financialAccountRoleTypeTransfer = new FinancialAccountRoleTypeTransfer(financialAccountRoleTypeName, sortOrder, description);
             put(financialAccountRoleType, financialAccountRoleTypeTransfer);

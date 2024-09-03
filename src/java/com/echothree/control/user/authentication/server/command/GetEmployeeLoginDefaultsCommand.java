@@ -17,19 +17,11 @@
 package com.echothree.control.user.authentication.server.command;
 
 import com.echothree.control.user.authentication.common.form.AuthenticationFormFactory;
-import com.echothree.control.user.authentication.common.form.EmployeeLoginForm;
 import com.echothree.control.user.authentication.common.form.GetEmployeeLoginDefaultsForm;
 import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
-import com.echothree.control.user.authentication.common.result.GetEmployeeLoginDefaultsResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyCompany;
-import com.echothree.model.data.party.server.entity.PartyRelationship;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserLogin;
-import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -55,26 +47,26 @@ public class GetEmployeeLoginDefaultsCommand
     
     @Override
     protected BaseResult execute() {
-        GetEmployeeLoginDefaultsResult result = AuthenticationResultFactory.getGetEmployeeLoginDefaultsResult();
-        UserControl userControl = getUserControl();
-        UserSession userSession = userControl.getUserSessionByUserVisit(getUserVisit());
+        var result = AuthenticationResultFactory.getGetEmployeeLoginDefaultsResult();
+        var userControl = getUserControl();
+        var userSession = userControl.getUserSessionByUserVisit(getUserVisit());
         String username = null;
         String companyName = null;
         
         if(userSession != null) {
-            Party party = userSession.getParty();
+            var party = userSession.getParty();
             
             if(party != null) {
                 if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyTypes.EMPLOYEE.name())) {
-                    UserLogin userLogin = userControl.getUserLogin(party);
-                    PartyRelationship partyRelationship = userSession.getPartyRelationship();
+                    var userLogin = userControl.getUserLogin(party);
+                    var partyRelationship = userSession.getPartyRelationship();
                     
                     username = userLogin.getUsername();
                     
                     if(partyRelationship != null) {
                         var partyControl = Session.getModelController(PartyControl.class);
-                        Party fromParty = partyRelationship.getFromParty();
-                        PartyCompany partyCompany = partyControl.getPartyCompany(fromParty);
+                        var fromParty = partyRelationship.getFromParty();
+                        var partyCompany = partyControl.getPartyCompany(fromParty);
                         
                         if(partyCompany != null) {
                             companyName = partyCompany.getPartyCompanyName();
@@ -83,8 +75,8 @@ public class GetEmployeeLoginDefaultsCommand
                 }
             }
         }
-        
-        EmployeeLoginForm employeeLoginForm = AuthenticationFormFactory.getEmployeeLoginForm();
+
+        var employeeLoginForm = AuthenticationFormFactory.getEmployeeLoginForm();
         employeeLoginForm.setUsername(username);
         employeeLoginForm.setCompanyName(companyName);
         result.setEmployeeLoginForm(employeeLoginForm);

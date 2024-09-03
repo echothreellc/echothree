@@ -22,7 +22,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.value.VendorTypeDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -62,8 +61,8 @@ public class SetDefaultVendorTypeCommand
     @Override
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
-        String vendorTypeName = form.getVendorTypeName();
-        VendorTypeDetailValue vendorTypeDetailValue = vendorControl.getVendorTypeDetailValueByNameForUpdate(vendorTypeName);
+        var vendorTypeName = form.getVendorTypeName();
+        var vendorTypeDetailValue = vendorControl.getVendorTypeDetailValueByNameForUpdate(vendorTypeName);
         
         if(vendorTypeDetailValue != null) {
             vendorTypeDetailValue.setIsDefault(Boolean.TRUE);

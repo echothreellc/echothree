@@ -18,14 +18,11 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.GetGeoCodeTimeZonesForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
-import com.echothree.control.user.geo.common.result.GetGeoCodeTimeZonesResult;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,14 +65,14 @@ public class GetGeoCodeTimeZonesCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetGeoCodeTimeZonesResult result = GeoResultFactory.getGetGeoCodeTimeZonesResult();
-        String geoCodeName = form.getGeoCodeName();
-        String javaTimeZoneName = form.getJavaTimeZoneName();
+        var result = GeoResultFactory.getGetGeoCodeTimeZonesResult();
+        var geoCodeName = form.getGeoCodeName();
+        var javaTimeZoneName = form.getJavaTimeZoneName();
         var parameterCount = (geoCodeName != null? 1: 0) + (javaTimeZoneName != null? 1: 0);
         
         if(parameterCount == 1) {
             if(geoCodeName != null) {
-                GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+                var geoCode = geoControl.getGeoCodeByName(geoCodeName);
                 
                 if(geoCode != null) {
                     result.setGeoCode(geoControl.getGeoCodeTransfer(getUserVisit(), geoCode));
@@ -85,7 +82,7 @@ public class GetGeoCodeTimeZonesCommand
                 }
             } else if(javaTimeZoneName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
+                var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
                 
                 if(timeZone != null) {
                     result.setTimeZone(partyControl.getTimeZoneTransfer(getUserVisit(), timeZone));

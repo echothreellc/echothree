@@ -17,19 +17,13 @@
 package com.echothree.model.control.filter.server.transfer;
 
 import com.echothree.model.control.filter.common.FilterOptions;
-import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterTypeTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.filter.server.entity.Filter;
-import com.echothree.model.data.filter.server.entity.FilterDetail;
-import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class FilterTransferCache
         extends BaseFilterTransferCache<Filter, FilterTransfer> {
@@ -55,18 +49,18 @@ public class FilterTransferCache
 
     @Override
     public FilterTransfer getTransfer(Filter filter) {
-        FilterTransfer filterTransfer = get(filter);
+        var filterTransfer = get(filter);
         
         if(filterTransfer == null) {
-            FilterDetail filterDetail = filter.getLastDetail();
-            FilterTypeTransfer filterTypeTransfer = filterControl.getFilterTypeTransfer(userVisit, filterDetail.getFilterType());
-            String filterName = filterDetail.getFilterName();
-            FilterAdjustmentTransfer initialFilterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterDetail.getInitialFilterAdjustment());
-            Selector filterItemSelector = filterDetail.getFilterItemSelector();
-            SelectorTransfer filterItemSelectorTransfer = filterItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, filterItemSelector);
-            Boolean isDefault = filterDetail.getIsDefault();
-            Integer sortOrder = filterDetail.getSortOrder();
-            String description = filterControl.getBestFilterDescription(filter, getLanguage());
+            var filterDetail = filter.getLastDetail();
+            var filterTypeTransfer = filterControl.getFilterTypeTransfer(userVisit, filterDetail.getFilterType());
+            var filterName = filterDetail.getFilterName();
+            var initialFilterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterDetail.getInitialFilterAdjustment());
+            var filterItemSelector = filterDetail.getFilterItemSelector();
+            var filterItemSelectorTransfer = filterItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, filterItemSelector);
+            var isDefault = filterDetail.getIsDefault();
+            var sortOrder = filterDetail.getSortOrder();
+            var description = filterControl.getBestFilterDescription(filter, getLanguage());
             
             filterTransfer = new FilterTransfer(filterTypeTransfer, filterName, initialFilterAdjustmentTransfer,
                     filterItemSelectorTransfer, isDefault, sortOrder, description);

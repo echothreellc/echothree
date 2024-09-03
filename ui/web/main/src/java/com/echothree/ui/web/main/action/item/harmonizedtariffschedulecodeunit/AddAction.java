@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.harmonizedtariffschedulecodeunit;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.CreateHarmonizedTariffScheduleCodeUnitForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -51,7 +50,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateHarmonizedTariffScheduleCodeUnitForm commandForm = ItemUtil.getHome().getCreateHarmonizedTariffScheduleCodeUnitForm();
+        var commandForm = ItemUtil.getHome().getCreateHarmonizedTariffScheduleCodeUnitForm();
 
         commandForm.setHarmonizedTariffScheduleCodeUnitName(actionForm.getHarmonizedTariffScheduleCodeUnitName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());

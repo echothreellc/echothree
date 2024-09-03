@@ -22,10 +22,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceDescription;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,20 +65,20 @@ public class DeleteSequenceDescriptionCommand
     @Override
     protected BaseResult execute() {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        String sequenceTypeName = form.getSequenceTypeName();
-        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
+        var sequenceTypeName = form.getSequenceTypeName();
+        var sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
         
         if(sequenceType != null) {
-            String sequenceName = form.getSequenceName();
-            Sequence sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
+            var sequenceName = form.getSequenceName();
+            var sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
             
             if(sequence != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    SequenceDescription sequenceDescription = sequenceControl.getSequenceDescriptionForUpdate(sequence, language);
+                    var sequenceDescription = sequenceControl.getSequenceDescriptionForUpdate(sequence, language);
                     
                     if(sequenceDescription != null) {
                         sequenceControl.deleteSequenceDescription(sequenceDescription, getPartyPK());

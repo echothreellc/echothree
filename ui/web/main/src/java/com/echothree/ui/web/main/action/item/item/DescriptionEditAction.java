@@ -19,18 +19,15 @@ package com.echothree.ui.web.main.action.item.item;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.edit.ItemDescriptionEdit;
 import com.echothree.control.user.item.common.form.EditItemDescriptionForm;
-import com.echothree.control.user.item.common.form.GetItemDescriptionTypeForm;
 import com.echothree.control.user.item.common.result.EditItemDescriptionResult;
 import com.echothree.control.user.item.common.result.GetItemDescriptionTypeResult;
 import com.echothree.control.user.item.common.spec.ItemDescriptionSpec;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.core.common.transfer.MimeTypeUsageTypeTransfer;
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -41,7 +38,6 @@ import java.io.IOException;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.struts.upload.FormFile;
 
 @SproutAction(
     path = "/Item/Item/DescriptionEdit",
@@ -61,7 +57,7 @@ public class DescriptionEditAction
     @Override
     protected ItemDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ItemDescriptionSpec spec = ItemUtil.getHome().getItemDescriptionSpec();
+        var spec = ItemUtil.getHome().getItemDescriptionSpec();
 
         spec.setItemDescriptionTypeName(findParameter(request, ParameterConstants.ITEM_DESCRIPTION_TYPE_NAME, actionForm.getItemDescriptionTypeName()));
         spec.setItemName(findParameter(request, ParameterConstants.ITEM_NAME, actionForm.getItemName()));
@@ -73,14 +69,14 @@ public class DescriptionEditAction
     private ItemDescriptionTypeTransfer getItemDescriptionTypeTransfer(DescriptionEditActionForm actionForm, HttpServletRequest request)
             throws NamingException {
         ItemDescriptionTypeTransfer itemDescriptionType = null;
-        GetItemDescriptionTypeForm commandForm = ItemUtil.getHome().getGetItemDescriptionTypeForm();
+        var commandForm = ItemUtil.getHome().getGetItemDescriptionTypeForm();
 
         commandForm.setItemDescriptionTypeName(actionForm.getItemDescriptionTypeName());
 
-        CommandResult commandResult = ItemUtil.getHome().getItemDescriptionType(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getItemDescriptionType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemDescriptionTypeResult result = (GetItemDescriptionTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemDescriptionTypeResult)executionResult.getResult();
 
             itemDescriptionType = result.getItemDescriptionType();
         }
@@ -91,20 +87,20 @@ public class DescriptionEditAction
     @Override
     protected ItemDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ItemDescriptionEdit edit = ItemUtil.getHome().getItemDescriptionEdit();
-        ItemDescriptionTypeTransfer itemDescriptionType = getItemDescriptionTypeTransfer(actionForm, request);
-        MimeTypeUsageTypeTransfer mimeTypeUsageType = itemDescriptionType.getMimeTypeUsageType();
+        var edit = ItemUtil.getHome().getItemDescriptionEdit();
+        var itemDescriptionType = getItemDescriptionTypeTransfer(actionForm, request);
+        var mimeTypeUsageType = itemDescriptionType.getMimeTypeUsageType();
 
         if(mimeTypeUsageType == null) {
             edit.setStringDescription(actionForm.getStringDescription());
         } else {
-            String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
+            var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
 
             if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.TEXT.name())) {
                 edit.setMimeTypeName(actionForm.getMimeTypeChoice());
                 edit.setClobDescription(actionForm.getClobDescription());
             } else {
-                FormFile blobDescription = actionForm.getBlobDescription();
+                var blobDescription = actionForm.getBlobDescription();
 
                 edit.setMimeTypeName(blobDescription.getContentType());
                 if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.IMAGE.name())) {
@@ -133,8 +129,8 @@ public class DescriptionEditAction
     @Override
     protected void setupActionForm(HttpServletRequest request, DescriptionEditActionForm actionForm, EditItemDescriptionResult result, ItemDescriptionSpec spec, ItemDescriptionEdit edit)
             throws NamingException {
-        ItemDescriptionTypeTransfer itemDescriptionType = result.getItemDescription().getItemDescriptionType();
-        MimeTypeUsageTypeTransfer mimeTypeUsageType = itemDescriptionType.getMimeTypeUsageType();
+        var itemDescriptionType = result.getItemDescription().getItemDescriptionType();
+        var mimeTypeUsageType = itemDescriptionType.getMimeTypeUsageType();
 
         actionForm.setItemDescriptionTypeName(spec.getItemDescriptionTypeName());
         actionForm.setItemName(spec.getItemName());
@@ -143,7 +139,7 @@ public class DescriptionEditAction
         if(mimeTypeUsageType == null) {
             actionForm.setStringDescription(edit.getStringDescription());
         } else {
-            String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
+            var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
 
             if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.TEXT.name())) {
                 actionForm.setMimeTypeChoice(edit.getMimeTypeName());

@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.security;
 
 import com.echothree.control.user.security.common.SecurityUtil;
 import com.echothree.control.user.security.common.SecurityService;
-import com.echothree.control.user.security.common.form.CreatePartySecurityRoleTemplateForm;
 import com.echothree.control.user.security.common.form.SecurityFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

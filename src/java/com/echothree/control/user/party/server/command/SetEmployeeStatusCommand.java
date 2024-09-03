@@ -22,7 +22,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.EmployeeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,11 +64,11 @@ public class SetEmployeeStatusCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String employeeName = form.getEmployeeName();
-        PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
+        var employeeName = form.getEmployeeName();
+        var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
         
         if(partyEmployee != null) {
-            String employeeStatusChoice = form.getEmployeeStatusChoice();
+            var employeeStatusChoice = form.getEmployeeStatusChoice();
             
             EmployeeLogic.getInstance().setEmployeeStatus(session, this, partyEmployee.getParty(), employeeStatusChoice, getPartyPK());
         } else {

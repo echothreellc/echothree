@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.shipping.shippingmethod;
 
 import com.echothree.control.user.shipping.common.ShippingUtil;
-import com.echothree.control.user.shipping.common.edit.ShippingMethodDescriptionEdit;
-import com.echothree.control.user.shipping.common.form.EditShippingMethodDescriptionForm;
 import com.echothree.control.user.shipping.common.result.EditShippingMethodDescriptionResult;
-import com.echothree.control.user.shipping.common.spec.ShippingMethodDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String shippingMethodName = request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var shippingMethodName = request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditShippingMethodDescriptionForm commandForm = ShippingUtil.getHome().getEditShippingMethodDescriptionForm();
-                ShippingMethodDescriptionSpec spec = ShippingUtil.getHome().getShippingMethodDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = ShippingUtil.getHome().getEditShippingMethodDescriptionForm();
+                var spec = ShippingUtil.getHome().getShippingMethodDescriptionSpec();
                 
                 if(shippingMethodName == null)
                     shippingMethodName = actionForm.getShippingMethodName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    ShippingMethodDescriptionEdit edit = ShippingUtil.getHome().getShippingMethodDescriptionEdit();
+                    var edit = ShippingUtil.getHome().getShippingMethodDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ShippingUtil.getHome().editShippingMethodDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ShippingUtil.getHome().editShippingMethodDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditShippingMethodDescriptionResult result = (EditShippingMethodDescriptionResult)executionResult.getResult();
+                            var result = (EditShippingMethodDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = ShippingUtil.getHome().editShippingMethodDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditShippingMethodDescriptionResult result = (EditShippingMethodDescriptionResult)executionResult.getResult();
+
+                    var commandResult = ShippingUtil.getHome().editShippingMethodDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditShippingMethodDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        ShippingMethodDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setShippingMethodName(shippingMethodName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SHIPPING_METHOD_NAME, shippingMethodName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

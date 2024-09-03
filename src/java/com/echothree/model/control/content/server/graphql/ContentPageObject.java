@@ -21,10 +21,7 @@ import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObje
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.content.server.entity.ContentPage;
-import com.echothree.model.data.content.server.entity.ContentPageArea;
 import com.echothree.model.data.content.server.entity.ContentPageDetail;
-import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -106,12 +103,12 @@ public class ContentPageObject
     public List<ContentPageAreaObject> getContentPageAreas(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        Language preferredLanguage = userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env));
-        List<ContentPageLayoutArea> entities = contentControl.getContentPageLayoutAreasByContentPageLayout(getContentPageDetail().getContentPageLayout());
+        var preferredLanguage = userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env));
+        var entities = contentControl.getContentPageLayoutAreasByContentPageLayout(getContentPageDetail().getContentPageLayout());
         List<ContentPageAreaObject> contentPageAreas = new ArrayList<>(entities.size());
         
         entities.forEach((entity) -> {
-            ContentPageArea contentPageArea = contentControl.getBestContentPageArea(contentPage, entity, preferredLanguage);
+            var contentPageArea = contentControl.getBestContentPageArea(contentPage, entity, preferredLanguage);
 
             if(contentPageArea != null) {
                 contentPageAreas.add(new ContentPageAreaObject(contentPageArea));

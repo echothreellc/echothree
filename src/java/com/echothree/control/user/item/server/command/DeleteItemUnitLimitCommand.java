@@ -20,10 +20,6 @@ import com.echothree.control.user.item.common.form.DeleteItemUnitLimitForm;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemUnitLimit;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -56,21 +52,21 @@ public class DeleteItemUnitLimitCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            String inventoryConditionName = form.getInventoryConditionName();
-            InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+            var inventoryConditionName = form.getInventoryConditionName();
+            var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
             
             if(inventoryCondition != null) {
                 var uomControl = Session.getModelController(UomControl.class);
-                String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
+                var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
                 
                 if(unitOfMeasureType != null) {
-                    ItemUnitLimit itemUnitLimit = itemControl.getItemUnitLimitForUpdate(item, inventoryCondition, unitOfMeasureType);
+                    var itemUnitLimit = itemControl.getItemUnitLimitForUpdate(item, inventoryCondition, unitOfMeasureType);
                     
                     if(itemUnitLimit != null) {
                         itemControl.deleteItemUnitLimit(itemUnitLimit, getPartyPK());

@@ -19,9 +19,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.SetDefaultForumMimeTypeForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.forum.server.value.ForumMimeTypeValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,16 +50,16 @@ public class SetDefaultForumMimeTypeCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumName = form.getForumName();
-        Forum forum = forumControl.getForumByName(forumName);
+        var forumName = form.getForumName();
+        var forum = forumControl.getForumByName(forumName);
         
         if(forum != null) {
             var coreControl = getCoreControl();
-            String mimeTypeName = form.getMimeTypeName();
-            MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+            var mimeTypeName = form.getMimeTypeName();
+            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
             
             if(mimeType != null) {
-                ForumMimeTypeValue forumMimeTypeValue = forumControl.getForumMimeTypeValueForUpdate(forum, mimeType);
+                var forumMimeTypeValue = forumControl.getForumMimeTypeValueForUpdate(forum, mimeType);
                 
                 if(forumMimeTypeValue != null) {
                     forumMimeTypeValue.setIsDefault(Boolean.TRUE);

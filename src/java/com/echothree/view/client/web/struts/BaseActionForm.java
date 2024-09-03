@@ -21,24 +21,18 @@ import com.echothree.control.user.core.common.form.ValidateForm;
 import com.echothree.control.user.core.common.result.ValidateResult;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.form.BaseFormFactory;
 import com.echothree.view.client.web.WebConstants;
 import com.echothree.view.client.web.taglib.TagConstants;
 import com.echothree.view.common.BaseChoicesBean;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.util.LabelValueBean;
@@ -61,20 +55,20 @@ public class BaseActionForm
     }
     
     public List<LabelValueBean> convertChoices(BaseChoicesBean choices) {
-        List<String> labels = choices.getLabels();
-        List<String> values = choices.getValues();
-        int labelsSize = labels.size();
-        int valuesSize = values.size();
+        var labels = choices.getLabels();
+        var values = choices.getValues();
+        var labelsSize = labels.size();
+        var valuesSize = values.size();
         List<LabelValueBean> result = null;
         
         if(labelsSize == valuesSize) {
             result = new ArrayList<>(labelsSize);
-            Iterator<String> labelIterator = labels.iterator();
-            Iterator<String> valueIterator = values.iterator();
+            var labelIterator = labels.iterator();
+            var valueIterator = values.iterator();
             
             while(labelIterator.hasNext() && valueIterator.hasNext()) {
-                String label = labelIterator.next();
-                String value = valueIterator.next();
+                var label = labelIterator.next();
+                var value = valueIterator.next();
                 
                 if(label == null)
                     label = "";
@@ -89,8 +83,8 @@ public class BaseActionForm
     @Override
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
-        
-        HttpSession httpSession = request.getSession(true);
+
+        var httpSession = request.getSession(true);
         
         userVisitPK = (UserVisitPK)httpSession.getAttribute(WebConstants.Session_USER_VISIT);
     }
@@ -144,16 +138,16 @@ public class BaseActionForm
 
     private ValidateForm getValidateForm(final List<FieldDefinition> fieldDefinitions, final Map<String, Class> returnTypes)
             throws NamingException {
-        ValidateForm validateForm = CoreUtil.getHome().getValidateForm();
-        BaseForm baseForm = BaseFormFactory.createForm(BaseForm.class);
+        var validateForm = CoreUtil.getHome().getValidateForm();
+        var baseForm = BaseFormFactory.createForm(BaseForm.class);
         Class<?> clazz = this.getClass();
 
         for(var fieldDefinition : fieldDefinitions) {
-            String fieldName = fieldDefinition.getFieldName();
+            var fieldName = fieldDefinition.getFieldName();
             
             try {
-                Method method = clazz.getMethod("get" + fieldName);
-                Object fieldValue = method.invoke(this);
+                var method = clazz.getMethod("get" + fieldName);
+                var fieldValue = method.invoke(this);
 
                 returnTypes.put(fieldName, method.getReturnType());
 
@@ -178,20 +172,20 @@ public class BaseActionForm
     }
 
     private void setFormValidateResult(final ValidateResult validateResult, final Map<String, Class> returnTypes) {
-        BaseForm baseForm = validateResult.getBaseForm();
-        Map<String, Object> map = baseForm.get();
+        var baseForm = validateResult.getBaseForm();
+        var map = baseForm.get();
         Class<?> clazz = this.getClass();
 
-        for(Entry<String, Object> entry : map.entrySet()) {
-            String key = entry.getKey();
+        for(var entry : map.entrySet()) {
+            var key = entry.getKey();
             Class<?> returnType = returnTypes.get(key);
 
             // If getValidateForm didn't add a map entry, returnType will be null. Ignore those
             // values, as they tend to be from functions like getFomName() which don't exist on
             // the ActionForm.
             if(returnType != null) {
-                String methodName = "set" + key;
-                Object value = entry.getValue();
+                var methodName = "set" + key;
+                var value = entry.getValue();
 
                 if(returnType.equals(Boolean.class) && value instanceof String) {
                     value = Boolean.valueOf((String)value);
@@ -219,11 +213,11 @@ public class BaseActionForm
     protected boolean validate(final HttpServletRequest request, final List<FieldDefinition> fieldDefinitions)
             throws NamingException {
         Map<String, Class> returnTypes = new HashMap<>(fieldDefinitions.size());
-        ValidateForm commandForm = getValidateForm(fieldDefinitions, returnTypes);
+        var commandForm = getValidateForm(fieldDefinitions, returnTypes);
 
-        CommandResult commandResult = CoreUtil.getHome().validate(BaseAction.getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().validate(BaseAction.getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
+            var executionResult = commandResult.getExecutionResult();
 
             setFormValidateResult((ValidateResult)executionResult.getResult(), returnTypes);
         }

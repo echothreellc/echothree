@@ -17,12 +17,9 @@
 package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.form.GetShipmentTypeShippingMethodsForm;
-import com.echothree.control.user.shipment.common.result.GetShipmentTypeShippingMethodsResult;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
-import com.echothree.model.data.shipment.server.entity.ShipmentType;
-import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,14 +51,14 @@ public class GetShipmentTypeShippingMethodsCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        GetShipmentTypeShippingMethodsResult result = ShipmentResultFactory.getGetShipmentTypeShippingMethodsResult();
-        String shipmentTypeName = form.getShipmentTypeName();
-        String shippingMethodName = form.getShippingMethodName();
+        var result = ShipmentResultFactory.getGetShipmentTypeShippingMethodsResult();
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shippingMethodName = form.getShippingMethodName();
         var parameterCount = (shipmentTypeName != null? 1: 0) + (shippingMethodName != null? 1: 0);
         
         if(parameterCount == 1) {
             if(shipmentTypeName != null) {
-                ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+                var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
                 
                 if(shipmentType != null) {
                     result.setShipmentType(shipmentControl.getShipmentTypeTransfer(getUserVisit(), shipmentType));
@@ -72,7 +69,7 @@ public class GetShipmentTypeShippingMethodsCommand
                 }
             } else if(shippingMethodName != null) {
                 var shippingControl = Session.getModelController(ShippingControl.class);
-                ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+                var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
                 
                 if(shippingMethod != null) {
                     result.setShippingMethod(shippingControl.getShippingMethodTransfer(getUserVisit(), shippingMethod));

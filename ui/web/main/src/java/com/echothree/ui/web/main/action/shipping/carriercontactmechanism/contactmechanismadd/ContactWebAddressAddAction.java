@@ -17,11 +17,9 @@
 package com.echothree.ui.web.main.action.shipping.carriercontactmechanism.contactmechanismadd;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.CreateContactWebAddressForm;
 import com.echothree.ui.web.main.action.shipping.carriercontactmechanism.BaseCarrierContactMechanismAction;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -53,8 +51,8 @@ public class ContactWebAddressAddAction
     public ActionForward executeAction(ActionMapping mapping, ContactWebAddressAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        CreateContactWebAddressForm commandForm = ContactUtil.getHome().getCreateContactWebAddressForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = ContactUtil.getHome().getCreateContactWebAddressForm();
 
         if(partyName == null) {
             partyName = actionForm.getPartyName();
@@ -65,7 +63,7 @@ public class ContactWebAddressAddAction
             commandForm.setUrl(actionForm.getUrl());
             commandForm.setDescription(actionForm.getDescription());
 
-            CommandResult commandResult = ContactUtil.getHome().createContactWebAddress(getUserVisitPK(request), commandForm);
+            var commandResult = ContactUtil.getHome().createContactWebAddress(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -77,8 +75,8 @@ public class ContactWebAddressAddAction
             actionForm.setPartyName(partyName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupCarrier(request, partyName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.club.club;
 
 import com.echothree.control.user.club.common.ClubUtil;
-import com.echothree.control.user.club.common.form.GetClubDescriptionsForm;
 import com.echothree.control.user.club.common.result.GetClubDescriptionsResult;
-import com.echothree.model.control.club.common.transfer.ClubTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String clubName = request.getParameter(ParameterConstants.CLUB_NAME);
-            GetClubDescriptionsForm commandForm = ClubUtil.getHome().getGetClubDescriptionsForm();
+            var clubName = request.getParameter(ParameterConstants.CLUB_NAME);
+            var commandForm = ClubUtil.getHome().getGetClubDescriptionsForm();
             
             commandForm.setClubName(clubName);
-            
-            CommandResult commandResult = ClubUtil.getHome().getClubDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetClubDescriptionsResult result = (GetClubDescriptionsResult)executionResult.getResult();
-            ClubTransfer clubTransfer = result.getClub();
+
+            var commandResult = ClubUtil.getHome().getClubDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetClubDescriptionsResult)executionResult.getResult();
+            var clubTransfer = result.getClub();
             
             request.setAttribute(AttributeConstants.CLUB, clubTransfer);
             request.setAttribute(AttributeConstants.CLUB_NAME, clubTransfer.getClubName());

@@ -20,12 +20,9 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.user.common.transfer.UserVisitGroupTransfer;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.common.workflow.UserVisitGroupStatusConstants;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.user.server.entity.UserVisitGroup;
-import com.echothree.model.data.user.server.entity.UserVisitGroupDetail;
 import com.echothree.util.server.persistence.Session;
 
 public class UserVisitGroupTransferCache
@@ -42,14 +39,14 @@ public class UserVisitGroupTransferCache
     }
 
     public UserVisitGroupTransfer getUserVisitGroupTransfer(UserVisitGroup userVisitGroup) {
-        UserVisitGroupTransfer userVisitGroupTransfer = get(userVisitGroup);
+        var userVisitGroupTransfer = get(userVisitGroup);
 
         if(userVisitGroupTransfer == null) {
-            UserVisitGroupDetail userVisitGroupDetail = userVisitGroup.getLastDetail();
-            String userVisitGroupName = userVisitGroupDetail.getUserVisitGroupName();
+            var userVisitGroupDetail = userVisitGroup.getLastDetail();
+            var userVisitGroupName = userVisitGroupDetail.getUserVisitGroupName();
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(userVisitGroup.getPrimaryKey());
-            WorkflowEntityStatusTransfer userVisitGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(userVisitGroup.getPrimaryKey());
+            var userVisitGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     UserVisitGroupStatusConstants.Workflow_USER_VISIT_GROUP_STATUS, entityInstance);
 
             userVisitGroupTransfer = new UserVisitGroupTransfer(userVisitGroupName, userVisitGroupStatusTransfer);

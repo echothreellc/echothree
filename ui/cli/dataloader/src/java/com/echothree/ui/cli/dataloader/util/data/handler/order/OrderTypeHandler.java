@@ -18,12 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.order;
 
 import com.echothree.control.user.order.common.OrderUtil;
 import com.echothree.control.user.order.common.OrderService;
-import com.echothree.control.user.order.common.form.CreateOrderAdjustmentTypeForm;
-import com.echothree.control.user.order.common.form.CreateOrderAliasTypeForm;
-import com.echothree.control.user.order.common.form.CreateOrderLineAdjustmentTypeForm;
-import com.echothree.control.user.order.common.form.CreateOrderPriorityForm;
-import com.echothree.control.user.order.common.form.CreateOrderTimeTypeForm;
-import com.echothree.control.user.order.common.form.CreateOrderTypeDescriptionForm;
 import com.echothree.control.user.order.common.form.OrderFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -56,9 +50,9 @@ public class OrderTypeHandler
         if(localName.equals("orderTypeDescription")) {
             String attrLanguageIsoName = null;
             String attrDescription = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     attrLanguageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -66,7 +60,7 @@ public class OrderTypeHandler
             }
             
             try {
-                CreateOrderTypeDescriptionForm commandForm = OrderFormFactory.getCreateOrderTypeDescriptionForm();
+                var commandForm = OrderFormFactory.getCreateOrderTypeDescriptionForm();
                 
                 commandForm.setOrderTypeName(orderTypeName);
                 commandForm.setLanguageIsoName(attrLanguageIsoName);
@@ -77,7 +71,7 @@ public class OrderTypeHandler
                 throw new SAXException(e);
             }
         } else if(localName.equals("orderTimeType")) {
-            CreateOrderTimeTypeForm commandForm = OrderFormFactory.getCreateOrderTimeTypeForm();
+            var commandForm = OrderFormFactory.getCreateOrderTimeTypeForm();
 
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.set(getAttrsMap(attrs));
@@ -86,7 +80,7 @@ public class OrderTypeHandler
 
             initialDataParser.pushHandler(new OrderTimeTypeHandler(initialDataParser, this, orderTypeName, commandForm.getOrderTimeTypeName()));
         } else if(localName.equals("orderPriority")) {
-            CreateOrderPriorityForm commandForm = OrderFormFactory.getCreateOrderPriorityForm();
+            var commandForm = OrderFormFactory.getCreateOrderPriorityForm();
 
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.set(getAttrsMap(attrs));
@@ -98,9 +92,9 @@ public class OrderTypeHandler
             String orderAliasTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("orderAliasTypeName"))
                     orderAliasTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -110,7 +104,7 @@ public class OrderTypeHandler
             }
             
             try {
-                CreateOrderAliasTypeForm commandForm = OrderFormFactory.getCreateOrderAliasTypeForm();
+                var commandForm = OrderFormFactory.getCreateOrderAliasTypeForm();
                 
                 commandForm.setOrderTypeName(orderTypeName);
                 commandForm.setOrderAliasTypeName(orderAliasTypeName);
@@ -124,7 +118,7 @@ public class OrderTypeHandler
                 throw new SAXException(e);
             }
         } else if(localName.equals("orderAdjustmentType")) {
-            CreateOrderAdjustmentTypeForm commandForm = OrderFormFactory.getCreateOrderAdjustmentTypeForm();
+            var commandForm = OrderFormFactory.getCreateOrderAdjustmentTypeForm();
 
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.set(getAttrsMap(attrs));
@@ -133,7 +127,7 @@ public class OrderTypeHandler
 
             initialDataParser.pushHandler(new OrderAdjustmentTypeHandler(initialDataParser, this, orderTypeName, commandForm.getOrderAdjustmentTypeName()));
         } else if(localName.equals("orderLineAdjustmentType")) {
-            CreateOrderLineAdjustmentTypeForm commandForm = OrderFormFactory.getCreateOrderLineAdjustmentTypeForm();
+            var commandForm = OrderFormFactory.getCreateOrderLineAdjustmentTypeForm();
 
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.set(getAttrsMap(attrs));

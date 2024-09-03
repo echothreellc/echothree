@@ -62,7 +62,7 @@ public class EditAction
     @Override
     protected WorkflowEntranceEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        WorkflowEntranceEdit edit = WorkflowUtil.getHome().getWorkflowEntranceEdit();
+        var edit = WorkflowUtil.getHome().getWorkflowEntranceEdit();
 
         edit.setWorkflowEntranceName(actionForm.getWorkflowEntranceName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

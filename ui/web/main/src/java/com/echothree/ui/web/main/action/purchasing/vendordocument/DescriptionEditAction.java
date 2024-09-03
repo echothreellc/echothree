@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected DocumentDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        DocumentDescriptionSpec spec = DocumentUtil.getHome().getDocumentDescriptionSpec();
+        var spec = DocumentUtil.getHome().getDocumentDescriptionSpec();
         
         actionForm.setPartyName(findParameter(request, ParameterConstants.PARTY_NAME, actionForm.getPartyName()));
         spec.setDocumentName(findParameter(request, ParameterConstants.DOCUMENT_NAME, actionForm.getDocumentName()));
@@ -63,7 +63,7 @@ public class DescriptionEditAction
     @Override
     protected DocumentDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        DocumentDescriptionEdit edit = DocumentUtil.getHome().getDocumentDescriptionEdit();
+        var edit = DocumentUtil.getHome().getDocumentDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

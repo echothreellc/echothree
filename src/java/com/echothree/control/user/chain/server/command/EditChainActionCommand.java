@@ -26,19 +26,8 @@ import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainAction;
-import com.echothree.model.data.chain.server.entity.ChainActionDescription;
-import com.echothree.model.data.chain.server.entity.ChainActionDetail;
 import com.echothree.model.data.chain.server.entity.ChainActionSet;
-import com.echothree.model.data.chain.server.entity.ChainActionSetDetail;
-import com.echothree.model.data.chain.server.entity.ChainDetail;
-import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.model.data.chain.server.entity.ChainKindDetail;
-import com.echothree.model.data.chain.server.entity.ChainType;
-import com.echothree.model.data.chain.server.entity.ChainTypeDetail;
-import com.echothree.model.data.chain.server.value.ChainActionDescriptionValue;
-import com.echothree.model.data.chain.server.value.ChainActionDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -104,24 +93,24 @@ public class EditChainActionCommand
     public ChainAction getEntity(EditChainActionResult result) {
         var chainControl = Session.getModelController(ChainControl.class);
         ChainAction chainAction = null;
-        String chainKindName = spec.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKindName = spec.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind != null) {
-            String chainTypeName = spec.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = spec.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
             if(chainType != null) {
-                String chainName = spec.getChainName();
-                Chain chain = chainControl.getChainByName(chainType, chainName);
+                var chainName = spec.getChainName();
+                var chain = chainControl.getChainByName(chainType, chainName);
 
                 if(chain != null) {
-                    String chainActionSetName = spec.getChainActionSetName();
+                    var chainActionSetName = spec.getChainActionSetName();
                     
                     chainActionSet = chainControl.getChainActionSetByName(chain, chainActionSetName);
 
                     if(chainActionSet != null) {
-                        String chainActionName = spec.getChainActionName();
+                        var chainActionName = spec.getChainActionName();
 
                         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                             chainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
@@ -164,8 +153,8 @@ public class EditChainActionCommand
     @Override
     public void doLock(ChainActionEdit edit, ChainAction chainAction) {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainActionDescription chainActionDescription = chainControl.getChainActionDescription(chainAction, getPreferredLanguage());
-        ChainActionDetail chainActionDetail = chainAction.getLastDetail();
+        var chainActionDescription = chainControl.getChainActionDescription(chainAction, getPreferredLanguage());
+        var chainActionDetail = chainAction.getLastDetail();
 
         edit.setChainActionName(chainActionDetail.getChainActionName());
         edit.setSortOrder(chainActionDetail.getSortOrder().toString());
@@ -178,14 +167,14 @@ public class EditChainActionCommand
     @Override
     public void canUpdate(ChainAction chainAction) {
         var chainControl = Session.getModelController(ChainControl.class);
-        String chainActionName = edit.getChainActionName();
-        ChainAction duplicateChainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
+        var chainActionName = edit.getChainActionName();
+        var duplicateChainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
 
         if(duplicateChainAction != null && !chainAction.equals(duplicateChainAction)) {
-            ChainActionSetDetail chainActionSetDetail = chainActionSet.getLastDetail();
-            ChainDetail chainDetail = chainActionSetDetail.getChain().getLastDetail();
-            ChainTypeDetail chainTypeDetail = chainDetail.getChainType().getLastDetail();
-            ChainKindDetail chainKindDetail = chainTypeDetail.getChainKind().getLastDetail();
+            var chainActionSetDetail = chainActionSet.getLastDetail();
+            var chainDetail = chainActionSetDetail.getChain().getLastDetail();
+            var chainTypeDetail = chainDetail.getChainType().getLastDetail();
+            var chainKindDetail = chainTypeDetail.getChainKind().getLastDetail();
             
             addExecutionError(ExecutionErrors.DuplicateChainActionName.name(), chainKindDetail.getChainKindName(), chainTypeDetail.getChainTypeName(),
                     chainDetail.getChainName(), chainActionSetDetail.getChainActionSetName(), chainActionName);
@@ -196,9 +185,9 @@ public class EditChainActionCommand
     public void doUpdate(ChainAction chainAction) {
         var chainControl = Session.getModelController(ChainControl.class);
         var partyPK = getPartyPK();
-        ChainActionDetailValue chainActionDetailValue = chainControl.getChainActionDetailValueForUpdate(chainAction);
-        ChainActionDescription chainActionDescription = chainControl.getChainActionDescriptionForUpdate(chainAction, getPreferredLanguage());
-        String description = edit.getDescription();
+        var chainActionDetailValue = chainControl.getChainActionDetailValueForUpdate(chainAction);
+        var chainActionDescription = chainControl.getChainActionDescriptionForUpdate(chainAction, getPreferredLanguage());
+        var description = edit.getDescription();
 
         chainActionDetailValue.setChainActionName(edit.getChainActionName());
         chainActionDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
@@ -210,7 +199,7 @@ public class EditChainActionCommand
         } else if(chainActionDescription != null && description == null) {
             chainControl.deleteChainActionDescription(chainActionDescription, partyPK);
         } else if(chainActionDescription != null && description != null) {
-            ChainActionDescriptionValue chainActionDescriptionValue = chainControl.getChainActionDescriptionValue(chainActionDescription);
+            var chainActionDescriptionValue = chainControl.getChainActionDescriptionValue(chainActionDescription);
 
             chainActionDescriptionValue.setDescription(description);
             chainControl.updateChainActionDescriptionFromValue(chainActionDescriptionValue, partyPK);

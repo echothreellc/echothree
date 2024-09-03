@@ -19,20 +19,16 @@ package com.echothree.ui.cli.dataloader.util.data.handler.core;
 import com.echothree.control.user.comment.common.CommentService;
 import com.echothree.control.user.comment.common.CommentUtil;
 import com.echothree.control.user.comment.common.form.CommentFormFactory;
-import com.echothree.control.user.comment.common.form.CreateCommentTypeForm;
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.form.CreateEntityAttributeForm;
 import com.echothree.control.user.core.common.result.EditEntityTypeDescriptionResult;
 import com.echothree.control.user.core.common.spec.CoreSpecFactory;
 import com.echothree.control.user.message.common.MessageService;
 import com.echothree.control.user.message.common.MessageUtil;
-import com.echothree.control.user.message.common.form.CreateMessageTypeForm;
 import com.echothree.control.user.message.common.form.MessageFormFactory;
 import com.echothree.control.user.rating.common.RatingService;
 import com.echothree.control.user.rating.common.RatingUtil;
-import com.echothree.control.user.rating.common.form.CreateRatingTypeForm;
 import com.echothree.control.user.rating.common.form.RatingFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -138,7 +134,7 @@ public class EntityTypeHandler
                         commandForm.getEntityAliasTypeName()));
             }
             case "entityAttribute" -> {
-                CreateEntityAttributeForm commandForm = CoreFormFactory.getCreateEntityAttributeForm();
+                var commandForm = CoreFormFactory.getCreateEntityAttributeForm();
 
                 commandForm.setComponentVendorName(componentVendorName);
                 commandForm.setEntityTypeName(entityTypeName);
@@ -150,7 +146,7 @@ public class EntityTypeHandler
                         commandForm.getEntityAttributeName()));
             }
             case "commentType" -> {
-                CreateCommentTypeForm commandForm = CommentFormFactory.getCreateCommentTypeForm();
+                var commandForm = CommentFormFactory.getCreateCommentTypeForm();
 
                 commandForm.setComponentVendorName(componentVendorName);
                 commandForm.setEntityTypeName(entityTypeName);
@@ -162,7 +158,7 @@ public class EntityTypeHandler
                         commandForm.getCommentTypeName()));
             }
             case "ratingType" -> {
-                CreateRatingTypeForm commandForm = RatingFormFactory.getCreateRatingTypeForm();
+                var commandForm = RatingFormFactory.getCreateRatingTypeForm();
 
                 commandForm.setComponentVendorName(componentVendorName);
                 commandForm.setEntityTypeName(entityTypeName);
@@ -174,7 +170,7 @@ public class EntityTypeHandler
                         commandForm.getRatingTypeName()));
             }
             case "messageType" -> {
-                CreateMessageTypeForm commandForm = MessageFormFactory.getCreateMessageTypeForm();
+                var commandForm = MessageFormFactory.getCreateMessageTypeForm();
 
                 commandForm.setComponentVendorName(componentVendorName);
                 commandForm.setEntityTypeName(entityTypeName);

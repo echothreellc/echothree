@@ -17,13 +17,11 @@
 package com.echothree.control.user.picklist.server.command;
 
 import com.echothree.control.user.picklist.common.form.GetPicklistAliasTypeChoicesForm;
-import com.echothree.control.user.picklist.common.result.GetPicklistAliasTypeChoicesResult;
 import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.picklist.server.entity.PicklistType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,13 +64,13 @@ public class GetPicklistAliasTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);
-        GetPicklistAliasTypeChoicesResult result = PicklistResultFactory.getGetPicklistAliasTypeChoicesResult();
-        String picklistTypeName = form.getPicklistTypeName();
-        PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var result = PicklistResultFactory.getGetPicklistAliasTypeChoicesResult();
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
-            String defaultPicklistAliasTypeChoice = form.getDefaultPicklistAliasTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultPicklistAliasTypeChoice = form.getDefaultPicklistAliasTypeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setPicklistAliasTypeChoices(picklistControl.getPicklistAliasTypeChoices(defaultPicklistAliasTypeChoice, getPreferredLanguage(), allowNullChoice,
                     picklistType));

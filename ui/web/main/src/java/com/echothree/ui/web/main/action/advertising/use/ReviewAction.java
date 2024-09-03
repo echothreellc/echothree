@@ -17,20 +17,15 @@
 package com.echothree.ui.web.main.action.advertising.use;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetUseForm;
 import com.echothree.control.user.offer.common.result.GetUseResult;
-import com.echothree.model.control.offer.common.transfer.UseNameElementTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
-import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,18 +49,18 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetUseForm commandForm = OfferUtil.getHome().getGetUseForm();
-            String useName = request.getParameter(ParameterConstants.USE_NAME);
+            var commandForm = OfferUtil.getHome().getGetUseForm();
+            var useName = request.getParameter(ParameterConstants.USE_NAME);
             
             commandForm.setUseName(useName);
-            
-            CommandResult commandResult = OfferUtil.getHome().getUse(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUseResult result = (GetUseResult)executionResult.getResult();
-            List<UseNameElementTransfer> useNameElements = result.getUseNameElements();
+
+            var commandResult = OfferUtil.getHome().getUse(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetUseResult)executionResult.getResult();
+            var useNameElements = result.getUseNameElements();
             
             request.setAttribute(AttributeConstants.USE, result.getUse());
             request.setAttribute(AttributeConstants.USE_NAME_ELEMENTS, useNameElements.isEmpty()? null: useNameElements);

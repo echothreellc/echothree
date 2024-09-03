@@ -19,20 +19,13 @@ package com.echothree.model.control.workflow.server.logic;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.party.server.factory.PartyFactory;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestinationPartyType;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSecurityRole;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrancePartyType;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntranceSecurityRole;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.util.List;
 
 public class WorkflowSecurityLogic {
     
@@ -50,16 +43,16 @@ public class WorkflowSecurityLogic {
     
     public boolean checkWorkflowEntranceAvailable(final WorkflowEntrance workflowEntrance, final PartyPK partyPK) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        boolean checkPassed = false;
+        var checkPassed = false;
 
         if(workflowControl.countWorkflowEntrancePartyTypesByWorkflowEntrance(workflowEntrance) != 0) {
-            Party party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, partyPK);
-            PartyType partyType = party.getLastDetail().getPartyType();
-            WorkflowEntrancePartyType workflowEntrancePartyType = workflowControl.getWorkflowEntrancePartyType(workflowEntrance, partyType);
+            var party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, partyPK);
+            var partyType = party.getLastDetail().getPartyType();
+            var workflowEntrancePartyType = workflowControl.getWorkflowEntrancePartyType(workflowEntrance, partyType);
 
             if(workflowEntrancePartyType != null) {
                 var securityControl = Session.getModelController(SecurityControl.class);
-                List<WorkflowEntranceSecurityRole> workflowEntranceSecurityRoles = workflowControl.getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(workflowEntrancePartyType);
+                var workflowEntranceSecurityRoles = workflowControl.getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(workflowEntrancePartyType);
 
                 if(workflowEntranceSecurityRoles.isEmpty()) {
                     // If there are no individual Security Roles, then pass it since the user is in a Party Type that was found.
@@ -84,7 +77,7 @@ public class WorkflowSecurityLogic {
     }
 
     public boolean checkAddEntityToWorkflow(final ExecutionErrorAccumulator eea, final WorkflowEntrance workflowEntrance, final PartyPK modifiedBy) {
-        boolean checkPassed = checkWorkflowEntranceAvailable(workflowEntrance, modifiedBy);
+        var checkPassed = checkWorkflowEntranceAvailable(workflowEntrance, modifiedBy);
         
         if(!checkPassed) {
             eea.addExecutionError(ExecutionErrors.WorkflowEntranceNotAllowed.name());
@@ -95,16 +88,16 @@ public class WorkflowSecurityLogic {
 
     public boolean checkWorkflowDestinationAvailable(final WorkflowDestination workflowDestination, final PartyPK partyPK) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        boolean checkPassed = false;
+        var checkPassed = false;
 
         if(workflowControl.countWorkflowDestinationPartyTypes(workflowDestination) != 0) {
-            Party party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, partyPK);
-            PartyType partyType = party.getLastDetail().getPartyType();
-            WorkflowDestinationPartyType workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyType(workflowDestination, partyType);
+            var party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, partyPK);
+            var partyType = party.getLastDetail().getPartyType();
+            var workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyType(workflowDestination, partyType);
 
             if(workflowDestinationPartyType != null) {
                 var securityControl = Session.getModelController(SecurityControl.class);
-                List<WorkflowDestinationSecurityRole> workflowDestinationSecurityRoles = workflowControl.getWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(workflowDestinationPartyType);
+                var workflowDestinationSecurityRoles = workflowControl.getWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(workflowDestinationPartyType);
 
                 if(workflowDestinationSecurityRoles.isEmpty()) {
                     // If there are no individual Security Roles, then pass it since the user is in a Party Type that was found.
@@ -129,7 +122,7 @@ public class WorkflowSecurityLogic {
     }
 
     public boolean checkTransitionEntityInWorkflow(final ExecutionErrorAccumulator eea, final WorkflowDestination workflowDestination, final PartyPK modifiedBy) {
-        boolean checkPassed = checkWorkflowDestinationAvailable(workflowDestination, modifiedBy);
+        var checkPassed = checkWorkflowDestinationAvailable(workflowDestination, modifiedBy);
 
         if(!checkPassed) {
             eea.addExecutionError(ExecutionErrors.WorkflowDestinationNotAllowed.name());

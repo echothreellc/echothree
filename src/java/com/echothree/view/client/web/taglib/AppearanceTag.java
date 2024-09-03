@@ -21,12 +21,8 @@ import com.echothree.model.control.core.common.FontStyles;
 import com.echothree.model.control.core.common.FontWeights;
 import com.echothree.model.control.core.common.TextDecorations;
 import com.echothree.model.control.core.common.TextTransformations;
-import com.echothree.model.control.core.common.transfer.AppearanceTextDecorationTransfer;
-import com.echothree.model.control.core.common.transfer.AppearanceTextTransformationTransfer;
 import com.echothree.model.control.core.common.transfer.AppearanceTransfer;
 import com.echothree.model.control.core.common.transfer.ColorTransfer;
-import com.echothree.model.control.core.common.transfer.FontStyleTransfer;
-import com.echothree.model.control.core.common.transfer.FontWeightTransfer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -109,25 +105,25 @@ public class AppearanceTag
             throws JspException {
         
         if(appearance != null) {
-            StringBuilder style = new StringBuilder("<span");
+            var style = new StringBuilder("<span");
             List<StringBuilder> appliedStyles = new ArrayList<>();
-            ColorTransfer textColor = appearance.getTextColor();
-            ColorTransfer backgroundColor = appearance.getBackgroundColor();
-            FontStyleTransfer fontStyle = appearance.getFontStyle();
-            FontWeightTransfer fontWeight = appearance.getFontWeight();
-            List<AppearanceTextDecorationTransfer> appearanceTextDecorations = appearance.getAppearanceTextDecorations().getList();
-            List<AppearanceTextTransformationTransfer> appearanceTextTransformations = appearance.getAppearanceTextTransformations().getList();
+            var textColor = appearance.getTextColor();
+            var backgroundColor = appearance.getBackgroundColor();
+            var fontStyle = appearance.getFontStyle();
+            var fontWeight = appearance.getFontWeight();
+            var appearanceTextDecorations = appearance.getAppearanceTextDecorations().getList();
+            var appearanceTextTransformations = appearance.getAppearanceTextTransformations().getList();
             
             // color:rgb(255,0,0);
             if(textColor != null) {
-                StringBuilder appliedStyle = new StringBuilder("color:");
+                var appliedStyle = new StringBuilder("color:");
                 
                 appliedStyles.add(colorToRgb(appliedStyle, textColor).append(';'));
             }
             
             // background-color:rgb(255,0,0);
             if(backgroundColor != null) {
-                StringBuilder appliedStyle = new StringBuilder("background-color:");
+                var appliedStyle = new StringBuilder("background-color:");
                 
                 appliedStyles.add(colorToRgb(appliedStyle, backgroundColor).append(';'));
             }
@@ -144,8 +140,8 @@ public class AppearanceTag
             
             // text-decoration:overline; (may be multiple, separated by spaces)
             if(appearanceTextDecorations != null && !appearanceTextDecorations.isEmpty()) {
-                StringBuilder appliedStyle = new StringBuilder("text-decoration:");
-                boolean secondOrLater = false;
+                var appliedStyle = new StringBuilder("text-decoration:");
+                var secondOrLater = false;
                 
                 for(var appearanceTextDecoration : appearanceTextDecorations) {
                     if(secondOrLater) {
@@ -162,8 +158,8 @@ public class AppearanceTag
             
             // text-transform:uppercase; (may be multiple, separated by spaces)
             if(appearanceTextTransformations != null && !appearanceTextTransformations.isEmpty()) {
-                StringBuilder appliedStyle = new StringBuilder("text-transform:");
-                boolean secondOrLater = false;
+                var appliedStyle = new StringBuilder("text-transform:");
+                var secondOrLater = false;
                 
                 for(var appearanceTextTransformation : appearanceTextTransformations) {
                     if(secondOrLater) {

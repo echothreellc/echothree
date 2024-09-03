@@ -21,7 +21,6 @@ import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.value.AllocationPriorityDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultAllocationPriorityCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        String allocationPriorityName = form.getAllocationPriorityName();
-        AllocationPriorityDetailValue allocationPriorityDetailValue = inventoryControl.getAllocationPriorityDetailValueByNameForUpdate(allocationPriorityName);
+        var allocationPriorityName = form.getAllocationPriorityName();
+        var allocationPriorityDetailValue = inventoryControl.getAllocationPriorityDetailValueByNameForUpdate(allocationPriorityName);
 
         if(allocationPriorityDetailValue != null) {
             allocationPriorityDetailValue.setIsDefault(Boolean.TRUE);

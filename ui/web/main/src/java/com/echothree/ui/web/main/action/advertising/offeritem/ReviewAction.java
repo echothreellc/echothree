@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.advertising.offeritem;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetOfferItemForm;
 import com.echothree.control.user.offer.common.result.GetOfferItemResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,19 +49,19 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetOfferItemForm commandForm = OfferUtil.getHome().getGetOfferItemForm();
-            String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
-            String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+            var commandForm = OfferUtil.getHome().getGetOfferItemForm();
+            var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+            var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
             
             commandForm.setOfferName(offerName);
             commandForm.setItemName(itemName);
-            
-            CommandResult commandResult = OfferUtil.getHome().getOfferItem(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetOfferItemResult result = (GetOfferItemResult)executionResult.getResult();
+
+            var commandResult = OfferUtil.getHome().getOfferItem(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetOfferItemResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.OFFER_ITEM, result.getOfferItem());
             forwardKey = ForwardConstants.DISPLAY;

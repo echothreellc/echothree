@@ -19,9 +19,6 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.CreateInventoryConditionUseTypeDescriptionForm;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.inventory.server.entity.InventoryConditionUseType;
-import com.echothree.model.data.inventory.server.entity.InventoryConditionUseTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,16 +51,16 @@ public class CreateInventoryConditionUseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        String inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
-        InventoryConditionUseType inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
+        var inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
+        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
         
         if(inventoryConditionUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                InventoryConditionUseTypeDescription inventoryConditionUseTypeDescription = inventoryControl.getInventoryConditionUseTypeDescription(inventoryConditionUseType, language);
+                var inventoryConditionUseTypeDescription = inventoryControl.getInventoryConditionUseTypeDescription(inventoryConditionUseType, language);
                 
                 if(inventoryConditionUseTypeDescription == null) {
                     var description = form.getDescription();

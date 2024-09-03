@@ -17,9 +17,7 @@
 package com.echothree.model.control.content.server.transfer;
 
 import com.echothree.model.control.content.common.transfer.ContentSectionDescriptionTransfer;
-import com.echothree.model.control.content.common.transfer.ContentSectionTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.content.server.entity.ContentSectionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class ContentSectionDescriptionTransferCache
     }
     
     public ContentSectionDescriptionTransfer getContentSectionDescriptionTransfer(ContentSectionDescription contentSectionDescription) {
-        ContentSectionDescriptionTransfer contentSectionDescriptionTransfer = get(contentSectionDescription);
+        var contentSectionDescriptionTransfer = get(contentSectionDescription);
         
         if(contentSectionDescriptionTransfer == null) {
-            ContentSectionTransfer contentSectionTransfer = contentControl.getContentSectionTransfer(userVisit, contentSectionDescription.getContentSection());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, contentSectionDescription.getLanguage());
+            var contentSectionTransfer = contentControl.getContentSectionTransfer(userVisit, contentSectionDescription.getContentSection());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentSectionDescription.getLanguage());
             
             contentSectionDescriptionTransfer = new ContentSectionDescriptionTransfer(languageTransfer, contentSectionTransfer, contentSectionDescription.getDescription());
             put(contentSectionDescription, contentSectionDescriptionTransfer);

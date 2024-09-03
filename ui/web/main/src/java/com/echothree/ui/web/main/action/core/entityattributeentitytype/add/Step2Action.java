@@ -17,14 +17,10 @@
 package com.echothree.ui.web.main.action.core.entityattributeentitytype.add;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.CreateEntityAttributeEntityTypeForm;
-import com.echothree.control.user.core.common.form.GetEntityTypesForm;
 import com.echothree.control.user.core.common.result.GetEntityTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -55,13 +51,13 @@ public class Step2Action
     
     private void setEntityTypeTransfers(HttpServletRequest request, String componentVendorName)
         throws NamingException {
-        GetEntityTypesForm commandForm = CoreUtil.getHome().getGetEntityTypesForm();
+        var commandForm = CoreUtil.getHome().getGetEntityTypesForm();
 
         commandForm.setComponentVendorName(componentVendorName);
 
-        CommandResult commandResult = CoreUtil.getHome().getEntityTypes(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEntityTypesResult result = (GetEntityTypesResult)executionResult.getResult();
+        var commandResult = CoreUtil.getHome().getEntityTypes(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEntityTypesResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ENTITY_TYPES, result.getEntityTypes());
     }
@@ -70,16 +66,16 @@ public class Step2Action
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-        String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-        String allowedComponentVendorName = request.getParameter(ParameterConstants.ALLOWED_COMPONENT_VENDOR_NAME);
-        String allowedEntityTypeName = request.getParameter(ParameterConstants.ALLOWED_ENTITY_TYPE_NAME);
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+        var allowedComponentVendorName = request.getParameter(ParameterConstants.ALLOWED_COMPONENT_VENDOR_NAME);
+        var allowedEntityTypeName = request.getParameter(ParameterConstants.ALLOWED_ENTITY_TYPE_NAME);
         
         if(allowedEntityTypeName == null) {
             forwardKey = ForwardConstants.FORM;
         } else {
-            CreateEntityAttributeEntityTypeForm commandForm = CoreUtil.getHome().getCreateEntityAttributeEntityTypeForm();
+            var commandForm = CoreUtil.getHome().getCreateEntityAttributeEntityTypeForm();
 
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
@@ -87,7 +83,7 @@ public class Step2Action
             commandForm.setAllowedComponentVendorName(allowedComponentVendorName);
             commandForm.setAllowedEntityTypeName(allowedEntityTypeName);
 
-            CommandResult commandResult = CoreUtil.getHome().createEntityAttributeEntityType(getUserVisitPK(request), commandForm);
+            var commandResult = CoreUtil.getHome().createEntityAttributeEntityType(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -96,8 +92,8 @@ public class Step2Action
                 forwardKey = ForwardConstants.DISPLAY;
             }
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupEntityAttributeTransfer(request, componentVendorName, entityTypeName, entityAttributeName);
             setEntityTypeTransfers(request, componentVendorName);

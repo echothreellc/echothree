@@ -26,7 +26,6 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.common.pk.UseTypePK;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.offer.server.entity.UseTypeDescription;
-import com.echothree.model.data.offer.server.entity.UseTypeDetail;
 import com.echothree.model.data.offer.server.factory.UseTypeDescriptionFactory;
 import com.echothree.model.data.offer.server.factory.UseTypeDetailFactory;
 import com.echothree.model.data.offer.server.factory.UseTypeFactory;
@@ -40,11 +39,9 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -61,20 +58,20 @@ public class UseTypeControl
     // --------------------------------------------------------------------------------
     
     public UseType createUseType(String useTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        UseType defaultUseType = getDefaultUseType();
-        boolean defaultFound = defaultUseType != null;
+        var defaultUseType = getDefaultUseType();
+        var defaultFound = defaultUseType != null;
         
         if(defaultFound && isDefault) {
-            UseTypeDetailValue defaultUseTypeDetailValue = getDefaultUseTypeDetailValueForUpdate();
+            var defaultUseTypeDetailValue = getDefaultUseTypeDetailValueForUpdate();
             
             defaultUseTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateUseTypeFromValue(defaultUseTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        UseType useType = UseTypeFactory.getInstance().create();
-        UseTypeDetail useTypeDetail = UseTypeDetailFactory.getInstance().create(useType, useTypeName, isDefault, sortOrder,
+
+        var useType = UseTypeFactory.getInstance().create();
+        var useTypeDetail = UseTypeDetailFactory.getInstance().create(useType, useTypeName, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -127,8 +124,8 @@ public class UseTypeControl
                     + "WHERE usetyp_activedetailid = usetypdt_usetypedetailid "
                     + "FOR UPDATE";
         }
-        
-        PreparedStatement ps = UseTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = UseTypeFactory.getInstance().prepareStatement(query);
         
         return UseTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -157,8 +154,8 @@ public class UseTypeControl
                         "WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_usetypename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UseTypeFactory.getInstance().prepareStatement(query);
+
+            var ps = UseTypeFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, useTypeName);
             
@@ -199,8 +196,8 @@ public class UseTypeControl
                     "WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = UseTypeFactory.getInstance().prepareStatement(query);
+
+        var ps = UseTypeFactory.getInstance().prepareStatement(query);
         
         return UseTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -236,7 +233,7 @@ public class UseTypeControl
     }
     
     public UseTypeChoicesBean getUseTypeChoices(String defaultUseTypeChoice, Language language, boolean allowNullChoice) {
-        List<UseType> useTypes = getUseTypes();
+        var useTypes = getUseTypes();
         var size = useTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -252,7 +249,7 @@ public class UseTypeControl
         }
         
         for(var useType : useTypes) {
-            UseTypeDetail useTypeDetail = useType.getLastDetail();
+            var useTypeDetail = useType.getLastDetail();
             
             var label = getBestUseTypeDescription(useType, language);
             var value = useTypeDetail.getUseTypeName();
@@ -272,25 +269,25 @@ public class UseTypeControl
     private void updateUseTypeFromValue(UseTypeDetailValue useTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(useTypeDetailValue.hasBeenModified()) {
-            UseType useType = UseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var useType = UseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      useTypeDetailValue.getUseTypePK());
-            UseTypeDetail useTypeDetail = useType.getActiveDetailForUpdate();
+            var useTypeDetail = useType.getActiveDetailForUpdate();
             
             useTypeDetail.setThruTime(session.START_TIME_LONG);
             useTypeDetail.store();
-            
-            UseTypePK useTypePK = useTypeDetail.getUseTypePK();
-            String useTypeName = useTypeDetailValue.getUseTypeName();
-            Boolean isDefault = useTypeDetailValue.getIsDefault();
-            Integer sortOrder = useTypeDetailValue.getSortOrder();
+
+            var useTypePK = useTypeDetail.getUseTypePK();
+            var useTypeName = useTypeDetailValue.getUseTypeName();
+            var isDefault = useTypeDetailValue.getIsDefault();
+            var sortOrder = useTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                UseType defaultUseType = getDefaultUseType();
-                boolean defaultFound = defaultUseType != null && !defaultUseType.equals(useType);
+                var defaultUseType = getDefaultUseType();
+                var defaultFound = defaultUseType != null && !defaultUseType.equals(useType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    UseTypeDetailValue defaultUseTypeDetailValue = getDefaultUseTypeDetailValueForUpdate();
+                    var defaultUseTypeDetailValue = getDefaultUseTypeDetailValueForUpdate();
                     
                     defaultUseTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateUseTypeFromValue(defaultUseTypeDetailValue, false, updatedBy);
@@ -319,23 +316,23 @@ public class UseTypeControl
 
         deleteUseTypeDescriptionsByUseType(useType, deletedBy);
         useControl.deleteUsesByUseType(useType, deletedBy);
-        
-        UseTypeDetail useTypeDetail = useType.getLastDetailForUpdate();
+
+        var useTypeDetail = useType.getLastDetailForUpdate();
         useTypeDetail.setThruTime(session.START_TIME_LONG);
         useType.setActiveDetail(null);
         useType.store();
         
         // Check for default, and pick one if necessary
-        UseType defaultUseType = getDefaultUseType();
+        var defaultUseType = getDefaultUseType();
         if(defaultUseType == null) {
-            List<UseType> useTypes = getUseTypesForUpdate();
+            var useTypes = getUseTypesForUpdate();
             
             if(!useTypes.isEmpty()) {
-                Iterator<UseType> iter = useTypes.iterator();
+                var iter = useTypes.iterator();
                 if(iter.hasNext()) {
                     defaultUseType = iter.next();
                 }
-                UseTypeDetailValue useTypeDetailValue = Objects.requireNonNull(defaultUseType).getLastDetailForUpdate().getUseTypeDetailValue().clone();
+                var useTypeDetailValue = Objects.requireNonNull(defaultUseType).getLastDetailForUpdate().getUseTypeDetailValue().clone();
                 
                 useTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateUseTypeFromValue(useTypeDetailValue, false, deletedBy);
@@ -350,7 +347,7 @@ public class UseTypeControl
     // --------------------------------------------------------------------------------
     
     public UseTypeDescription createUseTypeDescription(UseType useType, Language language, String description, BasePK createdBy) {
-        UseTypeDescription useTypeDescription = UseTypeDescriptionFactory.getInstance().create(useType, language,
+        var useTypeDescription = UseTypeDescriptionFactory.getInstance().create(useType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(useType.getPrimaryKey(), EventTypes.MODIFY, useTypeDescription.getPrimaryKey(),
@@ -375,8 +372,8 @@ public class UseTypeControl
                         "WHERE usetypd_usetyp_usetypeid = ? AND usetypd_lang_languageid = ? AND usetypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UseTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = UseTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, useType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -423,8 +420,8 @@ public class UseTypeControl
                         "WHERE usetypd_usetyp_usetypeid = ? AND usetypd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = UseTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = UseTypeDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, useType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -447,7 +444,7 @@ public class UseTypeControl
     
     public String getBestUseTypeDescription(UseType useType, Language language) {
         String description;
-        UseTypeDescription useTypeDescription = getUseTypeDescription(useType, language);
+        var useTypeDescription = getUseTypeDescription(useType, language);
         
         if(useTypeDescription == null && !language.getIsDefault()) {
             useTypeDescription = getUseTypeDescription(useType, getPartyControl().getDefaultLanguage());
@@ -467,7 +464,7 @@ public class UseTypeControl
     }
     
     public List<UseTypeDescriptionTransfer> getUseTypeDescriptionTransfersByUseType(UserVisit userVisit, UseType useType) {
-        List<UseTypeDescription> useTypeDescriptions = getUseTypeDescriptionsByUseType(useType);
+        var useTypeDescriptions = getUseTypeDescriptionsByUseType(useType);
         List<UseTypeDescriptionTransfer> useTypeDescriptionTransfers = new ArrayList<>(useTypeDescriptions.size());
         
         useTypeDescriptions.forEach((useTypeDescription) -> {
@@ -479,15 +476,15 @@ public class UseTypeControl
     
     public void updateUseTypeDescriptionFromValue(UseTypeDescriptionValue useTypeDescriptionValue, BasePK updatedBy) {
         if(useTypeDescriptionValue.hasBeenModified()) {
-            UseTypeDescription useTypeDescription = UseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var useTypeDescription = UseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      useTypeDescriptionValue.getPrimaryKey());
             
             useTypeDescription.setThruTime(session.START_TIME_LONG);
             useTypeDescription.store();
-            
-            UseType useType = useTypeDescription.getUseType();
-            Language language = useTypeDescription.getLanguage();
-            String description = useTypeDescriptionValue.getDescription();
+
+            var useType = useTypeDescription.getUseType();
+            var language = useTypeDescription.getLanguage();
+            var description = useTypeDescriptionValue.getDescription();
             
             useTypeDescription = UseTypeDescriptionFactory.getInstance().create(useType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -505,7 +502,7 @@ public class UseTypeControl
     }
     
     public void deleteUseTypeDescriptionsByUseType(UseType useType, BasePK deletedBy) {
-        List<UseTypeDescription> useTypeDescriptions = getUseTypeDescriptionsByUseTypeForUpdate(useType);
+        var useTypeDescriptions = getUseTypeDescriptionsByUseTypeForUpdate(useType);
         
         useTypeDescriptions.forEach((useTypeDescription) -> 
                 deleteUseTypeDescription(useTypeDescription, deletedBy)

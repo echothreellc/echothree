@@ -18,10 +18,7 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.GetPostalAddressLineElementsForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
-import com.echothree.control.user.contact.common.result.GetPostalAddressLineElementsResult;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
-import com.echothree.model.data.contact.server.entity.PostalAddressLine;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,13 +50,13 @@ public class GetPostalAddressLineElementsCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        GetPostalAddressLineElementsResult result = ContactResultFactory.getGetPostalAddressLineElementsResult();
-        String postalAddressFormatName = form.getPostalAddressFormatName();
-        PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
+        var result = ContactResultFactory.getGetPostalAddressLineElementsResult();
+        var postalAddressFormatName = form.getPostalAddressFormatName();
+        var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
         
         if(postalAddressFormat != null) {
-            Integer postalAddressLineSortOrder = Integer.valueOf(form.getPostalAddressLineSortOrder());
-            PostalAddressLine postalAddressLine = contactControl.getPostalAddressLine(postalAddressFormat, postalAddressLineSortOrder);
+            var postalAddressLineSortOrder = Integer.valueOf(form.getPostalAddressLineSortOrder());
+            var postalAddressLine = contactControl.getPostalAddressLine(postalAddressFormat, postalAddressLineSortOrder);
             
             result.setPostalAddressFormat(contactControl.getPostalAddressFormatTransfer(getUserVisit(), postalAddressFormat));
             

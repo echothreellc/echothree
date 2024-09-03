@@ -58,11 +58,11 @@ public class CreateUserVisitCampaignCommand
     
     @Override
     protected BaseResult execute() {
-        String campaignValue = form.getCampaignValue();
-        String campaignSourceValue = form.getCampaignSourceValue();
-        String campaignMediumValue = form.getCampaignMediumValue();
-        String campaignTermValue = form.getCampaignTermValue();
-        String campaignContentValue = form.getCampaignContentValue();
+        var campaignValue = form.getCampaignValue();
+        var campaignSourceValue = form.getCampaignSourceValue();
+        var campaignMediumValue = form.getCampaignMediumValue();
+        var campaignTermValue = form.getCampaignTermValue();
+        var campaignContentValue = form.getCampaignContentValue();
         var parameterCount = (campaignValue == null ? 0 : 1) + (campaignSourceValue == null ? 0 : 1) + (campaignMediumValue == null ? 0 : 1)
                 + (campaignTermValue == null ? 0 : 1) + (campaignContentValue == null ? 0 : 1);
 

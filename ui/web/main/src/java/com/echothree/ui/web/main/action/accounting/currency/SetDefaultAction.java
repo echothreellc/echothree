@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.currency;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.SetDefaultCurrencyForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultCurrencyForm commandForm = AccountingUtil.getHome().getSetDefaultCurrencyForm();
-            String currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
+            var commandForm = AccountingUtil.getHome().getSetDefaultCurrencyForm();
+            var currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
             
             commandForm.setCurrencyIsoName(currencyIsoName);
             

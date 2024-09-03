@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.selector.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.selector.common.transfer.SelectorPartyTransfer;
-import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorParty;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -38,11 +36,11 @@ public class SelectorPartyTransferCache
     }
     
     public SelectorPartyTransfer getSelectorPartyTransfer(SelectorParty selectorParty) {
-        SelectorPartyTransfer selectorPartyTransfer = get(selectorParty);
+        var selectorPartyTransfer = get(selectorParty);
         
         if(selectorPartyTransfer == null) {
-            SelectorTransfer selectorTransfer = selectorControl.getSelectorTransfer(userVisit, selectorParty.getSelector());
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, selectorParty.getParty());
+            var selectorTransfer = selectorControl.getSelectorTransfer(userVisit, selectorParty.getSelector());
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, selectorParty.getParty());
             
             selectorPartyTransfer = new SelectorPartyTransfer(selectorTransfer, partyTransfer);
             put(selectorParty, selectorPartyTransfer);

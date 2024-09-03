@@ -17,9 +17,7 @@
 package com.echothree.model.control.letter.server.transfer;
 
 import com.echothree.model.control.letter.common.transfer.LetterSourceDescriptionTransfer;
-import com.echothree.model.control.letter.common.transfer.LetterSourceTransfer;
 import com.echothree.model.control.letter.server.control.LetterControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.letter.server.entity.LetterSourceDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class LetterSourceDescriptionTransferCache
     }
     
     public LetterSourceDescriptionTransfer getLetterSourceDescriptionTransfer(LetterSourceDescription letterSourceDescription) {
-        LetterSourceDescriptionTransfer letterSourceDescriptionTransfer = get(letterSourceDescription);
+        var letterSourceDescriptionTransfer = get(letterSourceDescription);
         
         if(letterSourceDescriptionTransfer == null) {
-            LetterSourceTransfer letterSourceTransfer = letterControl.getLetterSourceTransfer(userVisit, letterSourceDescription.getLetterSource());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, letterSourceDescription.getLanguage());
+            var letterSourceTransfer = letterControl.getLetterSourceTransfer(userVisit, letterSourceDescription.getLetterSource());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, letterSourceDescription.getLanguage());
             
             letterSourceDescriptionTransfer = new LetterSourceDescriptionTransfer(languageTransfer, letterSourceTransfer, letterSourceDescription.getDescription());
             put(letterSourceDescription, letterSourceDescriptionTransfer);

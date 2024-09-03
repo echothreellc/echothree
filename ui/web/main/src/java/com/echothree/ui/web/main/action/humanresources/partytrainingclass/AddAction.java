@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.partytrainingclass;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.form.CreatePartyTrainingClassForm;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
@@ -61,7 +60,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyTrainingClassForm commandForm = TrainingUtil.getHome().getCreatePartyTrainingClassForm();
+        var commandForm = TrainingUtil.getHome().getCreatePartyTrainingClassForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setTrainingClassName(actionForm.getTrainingClassChoice());

@@ -17,13 +17,9 @@
 package com.echothree.control.user.security.server.command;
 
 import com.echothree.control.user.security.common.form.CheckSecurityRolesForm;
-import com.echothree.control.user.security.common.result.CheckSecurityRolesResult;
 import com.echothree.control.user.security.common.result.SecurityResultFactory;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserKeyDetail;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -52,23 +48,23 @@ public class CheckSecurityRolesCommand
     
     @Override
     protected BaseResult execute() {
-        CheckSecurityRolesResult result = SecurityResultFactory.getCheckSecurityRolesResult();
-        UserVisit userVisit = getUserVisit();
-        StringBuilder resultSecurityRoles = new StringBuilder();
+        var result = SecurityResultFactory.getCheckSecurityRolesResult();
+        var userVisit = getUserVisit();
+        var resultSecurityRoles = new StringBuilder();
         
         if(userVisit != null) {
-            UserKeyDetail userKeyDetail = userVisit.getUserKey().getLastDetail();
-            Party party = userKeyDetail.getParty();
+            var userKeyDetail = userVisit.getUserKey().getLastDetail();
+            var party = userKeyDetail.getParty();
             
             if(party != null) {
-                SecurityRoleLogic securityRoleLogic = SecurityRoleLogic.getInstance();
-                String formSecurityRoles = form.getSecurityRoles();
-                String []securityRolesToCheck = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(formSecurityRoles).toArray(new String[0]);
-                int securityRolesToCheckLength = securityRolesToCheck.length;
+                var securityRoleLogic = SecurityRoleLogic.getInstance();
+                var formSecurityRoles = form.getSecurityRoles();
+                var securityRolesToCheck = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(formSecurityRoles).toArray(new String[0]);
+                var securityRolesToCheckLength = securityRolesToCheck.length;
                 
-                for(int i = 0; i < securityRolesToCheckLength; i++) {
-                    String []securityRoleToCheck = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(securityRolesToCheck[i]).toArray(new String[0]);
-                    int securityRoleToCheckLength = securityRoleToCheck.length;
+                for(var i = 0; i < securityRolesToCheckLength; i++) {
+                    var securityRoleToCheck = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(securityRolesToCheck[i]).toArray(new String[0]);
+                    var securityRoleToCheckLength = securityRoleToCheck.length;
                     
                     if(securityRoleToCheckLength == 2) {
                         if(securityRoleLogic.hasSecurityRoleUsingNames(null, party, securityRoleToCheck[0], securityRoleToCheck[1])) {

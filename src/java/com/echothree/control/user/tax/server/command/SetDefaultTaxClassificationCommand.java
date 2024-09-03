@@ -22,8 +22,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tax.server.control.TaxControl;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.tax.server.value.TaxClassificationDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,13 +63,13 @@ public class SetDefaultTaxClassificationCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String countryName = form.getCountryName();
-        GeoCode geoCode = geoControl.getCountryByAlias(countryName);
+        var countryName = form.getCountryName();
+        var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
             var taxControl = Session.getModelController(TaxControl.class);
-            String taxClassificationName = form.getTaxClassificationName();
-            TaxClassificationDetailValue taxClassificationDetailValue = taxControl.getTaxClassificationDetailValueByNameForUpdate(geoCode,
+            var taxClassificationName = form.getTaxClassificationName();
+            var taxClassificationDetailValue = taxControl.getTaxClassificationDetailValueByNameForUpdate(geoCode,
                     taxClassificationName);
             
             if(taxClassificationDetailValue != null) {

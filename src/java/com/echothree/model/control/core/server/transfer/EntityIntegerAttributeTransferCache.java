@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityIntegerAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -36,12 +34,12 @@ public class EntityIntegerAttributeTransferCache
     }
     
     public EntityIntegerAttributeTransfer getEntityIntegerAttributeTransfer(EntityIntegerAttribute entityIntegerAttribute, EntityInstance entityInstance) {
-        EntityIntegerAttributeTransfer entityIntegerAttributeTransfer = get(entityIntegerAttribute);
+        var entityIntegerAttributeTransfer = get(entityIntegerAttribute);
         
         if(entityIntegerAttributeTransfer == null) {
-            EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityIntegerAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityIntegerAttribute.getEntityInstance(), false, false, false, false, false, false);
-            Integer integerAttribute = entityIntegerAttribute.getIntegerAttribute();
+            var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityIntegerAttribute.getEntityAttribute(), entityInstance) : null;
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityIntegerAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var integerAttribute = entityIntegerAttribute.getIntegerAttribute();
             
             entityIntegerAttributeTransfer = new EntityIntegerAttributeTransfer(entityAttribute, entityInstanceTransfer, integerAttribute);
             put(entityIntegerAttribute, entityIntegerAttributeTransfer);

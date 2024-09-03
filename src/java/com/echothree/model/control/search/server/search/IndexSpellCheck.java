@@ -24,12 +24,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.spell.DirectSpellChecker;
-import org.apache.lucene.search.spell.SuggestWord;
 
 public class IndexSpellCheck
         extends BaseIndex<List<List<CheckSpellingSuggestionTransfer>>> {
@@ -51,7 +49,7 @@ public class IndexSpellCheck
     }
     
     private boolean hasNonNullElements(Collection<?> collection) {
-        boolean result = false;
+        var result = false;
         
         for(var o : collection) {
             if(o != null) {
@@ -85,22 +83,22 @@ public class IndexSpellCheck
     protected List<List<CheckSpellingSuggestionTransfer>> useIndex(IndexReader ir)
             throws IOException {
         List<List<CheckSpellingSuggestionTransfer>> suggestions;
-        DirectSpellChecker directSpellChecker = new DirectSpellChecker();
-        Iterator<String> analyzedWordsIter = analyzedWords.iterator();
+        var directSpellChecker = new DirectSpellChecker();
+        var analyzedWordsIter = analyzedWords.iterator();
 
         suggestions = new ArrayList<>(words.size());
 
         for(var word : words) {
             List<CheckSpellingSuggestionTransfer> checkSpellingSuggestions = null;
-            String analyzedWord = analyzedWordsIter.next();
+            var analyzedWord = analyzedWordsIter.next();
 
             if(analyzedWord == null) {
                 if(EvaluatorDebugFlags.LogCheckSpelling) {
                     getLog().info("  Skipping: " + word);
                 }
             } else {
-                Term term = new Term(dictionaryField, word);
-                SuggestWord[] suggestWords = directSpellChecker.suggestSimilar(term, 5, ir);
+                var term = new Term(dictionaryField, word);
+                var suggestWords = directSpellChecker.suggestSimilar(term, 5, ir);
 
                 if(EvaluatorDebugFlags.LogCheckSpelling) {
                     getLog().info("  Checking: " + word);

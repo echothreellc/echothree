@@ -22,11 +22,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.security.server.logic.PartySecurityRoleTemplateLogic;
-import com.echothree.model.control.security.server.logic.PartySecurityRoleTemplateLogic.PreparedPartySecurityRoleTemplateTrainingClass;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplate;
-import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateTrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,19 +65,19 @@ public class CreatePartySecurityRoleTemplateTrainingClassCommand
     @Override
     protected BaseResult execute() {
         var securityControl = Session.getModelController(SecurityControl.class);
-        String partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
-        PartySecurityRoleTemplate partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
+        var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
+        var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
         
         if(partySecurityRoleTemplate != null) {
             var trainingControl = Session.getModelController(TrainingControl.class);
-            String trainingClassName = form.getTrainingClassName();
-            TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+            var trainingClassName = form.getTrainingClassName();
+            var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
             
             if(trainingClass != null) {
-                PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass = securityControl.getPartySecurityRoleTemplateTrainingClass(partySecurityRoleTemplate, trainingClass);
+                var partySecurityRoleTemplateTrainingClass = securityControl.getPartySecurityRoleTemplateTrainingClass(partySecurityRoleTemplate, trainingClass);
 
                 if(partySecurityRoleTemplateTrainingClass == null) {
-                    PreparedPartySecurityRoleTemplateTrainingClass preparedPartySecurityRoleTemplateTrainingClass = PartySecurityRoleTemplateLogic.getInstance().preparePartySecurityRoleTemplateTrainingClass(this,
+                    var preparedPartySecurityRoleTemplateTrainingClass = PartySecurityRoleTemplateLogic.getInstance().preparePartySecurityRoleTemplateTrainingClass(this,
                         partySecurityRoleTemplate, trainingClass);
 
                     if(!hasExecutionErrors()) {

@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected ItemAliasTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemAliasTypeEdit edit = ItemUtil.getHome().getItemAliasTypeEdit();
+        var edit = ItemUtil.getHome().getItemAliasTypeEdit();
 
         edit.setItemAliasTypeName(actionForm.getItemAliasTypeName());
         edit.setValidationPattern(actionForm.getValidationPattern());

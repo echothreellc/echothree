@@ -20,12 +20,9 @@ import com.echothree.model.control.contact.common.workflow.TelephoneStatusConsta
 import com.echothree.model.control.contact.common.transfer.ContactTelephoneTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactTelephone;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -41,17 +38,17 @@ public class ContactTelephoneTransferCache
     }
     
     public ContactTelephoneTransfer getContactTelephoneTransfer(ContactTelephone contactTelephone) {
-        ContactTelephoneTransfer contactTelephoneTransfer = get(contactTelephone);
+        var contactTelephoneTransfer = get(contactTelephone);
         
         if(contactTelephoneTransfer == null) {
-            GeoControl geoControl = Session.getModelController(GeoControl.class);
-            CountryTransfer countryGeoCode = geoControl.getCountryTransfer(userVisit, contactTelephone.getCountryGeoCode());
-            String areaCode = contactTelephone.getAreaCode();
-            String telephoneNumber = contactTelephone.getTelephoneNumber();
-            String telephoneExtension = contactTelephone.getTelephoneExtension();
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(contactTelephone.getContactMechanismPK());
-            WorkflowEntityStatusTransfer telephoneStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var geoControl = Session.getModelController(GeoControl.class);
+            var countryGeoCode = geoControl.getCountryTransfer(userVisit, contactTelephone.getCountryGeoCode());
+            var areaCode = contactTelephone.getAreaCode();
+            var telephoneNumber = contactTelephone.getTelephoneNumber();
+            var telephoneExtension = contactTelephone.getTelephoneExtension();
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(contactTelephone.getContactMechanismPK());
+            var telephoneStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     TelephoneStatusConstants.Workflow_TELEPHONE_STATUS, entityInstance);
             
             contactTelephoneTransfer = new ContactTelephoneTransfer(countryGeoCode, areaCode, telephoneNumber, telephoneExtension,

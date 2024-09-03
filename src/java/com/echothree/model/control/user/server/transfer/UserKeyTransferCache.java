@@ -17,15 +17,10 @@
 package com.echothree.model.control.user.server.transfer;
 
 
-import com.echothree.model.control.party.common.transfer.PartyRelationshipTransfer;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.common.transfer.UserKeyTransfer;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyRelationship;
 import com.echothree.model.data.user.server.entity.UserKey;
-import com.echothree.model.data.user.server.entity.UserKeyDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -42,15 +37,15 @@ public class UserKeyTransferCache
     }
     
     public UserKeyTransfer getUserKeyTransfer(UserKey userKey) {
-        UserKeyTransfer userKeyTransfer = get(userKey);
+        var userKeyTransfer = get(userKey);
         
         if(userKeyTransfer == null) {
-            UserKeyDetail userKeyDetail = userKey.getLastDetail();
-            String userKeyName = userKeyDetail.getUserKeyName();
-            Party party = userKeyDetail.getParty();
-            PartyTransfer partyTransfer = party == null? null: partyControl.getPartyTransfer(userVisit, party);
-            PartyRelationship partyRelationship = userKeyDetail.getPartyRelationship();
-            PartyRelationshipTransfer partyRelationshipTransfer = partyRelationship == null? null: partyControl.getPartyRelationshipTransfer(userVisit, partyRelationship);
+            var userKeyDetail = userKey.getLastDetail();
+            var userKeyName = userKeyDetail.getUserKeyName();
+            var party = userKeyDetail.getParty();
+            var partyTransfer = party == null? null: partyControl.getPartyTransfer(userVisit, party);
+            var partyRelationship = userKeyDetail.getPartyRelationship();
+            var partyRelationshipTransfer = partyRelationship == null? null: partyControl.getPartyRelationshipTransfer(userVisit, partyRelationship);
             
             userKeyTransfer = new UserKeyTransfer(userKeyName, partyTransfer, partyRelationshipTransfer);
             put(userKey, userKeyTransfer);

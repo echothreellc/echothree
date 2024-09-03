@@ -17,7 +17,6 @@
 package com.echothree.ui.cli.database.util;
 
 import static com.google.common.base.Charsets.UTF_8;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -41,8 +40,8 @@ public class DatabaseUtilitiesForJava {
     }
     
     public String createDirectoryForClassPackage(String classPackage, String baseDirectory) {
-        String directory = baseDirectory;
-        int currentIndex = 0;
+        var directory = baseDirectory;
+        var currentIndex = 0;
         int nextDot;
         do {
             nextDot = classPackage.indexOf('.', currentIndex);
@@ -52,8 +51,8 @@ public class DatabaseUtilitiesForJava {
                 directory = directory + File.separatorChar + classPackage.substring(currentIndex, nextDot);
             currentIndex = nextDot + 1;
         } while (nextDot != -1);
-        
-        File theDirectory = new File(directory);
+
+        var theDirectory = new File(directory);
         if(!theDirectory.exists()) {
             theDirectory.mkdirs();
         }
@@ -126,7 +125,7 @@ public class DatabaseUtilitiesForJava {
     }
     
     public void writePKConstructors(PrintWriter pw, Table theTable) {
-        String pkClass = theTable.getPKClass();
+        var pkClass = theTable.getPKClass();
         
         pw.println("    /** Creates a new instance of " + pkClass + " */");
         pw.println("    public " + pkClass + "(Long entityId) {");
@@ -152,16 +151,16 @@ public class DatabaseUtilitiesForJava {
     
     public void exportPKs(String baseDirectory)
     throws Exception {
-        for(Component theComponent: myComponents) {
-            String componentDirectory = createPKDirectoryForComponent(theComponent, baseDirectory);
+        for(var theComponent: myComponents) {
+            var componentDirectory = createPKDirectoryForComponent(theComponent, baseDirectory);
             
-            for(Table theTable: theComponent.getTables()) {
+            for(var theTable: theComponent.getTables()) {
                 if(theTable.hasEID()) {
-                    String classFileName = theTable.getPKClass() + ".java";
-                    File f = new File(componentDirectory + File.separatorChar + classFileName);
+                    var classFileName = theTable.getPKClass() + ".java";
+                    var f = new File(componentDirectory + File.separatorChar + classFileName);
                     
-                    try (BufferedWriter bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
-                        PrintWriter pw = new PrintWriter(bw);
+                    try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+                        var pw = new PrintWriter(bw);
                         
                         writeCopyright(pw);
                         writeVersion(pw, classFileName);
@@ -176,14 +175,14 @@ public class DatabaseUtilitiesForJava {
     
     public void writeValueFKImports(PrintWriter pw, Component theComponent, Table theTable)
     throws Exception {
-        HashSet<String> foreignImports = new HashSet<>();
+        var foreignImports = new HashSet<String>();
         foreignImports.add(theTable.getPKImport()); // make sure we don't import ourselves
         
-        for(Column theForeignKey: theTable.getForeignKeys()) {
-            String fkTableName = theForeignKey.getDestinationTable();
-            Table fkTable = theForeignKey.getTable().getDatabase().getTable(fkTableName);
-            
-            String fkImport = fkTable.getPKImport();
+        for(var theForeignKey: theTable.getForeignKeys()) {
+            var fkTableName = theForeignKey.getDestinationTable();
+            var fkTable = theForeignKey.getTable().getDatabase().getTable(fkTableName);
+
+            var fkImport = fkTable.getPKImport();
             if(!foreignImports.contains(fkImport)) {
                 pw.println("import " + fkImport + ";");
                 foreignImports.add(fkImport);
@@ -216,12 +215,12 @@ public class DatabaseUtilitiesForJava {
     }
     
     public void writeValueInstanceVariables(PrintWriter pw, Table theTable) {
-        boolean wroteColumnVariable = false;
-        List<Column> theColumns = theTable.getColumns();
+        var wroteColumnVariable = false;
+        var theColumns = theTable.getColumns();
         
-        for(Column column: theColumns) {
+        for(var column: theColumns) {
             if(column.getType() != ColumnType.columnEID) {
-                String variableName = column.getVariableName();
+                var variableName = column.getVariableName();
                 
                 pw.println("    private " + column.getTypeAsJavaType() + " " + variableName + ";");
                 pw.println("    private boolean " + variableName + "HasBeenModified = false;");
@@ -238,7 +237,7 @@ public class DatabaseUtilitiesForJava {
         pw.print("    private void constructFields(");
         
         wroteColumnVariable = false;
-        for(Column column: theColumns) {
+        for(var column: theColumns) {
             if(column.getType() != ColumnType.columnEID) {
                 if(wroteColumnVariable)
                     pw.print(", ");
@@ -251,7 +250,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("            throws PersistenceNotNullException {");
         
         theColumns.stream().filter((column) -> (column.getType() != ColumnType.columnEID)).map((column) -> {
-            String variableName = column.getVariableName();
+            var variableName = column.getVariableName();
             if(!column.getNullAllowed()) {
                 pw.println("        checkForNull(" + variableName + ");");
             }
@@ -265,14 +264,14 @@ public class DatabaseUtilitiesForJava {
     }
     
     public void writeValueConstructors(PrintWriter pw, Table theTable) {
-        String valueClass = theTable.getValueClass();
-        List<Column> columns = theTable.getColumns();
+        var valueClass = theTable.getValueClass();
+        var columns = theTable.getColumns();
         
         pw.println("    /** Creates a new instance of " + valueClass + " */");
         pw.print("    public " + valueClass + "(");
-        
-        boolean wroteColumnVariable = false;
-        for(Column column: columns) {
+
+        var wroteColumnVariable = false;
+        for(var column: columns) {
             if(wroteColumnVariable)
                 pw.print(", ");
             
@@ -286,7 +285,7 @@ public class DatabaseUtilitiesForJava {
         pw.print("        constructFields(");
         
         wroteColumnVariable = false;
-        for(Column column: columns) {
+        for(var column: columns) {
             if(column.getType() != ColumnType.columnEID) {
                 if(wroteColumnVariable)
                     pw.print(", ");
@@ -302,7 +301,7 @@ public class DatabaseUtilitiesForJava {
         pw.print("    public " + valueClass + "(");
         
         wroteColumnVariable = false;
-        for(Column column: columns) {
+        for(var column: columns) {
             if(column.getType() != ColumnType.columnEID) {
                 if(wroteColumnVariable)
                     pw.print(", ");
@@ -317,7 +316,7 @@ public class DatabaseUtilitiesForJava {
         pw.print("        constructFields(");
         
         wroteColumnVariable = false;
-        for(Column column: columns) {
+        for(var column: columns) {
             if(column.getType() != ColumnType.columnEID) {
                 if(wroteColumnVariable)
                     pw.print(", ");
@@ -332,7 +331,7 @@ public class DatabaseUtilitiesForJava {
     }
     
     public void writeValueCoreFunctions(PrintWriter pw, Table theTable) {
-        String factoryClass = theTable.getFactoryClass();
+        var factoryClass = theTable.getFactoryClass();
         
         pw.println("   @Override");
         pw.println("   public " + factoryClass + " getBaseFactoryInstance() {");
@@ -342,7 +341,7 @@ public class DatabaseUtilitiesForJava {
     }
     
     public void writeValuePrimaryKey(PrintWriter pw, Table theTable) {
-        String pkClass = theTable.getPKClass();
+        var pkClass = theTable.getPKClass();
         
         pw.println("   @Override");
         pw.println("    public " + pkClass + " getPrimaryKey() {");
@@ -356,7 +355,7 @@ public class DatabaseUtilitiesForJava {
     }
     
     public void writeValueHashAndString(PrintWriter pw, Table theTable) {
-        List<Column> columns = theTable.getColumns();
+        var columns = theTable.getColumns();
         
         pw.println("    private void clearHashAndString() {");
         pw.println("        _hashCode = null;");
@@ -374,9 +373,9 @@ public class DatabaseUtilitiesForJava {
             pw.println("            ");
             
             columns.forEach((column) -> {
-                int columnType = column.getType();
+                var columnType = column.getType();
                 if (columnType != ColumnType.columnEID && columnType != ColumnType.columnBLOB) {
-                    String variableName = column.getVariableName();
+                    var variableName = column.getVariableName();
                     pw.println("            hashCode = 37 * hashCode + ((" + variableName + " != null) ? " + variableName + ".hashCode() : 0);");
                 }
             });
@@ -400,7 +399,7 @@ public class DatabaseUtilitiesForJava {
             pw.println("            ");
             
             columns.forEach((column) -> {
-                int columnType = column.getType();
+                var columnType = column.getType();
                 if (columnType != ColumnType.columnEID && columnType != ColumnType.columnBLOB) {
                     pw.println("            stringValue.append(\", " + column.getVariableName() + "=\").append(" + column.getGetFunctionName() + "());");
                 }
@@ -418,7 +417,7 @@ public class DatabaseUtilitiesForJava {
     }
     
     public void writeValueEquals(PrintWriter pw, Table theTable) {
-        String valueClass = theTable.getValueClass();
+        var valueClass = theTable.getValueClass();
         
         pw.println("    @Override");
         pw.println("    public boolean equals(Object other) {");
@@ -450,8 +449,8 @@ public class DatabaseUtilitiesForJava {
     }
     
     public void writeValueIdentical(PrintWriter pw, Table theTable) {
-        List<Column> columns = theTable.getColumns();
-        String valueClass = theTable.getValueClass();
+        var columns = theTable.getColumns();
+        var valueClass = theTable.getValueClass();
         
         pw.println("    public boolean isIdentical(Object other) {");
         pw.println("        if(other instanceof " + valueClass + ") {");
@@ -463,11 +462,11 @@ public class DatabaseUtilitiesForJava {
             pw.println("            ");
             
             columns.forEach((column) -> {
-                int type = column.getType();
+                var type = column.getType();
                 if (type != ColumnType.columnEID) {
-                    String getFunctionName = column.getGetFunctionName();
-                    String variableSuffixName = column.getVariableSuffixName();
-                    String javaType = column.getTypeAsJavaType();
+                    var getFunctionName = column.getGetFunctionName();
+                    var variableSuffixName = column.getVariableSuffixName();
+                    var javaType = column.getTypeAsJavaType();
                     
                     pw.println("            if(objectsEqual) {");
                     pw.println("                " + javaType + " this" + variableSuffixName + " = " + getFunctionName + "();");
@@ -493,16 +492,16 @@ public class DatabaseUtilitiesForJava {
     }
     
     public void writeValueModified(PrintWriter pw, Table theTable) {
-        List<Column> columns = theTable.getColumns();
+        var columns = theTable.getColumns();
         
         pw.println("    @Override");
         pw.println("    public boolean hasBeenModified() {");
         
         if(columns.size() > 1) {
             pw.print("        return ");
-            
-            boolean variableWritten = false;
-            for(Column column: columns) {
+
+            var variableWritten = false;
+            for(var column: columns) {
                 if(column.getType() != ColumnType.columnEID) {
                     if(variableWritten)
                         pw.print(" || ");
@@ -529,9 +528,9 @@ public class DatabaseUtilitiesForJava {
     
     public void writeValueGetsSets(PrintWriter pw, Table theTable) {
         theTable.getColumns().stream().filter((column) -> (column.getType() != ColumnType.columnEID)).map((column) -> {
-            String getFunctionName = column.getGetFunctionName();
-            String variableName = column.getVariableName();
-            String javaType = column.getTypeAsJavaType();
+            var getFunctionName = column.getGetFunctionName();
+            var variableName = column.getVariableName();
+            var javaType = column.getTypeAsJavaType();
             
             pw.println("    public " + javaType + " " + getFunctionName + "() {");
             pw.println("        return " + variableName + ";");
@@ -574,7 +573,7 @@ public class DatabaseUtilitiesForJava {
     }
     
     public void writeValueClone(PrintWriter pw, Table theTable) {
-        String valueClass = theTable.getValueClass();
+        var valueClass = theTable.getValueClass();
         
         pw.println("    @Override");
         pw.println("    public " + valueClass + " clone() {");
@@ -614,16 +613,16 @@ public class DatabaseUtilitiesForJava {
     
     public void exportValues(String baseDirectory)
     throws Exception {
-        for(Component theComponent: myComponents) {
-            String componentDirectory = createValueDirectoryForComponent(theComponent, baseDirectory);
+        for(var theComponent: myComponents) {
+            var componentDirectory = createValueDirectoryForComponent(theComponent, baseDirectory);
             
-            for(Table theTable: theComponent.getTables()) {
+            for(var theTable: theComponent.getTables()) {
                 if(theTable.hasEID()) {
-                    String classFileName = theTable.getValueClass() + ".java";
-                    File f = new File(componentDirectory + File.separatorChar + classFileName);
+                    var classFileName = theTable.getValueClass() + ".java";
+                    var f = new File(componentDirectory + File.separatorChar + classFileName);
                     
-                    try (BufferedWriter bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
-                        PrintWriter pw = new PrintWriter(bw);
+                    try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+                        var pw = new PrintWriter(bw);
                         
                         writeCopyright(pw);
                         writeVersion(pw, classFileName);
@@ -638,16 +637,16 @@ public class DatabaseUtilitiesForJava {
     
     public void exportEntities(String baseDirectory)
     throws Exception {
-        for(Component theComponent: myComponents) {
-            String componentDirectory = createEntityDirectoryForComponent(theComponent, baseDirectory);
+        for(var theComponent: myComponents) {
+            var componentDirectory = createEntityDirectoryForComponent(theComponent, baseDirectory);
             
-            for(Table theTable: theComponent.getTables()) {
+            for(var theTable: theComponent.getTables()) {
                 if(theTable.hasEID()) {
-                    String classFileName = theTable.getEntityClass() + ".java";
-                    File f = new File(componentDirectory + File.separatorChar + classFileName);
+                    var classFileName = theTable.getEntityClass() + ".java";
+                    var f = new File(componentDirectory + File.separatorChar + classFileName);
                     
-                    try (BufferedWriter bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
-                        PrintWriter pw = new PrintWriter(bw);
+                    try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+                        var pw = new PrintWriter(bw);
                         
                         writeCopyright(pw);
                         writeVersion(pw, classFileName);
@@ -662,14 +661,14 @@ public class DatabaseUtilitiesForJava {
     
     public void writeEntityFKPKImports(PrintWriter pw, Table theTable)
     throws Exception {
-        HashSet<String> foreignImports = new HashSet<>();
+        var foreignImports = new HashSet<String>();
         foreignImports.add(theTable.getPKImport()); // make sure we don't import ourselves
         
-        for(Column theForeignKey: theTable.getForeignKeys()) {
-            String fkTableName = theForeignKey.getDestinationTable();
-            Table fkTable = theForeignKey.getTable().getDatabase().getTable(fkTableName);
-            
-            String fkImport = fkTable.getPKImport();
+        for(var theForeignKey: theTable.getForeignKeys()) {
+            var fkTableName = theForeignKey.getDestinationTable();
+            var fkTable = theForeignKey.getTable().getDatabase().getTable(fkTableName);
+
+            var fkImport = fkTable.getPKImport();
             if(!foreignImports.contains(fkImport)) {
                 pw.println("import " + fkImport + ";");
                 foreignImports.add(fkImport);
@@ -682,15 +681,15 @@ public class DatabaseUtilitiesForJava {
     
     public void writeEntityFKEntityImports(PrintWriter pw, Table theTable)
     throws Exception {
-        HashSet<String> foreignImports = new HashSet<>();
+        var foreignImports = new HashSet<String>();
         
         foreignImports.add(theTable.getEntityImport()); // make sure we don't import ourselves
         
-        for(Column theForeignKey: theTable.getForeignKeys()) {
-            String fkTableName = theForeignKey.getDestinationTable();
-            Table fkTable = theForeignKey.getTable().getDatabase().getTable(fkTableName);
-            
-            String fkImport = fkTable.getEntityImport();
+        for(var theForeignKey: theTable.getForeignKeys()) {
+            var fkTableName = theForeignKey.getDestinationTable();
+            var fkTable = theForeignKey.getTable().getDatabase().getTable(fkTableName);
+
+            var fkImport = fkTable.getEntityImport();
             if(!foreignImports.contains(fkImport)) {
                 pw.println("import " + fkImport + ";");
                 foreignImports.add(fkImport);
@@ -702,15 +701,15 @@ public class DatabaseUtilitiesForJava {
     
     public void writeEntityFKFactoryImports(PrintWriter pw, Table theTable)
     throws Exception {
-        HashSet<String> foreignImports = new HashSet<>();
+        var foreignImports = new HashSet<String>();
         
         foreignImports.add(theTable.getFactoryImport()); // make sure we don't import ourselves
         
-        for(Column theForeignKey: theTable.getForeignKeys()) {
-            String fkTableName = theForeignKey.getDestinationTable();
-            Table fkTable = theForeignKey.getTable().getDatabase().getTable(fkTableName);
-            
-            String fkImport = fkTable.getFactoryImport();
+        for(var theForeignKey: theTable.getForeignKeys()) {
+            var fkTableName = theForeignKey.getDestinationTable();
+            var fkTable = theForeignKey.getTable().getDatabase().getTable(fkTableName);
+
+            var fkImport = fkTable.getFactoryImport();
             if(!foreignImports.contains(fkImport)) {
                 pw.println("import " + fkImport + ";");
                 foreignImports.add(fkImport);
@@ -765,7 +764,7 @@ public class DatabaseUtilitiesForJava {
     }
     
     public void writeEntityConstructors(PrintWriter pw, Table theTable) {
-        String entityClass = theTable.getEntityClass();
+        var entityClass = theTable.getEntityClass();
         
         pw.println("    /** Creates a new instance of " + entityClass + " */");
         pw.println("    public " + entityClass + "()");
@@ -784,9 +783,9 @@ public class DatabaseUtilitiesForJava {
     }
     
     public void writeEntityCoreFunctions(PrintWriter pw, Table theTable) {
-        String entityClass = theTable.getEntityClass();
-        String factoryClass = theTable.getFactoryClass();
-        String valueClass = theTable.getValueClass();
+        var entityClass = theTable.getEntityClass();
+        var factoryClass = theTable.getFactoryClass();
+        var valueClass = theTable.getValueClass();
         
         pw.println("    @Override");
         pw.println("    public " + factoryClass + " getBaseFactoryInstance() {");
@@ -860,13 +859,13 @@ public class DatabaseUtilitiesForJava {
     
     public void writeEntityGetsSets(PrintWriter pw, Table theTable) {
         theTable.getColumns().forEach((column) -> {
-            int type = column.getType();
+            var type = column.getType();
             
             if (type != ColumnType.columnEID) {
-                String getFunctionName = column.getGetFunctionName();
-                String setFunctionName = column.getSetFunctionName();
-                String variableName = column.getVariableName();
-                String javaType = column.getTypeAsJavaType();
+                var getFunctionName = column.getGetFunctionName();
+                var setFunctionName = column.getSetFunctionName();
+                var variableName = column.getVariableName();
+                var javaType = column.getTypeAsJavaType();
                 String fkEntityClass = null;
                 
                 pw.println("    public " + javaType + " " + getFunctionName + "() {");
@@ -875,8 +874,8 @@ public class DatabaseUtilitiesForJava {
                 pw.println("    ");
                 
                 if(type == ColumnType.columnForeignKey) {
-                    String getEntityFunctionName = column.getGetEntityFunctionName();
-                    String fkFactoryClass = column.getFKFactoryClass();
+                    var getEntityFunctionName = column.getGetEntityFunctionName();
+                    var fkFactoryClass = column.getFKFactoryClass();
                     
                     fkEntityClass = column.getFKEntityClass();
                     
@@ -951,15 +950,15 @@ public class DatabaseUtilitiesForJava {
     
     public void writeFactoryFKPKImports(PrintWriter pw, Table theTable)
     throws Exception {
-        HashSet<String> foreignImports = new HashSet<>();
+        var foreignImports = new HashSet<String>();
         
         foreignImports.add(theTable.getPKImport()); // make sure we don't import ourselves
         
-        for(Column theForeignKey: theTable.getForeignKeys()) {
-            String fkTableName = theForeignKey.getDestinationTable();
-            Table fkTable = theForeignKey.getTable().getDatabase().getTable(fkTableName);
-            
-            String fkImport = fkTable.getPKImport();
+        for(var theForeignKey: theTable.getForeignKeys()) {
+            var fkTableName = theForeignKey.getDestinationTable();
+            var fkTable = theForeignKey.getTable().getDatabase().getTable(fkTableName);
+
+            var fkImport = fkTable.getPKImport();
             if(!foreignImports.contains(fkImport)) {
                 pw.println("import " + fkImport + ";");
                 foreignImports.add(fkImport);
@@ -971,15 +970,15 @@ public class DatabaseUtilitiesForJava {
     
     public void writeFactoryFKEntityImports(PrintWriter pw, Table theTable)
     throws Exception {
-        HashSet<String> foreignImports = new HashSet<>();
+        var foreignImports = new HashSet<String>();
         
         foreignImports.add(theTable.getEntityImport()); // make sure we don't import ourselves
         
-        for(Column theForeignKey: theTable.getForeignKeys()) {
-            String fkTableName = theForeignKey.getDestinationTable();
-            Table fkTable = theForeignKey.getTable().getDatabase().getTable(fkTableName);
-            
-            String fkImport = fkTable.getEntityImport();
+        for(var theForeignKey: theTable.getForeignKeys()) {
+            var fkTableName = theForeignKey.getDestinationTable();
+            var fkTable = theForeignKey.getTable().getDatabase().getTable(fkTableName);
+
+            var fkImport = fkTable.getEntityImport();
             if(!foreignImports.contains(fkImport)) {
                 pw.println("import " + fkImport + ";");
                 foreignImports.add(fkImport);
@@ -1040,18 +1039,18 @@ public class DatabaseUtilitiesForJava {
     
     public void writeFactoryInstanceVariables(PrintWriter pw, Table theTable)
     throws Exception {
-        List<Column> columns = theTable.getColumns();
-        String dbTableName = theTable.getDbTableName();
-        String chunkSize = theTable.getChunkSize();
-        String factoryClass = theTable.getFactoryClass();
+        var columns = theTable.getColumns();
+        var dbTableName = theTable.getDbTableName();
+        var chunkSize = theTable.getChunkSize();
+        var factoryClass = theTable.getFactoryClass();
         String pkColumn = null;
-        String allColumnsExceptPk = "";
+        var allColumnsExceptPk = "";
         String allColumns;
-        String questionMarks = "";
-        String updateColumns = "";
+        var questionMarks = "";
+        var updateColumns = "";
         
-        for(Column column: columns) {
-            int type = column.getType();
+        for(var column: columns) {
+            var type = column.getType();
 
             if(type == ColumnType.columnEID) {
                 pkColumn = column.getDbColumnName();
@@ -1086,7 +1085,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("    final public static String TABLE_NAME = \"" + dbTableName + "\";");
         pw.println("    ");
         
-        for(Column column:columns) {
+        for(var column:columns) {
             pw.println("    final public static String " + column.getDbColumnName().toUpperCase(Locale.getDefault()) + " = \"" + column.getDbColumnName() + "\";");
         }
         
@@ -1098,7 +1097,7 @@ public class DatabaseUtilitiesForJava {
     
     // http://www.oreillynet.com/onjava/blog/2007/01/singletons_and_lazy_loading.html
     public void writeFactoryConstructors(PrintWriter pw, Table theTable) {
-        String factoryClass = theTable.getFactoryClass();
+        var factoryClass = theTable.getFactoryClass();
         
         pw.println("    /** Creates a new instance of " + factoryClass + " */");
         pw.println("    private " + factoryClass + "() {");
@@ -1144,7 +1143,7 @@ public class DatabaseUtilitiesForJava {
     }
     
     public void writeFactoryPrepareFunction(PrintWriter pw, Table theTable) {
-        String factoryClass = theTable.getFactoryClass();
+        var factoryClass = theTable.getFactoryClass();
         
         pw.println("    public PreparedStatement prepareStatement(String query) {");
         pw.println("        return ThreadSession.currentSession().prepareStatement(" + factoryClass + ".class, query);");
@@ -1154,8 +1153,8 @@ public class DatabaseUtilitiesForJava {
     
     public void writeFactoryPkFunctions(PrintWriter pw, Table theTable)
     throws Exception {
-        String pkClass = theTable.getPKClass();
-        String dbColumnName = theTable.getEID().getDbColumnName();
+        var pkClass = theTable.getPKClass();
+        var dbColumnName = theTable.getEID().getDbColumnName();
         
         pw.println("    public " + pkClass + " getNextPK() {");
         pw.println("        return new " + pkClass + "(entityIdGenerator.getNextEntityId());");
@@ -1210,7 +1209,7 @@ public class DatabaseUtilitiesForJava {
     }
     
     public void writeFactoryRemoveFunctions(PrintWriter pw, Table theTable) {
-        String pkClass = theTable.getPKClass();
+        var pkClass = theTable.getPKClass();
         
         pw.println("    @Override");
         pw.println("    public void remove(Session session, " + theTable.getEntityClass() + " entity)");
@@ -1301,21 +1300,21 @@ public class DatabaseUtilitiesForJava {
     
     public void writeFactoryStoreFunctions(PrintWriter pw, Table theTable)
     throws Exception {
-        String entityClass = theTable.getEntityClass();
-        String valueClass = theTable.getValueClass();
-        List<Column> columns = theTable.getColumns();
+        var entityClass = theTable.getEntityClass();
+        var valueClass = theTable.getValueClass();
+        var columns = theTable.getColumns();
         
         pw.println("    private boolean bindForStore(PreparedStatement _ps, " + valueClass + " _value)");
         pw.println("            throws SQLException {");
         pw.println("        boolean _hasBeenModified = _value.hasBeenModified();");
         pw.println("        ");
         pw.println("        if(_hasBeenModified) {");
-        int parameterCount = 1;
-        for(Column column: columns) {
-            int type = column.getType();
+        var parameterCount = 1;
+        for(var column: columns) {
+            var type = column.getType();
 
             if(type != ColumnType.columnEID) {
-                String dbColumnName = column.getDbColumnName();
+                var dbColumnName = column.getDbColumnName();
 
                 pw.println("            " + column.getTypeAsJavaType() + " " + dbColumnName + " = _value." + column.getGetFunctionName() + "();");
                 pw.println("            if(" + dbColumnName + " == null)");
@@ -1453,19 +1452,19 @@ public class DatabaseUtilitiesForJava {
     
     public void writeFactoryCreateFunctions(PrintWriter pw, Table theTable)
     throws Exception {
-        List<Column> columns = theTable.getColumns();
-        String entityClass = theTable.getEntityClass();
-        String pkClass = theTable.getPKClass();
-        String valueClass = theTable.getValueClass();
-        String createEntityParameters = "";
-        String createPkParameters = "";
-        String pkParameters = "";
-        String valueParameters = "";
-        String nullParameters = "";
-        boolean isFirst = true;
+        var columns = theTable.getColumns();
+        var entityClass = theTable.getEntityClass();
+        var pkClass = theTable.getPKClass();
+        var valueClass = theTable.getValueClass();
+        var createEntityParameters = "";
+        var createPkParameters = "";
+        var pkParameters = "";
+        var valueParameters = "";
+        var nullParameters = "";
+        var isFirst = true;
         
-        for(Column column: columns) {
-            int type = column.getType();
+        for(var column: columns) {
+            var type = column.getType();
 
             if(type != ColumnType.columnEID) {
                 if(!isFirst) {
@@ -1524,12 +1523,12 @@ public class DatabaseUtilitiesForJava {
         pw.println("            throws SQLException {");
         pw.println("        _ps.setLong(1, _value.getEntityId());");
         pw.println("        ");
-        int parameterCount = 2;
-        for(Column column: columns) {
-            int type = column.getType();
+        var parameterCount = 2;
+        for(var column: columns) {
+            var type = column.getType();
 
             if(type != ColumnType.columnEID) {
-                String dbColumnName = column.getDbColumnName();
+                var dbColumnName = column.getDbColumnName();
                 
                 pw.println("        " + column.getTypeAsJavaType() + " " + dbColumnName + " = _value." + column.getGetFunctionName() + "();");
                 pw.println("        if(" + dbColumnName + " == null)");
@@ -1664,11 +1663,11 @@ public class DatabaseUtilitiesForJava {
     
     public void writeFactoryValueFunctions(PrintWriter pw, Table theTable)
     throws Exception {
-        String entityClass = theTable.getEntityClass();
-        String valueClass = theTable.getValueClass();
-        String pkClass = theTable.getPKClass();
-        Column eidColumn = theTable.getEID();
-        String eidDbColumnName = eidColumn.getDbColumnName();
+        var entityClass = theTable.getEntityClass();
+        var valueClass = theTable.getValueClass();
+        var pkClass = theTable.getPKClass();
+        var eidColumn = theTable.getEID();
+        var eidDbColumnName = eidColumn.getDbColumnName();
         
         pw.println("    public java.util.List<" + valueClass + "> getValuesFromPKs(Session session, Collection<" + pkClass + "> pks)");
         pw.println("            throws PersistenceDatabaseException {");
@@ -1722,13 +1721,13 @@ public class DatabaseUtilitiesForJava {
         pw.println("            " + entityClass + " _entity = (" + entityClass + ")session.getEntity(_pk);");
         pw.println("            ");
         pw.println("            if(_entity == null) {");
-        
-        String valueParameters = "";
-        for(Column column: theTable.getColumns()) {
-            int type = column.getType();
+
+        var valueParameters = "";
+        for(var column: theTable.getColumns()) {
+            var type = column.getType();
 
             if(type != ColumnType.columnEID) {
-                String dbColumnName = column.getDbColumnName();
+                var dbColumnName = column.getDbColumnName();
                 
                 switch(type) {
                     case ColumnType.columnInteger:
@@ -1792,12 +1791,12 @@ public class DatabaseUtilitiesForJava {
     
     public void writeFactoryEntityFunctions(PrintWriter pw, Table theTable)
     throws Exception {
-        String factoryClass = theTable.getFactoryClass();
-        String entityClass = theTable.getEntityClass();
-        String valueClass = theTable.getValueClass();
-        String pkClass = theTable.getPKClass();
-        Column eidColumn = theTable.getEID();
-        String eidDbColumnName = eidColumn.getDbColumnName();
+        var factoryClass = theTable.getFactoryClass();
+        var entityClass = theTable.getEntityClass();
+        var valueClass = theTable.getValueClass();
+        var pkClass = theTable.getPKClass();
+        var eidColumn = theTable.getEID();
+        var eidDbColumnName = eidColumn.getDbColumnName();
         
         pw.println("    public java.util.List<" + entityClass + "> getEntitiesFromPKs(EntityPermission entityPermission, Collection<" + pkClass + "> pks)");
         pw.println("            throws PersistenceDatabaseException {");
@@ -2156,13 +2155,13 @@ public class DatabaseUtilitiesForJava {
         pw.println("            }");
         pw.println("            ");
         pw.println("            if(_entity == null) {");
-        
-        String valueParameters = "";
-        for(Column column: theTable.getColumns()) {
-            int type = column.getType();
+
+        var valueParameters = "";
+        for(var column: theTable.getColumns()) {
+            var type = column.getType();
 
             if(type != ColumnType.columnEID) {
-                String dbColumnName = column.getDbColumnName();
+                var dbColumnName = column.getDbColumnName();
                 
                 switch(type) {
                     case ColumnType.columnInteger:
@@ -2295,16 +2294,16 @@ public class DatabaseUtilitiesForJava {
     
     public void exportFactories(String baseDirectory)
     throws Exception {
-        for(Component theComponent: myComponents) {
-            String componentDirectory = createFactoryDirectoryForComponent(theComponent, baseDirectory);
+        for(var theComponent: myComponents) {
+            var componentDirectory = createFactoryDirectoryForComponent(theComponent, baseDirectory);
             
-            for(Table theTable: theComponent.getTables()) {
+            for(var theTable: theComponent.getTables()) {
                 if(theTable.hasEID()) {
-                    String classFileName = theTable.getFactoryClass() + ".java";
-                    File f = new File(componentDirectory + File.separatorChar + classFileName);
+                    var classFileName = theTable.getFactoryClass() + ".java";
+                    var f = new File(componentDirectory + File.separatorChar + classFileName);
                     
-                    try (BufferedWriter bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
-                        PrintWriter pw = new PrintWriter(bw);
+                    try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+                        var pw = new PrintWriter(bw);
                         
                         writeCopyright(pw);
                         writeVersion(pw, classFileName);
@@ -2334,15 +2333,15 @@ public class DatabaseUtilitiesForJava {
     
     public void exportCommons(String baseDirectory)
     throws Exception {
-        for(Component theComponent: myComponents) {
-            String componentDirectory = createCommonDirectoryForComponent(theComponent, baseDirectory);
+        for(var theComponent: myComponents) {
+            var componentDirectory = createCommonDirectoryForComponent(theComponent, baseDirectory);
             
-            for(Table theTable: theComponent.getTables()) {
-                String classFileName = theTable.getConstantsClass() + ".java";
-                File f = new File(componentDirectory + File.separatorChar + classFileName);
+            for(var theTable: theComponent.getTables()) {
+                var classFileName = theTable.getConstantsClass() + ".java";
+                var f = new File(componentDirectory + File.separatorChar + classFileName);
                 
-                try (BufferedWriter bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
-                    PrintWriter pw = new PrintWriter(bw);
+                try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+                    var pw = new PrintWriter(bw);
                     
                     writeCopyright(pw);
                     writeVersion(pw, classFileName);
@@ -2355,12 +2354,12 @@ public class DatabaseUtilitiesForJava {
     
     public void exportEntityTypesEnum(String baseDirectory)
     throws Exception {
-        String directory = createCommonCoreControlDirectory(baseDirectory);
-        String classFileName = "EntityTypes.java";
-        File f = new File(directory + File.separatorChar + classFileName);
+        var directory = createCommonCoreControlDirectory(baseDirectory);
+        var classFileName = "EntityTypes.java";
+        var f = new File(directory + File.separatorChar + classFileName);
                 
-        try (BufferedWriter bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
-            PrintWriter pw = new PrintWriter(bw);
+        try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+            var pw = new PrintWriter(bw);
 
             writeCopyright(pw);
             writePackage(pw, MODEL_CONTROL_CORE_COMMON_PACKAGE);
@@ -2368,9 +2367,9 @@ public class DatabaseUtilitiesForJava {
             pw.println("public enum EntityTypes {");
             pw.println("    ");
 
-            boolean notFirst = false;
-            for(Component theComponent: myComponents) {
-                for(Table theTable: theComponent.getTables()) {
+            var notFirst = false;
+            for(var theComponent: myComponents) {
+                for(var theTable: theComponent.getTables()) {
                     if(notFirst) {
                         pw.println(",");
                     }

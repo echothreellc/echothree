@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.document.server.transfer;
 
-import com.echothree.model.control.document.common.transfer.DocumentTransfer;
 import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.model.control.document.server.control.DocumentControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.document.server.entity.PartyDocument;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,13 +34,13 @@ public class PartyDocumentTransferCache
     }
     
     public PartyDocumentTransfer getPartyDocumentTransfer(PartyDocument partyDocument) {
-        PartyDocumentTransfer partyDocumentTransfer = get(partyDocument);
+        var partyDocumentTransfer = get(partyDocument);
         
         if(partyDocumentTransfer == null) {
-            PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, partyDocument.getParty());
-            DocumentTransfer documentTransfer = documentControl.getDocumentTransfer(userVisit, partyDocument.getDocument());
-            Boolean isDefault = partyDocument.getIsDefault();
-            Integer sortOrder = partyDocument.getSortOrder();
+            var partyTransfer = partyControl.getPartyTransfer(userVisit, partyDocument.getParty());
+            var documentTransfer = documentControl.getDocumentTransfer(userVisit, partyDocument.getDocument());
+            var isDefault = partyDocument.getIsDefault();
+            var sortOrder = partyDocument.getSortOrder();
             
             partyDocumentTransfer = new PartyDocumentTransfer(partyTransfer, documentTransfer, isDefault, sortOrder);
             put(partyDocument, partyDocumentTransfer);

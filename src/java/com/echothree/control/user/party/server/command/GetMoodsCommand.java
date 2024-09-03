@@ -17,7 +17,6 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetMoodsForm;
-import com.echothree.control.user.party.common.result.GetMoodsResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -47,7 +46,7 @@ public class GetMoodsCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetMoodsResult result = PartyResultFactory.getGetMoodsResult();
+        var result = PartyResultFactory.getGetMoodsResult();
         
         result.setMoods(partyControl.getMoodTransfers(getUserVisit()));
         

@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.harmonizedtariffschedulecode;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetMimeTypeChoicesForm;
 import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCodeUnitChoicesForm;
 import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeUnitChoicesResult;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
 import com.echothree.model.control.item.common.choice.HarmonizedTariffScheduleCodeUnitChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -56,14 +52,14 @@ public class AddActionForm
     public void setupFirstHarmonizedTariffScheduleCodeUnitChoices() {
         if(firstHarmonizedTariffScheduleCodeUnitChoices == null) {
             try {
-                GetHarmonizedTariffScheduleCodeUnitChoicesForm form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitChoicesForm();
+                var form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitChoicesForm();
 
                 form.setDefaultHarmonizedTariffScheduleCodeUnitChoice(firstHarmonizedTariffScheduleCodeUnitChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetHarmonizedTariffScheduleCodeUnitChoicesResult getHarmonizedTariffScheduleCodeUnitChoicesResult = (GetHarmonizedTariffScheduleCodeUnitChoicesResult)executionResult.getResult();
+                var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getHarmonizedTariffScheduleCodeUnitChoicesResult = (GetHarmonizedTariffScheduleCodeUnitChoicesResult)executionResult.getResult();
                 firstHarmonizedTariffScheduleCodeUnitChoices = getHarmonizedTariffScheduleCodeUnitChoicesResult.getHarmonizedTariffScheduleCodeUnitChoices();
 
                 if(firstHarmonizedTariffScheduleCodeUnitChoice == null) {
@@ -79,14 +75,14 @@ public class AddActionForm
     public void setupSecondHarmonizedTariffScheduleCodeUnitChoices() {
         if(secondHarmonizedTariffScheduleCodeUnitChoices == null) {
             try {
-                GetHarmonizedTariffScheduleCodeUnitChoicesForm form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitChoicesForm();
+                var form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitChoicesForm();
 
                 form.setDefaultHarmonizedTariffScheduleCodeUnitChoice(secondHarmonizedTariffScheduleCodeUnitChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetHarmonizedTariffScheduleCodeUnitChoicesResult getHarmonizedTariffScheduleCodeUnitChoicesResult = (GetHarmonizedTariffScheduleCodeUnitChoicesResult)executionResult.getResult();
+                var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getHarmonizedTariffScheduleCodeUnitChoicesResult = (GetHarmonizedTariffScheduleCodeUnitChoicesResult)executionResult.getResult();
                 secondHarmonizedTariffScheduleCodeUnitChoices = getHarmonizedTariffScheduleCodeUnitChoicesResult.getHarmonizedTariffScheduleCodeUnitChoices();
 
                 if(secondHarmonizedTariffScheduleCodeUnitChoice == null) {
@@ -102,15 +98,15 @@ public class AddActionForm
      private void setupOverviewMimeTypeChoices() {
         if(overviewMimeTypeChoices == null) {
             try {
-                GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+                var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
                 
                 commandForm.setDefaultMimeTypeChoice(overviewMimeTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
-                
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
                 overviewMimeTypeChoices = result.getMimeTypeChoices();
                 
                 if(overviewMimeTypeChoice == null) {

@@ -18,15 +18,11 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetGlAccountClassDescriptionForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetGlAccountClassDescriptionResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.accounting.server.entity.GlAccountClass;
-import com.echothree.model.data.accounting.server.entity.GlAccountClassDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetGlAccountClassDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetGlAccountClassDescriptionResult result = AccountingResultFactory.getGetGlAccountClassDescriptionResult();
-        String glAccountClassName = form.getGlAccountClassName();
-        GlAccountClass glAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
+        var result = AccountingResultFactory.getGetGlAccountClassDescriptionResult();
+        var glAccountClassName = form.getGlAccountClassName();
+        var glAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
         
         if(glAccountClass != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                GlAccountClassDescription glAccountClassDescription = accountingControl.getGlAccountClassDescription(glAccountClass, language);
+                var glAccountClassDescription = accountingControl.getGlAccountClassDescription(glAccountClass, language);
                 
                 if(glAccountClassDescription != null) {
                     result.setGlAccountClassDescription(accountingControl.getGlAccountClassDescriptionTransfer(getUserVisit(), glAccountClassDescription));

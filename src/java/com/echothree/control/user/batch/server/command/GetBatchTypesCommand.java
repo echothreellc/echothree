@@ -18,7 +18,6 @@ package com.echothree.control.user.batch.server.command;
 
 import com.echothree.control.user.batch.common.form.GetBatchTypesForm;
 import com.echothree.control.user.batch.common.result.BatchResultFactory;
-import com.echothree.control.user.batch.common.result.GetBatchTypesResult;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -61,7 +60,7 @@ public class GetBatchTypesCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        GetBatchTypesResult result = BatchResultFactory.getGetBatchTypesResult();
+        var result = BatchResultFactory.getGetBatchTypesResult();
         
         result.setBatchTypes(batchControl.getBatchTypeTransfers(getUserVisit()));
         

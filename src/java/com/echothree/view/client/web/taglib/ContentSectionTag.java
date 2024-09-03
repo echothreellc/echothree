@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentSectionForm;
 import com.echothree.control.user.content.common.result.GetContentSectionResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -122,7 +119,7 @@ public class ContentSectionTag
     public int doStartTag()
             throws JspException {
         try {
-            GetContentSectionForm commandForm = ContentUtil.getHome().getGetContentSectionForm();
+            var commandForm = ContentUtil.getHome().getGetContentSectionForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -135,7 +132,7 @@ public class ContentSectionTag
 
             commandForm.setTransferProperties(transferProperties);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentSection(getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().getContentSection(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -143,8 +140,8 @@ public class ContentSectionTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentSectionResult result = (GetContentSectionResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContentSectionResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getContentSection(), scope);
             }

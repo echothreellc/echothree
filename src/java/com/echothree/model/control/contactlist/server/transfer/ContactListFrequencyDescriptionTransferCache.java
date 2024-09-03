@@ -17,9 +17,7 @@
 package com.echothree.model.control.contactlist.server.transfer;
 
 import com.echothree.model.control.contactlist.common.transfer.ContactListFrequencyDescriptionTransfer;
-import com.echothree.model.control.contactlist.common.transfer.ContactListFrequencyTransfer;
 import com.echothree.model.control.contactlist.server.ContactListControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.contactlist.server.entity.ContactListFrequencyDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class ContactListFrequencyDescriptionTransferCache
     }
     
     public ContactListFrequencyDescriptionTransfer getContactListFrequencyDescriptionTransfer(ContactListFrequencyDescription contactListFrequencyDescription) {
-        ContactListFrequencyDescriptionTransfer contactListFrequencyDescriptionTransfer = get(contactListFrequencyDescription);
+        var contactListFrequencyDescriptionTransfer = get(contactListFrequencyDescription);
         
         if(contactListFrequencyDescriptionTransfer == null) {
-            ContactListFrequencyTransfer contactListFrequencyTransfer = contactListControl.getContactListFrequencyTransfer(userVisit, contactListFrequencyDescription.getContactListFrequency());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, contactListFrequencyDescription.getLanguage());
+            var contactListFrequencyTransfer = contactListControl.getContactListFrequencyTransfer(userVisit, contactListFrequencyDescription.getContactListFrequency());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, contactListFrequencyDescription.getLanguage());
             
             contactListFrequencyDescriptionTransfer = new ContactListFrequencyDescriptionTransfer(languageTransfer, contactListFrequencyTransfer, contactListFrequencyDescription.getDescription());
             put(contactListFrequencyDescription, contactListFrequencyDescriptionTransfer);

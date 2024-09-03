@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.entity.OrderTypeDescription;
-import com.echothree.model.data.order.server.value.OrderTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditOrderTypeDescriptionCommand
     public OrderTypeDescription getEntity(EditOrderTypeDescriptionResult result) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderTypeDescription orderTypeDescription = null;
-        String orderTypeName = spec.getOrderTypeName();
+        var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditOrderTypeDescriptionCommand
     @Override
     public void doUpdate(OrderTypeDescription orderTypeDescription) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        OrderTypeDescriptionValue orderTypeDescriptionValue = orderTypeControl.getOrderTypeDescriptionValue(orderTypeDescription);
+        var orderTypeDescriptionValue = orderTypeControl.getOrderTypeDescriptionValue(orderTypeDescription);
         orderTypeDescriptionValue.setDescription(edit.getDescription());
 
         orderTypeControl.updateOrderTypeDescriptionFromValue(orderTypeDescriptionValue, getPartyPK());

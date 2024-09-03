@@ -17,9 +17,7 @@
 package com.echothree.model.control.contactlist.server.transfer;
 
 import com.echothree.model.control.contactlist.common.transfer.ContactListDescriptionTransfer;
-import com.echothree.model.control.contactlist.common.transfer.ContactListTransfer;
 import com.echothree.model.control.contactlist.server.ContactListControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.contactlist.server.entity.ContactListDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class ContactListDescriptionTransferCache
     }
     
     public ContactListDescriptionTransfer getContactListDescriptionTransfer(ContactListDescription contactListDescription) {
-        ContactListDescriptionTransfer contactListDescriptionTransfer = get(contactListDescription);
+        var contactListDescriptionTransfer = get(contactListDescription);
         
         if(contactListDescriptionTransfer == null) {
-            ContactListTransfer contactListTransfer = contactListControl.getContactListTransfer(userVisit, contactListDescription.getContactList());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, contactListDescription.getLanguage());
+            var contactListTransfer = contactListControl.getContactListTransfer(userVisit, contactListDescription.getContactList());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, contactListDescription.getLanguage());
             
             contactListDescriptionTransfer = new ContactListDescriptionTransfer(languageTransfer, contactListTransfer, contactListDescription.getDescription());
             put(contactListDescription, contactListDescriptionTransfer);

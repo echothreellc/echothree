@@ -27,11 +27,8 @@ import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.inventory.server.entity.LotAlias;
 import com.echothree.model.data.inventory.server.entity.LotAliasType;
-import com.echothree.model.data.inventory.server.entity.LotAliasTypeDetail;
-import com.echothree.model.data.inventory.server.value.LotAliasValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -92,12 +89,12 @@ public class EditLotAliasCommand
     public LotAlias getEntity(EditLotAliasResult result) {
         var lotControl = Session.getModelController(LotControl.class);
         LotAlias lotAlias = null;
-        String lotName = spec.getLotName();
-        Lot lot = lotControl.getLotByName(lotName);
+        var lotName = spec.getLotName();
+        var lot = lotControl.getLotByName(lotName);
 
         if(lot != null) {
             var lotAliasControl = Session.getModelController(LotAliasControl.class);
-            String lotAliasTypeName = spec.getLotAliasTypeName();
+            var lotAliasTypeName = spec.getLotAliasTypeName();
 
             lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
@@ -143,11 +140,11 @@ public class EditLotAliasCommand
     @Override
     public void canUpdate(LotAlias lotAlias) {
         var lotAliasControl = Session.getModelController(LotAliasControl.class);
-        String alias = edit.getAlias();
-        LotAlias duplicateLotAlias = lotAliasControl.getLotAliasByAlias(lotAliasType, alias);
+        var alias = edit.getAlias();
+        var duplicateLotAlias = lotAliasControl.getLotAliasByAlias(lotAliasType, alias);
 
         if(duplicateLotAlias != null && !lotAlias.equals(duplicateLotAlias)) {
-            LotAliasTypeDetail lotAliasTypeDetail = lotAlias.getLotAliasType().getLastDetail();
+            var lotAliasTypeDetail = lotAlias.getLotAliasType().getLastDetail();
 
             addExecutionError(ExecutionErrors.DuplicateLotAlias.name(), lotAliasTypeDetail.getLotAliasTypeName(), alias);
         }
@@ -156,7 +153,7 @@ public class EditLotAliasCommand
     @Override
     public void doUpdate(LotAlias lotAlias) {
         var lotAliasControl = Session.getModelController(LotAliasControl.class);
-        LotAliasValue lotAliasValue = lotAliasControl.getLotAliasValue(lotAlias);
+        var lotAliasValue = lotAliasControl.getLotAliasValue(lotAlias);
 
         lotAliasValue.setAlias(edit.getAlias());
 

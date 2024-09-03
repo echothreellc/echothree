@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.workrequirementtype;
 
 import com.echothree.control.user.workrequirement.common.WorkRequirementUtil;
-import com.echothree.control.user.workrequirement.common.form.GetWorkRequirementTypeForm;
 import com.echothree.control.user.workrequirement.common.result.GetWorkRequirementTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,19 +49,19 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetWorkRequirementTypeForm commandForm = WorkRequirementUtil.getHome().getGetWorkRequirementTypeForm();
-            String workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
-            String workRequirementTypeName = request.getParameter(ParameterConstants.WORK_REQUIREMENT_TYPE_NAME);
+            var commandForm = WorkRequirementUtil.getHome().getGetWorkRequirementTypeForm();
+            var workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
+            var workRequirementTypeName = request.getParameter(ParameterConstants.WORK_REQUIREMENT_TYPE_NAME);
             
             commandForm.setWorkEffortTypeName(workEffortTypeName);
             commandForm.setWorkRequirementTypeName(workRequirementTypeName);
-            
-            CommandResult commandResult = WorkRequirementUtil.getHome().getWorkRequirementType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkRequirementTypeResult result = (GetWorkRequirementTypeResult)executionResult.getResult();
+
+            var commandResult = WorkRequirementUtil.getHome().getWorkRequirementType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkRequirementTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORK_REQUIREMENT_TYPE, result.getWorkRequirementType());
             forwardKey = ForwardConstants.DISPLAY;

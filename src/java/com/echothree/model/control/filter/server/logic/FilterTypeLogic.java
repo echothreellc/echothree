@@ -26,7 +26,6 @@ import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterK
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterTypeException;
 import com.echothree.model.control.filter.common.exception.UnknownFilterTypeNameException;
 import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.party.server.entity.Language;

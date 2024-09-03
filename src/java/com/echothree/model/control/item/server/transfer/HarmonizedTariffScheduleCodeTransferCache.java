@@ -16,22 +16,15 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeTransfer;
-import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeUnitTransfer;
 import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeUseTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCode;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeDetail;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeTranslation;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUnit;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.List;
-import java.util.Set;
 
 public class HarmonizedTariffScheduleCodeTransferCache
         extends BaseItemTransferCache<HarmonizedTariffScheduleCode, HarmonizedTariffScheduleCodeTransfer> {
@@ -54,28 +47,28 @@ public class HarmonizedTariffScheduleCodeTransferCache
     
     @Override
     public HarmonizedTariffScheduleCodeTransfer getTransfer(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode) {
-        HarmonizedTariffScheduleCodeTransfer harmonizedTariffScheduleCodeTransfer = get(harmonizedTariffScheduleCode);
+        var harmonizedTariffScheduleCodeTransfer = get(harmonizedTariffScheduleCode);
         
         if(harmonizedTariffScheduleCodeTransfer == null) {
-            HarmonizedTariffScheduleCodeDetail harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getLastDetail();
-            CountryTransfer countryTransfer = geoControl.getCountryTransfer(userVisit, harmonizedTariffScheduleCodeDetail.getCountryGeoCode());
-            String harmonizedTariffScheduleCodeName = harmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeName();
-            HarmonizedTariffScheduleCodeUnit firstHarmonizedTariffScheduleCodeUnit = harmonizedTariffScheduleCodeDetail.getFirstHarmonizedTariffScheduleCodeUnit();
-            HarmonizedTariffScheduleCodeUnitTransfer firstHarmonizedTariffScheduleCodeUnitTransfer = firstHarmonizedTariffScheduleCodeUnit == null ? null : itemControl.getHarmonizedTariffScheduleCodeUnitTransfer(userVisit, firstHarmonizedTariffScheduleCodeUnit);
-            HarmonizedTariffScheduleCodeUnit secondHarmonizedTariffScheduleCodeUnit = harmonizedTariffScheduleCodeDetail.getSecondHarmonizedTariffScheduleCodeUnit();
-            HarmonizedTariffScheduleCodeUnitTransfer secondHarmonizedTariffScheduleCodeUnitTransfer = secondHarmonizedTariffScheduleCodeUnit == null ? null : itemControl.getHarmonizedTariffScheduleCodeUnitTransfer(userVisit, secondHarmonizedTariffScheduleCodeUnit);
-            Boolean isDefault = harmonizedTariffScheduleCodeDetail.getIsDefault();
-            Integer sortOrder = harmonizedTariffScheduleCodeDetail.getSortOrder();
-            HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation = itemControl.getBestHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, getLanguage());
-            String description = harmonizedTariffScheduleCodeTranslation == null ? harmonizedTariffScheduleCodeName : harmonizedTariffScheduleCodeTranslation.getDescription();
+            var harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getLastDetail();
+            var countryTransfer = geoControl.getCountryTransfer(userVisit, harmonizedTariffScheduleCodeDetail.getCountryGeoCode());
+            var harmonizedTariffScheduleCodeName = harmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeName();
+            var firstHarmonizedTariffScheduleCodeUnit = harmonizedTariffScheduleCodeDetail.getFirstHarmonizedTariffScheduleCodeUnit();
+            var firstHarmonizedTariffScheduleCodeUnitTransfer = firstHarmonizedTariffScheduleCodeUnit == null ? null : itemControl.getHarmonizedTariffScheduleCodeUnitTransfer(userVisit, firstHarmonizedTariffScheduleCodeUnit);
+            var secondHarmonizedTariffScheduleCodeUnit = harmonizedTariffScheduleCodeDetail.getSecondHarmonizedTariffScheduleCodeUnit();
+            var secondHarmonizedTariffScheduleCodeUnitTransfer = secondHarmonizedTariffScheduleCodeUnit == null ? null : itemControl.getHarmonizedTariffScheduleCodeUnitTransfer(userVisit, secondHarmonizedTariffScheduleCodeUnit);
+            var isDefault = harmonizedTariffScheduleCodeDetail.getIsDefault();
+            var sortOrder = harmonizedTariffScheduleCodeDetail.getSortOrder();
+            var harmonizedTariffScheduleCodeTranslation = itemControl.getBestHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, getLanguage());
+            var description = harmonizedTariffScheduleCodeTranslation == null ? harmonizedTariffScheduleCodeName : harmonizedTariffScheduleCodeTranslation.getDescription();
             
             harmonizedTariffScheduleCodeTransfer = new HarmonizedTariffScheduleCodeTransfer(countryTransfer, harmonizedTariffScheduleCodeName,
                     firstHarmonizedTariffScheduleCodeUnitTransfer, secondHarmonizedTariffScheduleCodeUnitTransfer, isDefault, sortOrder, description);
             put(harmonizedTariffScheduleCode, harmonizedTariffScheduleCodeTransfer);
             
             if(includeHarmonizedTariffScheduleCodeUses) {
-                List<HarmonizedTariffScheduleCodeUseTransfer> harmonizedTariffScheduleCodeUseTransfers = itemControl.getHarmonizedTariffScheduleCodeUseTransfersByHarmonizedTariffScheduleCode(userVisit, harmonizedTariffScheduleCode);
-                MapWrapper<HarmonizedTariffScheduleCodeUseTransfer> harmonizedTariffScheduleCodeUses = new MapWrapper<>();
+                var harmonizedTariffScheduleCodeUseTransfers = itemControl.getHarmonizedTariffScheduleCodeUseTransfersByHarmonizedTariffScheduleCode(userVisit, harmonizedTariffScheduleCode);
+                var harmonizedTariffScheduleCodeUses = new MapWrapper<HarmonizedTariffScheduleCodeUseTransfer>();
                 
                 harmonizedTariffScheduleCodeUseTransfers.forEach((harmonizedTariffScheduleCodeUseTransfer) -> {
                     harmonizedTariffScheduleCodeUses.put(harmonizedTariffScheduleCodeUseTransfer.getHarmonizedTariffScheduleCodeUseType().getHarmonizedTariffScheduleCodeUseTypeName(), harmonizedTariffScheduleCodeUseTransfer);

@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected ApplicationEditorUseSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ApplicationEditorUseSpec spec = CoreUtil.getHome().getApplicationEditorUseSpec();
+        var spec = CoreUtil.getHome().getApplicationEditorUseSpec();
         
         spec.setApplicationName(findParameter(request, ParameterConstants.APPLICATION_NAME, actionForm.getApplicationName()));
         spec.setApplicationEditorUseName(findParameter(request, ParameterConstants.ORIGINAL_APPLICATION_EDITOR_USE_NAME, actionForm.getOriginalApplicationEditorUseName()));
@@ -62,7 +62,7 @@ public class EditAction
     @Override
     protected ApplicationEditorUseEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ApplicationEditorUseEdit edit = CoreUtil.getHome().getApplicationEditorUseEdit();
+        var edit = CoreUtil.getHome().getApplicationEditorUseEdit();
 
         edit.setApplicationEditorUseName(actionForm.getApplicationEditorUseName());
         edit.setDefaultEditorName(actionForm.getDefaultEditorChoice());

@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.tax.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.tax.common.transfer.TaxDescriptionTransfer;
-import com.echothree.model.control.tax.common.transfer.TaxTransfer;
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.TaxDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -33,12 +31,12 @@ public class TaxDescriptionTransferCache
     
     @Override
     public TaxDescriptionTransfer getTransfer(TaxDescription taxDescription) {
-        TaxDescriptionTransfer taxDescriptionTransfer = get(taxDescription);
+        var taxDescriptionTransfer = get(taxDescription);
         
         if(taxDescriptionTransfer == null) {
-            TaxTransferCache taxTransferCache = taxControl.getTaxTransferCaches(userVisit).getTaxTransferCache();
-            TaxTransfer taxTransfer = taxTransferCache.getTransfer(taxDescription.getTax());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, taxDescription.getLanguage());
+            var taxTransferCache = taxControl.getTaxTransferCaches(userVisit).getTaxTransferCache();
+            var taxTransfer = taxTransferCache.getTransfer(taxDescription.getTax());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, taxDescription.getLanguage());
             
             taxDescriptionTransfer = new TaxDescriptionTransfer(languageTransfer, taxTransfer, taxDescription.getDescription());
             put(taxDescription, taxDescriptionTransfer);

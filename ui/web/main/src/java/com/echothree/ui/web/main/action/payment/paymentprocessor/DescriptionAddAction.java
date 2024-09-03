@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.payment.paymentprocessor;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.CreatePaymentProcessorDescriptionForm;
-import com.echothree.control.user.payment.common.form.GetPaymentProcessorForm;
 import com.echothree.control.user.payment.common.result.GetPaymentProcessorResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPaymentProcessorForm commandForm = PaymentUtil.getHome().getGetPaymentProcessorForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentProcessorForm();
 
         commandForm.setPaymentProcessorName(actionForm.getPaymentProcessorName());
-        
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentProcessor(getUserVisitPK(request), commandForm);
+
+        var commandResult = PaymentUtil.getHome().getPaymentProcessor(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPaymentProcessorResult result = (GetPaymentProcessorResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPaymentProcessorResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PAYMENT_PROCESSOR, result.getPaymentProcessor());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePaymentProcessorDescriptionForm commandForm = PaymentUtil.getHome().getCreatePaymentProcessorDescriptionForm();
+        var commandForm = PaymentUtil.getHome().getCreatePaymentProcessorDescriptionForm();
 
         commandForm.setPaymentProcessorName( actionForm.getPaymentProcessorName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

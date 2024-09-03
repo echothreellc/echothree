@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.printergroupusetype;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.CreatePrinterGroupUseTypeForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -51,7 +50,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePrinterGroupUseTypeForm commandForm = PrinterUtil.getHome().getCreatePrinterGroupUseTypeForm();
+        var commandForm = PrinterUtil.getHome().getCreatePrinterGroupUseTypeForm();
 
         commandForm.setPrinterGroupUseTypeName(actionForm.getPrinterGroupUseTypeName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());

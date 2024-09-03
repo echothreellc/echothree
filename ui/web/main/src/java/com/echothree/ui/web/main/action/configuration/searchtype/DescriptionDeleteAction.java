@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.searchtype;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.DeleteSearchTypeDescriptionForm;
-import com.echothree.control.user.search.common.form.GetSearchTypeDescriptionForm;
 import com.echothree.control.user.search.common.result.GetSearchTypeDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -64,16 +61,16 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSearchTypeDescriptionForm commandForm = SearchUtil.getHome().getGetSearchTypeDescriptionForm();
+        var commandForm = SearchUtil.getHome().getGetSearchTypeDescriptionForm();
         
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchTypeName(actionForm.getSearchTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = SearchUtil.getHome().getSearchTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = SearchUtil.getHome().getSearchTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSearchTypeDescriptionResult result = (GetSearchTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.SEARCH_TYPE_DESCRIPTION, result.getSearchTypeDescription());
         }
@@ -82,7 +79,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteSearchTypeDescriptionForm commandForm = SearchUtil.getHome().getDeleteSearchTypeDescriptionForm();
+        var commandForm = SearchUtil.getHome().getDeleteSearchTypeDescriptionForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchTypeName(actionForm.getSearchTypeName());

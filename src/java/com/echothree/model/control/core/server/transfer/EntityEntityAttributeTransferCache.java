@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityEntityAttributeTransfer;
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityEntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -36,12 +34,12 @@ public class EntityEntityAttributeTransferCache
     }
     
     public EntityEntityAttributeTransfer getEntityEntityAttributeTransfer(EntityEntityAttribute entityEntityAttribute, EntityInstance entityInstance) {
-        EntityEntityAttributeTransfer entityEntityAttributeTransfer = get(entityEntityAttribute);
+        var entityEntityAttributeTransfer = get(entityEntityAttribute);
         
         if(entityEntityAttributeTransfer == null) {
-            EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityEntityAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityEntityAttribute.getEntityInstance(), false, false, false, false, false, false);
-            EntityInstanceTransfer entityInstanceAttribute = coreControl.getEntityInstanceTransfer(userVisit, entityEntityAttribute.getEntityInstanceAttribute(), false, false, false, false, false, false);
+            var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityEntityAttribute.getEntityAttribute(), entityInstance) : null;
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityEntityAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var entityInstanceAttribute = coreControl.getEntityInstanceTransfer(userVisit, entityEntityAttribute.getEntityInstanceAttribute(), false, false, false, false, false, false);
             
             entityEntityAttributeTransfer = new EntityEntityAttributeTransfer(entityAttribute, entityInstanceTransfer, entityInstanceAttribute);
             put(entityEntityAttribute, entityEntityAttributeTransfer);

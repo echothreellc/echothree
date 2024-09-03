@@ -21,7 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.returnpolicy.server.value.ReturnKindDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultReturnKindCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        String returnKindName = form.getReturnKindName();
-        ReturnKindDetailValue returnKindDetailValue = returnPolicyControl.getReturnKindDetailValueByNameForUpdate(returnKindName);
+        var returnKindName = form.getReturnKindName();
+        var returnKindDetailValue = returnPolicyControl.getReturnKindDetailValueByNameForUpdate(returnKindName);
         
         if(returnKindDetailValue != null) {
             returnKindDetailValue.setIsDefault(Boolean.TRUE);

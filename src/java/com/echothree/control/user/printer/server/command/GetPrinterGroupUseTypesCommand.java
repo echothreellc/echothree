@@ -17,7 +17,6 @@
 package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.GetPrinterGroupUseTypesForm;
-import com.echothree.control.user.printer.common.result.GetPrinterGroupUseTypesResult;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -47,7 +46,7 @@ public class GetPrinterGroupUseTypesCommand
     @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        GetPrinterGroupUseTypesResult result = PrinterResultFactory.getGetPrinterGroupUseTypesResult();
+        var result = PrinterResultFactory.getGetPrinterGroupUseTypesResult();
 
         result.setPrinterGroupUseTypes(printerControl.getPrinterGroupUseTypeTransfers(getUserVisit()));
         

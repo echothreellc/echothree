@@ -56,7 +56,7 @@ public class TransferPropertiesTag
     @Override
     public int doStartTag()
             throws JspException {
-        TransferPropertiesHolder transferPropertiesHolder = (TransferPropertiesHolder)pageContext.getAttribute(WebConstants.Attribute_TRANSFER_PROPERTIES_HOLDER, PageContext.REQUEST_SCOPE);
+        var transferPropertiesHolder = (TransferPropertiesHolder)pageContext.getAttribute(WebConstants.Attribute_TRANSFER_PROPERTIES_HOLDER, PageContext.REQUEST_SCOPE);
 
         pageContext.setAttribute(WebConstants.Attribute_TRANSFER_PROPERTIES_HOLDER, new TransferPropertiesHolder(transferPropertiesHolder), PageContext.REQUEST_SCOPE);
 
@@ -66,7 +66,7 @@ public class TransferPropertiesTag
     @Override
     public int doEndTag()
             throws JspException {
-        TransferPropertiesHolder currentTransferPropertiesHolder = (TransferPropertiesHolder)pageContext.getAttribute(WebConstants.Attribute_TRANSFER_PROPERTIES_HOLDER, PageContext.REQUEST_SCOPE);
+        var currentTransferPropertiesHolder = (TransferPropertiesHolder)pageContext.getAttribute(WebConstants.Attribute_TRANSFER_PROPERTIES_HOLDER, PageContext.REQUEST_SCOPE);
 
         pageContext.setAttribute(WebConstants.Attribute_TRANSFER_PROPERTIES_HOLDER, currentTransferPropertiesHolder.getPreviousTransferPropertiesHolder(), PageContext.REQUEST_SCOPE);
         pageContext.setAttribute(var, currentTransferPropertiesHolder.getTransferProperties(), scope);

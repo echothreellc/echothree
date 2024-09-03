@@ -25,9 +25,6 @@ import com.echothree.control.user.core.common.spec.CommandMessageTranslationSpec
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.CommandMessage;
 import com.echothree.model.data.core.server.entity.CommandMessageTranslation;
-import com.echothree.model.data.core.server.entity.CommandMessageType;
-import com.echothree.model.data.core.server.value.CommandMessageTranslationValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -76,17 +73,17 @@ public class EditCommandMessageTranslationCommand
     public CommandMessageTranslation getEntity(EditCommandMessageTranslationResult result) {
         var coreControl = getCoreControl();
         CommandMessageTranslation commandMessageTranslation = null;
-        String commandMessageTypeName = spec.getCommandMessageTypeName();
-        CommandMessageType commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+        var commandMessageTypeName = spec.getCommandMessageTypeName();
+        var commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
 
         if(commandMessageType != null) {
-            String commandMessageKey = spec.getCommandMessageKey();
-            CommandMessage commandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
+            var commandMessageKey = spec.getCommandMessageKey();
+            var commandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
 
             if(commandMessage != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -131,7 +128,7 @@ public class EditCommandMessageTranslationCommand
     @Override
     public void doUpdate(CommandMessageTranslation commandMessageTranslation) {
         var coreControl = getCoreControl();
-        CommandMessageTranslationValue commandMessageTranslationValue = coreControl.getCommandMessageTranslationValue(commandMessageTranslation);
+        var commandMessageTranslationValue = coreControl.getCommandMessageTranslationValue(commandMessageTranslation);
         commandMessageTranslationValue.setTranslation(edit.getTranslation());
 
         coreControl.updateCommandMessageTranslationFromValue(commandMessageTranslationValue, getPartyPK());

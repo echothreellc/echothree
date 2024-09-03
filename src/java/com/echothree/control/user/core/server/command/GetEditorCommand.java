@@ -18,12 +18,10 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEditorForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEditorResult;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Editor;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,9 +62,9 @@ public class GetEditorCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEditorResult result = CoreResultFactory.getGetEditorResult();
-        String editorName = form.getEditorName();
-        Editor editor = coreControl.getEditorByName(editorName);
+        var result = CoreResultFactory.getGetEditorResult();
+        var editorName = form.getEditorName();
+        var editor = coreControl.getEditorByName(editorName);
         
         if(editor != null) {
             result.setEditor(coreControl.getEditorTransfer(getUserVisit(), editor));

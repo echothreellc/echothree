@@ -17,9 +17,7 @@
 package com.echothree.model.control.club.server.transfer;
 
 import com.echothree.model.control.club.common.transfer.ClubDescriptionTransfer;
-import com.echothree.model.control.club.common.transfer.ClubTransfer;
 import com.echothree.model.control.club.server.control.ClubControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.club.server.entity.ClubDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class ClubDescriptionTransferCache
     }
     
     public ClubDescriptionTransfer getClubDescriptionTransfer(ClubDescription clubDescription) {
-        ClubDescriptionTransfer clubDescriptionTransfer = get(clubDescription);
+        var clubDescriptionTransfer = get(clubDescription);
         
         if(clubDescriptionTransfer == null) {
-            ClubTransfer clubTransfer = clubControl.getClubTransfer(userVisit, clubDescription.getClub());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, clubDescription.getLanguage());
+            var clubTransfer = clubControl.getClubTransfer(userVisit, clubDescription.getClub());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, clubDescription.getLanguage());
             
             clubDescriptionTransfer = new ClubDescriptionTransfer(languageTransfer, clubTransfer, clubDescription.getDescription());
             put(clubDescription, clubDescriptionTransfer);

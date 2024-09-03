@@ -17,10 +17,8 @@
 package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.GetScaleTypeDescriptionsForm;
-import com.echothree.control.user.scale.common.result.GetScaleTypeDescriptionsResult;
 import com.echothree.control.user.scale.common.result.ScaleResultFactory;
 import com.echothree.model.control.scale.server.control.ScaleControl;
-import com.echothree.model.data.scale.server.entity.ScaleType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,9 +49,9 @@ public class GetScaleTypeDescriptionsCommand
    @Override
     protected BaseResult execute() {
         var scaleControl = Session.getModelController(ScaleControl.class);
-        GetScaleTypeDescriptionsResult result = ScaleResultFactory.getGetScaleTypeDescriptionsResult();
-        String scaleTypeName = form.getScaleTypeName();
-        ScaleType scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
+       var result = ScaleResultFactory.getGetScaleTypeDescriptionsResult();
+       var scaleTypeName = form.getScaleTypeName();
+       var scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
         
         if(scaleType != null) {
             result.setScaleType(scaleControl.getScaleTypeTransfer(getUserVisit(), scaleType));

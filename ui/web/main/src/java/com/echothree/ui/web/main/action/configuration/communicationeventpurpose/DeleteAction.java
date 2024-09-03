@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.communicationeventpurpose;
 
 import com.echothree.control.user.communication.common.CommunicationUtil;
-import com.echothree.control.user.communication.common.form.DeleteCommunicationEventPurposeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteCommunicationEventPurposeForm commandForm = CommunicationUtil.getHome().getDeleteCommunicationEventPurposeForm();
-            String communicationEventPurposeName = request.getParameter(ParameterConstants.COMMUNICATION_EVENT_PURPOSE_NAME);
+            var commandForm = CommunicationUtil.getHome().getDeleteCommunicationEventPurposeForm();
+            var communicationEventPurposeName = request.getParameter(ParameterConstants.COMMUNICATION_EVENT_PURPOSE_NAME);
             
             commandForm.setCommunicationEventPurposeName(communicationEventPurposeName);
             

@@ -21,9 +21,6 @@ import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.document.server.entity.DocumentType;
-import com.echothree.model.data.document.server.entity.DocumentTypeUsage;
-import com.echothree.model.data.document.server.entity.DocumentTypeUsageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,15 +63,15 @@ public class DeleteDocumentTypeUsageCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        String documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
-        DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
+        var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
+        var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
         
         if(documentTypeUsageType != null) {
-            String documentTypeName = form.getDocumentTypeName();
-            DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
+            var documentTypeName = form.getDocumentTypeName();
+            var documentType = documentControl.getDocumentTypeByName(documentTypeName);
             
             if(documentType != null) {
-                DocumentTypeUsage documentTypeUsage = documentControl.getDocumentTypeUsageForUpdate(documentTypeUsageType, documentType);
+                var documentTypeUsage = documentControl.getDocumentTypeUsageForUpdate(documentTypeUsageType, documentType);
                 
                 if(documentTypeUsage != null) {
                     documentControl.deleteDocumentTypeUsage(documentTypeUsage, getPartyPK());

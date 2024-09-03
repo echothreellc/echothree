@@ -25,7 +25,6 @@ import com.echothree.model.control.shipment.common.exception.DuplicateFreeOnBoar
 import com.echothree.model.control.shipment.common.exception.UnknownDefaultFreeOnBoardException;
 import com.echothree.model.control.shipment.common.exception.UnknownFreeOnBoardNameException;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.util.common.message.ExecutionErrors;

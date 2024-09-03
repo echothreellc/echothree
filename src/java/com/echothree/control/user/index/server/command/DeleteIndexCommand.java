@@ -21,7 +21,6 @@ import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,8 +62,8 @@ public class DeleteIndexCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        String indexName = form.getIndexName();
-        Index index = indexControl.getIndexByNameForUpdate(indexName);
+        var indexName = form.getIndexName();
+        var index = indexControl.getIndexByNameForUpdate(indexName);
         
         if(index != null) {
             indexControl.deleteIndex(index, getPartyPK());

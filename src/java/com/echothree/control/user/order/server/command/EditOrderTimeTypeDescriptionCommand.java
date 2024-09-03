@@ -30,8 +30,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderTimeType;
 import com.echothree.model.data.order.server.entity.OrderTimeTypeDescription;
-import com.echothree.model.data.order.server.value.OrderTimeTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -91,18 +89,18 @@ public class EditOrderTimeTypeDescriptionCommand
     public OrderTimeTypeDescription getEntity(EditOrderTimeTypeDescriptionResult result) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderTimeTypeDescription orderTimeTypeDescription = null;
-        String orderTypeName = spec.getOrderTypeName();
+        var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-            String orderTimeTypeName = spec.getOrderTimeTypeName();
-            OrderTimeType orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
+            var orderTimeTypeName = spec.getOrderTimeTypeName();
+            var orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
             if(orderTimeType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -147,7 +145,7 @@ public class EditOrderTimeTypeDescriptionCommand
     @Override
     public void doUpdate(OrderTimeTypeDescription orderTimeTypeDescription) {
         var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-        OrderTimeTypeDescriptionValue orderTimeTypeDescriptionValue = orderTimeControl.getOrderTimeTypeDescriptionValue(orderTimeTypeDescription);
+        var orderTimeTypeDescriptionValue = orderTimeControl.getOrderTimeTypeDescriptionValue(orderTimeTypeDescription);
         
         orderTimeTypeDescriptionValue.setDescription(edit.getDescription());
 

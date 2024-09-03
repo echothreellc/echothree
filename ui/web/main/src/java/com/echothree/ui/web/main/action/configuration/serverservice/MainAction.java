@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.serverservice;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetServerServicesForm;
 import com.echothree.control.user.core.common.result.GetServerServicesResult;
-import com.echothree.model.control.core.common.transfer.ServerTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +48,17 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String serverName = request.getParameter(ParameterConstants.SERVER_NAME);
-        GetServerServicesForm commandForm = CoreUtil.getHome().getGetServerServicesForm();
+        String forwardKey;
+        var serverName = request.getParameter(ParameterConstants.SERVER_NAME);
+        var commandForm = CoreUtil.getHome().getGetServerServicesForm();
 
         commandForm.setServerName(serverName);
 
-        CommandResult commandResult = CoreUtil.getHome().getServerServices(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getServerServices(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetServerServicesResult result = (GetServerServicesResult) executionResult.getResult();
-            ServerTransfer serverTransfer = result.getServer();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetServerServicesResult) executionResult.getResult();
+            var serverTransfer = result.getServer();
 
             request.setAttribute(AttributeConstants.SERVER, serverTransfer);
             request.setAttribute(AttributeConstants.SERVER_SERVICES, result.getServerServices());

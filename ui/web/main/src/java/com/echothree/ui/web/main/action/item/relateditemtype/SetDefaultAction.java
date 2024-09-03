@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.relateditemtype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.SetDefaultRelatedItemTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -48,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultRelatedItemTypeForm commandForm = ItemUtil.getHome().getSetDefaultRelatedItemTypeForm();
+        var commandForm = ItemUtil.getHome().getSetDefaultRelatedItemTypeForm();
 
         commandForm.setRelatedItemTypeName(request.getParameter(ParameterConstants.RELATED_ITEM_TYPE_NAME));
 

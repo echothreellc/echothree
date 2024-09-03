@@ -18,7 +18,6 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentCollectionForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentCollectionResult;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.content.server.entity.ContentCollection;
@@ -53,8 +52,8 @@ public class GetContentCollectionCommand
     @Override
     protected ContentCollection getEntity() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
             sendEvent(contentCollection.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -67,7 +66,7 @@ public class GetContentCollectionCommand
     
     @Override
     protected BaseResult getResult(ContentCollection contentCollection) {
-        GetContentCollectionResult result = ContentResultFactory.getGetContentCollectionResult();
+        var result = ContentResultFactory.getGetContentCollectionResult();
         
         if(contentCollection != null) {
             var contentControl = Session.getModelController(ContentControl.class);

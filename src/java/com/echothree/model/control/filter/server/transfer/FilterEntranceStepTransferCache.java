@@ -17,8 +17,6 @@
 package com.echothree.model.control.filter.server.transfer;
 
 import com.echothree.model.control.filter.common.transfer.FilterEntranceStepTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterStepTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterEntranceStep;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,11 +34,11 @@ public class FilterEntranceStepTransferCache
 
     @Override
     public FilterEntranceStepTransfer getTransfer(FilterEntranceStep filterEntranceStep) {
-        FilterEntranceStepTransfer filterEntranceStepTransfer = get(filterEntranceStep);
+        var filterEntranceStepTransfer = get(filterEntranceStep);
         
         if(filterEntranceStepTransfer == null) {
-            FilterTransfer filter = filterControl.getFilterTransfer(userVisit, filterEntranceStep.getFilter());
-            FilterStepTransfer filterStep = filterControl.getFilterStepTransfer(userVisit, filterEntranceStep.getFilterStep());
+            var filter = filterControl.getFilterTransfer(userVisit, filterEntranceStep.getFilter());
+            var filterStep = filterControl.getFilterStepTransfer(userVisit, filterEntranceStep.getFilterStep());
             
             filterEntranceStepTransfer = new FilterEntranceStepTransfer(filter, filterStep);
             put(filterEntranceStep, filterEntranceStepTransfer);

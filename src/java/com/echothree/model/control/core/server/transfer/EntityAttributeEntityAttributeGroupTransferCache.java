@@ -17,8 +17,6 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityAttributeEntityAttributeGroupTransfer;
-import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
-import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityAttributeEntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -36,12 +34,12 @@ public class EntityAttributeEntityAttributeGroupTransferCache
     }
     
     public EntityAttributeEntityAttributeGroupTransfer getEntityAttributeEntityAttributeGroupTransfer(EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup, EntityInstance entityInstance) {
-        EntityAttributeEntityAttributeGroupTransfer entityAttributeEntityAttributeGroupTransfer = get(entityAttributeEntityAttributeGroup);
+        var entityAttributeEntityAttributeGroupTransfer = get(entityAttributeEntityAttributeGroup);
         
         if(entityAttributeEntityAttributeGroupTransfer == null) {
-            EntityAttributeTransfer entityAttributeTransfer = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityAttributeEntityAttributeGroup.getEntityAttribute(), entityInstance) : null;
-            EntityAttributeGroupTransfer entityAttributeGroupTransfer = entityInstance == null ? coreControl.getEntityAttributeGroupTransfer(userVisit, entityAttributeEntityAttributeGroup.getEntityAttributeGroup(), entityInstance) : null;
-            Integer sortOrder = entityAttributeEntityAttributeGroup.getSortOrder();
+            var entityAttributeTransfer = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityAttributeEntityAttributeGroup.getEntityAttribute(), entityInstance) : null;
+            var entityAttributeGroupTransfer = entityInstance == null ? coreControl.getEntityAttributeGroupTransfer(userVisit, entityAttributeEntityAttributeGroup.getEntityAttributeGroup(), entityInstance) : null;
+            var sortOrder = entityAttributeEntityAttributeGroup.getSortOrder();
             
             entityAttributeEntityAttributeGroupTransfer = new EntityAttributeEntityAttributeGroupTransfer(entityAttributeTransfer, entityAttributeGroupTransfer, sortOrder);
             put(entityAttributeEntityAttributeGroup, entityAttributeEntityAttributeGroupTransfer);

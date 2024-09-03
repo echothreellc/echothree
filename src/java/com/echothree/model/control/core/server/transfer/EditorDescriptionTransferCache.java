@@ -17,9 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EditorDescriptionTransfer;
-import com.echothree.model.control.core.common.transfer.EditorTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.core.server.entity.EditorDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -35,11 +33,11 @@ public class EditorDescriptionTransferCache
     }
     
     public EditorDescriptionTransfer getEditorDescriptionTransfer(EditorDescription editorDescription) {
-        EditorDescriptionTransfer editorDescriptionTransfer = get(editorDescription);
+        var editorDescriptionTransfer = get(editorDescription);
         
         if(editorDescriptionTransfer == null) {
-            EditorTransfer editorTransfer = coreControl.getEditorTransfer(userVisit, editorDescription.getEditor());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, editorDescription.getLanguage());
+            var editorTransfer = coreControl.getEditorTransfer(userVisit, editorDescription.getEditor());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, editorDescription.getLanguage());
             
             editorDescriptionTransfer = new EditorDescriptionTransfer(languageTransfer, editorTransfer, editorDescription.getDescription());
             put(editorDescription, editorDescriptionTransfer);

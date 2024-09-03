@@ -17,9 +17,7 @@
 package com.echothree.control.user.customer.common.result;
 
 import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
-import com.echothree.model.control.offer.common.transfer.OfferCustomerTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
-import java.util.List;
 
 public interface GetCustomerTypeResult
         extends BaseResult {

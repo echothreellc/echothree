@@ -21,7 +21,6 @@ import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contact.server.value.ContactMechanismAliasTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultContactMechanismAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
-        ContactMechanismAliasTypeDetailValue contactMechanismAliasTypeDetailValue = contactControl.getContactMechanismAliasTypeDetailValueByNameForUpdate(contactMechanismAliasTypeName);
+        var contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
+        var contactMechanismAliasTypeDetailValue = contactControl.getContactMechanismAliasTypeDetailValueByNameForUpdate(contactMechanismAliasTypeName);
         
         if(contactMechanismAliasTypeDetailValue != null) {
             contactMechanismAliasTypeDetailValue.setIsDefault(Boolean.TRUE);

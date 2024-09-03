@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.humanresources.terminationtype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetTerminationTypeDescriptionsForm;
 import com.echothree.control.user.employee.common.result.GetTerminationTypeDescriptionsResult;
-import com.echothree.model.control.employee.common.transfer.TerminationTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String terminationTypeName = request.getParameter(ParameterConstants.TERMINATION_TYPE_NAME);
-            GetTerminationTypeDescriptionsForm commandForm = EmployeeUtil.getHome().getGetTerminationTypeDescriptionsForm();
+            var terminationTypeName = request.getParameter(ParameterConstants.TERMINATION_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getGetTerminationTypeDescriptionsForm();
             
             commandForm.setTerminationTypeName(terminationTypeName);
-            
-            CommandResult commandResult = EmployeeUtil.getHome().getTerminationTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTerminationTypeDescriptionsResult result = (GetTerminationTypeDescriptionsResult)executionResult.getResult();
-            TerminationTypeTransfer terminationTypeTransfer = result.getTerminationType();
+
+            var commandResult = EmployeeUtil.getHome().getTerminationTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTerminationTypeDescriptionsResult)executionResult.getResult();
+            var terminationTypeTransfer = result.getTerminationType();
             
             request.setAttribute(AttributeConstants.TERMINATION_TYPE, terminationTypeTransfer);
             request.setAttribute(AttributeConstants.TERMINATION_TYPE_NAME, terminationTypeTransfer.getTerminationTypeName());

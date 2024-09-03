@@ -27,10 +27,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Protocol;
 import com.echothree.model.data.core.server.entity.Service;
-import com.echothree.model.data.core.server.entity.ServiceDescription;
-import com.echothree.model.data.core.server.entity.ServiceDetail;
-import com.echothree.model.data.core.server.value.ServiceDescriptionValue;
-import com.echothree.model.data.core.server.value.ServiceDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -91,8 +87,8 @@ public class EditServiceCommand
     @Override
     public Service getEntity(EditServiceResult result) {
         var coreControl = getCoreControl();
-        Service service = null;
-        String serviceName = spec.getServiceName();
+        Service service;
+        var serviceName = spec.getServiceName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             service = coreControl.getServiceByName(serviceName);
@@ -124,8 +120,8 @@ public class EditServiceCommand
     @Override
     public void doLock(ServiceEdit edit, Service service) {
         var coreControl = getCoreControl();
-        ServiceDescription serviceDescription = coreControl.getServiceDescription(service, getPreferredLanguage());
-        ServiceDetail serviceDetail = service.getLastDetail();
+        var serviceDescription = coreControl.getServiceDescription(service, getPreferredLanguage());
+        var serviceDetail = service.getLastDetail();
 
         edit.setServiceName(serviceDetail.getServiceName());
         edit.setPort(serviceDetail.getPort().toString());
@@ -143,13 +139,13 @@ public class EditServiceCommand
     @Override
     public void canUpdate(Service service) {
         var coreControl = getCoreControl();
-        String serviceName = edit.getServiceName();
-        Service duplicateService = coreControl.getServiceByName(serviceName);
+        var serviceName = edit.getServiceName();
+        var duplicateService = coreControl.getServiceByName(serviceName);
 
         if(duplicateService != null && !service.equals(duplicateService)) {
             addExecutionError(ExecutionErrors.DuplicateServiceName.name(), serviceName);
         } else {
-            String protocolName = edit.getProtocolName();
+            var protocolName = edit.getProtocolName();
 
             protocol = coreControl.getProtocolByName(protocolName);
 
@@ -163,9 +159,9 @@ public class EditServiceCommand
     public void doUpdate(Service service) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        ServiceDetailValue serviceDetailValue = coreControl.getServiceDetailValueForUpdate(service);
-        ServiceDescription serviceDescription = coreControl.getServiceDescriptionForUpdate(service, getPreferredLanguage());
-        String description = edit.getDescription();
+        var serviceDetailValue = coreControl.getServiceDetailValueForUpdate(service);
+        var serviceDescription = coreControl.getServiceDescriptionForUpdate(service, getPreferredLanguage());
+        var description = edit.getDescription();
 
         serviceDetailValue.setServiceName(edit.getServiceName());
         serviceDetailValue.setPort(Integer.valueOf(edit.getPort()));
@@ -182,7 +178,7 @@ public class EditServiceCommand
                 coreControl.deleteServiceDescription(serviceDescription, partyPK);
             } else {
                 if(serviceDescription != null && description != null) {
-                    ServiceDescriptionValue serviceDescriptionValue = coreControl.getServiceDescriptionValue(serviceDescription);
+                    var serviceDescriptionValue = coreControl.getServiceDescriptionValue(serviceDescription);
 
                     serviceDescriptionValue.setDescription(description);
                     coreControl.updateServiceDescriptionFromValue(serviceDescriptionValue, partyPK);

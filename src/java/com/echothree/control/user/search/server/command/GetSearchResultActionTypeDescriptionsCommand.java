@@ -17,13 +17,11 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetSearchResultActionTypeDescriptionsForm;
-import com.echothree.control.user.search.common.result.GetSearchResultActionTypeDescriptionsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.search.server.entity.SearchResultActionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,9 +63,9 @@ public class GetSearchResultActionTypeDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchResultActionTypeDescriptionsResult result = SearchResultFactory.getGetSearchResultActionTypeDescriptionsResult();
-        String searchResultActionTypeName = form.getSearchResultActionTypeName();
-        SearchResultActionType searchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
+        var result = SearchResultFactory.getGetSearchResultActionTypeDescriptionsResult();
+        var searchResultActionTypeName = form.getSearchResultActionTypeName();
+        var searchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
         
         if(searchResultActionType != null) {
             result.setSearchResultActionType(searchControl.getSearchResultActionTypeTransfer(getUserVisit(), searchResultActionType));

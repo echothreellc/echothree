@@ -51,7 +51,7 @@ public class CustomerTypeContactListGroupEditAction
     @Override
     protected CustomerTypeContactListGroupSpec getSpec(HttpServletRequest request, CustomerTypeContactListGroupEditActionForm actionForm)
             throws NamingException {
-        CustomerTypeContactListGroupSpec spec = ContactListUtil.getHome().getCustomerTypeContactListGroupSpec();
+        var spec = ContactListUtil.getHome().getCustomerTypeContactListGroupSpec();
         
         spec.setContactListGroupName(findParameter(request, ParameterConstants.CONTACT_LIST_GROUP_NAME, actionForm.getContactListGroupName()));
         spec.setCustomerTypeName(findParameter(request, ParameterConstants.CUSTOMER_TYPE_NAME, actionForm.getCustomerTypeName()));
@@ -62,7 +62,7 @@ public class CustomerTypeContactListGroupEditAction
     @Override
     protected CustomerTypeContactListGroupEdit getEdit(HttpServletRequest request, CustomerTypeContactListGroupEditActionForm actionForm)
             throws NamingException {
-        CustomerTypeContactListGroupEdit edit = ContactListUtil.getHome().getCustomerTypeContactListGroupEdit();
+        var edit = ContactListUtil.getHome().getCustomerTypeContactListGroupEdit();
 
         edit.setAddWhenCreated(actionForm.getAddWhenCreated().toString());
 

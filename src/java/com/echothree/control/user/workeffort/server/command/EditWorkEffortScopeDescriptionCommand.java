@@ -19,17 +19,11 @@ package com.echothree.control.user.workeffort.server.command;
 import com.echothree.control.user.workeffort.common.edit.WorkEffortEditFactory;
 import com.echothree.control.user.workeffort.common.edit.WorkEffortScopeDescriptionEdit;
 import com.echothree.control.user.workeffort.common.form.EditWorkEffortScopeDescriptionForm;
-import com.echothree.control.user.workeffort.common.result.EditWorkEffortScopeDescriptionResult;
 import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
 import com.echothree.control.user.workeffort.common.spec.WorkEffortScopeDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortScopeDescription;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
-import com.echothree.model.data.workeffort.server.value.WorkEffortScopeDescriptionValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -67,28 +61,28 @@ public class EditWorkEffortScopeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        EditWorkEffortScopeDescriptionResult result = WorkEffortResultFactory.getEditWorkEffortScopeDescriptionResult();
-        String workEffortTypeName = spec.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var result = WorkEffortResultFactory.getEditWorkEffortScopeDescriptionResult();
+        var workEffortTypeName = spec.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-            String workEffortScopeName = spec.getWorkEffortScopeName();
-            WorkEffortScope workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
+            var workEffortScopeName = spec.getWorkEffortScopeName();
+            var workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
             
             if(workEffortScope != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        WorkEffortScopeDescription workEffortScopeDescription = workEffortControl.getWorkEffortScopeDescription(workEffortScope, language);
+                        var workEffortScopeDescription = workEffortControl.getWorkEffortScopeDescription(workEffortScope, language);
                         
                         if(workEffortScopeDescription != null) {
                             result.setWorkEffortScopeDescription(workEffortControl.getWorkEffortScopeDescriptionTransfer(getUserVisit(), workEffortScopeDescription));
                             
                             if(lockEntity(workEffortScope)) {
-                                WorkEffortScopeDescriptionEdit edit = WorkEffortEditFactory.getWorkEffortScopeDescriptionEdit();
+                                var edit = WorkEffortEditFactory.getWorkEffortScopeDescriptionEdit();
                                 
                                 result.setEdit(edit);
                                 edit.setDescription(workEffortScopeDescription.getDescription());
@@ -101,12 +95,12 @@ public class EditWorkEffortScopeDescriptionCommand
                             addExecutionError(ExecutionErrors.UnknownWorkEffortScopeDescription.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        WorkEffortScopeDescriptionValue workEffortScopeDescriptionValue = workEffortControl.getWorkEffortScopeDescriptionValueForUpdate(workEffortScope, language);
+                        var workEffortScopeDescriptionValue = workEffortControl.getWorkEffortScopeDescriptionValueForUpdate(workEffortScope, language);
                         
                         if(workEffortScopeDescriptionValue != null) {
                             if(lockEntityForUpdate(workEffortScope)) {
                                 try {
-                                    String description = edit.getDescription();
+                                    var description = edit.getDescription();
                                     
                                     workEffortScopeDescriptionValue.setDescription(description);
                                     

@@ -18,13 +18,11 @@ package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.GetContactListContactMechanismPurposeChoicesForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
-import com.echothree.control.user.contactlist.common.result.GetContactListContactMechanismPurposeChoicesResult;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -65,14 +63,14 @@ public class GetContactListContactMechanismPurposeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetContactListContactMechanismPurposeChoicesResult result = ContactListResultFactory.getGetContactListContactMechanismPurposeChoicesResult();
-        String contactListName = form.getContactListName();
-        ContactList contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
+        var result = ContactListResultFactory.getGetContactListContactMechanismPurposeChoicesResult();
+        var contactListName = form.getContactListName();
+        var contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
         
         if(!hasExecutionErrors()) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            String defaultContactMechanismPurposeChoice = form.getDefaultContactMechanismPurposeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultContactMechanismPurposeChoice = form.getDefaultContactMechanismPurposeChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setContactListContactMechanismPurposeChoices(contactListControl.getContactListContactMechanismPurposeChoices(defaultContactMechanismPurposeChoice, getPreferredLanguage(), allowNullChoice, contactList));
         }

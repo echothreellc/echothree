@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.common.form.CreatePartyCreditLimitForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,12 +54,12 @@ public class PartyCreditLimitAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
+        var customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
         
         try {
-            PartyCreditLimitAddActionForm actionForm = (PartyCreditLimitAddActionForm)form;
-            CreatePartyCreditLimitForm commandForm = TermUtil.getHome().getCreatePartyCreditLimitForm();
-            String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+            var actionForm = (PartyCreditLimitAddActionForm)form;
+            var commandForm = TermUtil.getHome().getCreatePartyCreditLimitForm();
+            var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
 
             if(customerName == null)
                 customerName = actionForm.getCustomerName();
@@ -73,8 +71,8 @@ public class PartyCreditLimitAddAction
                 commandForm.setCurrencyIsoName(actionForm.getCurrencyChoice());
                 commandForm.setCreditLimit(actionForm.getCreditLimit());
                 commandForm.setPotentialCreditLimit(actionForm.getPotentialCreditLimit());
-                
-                CommandResult commandResult = TermUtil.getHome().createPartyCreditLimit(getUserVisitPK(request), commandForm);
+
+                var commandResult = TermUtil.getHome().createPartyCreditLimit(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);
@@ -91,8 +89,8 @@ public class PartyCreditLimitAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CUSTOMER_NAME, customerName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

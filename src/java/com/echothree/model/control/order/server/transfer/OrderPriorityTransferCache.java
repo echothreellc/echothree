@@ -19,7 +19,6 @@ package com.echothree.model.control.order.server.transfer;
 import com.echothree.model.control.order.common.transfer.OrderPriorityTransfer;
 import com.echothree.model.control.order.server.control.OrderPriorityControl;
 import com.echothree.model.data.order.server.entity.OrderPriority;
-import com.echothree.model.data.order.server.entity.OrderPriorityDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -36,15 +35,15 @@ public class OrderPriorityTransferCache
     }
     
     public OrderPriorityTransfer getOrderPriorityTransfer(OrderPriority orderPriority) {
-        OrderPriorityTransfer orderPriorityTransfer = get(orderPriority);
+        var orderPriorityTransfer = get(orderPriority);
         
         if(orderPriorityTransfer == null) {
-            OrderPriorityDetail orderPriorityDetail = orderPriority.getLastDetail();
-            String orderPriorityName = orderPriorityDetail.getOrderPriorityName();
-            Integer priority = orderPriorityDetail.getPriority();
-            Boolean isDefault = orderPriorityDetail.getIsDefault();
-            Integer sortOrder = orderPriorityDetail.getSortOrder();
-            String description = orderPriorityControl.getBestOrderPriorityDescription(orderPriority, getLanguage());
+            var orderPriorityDetail = orderPriority.getLastDetail();
+            var orderPriorityName = orderPriorityDetail.getOrderPriorityName();
+            var priority = orderPriorityDetail.getPriority();
+            var isDefault = orderPriorityDetail.getIsDefault();
+            var sortOrder = orderPriorityDetail.getSortOrder();
+            var description = orderPriorityControl.getBestOrderPriorityDescription(orderPriority, getLanguage());
             
             orderPriorityTransfer = new OrderPriorityTransfer(orderPriorityName, priority, isDefault, sortOrder, description);
             put(orderPriority, orderPriorityTransfer);

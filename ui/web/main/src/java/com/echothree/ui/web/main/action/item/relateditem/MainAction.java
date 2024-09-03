@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.item.relateditem;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemForm;
 import com.echothree.control.user.item.common.result.GetItemResult;
 import com.echothree.model.control.item.common.ItemOptions;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,9 +51,9 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        String forwardKey;
+        var commandForm = ItemUtil.getHome().getGetItemForm();
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
         
         commandForm.setItemName(itemName);
         
@@ -65,10 +61,10 @@ public class MainAction
         options.add(ItemOptions.ItemIncludeRelatedItems);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemResult result = (GetItemResult)executionResult.getResult();
-        ItemTransfer item = result.getItem();
+        var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemResult)executionResult.getResult();
+        var item = result.getItem();
 
         if(item != null) {
             request.setAttribute(AttributeConstants.ITEM, item);

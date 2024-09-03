@@ -17,7 +17,6 @@
 package com.echothree.model.control.chain.server.transfer;
 
 import com.echothree.model.control.chain.common.transfer.ChainActionSurveyTransfer;
-import com.echothree.model.control.chain.common.transfer.ChainActionTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.survey.common.transfer.SurveyTransfer;
 import com.echothree.model.control.survey.server.control.SurveyControl;
@@ -36,10 +35,10 @@ public class ChainActionSurveyTransferCache
     }
     
     public ChainActionSurveyTransfer getChainActionSurveyTransfer(ChainActionSurvey chainActionSurvey) {
-        ChainActionSurveyTransfer chainActionSurveyTransfer = get(chainActionSurvey);
+        var chainActionSurveyTransfer = get(chainActionSurvey);
         
         if(chainActionSurveyTransfer == null) {
-            ChainActionTransfer chainAction = chainControl.getChainActionTransfer(userVisit, chainActionSurvey.getChainAction());
+            var chainAction = chainControl.getChainActionTransfer(userVisit, chainActionSurvey.getChainAction());
             SurveyTransfer survey = null; // TODO: surveyControl.getSurveyTransfer(userVisit, chainActionSurvey.getSurvey());
             
             chainActionSurveyTransfer = new ChainActionSurveyTransfer(chainAction, survey);

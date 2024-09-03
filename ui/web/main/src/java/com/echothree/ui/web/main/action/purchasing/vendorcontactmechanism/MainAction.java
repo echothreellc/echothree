@@ -17,18 +17,14 @@
 package com.echothree.ui.web.main.action.purchasing.vendorcontactmechanism;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.GetVendorForm;
 import com.echothree.control.user.vendor.common.result.GetVendorResult;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.party.common.PartyOptions;
-import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,9 +54,9 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetVendorForm commandForm = VendorUtil.getHome().getGetVendorForm();
-        String vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = VendorUtil.getHome().getGetVendorForm();
+        var vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         
         commandForm.setVendorName(vendorName);
         commandForm.setPartyName(partyName);
@@ -70,11 +66,11 @@ public class MainAction
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismPurposes);
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismRelationshipsByFromPartyContactMechanism);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
-        
-        CommandResult commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetVendorResult result = (GetVendorResult)executionResult.getResult();
-        VendorTransfer vendor = result.getVendor();
+
+        var commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetVendorResult)executionResult.getResult();
+        var vendor = result.getVendor();
         
         if(vendor == null) {
             forwardKey = ForwardConstants.ERROR_404;

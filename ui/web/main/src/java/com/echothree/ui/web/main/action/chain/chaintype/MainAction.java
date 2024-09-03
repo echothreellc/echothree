@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.chain.chaintype;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.GetChainTypesForm;
 import com.echothree.control.user.chain.common.result.GetChainTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,16 +48,16 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetChainTypesForm commandForm = ChainUtil.getHome().getGetChainTypesForm();
+        String forwardKey;
+        var commandForm = ChainUtil.getHome().getGetChainTypesForm();
 
         commandForm.setChainKindName(request.getParameter(ParameterConstants.CHAIN_KIND_NAME));
 
-        CommandResult commandResult = ChainUtil.getHome().getChainTypes(getUserVisitPK(request), commandForm);
+        var commandResult = ChainUtil.getHome().getChainTypes(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetChainTypesResult result = (GetChainTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetChainTypesResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CHAIN_KIND, result.getChainKind());
             request.setAttribute(AttributeConstants.CHAIN_TYPES, result.getChainTypes());

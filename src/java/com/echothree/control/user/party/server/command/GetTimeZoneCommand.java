@@ -17,7 +17,6 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetTimeZoneForm;
-import com.echothree.control.user.party.common.result.GetTimeZoneResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -25,7 +24,6 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.TimeZoneLogic;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -63,7 +61,7 @@ public class GetTimeZoneCommand
     protected TimeZone getEntity() {
         var partyControl = Session.getModelController(PartyControl.class);
         TimeZone timeZone = null;
-        String timeZoneName = form.getJavaTimeZoneName();
+        var timeZoneName = form.getJavaTimeZoneName();
         var parameterCount = (timeZoneName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
@@ -97,7 +95,7 @@ public class GetTimeZoneCommand
     @Override
     protected BaseResult getResult(TimeZone timeZone) {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetTimeZoneResult result = PartyResultFactory.getGetTimeZoneResult();
+        var result = PartyResultFactory.getGetTimeZoneResult();
 
         if(timeZone != null) {
             result.setTimeZone(partyControl.getTimeZoneTransfer(getUserVisit(), timeZone));

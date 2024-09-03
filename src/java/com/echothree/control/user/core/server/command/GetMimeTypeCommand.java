@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetMimeTypeResult;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -50,8 +49,8 @@ public class GetMimeTypeCommand
     @Override
     protected MimeType getEntity() {
         var coreControl = getCoreControl();
-        String mimeTypeName = form.getMimeTypeName();
-        MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        var mimeTypeName = form.getMimeTypeName();
+        var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType == null) {
             addExecutionError(ExecutionErrors.UnknownMimeTypeName.name(), mimeTypeName);
@@ -63,7 +62,7 @@ public class GetMimeTypeCommand
     @Override
     protected BaseResult getResult(MimeType mimeType) {
         var coreControl = getCoreControl();
-        GetMimeTypeResult result = CoreResultFactory.getGetMimeTypeResult();
+        var result = CoreResultFactory.getGetMimeTypeResult();
 
         if(mimeType != null) {
             result.setMimeType(coreControl.getMimeTypeTransfer(getUserVisit(), mimeType));

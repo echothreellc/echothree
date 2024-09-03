@@ -28,14 +28,8 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnKindDetail;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnType;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnTypeDescription;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnTypeDetail;
-import com.echothree.model.data.returnpolicy.server.value.ReturnTypeDescriptionValue;
-import com.echothree.model.data.returnpolicy.server.value.ReturnTypeDetailValue;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -99,12 +93,12 @@ public class EditReturnTypeCommand
     public ReturnType getEntity(EditReturnTypeResult result) {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         ReturnType returnType = null;
-        String returnKindName = spec.getReturnKindName();
+        var returnKindName = spec.getReturnKindName();
 
         returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
         if(returnKind != null) {
-            String returnTypeName = spec.getReturnTypeName();
+            var returnTypeName = spec.getReturnTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
@@ -139,8 +133,8 @@ public class EditReturnTypeCommand
     @Override
     public void doLock(ReturnTypeEdit edit, ReturnType returnType) {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        ReturnTypeDescription returnTypeDescription = returnPolicyControl.getReturnTypeDescription(returnType, getPreferredLanguage());
-        ReturnTypeDetail returnTypeDetail = returnType.getLastDetail();
+        var returnTypeDescription = returnPolicyControl.getReturnTypeDescription(returnType, getPreferredLanguage());
+        var returnTypeDetail = returnType.getLastDetail();
 
         returnSequence = returnTypeDetail.getReturnSequence();
 
@@ -157,16 +151,16 @@ public class EditReturnTypeCommand
     @Override
     public void canUpdate(ReturnType returnType) {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        ReturnKindDetail returnKindDetail = returnKind.getLastDetail();
-        String returnTypeName = edit.getReturnTypeName();
-        ReturnType duplicateReturnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
+        var returnKindDetail = returnKind.getLastDetail();
+        var returnTypeName = edit.getReturnTypeName();
+        var duplicateReturnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
 
         if(duplicateReturnType != null && !returnType.equals(duplicateReturnType)) {
             addExecutionError(ExecutionErrors.DuplicateReturnTypeName.name(), returnKindDetail.getReturnKindName(), returnTypeName);
         } else {
             var sequenceControl = Session.getModelController(SequenceControl.class);
-            SequenceType returnSequenceType = returnKindDetail.getReturnSequenceType();
-            String returnSequenceName = edit.getReturnSequenceName();
+            var returnSequenceType = returnKindDetail.getReturnSequenceType();
+            var returnSequenceName = edit.getReturnSequenceName();
 
             returnSequence = returnSequenceName == null ? null : sequenceControl.getSequenceByName(returnSequenceType, returnSequenceName);
 
@@ -180,9 +174,9 @@ public class EditReturnTypeCommand
     public void doUpdate(ReturnType returnType) {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var partyPK = getPartyPK();
-        ReturnTypeDetailValue returnTypeDetailValue = returnPolicyControl.getReturnTypeDetailValueForUpdate(returnType);
-        ReturnTypeDescription returnTypeDescription = returnPolicyControl.getReturnTypeDescriptionForUpdate(returnType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var returnTypeDetailValue = returnPolicyControl.getReturnTypeDetailValueForUpdate(returnType);
+        var returnTypeDescription = returnPolicyControl.getReturnTypeDescriptionForUpdate(returnType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         returnTypeDetailValue.setReturnTypeName(edit.getReturnTypeName());
         returnTypeDetailValue.setReturnSequencePK(returnSequence == null ? null : returnSequence.getPrimaryKey());
@@ -196,7 +190,7 @@ public class EditReturnTypeCommand
         } else if(returnTypeDescription != null && description == null) {
             returnPolicyControl.deleteReturnTypeDescription(returnTypeDescription, partyPK);
         } else if(returnTypeDescription != null && description != null) {
-            ReturnTypeDescriptionValue returnTypeDescriptionValue = returnPolicyControl.getReturnTypeDescriptionValue(returnTypeDescription);
+            var returnTypeDescriptionValue = returnPolicyControl.getReturnTypeDescriptionValue(returnTypeDescription);
 
             returnTypeDescriptionValue.setDescription(description);
             returnPolicyControl.updateReturnTypeDescriptionFromValue(returnTypeDescriptionValue, partyPK);

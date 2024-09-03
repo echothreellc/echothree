@@ -17,13 +17,9 @@
 package com.echothree.control.user.message.server.command;
 
 import com.echothree.control.user.message.common.form.GetMessageTypesForm;
-import com.echothree.control.user.message.common.result.GetMessageTypesResult;
 import com.echothree.control.user.message.common.result.MessageResultFactory;
 import com.echothree.model.control.message.server.control.MessageControl;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -53,15 +49,15 @@ public class GetMessageTypesCommand
     
     @Override
     protected BaseResult execute() {
-        GetMessageTypesResult result = MessageResultFactory.getGetMessageTypesResult();
+        var result = MessageResultFactory.getGetMessageTypesResult();
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            UserVisit userVisit = getUserVisit();
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var userVisit = getUserVisit();
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
             

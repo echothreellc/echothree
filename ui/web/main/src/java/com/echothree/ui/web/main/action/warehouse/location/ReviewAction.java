@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.warehouse.location;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.GetLocationForm;
 import com.echothree.control.user.warehouse.common.result.GetLocationResult;
-import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.core.common.CoreOptions;
-import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.warehouse.common.WarehouseOptions;
 import com.echothree.model.control.warehouse.common.transfer.LocationCapacityTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationNameElementTransfer;
@@ -29,8 +26,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -62,12 +57,12 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetLocationForm commandForm = WarehouseUtil.getHome().getGetLocationForm();
-            String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-            String locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
+            var commandForm = WarehouseUtil.getHome().getGetLocationForm();
+            var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+            var locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
             
             commandForm.setWarehouseName(warehouseName);
             commandForm.setLocationName(locationName);
@@ -84,9 +79,9 @@ public class ReviewAction
             options.add(CoreOptions.AppearanceIncludeTextTransformations);
             commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
 
-            CommandResult commandResult = WarehouseUtil.getHome().getLocation(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLocationResult result = (GetLocationResult)executionResult.getResult();
+            var commandResult = WarehouseUtil.getHome().getLocation(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLocationResult)executionResult.getResult();
             Collection<LocationNameElementTransfer> locationNameElements = result.getLocationNameElements();
             Collection<LocationCapacityTransfer> locationCapacities = result.getLocationCapacities();
             

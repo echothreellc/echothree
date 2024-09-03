@@ -20,11 +20,6 @@ import com.echothree.control.user.printer.common.form.CreatePrinterForm;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.common.workflow.PrinterStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.printer.server.entity.Printer;
-import com.echothree.model.data.printer.server.entity.PrinterGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -59,28 +54,28 @@ public class CreatePrinterCommand
     protected BaseResult execute() {
         var coreControl = getCoreControl();
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerName = form.getPrinterName();
-        Printer printer = printerControl.getPrinterByName(printerName);
+       var printerName = form.getPrinterName();
+       var printer = printerControl.getPrinterByName(printerName);
         
         if(printer == null) {
-            String printerGroupName = form.getPrinterGroupName();
-            PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
+            var printerGroupName = form.getPrinterGroupName();
+            var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
             
             if(printerGroup != null) {
                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                Integer priority = Integer.valueOf(form.getPriority());
+                var priority = Integer.valueOf(form.getPriority());
                 var description = form.getDescription();
-                PartyPK createdBy = getPartyPK();
+                var createdBy = getPartyPK();
                 
                 printer = printerControl.createPrinter(printerName, printerGroup, priority, createdBy);
                 
                 if(description != null) {
-                    Language language = getPreferredLanguage();
+                    var language = getPreferredLanguage();
                     
                     printerControl.createPrinterDescription(printer, language, description, createdBy);
                 }
-                
-                EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(printer.getPrimaryKey());
+
+                var entityInstance = coreControl.getEntityInstanceByBasePK(printer.getPrimaryKey());
                 workflowControl.addEntityToWorkflowUsingNames(null, PrinterStatusConstants.Workflow_PRINTER_STATUS, PrinterStatusConstants.WorkflowEntrance_NEW_PRINTER, entityInstance, null, null,
                         createdBy);
             } else {

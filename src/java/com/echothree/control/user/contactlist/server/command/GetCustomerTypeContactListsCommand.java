@@ -18,16 +18,12 @@ package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.GetCustomerTypeContactListsForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
-import com.echothree.control.user.contactlist.common.result.GetCustomerTypeContactListsResult;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
-import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -68,18 +64,18 @@ public class GetCustomerTypeContactListsCommand
     
     @Override
     protected BaseResult execute() {
-        GetCustomerTypeContactListsResult result = ContactListResultFactory.getGetCustomerTypeContactListsResult();
-        String customerTypeName = form.getCustomerTypeName();
-        String contactListName = form.getContactListName();
+        var result = ContactListResultFactory.getGetCustomerTypeContactListsResult();
+        var customerTypeName = form.getCustomerTypeName();
+        var contactListName = form.getContactListName();
         var parameterCount = (customerTypeName != null? 1: 0) + (contactListName != null? 1: 0);
         
         if(parameterCount == 1) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             if(customerTypeName != null) {
                 var customerControl = Session.getModelController(CustomerControl.class);
-                CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+                var customerType = customerControl.getCustomerTypeByName(customerTypeName);
                 
                 if(customerType != null) {
                     result.setCustomerType(customerControl.getCustomerTypeTransfer(userVisit, customerType));
@@ -88,7 +84,7 @@ public class GetCustomerTypeContactListsCommand
                     addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
                 }
             } else if(contactListName != null) {
-                ContactList contactList = contactListControl.getContactListByName(contactListName);
+                var contactList = contactListControl.getContactListByName(contactListName);
                 
                 if(contactList != null) {
                     result.setContactList(contactListControl.getContactListTransfer(userVisit, contactList));

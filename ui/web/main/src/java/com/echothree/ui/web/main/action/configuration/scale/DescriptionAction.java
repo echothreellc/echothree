@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.scale;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.GetScaleDescriptionsForm;
 import com.echothree.control.user.scale.common.result.GetScaleDescriptionsResult;
-import com.echothree.model.control.scale.common.transfer.ScaleTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String scaleName = request.getParameter(ParameterConstants.SCALE_NAME);
-            GetScaleDescriptionsForm commandForm = ScaleUtil.getHome().getGetScaleDescriptionsForm();
+            var scaleName = request.getParameter(ParameterConstants.SCALE_NAME);
+            var commandForm = ScaleUtil.getHome().getGetScaleDescriptionsForm();
             
             commandForm.setScaleName(scaleName);
-            
-            CommandResult commandResult = ScaleUtil.getHome().getScaleDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetScaleDescriptionsResult result = (GetScaleDescriptionsResult)executionResult.getResult();
-            ScaleTransfer scaleTransfer = result.getScale();
+
+            var commandResult = ScaleUtil.getHome().getScaleDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetScaleDescriptionsResult)executionResult.getResult();
+            var scaleTransfer = result.getScale();
             
             request.setAttribute(AttributeConstants.SCALE, scaleTransfer);
             request.setAttribute(AttributeConstants.SCALE_DESCRIPTIONS, result.getScaleDescriptions());

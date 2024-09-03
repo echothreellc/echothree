@@ -19,7 +19,6 @@ package com.echothree.ui.web.main.action.humanresources.employee;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.result.GetPartyTypeResult;
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetEmployeeResultsForm;
 import com.echothree.control.user.search.common.result.GetEmployeeResultsResult;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -30,8 +29,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -85,8 +82,8 @@ public class ResultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetEmployeeResultsForm commandForm = SearchUtil.getHome().getGetEmployeeResultsForm();
-        String results = request.getParameter(ParameterConstants.RESULTS);
+        var commandForm = SearchUtil.getHome().getGetEmployeeResultsForm();
+        var results = request.getParameter(ParameterConstants.RESULTS);
 
         commandForm.setSearchTypeName(SearchTypes.HUMAN_RESOURCES.name());
 
@@ -96,18 +93,18 @@ public class ResultAction
         commandForm.setOptions(options);
 
         if(results == null) {
-            String offsetParameter = request.getParameter(new ParamEncoder("employeeResult").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
-            Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
+            var offsetParameter = request.getParameter(new ParamEncoder("employeeResult").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
+            var offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
             Map<String, Limit> limits = new HashMap<>();
             limits.put(SearchResultConstants.ENTITY_TYPE_NAME, new Limit("20", offset == null ? null : offset.toString()));
             commandForm.setLimits(limits);
         }
 
-        CommandResult commandResult = setCommandResultAttribute(request, SearchUtil.getHome().getEmployeeResults(getUserVisitPK(request), commandForm));
+        var commandResult = setCommandResultAttribute(request, SearchUtil.getHome().getEmployeeResults(getUserVisitPK(request), commandForm));
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmployeeResultsResult result = (GetEmployeeResultsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmployeeResultsResult)executionResult.getResult();
 
             var employeeResultCount = result.getEmployeeResultCount();
             if(employeeResultCount != null) {

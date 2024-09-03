@@ -17,9 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityAttributeGroupDescriptionTransfer;
-import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroupDescription;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,11 +34,11 @@ public class EntityAttributeGroupDescriptionTransferCache
     }
     
     public EntityAttributeGroupDescriptionTransfer getEntityAttributeGroupDescriptionTransfer(EntityAttributeGroupDescription entityAttributeGroupDescription, EntityInstance entityInstance) {
-        EntityAttributeGroupDescriptionTransfer entityAttributeGroupDescriptionTransfer = get(entityAttributeGroupDescription);
+        var entityAttributeGroupDescriptionTransfer = get(entityAttributeGroupDescription);
         
         if(entityAttributeGroupDescriptionTransfer == null) {
-            EntityAttributeGroupTransfer entityAttributeGroupTransfer = entityInstance == null ? coreControl.getEntityAttributeGroupTransfer(userVisit, entityAttributeGroupDescription.getEntityAttributeGroup(), entityInstance) : null;
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, entityAttributeGroupDescription.getLanguage());
+            var entityAttributeGroupTransfer = entityInstance == null ? coreControl.getEntityAttributeGroupTransfer(userVisit, entityAttributeGroupDescription.getEntityAttributeGroup(), entityInstance) : null;
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, entityAttributeGroupDescription.getLanguage());
             
             entityAttributeGroupDescriptionTransfer = new EntityAttributeGroupDescriptionTransfer(languageTransfer, entityAttributeGroupTransfer, entityAttributeGroupDescription.getDescription());
             put(entityAttributeGroupDescription, entityAttributeGroupDescriptionTransfer);

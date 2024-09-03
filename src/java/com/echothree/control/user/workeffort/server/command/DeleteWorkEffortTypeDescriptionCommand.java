@@ -19,10 +19,7 @@ package com.echothree.control.user.workeffort.server.command;
 import com.echothree.control.user.workeffort.common.form.DeleteWorkEffortTypeDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortTypeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -53,16 +50,16 @@ public class DeleteWorkEffortTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                WorkEffortTypeDescription workEffortTypeDescription = workEffortControl.getWorkEffortTypeDescriptionForUpdate(workEffortType, language);
+                var workEffortTypeDescription = workEffortControl.getWorkEffortTypeDescriptionForUpdate(workEffortType, language);
                 
                 if(workEffortTypeDescription != null) {
                     workEffortControl.deleteWorkEffortTypeDescription(workEffortTypeDescription, getPartyPK());

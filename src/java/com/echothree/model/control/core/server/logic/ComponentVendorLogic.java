@@ -23,7 +23,6 @@ import com.echothree.model.control.core.common.exception.InvalidParameterCountEx
 import com.echothree.model.control.core.common.exception.UnknownComponentVendorNameException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;

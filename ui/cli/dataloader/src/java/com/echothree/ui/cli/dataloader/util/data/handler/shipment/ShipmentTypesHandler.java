@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.shipment;
 
 import com.echothree.control.user.shipment.common.ShipmentUtil;
 import com.echothree.control.user.shipment.common.ShipmentService;
-import com.echothree.control.user.shipment.common.form.CreateShipmentTypeForm;
 import com.echothree.control.user.shipment.common.form.ShipmentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -47,7 +46,7 @@ public class ShipmentTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("shipmentType")) {
-            CreateShipmentTypeForm commandForm = ShipmentFormFactory.getCreateShipmentTypeForm();
+            var commandForm = ShipmentFormFactory.getCreateShipmentTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

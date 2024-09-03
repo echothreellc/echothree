@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasurekind;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.edit.UnitOfMeasureKindEdit;
-import com.echothree.control.user.uom.common.form.EditUnitOfMeasureKindForm;
 import com.echothree.control.user.uom.common.result.EditUnitOfMeasureKindResult;
-import com.echothree.control.user.uom.common.spec.UnitOfMeasureKindSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,11 +51,11 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String originalUnitOfMeasureKindName = request.getParameter(ParameterConstants.ORIGINAL_UNIT_OF_MEASURE_KIND_NAME);
-        EditActionForm actionForm = (EditActionForm)form;
-        EditUnitOfMeasureKindForm commandForm = UomUtil.getHome().getEditUnitOfMeasureKindForm();
-        UnitOfMeasureKindSpec spec = UomUtil.getHome().getUnitOfMeasureKindSpec();
+        String forwardKey;
+        var originalUnitOfMeasureKindName = request.getParameter(ParameterConstants.ORIGINAL_UNIT_OF_MEASURE_KIND_NAME);
+        var actionForm = (EditActionForm)form;
+        var commandForm = UomUtil.getHome().getEditUnitOfMeasureKindForm();
+        var spec = UomUtil.getHome().getUnitOfMeasureKindSpec();
         
         if(originalUnitOfMeasureKindName == null)
             originalUnitOfMeasureKindName = actionForm.getOriginalUnitOfMeasureKindName();
@@ -69,7 +64,7 @@ public class EditAction
         spec.setUnitOfMeasureKindName(originalUnitOfMeasureKindName);
         
         if(wasPost(request)) {
-            UnitOfMeasureKindEdit edit = UomUtil.getHome().getUnitOfMeasureKindEdit();
+            var edit = UomUtil.getHome().getUnitOfMeasureKindEdit();
             
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
@@ -79,14 +74,14 @@ public class EditAction
             edit.setIsDefault(actionForm.getIsDefault().toString());
             edit.setSortOrder(actionForm.getSortOrder());
             edit.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = UomUtil.getHome().editUnitOfMeasureKind(getUserVisitPK(request), commandForm);
+
+            var commandResult = UomUtil.getHome().editUnitOfMeasureKind(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditUnitOfMeasureKindResult result = (EditUnitOfMeasureKindResult)executionResult.getResult();
+                    var result = (EditUnitOfMeasureKindResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -99,13 +94,13 @@ public class EditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = UomUtil.getHome().editUnitOfMeasureKind(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditUnitOfMeasureKindResult result = (EditUnitOfMeasureKindResult)executionResult.getResult();
+
+            var commandResult = UomUtil.getHome().editUnitOfMeasureKind(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditUnitOfMeasureKindResult)executionResult.getResult();
             
             if(result != null) {
-                UnitOfMeasureKindEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setOriginalUnitOfMeasureKindName(edit.getUnitOfMeasureKindName());

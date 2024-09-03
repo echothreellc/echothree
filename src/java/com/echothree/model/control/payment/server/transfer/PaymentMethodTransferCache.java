@@ -20,19 +20,12 @@ import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
-import com.echothree.model.data.payment.server.entity.PaymentMethodCheck;
-import com.echothree.model.data.payment.server.entity.PaymentMethodCreditCard;
-import com.echothree.model.data.payment.server.entity.PaymentMethodDetail;
-import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class PaymentMethodTransferCache
         extends BasePaymentTransferCache<PaymentMethod, PaymentMethodTransfer> {
@@ -60,18 +53,18 @@ public class PaymentMethodTransferCache
 
     @Override
     public PaymentMethodTransfer getTransfer(PaymentMethod paymentMethod) {
-        PaymentMethodTransfer paymentMethodTransfer = get(paymentMethod);
+        var paymentMethodTransfer = get(paymentMethod);
         
         if(paymentMethodTransfer == null) {
-            PaymentMethodDetail paymentMethodDetail = paymentMethod.getLastDetail();
-            String paymentMethodName = paymentMethodDetail.getPaymentMethodName();
-            PaymentMethodTypeTransfer paymentMethodTypeTransfer = paymentMethodTypeControl.getPaymentMethodTypeTransfer(userVisit, paymentMethodDetail.getPaymentMethodType());
-            String paymentMethodTypeName = paymentMethodTypeTransfer.getPaymentMethodTypeName();
-            PaymentProcessor paymentProcessor = paymentMethodDetail.getPaymentProcessor();
-            PaymentProcessorTransfer paymentProcessorTransfer = paymentProcessor == null ? null : paymentProcessorControl.getPaymentProcessorTransfer(userVisit, paymentProcessor);
-            Boolean isDefault = paymentMethodDetail.getIsDefault();
-            Integer sortOrder = paymentMethodDetail.getSortOrder();
-            String description = paymentMethodControl.getBestPaymentMethodDescription(paymentMethod, getLanguage());
+            var paymentMethodDetail = paymentMethod.getLastDetail();
+            var paymentMethodName = paymentMethodDetail.getPaymentMethodName();
+            var paymentMethodTypeTransfer = paymentMethodTypeControl.getPaymentMethodTypeTransfer(userVisit, paymentMethodDetail.getPaymentMethodType());
+            var paymentMethodTypeName = paymentMethodTypeTransfer.getPaymentMethodTypeName();
+            var paymentProcessor = paymentMethodDetail.getPaymentProcessor();
+            var paymentProcessorTransfer = paymentProcessor == null ? null : paymentProcessorControl.getPaymentProcessorTransfer(userVisit, paymentProcessor);
+            var isDefault = paymentMethodDetail.getIsDefault();
+            var sortOrder = paymentMethodDetail.getSortOrder();
+            var description = paymentMethodControl.getBestPaymentMethodDescription(paymentMethod, getLanguage());
             Boolean requestNameOnCard = null;
             Boolean requireNameOnCard = null;
             Boolean checkCardNumber = null;
@@ -91,11 +84,11 @@ public class PaymentMethodTransferCache
             Integer holdDays = null;
             
             if(paymentMethodTypeName.equals(PaymentMethodTypes.CHECK.name())) {
-                PaymentMethodCheck paymentMethodCheck = paymentMethodControl.getPaymentMethodCheck(paymentMethod);
+                var paymentMethodCheck = paymentMethodControl.getPaymentMethodCheck(paymentMethod);
                 
                 holdDays = paymentMethodCheck.getHoldDays();
             } else if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
-                PaymentMethodCreditCard paymentMethodCreditCard = paymentMethodControl.getPaymentMethodCreditCard(paymentMethod);
+                var paymentMethodCreditCard = paymentMethodControl.getPaymentMethodCreditCard(paymentMethod);
                 
                 requestNameOnCard = paymentMethodCreditCard.getRequestNameOnCard();
                 requireNameOnCard = paymentMethodCreditCard.getRequireNameOnCard();

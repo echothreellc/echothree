@@ -19,9 +19,6 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.CreateItemCountryOfOriginForm;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemCountryOfOrigin;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,19 +51,19 @@ public class CreateItemCountryOfOriginCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
             var geoControl = Session.getModelController(GeoControl.class);
-            String countryName = form.getCountryName();
-            GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
+            var countryName = form.getCountryName();
+            var countryGeoCode = geoControl.getCountryByAlias(countryName);
             
             if(countryGeoCode != null) {
-                ItemCountryOfOrigin itemCountryOfOrigin = itemControl.getItemCountryOfOrigin(item, countryGeoCode);
+                var itemCountryOfOrigin = itemControl.getItemCountryOfOrigin(item, countryGeoCode);
                 
                 if(itemCountryOfOrigin == null) {
-                    Integer percent = Integer.valueOf(form.getPercent());
+                    var percent = Integer.valueOf(form.getPercent());
                     
                     itemControl.createItemCountryOfOrigin(item, countryGeoCode, percent, getPartyPK());
                 } else {

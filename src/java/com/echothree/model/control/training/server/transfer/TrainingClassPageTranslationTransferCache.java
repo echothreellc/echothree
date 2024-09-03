@@ -16,10 +16,7 @@
 
 package com.echothree.model.control.training.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
-import com.echothree.model.control.training.common.transfer.TrainingClassPageTransfer;
 import com.echothree.model.control.training.common.transfer.TrainingClassPageTranslationTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassPageTranslation;
@@ -37,14 +34,14 @@ public class TrainingClassPageTranslationTransferCache
     }
     
     public TrainingClassPageTranslationTransfer getTrainingClassPageTranslationTransfer(TrainingClassPageTranslation trainingClassPageTranslation) {
-        TrainingClassPageTranslationTransfer trainingClassPageTranslationTransfer = get(trainingClassPageTranslation);
+        var trainingClassPageTranslationTransfer = get(trainingClassPageTranslation);
         
         if(trainingClassPageTranslationTransfer == null) {
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, trainingClassPageTranslation.getLanguage());
-            TrainingClassPageTransfer trainingClassPageTransfer = trainingControl.getTrainingClassPageTransfer(userVisit, trainingClassPageTranslation.getTrainingClassPage());
-            String description = trainingClassPageTranslation.getDescription();
-            MimeTypeTransfer pageMimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit, trainingClassPageTranslation.getPageMimeType());
-            String page = trainingClassPageTranslation.getPage();
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, trainingClassPageTranslation.getLanguage());
+            var trainingClassPageTransfer = trainingControl.getTrainingClassPageTransfer(userVisit, trainingClassPageTranslation.getTrainingClassPage());
+            var description = trainingClassPageTranslation.getDescription();
+            var pageMimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit, trainingClassPageTranslation.getPageMimeType());
+            var page = trainingClassPageTranslation.getPage();
             
             trainingClassPageTranslationTransfer = new TrainingClassPageTranslationTransfer(trainingClassPageTransfer, languageTransfer, description,
                     pageMimeTypeTransfer, page);

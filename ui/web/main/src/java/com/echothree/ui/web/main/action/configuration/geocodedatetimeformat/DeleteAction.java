@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.geocodedatetimeformat;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.DeleteGeoCodeDateTimeFormatForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,11 +51,11 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
+        var geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
         
         try {
-            DeleteGeoCodeDateTimeFormatForm commandForm = GeoUtil.getHome().getDeleteGeoCodeDateTimeFormatForm();
-            String dateTimeFormatName = request.getParameter(ParameterConstants.DATE_TIME_FORMAT_NAME);
+            var commandForm = GeoUtil.getHome().getDeleteGeoCodeDateTimeFormatForm();
+            var dateTimeFormatName = request.getParameter(ParameterConstants.DATE_TIME_FORMAT_NAME);
             
             commandForm.setGeoCodeName(geoCodeName);
             commandForm.setDateTimeFormatName(dateTimeFormatName);
@@ -67,8 +66,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

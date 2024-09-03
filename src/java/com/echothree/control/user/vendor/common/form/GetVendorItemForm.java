@@ -16,8 +16,6 @@
 
 package com.echothree.control.user.vendor.common.form;
 
-import com.echothree.control.user.party.common.spec.PartySpec;
-import com.echothree.control.user.vendor.common.spec.VendorItemSpec;
 import com.echothree.control.user.vendor.common.spec.VendorItemUniversalSpec;
 
 public interface GetVendorItemForm

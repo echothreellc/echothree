@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected ItemUnitOfMeasureTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemUnitOfMeasureTypeSpec spec = ItemUtil.getHome().getItemUnitOfMeasureTypeSpec();
+        var spec = ItemUtil.getHome().getItemUnitOfMeasureTypeSpec();
 
         spec.setItemName(findParameter(request, ParameterConstants.ITEM_NAME, actionForm.getItemName()));
         spec.setUnitOfMeasureTypeName(findParameter(request, ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME, actionForm.getUnitOfMeasureTypeName()));
@@ -62,7 +62,7 @@ public class EditAction
     @Override
     protected ItemUnitOfMeasureTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemUnitOfMeasureTypeEdit edit = ItemUtil.getHome().getItemUnitOfMeasureTypeEdit();
+        var edit = ItemUtil.getHome().getItemUnitOfMeasureTypeEdit();
 
         edit.setIsDefault(actionForm.getIsDefault().toString());
         edit.setSortOrder(actionForm.getSortOrder());

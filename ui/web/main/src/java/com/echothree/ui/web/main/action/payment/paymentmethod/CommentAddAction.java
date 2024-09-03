@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.payment.paymentmethod;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.form.CreateCommentForm;
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.GetPaymentMethodForm;
 import com.echothree.control.user.payment.common.result.GetPaymentMethodResult;
 import com.echothree.model.control.comment.common.CommentConstants;
-import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,14 +54,14 @@ public class CommentAddAction
     
     public String getPaymentMethodEntityRef(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPaymentMethodForm commandForm = PaymentUtil.getHome().getGetPaymentMethodForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentMethodForm();
         
         commandForm.setPaymentMethodName(actionForm.getPaymentMethodName());
-        
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentMethod(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPaymentMethodResult result = (GetPaymentMethodResult)executionResult.getResult();
-        PaymentMethodTransfer paymentMethod = result.getPaymentMethod();
+
+        var commandResult = PaymentUtil.getHome().getPaymentMethod(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPaymentMethodResult)executionResult.getResult();
+        var paymentMethod = result.getPaymentMethod();
         
         request.setAttribute(AttributeConstants.PAYMENT_METHOD, paymentMethod);
         
@@ -83,7 +79,7 @@ public class CommentAddAction
     @Override
     public CommandResult doAdd(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCommentForm commandForm = CommentUtil.getHome().getCreateCommentForm();
+        var commandForm = CommentUtil.getHome().getCreateCommentForm();
 
         commandForm.setEntityRef(getPaymentMethodEntityRef(actionForm, request));
         commandForm.setCommentTypeName(CommentConstants.CommentType_PAYMENT_METHOD);

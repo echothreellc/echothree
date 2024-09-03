@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.contactlist.contactlistgroup;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.GetContactListGroupDescriptionsForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListGroupDescriptionsResult;
-import com.echothree.model.control.contactlist.common.transfer.ContactListGroupTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String contactListGroupName = request.getParameter(ParameterConstants.CONTACT_LIST_GROUP_NAME);
-        GetContactListGroupDescriptionsForm commandForm = ContactListUtil.getHome().getGetContactListGroupDescriptionsForm();
+        var contactListGroupName = request.getParameter(ParameterConstants.CONTACT_LIST_GROUP_NAME);
+        var commandForm = ContactListUtil.getHome().getGetContactListGroupDescriptionsForm();
 
         commandForm.setContactListGroupName(contactListGroupName);
 
-        CommandResult commandResult = ContactListUtil.getHome().getContactListGroupDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ContactListUtil.getHome().getContactListGroupDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListGroupDescriptionsResult result = (GetContactListGroupDescriptionsResult) executionResult.getResult();
-            ContactListGroupTransfer contactListGroupTransfer = result.getContactListGroup();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListGroupDescriptionsResult) executionResult.getResult();
+            var contactListGroupTransfer = result.getContactListGroup();
 
             request.setAttribute(AttributeConstants.CONTACT_LIST_GROUP, contactListGroupTransfer);
             request.setAttribute(AttributeConstants.CONTACT_LIST_GROUP_DESCRIPTIONS, result.getContactListGroupDescriptions());

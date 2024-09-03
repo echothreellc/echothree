@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasurekind;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.form.GetUnitOfMeasureKindDescriptionsForm;
 import com.echothree.control.user.uom.common.result.GetUnitOfMeasureKindDescriptionsResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,14 +51,14 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-            GetUnitOfMeasureKindDescriptionsForm getUnitOfMeasureKindDescriptionsForm = UomUtil.getHome().getGetUnitOfMeasureKindDescriptionsForm();
+            var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+            var getUnitOfMeasureKindDescriptionsForm = UomUtil.getHome().getGetUnitOfMeasureKindDescriptionsForm();
             
             getUnitOfMeasureKindDescriptionsForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
-            
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureKindDescriptions(getUserVisitPK(request), getUnitOfMeasureKindDescriptionsForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureKindDescriptionsResult getUnitOfMeasureKindDescriptionsResult = (GetUnitOfMeasureKindDescriptionsResult)executionResult.getResult();
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureKindDescriptions(getUserVisitPK(request), getUnitOfMeasureKindDescriptionsForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureKindDescriptionsResult = (GetUnitOfMeasureKindDescriptionsResult)executionResult.getResult();
             
             request.setAttribute("unitOfMeasureKind", getUnitOfMeasureKindDescriptionsResult.getUnitOfMeasureKind());
             request.setAttribute("unitOfMeasureKindDescriptions", getUnitOfMeasureKindDescriptionsResult.getUnitOfMeasureKindDescriptions());

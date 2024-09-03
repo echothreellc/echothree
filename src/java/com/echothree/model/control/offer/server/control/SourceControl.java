@@ -22,9 +22,7 @@ import com.echothree.model.control.offer.common.transfer.SourceTransfer;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.common.pk.SourcePK;
 import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.offer.server.entity.OfferUseDetail;
 import com.echothree.model.data.offer.server.entity.Source;
-import com.echothree.model.data.offer.server.entity.SourceDetail;
 import com.echothree.model.data.offer.server.factory.SourceDetailFactory;
 import com.echothree.model.data.offer.server.factory.SourceFactory;
 import com.echothree.model.data.offer.server.value.SourceDetailValue;
@@ -34,11 +32,9 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,11 +51,11 @@ public class SourceControl
     // --------------------------------------------------------------------------------
 
     public Source createSource(String sourceName, OfferUse offerUse, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Source defaultSource = getDefaultSource();
-        boolean defaultFound = defaultSource != null;
+        var defaultSource = getDefaultSource();
+        var defaultFound = defaultSource != null;
 
         if(defaultFound && isDefault) {
-            SourceDetailValue defaultSourceDetailValue = getDefaultSourceDetailValueForUpdate();
+            var defaultSourceDetailValue = getDefaultSourceDetailValueForUpdate();
 
             defaultSourceDetailValue.setIsDefault(Boolean.FALSE);
             updateSourceFromValue(defaultSourceDetailValue, false, createdBy);
@@ -67,8 +63,8 @@ public class SourceControl
             isDefault = Boolean.TRUE;
         }
 
-        Source source = SourceFactory.getInstance().create();
-        SourceDetail sourceDetail = SourceDetailFactory.getInstance().create(source, sourceName, offerUse, isDefault,
+        var source = SourceFactory.getInstance().create();
+        var sourceDetail = SourceDetailFactory.getInstance().create(source, sourceName, offerUse, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -93,8 +89,8 @@ public class SourceControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Source */
     public Source getSourceByEntityInstance(EntityInstance entityInstance) {
-        SourcePK pk = new SourcePK(entityInstance.getEntityUniqueId());
-        Source source = SourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new SourcePK(entityInstance.getEntityUniqueId());
+        var source = SourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return source;
     }
@@ -113,7 +109,7 @@ public class SourceControl
                     "FOR UPDATE";
         }
 
-        PreparedStatement ps = SourceFactory.getInstance().prepareStatement(query);
+        var ps = SourceFactory.getInstance().prepareStatement(query);
 
         return SourceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -145,7 +141,7 @@ public class SourceControl
                     "FOR UPDATE";
         }
 
-        PreparedStatement ps = SourceFactory.getInstance().prepareStatement(query);
+        var ps = SourceFactory.getInstance().prepareStatement(query);
 
         return SourceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -159,7 +155,7 @@ public class SourceControl
     }
 
     private Source getSourceByName(String sourceName, EntityPermission entityPermission) {
-        Source source = null;
+        Source source;
 
         try {
             String query = null;
@@ -175,7 +171,7 @@ public class SourceControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = SourceFactory.getInstance().prepareStatement(query);
+            var ps = SourceFactory.getInstance().prepareStatement(query);
 
             ps.setString(1, sourceName);
 
@@ -204,7 +200,7 @@ public class SourceControl
     }
 
     private List<Source> getSourcesByOfferUse(OfferUse offerUse, EntityPermission entityPermission) {
-        List<Source> sources = null;
+        List<Source> sources;
 
         try {
             String query = null;
@@ -221,7 +217,7 @@ public class SourceControl
                         "FOR UPDATE";
             }
 
-            PreparedStatement ps = SourceFactory.getInstance().prepareStatement(query);
+            var ps = SourceFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, offerUse.getPrimaryKey().getEntityId());
 
@@ -242,7 +238,7 @@ public class SourceControl
     }
 
     public SourceChoicesBean getSourceChoices(String defaultSourceChoice, Language language, boolean allowNullChoice) {
-        List<Source> sources = getSources();
+        var sources = getSources();
         var size = sources.size() + (allowNullChoice? 1: 0);
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -258,7 +254,7 @@ public class SourceControl
         }
 
         for(var source : sources) {
-            SourceDetail sourceDetail = source.getLastDetail();
+            var sourceDetail = source.getLastDetail();
 
             var label = getBestSourceDescription(source, language);
             var value = sourceDetail.getSourceName();
@@ -278,11 +274,11 @@ public class SourceControl
     public String getBestSourceDescription(Source source, Language language) {
         var offerControl = Session.getModelController(OfferControl.class);
         var useControl = Session.getModelController(UseControl.class);
-        SourceDetail sourceDetail = source.getLastDetail();
-        String sourceName = sourceDetail.getSourceName();
-        OfferUseDetail offerUseDetail = sourceDetail.getOfferUse().getLastDetail();
-        String offerDescription = offerControl.getBestOfferDescription(offerUseDetail.getOffer(), language);
-        String useDescription = useControl.getBestUseDescription(offerUseDetail.getUse(), language);
+        var sourceDetail = source.getLastDetail();
+        var sourceName = sourceDetail.getSourceName();
+        var offerUseDetail = sourceDetail.getOfferUse().getLastDetail();
+        var offerDescription = offerControl.getBestOfferDescription(offerUseDetail.getOffer(), language);
+        var useDescription = useControl.getBestUseDescription(offerUseDetail.getUse(), language);
 
         return sourceName + ", " + offerDescription + ", " + useDescription;
     }
@@ -308,26 +304,26 @@ public class SourceControl
     private void updateSourceFromValue(SourceDetailValue sourceDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(sourceDetailValue.hasBeenModified()) {
-            Source source = SourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var source = SourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     sourceDetailValue.getSourcePK());
-            SourceDetail sourceDetail = source.getActiveDetailForUpdate();
+            var sourceDetail = source.getActiveDetailForUpdate();
 
             sourceDetail.setThruTime(session.START_TIME_LONG);
             sourceDetail.store();
 
-            SourcePK sourcePK = sourceDetail.getSourcePK(); // Do not update
-            String sourceName = sourceDetailValue.getSourceName();
-            OfferUse offerUse = sourceDetail.getOfferUse(); // Do not update
-            Boolean isDefault = sourceDetailValue.getIsDefault();
-            Integer sortOrder = sourceDetailValue.getSortOrder();
+            var sourcePK = sourceDetail.getSourcePK(); // Do not update
+            var sourceName = sourceDetailValue.getSourceName();
+            var offerUse = sourceDetail.getOfferUse(); // Do not update
+            var isDefault = sourceDetailValue.getIsDefault();
+            var sortOrder = sourceDetailValue.getSortOrder();
 
             if(checkDefault) {
-                Source defaultSource = getDefaultSource();
-                boolean defaultFound = defaultSource != null && !defaultSource.equals(source);
+                var defaultSource = getDefaultSource();
+                var defaultFound = defaultSource != null && !defaultSource.equals(source);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    SourceDetailValue defaultSourceDetailValue = getDefaultSourceDetailValueForUpdate();
+                    var defaultSourceDetailValue = getDefaultSourceDetailValueForUpdate();
 
                     defaultSourceDetailValue.setIsDefault(Boolean.FALSE);
                     updateSourceFromValue(defaultSourceDetailValue, false, updatedBy);
@@ -353,22 +349,22 @@ public class SourceControl
     }
 
     public void deleteSource(Source source, BasePK deletedBy) {
-        SourceDetail sourceDetail = source.getLastDetailForUpdate();
+        var sourceDetail = source.getLastDetailForUpdate();
         sourceDetail.setThruTime(session.START_TIME_LONG);
         source.setActiveDetail(null);
         source.store();
 
         // Check for default, and pick one if necessary
-        Source defaultSource = getDefaultSource();
+        var defaultSource = getDefaultSource();
         if(defaultSource == null) {
-            List<Source> sources = getSourcesForUpdate();
+            var sources = getSourcesForUpdate();
 
             if(!sources.isEmpty()) {
-                Iterator<Source> iter = sources.iterator();
+                var iter = sources.iterator();
                 if(iter.hasNext()) {
                     defaultSource = iter.next();
                 }
-                SourceDetailValue sourceDetailValue = Objects.requireNonNull(defaultSource).getLastDetailForUpdate().getSourceDetailValue().clone();
+                var sourceDetailValue = Objects.requireNonNull(defaultSource).getLastDetailForUpdate().getSourceDetailValue().clone();
 
                 sourceDetailValue.setIsDefault(Boolean.TRUE);
                 updateSourceFromValue(sourceDetailValue, false, deletedBy);

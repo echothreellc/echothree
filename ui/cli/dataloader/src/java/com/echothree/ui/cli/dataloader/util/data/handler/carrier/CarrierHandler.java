@@ -19,8 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.carrier;
 import com.echothree.control.user.carrier.common.CarrierUtil;
 import com.echothree.control.user.carrier.common.CarrierService;
 import com.echothree.control.user.carrier.common.form.CarrierFormFactory;
-import com.echothree.control.user.carrier.common.form.CreateCarrierOptionForm;
-import com.echothree.control.user.carrier.common.form.CreateCarrierServiceForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.contact.ContactMechanismsHandler;
@@ -58,7 +56,7 @@ public class CarrierHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("carrierService")) {
-            CreateCarrierServiceForm commandForm = CarrierFormFactory.getCreateCarrierServiceForm();
+            var commandForm = CarrierFormFactory.getCreateCarrierServiceForm();
 
             commandForm.setCarrierName(carrierName);
             commandForm.set(getAttrsMap(attrs));
@@ -67,7 +65,7 @@ public class CarrierHandler
 
             initialDataParser.pushHandler(new CarrierServiceHandler(initialDataParser, this, carrierName, commandForm.getCarrierServiceName()));
         } else if(localName.equals("carrierOption")) {
-            CreateCarrierOptionForm commandForm = CarrierFormFactory.getCreateCarrierOptionForm();
+            var commandForm = CarrierFormFactory.getCreateCarrierOptionForm();
 
             commandForm.setCarrierName(carrierName);
             commandForm.set(getAttrsMap(attrs));

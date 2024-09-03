@@ -18,15 +18,11 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.GetForumsForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
-import com.echothree.control.user.forum.common.result.GetForumsResult;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.forum.server.entity.ForumGroup;
-import com.echothree.model.data.forum.server.entity.ForumGroupForum;
 import com.echothree.model.data.forum.server.factory.ForumFactory;
 import com.echothree.model.data.forum.server.factory.ForumGroupForumFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -57,12 +53,12 @@ public class GetForumsCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        GetForumsResult result = ForumResultFactory.getGetForumsResult();
-        String forumGroupName = form.getForumGroupName();
-        ForumGroup forumGroup = forumControl.getForumGroupByName(forumGroupName);
+        var result = ForumResultFactory.getGetForumsResult();
+        var forumGroupName = form.getForumGroupName();
+        var forumGroup = forumControl.getForumGroupByName(forumGroupName);
         
         if(forumGroupName == null || forumGroup != null) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             if(forumGroup == null) {
                 if(session.hasLimit(ForumFactory.class)) {
@@ -71,7 +67,7 @@ public class GetForumsCommand
 
                 result.setForums(forumControl.getForumTransfers(userVisit));
             } else {
-                List<ForumGroupForum> forumGroupForums = forumControl.getForumGroupForumsByForumGroup(forumGroup);
+                var forumGroupForums = forumControl.getForumGroupForumsByForumGroup(forumGroup);
                 List<Forum> forums = new ArrayList<>(forumGroupForums.size());
                 
                 forumGroupForums.forEach((forumGroupForum) -> {

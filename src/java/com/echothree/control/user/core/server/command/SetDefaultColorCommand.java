@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.SetDefaultColorForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.value.ColorDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -61,8 +60,8 @@ public class SetDefaultColorCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String colorName = form.getColorName();
-        ColorDetailValue colorDetailValue = coreControl.getColorDetailValueByNameForUpdate(colorName);
+        var colorName = form.getColorName();
+        var colorDetailValue = coreControl.getColorDetailValueByNameForUpdate(colorName);
         
         if(colorDetailValue != null) {
             colorDetailValue.setIsDefault(Boolean.TRUE);

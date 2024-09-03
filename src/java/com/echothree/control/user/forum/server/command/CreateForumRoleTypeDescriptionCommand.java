@@ -19,9 +19,6 @@ package com.echothree.control.user.forum.server.command;
 import com.echothree.control.user.forum.common.form.CreateForumRoleTypeDescriptionForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.forum.server.entity.ForumRoleType;
-import com.echothree.model.data.forum.server.entity.ForumRoleTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,16 +51,16 @@ public class CreateForumRoleTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumRoleTypeName = form.getForumRoleTypeName();
-        ForumRoleType forumRoleType = forumControl.getForumRoleTypeByName(forumRoleTypeName);
+        var forumRoleTypeName = form.getForumRoleTypeName();
+        var forumRoleType = forumControl.getForumRoleTypeByName(forumRoleTypeName);
         
         if(forumRoleType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ForumRoleTypeDescription forumRoleTypeDescription = forumControl.getForumRoleTypeDescription(forumRoleType, language);
+                var forumRoleTypeDescription = forumControl.getForumRoleTypeDescription(forumRoleType, language);
                 
                 if(forumRoleTypeDescription == null) {
                     var description = form.getDescription();

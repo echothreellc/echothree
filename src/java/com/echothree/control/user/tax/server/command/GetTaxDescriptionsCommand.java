@@ -17,10 +17,8 @@
 package com.echothree.control.user.tax.server.command;
 
 import com.echothree.control.user.tax.common.form.GetTaxDescriptionsForm;
-import com.echothree.control.user.tax.common.result.GetTaxDescriptionsResult;
 import com.echothree.control.user.tax.common.result.TaxResultFactory;
 import com.echothree.model.control.tax.server.control.TaxControl;
-import com.echothree.model.data.tax.server.entity.Tax;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,9 +49,9 @@ public class GetTaxDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var taxControl = Session.getModelController(TaxControl.class);
-        GetTaxDescriptionsResult result = TaxResultFactory.getGetTaxDescriptionsResult();
-        String taxName = form.getTaxName();
-        Tax tax = taxControl.getTaxByName(taxName);
+        var result = TaxResultFactory.getGetTaxDescriptionsResult();
+        var taxName = form.getTaxName();
+        var tax = taxControl.getTaxByName(taxName);
         
         if(tax != null) {
             result.setTax(taxControl.getTaxTransfer(getUserVisit(), tax));

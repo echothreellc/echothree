@@ -20,17 +20,12 @@ import com.echothree.control.user.content.common.edit.ContentEditFactory;
 import com.echothree.control.user.content.common.edit.ContentPageLayoutDescriptionEdit;
 import com.echothree.control.user.content.common.form.EditContentPageLayoutDescriptionForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.EditContentPageLayoutDescriptionResult;
 import com.echothree.control.user.content.common.spec.ContentPageLayoutDescriptionSpec;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentPageLayout;
-import com.echothree.model.data.content.server.entity.ContentPageLayoutDescription;
-import com.echothree.model.data.content.server.value.ContentPageLayoutDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -79,25 +74,25 @@ public class EditContentPageLayoutDescriptionCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        EditContentPageLayoutDescriptionResult result = ContentResultFactory.getEditContentPageLayoutDescriptionResult();
-        String contentPageLayoutName = spec.getContentPageLayoutName();
-        ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
+        var result = ContentResultFactory.getEditContentPageLayoutDescriptionResult();
+        var contentPageLayoutName = spec.getContentPageLayoutName();
+        var contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
         
         if(contentPageLayout != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    ContentPageLayoutDescription contentPageLayoutDescription = contentControl.getContentPageLayoutDescription(contentPageLayout, language);
+                    var contentPageLayoutDescription = contentControl.getContentPageLayoutDescription(contentPageLayout, language);
                     
                     if(contentPageLayoutDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setContentPageLayoutDescription(contentControl.getContentPageLayoutDescriptionTransfer(getUserVisit(), contentPageLayoutDescription));
 
                             if(lockEntity(contentPageLayout)) {
-                                ContentPageLayoutDescriptionEdit edit = ContentEditFactory.getContentPageLayoutDescriptionEdit();
+                                var edit = ContentEditFactory.getContentPageLayoutDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(contentPageLayoutDescription.getDescription());
@@ -113,12 +108,12 @@ public class EditContentPageLayoutDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownContentPageLayoutDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    ContentPageLayoutDescriptionValue contentPageLayoutDescriptionValue = contentControl.getContentPageLayoutDescriptionValueForUpdate(contentPageLayout, language);
+                    var contentPageLayoutDescriptionValue = contentControl.getContentPageLayoutDescriptionValueForUpdate(contentPageLayout, language);
                     
                     if(contentPageLayoutDescriptionValue != null) {
                         if(lockEntityForUpdate(contentPageLayout)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 contentPageLayoutDescriptionValue.setDescription(description);
                                 

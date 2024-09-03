@@ -17,10 +17,8 @@
 package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.GetPrinterGroupJobStatusChoicesForm;
-import com.echothree.control.user.printer.common.result.GetPrinterGroupJobStatusChoicesResult;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.printer.server.control.PrinterControl;
-import com.echothree.model.data.printer.server.entity.PrinterGroupJob;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,12 +50,12 @@ public class GetPrinterGroupJobStatusChoicesCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        GetPrinterGroupJobStatusChoicesResult result = PrinterResultFactory.getGetPrinterGroupJobStatusChoicesResult();
-        String printerGroupJobName = form.getPrinterGroupJobName();
-        PrinterGroupJob printerGroupJob = printerControl.getPrinterGroupJobByName(printerGroupJobName);
+       var result = PrinterResultFactory.getGetPrinterGroupJobStatusChoicesResult();
+       var printerGroupJobName = form.getPrinterGroupJobName();
+       var printerGroupJob = printerControl.getPrinterGroupJobByName(printerGroupJobName);
         
         if(printerGroupJob != null) {
-            String defaultPrinterGroupJobStatusChoice = form.getDefaultPrinterGroupJobStatusChoice();
+            var defaultPrinterGroupJobStatusChoice = form.getDefaultPrinterGroupJobStatusChoice();
             
             result.setPrinterGroupJobStatusChoices(printerControl.getPrinterGroupJobStatusChoices(defaultPrinterGroupJobStatusChoice,
                     getPreferredLanguage(), printerGroupJob, getPartyPK()));

@@ -17,7 +17,6 @@
 package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.GetSelectorComparisonTypeChoicesForm;
-import com.echothree.control.user.selector.common.result.GetSelectorComparisonTypeChoicesResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -50,9 +49,9 @@ public class GetSelectorComparisonTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorComparisonTypeChoicesResult result = SelectorResultFactory.getGetSelectorComparisonTypeChoicesResult();
-        String defaultSelectorComparisonTypeChoice = form.getDefaultSelectorComparisonTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = SelectorResultFactory.getGetSelectorComparisonTypeChoicesResult();
+        var defaultSelectorComparisonTypeChoice = form.getDefaultSelectorComparisonTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setSelectorComparisonTypeChoices(selectorControl.getSelectorComparisonTypeChoices(defaultSelectorComparisonTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

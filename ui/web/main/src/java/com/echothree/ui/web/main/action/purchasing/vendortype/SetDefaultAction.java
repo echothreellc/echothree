@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendortype;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.SetDefaultVendorTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultVendorTypeForm commandForm = VendorUtil.getHome().getSetDefaultVendorTypeForm();
-            String vendorTypeName = request.getParameter(ParameterConstants.VENDOR_TYPE_NAME);
+            var commandForm = VendorUtil.getHome().getSetDefaultVendorTypeForm();
+            var vendorTypeName = request.getParameter(ParameterConstants.VENDOR_TYPE_NAME);
             
             commandForm.setVendorTypeName(vendorTypeName);
             

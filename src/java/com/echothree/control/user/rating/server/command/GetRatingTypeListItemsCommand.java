@@ -17,14 +17,9 @@
 package com.echothree.control.user.rating.server.command;
 
 import com.echothree.control.user.rating.common.form.GetRatingTypeListItemsForm;
-import com.echothree.control.user.rating.common.result.GetRatingTypeListItemsResult;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.model.control.rating.server.control.RatingControl;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -55,22 +50,22 @@ public class GetRatingTypeListItemsCommand
     
     @Override
     protected BaseResult execute() {
-        GetRatingTypeListItemsResult result = RatingResultFactory.getGetRatingTypeListItemsResult();
+        var result = RatingResultFactory.getGetRatingTypeListItemsResult();
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            UserVisit userVisit = getUserVisit();
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var userVisit = getUserVisit();
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
             
             if(entityType != null) {
                 var ratingControl = Session.getModelController(RatingControl.class);
-                String ratingTypeName = form.getRatingTypeName();
-                RatingType ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
+                var ratingTypeName = form.getRatingTypeName();
+                var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 
                 result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
                 

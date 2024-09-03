@@ -19,16 +19,13 @@ package com.echothree.ui.web.main.action.accounting.transactionglaccountcategory
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.common.edit.TransactionGlAccountCategoryDescriptionEdit;
 import com.echothree.control.user.accounting.common.form.EditTransactionGlAccountCategoryDescriptionForm;
-import com.echothree.control.user.accounting.common.form.GetTransactionGlAccountCategoryForm;
 import com.echothree.control.user.accounting.common.result.EditTransactionGlAccountCategoryDescriptionResult;
 import com.echothree.control.user.accounting.common.result.GetTransactionGlAccountCategoryResult;
 import com.echothree.control.user.accounting.common.spec.TransactionGlAccountCategoryDescriptionSpec;
-import com.echothree.model.control.accounting.common.transfer.TransactionGlAccountCategoryDescriptionTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,7 +52,7 @@ public class DescriptionEditAction
     @Override
     protected TransactionGlAccountCategoryDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        TransactionGlAccountCategoryDescriptionSpec spec = AccountingUtil.getHome().getTransactionGlAccountCategoryDescriptionSpec();
+        var spec = AccountingUtil.getHome().getTransactionGlAccountCategoryDescriptionSpec();
         
         spec.setTransactionTypeName(findParameter(request, ParameterConstants.TRANSACTION_TYPE_NAME, actionForm.getTransactionTypeName()));
         spec.setTransactionGlAccountCategoryName(findParameter(request, ParameterConstants.TRANSACTION_GL_ACCOUNT_CATEGORY_NAME, actionForm.getTransactionGlAccountCategoryName()));
@@ -67,7 +64,7 @@ public class DescriptionEditAction
     @Override
     protected TransactionGlAccountCategoryDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        TransactionGlAccountCategoryDescriptionEdit edit = AccountingUtil.getHome().getTransactionGlAccountCategoryDescriptionEdit();
+        var edit = AccountingUtil.getHome().getTransactionGlAccountCategoryDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 
@@ -91,11 +88,11 @@ public class DescriptionEditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditTransactionGlAccountCategoryDescriptionForm commandForm)
             throws Exception {
-        CommandResult commandResult = AccountingUtil.getHome().editTransactionGlAccountCategoryDescription(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditTransactionGlAccountCategoryDescriptionResult result = (EditTransactionGlAccountCategoryDescriptionResult)executionResult.getResult();
+        var commandResult = AccountingUtil.getHome().editTransactionGlAccountCategoryDescription(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditTransactionGlAccountCategoryDescriptionResult)executionResult.getResult();
 
-        TransactionGlAccountCategoryDescriptionTransfer transactionGlAccountCategoryDescription = result.getTransactionGlAccountCategoryDescription();
+        var transactionGlAccountCategoryDescription = result.getTransactionGlAccountCategoryDescription();
         if(transactionGlAccountCategoryDescription != null) {
             request.setAttribute(AttributeConstants.TRANSACTION_GL_ACCOUNT_CATEGORY, transactionGlAccountCategoryDescription.getTransactionGlAccountCategory());
         }
@@ -112,15 +109,15 @@ public class DescriptionEditAction
     @Override
     public void setupTransfer(DescriptionEditActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTransactionGlAccountCategoryForm commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoryForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoryForm();
 
         commandForm.setTransactionTypeName(actionForm.getTransactionTypeName());
         commandForm.setTransactionGlAccountCategoryName(actionForm.getTransactionGlAccountCategoryName());
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionGlAccountCategory(getUserVisitPK(request), commandForm);
+
+        var commandResult = AccountingUtil.getHome().getTransactionGlAccountCategory(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTransactionGlAccountCategoryResult result = (GetTransactionGlAccountCategoryResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionGlAccountCategoryResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRANSACTION_GL_ACCOUNT_CATEGORY, result.getTransactionGlAccountCategory());
         }

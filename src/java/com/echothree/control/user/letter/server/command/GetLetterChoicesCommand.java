@@ -17,15 +17,12 @@
 package com.echothree.control.user.letter.server.command;
 
 import com.echothree.control.user.letter.common.form.GetLetterChoicesForm;
-import com.echothree.control.user.letter.common.result.GetLetterChoicesResult;
 import com.echothree.control.user.letter.common.result.LetterResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,18 +66,18 @@ public class GetLetterChoicesCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetLetterChoicesResult result = LetterResultFactory.getGetLetterChoicesResult();
-        String chainKindName = form.getChainKindName();
-        ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+        var result = LetterResultFactory.getGetLetterChoicesResult();
+        var chainKindName = form.getChainKindName();
+        var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
-            String chainTypeName = form.getChainTypeName();
-            ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+            var chainTypeName = form.getChainTypeName();
+            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
                 var letterControl = Session.getModelController(LetterControl.class);
-                String defaultLetterChoice = form.getDefaultLetterChoice();
-                boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+                var defaultLetterChoice = form.getDefaultLetterChoice();
+                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
                 
                 result.setLetterChoices(letterControl.getLetterChoices(chainType, defaultLetterChoice,
                         getPreferredLanguage(), allowNullChoice));

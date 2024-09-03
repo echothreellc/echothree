@@ -26,11 +26,8 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.EntityTypeDescription;
-import com.echothree.model.data.core.server.value.EntityTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -90,17 +87,17 @@ public class EditEntityTypeDescriptionCommand
     public EntityTypeDescription getEntity(EditEntityTypeDescriptionResult result) {
         var coreControl = getCoreControl();
         EntityTypeDescription entityTypeDescription = null;
-        String componentVendorName = spec.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = spec.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
-            String entityTypeName = spec.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = spec.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -145,7 +142,7 @@ public class EditEntityTypeDescriptionCommand
     @Override
     public void doUpdate(EntityTypeDescription entityTypeDescription) {
         var coreControl = getCoreControl();
-        EntityTypeDescriptionValue entityTypeDescriptionValue = coreControl.getEntityTypeDescriptionValue(entityTypeDescription);
+        var entityTypeDescriptionValue = coreControl.getEntityTypeDescriptionValue(entityTypeDescription);
         entityTypeDescriptionValue.setDescription(edit.getDescription());
 
         coreControl.updateEntityTypeDescriptionFromValue(entityTypeDescriptionValue, getPartyPK());

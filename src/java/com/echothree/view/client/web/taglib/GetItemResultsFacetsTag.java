@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetItemResultsFacetsForm;
 import com.echothree.control.user.search.common.result.GetItemResultsFacetsResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.MapWrapper;
 import javax.naming.NamingException;
@@ -92,15 +89,15 @@ public class GetItemResultsFacetsTag
     @Override
     public int doStartTag() throws JspException {
         try {
-            GetItemResultsFacetsForm commandForm = SearchUtil.getHome().getGetItemResultsFacetsForm();
+            var commandForm = SearchUtil.getHome().getGetItemResultsFacetsForm();
             
             commandForm.setSearchTypeName(searchTypeName);
             
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = SearchUtil.getHome().getItemResultsFacets(getUserVisitPK(), commandForm);
+
+            var commandResult = SearchUtil.getHome().getItemResultsFacets(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -108,8 +105,8 @@ public class GetItemResultsFacetsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemResultsFacetsResult result = (GetItemResultsFacetsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemResultsFacetsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new MapWrapper<>(result.getUserVisitSearchFacets()), scope);
             }

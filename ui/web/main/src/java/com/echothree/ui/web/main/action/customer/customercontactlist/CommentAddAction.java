@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.customer.customercontactlist;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.form.CreateCommentForm;
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.GetPartyContactListForm;
 import com.echothree.control.user.contactlist.common.result.GetPartyContactListResult;
 import com.echothree.model.control.comment.common.CommentConstants;
-import com.echothree.model.control.contactlist.common.transfer.PartyContactListTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -59,15 +55,15 @@ public class CommentAddAction
     
     public String getPartyContactListEntityRef(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartyContactListForm commandForm = ContactListUtil.getHome().getGetPartyContactListForm();
+        var commandForm = ContactListUtil.getHome().getGetPartyContactListForm();
         
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setContactListName(actionForm.getContactListName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getPartyContactList(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyContactListResult result = (GetPartyContactListResult)executionResult.getResult();
-        PartyContactListTransfer partyContactList = result.getPartyContactList();
+
+        var commandResult = ContactListUtil.getHome().getPartyContactList(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyContactListResult)executionResult.getResult();
+        var partyContactList = result.getPartyContactList();
         
         request.setAttribute(AttributeConstants.PARTY_CONTACT_LIST, partyContactList);
         
@@ -87,7 +83,7 @@ public class CommentAddAction
     @Override
     public CommandResult doAdd(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCommentForm commandForm = CommentUtil.getHome().getCreateCommentForm();
+        var commandForm = CommentUtil.getHome().getCreateCommentForm();
 
         commandForm.setEntityRef(getPartyContactListEntityRef(actionForm, request));
         commandForm.setCommentTypeName(CommentConstants.CommentType_PARTY_CONTACT_LIST);

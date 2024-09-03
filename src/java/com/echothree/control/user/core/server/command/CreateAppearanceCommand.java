@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateAppearanceForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.CreateAppearanceResult;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -26,11 +25,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.data.core.server.entity.Appearance;
-import com.echothree.model.data.core.server.entity.Color;
-import com.echothree.model.data.core.server.entity.FontStyle;
-import com.echothree.model.data.core.server.entity.FontWeight;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -78,34 +72,34 @@ public class CreateAppearanceCommand
     
     @Override
     protected BaseResult execute() {
-        CreateAppearanceResult result = CoreResultFactory.getCreateAppearanceResult();
+        var result = CoreResultFactory.getCreateAppearanceResult();
         var coreControl = getCoreControl();
-        String appearanceName = form.getAppearanceName();
+        var appearanceName = form.getAppearanceName();
         
         if(appearanceName == null) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.APPEARANCE.name());
+            var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.APPEARANCE.name());
             
             appearanceName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         }
-        
-        Appearance appearance = coreControl.getAppearanceByName(appearanceName);
+
+        var appearance = coreControl.getAppearanceByName(appearanceName);
         
         if(appearance == null) {
-            String textColorName = form.getTextColorName();
-            Color textColor = textColorName == null ? null : coreControl.getColorByName(textColorName);
+            var textColorName = form.getTextColorName();
+            var textColor = textColorName == null ? null : coreControl.getColorByName(textColorName);
             
             if(textColorName == null || textColor != null) {
-                String backgroundColorName = form.getBackgroundColorName();
-                Color backgroundColor = backgroundColorName == null ? null : coreControl.getColorByName(backgroundColorName);
+                var backgroundColorName = form.getBackgroundColorName();
+                var backgroundColor = backgroundColorName == null ? null : coreControl.getColorByName(backgroundColorName);
 
                 if(backgroundColorName == null || backgroundColor != null) {
-                    String fontStyleName = form.getFontStyleName();
-                    FontStyle fontStyle = fontStyleName == null ? null : AppearanceLogic.getInstance().getFontStyleByName(this, fontStyleName);
+                    var fontStyleName = form.getFontStyleName();
+                    var fontStyle = fontStyleName == null ? null : AppearanceLogic.getInstance().getFontStyleByName(this, fontStyleName);
                     
                     if(!hasExecutionErrors()) {
-                        String fontWeightName = form.getFontWeightName();
-                        FontWeight fontWeight = fontWeightName == null ? null : AppearanceLogic.getInstance().getFontWeightByName(this, fontWeightName);
+                        var fontWeightName = form.getFontWeightName();
+                        var fontWeight = fontWeightName == null ? null : AppearanceLogic.getInstance().getFontWeightByName(this, fontWeightName);
 
                         if(!hasExecutionErrors()) {
                             var partyPK = getPartyPK();

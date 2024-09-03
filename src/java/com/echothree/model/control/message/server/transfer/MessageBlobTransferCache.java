@@ -16,16 +16,12 @@
 
 package com.echothree.model.control.message.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.message.common.transfer.MessageBlobTransfer;
-import com.echothree.model.control.message.common.transfer.MessageTransfer;
 import com.echothree.model.control.message.server.control.MessageControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.message.server.entity.MessageBlob;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.persistence.Session;
 
 public class MessageBlobTransferCache
@@ -43,13 +39,13 @@ public class MessageBlobTransferCache
     }
     
     public MessageBlobTransfer getMessageBlobTransfer(MessageBlob messageBlob) {
-        MessageBlobTransfer messageBlobTransfer = get(messageBlob);
+        var messageBlobTransfer = get(messageBlob);
         
         if(messageBlobTransfer == null) {
-            MessageTransfer message = messageControl.getMessageTransfer(userVisit, messageBlob.getMessage());
-            LanguageTransfer language = partyControl.getLanguageTransfer(userVisit, messageBlob.getLanguage());
-            MimeTypeTransfer mimeType = coreControl.getMimeTypeTransfer(userVisit, messageBlob.getMimeType());
-            ByteArray blob = messageBlob.getBlob();
+            var message = messageControl.getMessageTransfer(userVisit, messageBlob.getMessage());
+            var language = partyControl.getLanguageTransfer(userVisit, messageBlob.getLanguage());
+            var mimeType = coreControl.getMimeTypeTransfer(userVisit, messageBlob.getMimeType());
+            var blob = messageBlob.getBlob();
             
             messageBlobTransfer = new MessageBlobTransfer(message, language, mimeType, blob);
             put(messageBlob, messageBlobTransfer);

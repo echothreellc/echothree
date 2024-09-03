@@ -17,12 +17,9 @@
 package com.echothree.ui.web.main.action.forum.forumgroup;
 
 import com.echothree.control.user.icon.common.IconUtil;
-import com.echothree.control.user.icon.common.form.GetIconChoicesForm;
 import com.echothree.control.user.icon.common.result.GetIconChoicesResult;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.common.choice.IconChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -45,16 +42,16 @@ public class AddActionForm
     private void setupIconChoices()
             throws NamingException {
         if(iconChoices == null) {
-            GetIconChoicesForm commandForm = IconUtil.getHome().getGetIconChoicesForm();
+            var commandForm = IconUtil.getHome().getGetIconChoicesForm();
 
             // TODO: iconUsageType
             commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM_GROUP);
             commandForm.setDefaultIconChoice(iconChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetIconChoicesResult getIconChoicesResult = (GetIconChoicesResult)executionResult.getResult();
+            var commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getIconChoicesResult = (GetIconChoicesResult)executionResult.getResult();
             iconChoices = getIconChoicesResult.getIconChoices();
 
             if(iconChoice == null)

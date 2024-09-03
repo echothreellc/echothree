@@ -18,7 +18,6 @@ package com.echothree.control.user.uom.server.command;
 
 import com.echothree.control.user.uom.common.form.CreateUnitOfMeasureKindUseTypeForm;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,13 +52,13 @@ public class CreateUnitOfMeasureKindUseTypeCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
+        var unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
+        var unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
         
         if(unitOfMeasureKindUseType == null) {
-            Boolean allowMultiple = Boolean.valueOf(form.getAllowMultiple());
+            var allowMultiple = Boolean.valueOf(form.getAllowMultiple());
             var isDefault = Boolean.valueOf(form.getIsDefault());
-            Boolean allowFractionDigits = Boolean.valueOf(form.getAllowFractionDigits());
+            var allowFractionDigits = Boolean.valueOf(form.getAllowFractionDigits());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             
             uomControl.createUnitOfMeasureKindUseType(unitOfMeasureKindUseTypeName, allowMultiple, allowFractionDigits, isDefault, sortOrder);

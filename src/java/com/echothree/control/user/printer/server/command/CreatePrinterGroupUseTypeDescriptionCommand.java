@@ -19,9 +19,6 @@ package com.echothree.control.user.printer.server.command;
 import com.echothree.control.user.printer.common.form.CreatePrinterGroupUseTypeDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.server.control.PrinterControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
-import com.echothree.model.data.printer.server.entity.PrinterGroupUseTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,16 +51,16 @@ public class CreatePrinterGroupUseTypeDescriptionCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
-        PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
+       var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
+       var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
         
         if(printerGroupUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PrinterGroupUseTypeDescription printerDescription = printerControl.getPrinterGroupUseTypeDescription(printerGroupUseType, language);
+                var printerDescription = printerControl.getPrinterGroupUseTypeDescription(printerGroupUseType, language);
                 
                 if(printerDescription == null) {
                     var description = form.getDescription();

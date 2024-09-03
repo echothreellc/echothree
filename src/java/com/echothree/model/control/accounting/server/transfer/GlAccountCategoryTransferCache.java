@@ -19,7 +19,6 @@ package com.echothree.model.control.accounting.server.transfer;
 import com.echothree.model.control.accounting.common.transfer.GlAccountCategoryTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
-import com.echothree.model.data.accounting.server.entity.GlAccountCategoryDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class GlAccountCategoryTransferCache
@@ -34,16 +33,16 @@ public class GlAccountCategoryTransferCache
 
     @Override
     public GlAccountCategoryTransfer getTransfer(GlAccountCategory glAccountCategory) {
-        GlAccountCategoryTransfer glAccountCategoryTransfer = get(glAccountCategory);
+        var glAccountCategoryTransfer = get(glAccountCategory);
 
         if(glAccountCategoryTransfer == null) {
-            GlAccountCategoryDetail glAccountCategoryDetail = glAccountCategory.getLastDetail();
-            String glAccountCategoryName = glAccountCategoryDetail.getGlAccountCategoryName();
-            GlAccountCategory parentGlAccountCategory = glAccountCategoryDetail.getParentGlAccountCategory();
-            GlAccountCategoryTransfer parentGlAccountCategoryTransfer = parentGlAccountCategory == null ? null : getTransfer(parentGlAccountCategory);
-            Boolean isDefault = glAccountCategoryDetail.getIsDefault();
-            Integer sortOrder = glAccountCategoryDetail.getSortOrder();
-            String description = accountingControl.getBestGlAccountCategoryDescription(glAccountCategory, getLanguage());
+            var glAccountCategoryDetail = glAccountCategory.getLastDetail();
+            var glAccountCategoryName = glAccountCategoryDetail.getGlAccountCategoryName();
+            var parentGlAccountCategory = glAccountCategoryDetail.getParentGlAccountCategory();
+            var parentGlAccountCategoryTransfer = parentGlAccountCategory == null ? null : getTransfer(parentGlAccountCategory);
+            var isDefault = glAccountCategoryDetail.getIsDefault();
+            var sortOrder = glAccountCategoryDetail.getSortOrder();
+            var description = accountingControl.getBestGlAccountCategoryDescription(glAccountCategory, getLanguage());
 
             glAccountCategoryTransfer = new GlAccountCategoryTransfer(glAccountCategoryName, parentGlAccountCategoryTransfer, isDefault, sortOrder, description);
             put(glAccountCategory, glAccountCategoryTransfer);

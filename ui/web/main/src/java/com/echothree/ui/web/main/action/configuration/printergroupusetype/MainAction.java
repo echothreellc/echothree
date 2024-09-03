@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.configuration.printergroupusetype;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.GetPrinterGroupUseTypesForm;
 import com.echothree.control.user.printer.common.result.GetPrinterGroupUseTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -50,13 +47,13 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetPrinterGroupUseTypesForm commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypesForm();
+        String forwardKey;
+        var commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypesForm();
 
-        CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupUseTypes(getUserVisitPK(request), commandForm);
+        var commandResult = PrinterUtil.getHome().getPrinterGroupUseTypes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterGroupUseTypesResult result = (GetPrinterGroupUseTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPrinterGroupUseTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PRINTER_GROUP_USE_TYPES, result.getPrinterGroupUseTypes());
             forwardKey = ForwardConstants.DISPLAY;

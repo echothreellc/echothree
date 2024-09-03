@@ -19,7 +19,6 @@ package com.echothree.ui.web.main.servlet;
 import com.echothree.view.client.web.WebConstants;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,7 +34,7 @@ public class ErrorServlet
             String stackTrace = null;
 
             // Check for Struts exception...
-            Object obj = request.getAttribute(Globals.EXCEPTION_KEY);
+            var obj = request.getAttribute(Globals.EXCEPTION_KEY);
 
             // If not found, check for generic servlet exception...
             if(obj == null) {
@@ -48,7 +47,7 @@ public class ErrorServlet
             }
 
             if((obj != null) && (obj instanceof Throwable)) {
-                StringWriter sw = new StringWriter();
+                var sw = new StringWriter();
 
                 ((Throwable)obj).printStackTrace(new PrintWriter(sw));
 
@@ -57,8 +56,8 @@ public class ErrorServlet
 
             request.setAttribute(WebConstants.Attribute_STACK_TRACE, stackTrace);
 
-            String errorUrl = getServletConfig().getInitParameter("errorUrl");
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(errorUrl);
+            var errorUrl = getServletConfig().getInitParameter("errorUrl");
+            var dispatcher = getServletContext().getRequestDispatcher(errorUrl);
             dispatcher.forward(request,response);
         } catch(Exception e) {
             // If another Exception is thrown, just dump a stacktrace.

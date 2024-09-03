@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.chainkind;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.SetDefaultChainKindForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -47,7 +46,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultChainKindForm commandForm = ChainUtil.getHome().getSetDefaultChainKindForm();
+        var commandForm = ChainUtil.getHome().getSetDefaultChainKindForm();
 
         commandForm.setChainKindName(request.getParameter(ParameterConstants.CHAIN_KIND_NAME));
 

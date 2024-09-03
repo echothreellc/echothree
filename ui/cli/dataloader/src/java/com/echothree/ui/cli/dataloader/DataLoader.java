@@ -44,12 +44,12 @@ public class DataLoader {
     
     public static void main(String args[])
             throws Exception {
-        CommandLine line = getCommandLine(args);
-        
-        boolean doInitial = line.hasOption("i");
-        boolean doFile = line.hasOption("f");
-        boolean doZipCode = line.hasOption("z");
-        boolean doHts = line.hasOption("h");
+        var line = getCommandLine(args);
+
+        var doInitial = line.hasOption("i");
+        var doFile = line.hasOption("f");
+        var doZipCode = line.hasOption("z");
+        var doHts = line.hasOption("h");
         
         BaseHandler.setDoErrors(line.hasOption("e"));
         BaseHandler.setDoVerbose(line.hasOption("v"));
@@ -61,7 +61,7 @@ public class DataLoader {
         }
         
         if(doFile) {
-            String filename = line.getOptionValue("f");
+            var filename = line.getOptionValue("f");
 
             logger.info("Loading data from \"" + filename + "\" into database...");
             new InitialDataParser(filename).execute();

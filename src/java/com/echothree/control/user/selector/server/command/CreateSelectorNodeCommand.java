@@ -31,28 +31,21 @@ import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityListItem;
-import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.employee.server.entity.ResponsibilityType;
 import com.echothree.model.data.employee.server.entity.SkillType;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorBooleanType;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorNode;
 import com.echothree.model.data.selector.server.entity.SelectorNodeType;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.form.ValidationResult;
@@ -161,11 +154,11 @@ public class CreateSelectorNodeCommand
     
     @Override
     protected ValidationResult validate() {
-        Validator validator = new Validator(this);
-        ValidationResult validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
+        var validator = new Validator(this);
+        var validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
         
         if(!validationResult.getHasErrors()) {
-            SelectorNodeType selectorNodeType = SelectorNodeTypeLogic.getInstance().getSelectorNodeTypeByName(this, form.getSelectorNodeTypeName());
+            var selectorNodeType = SelectorNodeTypeLogic.getInstance().getSelectorNodeTypeByName(this, form.getSelectorNodeTypeName());
             
             if(!hasExecutionErrors()) {
                 var selectorNodeTypeEnum = SelectorNodeTypes.valueOf(selectorNodeType.getSelectorNodeTypeName());
@@ -217,8 +210,8 @@ public class CreateSelectorNodeCommand
     }
     
     private abstract class BaseSelectorNodeType {
-        SelectorControl selectorControl = null;
-        SelectorNodeType selectorNodeType = null;
+        SelectorControl selectorControl;
+        SelectorNodeType selectorNodeType;
         
         protected BaseSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             this.selectorControl = selectorControl;
@@ -332,15 +325,15 @@ public class CreateSelectorNodeCommand
             super(selectorControl, SelectorNodeTypes.BOOLEAN.name());
             
             if(!hasExecutionErrors()) {
-                String selectorBooleanTypeName = form.getSelectorBooleanTypeName();
+                var selectorBooleanTypeName = form.getSelectorBooleanTypeName();
                 selectorBooleanType = selectorControl.getSelectorBooleanTypeByName(selectorBooleanTypeName);
                 
                 if(selectorBooleanType != null) {
-                    String leftSelectorNodeName = form.getLeftSelectorNodeName();
+                    var leftSelectorNodeName = form.getLeftSelectorNodeName();
                     leftSelectorNode = selectorControl.getSelectorNodeByName(selector, leftSelectorNodeName);
                     
                     if(leftSelectorNode != null) {
-                        String rightSelectorNodeName = form.getRightSelectorNodeName();
+                        var rightSelectorNodeName = form.getRightSelectorNodeName();
                         rightSelectorNode = selectorControl.getSelectorNodeByName(selector, rightSelectorNodeName);
                         
                         if(rightSelectorNode != null) {
@@ -377,19 +370,19 @@ public class CreateSelectorNodeCommand
             super(selectorControl, SelectorNodeTypes.ENTITY_LIST_ITEM.name());
             
             if(!hasExecutionErrors()) {
-                String componentVendorName = form.getComponentVendorName();
-                ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                var componentVendorName = form.getComponentVendorName();
+                var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
                 
                 if(componentVendor != null) {
-                    String entityTypeName = form.getEntityTypeName();
-                    EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                    var entityTypeName = form.getEntityTypeName();
+                    var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
                     
                     if(entityType != null) {
-                        String entityAttributeName = form.getEntityAttributeName();
-                        EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+                        var entityAttributeName = form.getEntityAttributeName();
+                        var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
                         
                         if(entityAttribute != null) {
-                            String entityListItemName = form.getEntityListItemName();
+                            var entityListItemName = form.getEntityListItemName();
                             entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
                             
                             if(entityListItem == null) {
@@ -421,7 +414,7 @@ public class CreateSelectorNodeCommand
             super(selectorControl, SelectorNodeTypes.RESPONSIBILITY_TYPE.name());
             
             if(!hasExecutionErrors()) {
-                String responsiblityTypeName = form.getResponsibilityTypeName();
+                var responsiblityTypeName = form.getResponsibilityTypeName();
                 
                 responsiblityType = employeeControl.getResponsibilityTypeByName(responsiblityTypeName);
                 
@@ -445,7 +438,7 @@ public class CreateSelectorNodeCommand
             super(selectorControl, SelectorNodeTypes.SKILL_TYPE.name());
             
             if(!hasExecutionErrors()) {
-                String skillTypeName = form.getSkillTypeName();
+                var skillTypeName = form.getSkillTypeName();
                 
                 skillType = employeeControl.getSkillTypeByName(skillTypeName);
                 
@@ -469,7 +462,7 @@ public class CreateSelectorNodeCommand
             super(selectorControl, SelectorNodeTypes.TRAINING_CLASS.name());
             
             if(!hasExecutionErrors()) {
-                String trainingClassName = form.getTrainingClassName();
+                var trainingClassName = form.getTrainingClassName();
                 
                 trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
                 
@@ -493,11 +486,11 @@ public class CreateSelectorNodeCommand
             super(selectorControl, SelectorNodeTypes.TRAINING_CLASS.name());
             
             if(!hasExecutionErrors()) {
-                String workflowName = form.getWorkflowName();
+                var workflowName = form.getWorkflowName();
                 var workflow = workflowControl.getWorkflowByName(workflowName);
                 
                 if(workflow != null) {
-                    String workflowStepName = form.getWorkflowStepName();
+                    var workflowStepName = form.getWorkflowStepName();
                     
                     workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
                     
@@ -524,7 +517,7 @@ public class CreateSelectorNodeCommand
             super(selectorControl, SelectorNodeTypes.ITEM_CATEGORY.name());
             
             if(!hasExecutionErrors()) {
-                String itemCategoryName = form.getItemCategoryName();
+                var itemCategoryName = form.getItemCategoryName();
                 
                 itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
                 
@@ -536,7 +529,7 @@ public class CreateSelectorNodeCommand
         
         @Override
         public void execute(SelectorNode selectorNode, PartyPK partyPK) {
-            Boolean checkParents = Boolean.valueOf(form.getCheckParents());
+            var checkParents = Boolean.valueOf(form.getCheckParents());
             
             selectorControl.createSelectorNodeItemCategory(selectorNode, itemCategory, checkParents, partyPK);
         }
@@ -550,7 +543,7 @@ public class CreateSelectorNodeCommand
             super(selectorControl, SelectorNodeTypes.ITEM_ACCOUNTING_CATEGORY.name());
             
             if(!hasExecutionErrors()) {
-                String itemAccountingCategoryName = form.getItemAccountingCategoryName();
+                var itemAccountingCategoryName = form.getItemAccountingCategoryName();
                 
                 itemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
                 
@@ -562,7 +555,7 @@ public class CreateSelectorNodeCommand
         
         @Override
         public void execute(SelectorNode selectorNode, PartyPK partyPK) {
-            Boolean checkParents = Boolean.valueOf(form.getCheckParents());
+            var checkParents = Boolean.valueOf(form.getCheckParents());
             
             selectorControl.createSelectorNodeItemAccountingCategory(selectorNode, itemAccountingCategory, checkParents, partyPK);
         }
@@ -576,7 +569,7 @@ public class CreateSelectorNodeCommand
             super(selectorControl, SelectorNodeTypes.ITEM_PURCHASING_CATEGORY.name());
             
             if(!hasExecutionErrors()) {
-                String itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
+                var itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
                 
                 itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
                 
@@ -588,7 +581,7 @@ public class CreateSelectorNodeCommand
         
         @Override
         public void execute(SelectorNode selectorNode, PartyPK partyPK) {
-            Boolean checkParents = Boolean.valueOf(form.getCheckParents());
+            var checkParents = Boolean.valueOf(form.getCheckParents());
             
             selectorControl.createSelectorNodeItemPurchasingCategory(selectorNode, itemPurchasingCategory, checkParents, partyPK);
         }
@@ -602,7 +595,7 @@ public class CreateSelectorNodeCommand
             super(selectorControl, SelectorNodeTypes.PAYMENT_METHOD.name());
             
             if(!hasExecutionErrors()) {
-                String paymentMethodName = form.getPaymentMethodName();
+                var paymentMethodName = form.getPaymentMethodName();
                 
                 paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
                 
@@ -626,7 +619,7 @@ public class CreateSelectorNodeCommand
             super(selectorControl, SelectorNodeTypes.PAYMENT_PROCESSOR.name());
             
             if(!hasExecutionErrors()) {
-                String paymentProcessorName = form.getPaymentProcessorName();
+                var paymentProcessorName = form.getPaymentProcessorName();
                 
                 paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
                 
@@ -650,8 +643,8 @@ public class CreateSelectorNodeCommand
             super(selectorControl, SelectorNodeTypes.PAYMENT_PROCESSOR.name());
             
             if(!hasExecutionErrors()) {
-                String geoCodeName = form.getGeoCodeName();
-                String countryName = form.getCountryName();
+                var geoCodeName = form.getGeoCodeName();
+                var countryName = form.getCountryName();
                 var parameterCount = (geoCodeName == null ? 0 : 1) + (countryName == null ? 0 : 1);
                 
                 if(parameterCount == 1) {
@@ -684,24 +677,24 @@ public class CreateSelectorNodeCommand
     protected BaseResult execute() {
         if(!hasExecutionErrors()) {
             var selectorControl = Session.getModelController(SelectorControl.class);
-            String selectorKindName = form.getSelectorKindName();
-            SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+            var selectorKindName = form.getSelectorKindName();
+            var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
 
             if(selectorKind != null) {
-                String selectorTypeName = form.getSelectorTypeName();
-                SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
+                var selectorTypeName = form.getSelectorTypeName();
+                var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
 
                 if(selectorType != null) {
-                    String selectorName = form.getSelectorName();
-                    Selector selector = selectorControl.getSelectorByName(selectorType, selectorName);
+                    var selectorName = form.getSelectorName();
+                    var selector = selectorControl.getSelectorByName(selectorType, selectorName);
 
                     if(selector != null) {
-                        String selectorNodeName = form.getSelectorNodeName();
-                        SelectorNode selectorNode = selectorControl.getSelectorNodeByName(selector, selectorNodeName);
+                        var selectorNodeName = form.getSelectorNodeName();
+                        var selectorNode = selectorControl.getSelectorNodeByName(selector, selectorNodeName);
 
                         if(selectorNode == null) {
-                            String selectorNodeTypeName = form.getSelectorNodeTypeName();
-                            SelectorNodeType selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
+                            var selectorNodeTypeName = form.getSelectorNodeTypeName();
+                            var selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
 
                             if(selectorNodeType != null) {
                                 selectorNodeTypeName = selectorNodeType.getSelectorNodeTypeName();
@@ -753,8 +746,8 @@ public class CreateSelectorNodeCommand
 
                                     if(!hasExecutionErrors()) {
                                         var partyPK = getPartyPK();
-                                        Boolean isRootSelectorNode = Boolean.valueOf(form.getIsRootSelectorNode());
-                                        Boolean negate = Boolean.valueOf(form.getNegate());
+                                        var isRootSelectorNode = Boolean.valueOf(form.getIsRootSelectorNode());
+                                        var negate = Boolean.valueOf(form.getNegate());
                                         var description = form.getDescription();
 
                                         selectorNode = selectorControl.createSelectorNode(selector, selectorNodeName, isRootSelectorNode,
@@ -763,7 +756,7 @@ public class CreateSelectorNodeCommand
                                         baseSelectorNodeType.execute(selectorNode, partyPK);
 
                                         if(description != null) {
-                                            Language language = getPreferredLanguage();
+                                            var language = getPreferredLanguage();
 
                                             selectorControl.createSelectorNodeDescription(selectorNode, language, description, partyPK);
                                         }

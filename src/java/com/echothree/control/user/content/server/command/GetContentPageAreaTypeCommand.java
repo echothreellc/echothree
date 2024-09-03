@@ -18,7 +18,6 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentPageAreaTypeForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentPageAreaTypeResult;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.content.server.logic.ContentPageAreaTypeLogic;
 import com.echothree.model.control.core.common.EventTypes;
@@ -56,7 +55,7 @@ public class GetContentPageAreaTypeCommand
     
     @Override
     protected ContentPageAreaType getEntity() {
-        ContentPageAreaType contentPageAreaType = ContentPageAreaTypeLogic.getInstance().getContentPageAreaTypeByUniversalSpec(this, form);
+        var contentPageAreaType = ContentPageAreaTypeLogic.getInstance().getContentPageAreaTypeByUniversalSpec(this, form);
 
         if(contentPageAreaType != null) {
             sendEvent(contentPageAreaType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -68,7 +67,7 @@ public class GetContentPageAreaTypeCommand
     @Override
     protected BaseResult getResult(ContentPageAreaType contentPageAreaType) {
         var contentControl = Session.getModelController(ContentControl.class);
-        GetContentPageAreaTypeResult result = ContentResultFactory.getGetContentPageAreaTypeResult();
+        var result = ContentResultFactory.getGetContentPageAreaTypeResult();
 
         if(contentPageAreaType != null) {
             result.setContentPageAreaType(contentControl.getContentPageAreaTypeTransfer(getUserVisit(), contentPageAreaType));

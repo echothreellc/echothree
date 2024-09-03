@@ -18,14 +18,11 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.GetGeoCodeLanguagesForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
-import com.echothree.control.user.geo.common.result.GetGeoCodeLanguagesResult;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,14 +65,14 @@ public class GetGeoCodeLanguagesCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetGeoCodeLanguagesResult result = GeoResultFactory.getGetGeoCodeLanguagesResult();
-        String geoCodeName = form.getGeoCodeName();
-        String languageIsoName = form.getLanguageIsoName();
+        var result = GeoResultFactory.getGetGeoCodeLanguagesResult();
+        var geoCodeName = form.getGeoCodeName();
+        var languageIsoName = form.getLanguageIsoName();
         var parameterCount = (geoCodeName != null? 1: 0) + (languageIsoName != null? 1: 0);
         
         if(parameterCount == 1) {
             if(geoCodeName != null) {
-                GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+                var geoCode = geoControl.getGeoCodeByName(geoCodeName);
                 
                 if(geoCode != null) {
                     result.setGeoCode(geoControl.getGeoCodeTransfer(getUserVisit(), geoCode));
@@ -85,7 +82,7 @@ public class GetGeoCodeLanguagesCommand
                 }
             } else if(languageIsoName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
                     result.setLanguage(partyControl.getLanguageTransfer(getUserVisit(), language));

@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.accounting.companyprintergroupuse;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetCompanyForm;
 import com.echothree.control.user.party.common.result.GetCompanyResult;
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.GetPartyPrinterGroupUseForm;
 import com.echothree.control.user.printer.common.result.GetPartyPrinterGroupUseResult;
 import com.echothree.model.control.printer.common.transfer.PartyPrinterGroupUseTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionForm;
@@ -38,13 +34,13 @@ public abstract class BaseCompanyPrinterGroupUseAction<A
 
     public static void setupCompany(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetCompanyForm commandForm = PartyUtil.getHome().getGetCompanyForm();
+        var commandForm = PartyUtil.getHome().getGetCompanyForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCompanyResult result = (GetCompanyResult)executionResult.getResult();
+        var commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCompanyResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.COMPANY, result.getCompany());
     }
@@ -56,14 +52,14 @@ public abstract class BaseCompanyPrinterGroupUseAction<A
 
     public static PartyPrinterGroupUseTransfer getPartyPrinterGroupUseTransfer(HttpServletRequest request, String partyName, String printerGroupUseTypeName)
             throws NamingException {
-        GetPartyPrinterGroupUseForm commandForm = PrinterUtil.getHome().getGetPartyPrinterGroupUseForm();
+        var commandForm = PrinterUtil.getHome().getGetPartyPrinterGroupUseForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setPrinterGroupUseTypeName(printerGroupUseTypeName);
 
-        CommandResult commandResult = PrinterUtil.getHome().getPartyPrinterGroupUse(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyPrinterGroupUseResult result = (GetPartyPrinterGroupUseResult)executionResult.getResult();
+        var commandResult = PrinterUtil.getHome().getPartyPrinterGroupUse(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyPrinterGroupUseResult)executionResult.getResult();
 
         return result.getPartyPrinterGroupUse();
     }

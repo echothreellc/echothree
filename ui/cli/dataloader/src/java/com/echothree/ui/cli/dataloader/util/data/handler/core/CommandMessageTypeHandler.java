@@ -19,8 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.core;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.form.CreateCommandMessageForm;
-import com.echothree.control.user.core.common.form.CreateCommandMessageTypeDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -51,14 +49,14 @@ public class CommandMessageTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("commandMessageTypeDescription")) {
-            CreateCommandMessageTypeDescriptionForm commandForm = CoreFormFactory.getCreateCommandMessageTypeDescriptionForm();
+            var commandForm = CoreFormFactory.getCreateCommandMessageTypeDescriptionForm();
             
             commandForm.setCommandMessageTypeName(commandMessageTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             coreService.createCommandMessageTypeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("commandMessage")) {
-            CreateCommandMessageForm commandForm = CoreFormFactory.getCreateCommandMessageForm();
+            var commandForm = CoreFormFactory.getCreateCommandMessageForm();
 
             commandForm.setCommandMessageTypeName(commandMessageTypeName);
             commandForm.set(getAttrsMap(attrs));

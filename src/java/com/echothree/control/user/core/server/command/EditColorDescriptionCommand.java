@@ -28,8 +28,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ColorDescription;
-import com.echothree.model.data.core.server.value.ColorDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -88,13 +86,13 @@ public class EditColorDescriptionCommand
     public ColorDescription getEntity(EditColorDescriptionResult result) {
         var coreControl = getCoreControl();
         ColorDescription colorDescription = null;
-        String colorName = spec.getColorName();
-        Color color = coreControl.getColorByName(colorName);
+        var colorName = spec.getColorName();
+        var color = coreControl.getColorByName(colorName);
 
         if(color != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -136,7 +134,7 @@ public class EditColorDescriptionCommand
     @Override
     public void doUpdate(ColorDescription colorDescription) {
         var coreControl = getCoreControl();
-        ColorDescriptionValue colorDescriptionValue = coreControl.getColorDescriptionValue(colorDescription);
+        var colorDescriptionValue = coreControl.getColorDescriptionValue(colorDescription);
         colorDescriptionValue.setDescription(edit.getDescription());
 
         coreControl.updateColorDescriptionFromValue(colorDescriptionValue, getPartyPK());

@@ -17,7 +17,6 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemForm;
-import com.echothree.control.user.item.common.result.GetItemResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -90,7 +89,7 @@ public class GetItemCommand
     @Override
     protected BaseResult getResult(Item item) {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemResult result = ItemResultFactory.getGetItemResult();
+        var result = ItemResultFactory.getGetItemResult();
 
         if(item != null) {
             result.setItem(itemControl.getItemTransfer(getUserVisit(), item));

@@ -21,10 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnReason;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnReasonType;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -70,19 +66,19 @@ public class CreateReturnReasonTypeCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
-            String returnReasonName = form.getReturnReasonName();
-            ReturnReason returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
+            var returnReasonName = form.getReturnReasonName();
+            var returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
             
             if(returnReason != null) {
-                String returnTypeName = form.getReturnTypeName();
-                ReturnType returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
+                var returnTypeName = form.getReturnTypeName();
+                var returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
                 
                 if(returnType != null) {
-                    ReturnReasonType returnReasonType = returnPolicyControl.getReturnReasonType(returnReason, returnType);
+                    var returnReasonType = returnPolicyControl.getReturnReasonType(returnReason, returnType);
                     
                     if(returnReasonType == null) {
                         var isDefault = Boolean.valueOf(form.getIsDefault());

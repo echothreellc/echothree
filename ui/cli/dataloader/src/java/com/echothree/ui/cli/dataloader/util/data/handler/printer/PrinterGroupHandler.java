@@ -18,9 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.printer;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
 import com.echothree.control.user.printer.common.PrinterService;
-import com.echothree.control.user.printer.common.form.CreatePrinterForm;
-import com.echothree.control.user.printer.common.form.CreatePrinterGroupDescriptionForm;
-import com.echothree.control.user.printer.common.form.CreatePrinterGroupJobForm;
 import com.echothree.control.user.printer.common.form.PrinterFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -63,14 +60,14 @@ public class PrinterGroupHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("printerGroupDescription")) {
-            CreatePrinterGroupDescriptionForm commandForm = PrinterFormFactory.getCreatePrinterGroupDescriptionForm();
+            var commandForm = PrinterFormFactory.getCreatePrinterGroupDescriptionForm();
 
             commandForm.setPrinterGroupName(printerGroupName);
             commandForm.set(getAttrsMap(attrs));
 
             printerService.createPrinterGroupDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("printer")) {
-            CreatePrinterForm commandForm = PrinterFormFactory.getCreatePrinterForm();
+            var commandForm = PrinterFormFactory.getCreatePrinterForm();
 
             commandForm.setPrinterGroupName(printerGroupName);
             commandForm.set(getAttrsMap(attrs));
@@ -89,8 +86,8 @@ public class PrinterGroupHandler
     public void characters(char ch[], int start, int length)
             throws SAXException {
         if(inPrinterGroupJob) {
-            int oldLength = clob != null? clob.length: 0;
-            char []newClob = new char[oldLength + length];
+            var oldLength = clob != null? clob.length: 0;
+            var newClob = new char[oldLength + length];
 
             if(clob != null) {
                 System.arraycopy(clob, 0, newClob, 0, clob.length);
@@ -106,23 +103,23 @@ public class PrinterGroupHandler
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
         if(localName.equals("printerGroupJob")) {
-            CreatePrinterGroupJobForm commandForm = PrinterFormFactory.getCreatePrinterGroupJobForm();
+            var commandForm = PrinterFormFactory.getCreatePrinterGroupJobForm();
 
             commandForm.setPrinterGroupName(printerGroupName);
             commandForm.set(createPrinterGroupJobMap);
             commandForm.setClob(clob == null ? null : new String(clob));
 
-            String path = (String)createPrinterGroupJobMap.get("Path");
+            var path = (String)createPrinterGroupJobMap.get("Path");
             if(path != null) {
-                File file = new File(path);
-                long length = file.length();
+                var file = new File(path);
+                var length = file.length();
 
                 if(length < Integer.MAX_VALUE) {
                     try {
                         InputStream is = new FileInputStream(file);
-                        byte[] bytes = new byte[(int)length];
-                        int offset = 0;
-                        int numRead = 0;
+                        var bytes = new byte[(int)length];
+                        var offset = 0;
+                        var numRead = 0;
 
                         while(offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
                             offset += numRead;

@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.workflowentrancepartytype;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.GetWorkflowEntrancePartyTypesForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowEntrancePartyTypesResult;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,16 +48,16 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetWorkflowEntrancePartyTypesForm commandForm = WorkflowUtil.getHome().getGetWorkflowEntrancePartyTypesForm();
+        String forwardKey;
+        var commandForm = WorkflowUtil.getHome().getGetWorkflowEntrancePartyTypesForm();
         
         commandForm.setWorkflowName(request.getParameter(ParameterConstants.WORKFLOW_NAME));
         commandForm.setWorkflowEntranceName(request.getParameter(ParameterConstants.WORKFLOW_ENTRANCE_NAME));
-        
-        CommandResult commandResult = WorkflowUtil.getHome().getWorkflowEntrancePartyTypes(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetWorkflowEntrancePartyTypesResult result = (GetWorkflowEntrancePartyTypesResult)executionResult.getResult();
-        WorkflowEntranceTransfer workflowEntrance = result.getWorkflowEntrance();
+
+        var commandResult = WorkflowUtil.getHome().getWorkflowEntrancePartyTypes(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetWorkflowEntrancePartyTypesResult)executionResult.getResult();
+        var workflowEntrance = result.getWorkflowEntrance();
         
         if(workflowEntrance == null) {
             forwardKey = ForwardConstants.ERROR_404;

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.printer;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.DeletePrinterDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,12 +51,12 @@ public class DescriptionDeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
-        String printerName = request.getParameter(ParameterConstants.PRINTER_NAME);
+        var printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
+        var printerName = request.getParameter(ParameterConstants.PRINTER_NAME);
         
         try {
-            String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-            DeletePrinterDescriptionForm commandForm = PrinterUtil.getHome().getDeletePrinterDescriptionForm();
+            var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+            var commandForm = PrinterUtil.getHome().getDeletePrinterDescriptionForm();
             
             commandForm.setPrinterName(printerName);
             commandForm.setLanguageIsoName(languageIsoName);
@@ -68,8 +67,8 @@ public class DescriptionDeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(2);
             

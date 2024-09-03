@@ -17,7 +17,6 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetSearchSortDirectionForm;
-import com.echothree.control.user.search.common.result.GetSearchSortDirectionResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -27,7 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -73,8 +71,8 @@ public class GetSearchSortDirectionCommand
     
     @Override
     protected BaseResult execute() {
-        GetSearchSortDirectionResult result = SearchResultFactory.getGetSearchSortDirectionResult();
-        String searchSortDirectionName = form.getSearchSortDirectionName();
+        var result = SearchResultFactory.getGetSearchSortDirectionResult();
+        var searchSortDirectionName = form.getSearchSortDirectionName();
         var parameterCount = (searchSortDirectionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

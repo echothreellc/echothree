@@ -18,8 +18,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.DeleteForumMessageAttachmentForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.forum.server.entity.ForumMessage;
-import com.echothree.model.data.forum.server.entity.ForumMessageAttachment;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,12 +49,12 @@ public class DeleteForumMessageAttachmentCommand
     @Override
     protected BaseResult execute() {
         var forumControl = Session.getModelController(ForumControl.class);
-        String forumMessageName = form.getForumMessageName();
-        ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
+        var forumMessageName = form.getForumMessageName();
+        var forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
         
         if(forumMessage != null) {
-            Integer forumMessageAttachmentSequence = Integer.valueOf(form.getForumMessageAttachmentSequence());
-            ForumMessageAttachment forumMessageAttachment = forumControl.getForumMessageAttachmentBySequenceForUpdate(forumMessage, forumMessageAttachmentSequence);
+            var forumMessageAttachmentSequence = Integer.valueOf(form.getForumMessageAttachmentSequence());
+            var forumMessageAttachment = forumControl.getForumMessageAttachmentBySequenceForUpdate(forumMessage, forumMessageAttachmentSequence);
 
             if(forumMessageAttachment != null) {
                 forumControl.deleteForumMessageAttachment(forumMessageAttachment, getPartyPK());

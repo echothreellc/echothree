@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.companydocument;
 
 import com.echothree.model.control.document.common.DocumentOptions;
-import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -52,7 +51,7 @@ public class ClobViewAction
         Set<String> options = new HashSet<>();
         options.add(DocumentOptions.DocumentIncludeClob);
 
-        PartyDocumentTransfer partyDocument = setupPartyDocumentTransfer(request, options);
+        var partyDocument = setupPartyDocumentTransfer(request, options);
 
         if(partyDocument != null) {
             forwardKey = ForwardConstants.DISPLAY;

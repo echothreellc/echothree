@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.period;
 
 import com.echothree.control.user.period.common.PeriodUtil;
 import com.echothree.control.user.period.common.PeriodService;
-import com.echothree.control.user.period.common.form.CreatePeriodTypeDescriptionForm;
 import com.echothree.control.user.period.common.form.PeriodFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -52,7 +51,7 @@ public class PeriodTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("periodTypeDescription")) {
-            CreatePeriodTypeDescriptionForm commandForm = PeriodFormFactory.getCreatePeriodTypeDescriptionForm();
+            var commandForm = PeriodFormFactory.getCreatePeriodTypeDescriptionForm();
 
             commandForm.setPeriodKindName(periodKindName);
             commandForm.setPeriodTypeName(periodTypeName);

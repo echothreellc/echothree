@@ -70,12 +70,12 @@ public class DependencyTag
     @Override
     public int doStartTag()
             throws JspException {
-        EntityRefs currentEntityRefs = (EntityRefs)pageContext.getAttribute(WebConstants.Attribute_ENTITY_REFS, PageContext.REQUEST_SCOPE);
+        var currentEntityRefs = (EntityRefs)pageContext.getAttribute(WebConstants.Attribute_ENTITY_REFS, PageContext.REQUEST_SCOPE);
         
         if(currentEntityRefs == null) {
             throw new JspException("cacheDependency may only be used inside the body of a cache tag.");
         } else {
-            EntityRefExclusions entityRefExclusions = excludedComponentVendorNames == null && excludedEntityTypeNames == null && excludedEntityRefs == null ?
+            var entityRefExclusions = excludedComponentVendorNames == null && excludedEntityTypeNames == null && excludedEntityRefs == null ?
                 null : new EntityRefExclusions(excludedComponentVendorNames, excludedEntityTypeNames, excludedEntityRefs);
 
             // Add to the current one, and all its parents (in the cache of nested cache tags).

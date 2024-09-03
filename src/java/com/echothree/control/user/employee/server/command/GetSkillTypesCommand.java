@@ -18,7 +18,6 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.GetSkillTypesForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.common.result.GetSkillTypesResult;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -46,7 +45,7 @@ public class GetSkillTypesCommand
     
     @Override
     protected BaseResult execute() {
-        GetSkillTypesResult result = EmployeeResultFactory.getGetSkillTypesResult();
+        var result = EmployeeResultFactory.getGetSkillTypesResult();
         var employeeControl = Session.getModelController(EmployeeControl.class);
         
         result.setSkillTypes(employeeControl.getSkillTypeTransfers(getUserVisit()));

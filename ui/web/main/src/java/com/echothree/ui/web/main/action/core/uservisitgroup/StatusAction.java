@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.core.uservisitgroup;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.SetUserVisitGroupStatusForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -52,8 +50,8 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, StatusActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String userVisitGroupName = request.getParameter(ParameterConstants.USER_VISIT_GROUP_NAME);
-        SetUserVisitGroupStatusForm commandForm = UserUtil.getHome().getSetUserVisitGroupStatusForm();
+        var userVisitGroupName = request.getParameter(ParameterConstants.USER_VISIT_GROUP_NAME);
+        var commandForm = UserUtil.getHome().getSetUserVisitGroupStatusForm();
 
         if(userVisitGroupName == null) {
             userVisitGroupName = actionForm.getUserVisitGroupName();
@@ -62,7 +60,7 @@ public class StatusAction
             commandForm.setUserVisitGroupName(userVisitGroupName);
             commandForm.setUserVisitGroupStatusChoice(actionForm.getUserVisitGroupStatusChoice());
 
-            CommandResult commandResult = UserUtil.getHome().setUserVisitGroupStatus(getUserVisitPK(request), commandForm);
+            var commandResult = UserUtil.getHome().setUserVisitGroupStatus(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -76,7 +74,7 @@ public class StatusAction
             forwardKey = ForwardConstants.FORM;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.USER_VISIT_GROUP_NAME, userVisitGroupName);
         }

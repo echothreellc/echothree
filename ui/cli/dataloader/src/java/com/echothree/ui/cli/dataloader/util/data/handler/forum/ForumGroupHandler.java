@@ -18,12 +18,9 @@ package com.echothree.ui.cli.dataloader.util.data.handler.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
 import com.echothree.control.user.forum.common.ForumService;
-import com.echothree.control.user.forum.common.form.CreateForumGroupDescriptionForm;
-import com.echothree.control.user.forum.common.form.CreateForumGroupForumForm;
 import com.echothree.control.user.forum.common.form.ForumFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import java.util.Map;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -50,16 +47,16 @@ public class ForumGroupHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("forumGroupDescription")) {
-            CreateForumGroupDescriptionForm commandForm = ForumFormFactory.getCreateForumGroupDescriptionForm();
-            Map<String, Object> attrsMap = getAttrsMap(attrs);
+            var commandForm = ForumFormFactory.getCreateForumGroupDescriptionForm();
+            var attrsMap = getAttrsMap(attrs);
             
             commandForm.setForumGroupName(forumGroupName);
             commandForm.set(attrsMap);
             
             forumService.createForumGroupDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("forumGroupForum")) {
-            CreateForumGroupForumForm commandForm = ForumFormFactory.getCreateForumGroupForumForm();
-            Map<String, Object> attrsMap = getAttrsMap(attrs);
+            var commandForm = ForumFormFactory.getCreateForumGroupForumForm();
+            var attrsMap = getAttrsMap(attrs);
             
             commandForm.setForumGroupName(forumGroupName);
             commandForm.set(attrsMap);

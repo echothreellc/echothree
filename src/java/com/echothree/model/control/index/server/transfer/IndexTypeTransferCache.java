@@ -16,17 +16,13 @@
 
 package com.echothree.model.control.index.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.index.common.IndexOptions;
 import com.echothree.model.control.index.common.transfer.IndexTypeTransfer;
 import com.echothree.model.control.index.server.control.IndexControl;
-import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.index.server.entity.IndexType;
-import com.echothree.model.data.index.server.entity.IndexTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class IndexTypeTransferCache
         extends BaseIndexTransferCache<IndexType, IndexTypeTransfer> {
@@ -47,16 +43,16 @@ public class IndexTypeTransferCache
     }
 
     public IndexTypeTransfer getIndexTypeTransfer(IndexType indexType) {
-        IndexTypeTransfer indexTypeTransfer = get(indexType);
+        var indexTypeTransfer = get(indexType);
 
         if(indexTypeTransfer == null) {
-            IndexTypeDetail indexTypeDetail = indexType.getLastDetail();
-            String indexTypeName = indexTypeDetail.getIndexTypeName();
-            EntityType entityType = indexTypeDetail.getEntityType();
-            EntityTypeTransfer entityTypeTransfer = entityType == null ? null : coreControl.getEntityTypeTransfer(userVisit, entityType);
-            Boolean isDefault = indexTypeDetail.getIsDefault();
-            Integer sortOrder = indexTypeDetail.getSortOrder();
-            String description = indexControl.getBestIndexTypeDescription(indexType, getLanguage());
+            var indexTypeDetail = indexType.getLastDetail();
+            var indexTypeName = indexTypeDetail.getIndexTypeName();
+            var entityType = indexTypeDetail.getEntityType();
+            var entityTypeTransfer = entityType == null ? null : coreControl.getEntityTypeTransfer(userVisit, entityType);
+            var isDefault = indexTypeDetail.getIsDefault();
+            var sortOrder = indexTypeDetail.getSortOrder();
+            var description = indexControl.getBestIndexTypeDescription(indexType, getLanguage());
 
             indexTypeTransfer = new IndexTypeTransfer(indexTypeName, entityTypeTransfer, isDefault, sortOrder, description);
             put(indexType, indexTypeTransfer);

@@ -133,11 +133,11 @@ public abstract class CmsBaseDownloadAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String eTag = getETag(request);
-        String previousETag = request.getHeader("If-None-Match");
+        var eTag = getETag(request);
+        var previousETag = request.getHeader("If-None-Match");
 
         if(eTag != null && (previousETag != null && previousETag.equals(eTag))) { // compare previous token with current one
-            String ifModifiedSince = request.getHeader("If-Modified-Since");
+            var ifModifiedSince = request.getHeader("If-Modified-Since");
 
             response.sendError(HttpServletResponse.SC_NOT_MODIFIED);
 
@@ -147,15 +147,15 @@ public abstract class CmsBaseDownloadAction
                 response.setHeader("Last-Modified", request.getHeader("If-Modified-Since"));
             }
         } else {
-            StreamInfo info = getStreamInfo(mapping, form, request, response);
+            var info = getStreamInfo(mapping, form, request, response);
 
             if(info == null) {
                 forwardKey = ForwardConstants.ERROR_404;
             } else {
-                InputStream stream = info.getInputStream();
+                var stream = info.getInputStream();
 
                 try {
-                    Long lastModified = info.getLastModified();
+                    var lastModified = info.getLastModified();
 
                     // If both eTag and lastModified are set, then we'll include the ETag and Last-Modified headers
                     // in the response. Otherwise, the returned information is not-cachable.
@@ -194,9 +194,9 @@ public abstract class CmsBaseDownloadAction
      */
     public int copy(InputStream input, OutputStream output)
         throws IOException {
-        byte[] buffer = new byte[getBufferSize()];
-        int count = 0;
-        int n = 0;
+        var buffer = new byte[getBufferSize()];
+        var count = 0;
+        var n = 0;
 
         while (-1 != (n = input.read(buffer))) {
             output.write(buffer, 0, n);

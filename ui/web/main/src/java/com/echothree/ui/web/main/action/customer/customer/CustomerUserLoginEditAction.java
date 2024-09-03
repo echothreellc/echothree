@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.spec.PartyUniversalSpec;
@@ -29,7 +28,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,7 +54,7 @@ public class CustomerUserLoginEditAction
     @Override
     protected PartyUniversalSpec getSpec(HttpServletRequest request, CustomerUserLoginEditActionForm actionForm)
             throws NamingException {
-        PartyUniversalSpec spec = PartyUtil.getHome().getPartyUniversalSpec();
+        var spec = PartyUtil.getHome().getPartyUniversalSpec();
         
         spec.setPartyName(findParameter(request, ParameterConstants.PARTY_NAME, actionForm.getPartyName()));
         
@@ -66,7 +64,7 @@ public class CustomerUserLoginEditAction
     @Override
     protected UserLoginEdit getEdit(HttpServletRequest request, CustomerUserLoginEditActionForm actionForm)
             throws NamingException {
-        UserLoginEdit edit = UserUtil.getHome().getUserLoginEdit();
+        var edit = UserUtil.getHome().getUserLoginEdit();
 
         edit.setUsername(actionForm.getUsername());
 
@@ -88,9 +86,9 @@ public class CustomerUserLoginEditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditUserLoginForm commandForm)
             throws Exception {
-        CommandResult commandResult = UserUtil.getHome().editUserLogin(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditUserLoginResult result = (EditUserLoginResult)executionResult.getResult();
+        var commandResult = UserUtil.getHome().editUserLogin(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditUserLoginResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.USER_LOGIN, result.getUserLogin());
         
@@ -105,13 +103,13 @@ public class CustomerUserLoginEditAction
     @Override
     public void setupTransfer(CustomerUserLoginEditActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
         
         commandForm.setPartyName(actionForm.getPartyName());
-        
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
+
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }

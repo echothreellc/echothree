@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected EditorSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        EditorSpec spec = CoreUtil.getHome().getEditorSpec();
+        var spec = CoreUtil.getHome().getEditorSpec();
         
         spec.setEditorName(findParameter(request, ParameterConstants.ORIGINAL_EDITOR_NAME, actionForm.getOriginalEditorName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected EditorEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        EditorEdit edit = CoreUtil.getHome().getEditorEdit();
+        var edit = CoreUtil.getHome().getEditorEdit();
 
         edit.setEditorName(actionForm.getEditorName());
         edit.setHasDimensions(actionForm.getHasDimensions().toString());

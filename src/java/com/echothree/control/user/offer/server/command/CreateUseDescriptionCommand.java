@@ -22,9 +22,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.entity.Use;
-import com.echothree.model.data.offer.server.entity.UseDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,16 +64,16 @@ public class CreateUseDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        String useName = form.getUseName();
+        var useName = form.getUseName();
         var useControl = Session.getModelController(UseControl.class);
-        Use use = useControl.getUseByName(useName);
+        var use = useControl.getUseByName(useName);
         
         if(use != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             if(language != null) {
-                UseDescription useDescription = useControl.getUseDescription(use, language);
+                var useDescription = useControl.getUseDescription(use, language);
                 
                 if(useDescription == null) {
                     var description = form.getDescription();

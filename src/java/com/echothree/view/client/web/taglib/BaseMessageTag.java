@@ -69,7 +69,7 @@ public class BaseMessageTag
     }
     
     public void setMessageAttribute(Message message) {
-        String value = message.getMessage();
+        var value = message.getMessage();
         
         if(value == null) {
             pageContext.removeAttribute(id);

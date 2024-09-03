@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.item.harmonizedtariffschedulecodeunit;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCodeUnitForm;
 import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeUnitResult;
 import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeUnitTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetHarmonizedTariffScheduleCodeUnitForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitForm();
+        String forwardKey;
+        var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitForm();
 
         commandForm.setHarmonizedTariffScheduleCodeUnitName(request.getParameter(ParameterConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT_NAME));
-        
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnit(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnit(getUserVisitPK(request), commandForm);
         HarmonizedTariffScheduleCodeUnitTransfer harmonizedTariffScheduleCodeUnit = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeUnitResult result = (GetHarmonizedTariffScheduleCodeUnitResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodeUnitResult)executionResult.getResult();
             
             harmonizedTariffScheduleCodeUnit = result.getHarmonizedTariffScheduleCodeUnit();
         }

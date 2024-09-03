@@ -18,7 +18,6 @@ package com.echothree.control.user.document.server.command;
 
 import com.echothree.control.user.document.common.form.GetDocumentTypeUsageTypeChoicesForm;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
-import com.echothree.control.user.document.common.result.GetDocumentTypeUsageTypeChoicesResult;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetDocumentTypeUsageTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        GetDocumentTypeUsageTypeChoicesResult result = DocumentResultFactory.getGetDocumentTypeUsageTypeChoicesResult();
-        String defaultDocumentTypeUsageTypeChoice = form.getDefaultDocumentTypeUsageTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = DocumentResultFactory.getGetDocumentTypeUsageTypeChoicesResult();
+        var defaultDocumentTypeUsageTypeChoice = form.getDefaultDocumentTypeUsageTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setDocumentTypeUsageTypeChoices(documentControl.getDocumentTypeUsageTypeChoices(defaultDocumentTypeUsageTypeChoice, getPreferredLanguage(),
                 allowNullChoice));

@@ -18,7 +18,6 @@ package com.echothree.control.user.associate.server.command;
 
 import com.echothree.control.user.associate.common.form.DeleteAssociateReferralForm;
 import com.echothree.model.control.associate.server.control.AssociateControl;
-import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class DeleteAssociateReferralCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-        String associateReferralName = form.getAssociateReferralName();
-        AssociateReferral associateReferral = associateControl.getAssociateReferralByNameForUpdate(associateReferralName);
+        var associateReferralName = form.getAssociateReferralName();
+        var associateReferral = associateControl.getAssociateReferralByNameForUpdate(associateReferralName);
         
         if(associateReferral != null) {
             associateControl.deleteAssociateReferral(associateReferral, getPartyPK());

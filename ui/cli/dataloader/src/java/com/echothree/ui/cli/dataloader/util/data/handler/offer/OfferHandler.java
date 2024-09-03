@@ -18,11 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.OfferService;
-import com.echothree.control.user.offer.common.form.CreateOfferChainTypeForm;
-import com.echothree.control.user.offer.common.form.CreateOfferCustomerTypeForm;
-import com.echothree.control.user.offer.common.form.CreateOfferDescriptionForm;
-import com.echothree.control.user.offer.common.form.CreateOfferItemForm;
-import com.echothree.control.user.offer.common.form.CreateOfferUseForm;
 import com.echothree.control.user.offer.common.form.OfferFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -52,14 +47,14 @@ public class OfferHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("offerDescription")) {
-            CreateOfferDescriptionForm commandForm = OfferFormFactory.getCreateOfferDescriptionForm();
+            var commandForm = OfferFormFactory.getCreateOfferDescriptionForm();
             
             commandForm.setOfferName(offerName);
             commandForm.set(getAttrsMap(attrs));
             
             offerService.createOfferDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("offerUse")) {
-            CreateOfferUseForm commandForm = OfferFormFactory.getCreateOfferUseForm();
+            var commandForm = OfferFormFactory.getCreateOfferUseForm();
             
             commandForm.setOfferName(offerName);
             commandForm.set(getAttrsMap(attrs));
@@ -68,7 +63,7 @@ public class OfferHandler
             
             initialDataParser.pushHandler(new OfferUseHandler(initialDataParser, this, offerName, commandForm.getUseName()));
         } else if(localName.equals("offerItem")) {
-            CreateOfferItemForm commandForm = OfferFormFactory.getCreateOfferItemForm();
+            var commandForm = OfferFormFactory.getCreateOfferItemForm();
             
             commandForm.setOfferName(offerName);
             commandForm.set(getAttrsMap(attrs));
@@ -77,14 +72,14 @@ public class OfferHandler
             
             initialDataParser.pushHandler(new OfferItemHandler(initialDataParser, this, offerName, commandForm.getItemName()));
         } else if(localName.equals("offerCustomerType")) {
-            CreateOfferCustomerTypeForm commandForm = OfferFormFactory.getCreateOfferCustomerTypeForm();
+            var commandForm = OfferFormFactory.getCreateOfferCustomerTypeForm();
             
             commandForm.setOfferName(offerName);
             commandForm.set(getAttrsMap(attrs));
             
             offerService.createOfferCustomerType(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("offerChainType")) {
-            CreateOfferChainTypeForm commandForm = OfferFormFactory.getCreateOfferChainTypeForm();
+            var commandForm = OfferFormFactory.getCreateOfferChainTypeForm();
             
             commandForm.setOfferName(offerName);
             commandForm.set(getAttrsMap(attrs));

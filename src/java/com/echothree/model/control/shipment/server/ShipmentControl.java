@@ -31,35 +31,18 @@ import com.echothree.model.control.shipment.common.transfer.ShipmentTypeDescript
 import com.echothree.model.control.shipment.common.transfer.ShipmentTypeShippingMethodTransfer;
 import com.echothree.model.control.shipment.common.transfer.ShipmentTypeTransfer;
 import com.echothree.model.control.shipment.server.control.BaseShipmentControl;
-import com.echothree.model.control.shipment.server.transfer.ShipmentAliasTransferCache;
-import com.echothree.model.control.shipment.server.transfer.ShipmentAliasTypeDescriptionTransferCache;
-import com.echothree.model.control.shipment.server.transfer.ShipmentAliasTypeTransferCache;
-import com.echothree.model.control.shipment.server.transfer.ShipmentTimeTransferCache;
-import com.echothree.model.control.shipment.server.transfer.ShipmentTimeTypeDescriptionTransferCache;
-import com.echothree.model.control.shipment.server.transfer.ShipmentTimeTypeTransferCache;
-import com.echothree.model.control.shipment.server.transfer.ShipmentTypeDescriptionTransferCache;
-import com.echothree.model.control.shipment.server.transfer.ShipmentTypeShippingMethodTransferCache;
-import com.echothree.model.control.shipment.server.transfer.ShipmentTypeTransferCache;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.sequence.common.pk.SequenceTypePK;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
-import com.echothree.model.data.shipment.common.pk.ShipmentAliasTypePK;
-import com.echothree.model.data.shipment.common.pk.ShipmentPK;
-import com.echothree.model.data.shipment.common.pk.ShipmentTimeTypePK;
-import com.echothree.model.data.shipment.common.pk.ShipmentTypePK;
 import com.echothree.model.data.shipment.server.entity.Shipment;
 import com.echothree.model.data.shipment.server.entity.ShipmentAlias;
 import com.echothree.model.data.shipment.server.entity.ShipmentAliasType;
 import com.echothree.model.data.shipment.server.entity.ShipmentAliasTypeDescription;
-import com.echothree.model.data.shipment.server.entity.ShipmentAliasTypeDetail;
 import com.echothree.model.data.shipment.server.entity.ShipmentTime;
 import com.echothree.model.data.shipment.server.entity.ShipmentTimeType;
 import com.echothree.model.data.shipment.server.entity.ShipmentTimeTypeDescription;
-import com.echothree.model.data.shipment.server.entity.ShipmentTimeTypeDetail;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.model.data.shipment.server.entity.ShipmentTypeDescription;
-import com.echothree.model.data.shipment.server.entity.ShipmentTypeDetail;
 import com.echothree.model.data.shipment.server.entity.ShipmentTypeShippingMethod;
 import com.echothree.model.data.shipment.server.factory.ShipmentAliasFactory;
 import com.echothree.model.data.shipment.server.factory.ShipmentAliasTypeDescriptionFactory;
@@ -82,25 +65,20 @@ import com.echothree.model.data.shipment.server.value.ShipmentTimeValue;
 import com.echothree.model.data.shipment.server.value.ShipmentTypeDescriptionValue;
 import com.echothree.model.data.shipment.server.value.ShipmentTypeDetailValue;
 import com.echothree.model.data.shipment.server.value.ShipmentTypeShippingMethodValue;
-import com.echothree.model.data.shipping.common.pk.ShippingMethodPK;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.common.pk.WorkflowEntrancePK;
-import com.echothree.model.data.workflow.common.pk.WorkflowPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -121,11 +99,11 @@ public class ShipmentControl
     public ShipmentType createShipmentType(String shipmentTypeName, ShipmentType parentShipmentType, SequenceType shipmentSequenceType,
             SequenceType shipmentPackageSequenceType, Workflow shipmentWorkflow, WorkflowEntrance shipmentWorkflowEntrance, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        ShipmentType defaultShipmentType = getDefaultShipmentType();
-        boolean defaultFound = defaultShipmentType != null;
+        var defaultShipmentType = getDefaultShipmentType();
+        var defaultFound = defaultShipmentType != null;
 
         if(defaultFound && isDefault) {
-            ShipmentTypeDetailValue defaultShipmentTypeDetailValue = getDefaultShipmentTypeDetailValueForUpdate();
+            var defaultShipmentTypeDetailValue = getDefaultShipmentTypeDetailValueForUpdate();
 
             defaultShipmentTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateShipmentTypeFromValue(defaultShipmentTypeDetailValue, false, createdBy);
@@ -133,8 +111,8 @@ public class ShipmentControl
             isDefault = Boolean.TRUE;
         }
 
-        ShipmentType shipmentType = ShipmentTypeFactory.getInstance().create();
-        ShipmentTypeDetail shipmentTypeDetail = ShipmentTypeDetailFactory.getInstance().create(shipmentType, shipmentTypeName, parentShipmentType,
+        var shipmentType = ShipmentTypeFactory.getInstance().create();
+        var shipmentTypeDetail = ShipmentTypeDetailFactory.getInstance().create(shipmentType, shipmentTypeName, parentShipmentType,
                 shipmentSequenceType, shipmentPackageSequenceType, shipmentWorkflow, shipmentWorkflowEntrance, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
@@ -293,9 +271,9 @@ public class ShipmentControl
     }
 
     public List<ShipmentTypeTransfer> getShipmentTypeTransfers(UserVisit userVisit) {
-        List<ShipmentType> shipmentTypes = getShipmentTypes();
+        var shipmentTypes = getShipmentTypes();
         List<ShipmentTypeTransfer> shipmentTypeTransfers = new ArrayList<>(shipmentTypes.size());
-        ShipmentTypeTransferCache shipmentTypeTransferCache = getShipmentTransferCaches(userVisit).getShipmentTypeTransferCache();
+        var shipmentTypeTransferCache = getShipmentTransferCaches(userVisit).getShipmentTypeTransferCache();
 
         shipmentTypes.forEach((shipmentType) ->
                 shipmentTypeTransfers.add(shipmentTypeTransferCache.getTransfer(shipmentType))
@@ -306,7 +284,7 @@ public class ShipmentControl
 
     public ShipmentTypeChoicesBean getShipmentTypeChoices(String defaultShipmentTypeChoice,
             Language language, boolean allowNullChoice) {
-        List<ShipmentType> shipmentTypes = getShipmentTypes();
+        var shipmentTypes = getShipmentTypes();
         var size = shipmentTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -322,7 +300,7 @@ public class ShipmentControl
         }
 
         for(var shipmentType : shipmentTypes) {
-            ShipmentTypeDetail shipmentTypeDetail = shipmentType.getLastDetail();
+            var shipmentTypeDetail = shipmentType.getLastDetail();
 
             var label = getBestShipmentTypeDescription(shipmentType, language);
             var value = shipmentTypeDetail.getShipmentTypeName();
@@ -341,7 +319,7 @@ public class ShipmentControl
 
     public boolean isParentShipmentTypeSafe(ShipmentType shipmentType,
             ShipmentType parentShipmentType) {
-        boolean safe = true;
+        var safe = true;
 
         if(parentShipmentType != null) {
             Set<ShipmentType> parentShipmentTypes = new HashSet<>();
@@ -364,30 +342,30 @@ public class ShipmentControl
     private void updateShipmentTypeFromValue(ShipmentTypeDetailValue shipmentTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(shipmentTypeDetailValue.hasBeenModified()) {
-            ShipmentType shipmentType = ShipmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shipmentType = ShipmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      shipmentTypeDetailValue.getShipmentTypePK());
-            ShipmentTypeDetail shipmentTypeDetail = shipmentType.getActiveDetailForUpdate();
+            var shipmentTypeDetail = shipmentType.getActiveDetailForUpdate();
 
             shipmentTypeDetail.setThruTime(session.START_TIME_LONG);
             shipmentTypeDetail.store();
 
-            ShipmentTypePK shipmentTypePK = shipmentTypeDetail.getShipmentTypePK(); // Not updated
-            String shipmentTypeName = shipmentTypeDetailValue.getShipmentTypeName();
-            ShipmentTypePK parentShipmentTypePK = shipmentTypeDetailValue.getParentShipmentTypePK();
-            SequenceTypePK shipmentSequenceTypePK = shipmentTypeDetailValue.getShipmentSequenceTypePK();
-            SequenceTypePK shipmentPackageSequenceTypePK = shipmentTypeDetailValue.getShipmentPackageSequenceTypePK();
-            WorkflowPK shipmentWorkflowPK = shipmentTypeDetailValue.getShipmentWorkflowPK();
-            WorkflowEntrancePK shipmentWorkflowEntrancePK = shipmentTypeDetailValue.getShipmentWorkflowEntrancePK();
-            Boolean isDefault = shipmentTypeDetailValue.getIsDefault();
-            Integer sortOrder = shipmentTypeDetailValue.getSortOrder();
+            var shipmentTypePK = shipmentTypeDetail.getShipmentTypePK(); // Not updated
+            var shipmentTypeName = shipmentTypeDetailValue.getShipmentTypeName();
+            var parentShipmentTypePK = shipmentTypeDetailValue.getParentShipmentTypePK();
+            var shipmentSequenceTypePK = shipmentTypeDetailValue.getShipmentSequenceTypePK();
+            var shipmentPackageSequenceTypePK = shipmentTypeDetailValue.getShipmentPackageSequenceTypePK();
+            var shipmentWorkflowPK = shipmentTypeDetailValue.getShipmentWorkflowPK();
+            var shipmentWorkflowEntrancePK = shipmentTypeDetailValue.getShipmentWorkflowEntrancePK();
+            var isDefault = shipmentTypeDetailValue.getIsDefault();
+            var sortOrder = shipmentTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ShipmentType defaultShipmentType = getDefaultShipmentType();
-                boolean defaultFound = defaultShipmentType != null && !defaultShipmentType.equals(shipmentType);
+                var defaultShipmentType = getDefaultShipmentType();
+                var defaultFound = defaultShipmentType != null && !defaultShipmentType.equals(shipmentType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ShipmentTypeDetailValue defaultShipmentTypeDetailValue = getDefaultShipmentTypeDetailValueForUpdate();
+                    var defaultShipmentTypeDetailValue = getDefaultShipmentTypeDetailValueForUpdate();
 
                     defaultShipmentTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateShipmentTypeFromValue(defaultShipmentTypeDetailValue, false, updatedBy);
@@ -413,7 +391,7 @@ public class ShipmentControl
     }
 
     private void deleteShipmentType(ShipmentType shipmentType, boolean checkDefault, BasePK deletedBy) {
-        ShipmentTypeDetail shipmentTypeDetail = shipmentType.getLastDetailForUpdate();
+        var shipmentTypeDetail = shipmentType.getLastDetailForUpdate();
 
         deleteShipmentTypesByParentShipmentType(shipmentType, deletedBy);
         deleteShipmentTypeDescriptionsByShipmentType(shipmentType, deletedBy);
@@ -426,17 +404,17 @@ public class ShipmentControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            ShipmentType defaultShipmentType = getDefaultShipmentType();
+            var defaultShipmentType = getDefaultShipmentType();
 
             if(defaultShipmentType == null) {
-                List<ShipmentType> shipmentTypes = getShipmentTypesForUpdate();
+                var shipmentTypes = getShipmentTypesForUpdate();
 
                 if(!shipmentTypes.isEmpty()) {
-                    Iterator<ShipmentType> iter = shipmentTypes.iterator();
+                    var iter = shipmentTypes.iterator();
                     if(iter.hasNext()) {
                         defaultShipmentType = iter.next();
                     }
-                    ShipmentTypeDetailValue shipmentTypeDetailValue = Objects.requireNonNull(defaultShipmentType).getLastDetailForUpdate().getShipmentTypeDetailValue().clone();
+                    var shipmentTypeDetailValue = Objects.requireNonNull(defaultShipmentType).getLastDetailForUpdate().getShipmentTypeDetailValue().clone();
 
                     shipmentTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateShipmentTypeFromValue(shipmentTypeDetailValue, false, deletedBy);
@@ -468,7 +446,7 @@ public class ShipmentControl
     // --------------------------------------------------------------------------------
 
     public ShipmentTypeDescription createShipmentTypeDescription(ShipmentType shipmentType, Language language, String description, BasePK createdBy) {
-        ShipmentTypeDescription shipmentTypeDescription = ShipmentTypeDescriptionFactory.getInstance().create(shipmentType, language, description,
+        var shipmentTypeDescription = ShipmentTypeDescriptionFactory.getInstance().create(shipmentType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(shipmentType.getPrimaryKey(), EventTypes.MODIFY, shipmentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -547,7 +525,7 @@ public class ShipmentControl
 
     public String getBestShipmentTypeDescription(ShipmentType shipmentType, Language language) {
         String description;
-        ShipmentTypeDescription shipmentTypeDescription = getShipmentTypeDescription(shipmentType, language);
+        var shipmentTypeDescription = getShipmentTypeDescription(shipmentType, language);
 
         if(shipmentTypeDescription == null && !language.getIsDefault()) {
             shipmentTypeDescription = getShipmentTypeDescription(shipmentType, getPartyControl().getDefaultLanguage());
@@ -567,9 +545,9 @@ public class ShipmentControl
     }
 
     public List<ShipmentTypeDescriptionTransfer> getShipmentTypeDescriptionTransfersByShipmentType(UserVisit userVisit, ShipmentType shipmentType) {
-        List<ShipmentTypeDescription> shipmentTypeDescriptions = getShipmentTypeDescriptionsByShipmentType(shipmentType);
+        var shipmentTypeDescriptions = getShipmentTypeDescriptionsByShipmentType(shipmentType);
         List<ShipmentTypeDescriptionTransfer> shipmentTypeDescriptionTransfers = new ArrayList<>(shipmentTypeDescriptions.size());
-        ShipmentTypeDescriptionTransferCache shipmentTypeDescriptionTransferCache = getShipmentTransferCaches(userVisit).getShipmentTypeDescriptionTransferCache();
+        var shipmentTypeDescriptionTransferCache = getShipmentTransferCaches(userVisit).getShipmentTypeDescriptionTransferCache();
 
         shipmentTypeDescriptions.forEach((shipmentTypeDescription) ->
                 shipmentTypeDescriptionTransfers.add(shipmentTypeDescriptionTransferCache.getTransfer(shipmentTypeDescription))
@@ -580,15 +558,15 @@ public class ShipmentControl
 
     public void updateShipmentTypeDescriptionFromValue(ShipmentTypeDescriptionValue shipmentTypeDescriptionValue, BasePK updatedBy) {
         if(shipmentTypeDescriptionValue.hasBeenModified()) {
-            ShipmentTypeDescription shipmentTypeDescription = ShipmentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shipmentTypeDescription = ShipmentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     shipmentTypeDescriptionValue.getPrimaryKey());
 
             shipmentTypeDescription.setThruTime(session.START_TIME_LONG);
             shipmentTypeDescription.store();
 
-            ShipmentType shipmentType = shipmentTypeDescription.getShipmentType();
-            Language language = shipmentTypeDescription.getLanguage();
-            String description = shipmentTypeDescriptionValue.getDescription();
+            var shipmentType = shipmentTypeDescription.getShipmentType();
+            var language = shipmentTypeDescription.getLanguage();
+            var description = shipmentTypeDescriptionValue.getDescription();
 
             shipmentTypeDescription = ShipmentTypeDescriptionFactory.getInstance().create(shipmentType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -605,7 +583,7 @@ public class ShipmentControl
     }
 
     public void deleteShipmentTypeDescriptionsByShipmentType(ShipmentType shipmentType, BasePK deletedBy) {
-        List<ShipmentTypeDescription> shipmentTypeDescriptions = getShipmentTypeDescriptionsByShipmentTypeForUpdate(shipmentType);
+        var shipmentTypeDescriptions = getShipmentTypeDescriptionsByShipmentTypeForUpdate(shipmentType);
 
         shipmentTypeDescriptions.forEach((shipmentTypeDescription) -> 
                 deleteShipmentTypeDescription(shipmentTypeDescription, deletedBy)
@@ -617,11 +595,11 @@ public class ShipmentControl
     // --------------------------------------------------------------------------------
 
     public ShipmentTimeType createShipmentTimeType(ShipmentType shipmentType, String shipmentTimeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        ShipmentTimeType defaultShipmentTimeType = getDefaultShipmentTimeType(shipmentType);
-        boolean defaultFound = defaultShipmentTimeType != null;
+        var defaultShipmentTimeType = getDefaultShipmentTimeType(shipmentType);
+        var defaultFound = defaultShipmentTimeType != null;
 
         if(defaultFound && isDefault) {
-            ShipmentTimeTypeDetailValue defaultShipmentTimeTypeDetailValue = getDefaultShipmentTimeTypeDetailValueForUpdate(shipmentType);
+            var defaultShipmentTimeTypeDetailValue = getDefaultShipmentTimeTypeDetailValueForUpdate(shipmentType);
 
             defaultShipmentTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateShipmentTimeTypeFromValue(defaultShipmentTimeTypeDetailValue, false, createdBy);
@@ -629,8 +607,8 @@ public class ShipmentControl
             isDefault = Boolean.TRUE;
         }
 
-        ShipmentTimeType shipmentTimeType = ShipmentTimeTypeFactory.getInstance().create();
-        ShipmentTimeTypeDetail shipmentTimeTypeDetail = ShipmentTimeTypeDetailFactory.getInstance().create(shipmentTimeType, shipmentType, shipmentTimeTypeName, isDefault,
+        var shipmentTimeType = ShipmentTimeTypeFactory.getInstance().create();
+        var shipmentTimeTypeDetail = ShipmentTimeTypeDetailFactory.getInstance().create(shipmentTimeType, shipmentType, shipmentTimeTypeName, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -759,9 +737,9 @@ public class ShipmentControl
     }
 
     public List<ShipmentTimeTypeTransfer> getShipmentTimeTypeTransfers(UserVisit userVisit, ShipmentType shipmentType) {
-        List<ShipmentTimeType> shipmentTimeTypes = getShipmentTimeTypes(shipmentType);
+        var shipmentTimeTypes = getShipmentTimeTypes(shipmentType);
         List<ShipmentTimeTypeTransfer> shipmentTimeTypeTransfers = new ArrayList<>(shipmentTimeTypes.size());
-        ShipmentTimeTypeTransferCache shipmentTimeTypeTransferCache = getShipmentTransferCaches(userVisit).getShipmentTimeTypeTransferCache();
+        var shipmentTimeTypeTransferCache = getShipmentTransferCaches(userVisit).getShipmentTimeTypeTransferCache();
 
         shipmentTimeTypes.forEach((shipmentTimeType) ->
                 shipmentTimeTypeTransfers.add(shipmentTimeTypeTransferCache.getTransfer(shipmentTimeType))
@@ -772,7 +750,7 @@ public class ShipmentControl
 
     public ShipmentTimeTypeChoicesBean getShipmentTimeTypeChoices(String defaultShipmentTimeTypeChoice, Language language, boolean allowNullChoice,
             ShipmentType shipmentType) {
-        List<ShipmentTimeType> shipmentTimeTypes = getShipmentTimeTypes(shipmentType);
+        var shipmentTimeTypes = getShipmentTimeTypes(shipmentType);
         var size = shipmentTimeTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -788,7 +766,7 @@ public class ShipmentControl
         }
 
         for(var shipmentTimeType : shipmentTimeTypes) {
-            ShipmentTimeTypeDetail shipmentTimeTypeDetail = shipmentTimeType.getLastDetail();
+            var shipmentTimeTypeDetail = shipmentTimeType.getLastDetail();
 
             var label = getBestShipmentTimeTypeDescription(shipmentTimeType, language);
             var value = shipmentTimeTypeDetail.getShipmentTimeTypeName();
@@ -808,27 +786,27 @@ public class ShipmentControl
     private void updateShipmentTimeTypeFromValue(ShipmentTimeTypeDetailValue shipmentTimeTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(shipmentTimeTypeDetailValue.hasBeenModified()) {
-            ShipmentTimeType shipmentTimeType = ShipmentTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shipmentTimeType = ShipmentTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      shipmentTimeTypeDetailValue.getShipmentTimeTypePK());
-            ShipmentTimeTypeDetail shipmentTimeTypeDetail = shipmentTimeType.getActiveDetailForUpdate();
+            var shipmentTimeTypeDetail = shipmentTimeType.getActiveDetailForUpdate();
 
             shipmentTimeTypeDetail.setThruTime(session.START_TIME_LONG);
             shipmentTimeTypeDetail.store();
 
-            ShipmentType shipmentType = shipmentTimeTypeDetail.getShipmentType(); // Not updated
-            ShipmentTypePK shipmentTypePK = shipmentType.getPrimaryKey(); // Not updated
-            ShipmentTimeTypePK shipmentTimeTypePK = shipmentTimeTypeDetail.getShipmentTimeTypePK(); // Not updated
-            String shipmentTimeTypeName = shipmentTimeTypeDetailValue.getShipmentTimeTypeName();
-            Boolean isDefault = shipmentTimeTypeDetailValue.getIsDefault();
-            Integer sortOrder = shipmentTimeTypeDetailValue.getSortOrder();
+            var shipmentType = shipmentTimeTypeDetail.getShipmentType(); // Not updated
+            var shipmentTypePK = shipmentType.getPrimaryKey(); // Not updated
+            var shipmentTimeTypePK = shipmentTimeTypeDetail.getShipmentTimeTypePK(); // Not updated
+            var shipmentTimeTypeName = shipmentTimeTypeDetailValue.getShipmentTimeTypeName();
+            var isDefault = shipmentTimeTypeDetailValue.getIsDefault();
+            var sortOrder = shipmentTimeTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ShipmentTimeType defaultShipmentTimeType = getDefaultShipmentTimeType(shipmentType);
-                boolean defaultFound = defaultShipmentTimeType != null && !defaultShipmentTimeType.equals(shipmentTimeType);
+                var defaultShipmentTimeType = getDefaultShipmentTimeType(shipmentType);
+                var defaultFound = defaultShipmentTimeType != null && !defaultShipmentTimeType.equals(shipmentTimeType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ShipmentTimeTypeDetailValue defaultShipmentTimeTypeDetailValue = getDefaultShipmentTimeTypeDetailValueForUpdate(shipmentType);
+                    var defaultShipmentTimeTypeDetailValue = getDefaultShipmentTimeTypeDetailValueForUpdate(shipmentType);
 
                     defaultShipmentTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateShipmentTimeTypeFromValue(defaultShipmentTimeTypeDetailValue, false, updatedBy);
@@ -856,23 +834,23 @@ public class ShipmentControl
         deleteShipmentTimesByShipmentTimeType(shipmentTimeType, deletedBy);
         deleteShipmentTimeTypeDescriptionsByShipmentTimeType(shipmentTimeType, deletedBy);
 
-        ShipmentTimeTypeDetail shipmentTimeTypeDetail = shipmentTimeType.getLastDetailForUpdate();
+        var shipmentTimeTypeDetail = shipmentTimeType.getLastDetailForUpdate();
         shipmentTimeTypeDetail.setThruTime(session.START_TIME_LONG);
         shipmentTimeType.setActiveDetail(null);
         shipmentTimeType.store();
 
         // Check for default, and pick one if necessary
-        ShipmentType shipmentType = shipmentTimeTypeDetail.getShipmentType();
-        ShipmentTimeType defaultShipmentTimeType = getDefaultShipmentTimeType(shipmentType);
+        var shipmentType = shipmentTimeTypeDetail.getShipmentType();
+        var defaultShipmentTimeType = getDefaultShipmentTimeType(shipmentType);
         if(defaultShipmentTimeType == null) {
-            List<ShipmentTimeType> shipmentTimeTypes = getShipmentTimeTypesForUpdate(shipmentType);
+            var shipmentTimeTypes = getShipmentTimeTypesForUpdate(shipmentType);
 
             if(!shipmentTimeTypes.isEmpty()) {
-                Iterator<ShipmentTimeType> iter = shipmentTimeTypes.iterator();
+                var iter = shipmentTimeTypes.iterator();
                 if(iter.hasNext()) {
                     defaultShipmentTimeType = iter.next();
                 }
-                ShipmentTimeTypeDetailValue shipmentTimeTypeDetailValue = Objects.requireNonNull(defaultShipmentTimeType).getLastDetailForUpdate().getShipmentTimeTypeDetailValue().clone();
+                var shipmentTimeTypeDetailValue = Objects.requireNonNull(defaultShipmentTimeType).getLastDetailForUpdate().getShipmentTimeTypeDetailValue().clone();
 
                 shipmentTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateShipmentTimeTypeFromValue(shipmentTimeTypeDetailValue, false, deletedBy);
@@ -887,7 +865,7 @@ public class ShipmentControl
     // --------------------------------------------------------------------------------
 
     public ShipmentTimeTypeDescription createShipmentTimeTypeDescription(ShipmentTimeType shipmentTimeType, Language language, String description, BasePK createdBy) {
-        ShipmentTimeTypeDescription shipmentTimeTypeDescription = ShipmentTimeTypeDescriptionFactory.getInstance().create(shipmentTimeType, language, description,
+        var shipmentTimeTypeDescription = ShipmentTimeTypeDescriptionFactory.getInstance().create(shipmentTimeType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(shipmentTimeType.getPrimaryKey(), EventTypes.MODIFY, shipmentTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -966,7 +944,7 @@ public class ShipmentControl
 
     public String getBestShipmentTimeTypeDescription(ShipmentTimeType shipmentTimeType, Language language) {
         String description;
-        ShipmentTimeTypeDescription shipmentTimeTypeDescription = getShipmentTimeTypeDescription(shipmentTimeType, language);
+        var shipmentTimeTypeDescription = getShipmentTimeTypeDescription(shipmentTimeType, language);
 
         if(shipmentTimeTypeDescription == null && !language.getIsDefault()) {
             shipmentTimeTypeDescription = getShipmentTimeTypeDescription(shipmentTimeType, getPartyControl().getDefaultLanguage());
@@ -986,9 +964,9 @@ public class ShipmentControl
     }
 
     public List<ShipmentTimeTypeDescriptionTransfer> getShipmentTimeTypeDescriptionTransfersByShipmentTimeType(UserVisit userVisit, ShipmentTimeType shipmentTimeType) {
-        List<ShipmentTimeTypeDescription> shipmentTimeTypeDescriptions = getShipmentTimeTypeDescriptionsByShipmentTimeType(shipmentTimeType);
+        var shipmentTimeTypeDescriptions = getShipmentTimeTypeDescriptionsByShipmentTimeType(shipmentTimeType);
         List<ShipmentTimeTypeDescriptionTransfer> shipmentTimeTypeDescriptionTransfers = new ArrayList<>(shipmentTimeTypeDescriptions.size());
-        ShipmentTimeTypeDescriptionTransferCache shipmentTimeTypeDescriptionTransferCache = getShipmentTransferCaches(userVisit).getShipmentTimeTypeDescriptionTransferCache();
+        var shipmentTimeTypeDescriptionTransferCache = getShipmentTransferCaches(userVisit).getShipmentTimeTypeDescriptionTransferCache();
 
         shipmentTimeTypeDescriptions.forEach((shipmentTimeTypeDescription) ->
                 shipmentTimeTypeDescriptionTransfers.add(shipmentTimeTypeDescriptionTransferCache.getTransfer(shipmentTimeTypeDescription))
@@ -999,15 +977,15 @@ public class ShipmentControl
 
     public void updateShipmentTimeTypeDescriptionFromValue(ShipmentTimeTypeDescriptionValue shipmentTimeTypeDescriptionValue, BasePK updatedBy) {
         if(shipmentTimeTypeDescriptionValue.hasBeenModified()) {
-            ShipmentTimeTypeDescription shipmentTimeTypeDescription = ShipmentTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shipmentTimeTypeDescription = ShipmentTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     shipmentTimeTypeDescriptionValue.getPrimaryKey());
 
             shipmentTimeTypeDescription.setThruTime(session.START_TIME_LONG);
             shipmentTimeTypeDescription.store();
 
-            ShipmentTimeType shipmentTimeType = shipmentTimeTypeDescription.getShipmentTimeType();
-            Language language = shipmentTimeTypeDescription.getLanguage();
-            String description = shipmentTimeTypeDescriptionValue.getDescription();
+            var shipmentTimeType = shipmentTimeTypeDescription.getShipmentTimeType();
+            var language = shipmentTimeTypeDescription.getLanguage();
+            var description = shipmentTimeTypeDescriptionValue.getDescription();
 
             shipmentTimeTypeDescription = ShipmentTimeTypeDescriptionFactory.getInstance().create(shipmentTimeType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1024,7 +1002,7 @@ public class ShipmentControl
     }
 
     public void deleteShipmentTimeTypeDescriptionsByShipmentTimeType(ShipmentTimeType shipmentTimeType, BasePK deletedBy) {
-        List<ShipmentTimeTypeDescription> shipmentTimeTypeDescriptions = getShipmentTimeTypeDescriptionsByShipmentTimeTypeForUpdate(shipmentTimeType);
+        var shipmentTimeTypeDescriptions = getShipmentTimeTypeDescriptionsByShipmentTimeTypeForUpdate(shipmentTimeType);
 
         shipmentTimeTypeDescriptions.forEach((shipmentTimeTypeDescription) -> 
                 deleteShipmentTimeTypeDescription(shipmentTimeTypeDescription, deletedBy)
@@ -1037,19 +1015,19 @@ public class ShipmentControl
     
     public ShipmentTypeShippingMethod createShipmentTypeShippingMethod(ShipmentType shipmentType, ShippingMethod shippingMethod, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
-        ShipmentTypeShippingMethod defaultShipmentTypeShippingMethod = getDefaultShipmentTypeShippingMethod(shipmentType);
-        boolean defaultFound = defaultShipmentTypeShippingMethod != null;
+        var defaultShipmentTypeShippingMethod = getDefaultShipmentTypeShippingMethod(shipmentType);
+        var defaultFound = defaultShipmentTypeShippingMethod != null;
         
         if(defaultFound && isDefault) {
-            ShipmentTypeShippingMethodValue defaultShipmentTypeShippingMethodValue = getDefaultShipmentTypeShippingMethodValueForUpdate(shipmentType);
+            var defaultShipmentTypeShippingMethodValue = getDefaultShipmentTypeShippingMethodValueForUpdate(shipmentType);
             
             defaultShipmentTypeShippingMethodValue.setIsDefault(Boolean.FALSE);
             updateShipmentTypeShippingMethodFromValue(defaultShipmentTypeShippingMethodValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        ShipmentTypeShippingMethod shipmentTypeShippingMethod = ShipmentTypeShippingMethodFactory.getInstance().create(shipmentType, shippingMethod,
+
+        var shipmentTypeShippingMethod = ShipmentTypeShippingMethodFactory.getInstance().create(shipmentType, shippingMethod,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shipmentTypeShippingMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1073,8 +1051,8 @@ public class ShipmentControl
                         "WHERE shptypshm_shptyp_shipmenttypeid = ? AND shptypshm_shm_shippingmethodid = ? AND shptypshm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ShipmentTypeShippingMethodFactory.getInstance().prepareStatement(query);
+
+            var ps = ShipmentTypeShippingMethodFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, shipmentType.getPrimaryKey().getEntityId());
             ps.setLong(2, shippingMethod.getPrimaryKey().getEntityId());
@@ -1097,7 +1075,7 @@ public class ShipmentControl
     }
     
     public ShipmentTypeShippingMethodValue getShipmentTypeShippingMethodValueForUpdate(ShipmentType shipmentType, ShippingMethod shippingMethod) {
-        ShipmentTypeShippingMethod shipmentTypeShippingMethod = getShipmentTypeShippingMethodForUpdate(shipmentType, shippingMethod);
+        var shipmentTypeShippingMethod = getShipmentTypeShippingMethodForUpdate(shipmentType, shippingMethod);
         
         return shipmentTypeShippingMethod == null? null: shipmentTypeShippingMethod.getShipmentTypeShippingMethodValue().clone();
     }
@@ -1118,8 +1096,8 @@ public class ShipmentControl
                         "WHERE shptypshm_shptyp_shipmenttypeid = ? AND shptypshm_isdefault = 1 AND shptypshm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ShipmentTypeShippingMethodFactory.getInstance().prepareStatement(query);
+
+            var ps = ShipmentTypeShippingMethodFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, shipmentType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1141,7 +1119,7 @@ public class ShipmentControl
     }
     
     public ShipmentTypeShippingMethodValue getDefaultShipmentTypeShippingMethodValueForUpdate(ShipmentType shipmentType) {
-        ShipmentTypeShippingMethod shipmentTypeShippingMethod = getDefaultShipmentTypeShippingMethodForUpdate(shipmentType);
+        var shipmentTypeShippingMethod = getDefaultShipmentTypeShippingMethodForUpdate(shipmentType);
         
         return shipmentTypeShippingMethod == null? null: shipmentTypeShippingMethod.getShipmentTypeShippingMethodValue().clone();
     }
@@ -1164,8 +1142,8 @@ public class ShipmentControl
                         "WHERE shptypshm_shptyp_shipmenttypeid = ? AND shptypshm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ShipmentTypeShippingMethodFactory.getInstance().prepareStatement(query);
+
+            var ps = ShipmentTypeShippingMethodFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, shipmentType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1205,8 +1183,8 @@ public class ShipmentControl
                         "WHERE shptypshm_shm_shippingmethodid = ? AND shptypshm_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = ShipmentTypeShippingMethodFactory.getInstance().prepareStatement(query);
+
+            var ps = ShipmentTypeShippingMethodFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1229,7 +1207,7 @@ public class ShipmentControl
     
     public List<ShipmentTypeShippingMethodTransfer> getShipmentTypeShippingMethodTransfers(UserVisit userVisit, Collection<ShipmentTypeShippingMethod> shipmentTypeShippingMethods) {
         List<ShipmentTypeShippingMethodTransfer> shipmentTypeShippingMethodTransfers = new ArrayList<>(shipmentTypeShippingMethods.size());
-        ShipmentTypeShippingMethodTransferCache shipmentTypeShippingMethodTransferCache = getShipmentTransferCaches(userVisit).getShipmentTypeShippingMethodTransferCache();
+        var shipmentTypeShippingMethodTransferCache = getShipmentTransferCaches(userVisit).getShipmentTypeShippingMethodTransferCache();
         
         shipmentTypeShippingMethods.forEach((shipmentTypeShippingMethod) ->
                 shipmentTypeShippingMethodTransfers.add(shipmentTypeShippingMethodTransferCache.getTransfer(shipmentTypeShippingMethod))
@@ -1252,25 +1230,25 @@ public class ShipmentControl
     
     private void updateShipmentTypeShippingMethodFromValue(ShipmentTypeShippingMethodValue shipmentTypeShippingMethodValue, boolean checkDefault, BasePK updatedBy) {
         if(shipmentTypeShippingMethodValue.hasBeenModified()) {
-            ShipmentTypeShippingMethod shipmentTypeShippingMethod = ShipmentTypeShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shipmentTypeShippingMethod = ShipmentTypeShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      shipmentTypeShippingMethodValue.getPrimaryKey());
             
             shipmentTypeShippingMethod.setThruTime(session.START_TIME_LONG);
             shipmentTypeShippingMethod.store();
-            
-            ShipmentType shipmentType = shipmentTypeShippingMethod.getShipmentType(); // Not Updated
-            ShipmentTypePK shipmentTypePK = shipmentType.getPrimaryKey(); // Not Updated
-            ShippingMethodPK shippingMethodPK = shipmentTypeShippingMethod.getShippingMethodPK(); // Not Updated
-            Boolean isDefault = shipmentTypeShippingMethodValue.getIsDefault();
-            Integer sortOrder = shipmentTypeShippingMethodValue.getSortOrder();
+
+            var shipmentType = shipmentTypeShippingMethod.getShipmentType(); // Not Updated
+            var shipmentTypePK = shipmentType.getPrimaryKey(); // Not Updated
+            var shippingMethodPK = shipmentTypeShippingMethod.getShippingMethodPK(); // Not Updated
+            var isDefault = shipmentTypeShippingMethodValue.getIsDefault();
+            var sortOrder = shipmentTypeShippingMethodValue.getSortOrder();
             
             if(checkDefault) {
-                ShipmentTypeShippingMethod defaultShipmentTypeShippingMethod = getDefaultShipmentTypeShippingMethod(shipmentType);
-                boolean defaultFound = defaultShipmentTypeShippingMethod != null && !defaultShipmentTypeShippingMethod.equals(shipmentTypeShippingMethod);
+                var defaultShipmentTypeShippingMethod = getDefaultShipmentTypeShippingMethod(shipmentType);
+                var defaultFound = defaultShipmentTypeShippingMethod != null && !defaultShipmentTypeShippingMethod.equals(shipmentTypeShippingMethod);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ShipmentTypeShippingMethodValue defaultShipmentTypeShippingMethodValue = getDefaultShipmentTypeShippingMethodValueForUpdate(shipmentType);
+                    var defaultShipmentTypeShippingMethodValue = getDefaultShipmentTypeShippingMethodValueForUpdate(shipmentType);
                     
                     defaultShipmentTypeShippingMethodValue.setIsDefault(Boolean.FALSE);
                     updateShipmentTypeShippingMethodFromValue(defaultShipmentTypeShippingMethodValue, false, updatedBy);
@@ -1296,17 +1274,17 @@ public class ShipmentControl
         shipmentTypeShippingMethod.store();
         
         // Check for default, and pick one if necessary
-        ShipmentType shipmentType = shipmentTypeShippingMethod.getShipmentType();
-        ShipmentTypeShippingMethod defaultShipmentTypeShippingMethod = getDefaultShipmentTypeShippingMethod(shipmentType);
+        var shipmentType = shipmentTypeShippingMethod.getShipmentType();
+        var defaultShipmentTypeShippingMethod = getDefaultShipmentTypeShippingMethod(shipmentType);
         if(defaultShipmentTypeShippingMethod == null) {
-            List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods = getShipmentTypeShippingMethodsByShipmentTypeForUpdate(shipmentType);
+            var shipmentTypeShippingMethods = getShipmentTypeShippingMethodsByShipmentTypeForUpdate(shipmentType);
             
             if(!shipmentTypeShippingMethods.isEmpty()) {
-                Iterator<ShipmentTypeShippingMethod> iter = shipmentTypeShippingMethods.iterator();
+                var iter = shipmentTypeShippingMethods.iterator();
                 if(iter.hasNext()) {
                     defaultShipmentTypeShippingMethod = iter.next();
                 }
-                ShipmentTypeShippingMethodValue shipmentTypeShippingMethodValue = defaultShipmentTypeShippingMethod.getShipmentTypeShippingMethodValue().clone();
+                var shipmentTypeShippingMethodValue = defaultShipmentTypeShippingMethod.getShipmentTypeShippingMethodValue().clone();
                 
                 shipmentTypeShippingMethodValue.setIsDefault(Boolean.TRUE);
                 updateShipmentTypeShippingMethodFromValue(shipmentTypeShippingMethodValue, false, deletedBy);
@@ -1335,7 +1313,7 @@ public class ShipmentControl
     // --------------------------------------------------------------------------------
 
     public ShipmentTime createShipmentTime(Shipment shipment, ShipmentTimeType shipmentTimeType, Long time, BasePK createdBy) {
-        ShipmentTime shipmentTime = ShipmentTimeFactory.getInstance().create(shipment, shipmentTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var shipmentTime = ShipmentTimeFactory.getInstance().create(shipment, shipmentTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(shipment.getPrimaryKey(), EventTypes.MODIFY, shipmentTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1463,7 +1441,7 @@ public class ShipmentControl
 
     public List<ShipmentTimeTransfer> getShipmentTimeTransfers(UserVisit userVisit, Collection<ShipmentTime> shipmentTimes) {
         List<ShipmentTimeTransfer> shipmentTimeTransfers = new ArrayList<>(shipmentTimes.size());
-        ShipmentTimeTransferCache shipmentTimeTransferCache = getShipmentTransferCaches(userVisit).getShipmentTimeTransferCache();
+        var shipmentTimeTransferCache = getShipmentTransferCaches(userVisit).getShipmentTimeTransferCache();
 
         shipmentTimes.forEach((shipmentTime) ->
                 shipmentTimeTransfers.add(shipmentTimeTransferCache.getTransfer(shipmentTime))
@@ -1482,15 +1460,15 @@ public class ShipmentControl
 
     public void updateShipmentTimeFromValue(ShipmentTimeValue shipmentTimeValue, BasePK updatedBy) {
         if(shipmentTimeValue.hasBeenModified()) {
-            ShipmentTime shipmentTime = ShipmentTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shipmentTime = ShipmentTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     shipmentTimeValue.getPrimaryKey());
 
             shipmentTime.setThruTime(session.START_TIME_LONG);
             shipmentTime.store();
 
-            ShipmentPK shipmentPK = shipmentTime.getShipmentPK(); // Not updated
-            ShipmentTimeTypePK shipmentTimeTypePK = shipmentTime.getShipmentTimeTypePK(); // Not updated
-            Long time = shipmentTimeValue.getTime();
+            var shipmentPK = shipmentTime.getShipmentPK(); // Not updated
+            var shipmentTimeTypePK = shipmentTime.getShipmentTimeTypePK(); // Not updated
+            var time = shipmentTimeValue.getTime();
 
             shipmentTime = ShipmentTimeFactory.getInstance().create(shipmentPK, shipmentTimeTypePK, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -1525,11 +1503,11 @@ public class ShipmentControl
 
     public ShipmentAliasType createShipmentAliasType(ShipmentType shipmentType, String shipmentAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        ShipmentAliasType defaultShipmentAliasType = getDefaultShipmentAliasType(shipmentType);
-        boolean defaultFound = defaultShipmentAliasType != null;
+        var defaultShipmentAliasType = getDefaultShipmentAliasType(shipmentType);
+        var defaultFound = defaultShipmentAliasType != null;
 
         if(defaultFound && isDefault) {
-            ShipmentAliasTypeDetailValue defaultShipmentAliasTypeDetailValue = getDefaultShipmentAliasTypeDetailValueForUpdate(shipmentType);
+            var defaultShipmentAliasTypeDetailValue = getDefaultShipmentAliasTypeDetailValueForUpdate(shipmentType);
 
             defaultShipmentAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateShipmentAliasTypeFromValue(defaultShipmentAliasTypeDetailValue, false, createdBy);
@@ -1537,8 +1515,8 @@ public class ShipmentControl
             isDefault = Boolean.TRUE;
         }
 
-        ShipmentAliasType shipmentAliasType = ShipmentAliasTypeFactory.getInstance().create();
-        ShipmentAliasTypeDetail shipmentAliasTypeDetail = ShipmentAliasTypeDetailFactory.getInstance().create(shipmentAliasType, shipmentType, shipmentAliasTypeName,
+        var shipmentAliasType = ShipmentAliasTypeFactory.getInstance().create();
+        var shipmentAliasTypeDetail = ShipmentAliasTypeDetailFactory.getInstance().create(shipmentAliasType, shipmentType, shipmentAliasTypeName,
                 validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1663,9 +1641,9 @@ public class ShipmentControl
     }
 
     public List<ShipmentAliasTypeTransfer> getShipmentAliasTypeTransfers(UserVisit userVisit, ShipmentType shipmentType) {
-        List<ShipmentAliasType> shipmentAliasTypes = getShipmentAliasTypes(shipmentType);
+        var shipmentAliasTypes = getShipmentAliasTypes(shipmentType);
         List<ShipmentAliasTypeTransfer> shipmentAliasTypeTransfers = new ArrayList<>(shipmentAliasTypes.size());
-        ShipmentAliasTypeTransferCache shipmentAliasTypeTransferCache = getShipmentTransferCaches(userVisit).getShipmentAliasTypeTransferCache();
+        var shipmentAliasTypeTransferCache = getShipmentTransferCaches(userVisit).getShipmentAliasTypeTransferCache();
 
         shipmentAliasTypes.forEach((shipmentAliasType) ->
                 shipmentAliasTypeTransfers.add(shipmentAliasTypeTransferCache.getTransfer(shipmentAliasType))
@@ -1676,7 +1654,7 @@ public class ShipmentControl
 
     public ShipmentAliasTypeChoicesBean getShipmentAliasTypeChoices(String defaultShipmentAliasTypeChoice, Language language,
             boolean allowNullChoice, ShipmentType shipmentType) {
-        List<ShipmentAliasType> shipmentAliasTypes = getShipmentAliasTypes(shipmentType);
+        var shipmentAliasTypes = getShipmentAliasTypes(shipmentType);
         var size = shipmentAliasTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -1692,7 +1670,7 @@ public class ShipmentControl
         }
 
         for(var shipmentAliasType : shipmentAliasTypes) {
-            ShipmentAliasTypeDetail shipmentAliasTypeDetail = shipmentAliasType.getLastDetail();
+            var shipmentAliasTypeDetail = shipmentAliasType.getLastDetail();
 
             var label = getBestShipmentAliasTypeDescription(shipmentAliasType, language);
             var value = shipmentAliasTypeDetail.getShipmentAliasTypeName();
@@ -1712,28 +1690,28 @@ public class ShipmentControl
     private void updateShipmentAliasTypeFromValue(ShipmentAliasTypeDetailValue shipmentAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(shipmentAliasTypeDetailValue.hasBeenModified()) {
-            ShipmentAliasType shipmentAliasType = ShipmentAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shipmentAliasType = ShipmentAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     shipmentAliasTypeDetailValue.getShipmentAliasTypePK());
-            ShipmentAliasTypeDetail shipmentAliasTypeDetail = shipmentAliasType.getActiveDetailForUpdate();
+            var shipmentAliasTypeDetail = shipmentAliasType.getActiveDetailForUpdate();
 
             shipmentAliasTypeDetail.setThruTime(session.START_TIME_LONG);
             shipmentAliasTypeDetail.store();
 
-            ShipmentAliasTypePK shipmentAliasTypePK = shipmentAliasTypeDetail.getShipmentAliasTypePK();
-            ShipmentType shipmentType = shipmentAliasTypeDetail.getShipmentType();
-            ShipmentTypePK shipmentTypePK = shipmentType.getPrimaryKey();
-            String shipmentAliasTypeName = shipmentAliasTypeDetailValue.getShipmentAliasTypeName();
-            String validationPattern = shipmentAliasTypeDetailValue.getValidationPattern();
-            Boolean isDefault = shipmentAliasTypeDetailValue.getIsDefault();
-            Integer sortOrder = shipmentAliasTypeDetailValue.getSortOrder();
+            var shipmentAliasTypePK = shipmentAliasTypeDetail.getShipmentAliasTypePK();
+            var shipmentType = shipmentAliasTypeDetail.getShipmentType();
+            var shipmentTypePK = shipmentType.getPrimaryKey();
+            var shipmentAliasTypeName = shipmentAliasTypeDetailValue.getShipmentAliasTypeName();
+            var validationPattern = shipmentAliasTypeDetailValue.getValidationPattern();
+            var isDefault = shipmentAliasTypeDetailValue.getIsDefault();
+            var sortOrder = shipmentAliasTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                ShipmentAliasType defaultShipmentAliasType = getDefaultShipmentAliasType(shipmentType);
-                boolean defaultFound = defaultShipmentAliasType != null && !defaultShipmentAliasType.equals(shipmentAliasType);
+                var defaultShipmentAliasType = getDefaultShipmentAliasType(shipmentType);
+                var defaultFound = defaultShipmentAliasType != null && !defaultShipmentAliasType.equals(shipmentAliasType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ShipmentAliasTypeDetailValue defaultShipmentAliasTypeDetailValue = getDefaultShipmentAliasTypeDetailValueForUpdate(shipmentType);
+                    var defaultShipmentAliasTypeDetailValue = getDefaultShipmentAliasTypeDetailValueForUpdate(shipmentType);
 
                     defaultShipmentAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateShipmentAliasTypeFromValue(defaultShipmentAliasTypeDetailValue, false, updatedBy);
@@ -1761,23 +1739,23 @@ public class ShipmentControl
         deleteShipmentAliasesByShipmentAliasType(shipmentAliasType, deletedBy);
         deleteShipmentAliasTypeDescriptionsByShipmentAliasType(shipmentAliasType, deletedBy);
 
-        ShipmentAliasTypeDetail shipmentAliasTypeDetail = shipmentAliasType.getLastDetailForUpdate();
+        var shipmentAliasTypeDetail = shipmentAliasType.getLastDetailForUpdate();
         shipmentAliasTypeDetail.setThruTime(session.START_TIME_LONG);
         shipmentAliasType.setActiveDetail(null);
         shipmentAliasType.store();
 
         // Check for default, and pick one if necessary
-        ShipmentType shipmentType = shipmentAliasTypeDetail.getShipmentType();
-        ShipmentAliasType defaultShipmentAliasType = getDefaultShipmentAliasType(shipmentType);
+        var shipmentType = shipmentAliasTypeDetail.getShipmentType();
+        var defaultShipmentAliasType = getDefaultShipmentAliasType(shipmentType);
         if(defaultShipmentAliasType == null) {
-            List<ShipmentAliasType> shipmentAliasTypes = getShipmentAliasTypesForUpdate(shipmentType);
+            var shipmentAliasTypes = getShipmentAliasTypesForUpdate(shipmentType);
 
             if(!shipmentAliasTypes.isEmpty()) {
-                Iterator<ShipmentAliasType> iter = shipmentAliasTypes.iterator();
+                var iter = shipmentAliasTypes.iterator();
                 if(iter.hasNext()) {
                     defaultShipmentAliasType = iter.next();
                 }
-                ShipmentAliasTypeDetailValue shipmentAliasTypeDetailValue = Objects.requireNonNull(defaultShipmentAliasType).getLastDetailForUpdate().getShipmentAliasTypeDetailValue().clone();
+                var shipmentAliasTypeDetailValue = Objects.requireNonNull(defaultShipmentAliasType).getLastDetailForUpdate().getShipmentAliasTypeDetailValue().clone();
 
                 shipmentAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateShipmentAliasTypeFromValue(shipmentAliasTypeDetailValue, false, deletedBy);
@@ -1802,7 +1780,7 @@ public class ShipmentControl
     // --------------------------------------------------------------------------------
 
     public ShipmentAliasTypeDescription createShipmentAliasTypeDescription(ShipmentAliasType shipmentAliasType, Language language, String description, BasePK createdBy) {
-        ShipmentAliasTypeDescription shipmentAliasTypeDescription = ShipmentAliasTypeDescriptionFactory.getInstance().create(shipmentAliasType, language,
+        var shipmentAliasTypeDescription = ShipmentAliasTypeDescriptionFactory.getInstance().create(shipmentAliasType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(shipmentAliasType.getPrimaryKey(), EventTypes.MODIFY, shipmentAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1881,7 +1859,7 @@ public class ShipmentControl
 
     public String getBestShipmentAliasTypeDescription(ShipmentAliasType shipmentAliasType, Language language) {
         String description;
-        ShipmentAliasTypeDescription shipmentAliasTypeDescription = getShipmentAliasTypeDescription(shipmentAliasType, language);
+        var shipmentAliasTypeDescription = getShipmentAliasTypeDescription(shipmentAliasType, language);
 
         if(shipmentAliasTypeDescription == null && !language.getIsDefault()) {
             shipmentAliasTypeDescription = getShipmentAliasTypeDescription(shipmentAliasType, getPartyControl().getDefaultLanguage());
@@ -1901,9 +1879,9 @@ public class ShipmentControl
     }
 
     public List<ShipmentAliasTypeDescriptionTransfer> getShipmentAliasTypeDescriptionTransfersByShipmentAliasType(UserVisit userVisit, ShipmentAliasType shipmentAliasType) {
-        List<ShipmentAliasTypeDescription> shipmentAliasTypeDescriptions = getShipmentAliasTypeDescriptionsByShipmentAliasType(shipmentAliasType);
+        var shipmentAliasTypeDescriptions = getShipmentAliasTypeDescriptionsByShipmentAliasType(shipmentAliasType);
         List<ShipmentAliasTypeDescriptionTransfer> shipmentAliasTypeDescriptionTransfers = new ArrayList<>(shipmentAliasTypeDescriptions.size());
-        ShipmentAliasTypeDescriptionTransferCache shipmentAliasTypeDescriptionTransferCache = getShipmentTransferCaches(userVisit).getShipmentAliasTypeDescriptionTransferCache();
+        var shipmentAliasTypeDescriptionTransferCache = getShipmentTransferCaches(userVisit).getShipmentAliasTypeDescriptionTransferCache();
 
         shipmentAliasTypeDescriptions.forEach((shipmentAliasTypeDescription) ->
                 shipmentAliasTypeDescriptionTransfers.add(shipmentAliasTypeDescriptionTransferCache.getTransfer(shipmentAliasTypeDescription))
@@ -1914,15 +1892,15 @@ public class ShipmentControl
 
     public void updateShipmentAliasTypeDescriptionFromValue(ShipmentAliasTypeDescriptionValue shipmentAliasTypeDescriptionValue, BasePK updatedBy) {
         if(shipmentAliasTypeDescriptionValue.hasBeenModified()) {
-            ShipmentAliasTypeDescription shipmentAliasTypeDescription = ShipmentAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shipmentAliasTypeDescription = ShipmentAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      shipmentAliasTypeDescriptionValue.getPrimaryKey());
 
             shipmentAliasTypeDescription.setThruTime(session.START_TIME_LONG);
             shipmentAliasTypeDescription.store();
 
-            ShipmentAliasType shipmentAliasType = shipmentAliasTypeDescription.getShipmentAliasType();
-            Language language = shipmentAliasTypeDescription.getLanguage();
-            String description = shipmentAliasTypeDescriptionValue.getDescription();
+            var shipmentAliasType = shipmentAliasTypeDescription.getShipmentAliasType();
+            var language = shipmentAliasTypeDescription.getLanguage();
+            var description = shipmentAliasTypeDescriptionValue.getDescription();
 
             shipmentAliasTypeDescription = ShipmentAliasTypeDescriptionFactory.getInstance().create(shipmentAliasType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1939,7 +1917,7 @@ public class ShipmentControl
     }
 
     public void deleteShipmentAliasTypeDescriptionsByShipmentAliasType(ShipmentAliasType shipmentAliasType, BasePK deletedBy) {
-        List<ShipmentAliasTypeDescription> shipmentAliasTypeDescriptions = getShipmentAliasTypeDescriptionsByShipmentAliasTypeForUpdate(shipmentAliasType);
+        var shipmentAliasTypeDescriptions = getShipmentAliasTypeDescriptionsByShipmentAliasTypeForUpdate(shipmentAliasType);
 
         shipmentAliasTypeDescriptions.forEach((shipmentAliasTypeDescription) -> 
                 deleteShipmentAliasTypeDescription(shipmentAliasTypeDescription, deletedBy)
@@ -1951,7 +1929,7 @@ public class ShipmentControl
     // --------------------------------------------------------------------------------
 
     public ShipmentAlias createShipmentAlias(Shipment shipment, ShipmentAliasType shipmentAliasType, String alias, BasePK createdBy) {
-        ShipmentAlias shipmentAlias = ShipmentAliasFactory.getInstance().create(shipment, shipmentAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var shipmentAlias = ShipmentAliasFactory.getInstance().create(shipment, shipmentAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(shipment.getPrimaryKey(), EventTypes.MODIFY, shipmentAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2094,9 +2072,9 @@ public class ShipmentControl
     }
 
     public List<ShipmentAliasTransfer> getShipmentAliasTransfersByShipment(UserVisit userVisit, Shipment shipment) {
-        List<ShipmentAlias> shipmentaliases = getShipmentAliasesByShipment(shipment);
+        var shipmentaliases = getShipmentAliasesByShipment(shipment);
         List<ShipmentAliasTransfer> shipmentAliasTransfers = new ArrayList<>(shipmentaliases.size());
-        ShipmentAliasTransferCache shipmentAliasTransferCache = getShipmentTransferCaches(userVisit).getShipmentAliasTransferCache();
+        var shipmentAliasTransferCache = getShipmentTransferCaches(userVisit).getShipmentAliasTransferCache();
 
         shipmentaliases.forEach((shipmentAlias) ->
                 shipmentAliasTransfers.add(shipmentAliasTransferCache.getTransfer(shipmentAlias))
@@ -2107,14 +2085,14 @@ public class ShipmentControl
 
     public void updateShipmentAliasFromValue(ShipmentAliasValue shipmentAliasValue, BasePK updatedBy) {
         if(shipmentAliasValue.hasBeenModified()) {
-            ShipmentAlias shipmentAlias = ShipmentAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, shipmentAliasValue.getPrimaryKey());
+            var shipmentAlias = ShipmentAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, shipmentAliasValue.getPrimaryKey());
 
             shipmentAlias.setThruTime(session.START_TIME_LONG);
             shipmentAlias.store();
 
-            ShipmentPK shipmentPK = shipmentAlias.getShipmentPK();
-            ShipmentAliasTypePK shipmentAliasTypePK = shipmentAlias.getShipmentAliasTypePK();
-            String alias  = shipmentAliasValue.getAlias();
+            var shipmentPK = shipmentAlias.getShipmentPK();
+            var shipmentAliasTypePK = shipmentAlias.getShipmentAliasTypePK();
+            var alias  = shipmentAliasValue.getAlias();
 
             shipmentAlias = ShipmentAliasFactory.getInstance().create(shipmentPK, shipmentAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -2130,7 +2108,7 @@ public class ShipmentControl
     }
 
     public void deleteShipmentAliasesByShipmentAliasType(ShipmentAliasType shipmentAliasType, BasePK deletedBy) {
-        List<ShipmentAlias> shipmentaliases = getShipmentAliasesByShipmentAliasTypeForUpdate(shipmentAliasType);
+        var shipmentaliases = getShipmentAliasesByShipmentAliasTypeForUpdate(shipmentAliasType);
 
         shipmentaliases.forEach((shipmentAlias) -> 
                 deleteShipmentAlias(shipmentAlias, deletedBy)
@@ -2138,7 +2116,7 @@ public class ShipmentControl
     }
 
     public void deleteShipmentAliasesByShipment(Shipment shipment, BasePK deletedBy) {
-        List<ShipmentAlias> shipmentaliases = getShipmentAliasesByShipmentForUpdate(shipment);
+        var shipmentaliases = getShipmentAliasesByShipmentForUpdate(shipment);
 
         shipmentaliases.forEach((shipmentAlias) -> 
                 deleteShipmentAlias(shipmentAlias, deletedBy)

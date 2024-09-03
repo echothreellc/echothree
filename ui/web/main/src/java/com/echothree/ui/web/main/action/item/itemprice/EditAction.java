@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected ItemPriceSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemPriceSpec spec = ItemUtil.getHome().getItemPriceSpec();
+        var spec = ItemUtil.getHome().getItemPriceSpec();
 
         spec.setItemName(findParameter(request, ParameterConstants.ITEM_NAME, actionForm.getItemName()));
         spec.setInventoryConditionName(findParameter(request, ParameterConstants.INVENTORY_CONDITION_NAME, actionForm.getInventoryConditionName()));
@@ -64,7 +64,7 @@ public class EditAction
     @Override
     protected ItemPriceEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemPriceEdit edit = ItemUtil.getHome().getItemPriceEdit();
+        var edit = ItemUtil.getHome().getItemPriceEdit();
 
         edit.setUnitPrice(actionForm.getUnitPrice());
         edit.setMaximumUnitPrice(actionForm.getMaximumUnitPrice());

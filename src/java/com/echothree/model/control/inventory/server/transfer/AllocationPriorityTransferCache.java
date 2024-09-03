@@ -19,7 +19,6 @@ package com.echothree.model.control.inventory.server.transfer;
 import com.echothree.model.control.inventory.common.transfer.AllocationPriorityTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
-import com.echothree.model.data.inventory.server.entity.AllocationPriorityDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class AllocationPriorityTransferCache
@@ -34,15 +33,15 @@ public class AllocationPriorityTransferCache
     
     @Override
     public AllocationPriorityTransfer getTransfer(AllocationPriority allocationPriority) {
-        AllocationPriorityTransfer allocationPriorityTransfer = get(allocationPriority);
+        var allocationPriorityTransfer = get(allocationPriority);
         
         if(allocationPriorityTransfer == null) {
-            AllocationPriorityDetail allocationPriorityDetail = allocationPriority.getLastDetail();
-            String allocationPriorityName = allocationPriorityDetail.getAllocationPriorityName();
-            Integer priority = allocationPriorityDetail.getPriority();
-            Boolean isDefault = allocationPriorityDetail.getIsDefault();
-            Integer sortOrder = allocationPriorityDetail.getSortOrder();
-            String description = inventoryControl.getBestAllocationPriorityDescription(allocationPriority, getLanguage());
+            var allocationPriorityDetail = allocationPriority.getLastDetail();
+            var allocationPriorityName = allocationPriorityDetail.getAllocationPriorityName();
+            var priority = allocationPriorityDetail.getPriority();
+            var isDefault = allocationPriorityDetail.getIsDefault();
+            var sortOrder = allocationPriorityDetail.getSortOrder();
+            var description = inventoryControl.getBestAllocationPriorityDescription(allocationPriority, getLanguage());
             
             allocationPriorityTransfer = new AllocationPriorityTransfer(allocationPriorityName, priority, isDefault, sortOrder, description);
             put(allocationPriority, allocationPriorityTransfer);

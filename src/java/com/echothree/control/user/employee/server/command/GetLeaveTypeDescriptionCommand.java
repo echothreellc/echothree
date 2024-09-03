@@ -18,15 +18,11 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.GetLeaveTypeDescriptionForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.common.result.GetLeaveTypeDescriptionResult;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.employee.server.entity.LeaveType;
-import com.echothree.model.data.employee.server.entity.LeaveTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetLeaveTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        GetLeaveTypeDescriptionResult result = EmployeeResultFactory.getGetLeaveTypeDescriptionResult();
-        String leaveTypeName = form.getLeaveTypeName();
-        LeaveType leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
+        var result = EmployeeResultFactory.getGetLeaveTypeDescriptionResult();
+        var leaveTypeName = form.getLeaveTypeName();
+        var leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
         
         if(leaveType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                LeaveTypeDescription leaveTypeDescription = employeeControl.getLeaveTypeDescription(leaveType, language);
+                var leaveTypeDescription = employeeControl.getLeaveTypeDescription(leaveType, language);
                 
                 if(leaveTypeDescription != null) {
                     result.setLeaveTypeDescription(employeeControl.getLeaveTypeDescriptionTransfer(getUserVisit(), leaveTypeDescription));

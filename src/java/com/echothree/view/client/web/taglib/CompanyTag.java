@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetCompanyForm;
 import com.echothree.control.user.party.common.result.GetCompanyResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -98,7 +95,7 @@ public class CompanyTag
     public int doStartTag()
             throws JspException {
         try {
-            GetCompanyForm commandForm = PartyUtil.getHome().getGetCompanyForm();
+            var commandForm = PartyUtil.getHome().getGetCompanyForm();
             
             commandForm.setCompanyName(companyName);
             commandForm.setPartyName(partyName);
@@ -106,8 +103,8 @@ public class CompanyTag
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(), commandForm);
+
+            var commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -115,8 +112,8 @@ public class CompanyTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCompanyResult result = (GetCompanyResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCompanyResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getCompany(), scope);
             }

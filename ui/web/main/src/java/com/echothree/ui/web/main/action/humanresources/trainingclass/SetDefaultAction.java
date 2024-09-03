@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.trainingclass;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.form.SetDefaultTrainingClassForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -47,7 +46,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        SetDefaultTrainingClassForm commandForm = TrainingUtil.getHome().getSetDefaultTrainingClassForm();
+        var commandForm = TrainingUtil.getHome().getSetDefaultTrainingClassForm();
 
         commandForm.setTrainingClassName(request.getParameter(ParameterConstants.TRAINING_CLASS_NAME));
 

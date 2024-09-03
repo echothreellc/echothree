@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.appearance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteAppearanceTextDecorationForm;
-import com.echothree.control.user.core.common.form.GetAppearanceTextDecorationForm;
 import com.echothree.control.user.core.common.result.GetAppearanceTextDecorationResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class TextDecorationDeleteAction
     @Override
     public void setupTransfer(TextDecorationDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetAppearanceTextDecorationForm commandForm = CoreUtil.getHome().getGetAppearanceTextDecorationForm();
+        var commandForm = CoreUtil.getHome().getGetAppearanceTextDecorationForm();
         
         commandForm.setAppearanceName(actionForm.getAppearanceName());
         commandForm.setTextDecorationName(actionForm.getTextDecorationName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getAppearanceTextDecoration(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getAppearanceTextDecoration(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAppearanceTextDecorationResult result = (GetAppearanceTextDecorationResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAppearanceTextDecorationResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.APPEARANCE_TEXT_DECORATION, result.getAppearanceTextDecoration());
         }
@@ -80,7 +77,7 @@ public class TextDecorationDeleteAction
     @Override
     public CommandResult doDelete(TextDecorationDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteAppearanceTextDecorationForm commandForm = CoreUtil.getHome().getDeleteAppearanceTextDecorationForm();
+        var commandForm = CoreUtil.getHome().getDeleteAppearanceTextDecorationForm();
 
         commandForm.setAppearanceName(actionForm.getAppearanceName());
         commandForm.setTextDecorationName(actionForm.getTextDecorationName());

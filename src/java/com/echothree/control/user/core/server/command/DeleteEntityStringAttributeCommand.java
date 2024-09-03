@@ -21,10 +21,6 @@ import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityStringAttribute;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -74,31 +70,31 @@ public class DeleteEntityStringAttributeCommand
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
 
             if(!hasExecutionErrors()) {
-                String entityAttributeName = form.getEntityAttributeName();
-                String entityAttributeUlid = form.getEntityAttributeUlid();
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttributeUlid = form.getEntityAttributeUlid();
                 
                 parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
                 
                 if(parameterCount == 1) {
-                    EntityAttribute entityAttribute = entityAttributeName == null ?
+                    var entityAttribute = entityAttributeName == null ?
                             EntityAttributeLogic.getInstance().getEntityAttributeByUlid(this, entityAttributeUlid) :
                             EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            String languageIsoName = form.getLanguageIsoName();
-                            String languageUlid = form.getLanguageUlid();
+                            var languageIsoName = form.getLanguageIsoName();
+                            var languageUlid = form.getLanguageUlid();
                             
                             parameterCount = (languageIsoName == null ? 0 : 1) + (languageUlid == null ? 0 : 1);
 
                             if(parameterCount == 1) {
-                                Language language = languageIsoName == null ?
+                                var language = languageIsoName == null ?
                                         LanguageLogic.getInstance().getLanguageByUlid(this, languageUlid) :
                                         LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
 
                                 if(!hasExecutionErrors()) {
                                     var coreControl = getCoreControl();
-                                    EntityStringAttribute entityStringAttribute = coreControl.getEntityStringAttributeForUpdate(entityAttribute, entityInstance, language);
+                                    var entityStringAttribute = coreControl.getEntityStringAttributeForUpdate(entityAttribute, entityInstance, language);
 
                                     if(entityStringAttribute != null) {
                                         coreControl.deleteEntityStringAttribute(entityStringAttribute, getPartyPK());

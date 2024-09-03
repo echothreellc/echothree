@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.transactionentityroletype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.DeleteTransactionEntityRoleTypeDescriptionForm;
-import com.echothree.control.user.accounting.common.form.GetTransactionEntityRoleTypeDescriptionForm;
 import com.echothree.control.user.accounting.common.result.GetTransactionEntityRoleTypeDescriptionResult;
 import com.echothree.control.user.accounting.common.spec.TransactionEntityRoleTypeDescriptionSpec;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -26,7 +24,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -71,13 +68,13 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTransactionEntityRoleTypeDescriptionForm commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypeDescriptionForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypeDescriptionForm();
         
         setupSpec(actionForm, commandForm);
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionEntityRoleTypeDescription(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTransactionEntityRoleTypeDescriptionResult result = (GetTransactionEntityRoleTypeDescriptionResult)executionResult.getResult();
+
+        var commandResult = AccountingUtil.getHome().getTransactionEntityRoleTypeDescription(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTransactionEntityRoleTypeDescriptionResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.TRANSACTION_ENTITY_ROLE_TYPE_DESCRIPTION, result.getTransactionEntityRoleTypeDescription());
     }
@@ -85,7 +82,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteTransactionEntityRoleTypeDescriptionForm commandForm = AccountingUtil.getHome().getDeleteTransactionEntityRoleTypeDescriptionForm();
+        var commandForm = AccountingUtil.getHome().getDeleteTransactionEntityRoleTypeDescriptionForm();
 
         setupSpec(actionForm, commandForm);
 

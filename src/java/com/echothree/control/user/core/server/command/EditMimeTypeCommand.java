@@ -26,10 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.core.server.entity.MimeTypeDescription;
-import com.echothree.model.data.core.server.entity.MimeTypeDetail;
-import com.echothree.model.data.core.server.value.MimeTypeDescriptionValue;
-import com.echothree.model.data.core.server.value.MimeTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -88,8 +84,8 @@ public class EditMimeTypeCommand
     @Override
     public MimeType getEntity(EditMimeTypeResult result) {
         var coreControl = getCoreControl();
-        MimeType mimeType = null;
-        String mimeTypeName = spec.getMimeTypeName();
+        MimeType mimeType;
+        var mimeTypeName = spec.getMimeTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             mimeType = coreControl.getMimeTypeByName(mimeTypeName);
@@ -121,8 +117,8 @@ public class EditMimeTypeCommand
     @Override
     public void doLock(MimeTypeEdit edit, MimeType mimeType) {
         var coreControl = getCoreControl();
-        MimeTypeDescription mimeTypeDescription = coreControl.getMimeTypeDescription(mimeType, getPreferredLanguage());
-        MimeTypeDetail mimeTypeDetail = mimeType.getLastDetail();
+        var mimeTypeDescription = coreControl.getMimeTypeDescription(mimeType, getPreferredLanguage());
+        var mimeTypeDetail = mimeType.getLastDetail();
 
         edit.setMimeTypeName(mimeTypeDetail.getMimeTypeName());
         edit.setIsDefault(mimeTypeDetail.getIsDefault().toString());
@@ -136,8 +132,8 @@ public class EditMimeTypeCommand
     @Override
     public void canUpdate(MimeType mimeType) {
         var coreControl = getCoreControl();
-        String mimeTypeName = edit.getMimeTypeName();
-        MimeType duplicateMimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        var mimeTypeName = edit.getMimeTypeName();
+        var duplicateMimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
         if(duplicateMimeType != null && !mimeType.equals(duplicateMimeType)) {
             addExecutionError(ExecutionErrors.DuplicateMimeTypeName.name(), mimeTypeName);
@@ -148,9 +144,9 @@ public class EditMimeTypeCommand
     public void doUpdate(MimeType mimeType) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        MimeTypeDetailValue mimeTypeDetailValue = coreControl.getMimeTypeDetailValueForUpdate(mimeType);
-        MimeTypeDescription mimeTypeDescription = coreControl.getMimeTypeDescriptionForUpdate(mimeType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var mimeTypeDetailValue = coreControl.getMimeTypeDetailValueForUpdate(mimeType);
+        var mimeTypeDescription = coreControl.getMimeTypeDescriptionForUpdate(mimeType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         mimeTypeDetailValue.setMimeTypeName(edit.getMimeTypeName());
         mimeTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -163,7 +159,7 @@ public class EditMimeTypeCommand
         } else if(mimeTypeDescription != null && description == null) {
             coreControl.deleteMimeTypeDescription(mimeTypeDescription, partyPK);
         } else if(mimeTypeDescription != null && description != null) {
-            MimeTypeDescriptionValue mimeTypeDescriptionValue = coreControl.getMimeTypeDescriptionValue(mimeTypeDescription);
+            var mimeTypeDescriptionValue = coreControl.getMimeTypeDescriptionValue(mimeTypeDescription);
 
             mimeTypeDescriptionValue.setDescription(description);
             coreControl.updateMimeTypeDescriptionFromValue(mimeTypeDescriptionValue, partyPK);

@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.GetUserSessionForm;
 import com.echothree.control.user.user.common.result.GetUserSessionResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -86,13 +83,13 @@ public class UserSessionTag
     public int doStartTag()
             throws JspException {
         try {
-            GetUserSessionForm commandForm = UserUtil.getHome().getGetUserSessionForm();
+            var commandForm = UserUtil.getHome().getGetUserSessionForm();
 
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
 
-            CommandResult commandResult = UserUtil.getHome().getUserSession(getUserVisitPK(), commandForm);
+            var commandResult = UserUtil.getHome().getUserSession(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -100,8 +97,8 @@ public class UserSessionTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUserSessionResult result = (GetUserSessionResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetUserSessionResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getUserSession(), scope);
             }

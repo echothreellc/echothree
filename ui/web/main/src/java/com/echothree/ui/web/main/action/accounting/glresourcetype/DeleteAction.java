@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.glresourcetype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.DeleteGlResourceTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteGlResourceTypeForm commandForm = AccountingUtil.getHome().getDeleteGlResourceTypeForm();
-            String glResourceTypeName = request.getParameter(ParameterConstants.GL_RESOURCE_TYPE_NAME);
+            var commandForm = AccountingUtil.getHome().getDeleteGlResourceTypeForm();
+            var glResourceTypeName = request.getParameter(ParameterConstants.GL_RESOURCE_TYPE_NAME);
             
             commandForm.setGlResourceTypeName(glResourceTypeName);
             

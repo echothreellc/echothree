@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.namesuffix;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.DeleteNameSuffixForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteNameSuffixForm commandForm = PartyUtil.getHome().getDeleteNameSuffixForm();
-            String nameSuffixId = request.getParameter(ParameterConstants.NAME_SUFFIX_ID);
+            var commandForm = PartyUtil.getHome().getDeleteNameSuffixForm();
+            var nameSuffixId = request.getParameter(ParameterConstants.NAME_SUFFIX_ID);
             
             commandForm.setNameSuffixId(nameSuffixId);
             

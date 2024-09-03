@@ -19,13 +19,7 @@ package com.echothree.control.user.associate.server.command;
 import com.echothree.control.user.associate.common.form.CreateAssociatePartyContactMechanismForm;
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.data.associate.server.entity.Associate;
-import com.echothree.model.data.associate.server.entity.AssociatePartyContactMechanism;
-import com.echothree.model.data.associate.server.entity.AssociateProgram;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
-import com.echothree.model.data.contact.server.entity.ContactMechanismAlias;
-import com.echothree.model.data.contact.server.entity.ContactMechanismAliasType;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,23 +57,23 @@ public class CreateAssociatePartyContactMechanismCommand
     
     @Override
     protected BaseResult execute() {
-        String contactMechanismName = form.getContactMechanismName();
-        String contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
-        String alias = form.getAlias();
+        var contactMechanismName = form.getContactMechanismName();
+        var contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
+        var alias = form.getAlias();
         var parameterCount = (contactMechanismName == null ? 0 : 1) + (contactMechanismAliasTypeName == null && alias == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var associateControl = Session.getModelController(AssociateControl.class);
-            String associateProgramName = form.getAssociateProgramName();
-            AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+            var associateProgramName = form.getAssociateProgramName();
+            var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
             
             if(associateProgram != null) {
-                String associateName = form.getAssociateName();
-                Associate associate = associateControl.getAssociateByName(associateProgram, associateName);
+                var associateName = form.getAssociateName();
+                var associate = associateControl.getAssociateByName(associateProgram, associateName);
                 
                 if(associate != null) {
-                    String associatePartyContactMechanismName = form.getAssociatePartyContactMechanismName();
-                    AssociatePartyContactMechanism associatePartyContactMechanism = associateControl.getAssociatePartyContactMechanismByName(associate,
+                    var associatePartyContactMechanismName = form.getAssociatePartyContactMechanismName();
+                    var associatePartyContactMechanism = associateControl.getAssociatePartyContactMechanismByName(associate,
                             associatePartyContactMechanismName);
                     
                     if(associatePartyContactMechanism == null) {
@@ -93,10 +87,10 @@ public class CreateAssociatePartyContactMechanismCommand
                                 addExecutionError(ExecutionErrors.UnknownContactMechanismName.name(), contactMechanismName);
                             }
                         } else {
-                            ContactMechanismAliasType contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
+                            var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
                             
                             if(contactMechanismAliasType != null) {
-                                ContactMechanismAlias contactMechanismAlias = contactControl.getContactMechanismAliasByAlias(contactMechanismAliasType,
+                                var contactMechanismAlias = contactControl.getContactMechanismAliasByAlias(contactMechanismAliasType,
                                         alias);
                                 
                                 if(contactMechanismAlias != null) {
@@ -110,7 +104,7 @@ public class CreateAssociatePartyContactMechanismCommand
                         }
                         
                         if(!hasExecutionErrors()) {
-                            PartyContactMechanism partyContactMechanism = contactControl.getPartyContactMechanism(associate.getLastDetail().getParty(),
+                            var partyContactMechanism = contactControl.getPartyContactMechanism(associate.getLastDetail().getParty(),
                                     contactMechanism);
                             
                             if(partyContactMechanism != null) {

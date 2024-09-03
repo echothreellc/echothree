@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.order;
 
 import com.echothree.control.user.order.common.OrderUtil;
 import com.echothree.control.user.order.common.OrderService;
-import com.echothree.control.user.order.common.form.CreateOrderTimeTypeDescriptionForm;
 import com.echothree.control.user.order.common.form.OrderFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -51,7 +50,7 @@ public class OrderTimeTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("orderTimeTypeDescription")) {
-            CreateOrderTimeTypeDescriptionForm commandForm = OrderFormFactory.getCreateOrderTimeTypeDescriptionForm();
+            var commandForm = OrderFormFactory.getCreateOrderTimeTypeDescriptionForm();
             
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.setOrderTimeTypeName(orderTimeTypeName);

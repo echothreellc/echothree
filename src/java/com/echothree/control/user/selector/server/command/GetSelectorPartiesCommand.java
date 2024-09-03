@@ -18,14 +18,9 @@ package com.echothree.control.user.selector.server.command;
 
 
 import com.echothree.control.user.selector.common.form.GetSelectorPartiesForm;
-import com.echothree.control.user.selector.common.result.GetSelectorPartiesResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -57,20 +52,20 @@ public class GetSelectorPartiesCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorPartiesResult result = SelectorResultFactory.getGetSelectorPartiesResult();
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var result = SelectorResultFactory.getGetSelectorPartiesResult();
+        var selectorKindName = form.getSelectorKindName();
+        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
         if(selectorKind != null) {
-            UserVisit userVisit = getUserVisit();
-            String selectorTypeName = form.getSelectorTypeName();
-            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
+            var userVisit = getUserVisit();
+            var selectorTypeName = form.getSelectorTypeName();
+            var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
             
             result.setSelectorKind(selectorControl.getSelectorKindTransfer(userVisit, selectorKind));
             
             if(selectorType != null) {
-                String selectorName = form.getSelectorName();
-                Selector selector = selectorControl.getSelectorByName(selectorType, selectorName);
+                var selectorName = form.getSelectorName();
+                var selector = selectorControl.getSelectorByName(selectorType, selectorName);
                 
                 result.setSelectorType(selectorControl.getSelectorTypeTransfer(userVisit, selectorType));
                 

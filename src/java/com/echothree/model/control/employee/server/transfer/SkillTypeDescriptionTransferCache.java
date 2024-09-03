@@ -17,9 +17,7 @@
 package com.echothree.model.control.employee.server.transfer;
 
 import com.echothree.model.control.employee.common.transfer.SkillTypeDescriptionTransfer;
-import com.echothree.model.control.employee.common.transfer.SkillTypeTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.employee.server.entity.SkillTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,12 +30,12 @@ public class SkillTypeDescriptionTransferCache
     }
     
     public SkillTypeDescriptionTransfer getSkillTypeDescriptionTransfer(SkillTypeDescription skillTypeDescription) {
-        SkillTypeDescriptionTransfer skillTypeDescriptionTransfer = get(skillTypeDescription);
+        var skillTypeDescriptionTransfer = get(skillTypeDescription);
         
         if(skillTypeDescriptionTransfer == null) {
-            SkillTypeTransfer skillTypeTransfer = employeeControl.getSkillTypeTransfer(userVisit,
+            var skillTypeTransfer = employeeControl.getSkillTypeTransfer(userVisit,
                     skillTypeDescription.getSkillType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, skillTypeDescription.getLanguage());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, skillTypeDescription.getLanguage());
             
             skillTypeDescriptionTransfer = new SkillTypeDescriptionTransfer(languageTransfer, skillTypeTransfer, skillTypeDescription.getDescription());
             put(skillTypeDescription, skillTypeDescriptionTransfer);

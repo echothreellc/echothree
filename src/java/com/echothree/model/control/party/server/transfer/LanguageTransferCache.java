@@ -22,7 +22,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import java.util.Set;
 
 public class LanguageTransferCache
         extends BasePartyTransferCache<Language, LanguageTransfer> {
@@ -51,13 +50,13 @@ public class LanguageTransferCache
     }
     
     public LanguageTransfer getLanguageTransfer(Language language) {
-        LanguageTransfer languageTransfer = get(language);
+        var languageTransfer = get(language);
         
         if(languageTransfer == null) {
-            String languageIsoName = filterLanguageIsoName ? null : language.getLanguageIsoName();
-            Boolean isDefault = filterisDefault ? null : language.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : language.getSortOrder();
-            String description = filterDescription ? null : partyControl.getBestLanguageDescription(language, getLanguage());
+            var languageIsoName = filterLanguageIsoName ? null : language.getLanguageIsoName();
+            var isDefault = filterisDefault ? null : language.getIsDefault();
+            var sortOrder = filterSortOrder ? null : language.getSortOrder();
+            var description = filterDescription ? null : partyControl.getBestLanguageDescription(language, getLanguage());
             
             languageTransfer = new LanguageTransfer(languageIsoName, isDefault, sortOrder, description);
             put(language, languageTransfer);

@@ -139,7 +139,7 @@ public class ContentPageAreaObject
     @GraphQLField
     @GraphQLDescription("clob")
     public String getClob(final DataFetchingEnvironment env) {
-        ContentPageAreaClob contentPageAreaClob = getContentPageAreaClob();
+        var contentPageAreaClob = getContentPageAreaClob();
         
         return contentPageAreaClob == null ? null : contentPageAreaClob.getClob();
     }
@@ -147,7 +147,7 @@ public class ContentPageAreaObject
     @GraphQLField
     @GraphQLDescription("string")
     public String getString(final DataFetchingEnvironment env) {
-        ContentPageAreaString contentPageAreaString = getContentPageAreaString();
+        var contentPageAreaString = getContentPageAreaString();
         
         return contentPageAreaString == null ? null : contentPageAreaString.getString();
     }
@@ -155,7 +155,7 @@ public class ContentPageAreaObject
     @GraphQLField
     @GraphQLDescription("url")
     public String getUrl(final DataFetchingEnvironment env) {
-        ContentPageAreaUrl contentPageAreaUrl = getContentPageAreaUrl();
+        var contentPageAreaUrl = getContentPageAreaUrl();
         
         return contentPageAreaUrl == null ? null : contentPageAreaUrl.getUrl();
     }

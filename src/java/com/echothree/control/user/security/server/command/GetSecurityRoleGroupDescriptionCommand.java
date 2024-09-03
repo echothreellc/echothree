@@ -17,16 +17,12 @@
 package com.echothree.control.user.security.server.command;
 
 import com.echothree.control.user.security.common.form.GetSecurityRoleGroupDescriptionForm;
-import com.echothree.control.user.security.common.result.GetSecurityRoleGroupDescriptionResult;
 import com.echothree.control.user.security.common.result.SecurityResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
-import com.echothree.model.data.security.server.entity.SecurityRoleGroupDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetSecurityRoleGroupDescriptionCommand
     @Override
     protected BaseResult execute() {
         var securityControl = Session.getModelController(SecurityControl.class);
-        GetSecurityRoleGroupDescriptionResult result = SecurityResultFactory.getGetSecurityRoleGroupDescriptionResult();
-        String securityRoleGroupName = form.getSecurityRoleGroupName();
-        SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
+        var result = SecurityResultFactory.getGetSecurityRoleGroupDescriptionResult();
+        var securityRoleGroupName = form.getSecurityRoleGroupName();
+        var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
         
         if(securityRoleGroup != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                SecurityRoleGroupDescription securityRoleGroupDescription = securityControl.getSecurityRoleGroupDescription(securityRoleGroup, language);
+                var securityRoleGroupDescription = securityControl.getSecurityRoleGroupDescription(securityRoleGroup, language);
                 
                 if(securityRoleGroupDescription != null) {
                     result.setSecurityRoleGroupDescription(securityControl.getSecurityRoleGroupDescriptionTransfer(getUserVisit(), securityRoleGroupDescription));

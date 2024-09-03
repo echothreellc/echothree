@@ -75,7 +75,6 @@ package com.echothree.view.client.web.struts.sslext.taglib;
 
 import com.echothree.view.client.web.struts.sslext.util.SecureRequestUtils;
 import java.net.MalformedURLException;
-import java.util.Map;
 import javax.servlet.jsp.JspException;
 import org.apache.struts.taglib.TagUtils;
 
@@ -98,9 +97,9 @@ public class SecureRewriteTag
     @Override
     public int doStartTag() throws JspException {
         // Generate the hyperlink URL
-        TagUtils tagUtils = TagUtils.getInstance();
-        Map params = tagUtils.computeParameters(pageContext, paramId, paramName, paramProperty, paramScope, name, property, scope, transaction);
-        String url = null;
+        var tagUtils = TagUtils.getInstance();
+        var params = tagUtils.computeParameters(pageContext, paramId, paramName, paramProperty, paramScope, name, property, scope, transaction);
+        String url;
         
         try {
             url = SecureRequestUtils.computeURL(pageContext, forward, href, page, action, params, anchor, false);

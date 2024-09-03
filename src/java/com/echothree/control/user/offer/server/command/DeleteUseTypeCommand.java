@@ -21,7 +21,6 @@ import com.echothree.model.control.offer.server.logic.UseTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -60,8 +59,8 @@ public class DeleteUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        String useTypeName = form.getUseTypeName();
-        UseType useType = UseTypeLogic.getInstance().getUseTypeByNameForUpdate(this, useTypeName);
+        var useTypeName = form.getUseTypeName();
+        var useType = UseTypeLogic.getInstance().getUseTypeByNameForUpdate(this, useTypeName);
         
         if(!hasExecutionErrors()) {
             UseTypeLogic.getInstance().deleteUseType(this, useType, getPartyPK());

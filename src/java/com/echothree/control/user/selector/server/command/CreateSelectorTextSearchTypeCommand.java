@@ -18,7 +18,6 @@ package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.CreateSelectorTextSearchTypeForm;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.entity.SelectorTextSearchType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,9 +49,9 @@ public class CreateSelectorTextSearchTypeCommand
     
     @Override
     protected BaseResult execute() {
-        String selectorTextSearchTypeName = form.getSelectorTextSearchTypeName();
+        var selectorTextSearchTypeName = form.getSelectorTextSearchTypeName();
         var selectorControl = Session.getModelController(SelectorControl.class);
-        SelectorTextSearchType selectorTextSearchType = selectorControl.getSelectorTextSearchTypeByName(selectorTextSearchTypeName);
+        var selectorTextSearchType = selectorControl.getSelectorTextSearchTypeByName(selectorTextSearchTypeName);
         
         if(selectorTextSearchType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

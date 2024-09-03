@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.protocol;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteProtocolForm;
-import com.echothree.control.user.core.common.form.GetProtocolForm;
 import com.echothree.control.user.core.common.result.GetProtocolResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -61,13 +58,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetProtocolForm commandForm = CoreUtil.getHome().getGetProtocolForm();
+        var commandForm = CoreUtil.getHome().getGetProtocolForm();
         
         commandForm.setProtocolName(actionForm.getProtocolName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getProtocol(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetProtocolResult result = (GetProtocolResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getProtocol(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetProtocolResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.PROTOCOL, result.getProtocol());
     }
@@ -75,7 +72,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteProtocolForm commandForm = CoreUtil.getHome().getDeleteProtocolForm();
+        var commandForm = CoreUtil.getHome().getDeleteProtocolForm();
 
         commandForm.setProtocolName(actionForm.getProtocolName());
 

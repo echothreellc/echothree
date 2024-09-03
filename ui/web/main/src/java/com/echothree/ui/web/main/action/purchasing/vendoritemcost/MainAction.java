@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.purchasing.vendoritemcost;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.GetVendorItemCostsForm;
 import com.echothree.control.user.vendor.common.result.GetVendorItemCostsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,19 +49,19 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetVendorItemCostsForm commandForm = VendorUtil.getHome().getGetVendorItemCostsForm();
-            String vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
-            String vendorItemName = request.getParameter(ParameterConstants.VENDOR_ITEM_NAME);
+            var commandForm = VendorUtil.getHome().getGetVendorItemCostsForm();
+            var vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
+            var vendorItemName = request.getParameter(ParameterConstants.VENDOR_ITEM_NAME);
             
             commandForm.setVendorName(vendorName);
             commandForm.setVendorItemName(vendorItemName);
-            
-            CommandResult commandResult = VendorUtil.getHome().getVendorItemCosts(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetVendorItemCostsResult result = (GetVendorItemCostsResult)executionResult.getResult();
+
+            var commandResult = VendorUtil.getHome().getVendorItemCosts(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetVendorItemCostsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.VENDOR, result.getVendor());
             request.setAttribute(AttributeConstants.VENDOR_ITEM, result.getVendorItem());

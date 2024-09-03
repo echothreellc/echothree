@@ -19,7 +19,6 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.edit.OfferEditFactory;
 import com.echothree.control.user.offer.common.edit.UseEdit;
 import com.echothree.control.user.offer.common.form.EditUseForm;
-import com.echothree.control.user.offer.common.result.EditUseResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.UseSpec;
 import com.echothree.model.control.offer.server.control.UseControl;
@@ -28,12 +27,6 @@ import com.echothree.model.control.offer.server.logic.UseLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.entity.Use;
-import com.echothree.model.data.offer.server.entity.UseDescription;
-import com.echothree.model.data.offer.server.entity.UseDetail;
-import com.echothree.model.data.offer.server.entity.UseType;
-import com.echothree.model.data.offer.server.value.UseDescriptionValue;
-import com.echothree.model.data.offer.server.value.UseDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
@@ -85,19 +78,19 @@ public class EditUseCommand
     @Override
     protected BaseResult execute() {
         var useControl = Session.getModelController(UseControl.class);
-        EditUseResult result = OfferResultFactory.getEditUseResult();
+        var result = OfferResultFactory.getEditUseResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String useName = spec.getUseName();
-            Use use = useControl.getUseByName(useName);
+            var useName = spec.getUseName();
+            var use = useControl.getUseByName(useName);
             
             if(use != null) {
                 result.setUse(useControl.getUseTransfer(getUserVisit(), use));
                 
                 if(lockEntity(use)) {
-                    UseDescription useDescription = useControl.getUseDescription(use, getPreferredLanguage());
-                    UseEdit edit = OfferEditFactory.getUseEdit();
-                    UseDetail useDetail = use.getLastDetail();
+                    var useDescription = useControl.getUseDescription(use, getPreferredLanguage());
+                    var edit = OfferEditFactory.getUseEdit();
+                    var useDetail = use.getLastDetail();
                     
                     result.setEdit(edit);
                     edit.setUseName(useDetail.getUseName());
@@ -117,25 +110,25 @@ public class EditUseCommand
                 addExecutionError(ExecutionErrors.UnknownUseName.name(), useName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String useName = spec.getUseName();
-            Use use = useControl.getUseByNameForUpdate(useName);
+            var useName = spec.getUseName();
+            var use = useControl.getUseByNameForUpdate(useName);
             
             if(use != null) {
                 useName = edit.getUseName();
-                Use duplicateUse = useControl.getUseByName(useName);
+                var duplicateUse = useControl.getUseByName(useName);
                 
                 if(duplicateUse == null || use.equals(duplicateUse)) {
                     var useTypeControl = Session.getModelController(UseTypeControl.class);
-                    String useTypeName = edit.getUseTypeName();
-                    UseType useType = useTypeControl.getUseTypeByName(useTypeName);
+                    var useTypeName = edit.getUseTypeName();
+                    var useType = useTypeControl.getUseTypeByName(useTypeName);
                     
                     if(useType != null) {
                         if(lockEntityForUpdate(use)) {
                             try {
                                 var partyPK = getPartyPK();
-                                UseDetailValue useDetailValue = useControl.getUseDetailValueForUpdate(use);
-                                UseDescription useDescription = useControl.getUseDescriptionForUpdate(use, getPreferredLanguage());
-                                String description = edit.getDescription();
+                                var useDetailValue = useControl.getUseDetailValueForUpdate(use);
+                                var useDescription = useControl.getUseDescriptionForUpdate(use, getPreferredLanguage());
+                                var description = edit.getDescription();
                                 
                                 useDetailValue.setUseName(edit.getUseName());
                                 useDetailValue.setUseTypePK(useType.getPrimaryKey());
@@ -149,7 +142,7 @@ public class EditUseCommand
                                 } else if(useDescription != null && description == null) {
                                     useControl.deleteUseDescription(useDescription, partyPK);
                                 } else if(useDescription != null && description != null) {
-                                    UseDescriptionValue useDescriptionValue = useControl.getUseDescriptionValue(useDescription);
+                                    var useDescriptionValue = useControl.getUseDescriptionValue(useDescription);
                                     
                                     useDescriptionValue.setDescription(description);
                                     useControl.updateUseDescriptionFromValue(useDescriptionValue, partyPK);

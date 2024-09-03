@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.wishlist.wishlistpriority;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.form.SetDefaultWishlistPriorityForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,11 +51,11 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
+        var wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
         
         try {
-            SetDefaultWishlistPriorityForm commandForm = WishlistUtil.getHome().getSetDefaultWishlistPriorityForm();
-            String wishlistPriorityName = request.getParameter(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME);
+            var commandForm = WishlistUtil.getHome().getSetDefaultWishlistPriorityForm();
+            var wishlistPriorityName = request.getParameter(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME);
             
             commandForm.setWishlistTypeName(wishlistTypeName);
             commandForm.setWishlistPriorityName(wishlistPriorityName);
@@ -67,8 +66,8 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

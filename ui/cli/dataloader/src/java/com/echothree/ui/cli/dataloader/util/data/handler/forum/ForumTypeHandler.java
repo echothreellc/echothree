@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
 import com.echothree.control.user.forum.common.ForumService;
-import com.echothree.control.user.forum.common.form.CreateForumTypeDescriptionForm;
-import com.echothree.control.user.forum.common.form.CreateForumTypeMessageTypeForm;
 import com.echothree.control.user.forum.common.form.ForumFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -51,9 +49,9 @@ public class ForumTypeHandler
         if(localName.equals("forumTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -61,7 +59,7 @@ public class ForumTypeHandler
             }
             
             try {
-                CreateForumTypeDescriptionForm form = ForumFormFactory.getCreateForumTypeDescriptionForm();
+                var form = ForumFormFactory.getCreateForumTypeDescriptionForm();
                 
                 form.setForumTypeName(forumTypeName);
                 form.setLanguageIsoName(languageIsoName);
@@ -75,9 +73,9 @@ public class ForumTypeHandler
             String forumMessageTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("forumMessageTypeName"))
                     forumMessageTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -87,7 +85,7 @@ public class ForumTypeHandler
             }
             
             try {
-                CreateForumTypeMessageTypeForm form = ForumFormFactory.getCreateForumTypeMessageTypeForm();
+                var form = ForumFormFactory.getCreateForumTypeMessageTypeForm();
                 
                 form.setForumTypeName(forumTypeName);
                 form.setForumMessageTypeName(forumMessageTypeName);

@@ -18,7 +18,6 @@ package com.echothree.control.user.document.server.command;
 
 import com.echothree.control.user.document.common.form.GetDocumentTypesForm;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
-import com.echothree.control.user.document.common.result.GetDocumentTypesResult;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -61,7 +60,7 @@ public class GetDocumentTypesCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        GetDocumentTypesResult result = DocumentResultFactory.getGetDocumentTypesResult();
+        var result = DocumentResultFactory.getGetDocumentTypesResult();
         
         result.setDocumentTypes(documentControl.getDocumentTypeTransfers(getUserVisit()));
         

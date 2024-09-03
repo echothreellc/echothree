@@ -19,15 +19,10 @@ package com.echothree.control.user.term.server.command;
 import com.echothree.control.user.term.common.edit.TermDescriptionEdit;
 import com.echothree.control.user.term.common.edit.TermEditFactory;
 import com.echothree.control.user.term.common.form.EditTermDescriptionForm;
-import com.echothree.control.user.term.common.result.EditTermDescriptionResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.control.user.term.common.spec.TermDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.term.server.entity.Term;
-import com.echothree.model.data.term.server.entity.TermDescription;
-import com.echothree.model.data.term.server.value.TermDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,24 +60,24 @@ public class EditTermDescriptionCommand
     @Override
     protected BaseResult execute() {
         var termControl = Session.getModelController(TermControl.class);
-        EditTermDescriptionResult result = TermResultFactory.getEditTermDescriptionResult();
-        String termName = spec.getTermName();
-        Term term = termControl.getTermByName(termName);
+        var result = TermResultFactory.getEditTermDescriptionResult();
+        var termName = spec.getTermName();
+        var term = termControl.getTermByName(termName);
         
         if(term != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    TermDescription termDescription = termControl.getTermDescription(term, language);
+                    var termDescription = termControl.getTermDescription(term, language);
                     
                     if(termDescription != null) {
                         result.setTermDescription(termControl.getTermDescriptionTransfer(getUserVisit(), termDescription));
                         
                         if(lockEntity(term)) {
-                            TermDescriptionEdit edit = TermEditFactory.getTermDescriptionEdit();
+                            var edit = TermEditFactory.getTermDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(termDescription.getDescription());
@@ -95,12 +90,12 @@ public class EditTermDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownTermDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    TermDescriptionValue termDescriptionValue = termControl.getTermDescriptionValueForUpdate(term, language);
+                    var termDescriptionValue = termControl.getTermDescriptionValueForUpdate(term, language);
                     
                     if(termDescriptionValue != null) {
                         if(lockEntityForUpdate(term)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 termDescriptionValue.setDescription(description);
                                 

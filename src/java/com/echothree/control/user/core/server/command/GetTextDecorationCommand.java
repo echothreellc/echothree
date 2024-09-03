@@ -18,13 +18,11 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetTextDecorationForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetTextDecorationResult;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -61,7 +59,7 @@ public class GetTextDecorationCommand
     protected TextDecoration getEntity() {
         var coreControl = getCoreControl();
         TextDecoration textDecoration = null;
-        String textDecorationName = form.getTextDecorationName();
+        var textDecorationName = form.getTextDecorationName();
         var parameterCount = (textDecorationName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
@@ -89,7 +87,7 @@ public class GetTextDecorationCommand
     @Override
     protected BaseResult getResult(TextDecoration textDecoration) {
         var coreControl = getCoreControl();
-        GetTextDecorationResult result = CoreResultFactory.getGetTextDecorationResult();
+        var result = CoreResultFactory.getGetTextDecorationResult();
 
         if(textDecoration != null) {
             result.setTextDecoration(coreControl.getTextDecorationTransfer(getUserVisit(), textDecoration));

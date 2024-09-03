@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationreasontype;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationTypeChoicesForm;
 import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationTypeChoicesResult;
 import com.echothree.model.control.cancellationpolicy.common.choice.CancellationTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -45,15 +42,15 @@ public class AddActionForm
     private void setupCancellationTypeChoices() {
         if(cancellationTypeChoices == null) {
             try {
-                GetCancellationTypeChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationTypeChoicesForm();
+                var form = CancellationPolicyUtil.getHome().getGetCancellationTypeChoicesForm();
                 
                 form.setCancellationKindName(cancellationKindName);
                 form.setDefaultCancellationTypeChoice(cancellationTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCancellationTypeChoicesResult getCancellationTypeChoicesResult = (GetCancellationTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = CancellationPolicyUtil.getHome().getCancellationTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getCancellationTypeChoicesResult = (GetCancellationTypeChoicesResult)executionResult.getResult();
                 cancellationTypeChoices = getCancellationTypeChoicesResult.getCancellationTypeChoices();
                 
                 if(cancellationTypeChoice == null) {

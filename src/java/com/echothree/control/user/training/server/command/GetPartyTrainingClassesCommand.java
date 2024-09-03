@@ -17,15 +17,12 @@
 package com.echothree.control.user.training.server.command;
 
 import com.echothree.control.user.training.common.form.GetPartyTrainingClassesForm;
-import com.echothree.control.user.training.common.result.GetPartyTrainingClassesResult;
 import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,9 +64,9 @@ public class GetPartyTrainingClassesCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyTrainingClassesResult result = TrainingResultFactory.getGetPartyTrainingClassesResult();
-        String partyName = form.getPartyName();
-        String trainingClassName = form.getTrainingClassName();
+        var result = TrainingResultFactory.getGetPartyTrainingClassesResult();
+        var partyName = form.getPartyName();
+        var trainingClassName = form.getTrainingClassName();
         var parameterCount = (partyName == null ? 0 : 1) + (trainingClassName == null ? 0 : 1);
         
         if(parameterCount == 1) {
@@ -77,7 +74,7 @@ public class GetPartyTrainingClassesCommand
             
             if(partyName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                Party party = partyControl.getPartyByName(partyName);
+                var party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
                     result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
@@ -86,7 +83,7 @@ public class GetPartyTrainingClassesCommand
                     addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else if(trainingClassName != null) {
-                TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+                var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
                 
                 if(trainingClass != null) {
                     result.setTrainingClass(trainingControl.getTrainingClassTransfer(getUserVisit(), trainingClass));

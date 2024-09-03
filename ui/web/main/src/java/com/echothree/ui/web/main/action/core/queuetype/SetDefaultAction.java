@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.queuetype;
 
 import com.echothree.control.user.queue.common.QueueUtil;
-import com.echothree.control.user.queue.common.form.SetDefaultQueueTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -48,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultQueueTypeForm commandForm = QueueUtil.getHome().getSetDefaultQueueTypeForm();
+        var commandForm = QueueUtil.getHome().getSetDefaultQueueTypeForm();
 
         commandForm.setQueueTypeName(request.getParameter(ParameterConstants.QUEUE_TYPE_NAME));
 

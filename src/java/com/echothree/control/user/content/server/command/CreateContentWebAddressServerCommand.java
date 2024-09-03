@@ -21,9 +21,6 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentWebAddress;
-import com.echothree.model.data.content.server.entity.ContentWebAddressServer;
-import com.echothree.model.data.core.server.entity.Server;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,16 +63,16 @@ public class CreateContentWebAddressServerCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentWebAddressName = form.getContentWebAddressName();
-        ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
+        var contentWebAddressName = form.getContentWebAddressName();
+        var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
         
         if(contentWebAddress != null) {
             var coreControl = getCoreControl();
-            String serverName = form.getServerName();
-            Server server = coreControl.getServerByName(serverName);
+            var serverName = form.getServerName();
+            var server = coreControl.getServerByName(serverName);
             
             if(server != null) {
-                ContentWebAddressServer contentWebAddressServer = contentControl.getContentWebAddressServer(contentWebAddress, server);
+                var contentWebAddressServer = contentControl.getContentWebAddressServer(contentWebAddress, server);
                 
                 if(contentWebAddressServer == null) {
                     contentControl.createContentWebAddressServer(contentWebAddress, server, getPartyPK());

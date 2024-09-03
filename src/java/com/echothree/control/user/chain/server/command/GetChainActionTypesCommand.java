@@ -18,7 +18,6 @@ package com.echothree.control.user.chain.server.command;
 
 import com.echothree.control.user.chain.common.form.GetChainActionTypesForm;
 import com.echothree.control.user.chain.common.result.ChainResultFactory;
-import com.echothree.control.user.chain.common.result.GetChainActionTypesResult;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -61,7 +60,7 @@ public class GetChainActionTypesCommand
     @Override
     protected BaseResult execute() {
         var chainControl = Session.getModelController(ChainControl.class);
-        GetChainActionTypesResult result = ChainResultFactory.getGetChainActionTypesResult();
+        var result = ChainResultFactory.getGetChainActionTypesResult();
         
         result.setChainActionTypes(chainControl.getChainActionTypeTransfers(getUserVisit()));
         

@@ -17,11 +17,9 @@
 package com.echothree.ui.web.main.action.inventory.inventorylocationgroupcapacity.Add;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupCapacityForm;
 import com.echothree.ui.web.main.action.inventory.inventorylocationgroupcapacity.AddActionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -53,10 +51,10 @@ public class Step3Action
     public ActionForward executeAction(ActionMapping mapping, AddActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-        String unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
         
         if(warehouseName == null) {
             warehouseName = form.getWarehouseName();
@@ -75,15 +73,15 @@ public class Step3Action
         }
         
         if(wasPost(request)) {
-            CreateInventoryLocationGroupCapacityForm commandForm = InventoryUtil.getHome().getCreateInventoryLocationGroupCapacityForm();
+            var commandForm = InventoryUtil.getHome().getCreateInventoryLocationGroupCapacityForm();
             
             commandForm.setWarehouseName(warehouseName);
             commandForm.setInventoryLocationGroupName(inventoryLocationGroupName);
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
             commandForm.setCapacity(form.getCapacity());
-            
-            CommandResult commandResult = InventoryUtil.getHome().createInventoryLocationGroupCapacity(getUserVisitPK(request), commandForm);
+
+            var commandResult = InventoryUtil.getHome().createInventoryLocationGroupCapacity(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -99,8 +97,8 @@ public class Step3Action
             form.setCapacity("1");
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupInventoryLocationGroup(request, warehouseName, inventoryLocationGroupName);
             setupUnitOfMeasureType(request, unitOfMeasureKindName, unitOfMeasureTypeName);

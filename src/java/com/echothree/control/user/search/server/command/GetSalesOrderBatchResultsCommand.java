@@ -17,17 +17,12 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetSalesOrderBatchResultsForm;
-import com.echothree.control.user.search.common.result.GetSalesOrderBatchResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
 import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
-import com.echothree.model.data.search.server.entity.SearchKind;
-import com.echothree.model.data.search.server.entity.SearchType;
-import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -56,17 +51,17 @@ public class GetSalesOrderBatchResultsCommand
     
     @Override
     protected BaseResult execute() {
-        GetSalesOrderBatchResultsResult result = SearchResultFactory.getGetSalesOrderBatchResultsResult();
+        var result = SearchResultFactory.getGetSalesOrderBatchResultsResult();
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.SALES_ORDER_BATCH.name());
+        var searchKind = searchControl.getSearchKindByName(SearchKinds.SALES_ORDER_BATCH.name());
         
         if(searchKind != null) {
-            String searchTypeName = form.getSearchTypeName();
-            SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
+            var searchTypeName = form.getSearchTypeName();
+            var searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
             
             if(searchType != null) {
-                UserVisit userVisit = getUserVisit();
-                UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
+                var userVisit = getUserVisit();
+                var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
                     var salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);

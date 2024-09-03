@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.core.eventgroup;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEventGroupStatusChoicesForm;
 import com.echothree.control.user.core.common.result.GetEventGroupStatusChoicesResult;
 import com.echothree.model.control.core.common.choice.EventGroupStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -40,15 +37,15 @@ public class StatusActionForm
     public void setupEventGroupStatusChoices()
             throws NamingException {
         if(eventGroupStatusChoices == null) {
-            GetEventGroupStatusChoicesForm form = CoreUtil.getHome().getGetEventGroupStatusChoicesForm();
+            var form = CoreUtil.getHome().getGetEventGroupStatusChoicesForm();
 
             form.setEventGroupName(eventGroupName);
             form.setDefaultEventGroupStatusChoice(eventGroupStatusChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getEventGroupStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEventGroupStatusChoicesResult result = (GetEventGroupStatusChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getEventGroupStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEventGroupStatusChoicesResult)executionResult.getResult();
             eventGroupStatusChoices = result.getEventGroupStatusChoices();
 
             if(eventGroupStatusChoice == null) {

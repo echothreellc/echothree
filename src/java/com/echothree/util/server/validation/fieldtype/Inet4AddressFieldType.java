@@ -23,7 +23,6 @@ import com.echothree.util.common.message.Messages;
 import com.echothree.util.server.validation.Patterns;
 import com.echothree.util.server.validation.Validator;
 import com.google.common.base.Splitter;
-import java.util.regex.Matcher;
 
 public class Inet4AddressFieldType
         extends BaseFieldType {
@@ -36,9 +35,9 @@ public class Inet4AddressFieldType
     
     @Override
     public String validate() {
-        boolean hadErrors = false;
-        
-        Matcher m = Patterns.Inet4Address.matcher(fieldValue);
+        var hadErrors = false;
+
+        var m = Patterns.Inet4Address.matcher(fieldValue);
         if(!m.matches()) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
             hadErrors = true;
@@ -46,13 +45,13 @@ public class Inet4AddressFieldType
         
         if(!hadErrors) {
             String splitAddress[] = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(fieldValue).toArray(new String[0]);
-            int inet4Address0 = Integer.parseInt(splitAddress[0]);
-            int inet4Address1 = Integer.parseInt(splitAddress[1]);
-            int inet4Address2 = Integer.parseInt(splitAddress[2]);
-            int inet4Address3 = Integer.parseInt(splitAddress[3]);
+            var inet4Address0 = Integer.parseInt(splitAddress[0]);
+            var inet4Address1 = Integer.parseInt(splitAddress[1]);
+            var inet4Address2 = Integer.parseInt(splitAddress[2]);
+            var inet4Address3 = Integer.parseInt(splitAddress[3]);
             
             if(inet4Address0 < 256 && inet4Address1 < 256 && inet4Address2 < 256 && inet4Address3 < 256) {
-                int inet4Address = (inet4Address0 << 24) + (inet4Address1 << 16) + (inet4Address2 << 8) + inet4Address3;
+                var inet4Address = (inet4Address0 << 24) + (inet4Address1 << 16) + (inet4Address2 << 8) + inet4Address3;
                 
                 fieldValue = Integer.toString(inet4Address);
             } else {

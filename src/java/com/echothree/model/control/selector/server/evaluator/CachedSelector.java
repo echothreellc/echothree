@@ -19,7 +19,6 @@ package com.echothree.model.control.selector.server.evaluator;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorDetail;
 import com.echothree.model.data.selector.server.entity.SelectorNode;
 import com.echothree.model.data.selector.server.entity.SelectorNodeBoolean;
 import com.echothree.model.data.selector.server.entity.SelectorNodeDetail;
@@ -34,7 +33,6 @@ import com.echothree.model.data.selector.server.entity.SelectorNodeTrainingClass
 import com.echothree.model.data.selector.server.entity.SelectorNodeWorkflowStep;
 import com.echothree.util.server.persistence.Session;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CachedSelector {
@@ -64,8 +62,8 @@ public class CachedSelector {
     }
     
     private void init(final Selector selector) {
-        SelectorDetail selectorDetail = selector.getLastDetail();
-        String selectorKindName = selectorDetail.getSelectorType().getLastDetail().getSelectorKind().getLastDetail().getSelectorKindName();
+        var selectorDetail = selector.getLastDetail();
+        var selectorKindName = selectorDetail.getSelectorType().getLastDetail().getSelectorKind().getLastDetail().getSelectorKindName();
         
         this.selector = selector;
         
@@ -97,14 +95,14 @@ public class CachedSelector {
      * the SelectorNodeDetail as the value.
      */
     private void cacheSelectorNodes() {
-        List<SelectorNode> rawSelectorNodes = selectorControl.getSelectorNodesBySelector(selector);
-        int size = rawSelectorNodes.size();
+        var rawSelectorNodes = selectorControl.getSelectorNodesBySelector(selector);
+        var size = rawSelectorNodes.size();
         
         selectorNodes = new HashMap<>(size);
         
         if(size > 0) {
             rawSelectorNodes.forEach((selectorNode) -> {
-                SelectorNodeDetail selectorNodeDetail = selectorNode.getLastDetail();
+                var selectorNodeDetail = selectorNode.getLastDetail();
                 
                 if(selectorNodeDetail.getIsRootSelectorNode()) {
                     rootSelectorNodeDetail = selectorNodeDetail;
@@ -119,8 +117,8 @@ public class CachedSelector {
      * SelectorNodeBoolean is the value.
      */
     private void cacheSelectorNodeBooleans() {
-        List<SelectorNodeBoolean> rawSelectorNodeBooleans = selectorControl.getSelectorNodeBooleansBySelector(selector);
-        int size = rawSelectorNodeBooleans.size();
+        var rawSelectorNodeBooleans = selectorControl.getSelectorNodeBooleansBySelector(selector);
+        var size = rawSelectorNodeBooleans.size();
         
         if(size > 0) {
             selectorNodeBooleans = new HashMap<>(size);
@@ -136,8 +134,8 @@ public class CachedSelector {
      * SelectorNodeEntityListItem is the value.
      */
     private void cacheSelectorNodeEntityListItems() {
-        List<SelectorNodeEntityListItem> rawSelectorNodeEntityListItems = selectorControl.getSelectorNodeEntityListItemsBySelector(selector);
-        int size = rawSelectorNodeEntityListItems.size();
+        var rawSelectorNodeEntityListItems = selectorControl.getSelectorNodeEntityListItemsBySelector(selector);
+        var size = rawSelectorNodeEntityListItems.size();
         
         if(size > 0) {
             selectorNodeEntityListItems = new HashMap<>(size);
@@ -153,8 +151,8 @@ public class CachedSelector {
      * SelectorNodeWorkflowStep is the value.
      */
     private void cacheSelectorNodeWorkflowSteps() {
-        List<SelectorNodeWorkflowStep> rawSelectorNodeWorkflowSteps = selectorControl.getSelectorNodeWorkflowStepsBySelector(selector);
-        int size = rawSelectorNodeWorkflowSteps.size();
+        var rawSelectorNodeWorkflowSteps = selectorControl.getSelectorNodeWorkflowStepsBySelector(selector);
+        var size = rawSelectorNodeWorkflowSteps.size();
         
         if(size > 0) {
             selectorNodeWorkflowSteps = new HashMap<>(size);
@@ -170,8 +168,8 @@ public class CachedSelector {
      * SelectorNodeResponsibilityType is the value.
      */
     private void cacheSelectorNodeResponsibilityTypes() {
-        List<SelectorNodeResponsibilityType> rawSelectorNodeResponsibilityTypes = selectorControl.getSelectorNodeResponsibilityTypesBySelector(selector);
-        int size = rawSelectorNodeResponsibilityTypes.size();
+        var rawSelectorNodeResponsibilityTypes = selectorControl.getSelectorNodeResponsibilityTypesBySelector(selector);
+        var size = rawSelectorNodeResponsibilityTypes.size();
         
         if(size > 0) {
             selectorNodeResponsibilityTypes = new HashMap<>(size);
@@ -187,8 +185,8 @@ public class CachedSelector {
      * SelectorNodeSkillType is the value.
      */
     private void cacheSelectorNodeSkillTypes() {
-        List<SelectorNodeSkillType> rawSelectorNodeSkillTypes = selectorControl.getSelectorNodeSkillTypesBySelector(selector);
-        int size = rawSelectorNodeSkillTypes.size();
+        var rawSelectorNodeSkillTypes = selectorControl.getSelectorNodeSkillTypesBySelector(selector);
+        var size = rawSelectorNodeSkillTypes.size();
         
         if(size > 0) {
             selectorNodeSkillTypes = new HashMap<>(size);
@@ -204,8 +202,8 @@ public class CachedSelector {
      * SelectorNodeTrainingClass is the value.
      */
     private void cacheSelectorNodeTrainingClasses() {
-        List<SelectorNodeTrainingClass> rawSelectorNodeTrainingClasses = selectorControl.getSelectorNodeTrainingClassesBySelector(selector);
-        int size = rawSelectorNodeTrainingClasses.size();
+        var rawSelectorNodeTrainingClasses = selectorControl.getSelectorNodeTrainingClassesBySelector(selector);
+        var size = rawSelectorNodeTrainingClasses.size();
         
         if(size > 0) {
             selectorNodeTrainingClasses = new HashMap<>(size);
@@ -221,8 +219,8 @@ public class CachedSelector {
      * SelectorNodeGeoCode is the value.
      */
     private void cacheSelectorNodeGeoCodes() {
-        List<SelectorNodeGeoCode> rawSelectorNodeGeoCodes = selectorControl.getSelectorNodeGeoCodesBySelector(selector);
-        int size = rawSelectorNodeGeoCodes.size();
+        var rawSelectorNodeGeoCodes = selectorControl.getSelectorNodeGeoCodesBySelector(selector);
+        var size = rawSelectorNodeGeoCodes.size();
         
         if(size > 0) {
             selectorNodeGeoCodes = new HashMap<>(size);
@@ -238,8 +236,8 @@ public class CachedSelector {
      * SelectorNodeItemCategory is the value.
      */
     private void cacheSelectorNodeItemCategories() {
-        List<SelectorNodeItemCategory> rawSelectorNodeItemCategories = selectorControl.getSelectorNodeItemCategoriesBySelector(selector);
-        int size = rawSelectorNodeItemCategories.size();
+        var rawSelectorNodeItemCategories = selectorControl.getSelectorNodeItemCategoriesBySelector(selector);
+        var size = rawSelectorNodeItemCategories.size();
         
         if(size > 0) {
             selectorNodeItemCategories = new HashMap<>(size);
@@ -255,8 +253,8 @@ public class CachedSelector {
      * SelectorNodeItemAccountingCategory is the value.
      */
     private void cacheSelectorNodeItemAccountingCategories() {
-        List<SelectorNodeItemAccountingCategory> rawSelectorNodeItemAccountingCategories = selectorControl.getSelectorNodeItemAccountingCategoriesBySelector(selector);
-        int size = rawSelectorNodeItemAccountingCategories.size();
+        var rawSelectorNodeItemAccountingCategories = selectorControl.getSelectorNodeItemAccountingCategoriesBySelector(selector);
+        var size = rawSelectorNodeItemAccountingCategories.size();
         
         if(size > 0) {
             selectorNodeItemAccountingCategories = new HashMap<>(size);
@@ -272,8 +270,8 @@ public class CachedSelector {
      * SelectorNodeItemPurchasingCategory is the value.
      */
     private void cacheSelectorNodeItemPurchasingCategories() {
-        List<SelectorNodeItemPurchasingCategory> rawSelectorNodeItemPurchasingCategories = selectorControl.getSelectorNodeItemPurchasingCategoriesBySelector(selector);
-        int size = rawSelectorNodeItemPurchasingCategories.size();
+        var rawSelectorNodeItemPurchasingCategories = selectorControl.getSelectorNodeItemPurchasingCategoriesBySelector(selector);
+        var size = rawSelectorNodeItemPurchasingCategories.size();
         
         if(size > 0) {
             selectorNodeItemPurchasingCategories = new HashMap<>(size);

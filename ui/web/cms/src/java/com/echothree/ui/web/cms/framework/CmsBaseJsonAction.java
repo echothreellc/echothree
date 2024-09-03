@@ -75,12 +75,12 @@ public abstract class CmsBaseJsonAction
     @Override
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        JsonConfig jsonConfig = new JsonConfig();
+        var jsonConfig = new JsonConfig();
         
         jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.NOPROP);
         jsonConfig.setJsonPropertyFilter(new CompositePropertyFilter(getPropertyFilters()));
 
-        CommandResult commandResult = getCommandResult(request);
+        var commandResult = getCommandResult(request);
         StreamInfo streamInfo = new ByteArrayStreamInfo("application/json;charset=UTF-8", new ByteArrayInputStream(JSONObject.fromObject(commandResult, jsonConfig).toString().getBytes(Charsets.UTF_8)));
         
         return streamInfo;

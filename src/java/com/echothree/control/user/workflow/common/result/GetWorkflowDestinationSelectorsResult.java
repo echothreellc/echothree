@@ -18,8 +18,6 @@ package com.echothree.control.user.workflow.common.result;
 
 import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationSelectorTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowStepTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 

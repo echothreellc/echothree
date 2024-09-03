@@ -19,13 +19,10 @@ package com.echothree.model.control.period.server.logic;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.model.data.period.server.entity.PeriodKind;
 import com.echothree.model.data.period.server.entity.PeriodType;
-import com.echothree.model.data.period.server.entity.PeriodTypeDetail;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.server.persistence.Session;
 
 public class PeriodLogic {
@@ -45,9 +42,9 @@ public class PeriodLogic {
     public Period createPeriod(final PeriodKind periodKind, final String periodName, final Period parentPeriod,
             final PeriodType periodType, final Long startTime, final Long endTime, final PartyPK createdBy) {
         var periodControl = Session.getModelController(PeriodControl.class);
-        Period period = periodControl.createPeriod(periodKind, periodName, parentPeriod, periodType, startTime, endTime, createdBy);
-        PeriodTypeDetail periodTypeDetail = periodType.getLastDetail();
-        WorkflowEntrance workflowEntrance = periodTypeDetail.getWorkflowEntrance();
+        var period = periodControl.createPeriod(periodKind, periodName, parentPeriod, periodType, startTime, endTime, createdBy);
+        var periodTypeDetail = periodType.getLastDetail();
+        var workflowEntrance = periodTypeDetail.getWorkflowEntrance();
         
         if(workflowEntrance == null) {
             workflowEntrance = periodTypeDetail.getPeriodKind().getLastDetail().getWorkflowEntrance();
@@ -56,7 +53,7 @@ public class PeriodLogic {
         if(workflowEntrance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
             var workflowControl = Session.getModelController(WorkflowControl.class);
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(period.getPrimaryKey());
+            var entityInstance = coreControl.getEntityInstanceByBasePK(period.getPrimaryKey());
 
             workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
         }

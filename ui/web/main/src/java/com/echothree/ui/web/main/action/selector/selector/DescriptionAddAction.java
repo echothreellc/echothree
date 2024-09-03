@@ -17,11 +17,9 @@
 package com.echothree.ui.web.main.action.selector.selector;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.form.CreateSelectorDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -55,16 +53,16 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-        String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-        String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+        var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+        var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+        var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
         
         try {
             if(forwardKey == null) {
                 if(wasPost(request)) {
-                    DescriptionAddActionForm descriptionAddActionForm = (DescriptionAddActionForm)form;
-                    
-                    CreateSelectorDescriptionForm createSelectorDescriptionForm = SelectorUtil.getHome().getCreateSelectorDescriptionForm();
+                    var descriptionAddActionForm = (DescriptionAddActionForm)form;
+
+                    var createSelectorDescriptionForm = SelectorUtil.getHome().getCreateSelectorDescriptionForm();
                     
                     if(selectorKindName == null)
                         selectorKindName = descriptionAddActionForm.getSelectorKindName();
@@ -78,8 +76,8 @@ public class DescriptionAddAction
                     createSelectorDescriptionForm.setSelectorName(selectorName);
                     createSelectorDescriptionForm.setLanguageIsoName(descriptionAddActionForm.getLanguageChoice());
                     createSelectorDescriptionForm.setDescription(descriptionAddActionForm.getDescription());
-                    
-                    CommandResult commandResult = SelectorUtil.getHome().createSelectorDescription(getUserVisitPK(request), createSelectorDescriptionForm);
+
+                    var commandResult = SelectorUtil.getHome().createSelectorDescription(getUserVisitPK(request), createSelectorDescriptionForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -93,8 +91,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM) || forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(3);
             parameters.put(ParameterConstants.SELECTOR_KIND_NAME, selectorKindName);

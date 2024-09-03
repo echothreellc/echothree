@@ -17,7 +17,6 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateMimeTypeUsageTypeForm;
-import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class CreateMimeTypeUsageTypeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
-        MimeTypeUsageType mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+        var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
+        var mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
         
         if(mimeTypeUsageType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

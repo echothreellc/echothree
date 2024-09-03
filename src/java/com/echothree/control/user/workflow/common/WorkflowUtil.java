@@ -18,7 +18,6 @@ package com.echothree.control.user.workflow.common;
 
 import com.echothree.control.user.workflow.server.WorkflowLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class WorkflowUtil {
@@ -30,7 +29,7 @@ public class WorkflowUtil {
     public static WorkflowLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (WorkflowLocal)ctx.lookup("ejb:echothree/echothree-server/WorkflowBean!com.echothree.control.user.workflow.server.WorkflowLocal");
         }
@@ -42,7 +41,7 @@ public class WorkflowUtil {
     public static WorkflowRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (WorkflowRemote)ctx.lookup("ejb:echothree/echothree-server/WorkflowBean!com.echothree.control.user.workflow.common.WorkflowRemote");
         }

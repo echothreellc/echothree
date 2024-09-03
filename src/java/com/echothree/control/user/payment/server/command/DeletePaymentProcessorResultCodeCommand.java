@@ -21,7 +21,6 @@ import com.echothree.model.control.payment.server.logic.PaymentProcessorResultCo
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorResultCode;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -60,8 +59,8 @@ public class DeletePaymentProcessorResultCodeCommand
     
     @Override
     protected BaseResult execute() {
-        String paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
-        PaymentProcessorResultCode paymentProcessorResultCode = PaymentProcessorResultCodeLogic.getInstance().getPaymentProcessorResultCodeByNameForUpdate(this, paymentProcessorResultCodeName);
+        var paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
+        var paymentProcessorResultCode = PaymentProcessorResultCodeLogic.getInstance().getPaymentProcessorResultCodeByNameForUpdate(this, paymentProcessorResultCodeName);
         
         if(!hasExecutionErrors()) {
             PaymentProcessorResultCodeLogic.getInstance().deletePaymentProcessorResultCode(this, paymentProcessorResultCode, getPartyPK());

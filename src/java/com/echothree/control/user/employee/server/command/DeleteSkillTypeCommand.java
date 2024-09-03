@@ -18,7 +18,6 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.DeleteSkillTypeForm;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.data.employee.server.entity.SkillType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class DeleteSkillTypeCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String skillTypeName = form.getSkillTypeName();
-        SkillType skillType = employeeControl.getSkillTypeByNameForUpdate(skillTypeName);
+        var skillTypeName = form.getSkillTypeName();
+        var skillType = employeeControl.getSkillTypeByNameForUpdate(skillTypeName);
         
         if(skillType != null) {
             employeeControl.deleteSkillType(skillType, getPartyPK());

@@ -24,8 +24,6 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorResultCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransaction;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.model.data.payment.server.factory.PaymentProcessorTransactionDetailFactory;
 import com.echothree.model.data.payment.server.factory.PaymentProcessorTransactionFactory;
 import com.echothree.model.data.payment.server.value.PaymentProcessorTransactionDetailValue;

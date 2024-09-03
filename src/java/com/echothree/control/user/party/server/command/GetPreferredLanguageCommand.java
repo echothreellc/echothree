@@ -17,11 +17,9 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetPreferredLanguageForm;
-import com.echothree.control.user.party.common.result.GetPreferredLanguageResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
@@ -49,8 +47,8 @@ public class GetPreferredLanguageCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPreferredLanguageResult result = PartyResultFactory.getGetPreferredLanguageResult();
-        Language language = getPreferredLanguage();
+        var result = PartyResultFactory.getGetPreferredLanguageResult();
+        var language = getPreferredLanguage();
 
         result.setPreferredLanguage(partyControl.getLanguageTransfer(getUserVisit(), language));
         sendEvent(language.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());

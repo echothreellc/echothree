@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.tag;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.form.GetTagsForm;
 import com.echothree.control.user.tag.common.result.GetTagsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -54,15 +51,15 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws NamingException {
         String forwardKey;
-        GetTagsForm commandForm = TagUtil.getHome().getGetTagsForm();
+        var commandForm = TagUtil.getHome().getGetTagsForm();
 
         commandForm.setTagScopeName(request.getParameter(ParameterConstants.TAG_SCOPE_NAME));
 
-        CommandResult commandResult = TagUtil.getHome().getTags(getUserVisitPK(request), commandForm);
+        var commandResult = TagUtil.getHome().getTags(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTagsResult result = (GetTagsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTagsResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.TAG_SCOPE, result.getTagScope());
             request.setAttribute(AttributeConstants.TAGS, new ListWrapper<>(result.getTags()));

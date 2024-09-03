@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.shipping.carriercontactmechanism;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.form.CreateCommentForm;
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.GetContactMechanismForm;
 import com.echothree.control.user.contact.common.result.GetContactMechanismResult;
 import com.echothree.model.control.comment.common.CommentConstants;
-import com.echothree.model.control.contact.common.transfer.ContactMechanismTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -59,14 +55,14 @@ public class CommentAddAction
     
     public String getContactMechanismEntityRef(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContactMechanismForm commandForm = ContactUtil.getHome().getGetContactMechanismForm();
+        var commandForm = ContactUtil.getHome().getGetContactMechanismForm();
         
         commandForm.setContactMechanismName(actionForm.getContactMechanismName());
-        
-        CommandResult commandResult = ContactUtil.getHome().getContactMechanism(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetContactMechanismResult result = (GetContactMechanismResult)executionResult.getResult();
-        ContactMechanismTransfer contactMechanism = result.getContactMechanism();
+
+        var commandResult = ContactUtil.getHome().getContactMechanism(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetContactMechanismResult)executionResult.getResult();
+        var contactMechanism = result.getContactMechanism();
         
         request.setAttribute(AttributeConstants.CONTACT_MECHANISM, contactMechanism);
         
@@ -86,7 +82,7 @@ public class CommentAddAction
     @Override
     public CommandResult doAdd(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCommentForm commandForm = CommentUtil.getHome().getCreateCommentForm();
+        var commandForm = CommentUtil.getHome().getCreateCommentForm();
 
         commandForm.setEntityRef(getContactMechanismEntityRef(actionForm, request));
         commandForm.setCommentTypeName(CommentConstants.CommentType_CONTACT_MECHANISM);

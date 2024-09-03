@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.payment.paymentprocessortype;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.GetPaymentProcessorTypeForm;
 import com.echothree.control.user.payment.common.result.GetPaymentProcessorTypeResult;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetPaymentProcessorTypeForm commandForm = PaymentUtil.getHome().getGetPaymentProcessorTypeForm();
+        String forwardKey;
+        var commandForm = PaymentUtil.getHome().getGetPaymentProcessorTypeForm();
 
         commandForm.setPaymentProcessorTypeName(request.getParameter(ParameterConstants.PAYMENT_PROCESSOR_TYPE_NAME));
 
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentProcessorType(getUserVisitPK(request), commandForm);
+        var commandResult = PaymentUtil.getHome().getPaymentProcessorType(getUserVisitPK(request), commandForm);
         PaymentProcessorTypeTransfer paymentProcessorType = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPaymentProcessorTypeResult result = (GetPaymentProcessorTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPaymentProcessorTypeResult)executionResult.getResult();
 
             paymentProcessorType = result.getPaymentProcessorType();
         }

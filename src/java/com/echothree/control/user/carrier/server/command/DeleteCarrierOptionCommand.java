@@ -21,9 +21,6 @@ import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.carrier.server.entity.Carrier;
-import com.echothree.model.data.carrier.server.entity.CarrierOption;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,13 +63,13 @@ public class DeleteCarrierOptionCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        String carrierName = form.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var carrierName = form.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
-            String carrierOptionName = form.getCarrierOptionName();
-            CarrierOption carrierOption = carrierControl.getCarrierOptionByNameForUpdate(carrierParty, carrierOptionName);
+            var carrierParty = carrier.getParty();
+            var carrierOptionName = form.getCarrierOptionName();
+            var carrierOption = carrierControl.getCarrierOptionByNameForUpdate(carrierParty, carrierOptionName);
             
             if(carrierOption != null) {
                 carrierControl.deleteCarrierOption(carrierOption, getPartyPK());

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customertype;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.DeleteOfferCustomerTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,11 +51,11 @@ public class OfferCustomerTypeDeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
+        var customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
         
         try {
-            String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
-            DeleteOfferCustomerTypeForm commandForm = OfferUtil.getHome().getDeleteOfferCustomerTypeForm();
+            var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+            var commandForm = OfferUtil.getHome().getDeleteOfferCustomerTypeForm();
             
             commandForm.setOfferName(offerName);
             commandForm.setCustomerTypeName(customerTypeName);
@@ -67,8 +66,8 @@ public class OfferCustomerTypeDeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

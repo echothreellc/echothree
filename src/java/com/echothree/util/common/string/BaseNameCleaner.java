@@ -132,7 +132,7 @@ public class BaseNameCleaner {
         for(var i = Math.min(maxPersonalTitleSpaces, endingIndex - startingIndex) ; i >= startingIndex ; i--) {
             var personalTitle = new StringBuilder();
 
-            for(int j = 0 ; j <= i ; j++) {
+            for(var j = 0; j <= i ; j++) {
                 if(j > 0) {
                     personalTitle.append(' ');
                 }
@@ -154,7 +154,7 @@ public class BaseNameCleaner {
             for(var i = Math.min(endingIndex == 0 ? 0 : endingIndex - maxNameSuffixSpaces, endingIndex - startingIndex) ; i <= endingIndex ; i++) {
                 var nameSuffix = new StringBuilder();
 
-                for(int j = i ; j <= endingIndex ; j++) {
+                for(var j = i; j <= endingIndex ; j++) {
                     if(j > i) {
                         nameSuffix.append(' ');
                     }
@@ -237,10 +237,10 @@ public class BaseNameCleaner {
                 if(startingIndex == endingIndex) {
                     lastName = pieces.get(startingIndex);
                 } else {
-                    StringBuilder sb = new StringBuilder();
+                    var sb = new StringBuilder();
 
-                    for(int i = startingIndex ; i < endingIndex ; i++) {
-                        String toAppend = pieces.get(i);
+                    for(var i = startingIndex; i < endingIndex ; i++) {
+                        var toAppend = pieces.get(i);
 
                         if(i != startingIndex) {
                             sb.append(' ');

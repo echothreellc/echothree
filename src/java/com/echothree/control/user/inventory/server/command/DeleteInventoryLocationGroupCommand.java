@@ -19,10 +19,7 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationGroupForm;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -53,14 +50,14 @@ public class DeleteInventoryLocationGroupCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var warehouseName = form.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            Party warehouseParty = warehouse.getParty();
-            String inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByNameForUpdate(warehouseParty, inventoryLocationGroupName);
+            var warehouseParty = warehouse.getParty();
+            var inventoryLocationGroupName = form.getInventoryLocationGroupName();
+            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByNameForUpdate(warehouseParty, inventoryLocationGroupName);
             
             if(inventoryLocationGroup != null) {
                 inventoryControl.deleteInventoryLocationGroup(inventoryLocationGroup, getPartyPK());

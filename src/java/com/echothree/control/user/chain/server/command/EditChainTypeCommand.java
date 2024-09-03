@@ -27,12 +27,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.model.data.chain.server.entity.ChainKindDetail;
 import com.echothree.model.data.chain.server.entity.ChainType;
-import com.echothree.model.data.chain.server.entity.ChainTypeDescription;
-import com.echothree.model.data.chain.server.entity.ChainTypeDetail;
-import com.echothree.model.data.chain.server.value.ChainTypeDescriptionValue;
-import com.echothree.model.data.chain.server.value.ChainTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -95,12 +90,12 @@ public class EditChainTypeCommand
     public ChainType getEntity(EditChainTypeResult result) {
         var chainControl = Session.getModelController(ChainControl.class);
         ChainType chainType = null;
-        String chainKindName = spec.getChainKindName();
+        var chainKindName = spec.getChainKindName();
 
         chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind != null) {
-            String chainTypeName = spec.getChainTypeName();
+            var chainTypeName = spec.getChainTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
@@ -133,8 +128,8 @@ public class EditChainTypeCommand
     @Override
     public void doLock(ChainTypeEdit edit, ChainType chainType) {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainTypeDescription chainTypeDescription = chainControl.getChainTypeDescription(chainType, getPreferredLanguage());
-        ChainTypeDetail chainTypeDetail = chainType.getLastDetail();
+        var chainTypeDescription = chainControl.getChainTypeDescription(chainType, getPreferredLanguage());
+        var chainTypeDetail = chainType.getLastDetail();
 
         edit.setChainTypeName(chainTypeDetail.getChainTypeName());
         edit.setIsDefault(chainTypeDetail.getIsDefault().toString());
@@ -148,9 +143,9 @@ public class EditChainTypeCommand
     @Override
     public void canUpdate(ChainType chainType) {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainKindDetail chainKindDetail = chainKind.getLastDetail();
-        String chainTypeName = edit.getChainTypeName();
-        ChainType duplicateChainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+        var chainKindDetail = chainKind.getLastDetail();
+        var chainTypeName = edit.getChainTypeName();
+        var duplicateChainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
         if(duplicateChainType != null && !chainType.equals(duplicateChainType)) {
             addExecutionError(ExecutionErrors.DuplicateChainTypeName.name(), chainKindDetail.getChainKindName(), chainTypeName);
@@ -161,9 +156,9 @@ public class EditChainTypeCommand
     public void doUpdate(ChainType chainType) {
         var chainControl = Session.getModelController(ChainControl.class);
         var partyPK = getPartyPK();
-        ChainTypeDetailValue chainTypeDetailValue = chainControl.getChainTypeDetailValueForUpdate(chainType);
-        ChainTypeDescription chainTypeDescription = chainControl.getChainTypeDescriptionForUpdate(chainType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var chainTypeDetailValue = chainControl.getChainTypeDetailValueForUpdate(chainType);
+        var chainTypeDescription = chainControl.getChainTypeDescriptionForUpdate(chainType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         chainTypeDetailValue.setChainTypeName(edit.getChainTypeName());
         chainTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -176,7 +171,7 @@ public class EditChainTypeCommand
         } else if(chainTypeDescription != null && description == null) {
             chainControl.deleteChainTypeDescription(chainTypeDescription, partyPK);
         } else if(chainTypeDescription != null && description != null) {
-            ChainTypeDescriptionValue chainTypeDescriptionValue = chainControl.getChainTypeDescriptionValue(chainTypeDescription);
+            var chainTypeDescriptionValue = chainControl.getChainTypeDescriptionValue(chainTypeDescription);
 
             chainTypeDescriptionValue.setDescription(description);
             chainControl.updateChainTypeDescriptionFromValue(chainTypeDescriptionValue, partyPK);

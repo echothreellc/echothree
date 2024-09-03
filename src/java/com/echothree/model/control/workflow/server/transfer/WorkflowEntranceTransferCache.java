@@ -18,13 +18,10 @@ package com.echothree.model.control.workflow.server.transfer;
 
 import com.echothree.model.control.workflow.common.WorkflowProperties;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntranceDetail;
 import com.echothree.util.common.form.TransferProperties;
-import java.util.Set;
 
 public class WorkflowEntranceTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntrance, WorkflowEntranceTransfer> {
@@ -59,15 +56,15 @@ public class WorkflowEntranceTransferCache
     }
     
     public WorkflowEntranceTransfer getWorkflowEntranceTransfer(WorkflowEntrance workflowEntrance) {
-        WorkflowEntranceTransfer workflowEntranceTransfer = get(workflowEntrance);
+        var workflowEntranceTransfer = get(workflowEntrance);
         
         if(workflowEntranceTransfer == null) {
-            WorkflowEntranceDetail workflowEntranceDetail = workflowEntrance.getLastDetail();
-            WorkflowTransfer workflow = filterWorkflow ? null : workflowControl.getWorkflowTransfer(userVisit, workflowEntranceDetail.getWorkflow());
-            String workflowEntranceName = filterWorkflowEntranceName ? null : workflowEntranceDetail.getWorkflowEntranceName();
-            Boolean isDefault = filterIsDefault ? null : workflowEntranceDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : workflowEntranceDetail.getSortOrder();
-            String description = filterDescription ? null : workflowControl.getBestWorkflowEntranceDescription(workflowEntrance, getLanguage());
+            var workflowEntranceDetail = workflowEntrance.getLastDetail();
+            var workflow = filterWorkflow ? null : workflowControl.getWorkflowTransfer(userVisit, workflowEntranceDetail.getWorkflow());
+            var workflowEntranceName = filterWorkflowEntranceName ? null : workflowEntranceDetail.getWorkflowEntranceName();
+            var isDefault = filterIsDefault ? null : workflowEntranceDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : workflowEntranceDetail.getSortOrder();
+            var description = filterDescription ? null : workflowControl.getBestWorkflowEntranceDescription(workflowEntrance, getLanguage());
             
             workflowEntranceTransfer = new WorkflowEntranceTransfer(workflow, workflowEntranceName, isDefault, sortOrder,
                     description);

@@ -18,7 +18,6 @@ package com.echothree.control.user.communication.server.server;
 
 import com.echothree.control.user.communication.common.form.CreateCommunicationEventTypeForm;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.data.communication.server.entity.CommunicationEventType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,8 +50,8 @@ public class CreateCommunicationEventTypeCommand
     @Override
     protected BaseResult execute() {
         var communicationControl = Session.getModelController(CommunicationControl.class);
-        String communicationEventTypeName = form.getCommunicationEventTypeName();
-        CommunicationEventType communicationEventType = communicationControl.getCommunicationEventTypeByName(communicationEventTypeName);
+        var communicationEventTypeName = form.getCommunicationEventTypeName();
+        var communicationEventType = communicationControl.getCommunicationEventTypeByName(communicationEventTypeName);
         
         if(communicationEventType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

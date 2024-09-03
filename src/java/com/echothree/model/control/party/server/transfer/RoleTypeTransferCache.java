@@ -30,13 +30,13 @@ public class RoleTypeTransferCache
     }
     
     public RoleTypeTransfer getRoleTypeTransfer(RoleType roleType) {
-        RoleTypeTransfer roleTypeTransfer = get(roleType);
+        var roleTypeTransfer = get(roleType);
         
         if(roleTypeTransfer == null) {
-            String roleTypeName = roleType.getRoleTypeName();
-            RoleType parentRoleType = roleType.getParentRoleType();
-            RoleTypeTransfer parentRoleTypeTransfer = parentRoleType == null? null: getRoleTypeTransfer(parentRoleType);
-            String description = partyControl.getBestRoleTypeDescription(roleType, getLanguage());
+            var roleTypeName = roleType.getRoleTypeName();
+            var parentRoleType = roleType.getParentRoleType();
+            var parentRoleTypeTransfer = parentRoleType == null? null: getRoleTypeTransfer(parentRoleType);
+            var description = partyControl.getBestRoleTypeDescription(roleType, getLanguage());
             
             roleTypeTransfer = new RoleTypeTransfer(roleTypeName, parentRoleTypeTransfer, description);
             put(roleType, roleTypeTransfer);

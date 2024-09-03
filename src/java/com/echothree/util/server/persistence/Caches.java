@@ -36,7 +36,7 @@ public class Caches {
     public Cache<String, Object> getSecurityCache() {
         if(securityCache == null) {
             securityCacheBeanInstance = unmanagedSecurityCacheBean.newInstance();
-            SecurityCacheBean securityCacheBean = securityCacheBeanInstance.produce().inject().postConstruct().get();
+            var securityCacheBean = securityCacheBeanInstance.produce().inject().postConstruct().get();
             securityCache = securityCacheBean.getCache();
         }
 
@@ -46,7 +46,7 @@ public class Caches {
     public Cache<String, Object> getDataCache() {
         if(dataCache == null) {
             dataCacheBeanInstance = unmanagedDataCacheBean.newInstance();
-            DataCacheBean dataCacheBean = dataCacheBeanInstance.produce().inject().postConstruct().get();
+            var dataCacheBean = dataCacheBeanInstance.produce().inject().postConstruct().get();
             dataCache = dataCacheBean.getCache();
         }
 

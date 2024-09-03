@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.payment;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.PaymentService;
-import com.echothree.control.user.payment.common.form.CreateBillingAccountRoleTypeDescriptionForm;
 import com.echothree.control.user.payment.common.form.PaymentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -49,7 +48,7 @@ public class BillingAccountRoleTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("billingAccountRoleTypeDescription")) {
-            CreateBillingAccountRoleTypeDescriptionForm commandForm = PaymentFormFactory.getCreateBillingAccountRoleTypeDescriptionForm();
+            var commandForm = PaymentFormFactory.getCreateBillingAccountRoleTypeDescriptionForm();
             
             commandForm.setBillingAccountRoleTypeName(billingAccountRoleTypeName);
             commandForm.set(getAttrsMap(attrs));

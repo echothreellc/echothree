@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.forum.forumforumthread;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.GetForumForumThreadsForm;
 import com.echothree.control.user.forum.common.result.GetForumForumThreadsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,14 +48,14 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetForumForumThreadsForm commandForm = ForumUtil.getHome().getGetForumForumThreadsForm();
-        String forumThreadName = request.getParameter(ParameterConstants.FORUM_THREAD_NAME);
+        var commandForm = ForumUtil.getHome().getGetForumForumThreadsForm();
+        var forumThreadName = request.getParameter(ParameterConstants.FORUM_THREAD_NAME);
         
         commandForm.setForumThreadName(forumThreadName);
-        
-        CommandResult commandResult = ForumUtil.getHome().getForumForumThreads(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetForumForumThreadsResult result = (GetForumForumThreadsResult)executionResult.getResult();
+
+        var commandResult = ForumUtil.getHome().getForumForumThreads(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetForumForumThreadsResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.FORUM_THREAD, result.getForumThread());
         request.setAttribute(AttributeConstants.FORUM_FORUM_THREADS, result.getForumForumThreads());

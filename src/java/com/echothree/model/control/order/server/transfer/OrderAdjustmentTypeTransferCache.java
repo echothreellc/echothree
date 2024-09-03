@@ -19,7 +19,6 @@ package com.echothree.model.control.order.server.transfer;
 import com.echothree.model.control.order.common.transfer.OrderAdjustmentTypeTransfer;
 import com.echothree.model.control.order.server.control.OrderAdjustmentControl;
 import com.echothree.model.data.order.server.entity.OrderAdjustmentType;
-import com.echothree.model.data.order.server.entity.OrderAdjustmentTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -36,14 +35,14 @@ public class OrderAdjustmentTypeTransferCache
     }
     
     public OrderAdjustmentTypeTransfer getOrderAdjustmentTypeTransfer(OrderAdjustmentType orderAdjustmentType) {
-        OrderAdjustmentTypeTransfer orderAdjustmentTypeTransfer = get(orderAdjustmentType);
+        var orderAdjustmentTypeTransfer = get(orderAdjustmentType);
         
         if(orderAdjustmentTypeTransfer == null) {
-            OrderAdjustmentTypeDetail orderAdjustmentTypeDetail = orderAdjustmentType.getLastDetail();
-            String orderAdjustmentTypeName = orderAdjustmentTypeDetail.getOrderAdjustmentTypeName();
-            Boolean isDefault = orderAdjustmentTypeDetail.getIsDefault();
-            Integer sortOrder = orderAdjustmentTypeDetail.getSortOrder();
-            String description = orderAdjustmentControl.getBestOrderAdjustmentTypeDescription(orderAdjustmentType, getLanguage());
+            var orderAdjustmentTypeDetail = orderAdjustmentType.getLastDetail();
+            var orderAdjustmentTypeName = orderAdjustmentTypeDetail.getOrderAdjustmentTypeName();
+            var isDefault = orderAdjustmentTypeDetail.getIsDefault();
+            var sortOrder = orderAdjustmentTypeDetail.getSortOrder();
+            var description = orderAdjustmentControl.getBestOrderAdjustmentTypeDescription(orderAdjustmentType, getLanguage());
             
             orderAdjustmentTypeTransfer = new OrderAdjustmentTypeTransfer(orderAdjustmentTypeName, isDefault, sortOrder, description);
             put(orderAdjustmentType, orderAdjustmentTypeTransfer);

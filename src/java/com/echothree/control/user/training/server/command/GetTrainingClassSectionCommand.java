@@ -17,7 +17,6 @@
 package com.echothree.control.user.training.server.command;
 
 import com.echothree.control.user.training.common.form.GetTrainingClassSectionForm;
-import com.echothree.control.user.training.common.result.GetTrainingClassSectionResult;
 import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -25,13 +24,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassSessionLogic;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassSession;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionSection;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionStatus;
-import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClassSection;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -74,21 +67,21 @@ public class GetTrainingClassSectionCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        GetTrainingClassSectionResult result = TrainingResultFactory.getGetTrainingClassSectionResult();
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var result = TrainingResultFactory.getGetTrainingClassSectionResult();
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            String trainingClassSectionName = form.getTrainingClassSectionName();
-            TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSectionName = form.getTrainingClassSectionName();
+            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                String partyTrainingClassName = form.getPartyTrainingClassName();
-                PartyTrainingClassSessionStatus partyTrainingClassSessionStatus = partyTrainingClassName == null ? null
+                var partyTrainingClassName = form.getPartyTrainingClassName();
+                var partyTrainingClassSessionStatus = partyTrainingClassName == null ? null
                         : PartyTrainingClassSessionLogic.getInstance().getLatestPartyTrainingClassSessionStatusForUpdate(this, partyTrainingClassName);
 
                 if(!hasExecutionErrors()) {
-                    PartyTrainingClassSession partyTrainingClassSession = partyTrainingClassSessionStatus == null ? null
+                    var partyTrainingClassSession = partyTrainingClassSessionStatus == null ? null
                             : partyTrainingClassSessionStatus.getPartyTrainingClassSession();
 
                     // Verify that the TrainingClass from above is same as the one being used by the PartyTrainingClassSession.
@@ -99,7 +92,7 @@ public class GetTrainingClassSectionCommand
                     }
 
                     if(!hasExecutionErrors()) {
-                        UserVisit userVisit = getUserVisit();
+                        var userVisit = getUserVisit();
                         var partyPK = getPartyPK();
 
                         result.setTrainingClassSection(trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassSection));
@@ -107,7 +100,7 @@ public class GetTrainingClassSectionCommand
                         sendEvent(trainingClassSection.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
 
                         if(partyTrainingClassSessionStatus != null) {
-                            PartyTrainingClassSessionSection partyTrainingClassSessionSection = trainingControl.createPartyTrainingClassSessionSection(partyTrainingClassSession,
+                            var partyTrainingClassSessionSection = trainingControl.createPartyTrainingClassSessionSection(partyTrainingClassSession,
                                     trainingClassSection, session.START_TIME_LONG, null, partyPK);
 
                             PartyTrainingClassSessionLogic.getInstance().updatePartyTrainingClassSessionStatus(session, partyTrainingClassSessionStatus,

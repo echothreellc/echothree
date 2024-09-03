@@ -19,7 +19,6 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.edit.OfferEditFactory;
 import com.echothree.control.user.offer.common.edit.OfferUseEdit;
 import com.echothree.control.user.offer.common.form.EditOfferUseForm;
-import com.echothree.control.user.offer.common.result.EditOfferUseResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.OfferUseSpec;
 import com.echothree.model.control.offer.server.control.OfferControl;
@@ -30,13 +29,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.offer.server.entity.OfferUseDetail;
-import com.echothree.model.data.offer.server.entity.Use;
-import com.echothree.model.data.offer.server.value.OfferUseDetailValue;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
@@ -85,28 +78,28 @@ public class EditOfferUseCommand
     @Override
     protected BaseResult execute() {
         var offerControl = Session.getModelController(OfferControl.class);
-        EditOfferUseResult result = OfferResultFactory.getEditOfferUseResult();
-        String offerName = spec.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
+        var result = OfferResultFactory.getEditOfferUseResult();
+        var offerName = spec.getOfferName();
+        var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
             var useControl = Session.getModelController(UseControl.class);
-            String useName = spec.getUseName();
-            Use use = useControl.getUseByName(useName);
+            var useName = spec.getUseName();
+            var use = useControl.getUseByName(useName);
             
             if(use != null) {
                 var offerUseControl = Session.getModelController(OfferUseControl.class);
 
                 if(editMode.equals(EditMode.LOCK)) {
-                    OfferUse offerUse = offerUseControl.getOfferUse(offer, use);
+                    var offerUse = offerUseControl.getOfferUse(offer, use);
                     
                     if(offerUse != null) {
                         result.setOfferUse(offerUseControl.getOfferUseTransfer(getUserVisit(), offerUse));
                         
                         if(lockEntity(offerUse)) {
-                            OfferUseEdit edit = OfferEditFactory.getOfferUseEdit();
-                            OfferUseDetail offerUseDetail = offerUse.getLastDetail();
-                            Sequence salesOrderSequence = offerUseDetail.getSalesOrderSequence();
+                            var edit = OfferEditFactory.getOfferUseEdit();
+                            var offerUseDetail = offerUse.getLastDetail();
+                            var salesOrderSequence = offerUseDetail.getSalesOrderSequence();
                             
                             result.setEdit(edit);
                             edit.setSalesOrderSequenceName(salesOrderSequence == null? null: salesOrderSequence.getLastDetail().getSequenceName());
@@ -119,15 +112,15 @@ public class EditOfferUseCommand
                         addExecutionError(ExecutionErrors.UnknownOfferUse.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    OfferUse offerUse = offerUseControl.getOfferUseForUpdate(offer, use);
+                    var offerUse = offerUseControl.getOfferUseForUpdate(offer, use);
                     
                     if(offerUse != null) {
-                        String salesOrderSequenceName = edit.getSalesOrderSequenceName();
+                        var salesOrderSequenceName = edit.getSalesOrderSequenceName();
                         Sequence salesOrderSequence = null;
                         
                         if(salesOrderSequenceName != null) {
                             var sequenceControl = Session.getModelController(SequenceControl.class);
-                            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
+                            var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
                             
                             if(sequenceType != null) {
                                 salesOrderSequence = sequenceControl.getSequenceByName(sequenceType, salesOrderSequenceName);
@@ -139,7 +132,7 @@ public class EditOfferUseCommand
                         if(salesOrderSequenceName == null || salesOrderSequence != null) {
                             if(lockEntityForUpdate(offerUse)) {
                                 try {
-                                    OfferUseDetailValue offerUseDetailValue = offerUseControl.getOfferUseDetailValueForUpdate(offerUse);
+                                    var offerUseDetailValue = offerUseControl.getOfferUseDetailValueForUpdate(offerUse);
                                     
                                     offerUseDetailValue.setSalesOrderSequencePK(salesOrderSequence == null? null: salesOrderSequence.getPrimaryKey());
 

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.salesorder.salesorderbatch;
 
 import com.echothree.control.user.sales.common.SalesUtil;
-import com.echothree.control.user.sales.common.form.CreateSalesOrderBatchForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -45,7 +44,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateSalesOrderBatchForm commandForm = SalesUtil.getHome().getCreateSalesOrderBatchForm();
+        var commandForm = SalesUtil.getHome().getCreateSalesOrderBatchForm();
 
         commandForm.setCurrencyIsoName(actionForm.getCurrencyChoice());
         commandForm.setPaymentMethodName(actionForm.getPaymentMethodChoice());

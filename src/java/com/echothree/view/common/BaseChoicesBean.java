@@ -17,7 +17,6 @@
 package com.echothree.view.common;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
 public class BaseChoicesBean implements Serializable {
@@ -68,8 +67,8 @@ public class BaseChoicesBean implements Serializable {
     
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        Iterator<String> valueIter = values.iterator();
+        var result = new StringBuilder();
+        var valueIter = values.iterator();
 
         labels.stream().map((label) -> {
             result.append('"').append(label).append(",\" \"").append(valueIter.next()).append('"');

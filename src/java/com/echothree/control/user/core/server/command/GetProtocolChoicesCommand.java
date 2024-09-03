@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetProtocolChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetProtocolChoicesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,9 +60,9 @@ public class GetProtocolChoicesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetProtocolChoicesResult result = CoreResultFactory.getGetProtocolChoicesResult();
-        String defaultProtocolChoice = form.getDefaultProtocolChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = CoreResultFactory.getGetProtocolChoicesResult();
+        var defaultProtocolChoice = form.getDefaultProtocolChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setProtocolChoices(coreControl.getProtocolChoices(defaultProtocolChoice, getPreferredLanguage(),
                 allowNullChoice));

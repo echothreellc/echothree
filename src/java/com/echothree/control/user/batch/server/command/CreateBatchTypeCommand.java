@@ -24,10 +24,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.batch.server.entity.BatchType;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -75,11 +72,11 @@ public class CreateBatchTypeCommand
     @Override
     protected BaseResult execute() {
         var batchControl = Session.getModelController(BatchControl.class);
-        String batchTypeName = form.getBatchTypeName();
-        BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var batchTypeName = form.getBatchTypeName();
+        var batchType = batchControl.getBatchTypeByName(batchTypeName);
 
         if(batchType == null) {
-            String parentBatchTypeName = form.getParentBatchTypeName();
+            var parentBatchTypeName = form.getParentBatchTypeName();
             BatchType parentBatchType = null;
 
             if(parentBatchTypeName != null) {
@@ -88,19 +85,19 @@ public class CreateBatchTypeCommand
 
             if(parentBatchTypeName == null || parentBatchType != null) {
                 var sequenceControl = Session.getModelController(SequenceControl.class);
-                String batchSequenceTypeName = form.getBatchSequenceTypeName();
-                SequenceType batchSequenceType = sequenceControl.getSequenceTypeByName(batchSequenceTypeName);
+                var batchSequenceTypeName = form.getBatchSequenceTypeName();
+                var batchSequenceType = sequenceControl.getSequenceTypeByName(batchSequenceTypeName);
 
                 if(batchSequenceTypeName == null || batchSequenceType != null) {
                     var workflowControl = Session.getModelController(WorkflowControl.class);
-                    String batchWorkflowName = form.getBatchWorkflowName();
-                    Workflow batchWorkflow = batchWorkflowName == null ? null : workflowControl.getWorkflowByName(batchWorkflowName);
+                    var batchWorkflowName = form.getBatchWorkflowName();
+                    var batchWorkflow = batchWorkflowName == null ? null : workflowControl.getWorkflowByName(batchWorkflowName);
 
                     if(batchWorkflowName == null || batchWorkflow != null) {
-                        String batchWorkflowEntranceName = form.getBatchWorkflowEntranceName();
+                        var batchWorkflowEntranceName = form.getBatchWorkflowEntranceName();
 
                         if(batchWorkflowEntranceName == null || (batchWorkflow != null && batchWorkflowEntranceName != null)) {
-                            WorkflowEntrance batchWorkflowEntrance = batchWorkflowEntranceName == null ? null : workflowControl.getWorkflowEntranceByName(batchWorkflow, batchWorkflowEntranceName);
+                            var batchWorkflowEntrance = batchWorkflowEntranceName == null ? null : workflowControl.getWorkflowEntranceByName(batchWorkflow, batchWorkflowEntranceName);
 
                             if(batchWorkflowEntranceName == null || batchWorkflowEntrance != null) {
                                 var partyPK = getPartyPK();

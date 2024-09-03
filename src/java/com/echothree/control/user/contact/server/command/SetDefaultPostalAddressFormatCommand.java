@@ -18,7 +18,6 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.SetDefaultPostalAddressFormatForm;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.data.contact.server.value.PostalAddressFormatDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class SetDefaultPostalAddressFormatCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String postalAddressFormatName = form.getPostalAddressFormatName();
-        PostalAddressFormatDetailValue postalAddressFormatDetailValue = contactControl.getPostalAddressFormatDetailValueByNameForUpdate(postalAddressFormatName);
+        var postalAddressFormatName = form.getPostalAddressFormatName();
+        var postalAddressFormatDetailValue = contactControl.getPostalAddressFormatDetailValueByNameForUpdate(postalAddressFormatName);
         
         if(postalAddressFormatDetailValue != null) {
             postalAddressFormatDetailValue.setIsDefault(Boolean.TRUE);

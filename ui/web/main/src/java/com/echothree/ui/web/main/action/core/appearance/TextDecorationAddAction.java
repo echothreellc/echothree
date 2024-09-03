@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.appearance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.CreateAppearanceTextDecorationForm;
-import com.echothree.control.user.core.common.form.GetAppearanceForm;
 import com.echothree.control.user.core.common.result.GetAppearanceResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class TextDecorationAddAction
     @Override
     public void setupTransfer(TextDecorationAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetAppearanceForm commandForm = CoreUtil.getHome().getGetAppearanceForm();
+        var commandForm = CoreUtil.getHome().getGetAppearanceForm();
 
         commandForm.setAppearanceName(actionForm.getAppearanceName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getAppearance(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getAppearance(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAppearanceResult result = (GetAppearanceResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAppearanceResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.APPEARANCE, result.getAppearance());
         }
@@ -72,7 +69,7 @@ public class TextDecorationAddAction
     @Override
     public CommandResult doAdd(TextDecorationAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateAppearanceTextDecorationForm commandForm = CoreUtil.getHome().getCreateAppearanceTextDecorationForm();
+        var commandForm = CoreUtil.getHome().getCreateAppearanceTextDecorationForm();
 
         commandForm.setAppearanceName( actionForm.getAppearanceName());
         commandForm.setTextDecorationName(actionForm.getTextDecorationChoice());

@@ -19,16 +19,13 @@ package com.echothree.ui.web.main.action.accounting.transactionentityroletype;
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.common.edit.TransactionEntityRoleTypeDescriptionEdit;
 import com.echothree.control.user.accounting.common.form.EditTransactionEntityRoleTypeDescriptionForm;
-import com.echothree.control.user.accounting.common.form.GetTransactionEntityRoleTypeForm;
 import com.echothree.control.user.accounting.common.result.EditTransactionEntityRoleTypeDescriptionResult;
 import com.echothree.control.user.accounting.common.result.GetTransactionEntityRoleTypeResult;
 import com.echothree.control.user.accounting.common.spec.TransactionEntityRoleTypeDescriptionSpec;
-import com.echothree.model.control.accounting.common.transfer.TransactionEntityRoleTypeDescriptionTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,7 +52,7 @@ public class DescriptionEditAction
     @Override
     protected TransactionEntityRoleTypeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        TransactionEntityRoleTypeDescriptionSpec spec = AccountingUtil.getHome().getTransactionEntityRoleTypeDescriptionSpec();
+        var spec = AccountingUtil.getHome().getTransactionEntityRoleTypeDescriptionSpec();
         
         spec.setTransactionTypeName(findParameter(request, ParameterConstants.TRANSACTION_TYPE_NAME, actionForm.getTransactionTypeName()));
         spec.setTransactionEntityRoleTypeName(findParameter(request, ParameterConstants.TRANSACTION_ENTITY_ROLE_TYPE_NAME, actionForm.getTransactionEntityRoleTypeName()));
@@ -67,7 +64,7 @@ public class DescriptionEditAction
     @Override
     protected TransactionEntityRoleTypeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        TransactionEntityRoleTypeDescriptionEdit edit = AccountingUtil.getHome().getTransactionEntityRoleTypeDescriptionEdit();
+        var edit = AccountingUtil.getHome().getTransactionEntityRoleTypeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 
@@ -91,11 +88,11 @@ public class DescriptionEditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditTransactionEntityRoleTypeDescriptionForm commandForm)
             throws Exception {
-        CommandResult commandResult = AccountingUtil.getHome().editTransactionEntityRoleTypeDescription(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditTransactionEntityRoleTypeDescriptionResult result = (EditTransactionEntityRoleTypeDescriptionResult)executionResult.getResult();
+        var commandResult = AccountingUtil.getHome().editTransactionEntityRoleTypeDescription(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditTransactionEntityRoleTypeDescriptionResult)executionResult.getResult();
 
-        TransactionEntityRoleTypeDescriptionTransfer transactionEntityRoleTypeDescription = result.getTransactionEntityRoleTypeDescription();
+        var transactionEntityRoleTypeDescription = result.getTransactionEntityRoleTypeDescription();
         if(transactionEntityRoleTypeDescription != null) {
             request.setAttribute(AttributeConstants.TRANSACTION_ENTITY_ROLE_TYPE, transactionEntityRoleTypeDescription.getTransactionEntityRoleType());
         }
@@ -112,15 +109,15 @@ public class DescriptionEditAction
     @Override
     public void setupTransfer(DescriptionEditActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTransactionEntityRoleTypeForm commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypeForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypeForm();
 
         commandForm.setTransactionTypeName(actionForm.getTransactionTypeName());
         commandForm.setTransactionEntityRoleTypeName(actionForm.getTransactionEntityRoleTypeName());
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionEntityRoleType(getUserVisitPK(request), commandForm);
+
+        var commandResult = AccountingUtil.getHome().getTransactionEntityRoleType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTransactionEntityRoleTypeResult result = (GetTransactionEntityRoleTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionEntityRoleTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRANSACTION_ENTITY_ROLE_TYPE, result.getTransactionEntityRoleType());
         }

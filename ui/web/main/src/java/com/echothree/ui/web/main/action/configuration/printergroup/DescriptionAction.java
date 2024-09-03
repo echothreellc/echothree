@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.printergroup;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.GetPrinterGroupDescriptionsForm;
 import com.echothree.control.user.printer.common.result.GetPrinterGroupDescriptionsResult;
-import com.echothree.model.control.printer.common.transfer.PrinterGroupTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
-            GetPrinterGroupDescriptionsForm commandForm = PrinterUtil.getHome().getGetPrinterGroupDescriptionsForm();
+            var printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
+            var commandForm = PrinterUtil.getHome().getGetPrinterGroupDescriptionsForm();
             
             commandForm.setPrinterGroupName(printerGroupName);
-            
-            CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterGroupDescriptionsResult result = (GetPrinterGroupDescriptionsResult)executionResult.getResult();
-            PrinterGroupTransfer printerGroupTransfer = result.getPrinterGroup();
+
+            var commandResult = PrinterUtil.getHome().getPrinterGroupDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPrinterGroupDescriptionsResult)executionResult.getResult();
+            var printerGroupTransfer = result.getPrinterGroup();
             
             request.setAttribute(AttributeConstants.PRINTER_GROUP, printerGroupTransfer);
             request.setAttribute(AttributeConstants.PRINTER_GROUP_DESCRIPTIONS, result.getPrinterGroupDescriptions());

@@ -17,7 +17,6 @@
 package com.echothree.model.control.shipment.server.transfer;
 
 import com.echothree.model.control.shipment.common.transfer.ShipmentTimeTransfer;
-import com.echothree.model.control.shipment.common.transfer.ShipmentTimeTypeTransfer;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -35,12 +34,12 @@ public class ShipmentTimeTransferCache
 
     @Override
     public ShipmentTimeTransfer getTransfer(ShipmentTime shipmentTime) {
-        ShipmentTimeTransfer shipmentTimeTransfer = get(shipmentTime);
+        var shipmentTimeTransfer = get(shipmentTime);
         
         if(shipmentTimeTransfer == null) {
-            ShipmentTimeTypeTransfer shipmentTimeType = shipmentControl.getShipmentTimeTypeTransfer(userVisit, shipmentTime.getShipmentTimeType());
-            Long unformattedTime = shipmentTime.getTime();
-            String time = formatTypicalDateTime(unformattedTime);
+            var shipmentTimeType = shipmentControl.getShipmentTimeTypeTransfer(userVisit, shipmentTime.getShipmentTimeType());
+            var unformattedTime = shipmentTime.getTime();
+            var time = formatTypicalDateTime(unformattedTime);
             
             shipmentTimeTransfer = new ShipmentTimeTransfer(shipmentTimeType, unformattedTime, time);
             put(shipmentTime, shipmentTimeTransfer);

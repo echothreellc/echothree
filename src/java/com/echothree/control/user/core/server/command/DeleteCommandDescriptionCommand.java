@@ -18,10 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteCommandDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.core.server.entity.Command;
-import com.echothree.model.data.core.server.entity.CommandDescription;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,20 +50,20 @@ public class DeleteCommandDescriptionCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
-            String commandName = form.getCommandName();
-            Command command = coreControl.getCommandByName(componentVendor, commandName);
+            var commandName = form.getCommandName();
+            var command = coreControl.getCommandByName(componentVendor, commandName);
             
             if(command != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    CommandDescription commandDescription = coreControl.getCommandDescriptionForUpdate(command, language);
+                    var commandDescription = coreControl.getCommandDescriptionForUpdate(command, language);
                     
                     if(commandDescription != null) {
                         coreControl.deleteCommandDescription(commandDescription, getPartyPK());

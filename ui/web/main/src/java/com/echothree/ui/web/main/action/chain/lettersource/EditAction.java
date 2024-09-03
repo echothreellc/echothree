@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.chain.lettersource;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.edit.LetterSourceEdit;
-import com.echothree.control.user.letter.common.form.EditLetterSourceForm;
 import com.echothree.control.user.letter.common.result.EditLetterSourceResult;
-import com.echothree.control.user.letter.common.spec.LetterSourceSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,10 +50,10 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String originalLetterSourceName = request.getParameter(ParameterConstants.ORIGINAL_LETTER_SOURCE_NAME);
-        EditLetterSourceForm commandForm = LetterUtil.getHome().getEditLetterSourceForm();
-        LetterSourceSpec spec = LetterUtil.getHome().getLetterSourceSpec();
+        String forwardKey;
+        var originalLetterSourceName = request.getParameter(ParameterConstants.ORIGINAL_LETTER_SOURCE_NAME);
+        var commandForm = LetterUtil.getHome().getEditLetterSourceForm();
+        var spec = LetterUtil.getHome().getLetterSourceSpec();
         
         if(originalLetterSourceName == null) {
             originalLetterSourceName = actionForm.getOriginalLetterSourceName();
@@ -68,7 +63,7 @@ public class EditAction
         spec.setLetterSourceName(originalLetterSourceName);
         
         if(wasPost(request)) {
-            LetterSourceEdit edit = LetterUtil.getHome().getLetterSourceEdit();
+            var edit = LetterUtil.getHome().getLetterSourceEdit();
             
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
@@ -80,14 +75,14 @@ public class EditAction
             edit.setIsDefault(actionForm.getIsDefault().toString());
             edit.setSortOrder(actionForm.getSortOrder());
             edit.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = LetterUtil.getHome().editLetterSource(getUserVisitPK(request), commandForm);
+
+            var commandResult = LetterUtil.getHome().editLetterSource(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditLetterSourceResult result = (EditLetterSourceResult)executionResult.getResult();
+                    var result = (EditLetterSourceResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -100,13 +95,13 @@ public class EditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = LetterUtil.getHome().editLetterSource(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditLetterSourceResult result = (EditLetterSourceResult)executionResult.getResult();
+
+            var commandResult = LetterUtil.getHome().editLetterSource(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditLetterSourceResult)executionResult.getResult();
             
             if(result != null) {
-                LetterSourceEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setPartyName(getUserSession(request).getPartyRelationship().getFromParty().getPartyName());

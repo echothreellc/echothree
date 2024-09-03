@@ -21,10 +21,6 @@ import com.echothree.model.control.cancellationpolicy.server.control.Cancellatio
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReason;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReasonType;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -70,19 +66,19 @@ public class CreateCancellationReasonTypeCommand
     @Override
     protected BaseResult execute() {
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
-            String cancellationReasonName = form.getCancellationReasonName();
-            CancellationReason cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
+            var cancellationReasonName = form.getCancellationReasonName();
+            var cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
             
             if(cancellationReason != null) {
-                String cancellationTypeName = form.getCancellationTypeName();
-                CancellationType cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
+                var cancellationTypeName = form.getCancellationTypeName();
+                var cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
                 
                 if(cancellationType != null) {
-                    CancellationReasonType cancellationReasonType = cancellationPolicyControl.getCancellationReasonType(cancellationReason, cancellationType);
+                    var cancellationReasonType = cancellationPolicyControl.getCancellationReasonType(cancellationReason, cancellationType);
                     
                     if(cancellationReasonType == null) {
                         var isDefault = Boolean.valueOf(form.getIsDefault());

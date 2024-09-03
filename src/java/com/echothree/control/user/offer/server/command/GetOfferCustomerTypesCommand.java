@@ -17,7 +17,6 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetOfferCustomerTypesForm;
-import com.echothree.control.user.offer.common.result.GetOfferCustomerTypesResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
@@ -73,8 +72,8 @@ public class GetOfferCustomerTypesCommand
     @Override
     protected Collection<OfferCustomerType> getEntities() {
         var offerControl = Session.getModelController(OfferControl.class);
-        String offerName = form.getOfferName();
-        String customerTypeName = form.getCustomerTypeName();
+        var offerName = form.getOfferName();
+        var customerTypeName = form.getCustomerTypeName();
         var parameterCount = (offerName != null ? 1 : 0) + (customerTypeName != null ? 1 : 0);
         Collection<OfferCustomerType> offerCustomerTypes = null;
 
@@ -107,7 +106,7 @@ public class GetOfferCustomerTypesCommand
     
     @Override
     protected BaseResult getResult(Collection<OfferCustomerType> entities) {
-        GetOfferCustomerTypesResult result = OfferResultFactory.getGetOfferCustomerTypesResult();
+        var result = OfferResultFactory.getGetOfferCustomerTypesResult();
         
         if(entities != null) {
             var offerControl = Session.getModelController(OfferControl.class);

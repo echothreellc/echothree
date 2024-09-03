@@ -21,9 +21,6 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
-import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
-import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -59,20 +56,20 @@ public class CreateSubscriptionTypeCommand
     @Override
     protected BaseResult execute() {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        String subscriptionKindName = form.getSubscriptionKindName();
-        SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
+        var subscriptionKindName = form.getSubscriptionKindName();
+        var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
         if(subscriptionKind != null) {
-            String subscriptionTypeName = form.getSubscriptionTypeName();
-            SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
+            var subscriptionTypeName = form.getSubscriptionTypeName();
+            var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
             
             if(subscriptionType == null) {
-                String subscriptionSequenceName = form.getSubscriptionSequenceName();
+                var subscriptionSequenceName = form.getSubscriptionSequenceName();
                 Sequence subscriptionSequence = null;
                 
                 if(subscriptionSequenceName != null) {
                     var sequenceControl = Session.getModelController(SequenceControl.class);
-                    SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SUBSCRIPTION.name());
+                    var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SUBSCRIPTION.name());
                     subscriptionSequence = sequenceControl.getSequenceByName(sequenceType, subscriptionSequenceName);
                 }
                 

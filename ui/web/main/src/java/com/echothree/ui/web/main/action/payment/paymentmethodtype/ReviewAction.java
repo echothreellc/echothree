@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.payment.paymentmethodtype;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.GetPaymentMethodTypeForm;
 import com.echothree.control.user.payment.common.result.GetPaymentMethodTypeResult;
 import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTransfer;
@@ -26,8 +25,6 @@ import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,8 +53,8 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetPaymentMethodTypeForm commandForm = PaymentUtil.getHome().getGetPaymentMethodTypeForm();
+        String forwardKey;
+        var commandForm = PaymentUtil.getHome().getGetPaymentMethodTypeForm();
 
         commandForm.setPaymentMethodTypeName(request.getParameter(ParameterConstants.PAYMENT_METHOD_TYPE_NAME));
 
@@ -65,12 +62,12 @@ public class ReviewAction
         options.add(PaymentOptions.PaymentMethodTypeIncludePaymentMethodTypePartyTypes);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
 
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentMethodType(getUserVisitPK(request), commandForm);
+        var commandResult = PaymentUtil.getHome().getPaymentMethodType(getUserVisitPK(request), commandForm);
         PaymentMethodTypeTransfer paymentMethodType = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPaymentMethodTypeResult result = (GetPaymentMethodTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPaymentMethodTypeResult)executionResult.getResult();
 
             paymentMethodType = result.getPaymentMethodType();
         }

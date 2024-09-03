@@ -25,9 +25,6 @@ import com.echothree.control.user.core.common.spec.CommandDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.Command;
 import com.echothree.model.data.core.server.entity.CommandDescription;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.value.CommandDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -76,17 +73,17 @@ public class EditCommandDescriptionCommand
     public CommandDescription getEntity(EditCommandDescriptionResult result) {
         var coreControl = getCoreControl();
         CommandDescription commandDescription = null;
-        String componentVendorName = spec.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = spec.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
-            String commandName = spec.getCommandName();
-            Command command = coreControl.getCommandByName(componentVendor, commandName);
+            var commandName = spec.getCommandName();
+            var command = coreControl.getCommandByName(componentVendor, commandName);
 
             if(command != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -131,7 +128,7 @@ public class EditCommandDescriptionCommand
     @Override
     public void doUpdate(CommandDescription commandDescription) {
         var coreControl = getCoreControl();
-        CommandDescriptionValue commandDescriptionValue = coreControl.getCommandDescriptionValue(commandDescription);
+        var commandDescriptionValue = coreControl.getCommandDescriptionValue(commandDescription);
         commandDescriptionValue.setDescription(edit.getDescription());
 
         coreControl.updateCommandDescriptionFromValue(commandDescriptionValue, getPartyPK());

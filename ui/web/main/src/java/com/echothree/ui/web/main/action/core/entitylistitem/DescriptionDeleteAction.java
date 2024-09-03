@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.entitylistitem;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteEntityListItemDescriptionForm;
-import com.echothree.control.user.core.common.form.GetEntityListItemDescriptionForm;
 import com.echothree.control.user.core.common.result.GetEntityListItemDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -66,18 +63,18 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEntityListItemDescriptionForm commandForm = CoreUtil.getHome().getGetEntityListItemDescriptionForm();
+        var commandForm = CoreUtil.getHome().getGetEntityListItemDescriptionForm();
         
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityListItemName(actionForm.getEntityListItemName());
         commandForm.setEntityAttributeName(actionForm.getEntityAttributeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityListItemDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEntityListItemDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityListItemDescriptionResult result = (GetEntityListItemDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityListItemDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.ENTITY_LIST_ITEM_DESCRIPTION, result.getEntityListItemDescription());
         }
@@ -86,7 +83,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteEntityListItemDescriptionForm commandForm = CoreUtil.getHome().getDeleteEntityListItemDescriptionForm();
+        var commandForm = CoreUtil.getHome().getDeleteEntityListItemDescriptionForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());

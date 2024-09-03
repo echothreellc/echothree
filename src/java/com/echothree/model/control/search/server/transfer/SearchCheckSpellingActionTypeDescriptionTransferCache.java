@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.search.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.search.common.transfer.SearchCheckSpellingActionTypeDescriptionTransfer;
-import com.echothree.model.control.search.common.transfer.SearchCheckSpellingActionTypeTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class SearchCheckSpellingActionTypeDescriptionTransferCache
     }
     
     public SearchCheckSpellingActionTypeDescriptionTransfer getSearchCheckSpellingActionTypeDescriptionTransfer(SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription) {
-        SearchCheckSpellingActionTypeDescriptionTransfer searchCheckSpellingActionTypeDescriptionTransfer = get(searchCheckSpellingActionTypeDescription);
+        var searchCheckSpellingActionTypeDescriptionTransfer = get(searchCheckSpellingActionTypeDescription);
         
         if(searchCheckSpellingActionTypeDescriptionTransfer == null) {
-            SearchCheckSpellingActionTypeTransfer searchCheckSpellingActionTypeTransfer = searchControl.getSearchCheckSpellingActionTypeTransfer(userVisit, searchCheckSpellingActionTypeDescription.getSearchCheckSpellingActionType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, searchCheckSpellingActionTypeDescription.getLanguage());
+            var searchCheckSpellingActionTypeTransfer = searchControl.getSearchCheckSpellingActionTypeTransfer(userVisit, searchCheckSpellingActionTypeDescription.getSearchCheckSpellingActionType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchCheckSpellingActionTypeDescription.getLanguage());
             
             searchCheckSpellingActionTypeDescriptionTransfer = new SearchCheckSpellingActionTypeDescriptionTransfer(languageTransfer, searchCheckSpellingActionTypeTransfer, searchCheckSpellingActionTypeDescription.getDescription());
             put(searchCheckSpellingActionTypeDescription, searchCheckSpellingActionTypeDescriptionTransfer);

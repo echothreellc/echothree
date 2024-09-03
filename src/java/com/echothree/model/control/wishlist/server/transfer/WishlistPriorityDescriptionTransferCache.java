@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.wishlist.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityDescriptionTransfer;
-import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityTransfer;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriorityDescription;
@@ -32,11 +30,11 @@ public class WishlistPriorityDescriptionTransferCache
     }
     
     public WishlistPriorityDescriptionTransfer getWishlistPriorityDescriptionTransfer(WishlistPriorityDescription wishlistPriorityDescription) {
-        WishlistPriorityDescriptionTransfer wishlistPriorityDescriptionTransfer = get(wishlistPriorityDescription);
+        var wishlistPriorityDescriptionTransfer = get(wishlistPriorityDescription);
         
         if(wishlistPriorityDescriptionTransfer == null) {
-            WishlistPriorityTransfer wishlistPriorityTransfer = wishlistControl.getWishlistPriorityTransfer(userVisit, wishlistPriorityDescription.getWishlistPriority());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, wishlistPriorityDescription.getLanguage());
+            var wishlistPriorityTransfer = wishlistControl.getWishlistPriorityTransfer(userVisit, wishlistPriorityDescription.getWishlistPriority());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, wishlistPriorityDescription.getLanguage());
             
             wishlistPriorityDescriptionTransfer = new WishlistPriorityDescriptionTransfer(languageTransfer, wishlistPriorityTransfer, wishlistPriorityDescription.getDescription());
             put(wishlistPriorityDescription, wishlistPriorityDescriptionTransfer);

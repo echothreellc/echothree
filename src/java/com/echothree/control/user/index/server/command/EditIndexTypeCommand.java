@@ -27,14 +27,8 @@ import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.index.server.entity.IndexType;
-import com.echothree.model.data.index.server.entity.IndexTypeDescription;
-import com.echothree.model.data.index.server.entity.IndexTypeDetail;
-import com.echothree.model.data.index.server.value.IndexTypeDescriptionValue;
-import com.echothree.model.data.index.server.value.IndexTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -97,7 +91,7 @@ public class EditIndexTypeCommand
     public IndexType getEntity(EditIndexTypeResult result) {
         var indexControl = Session.getModelController(IndexControl.class);
         IndexType indexType;
-        String indexTypeName = spec.getIndexTypeName();
+        var indexTypeName = spec.getIndexTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             indexType = indexControl.getIndexTypeByName(indexTypeName);
@@ -129,13 +123,13 @@ public class EditIndexTypeCommand
     @Override
     public void doLock(IndexTypeEdit edit, IndexType indexType) {
         var indexControl = Session.getModelController(IndexControl.class);
-        IndexTypeDescription indexTypeDescription = indexControl.getIndexTypeDescription(indexType, getPreferredLanguage());
-        IndexTypeDetail indexTypeDetail = indexType.getLastDetail();
+        var indexTypeDescription = indexControl.getIndexTypeDescription(indexType, getPreferredLanguage());
+        var indexTypeDetail = indexType.getLastDetail();
         
         entityType = indexTypeDetail.getEntityType();
-        
-        EntityTypeDetail entityTypeDetail = entityType == null ? null : entityType.getLastDetail();
-        ComponentVendor componentVendor = entityTypeDetail == null ? null : entityTypeDetail.getComponentVendor();
+
+        var entityTypeDetail = entityType == null ? null : entityType.getLastDetail();
+        var componentVendor = entityTypeDetail == null ? null : entityTypeDetail.getComponentVendor();
 
         edit.setIndexTypeName(indexTypeDetail.getIndexTypeName());
         edit.setComponentVendorName(componentVendor == null ? null : componentVendor.getLastDetail().getComponentVendorName());
@@ -151,14 +145,14 @@ public class EditIndexTypeCommand
     @Override
     public void canUpdate(IndexType indexType) {
         var indexControl = Session.getModelController(IndexControl.class);
-        String indexTypeName = edit.getIndexTypeName();
-        IndexType duplicateIndexType = indexControl.getIndexTypeByName(indexTypeName);
+        var indexTypeName = edit.getIndexTypeName();
+        var duplicateIndexType = indexControl.getIndexTypeByName(indexTypeName);
 
         if(duplicateIndexType != null && !indexType.equals(duplicateIndexType)) {
             addExecutionError(ExecutionErrors.DuplicateIndexTypeName.name(), indexTypeName);
         } else {
-            String componentVendorName = edit.getComponentVendorName();
-            String entityTypeName = edit.getEntityTypeName();
+            var componentVendorName = edit.getComponentVendorName();
+            var entityTypeName = edit.getEntityTypeName();
             var parameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1);
 
             if(parameterCount == 0 || parameterCount == 2) {
@@ -173,9 +167,9 @@ public class EditIndexTypeCommand
     public void doUpdate(IndexType indexType) {
         var indexControl = Session.getModelController(IndexControl.class);
         var partyPK = getPartyPK();
-        IndexTypeDetailValue indexTypeDetailValue = indexControl.getIndexTypeDetailValueForUpdate(indexType);
-        IndexTypeDescription indexTypeDescription = indexControl.getIndexTypeDescriptionForUpdate(indexType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var indexTypeDetailValue = indexControl.getIndexTypeDetailValueForUpdate(indexType);
+        var indexTypeDescription = indexControl.getIndexTypeDescriptionForUpdate(indexType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         indexTypeDetailValue.setIndexTypeName(edit.getIndexTypeName());
         indexTypeDetailValue.setEntityTypePK(entityType == null ? null : entityType.getPrimaryKey());
@@ -189,7 +183,7 @@ public class EditIndexTypeCommand
         } else if(indexTypeDescription != null && description == null) {
             indexControl.deleteIndexTypeDescription(indexTypeDescription, partyPK);
         } else if(indexTypeDescription != null && description != null) {
-            IndexTypeDescriptionValue indexTypeDescriptionValue = indexControl.getIndexTypeDescriptionValue(indexTypeDescription);
+            var indexTypeDescriptionValue = indexControl.getIndexTypeDescriptionValue(indexTypeDescription);
 
             indexTypeDescriptionValue.setDescription(description);
             indexControl.updateIndexTypeDescriptionFromValue(indexTypeDescriptionValue, partyPK);

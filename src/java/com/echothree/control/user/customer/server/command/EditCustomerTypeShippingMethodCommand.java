@@ -26,8 +26,6 @@ import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.entity.CustomerTypeShippingMethod;
-import com.echothree.model.data.customer.server.value.CustomerTypeShippingMethodValue;
-import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -77,13 +75,13 @@ public class EditCustomerTypeShippingMethodCommand
     public CustomerTypeShippingMethod getEntity(EditCustomerTypeShippingMethodResult result) {
         var customerControl = Session.getModelController(CustomerControl.class);
         CustomerTypeShippingMethod customerTypeShippingMethod = null;
-        String customerTypeName = spec.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerTypeName = spec.getCustomerTypeName();
+        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
         if(customerType != null) {
             var shippingControl = Session.getModelController(ShippingControl.class);
-            String shippingMethodName = spec.getShippingMethodName();
-            ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+            var shippingMethodName = spec.getShippingMethodName();
+            var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
 
             if(shippingMethod != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -127,7 +125,7 @@ public class EditCustomerTypeShippingMethodCommand
     @Override
     public void doUpdate(CustomerTypeShippingMethod customerTypeShippingMethod) {
         var customerControl = Session.getModelController(CustomerControl.class);
-        CustomerTypeShippingMethodValue customerTypeShippingMethodValue = customerControl.getCustomerTypeShippingMethodValue(customerTypeShippingMethod);
+        var customerTypeShippingMethodValue = customerControl.getCustomerTypeShippingMethodValue(customerTypeShippingMethod);
         
         customerTypeShippingMethodValue.setDefaultSelectionPriority(Integer.valueOf(edit.getDefaultSelectionPriority()));
         customerTypeShippingMethodValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

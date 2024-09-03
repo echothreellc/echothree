@@ -17,7 +17,6 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetPersonalTitleChoicesForm;
-import com.echothree.control.user.party.common.result.GetPersonalTitleChoicesResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -51,9 +50,9 @@ public class GetPersonalTitleChoicesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPersonalTitleChoicesResult result = PartyResultFactory.getGetPersonalTitleChoicesResult();
-        String defaultPersonalTitleChoice = form.getDefaultPersonalTitleChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = PartyResultFactory.getGetPersonalTitleChoicesResult();
+        var defaultPersonalTitleChoice = form.getDefaultPersonalTitleChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setPersonalTitleChoices(partyControl.getPersonalTitleChoices(defaultPersonalTitleChoice, allowNullChoice));
         

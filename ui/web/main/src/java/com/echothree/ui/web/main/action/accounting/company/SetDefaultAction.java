@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.company;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.SetDefaultCompanyForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultCompanyForm commandForm = PartyUtil.getHome().getSetDefaultCompanyForm();
-            String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
+            var commandForm = PartyUtil.getHome().getSetDefaultCompanyForm();
+            var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
             
             commandForm.setCompanyName(companyName);
             

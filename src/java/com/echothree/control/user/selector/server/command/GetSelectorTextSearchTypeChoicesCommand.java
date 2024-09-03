@@ -17,7 +17,6 @@
 package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.GetSelectorTextSearchTypeChoicesForm;
-import com.echothree.control.user.selector.common.result.GetSelectorTextSearchTypeChoicesResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -50,9 +49,9 @@ public class GetSelectorTextSearchTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorTextSearchTypeChoicesResult result = SelectorResultFactory.getGetSelectorTextSearchTypeChoicesResult();
-        String defaultSelectorTextSearchTypeChoice = form.getDefaultSelectorTextSearchTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = SelectorResultFactory.getGetSelectorTextSearchTypeChoicesResult();
+        var defaultSelectorTextSearchTypeChoice = form.getDefaultSelectorTextSearchTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setSelectorTextSearchTypeChoices(selectorControl.getSelectorTextSearchTypeChoices(defaultSelectorTextSearchTypeChoice,
                 getPreferredLanguage(), allowNullChoice));

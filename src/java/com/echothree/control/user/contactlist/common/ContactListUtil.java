@@ -18,7 +18,6 @@ package com.echothree.control.user.contactlist.common;
 
 import com.echothree.control.user.contactlist.server.ContactListLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class ContactListUtil {
@@ -30,7 +29,7 @@ public class ContactListUtil {
     public static ContactListLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (ContactListLocal)ctx.lookup("ejb:echothree/echothree-server/ContactListBean!com.echothree.control.user.contactlist.server.ContactListLocal");
         }
@@ -42,7 +41,7 @@ public class ContactListUtil {
     public static ContactListRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (ContactListRemote)ctx.lookup("ejb:echothree/echothree-server/ContactListBean!com.echothree.control.user.contactlist.common.ContactListRemote");
         }

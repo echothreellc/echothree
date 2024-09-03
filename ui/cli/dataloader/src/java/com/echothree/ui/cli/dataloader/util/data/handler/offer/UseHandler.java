@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.OfferService;
-import com.echothree.control.user.offer.common.form.CreateUseDescriptionForm;
 import com.echothree.control.user.offer.common.form.OfferFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -50,9 +49,9 @@ public class UseHandler
         if(localName.equals("useDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +59,7 @@ public class UseHandler
             }
             
             try {
-                CreateUseDescriptionForm form = OfferFormFactory.getCreateUseDescriptionForm();
+                var form = OfferFormFactory.getCreateUseDescriptionForm();
                 
                 form.setUseName(useName);
                 form.setLanguageIsoName(languageIsoName);

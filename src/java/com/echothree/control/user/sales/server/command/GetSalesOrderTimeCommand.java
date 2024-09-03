@@ -17,7 +17,6 @@
 package com.echothree.control.user.sales.server.command;
 
 import com.echothree.control.user.sales.common.form.GetSalesOrderTimeForm;
-import com.echothree.control.user.sales.common.result.GetSalesOrderTimeResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.sales.server.logic.SalesOrderTimeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -48,9 +47,9 @@ public class GetSalesOrderTimeCommand
     
     @Override
     protected BaseResult execute() {
-        GetSalesOrderTimeResult result = SalesResultFactory.getGetSalesOrderTimeResult();
-        String orderName = form.getOrderName();
-        String orderTimeTypeName = form.getOrderTimeTypeName();
+        var result = SalesResultFactory.getGetSalesOrderTimeResult();
+        var orderName = form.getOrderName();
+        var orderTimeTypeName = form.getOrderTimeTypeName();
         
         result.setOrderTime(SalesOrderTimeLogic.getInstance().getOrderTimeTransfer(this, getUserVisit(), orderName, orderTimeTypeName));
         

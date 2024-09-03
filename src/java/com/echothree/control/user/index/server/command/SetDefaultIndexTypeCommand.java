@@ -21,7 +21,6 @@ import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.index.server.value.IndexTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,8 +62,8 @@ public class SetDefaultIndexTypeCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        String indexTypeName = form.getIndexTypeName();
-        IndexTypeDetailValue indexTypeDetailValue = indexControl.getIndexTypeDetailValueByNameForUpdate(indexTypeName);
+        var indexTypeName = form.getIndexTypeName();
+        var indexTypeDetailValue = indexControl.getIndexTypeDetailValueByNameForUpdate(indexTypeName);
         
         if(indexTypeDetailValue != null) {
             indexTypeDetailValue.setIsDefault(Boolean.TRUE);

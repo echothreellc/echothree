@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.country;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.SetDefaultGeoCodeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultGeoCodeForm commandForm = GeoUtil.getHome().getSetDefaultGeoCodeForm();
-            String countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
+            var commandForm = GeoUtil.getHome().getSetDefaultGeoCodeForm();
+            var countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
             
             commandForm.setGeoCodeName(countryName);
             

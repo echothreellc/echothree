@@ -21,9 +21,6 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.ItemDescriptionType;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUse;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,15 +63,15 @@ public class DeleteItemDescriptionTypeUseCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemDescriptionTypeName = form.getItemDescriptionTypeName();
-        ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
+        var itemDescriptionTypeName = form.getItemDescriptionTypeName();
+        var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
 
         if(itemDescriptionType != null) {
-            String itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
-            ItemDescriptionTypeUseType itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
+            var itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
+            var itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
 
             if(itemDescriptionTypeUseType != null) {
-                ItemDescriptionTypeUse itemDescriptionTypeUse = itemControl.getItemDescriptionTypeUseForUpdate(itemDescriptionType, itemDescriptionTypeUseType);
+                var itemDescriptionTypeUse = itemControl.getItemDescriptionTypeUseForUpdate(itemDescriptionType, itemDescriptionTypeUseType);
 
                 if(itemDescriptionTypeUse != null) {
                     itemControl.deleteItemDescriptionTypeUse(itemDescriptionTypeUse, getPartyPK());

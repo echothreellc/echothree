@@ -18,9 +18,6 @@ package com.echothree.control.user.comment.server.command;
 
 import com.echothree.control.user.comment.common.form.DeleteCommentUsageForm;
 import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.data.comment.server.entity.Comment;
-import com.echothree.model.data.comment.server.entity.CommentUsage;
-import com.echothree.model.data.comment.server.entity.CommentUsageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,15 +49,15 @@ public class DeleteCommentUsageCommand
     @Override
     protected BaseResult execute() {
         var commentControl = Session.getModelController(CommentControl.class);
-        String commentName = form.getCommentName();
-        Comment comment = commentControl.getCommentByName(commentName);
+        var commentName = form.getCommentName();
+        var comment = commentControl.getCommentByName(commentName);
         
         if(comment != null) {
-            String commentUsageTypeName = form.getCommentUsageTypeName();
-            CommentUsageType commentUsageType = commentControl.getCommentUsageTypeByName(comment.getLastDetail().getCommentType(), commentUsageTypeName);
+            var commentUsageTypeName = form.getCommentUsageTypeName();
+            var commentUsageType = commentControl.getCommentUsageTypeByName(comment.getLastDetail().getCommentType(), commentUsageTypeName);
             
             if(commentUsageType != null) {
-                CommentUsage commentUsage = commentControl.getCommentUsageForUpdate(comment, commentUsageType);
+                var commentUsage = commentControl.getCommentUsageForUpdate(comment, commentUsageType);
                 
                 if(commentUsage != null) {
                     commentControl.deleteCommentUsage(commentUsage, getPartyPK());

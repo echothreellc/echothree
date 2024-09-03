@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.returnpolicy.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnKindDescriptionTransfer;
-import com.echothree.model.control.returnpolicy.common.transfer.ReturnKindTransfer;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKindDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class ReturnKindDescriptionTransferCache
     }
     
     public ReturnKindDescriptionTransfer getReturnKindDescriptionTransfer(ReturnKindDescription returnKindDescription) {
-        ReturnKindDescriptionTransfer returnKindDescriptionTransfer = get(returnKindDescription);
+        var returnKindDescriptionTransfer = get(returnKindDescription);
         
         if(returnKindDescriptionTransfer == null) {
-            ReturnKindTransfer returnKindTransfer = returnPolicyControl.getReturnKindTransfer(userVisit, returnKindDescription.getReturnKind());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, returnKindDescription.getLanguage());
+            var returnKindTransfer = returnPolicyControl.getReturnKindTransfer(userVisit, returnKindDescription.getReturnKind());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, returnKindDescription.getLanguage());
             
             returnKindDescriptionTransfer = new ReturnKindDescriptionTransfer(languageTransfer, returnKindTransfer, returnKindDescription.getDescription());
             put(returnKindDescription, returnKindDescriptionTransfer);

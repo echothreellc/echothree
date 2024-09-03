@@ -22,7 +22,7 @@ import java.io.Serializable;
 public class SecurityResult
         implements Serializable {
     
-    private Messages securityMessages = null;
+    private Messages securityMessages;
     
     /** Creates a new instance of SecurityResult */
     public SecurityResult(Messages securityMessages) {

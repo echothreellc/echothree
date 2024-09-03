@@ -25,22 +25,14 @@ import com.echothree.control.user.forum.common.spec.ForumMessageAttachmentSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.forum.server.entity.ForumMessageAttachment;
-import com.echothree.model.data.forum.server.entity.ForumMessageBlobAttachment;
-import com.echothree.model.data.forum.server.entity.ForumMessageClobAttachment;
-import com.echothree.model.data.forum.server.value.ForumMessageAttachmentDetailValue;
-import com.echothree.model.data.forum.server.value.ForumMessageBlobAttachmentValue;
-import com.echothree.model.data.forum.server.value.ForumMessageClobAttachmentValue;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -88,11 +80,11 @@ public class EditForumMessageAttachmentCommand
     public ForumMessageAttachment getEntity(EditForumMessageAttachmentResult result) {
         var forumControl = Session.getModelController(ForumControl.class);
         ForumMessageAttachment forumMessageAttachment = null;
-        String forumMessageName = spec.getForumMessageName();
-        ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
+        var forumMessageName = spec.getForumMessageName();
+        var forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
 
         if(forumMessage != null) {
-            Integer forumMessageAttachmentSequence = Integer.valueOf(spec.getForumMessageAttachmentSequence());
+            var forumMessageAttachmentSequence = Integer.valueOf(spec.getForumMessageAttachmentSequence());
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 forumMessageAttachment = forumControl.getForumMessageAttachmentBySequence(forumMessage, forumMessageAttachmentSequence);
@@ -132,11 +124,11 @@ public class EditForumMessageAttachmentCommand
 
         edit.setMimeTypeName(mimeType == null? null: mimeType.getLastDetail().getMimeTypeName());
 
-        String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+        var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
 
         // EntityAttributeTypes.BLOB.name() does not return anything in edit
         if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-            ForumMessageClobAttachment forumMessageAttachmentClob = forumControl.getForumMessageClobAttachment(forumMessageAttachment);
+            var forumMessageAttachmentClob = forumControl.getForumMessageClobAttachment(forumMessageAttachment);
 
             if(forumMessageAttachmentClob != null) {
                 edit.setClob(forumMessageAttachmentClob.getClob());
@@ -147,14 +139,14 @@ public class EditForumMessageAttachmentCommand
     @Override
     public void canUpdate(ForumMessageAttachment forumMessageAttachment) {
         var coreControl = getCoreControl();
-        String mimeTypeName = edit.getMimeTypeName();
+        var mimeTypeName = edit.getMimeTypeName();
 
         mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType != null) {
-            String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
-            ByteArray blob = edit.getBlob();
-            String clob = edit.getClob();
+            var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+            var blob = edit.getBlob();
+            var clob = edit.getClob();
 
             if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name()) && blob == null) {
                 addExecutionError(ExecutionErrors.MissingBlob.name());
@@ -171,18 +163,18 @@ public class EditForumMessageAttachmentCommand
     @Override
     public void doUpdate(ForumMessageAttachment forumMessageAttachment) {
         var forumControl = Session.getModelController(ForumControl.class);
-        ForumMessageAttachmentDetailValue forumMessageAttachmentDetailValue = forumControl.getForumMessageAttachmentDetailValueForUpdate(forumMessageAttachment);
-        String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
-        PartyPK updatedBy = getPartyPK();
+        var forumMessageAttachmentDetailValue = forumControl.getForumMessageAttachmentDetailValueForUpdate(forumMessageAttachment);
+        var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+        var updatedBy = getPartyPK();
 
         forumMessageAttachmentDetailValue.setMimeTypePK(mimeType.getPrimaryKey());
         forumControl.updateForumMessageAttachmentFromValue(forumMessageAttachmentDetailValue, updatedBy);
 
-        ForumMessageBlobAttachment forumMessageAttachmentBlob = forumControl.getForumMessageBlobAttachmentForUpdate(forumMessageAttachment);
-        ForumMessageClobAttachment forumMessageAttachmentClob = forumControl.getForumMessageClobAttachmentForUpdate(forumMessageAttachment);
+        var forumMessageAttachmentBlob = forumControl.getForumMessageBlobAttachmentForUpdate(forumMessageAttachment);
+        var forumMessageAttachmentClob = forumControl.getForumMessageClobAttachmentForUpdate(forumMessageAttachment);
 
         if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
-            ByteArray blob = edit.getBlob();
+            var blob = edit.getBlob();
 
             if(forumMessageAttachmentClob != null) {
                 forumControl.deleteForumMessageClobAttachment(forumMessageAttachmentClob, updatedBy);
@@ -191,12 +183,12 @@ public class EditForumMessageAttachmentCommand
             if(forumMessageAttachmentBlob == null) {
                 forumControl.createForumMessageBlobAttachment(forumMessageAttachment, blob, updatedBy);
             } else {
-                ForumMessageBlobAttachmentValue forumMessageAttachmentBlobValue = forumControl.getForumMessageBlobAttachmentValue(forumMessageAttachmentBlob);
+                var forumMessageAttachmentBlobValue = forumControl.getForumMessageBlobAttachmentValue(forumMessageAttachmentBlob);
 
                 forumMessageAttachmentBlobValue.setBlob(blob);
             }
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-            String clob = edit.getClob();
+            var clob = edit.getClob();
             
             if(forumMessageAttachmentBlob != null) {
                 forumControl.deleteForumMessageBlobAttachment(forumMessageAttachmentBlob, updatedBy);
@@ -205,7 +197,7 @@ public class EditForumMessageAttachmentCommand
             if(forumMessageAttachmentClob == null) {
                 forumControl.createForumMessageClobAttachment(forumMessageAttachment, clob, updatedBy);
             } else {
-                ForumMessageClobAttachmentValue forumMessageAttachmentClobValue = forumControl.getForumMessageClobAttachmentValue(forumMessageAttachmentClob);
+                var forumMessageAttachmentClobValue = forumControl.getForumMessageClobAttachmentValue(forumMessageAttachmentClob);
 
                 forumMessageAttachmentClobValue.setClob(clob);
             }

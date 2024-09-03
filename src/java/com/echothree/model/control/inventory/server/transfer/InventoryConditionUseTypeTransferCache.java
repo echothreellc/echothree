@@ -31,13 +31,13 @@ public class InventoryConditionUseTypeTransferCache
     
     @Override
     public InventoryConditionUseTypeTransfer getTransfer(InventoryConditionUseType inventoryConditionUseType) {
-        InventoryConditionUseTypeTransfer inventoryConditionUseTypeTransfer = get(inventoryConditionUseType);
+        var inventoryConditionUseTypeTransfer = get(inventoryConditionUseType);
         
         if(inventoryConditionUseTypeTransfer == null) {
-            String inventoryConditionUseTypeName = inventoryConditionUseType.getInventoryConditionUseTypeName();
-            Boolean isDefault = inventoryConditionUseType.getIsDefault();
-            Integer sortOrder = inventoryConditionUseType.getSortOrder();
-            String description = inventoryControl.getBestInventoryConditionUseTypeDescription(inventoryConditionUseType, getLanguage());
+            var inventoryConditionUseTypeName = inventoryConditionUseType.getInventoryConditionUseTypeName();
+            var isDefault = inventoryConditionUseType.getIsDefault();
+            var sortOrder = inventoryConditionUseType.getSortOrder();
+            var description = inventoryControl.getBestInventoryConditionUseTypeDescription(inventoryConditionUseType, getLanguage());
             
             inventoryConditionUseTypeTransfer = new InventoryConditionUseTypeTransfer(inventoryConditionUseTypeName, isDefault,
                     sortOrder, description);

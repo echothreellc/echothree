@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.service;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetServiceForm;
 import com.echothree.control.user.core.common.result.GetServiceResult;
 import com.echothree.model.control.core.common.transfer.ServiceTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetServiceForm commandForm = CoreUtil.getHome().getGetServiceForm();
+        String forwardKey;
+        var commandForm = CoreUtil.getHome().getGetServiceForm();
 
         commandForm.setServiceName(request.getParameter(ParameterConstants.SERVICE_NAME));
-        
-        CommandResult commandResult = CoreUtil.getHome().getService(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getService(getUserVisitPK(request), commandForm);
         ServiceTransfer service = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetServiceResult result = (GetServiceResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetServiceResult)executionResult.getResult();
             
             service = result.getService();
         }

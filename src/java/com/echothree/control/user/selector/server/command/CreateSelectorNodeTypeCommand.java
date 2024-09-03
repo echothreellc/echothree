@@ -18,7 +18,6 @@ package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.CreateSelectorNodeTypeForm;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.entity.SelectorNodeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,8 +49,8 @@ public class CreateSelectorNodeTypeCommand
     @Override
     protected BaseResult execute() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorNodeTypeName = form.getSelectorNodeTypeName();
-        SelectorNodeType selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
+        var selectorNodeTypeName = form.getSelectorNodeTypeName();
+        var selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
         
         if(selectorNodeType == null) {
             var sortOrder = Integer.valueOf(form.getSortOrder());

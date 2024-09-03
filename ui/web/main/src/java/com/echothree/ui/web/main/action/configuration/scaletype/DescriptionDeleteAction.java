@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.scaletype;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.DeleteScaleTypeDescriptionForm;
-import com.echothree.control.user.scale.common.form.GetScaleTypeDescriptionForm;
 import com.echothree.control.user.scale.common.result.GetScaleTypeDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetScaleTypeDescriptionForm commandForm = ScaleUtil.getHome().getGetScaleTypeDescriptionForm();
+        var commandForm = ScaleUtil.getHome().getGetScaleTypeDescriptionForm();
         
         commandForm.setScaleTypeName(actionForm.getScaleTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = ScaleUtil.getHome().getScaleTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = ScaleUtil.getHome().getScaleTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetScaleTypeDescriptionResult result = (GetScaleTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetScaleTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.SCALE_TYPE_DESCRIPTION, result.getScaleTypeDescription());
         }
@@ -80,7 +77,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteScaleTypeDescriptionForm commandForm = ScaleUtil.getHome().getDeleteScaleTypeDescriptionForm();
+        var commandForm = ScaleUtil.getHome().getDeleteScaleTypeDescriptionForm();
 
         commandForm.setScaleTypeName(actionForm.getScaleTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

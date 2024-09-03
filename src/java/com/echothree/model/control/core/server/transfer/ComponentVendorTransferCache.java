@@ -18,12 +18,9 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.ComponentVendorDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import java.util.Set;
 
 public class ComponentVendorTransferCache
         extends BaseCoreTransferCache<ComponentVendor, ComponentVendorTransfer> {
@@ -52,12 +49,12 @@ public class ComponentVendorTransferCache
     }
     
     public ComponentVendorTransfer getComponentVendorTransfer(ComponentVendor componentVendor) {
-        ComponentVendorTransfer componentVendorTransfer = get(componentVendor);
+        var componentVendorTransfer = get(componentVendor);
         
         if(componentVendorTransfer == null) {
-            ComponentVendorDetail componentVendorDetail = componentVendor.getLastDetail();
-            String componentVendorName = filterComponentVendorName ? null : componentVendorDetail.getComponentVendorName();
-            String description = filterDescription ? null : componentVendorDetail.getDescription();
+            var componentVendorDetail = componentVendor.getLastDetail();
+            var componentVendorName = filterComponentVendorName ? null : componentVendorDetail.getComponentVendorName();
+            var description = filterDescription ? null : componentVendorDetail.getDescription();
             
             componentVendorTransfer = new ComponentVendorTransfer(componentVendorName, description);
             put(componentVendor, componentVendorTransfer);

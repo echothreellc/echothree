@@ -22,8 +22,6 @@ import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.order.server.entity.OrderType;
-import com.echothree.model.data.order.server.value.OrderAliasTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -70,8 +68,8 @@ public class SetDefaultOrderAliasTypeCommand
 
         if(orderType != null) {
             var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-            String orderAliasTypeName = form.getOrderAliasTypeName();
-            OrderAliasTypeDetailValue orderAliasTypeDetailValue = orderAliasControl.getOrderAliasTypeDetailValueByNameForUpdate(orderType, orderAliasTypeName);
+            var orderAliasTypeName = form.getOrderAliasTypeName();
+            var orderAliasTypeDetailValue = orderAliasControl.getOrderAliasTypeDetailValueByNameForUpdate(orderType, orderAliasTypeName);
 
             if(orderAliasTypeDetailValue != null) {
                 orderAliasTypeDetailValue.setIsDefault(Boolean.TRUE);

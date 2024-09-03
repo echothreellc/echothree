@@ -21,11 +21,6 @@ import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
-import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
-import com.echothree.model.data.geo.server.entity.GeoCodeScope;
-import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -39,7 +34,6 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CreateGeoCodeAliasCommand
@@ -71,28 +65,28 @@ public class CreateGeoCodeAliasCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        String geoCodeName = form.getGeoCodeName();
-        GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var geoCodeName = form.getGeoCodeName();
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
 
         if(geoCode != null) {
-            GeoCodeType geoCodeType = geoCode.getLastDetail().getGeoCodeType();
-            String geoCodeAliasTypeName = form.getGeoCodeAliasTypeName();
-            GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByNameForUpdate(geoCodeType, geoCodeAliasTypeName);
+            var geoCodeType = geoCode.getLastDetail().getGeoCodeType();
+            var geoCodeAliasTypeName = form.getGeoCodeAliasTypeName();
+            var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByNameForUpdate(geoCodeType, geoCodeAliasTypeName);
 
             if(geoCodeAliasType != null) {
-                GeoCodeScope geoCodeScope = geoCode.getLastDetail().getGeoCodeScope();
-                GeoCodeAlias geoCodeAlias = geoControl.getGeoCodeAliasForUpdate(geoCode, geoCodeAliasType);
-                String alias = form.getAlias();
+                var geoCodeScope = geoCode.getLastDetail().getGeoCodeScope();
+                var geoCodeAlias = geoControl.getGeoCodeAliasForUpdate(geoCode, geoCodeAliasType);
+                var alias = form.getAlias();
 
                 if(geoCodeAlias == null) {
                     geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, alias);
 
                     if(geoCodeAlias == null) {
-                        String validationPattern = geoCodeAliasType.getLastDetail().getValidationPattern();
+                        var validationPattern = geoCodeAliasType.getLastDetail().getValidationPattern();
 
                         if(validationPattern != null) {
-                            Pattern pattern = Pattern.compile(validationPattern);
-                            Matcher m = pattern.matcher(alias);
+                            var pattern = Pattern.compile(validationPattern);
+                            var m = pattern.matcher(alias);
 
                             if(!m.matches()) {
                                 addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);

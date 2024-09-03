@@ -18,15 +18,12 @@ package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.GetContactListContactMechanismPurposesForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
-import com.echothree.control.user.contactlist.common.result.GetContactListContactMechanismPurposesResult;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -65,13 +62,13 @@ public class GetContactListContactMechanismPurposesCommand
     
     @Override
     protected BaseResult execute() {
-        GetContactListContactMechanismPurposesResult result = ContactListResultFactory.getGetContactListContactMechanismPurposesResult();
-        String contactListName = form.getContactListName();
-        ContactList contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
+        var result = ContactListResultFactory.getGetContactListContactMechanismPurposesResult();
+        var contactListName = form.getContactListName();
+        var contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
         
         if(!hasExecutionErrors()) {
             var contactListControl = Session.getModelController(ContactListControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setContactList(contactListControl.getContactListTransfer(userVisit, contactList));
             result.setContactListContactMechanismPurposes(contactListControl.getContactListContactMechanismPurposeTransfersByContactList(userVisit, contactList));

@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.advertising.usenameelement;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.CreateUseNameElementDescriptionForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -56,14 +54,14 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String useNameElementName = request.getParameter(ParameterConstants.USE_NAME_ELEMENT_NAME);
+        var useNameElementName = request.getParameter(ParameterConstants.USE_NAME_ELEMENT_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateUseNameElementDescriptionForm commandForm = OfferUtil.getHome().getCreateUseNameElementDescriptionForm();
+                    var commandForm = OfferUtil.getHome().getCreateUseNameElementDescriptionForm();
                     
                     if(useNameElementName == null)
                         useNameElementName = actionForm.getUseNameElementName();
@@ -71,8 +69,8 @@ public class DescriptionAddAction
                     commandForm.setUseNameElementName(useNameElementName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = OfferUtil.getHome().createUseNameElementDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = OfferUtil.getHome().createUseNameElementDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -88,8 +86,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.USE_NAME_ELEMENT_NAME, useNameElementName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

@@ -18,7 +18,6 @@ package com.echothree.control.user.uom.server.command;
 
 import com.echothree.control.user.uom.common.form.SetDefaultUnitOfMeasureKindForm;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.uom.server.value.UnitOfMeasureKindDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class SetDefaultUnitOfMeasureKindCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-        UnitOfMeasureKindDetailValue unitOfMeasureKindDetailValue = uomControl.getUnitOfMeasureKindDetailValueByNameForUpdate(unitOfMeasureKindName);
+        var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+        var unitOfMeasureKindDetailValue = uomControl.getUnitOfMeasureKindDetailValueByNameForUpdate(unitOfMeasureKindName);
         
         if(unitOfMeasureKindDetailValue != null) {
             unitOfMeasureKindDetailValue.setIsDefault(Boolean.TRUE);

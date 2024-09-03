@@ -17,12 +17,10 @@
 package com.echothree.control.user.workrequirement.server.command;
 
 import com.echothree.control.user.workrequirement.common.form.GetWorkRequirementForm;
-import com.echothree.control.user.workrequirement.common.result.GetWorkRequirementResult;
 import com.echothree.control.user.workrequirement.common.result.WorkRequirementResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workrequirement.server.entity.WorkRequirement;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -51,10 +49,10 @@ public class GetWorkRequirementCommand
     
     @Override
     protected BaseResult execute() {
-        GetWorkRequirementResult result = WorkRequirementResultFactory.getGetWorkRequirementResult();
+        var result = WorkRequirementResultFactory.getGetWorkRequirementResult();
         var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
-        String workRequirementName = form.getWorkRequirementName();
-        WorkRequirement workRequirement = workRequirementControl.getWorkRequirementByName(workRequirementName);
+        var workRequirementName = form.getWorkRequirementName();
+        var workRequirement = workRequirementControl.getWorkRequirementByName(workRequirementName);
         
         if(workRequirement != null) {
             result.setWorkRequirement(workRequirementControl.getWorkRequirementTransfer(getUserVisit(), workRequirement));

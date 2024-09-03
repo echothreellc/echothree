@@ -20,9 +20,6 @@ import com.echothree.control.user.item.common.form.CreateItemDeliveryTypeDescrip
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.item.server.entity.ItemDeliveryType;
-import com.echothree.model.data.item.server.entity.ItemDeliveryTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,16 +59,16 @@ public class CreateItemDeliveryTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemDeliveryTypeName = form.getItemDeliveryTypeName();
-        ItemDeliveryType itemDeliveryType = itemControl.getItemDeliveryTypeByName(itemDeliveryTypeName);
+        var itemDeliveryTypeName = form.getItemDeliveryTypeName();
+        var itemDeliveryType = itemControl.getItemDeliveryTypeByName(itemDeliveryTypeName);
         
         if(itemDeliveryType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                ItemDeliveryTypeDescription itemDeliveryTypeDescription = itemControl.getItemDeliveryTypeDescription(itemDeliveryType, language);
+                var itemDeliveryTypeDescription = itemControl.getItemDeliveryTypeDescription(itemDeliveryType, language);
                 
                 if(itemDeliveryTypeDescription == null) {
                     var description = form.getDescription();

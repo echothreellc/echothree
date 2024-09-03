@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.inventory.inventorylocationgroup;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupVolumeEdit;
-import com.echothree.control.user.inventory.common.form.EditInventoryLocationGroupVolumeForm;
 import com.echothree.control.user.inventory.common.result.EditInventoryLocationGroupVolumeResult;
-import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -59,10 +54,10 @@ public class VolumeEditAction
     public ActionForward executeAction(ActionMapping mapping, VolumeEditActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
-        EditInventoryLocationGroupVolumeForm commandForm = InventoryUtil.getHome().getEditInventoryLocationGroupVolumeForm();
-        InventoryLocationGroupSpec spec = InventoryUtil.getHome().getInventoryLocationGroupSpec();
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
+        var commandForm = InventoryUtil.getHome().getEditInventoryLocationGroupVolumeForm();
+        var spec = InventoryUtil.getHome().getInventoryLocationGroupSpec();
         
         if(warehouseName == null)
             warehouseName = form.getWarehouseName();
@@ -74,7 +69,7 @@ public class VolumeEditAction
         spec.setInventoryLocationGroupName(inventoryLocationGroupName);
         
         if(wasPost(request)) {
-            InventoryLocationGroupVolumeEdit edit = InventoryUtil.getHome().getInventoryLocationGroupVolumeEdit();
+            var edit = InventoryUtil.getHome().getInventoryLocationGroupVolumeEdit();
             
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
@@ -85,14 +80,14 @@ public class VolumeEditAction
             edit.setWidth(form.getWidth());
             edit.setDepthUnitOfMeasureTypeName(form.getDepthUnitOfMeasureTypeChoice());
             edit.setDepth(form.getDepth());
-            
-            CommandResult commandResult = InventoryUtil.getHome().editInventoryLocationGroupVolume(getUserVisitPK(request), commandForm);
+
+            var commandResult = InventoryUtil.getHome().editInventoryLocationGroupVolume(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditInventoryLocationGroupVolumeResult result = (EditInventoryLocationGroupVolumeResult)executionResult.getResult();
+                    var result = (EditInventoryLocationGroupVolumeResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -105,13 +100,13 @@ public class VolumeEditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = InventoryUtil.getHome().editInventoryLocationGroupVolume(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditInventoryLocationGroupVolumeResult result = (EditInventoryLocationGroupVolumeResult)executionResult.getResult();
+
+            var commandResult = InventoryUtil.getHome().editInventoryLocationGroupVolume(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditInventoryLocationGroupVolumeResult)executionResult.getResult();
             
             if(result != null) {
-                InventoryLocationGroupVolumeEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     form.setWarehouseName(warehouseName);
@@ -131,8 +126,8 @@ public class VolumeEditAction
             
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WAREHOUSE_NAME, warehouseName);
             request.setAttribute(AttributeConstants.INVENTORY_LOCATION_GROUP_NAME, inventoryLocationGroupName);

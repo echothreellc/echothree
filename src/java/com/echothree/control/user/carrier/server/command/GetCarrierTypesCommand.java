@@ -18,13 +18,11 @@ package com.echothree.control.user.carrier.server.command;
 
 import com.echothree.control.user.carrier.common.form.GetCarrierTypesForm;
 import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
-import com.echothree.control.user.carrier.common.result.GetCarrierTypesResult;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -62,8 +60,8 @@ public class GetCarrierTypesCommand
     @Override
     protected BaseResult execute() {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        GetCarrierTypesResult result = CarrierResultFactory.getGetCarrierTypesResult();
-        UserVisit userVisit = getUserVisit();
+        var result = CarrierResultFactory.getGetCarrierTypesResult();
+        var userVisit = getUserVisit();
 
         result.setCarrierTypes(carrierControl.getCarrierTypeTransfers(userVisit));
 

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.ratingtype;
 
 import com.echothree.control.user.rating.common.RatingUtil;
-import com.echothree.control.user.rating.common.form.GetRatingTypeDescriptionsForm;
 import com.echothree.control.user.rating.common.result.GetRatingTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,18 +52,18 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String ratingTypeName = request.getParameter(ParameterConstants.RATING_TYPE_NAME);
-            GetRatingTypeDescriptionsForm commandForm = RatingUtil.getHome().getGetRatingTypeDescriptionsForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var ratingTypeName = request.getParameter(ParameterConstants.RATING_TYPE_NAME);
+            var commandForm = RatingUtil.getHome().getGetRatingTypeDescriptionsForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setRatingTypeName(ratingTypeName);
-            
-            CommandResult commandResult = RatingUtil.getHome().getRatingTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetRatingTypeDescriptionsResult result = (GetRatingTypeDescriptionsResult)executionResult.getResult();
+
+            var commandResult = RatingUtil.getHome().getRatingTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetRatingTypeDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RATING_TYPE, result.getRatingType());
             request.setAttribute(AttributeConstants.RATING_TYPE_DESCRIPTIONS, result.getRatingTypeDescriptions());

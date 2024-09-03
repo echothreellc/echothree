@@ -18,9 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteMimeTypeDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.core.server.entity.MimeTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,16 +49,16 @@ public class DeleteMimeTypeDescriptionCommand
    @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String mimeTypeName = form.getMimeTypeName();
-        MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+       var mimeTypeName = form.getMimeTypeName();
+       var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
         
         if(mimeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                MimeTypeDescription mimeTypeDescription = coreControl.getMimeTypeDescriptionForUpdate(mimeType, language);
+                var mimeTypeDescription = coreControl.getMimeTypeDescriptionForUpdate(mimeType, language);
                 
                 if(mimeTypeDescription != null) {
                     coreControl.deleteMimeTypeDescription(mimeTypeDescription, getPartyPK());

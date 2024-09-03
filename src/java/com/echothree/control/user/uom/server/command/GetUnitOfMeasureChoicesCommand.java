@@ -17,10 +17,8 @@
 package com.echothree.control.user.uom.server.command;
 
 import com.echothree.control.user.uom.common.form.GetUnitOfMeasureChoicesForm;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureChoicesResult;
 import com.echothree.control.user.uom.common.result.UomResultFactory;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,12 +50,12 @@ public class GetUnitOfMeasureChoicesCommand
     @Override
     protected BaseResult execute() {
         var uomControl = Session.getModelController(UomControl.class);
-        GetUnitOfMeasureChoicesResult result = UomResultFactory.getGetUnitOfMeasureChoicesResult();
-        String unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
+        var result = UomResultFactory.getGetUnitOfMeasureChoicesResult();
+        var unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
+        var unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
         
         if(unitOfMeasureKindUseType != null) {
-            String defaultUnitOfMeasureChoice = form.getDefaultUnitOfMeasureChoice();
+            var defaultUnitOfMeasureChoice = form.getDefaultUnitOfMeasureChoice();
             
             result.setUnitOfMeasureChoices(uomControl.getUnitOfMeasureChoicesByUnitOfMeasureKindUseType(defaultUnitOfMeasureChoice,
                     getPreferredLanguage(), unitOfMeasureKindUseType));

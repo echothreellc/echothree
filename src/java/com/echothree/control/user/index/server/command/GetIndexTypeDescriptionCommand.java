@@ -17,16 +17,12 @@
 package com.echothree.control.user.index.server.command;
 
 import com.echothree.control.user.index.common.form.GetIndexTypeDescriptionForm;
-import com.echothree.control.user.index.common.result.GetIndexTypeDescriptionResult;
 import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.index.server.entity.IndexType;
-import com.echothree.model.data.index.server.entity.IndexTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -68,17 +64,17 @@ public class GetIndexTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var indexControl = Session.getModelController(IndexControl.class);
-        GetIndexTypeDescriptionResult result = IndexResultFactory.getGetIndexTypeDescriptionResult();
-        String indexTypeName = form.getIndexTypeName();
-        IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
+        var result = IndexResultFactory.getGetIndexTypeDescriptionResult();
+        var indexTypeName = form.getIndexTypeName();
+        var indexType = indexControl.getIndexTypeByName(indexTypeName);
 
         if(indexType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                IndexTypeDescription indexTypeDescription = indexControl.getIndexTypeDescription(indexType, language);
+                var indexTypeDescription = indexControl.getIndexTypeDescription(indexType, language);
 
                 if(indexTypeDescription != null) {
                     result.setIndexTypeDescription(indexControl.getIndexTypeDescriptionTransfer(getUserVisit(), indexTypeDescription));

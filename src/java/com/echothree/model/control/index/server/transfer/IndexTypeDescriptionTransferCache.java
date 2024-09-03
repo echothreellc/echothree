@@ -17,9 +17,7 @@
 package com.echothree.model.control.index.server.transfer;
 
 import com.echothree.model.control.index.common.transfer.IndexTypeDescriptionTransfer;
-import com.echothree.model.control.index.common.transfer.IndexTypeTransfer;
 import com.echothree.model.control.index.server.control.IndexControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.index.server.entity.IndexTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -32,11 +30,11 @@ public class IndexTypeDescriptionTransferCache
     }
     
     public IndexTypeDescriptionTransfer getIndexTypeDescriptionTransfer(IndexTypeDescription indexTypeDescription) {
-        IndexTypeDescriptionTransfer indexTypeDescriptionTransfer = get(indexTypeDescription);
+        var indexTypeDescriptionTransfer = get(indexTypeDescription);
         
         if(indexTypeDescriptionTransfer == null) {
-            IndexTypeTransfer indexTypeTransfer = indexControl.getIndexTypeTransfer(userVisit, indexTypeDescription.getIndexType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, indexTypeDescription.getLanguage());
+            var indexTypeTransfer = indexControl.getIndexTypeTransfer(userVisit, indexTypeDescription.getIndexType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, indexTypeDescription.getLanguage());
             
             indexTypeDescriptionTransfer = new IndexTypeDescriptionTransfer(languageTransfer, indexTypeTransfer, indexTypeDescription.getDescription());
             put(indexTypeDescription, indexTypeDescriptionTransfer);

@@ -16,15 +16,11 @@
 
 package com.echothree.model.control.rating.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.rating.common.transfer.RatingTypeTransfer;
 import com.echothree.model.control.rating.server.control.RatingControl;
-import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.rating.server.entity.RatingType;
-import com.echothree.model.data.rating.server.entity.RatingTypeDetail;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -42,16 +38,16 @@ public class RatingTypeTransferCache
     }
     
     public RatingTypeTransfer getRatingTypeTransfer(RatingType ratingType) {
-        RatingTypeTransfer ratingTypeTransfer = get(ratingType);
+        var ratingTypeTransfer = get(ratingType);
         
         if(ratingTypeTransfer == null) {
-            RatingTypeDetail ratingTypeDetail = ratingType.getLastDetail();
-            EntityTypeTransfer entityTypeTransfer = coreControl.getEntityTypeTransfer(userVisit, ratingTypeDetail.getEntityType());
-            String ratingTypeName = ratingTypeDetail.getRatingTypeName();
-            Sequence ratingSequence = ratingTypeDetail.getRatingSequence();
-            SequenceTransfer ratingSequenceTransfer = ratingSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, ratingSequence);
-            Integer sortOrder = ratingTypeDetail.getSortOrder();
-            String description = ratingControl.getBestRatingTypeDescription(ratingType, getLanguage());
+            var ratingTypeDetail = ratingType.getLastDetail();
+            var entityTypeTransfer = coreControl.getEntityTypeTransfer(userVisit, ratingTypeDetail.getEntityType());
+            var ratingTypeName = ratingTypeDetail.getRatingTypeName();
+            var ratingSequence = ratingTypeDetail.getRatingSequence();
+            var ratingSequenceTransfer = ratingSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, ratingSequence);
+            var sortOrder = ratingTypeDetail.getSortOrder();
+            var description = ratingControl.getBestRatingTypeDescription(ratingType, getLanguage());
             
             ratingTypeTransfer = new RatingTypeTransfer(entityTypeTransfer, ratingTypeName, ratingSequenceTransfer, sortOrder, description);
             put(ratingType, ratingTypeTransfer);

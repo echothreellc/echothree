@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.core.ratingtypelistitem;
 
 import com.echothree.control.user.rating.common.RatingUtil;
-import com.echothree.control.user.rating.common.edit.RatingTypeListItemDescriptionEdit;
-import com.echothree.control.user.rating.common.form.EditRatingTypeListItemDescriptionForm;
 import com.echothree.control.user.rating.common.result.EditRatingTypeListItemDescriptionResult;
-import com.echothree.control.user.rating.common.spec.RatingTypeListItemDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,17 +56,17 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-        String ratingTypeName = request.getParameter(ParameterConstants.RATING_TYPE_NAME);
-        String ratingTypeListItemName = request.getParameter(ParameterConstants.RATING_TYPE_LIST_ITEM_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var ratingTypeName = request.getParameter(ParameterConstants.RATING_TYPE_NAME);
+        var ratingTypeListItemName = request.getParameter(ParameterConstants.RATING_TYPE_LIST_ITEM_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditRatingTypeListItemDescriptionForm commandForm = RatingUtil.getHome().getEditRatingTypeListItemDescriptionForm();
-                RatingTypeListItemDescriptionSpec spec = RatingUtil.getHome().getRatingTypeListItemDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = RatingUtil.getHome().getEditRatingTypeListItemDescriptionForm();
+                var spec = RatingUtil.getHome().getRatingTypeListItemDescriptionSpec();
                 
                 if(componentVendorName == null)
                     componentVendorName = actionForm.getComponentVendorName();
@@ -92,19 +87,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    RatingTypeListItemDescriptionEdit edit = RatingUtil.getHome().getRatingTypeListItemDescriptionEdit();
+                    var edit = RatingUtil.getHome().getRatingTypeListItemDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = RatingUtil.getHome().editRatingTypeListItemDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = RatingUtil.getHome().editRatingTypeListItemDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditRatingTypeListItemDescriptionResult result = (EditRatingTypeListItemDescriptionResult)executionResult.getResult();
+                            var result = (EditRatingTypeListItemDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -117,13 +112,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = RatingUtil.getHome().editRatingTypeListItemDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditRatingTypeListItemDescriptionResult result = (EditRatingTypeListItemDescriptionResult)executionResult.getResult();
+
+                    var commandResult = RatingUtil.getHome().editRatingTypeListItemDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditRatingTypeListItemDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        RatingTypeListItemDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setComponentVendorName(componentVendorName);
@@ -145,8 +140,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorName);
             request.setAttribute(AttributeConstants.ENTITY_TYPE_NAME, entityTypeName);

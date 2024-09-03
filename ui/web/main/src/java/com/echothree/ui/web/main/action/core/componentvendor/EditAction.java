@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected ComponentVendorSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ComponentVendorSpec spec = CoreUtil.getHome().getComponentVendorSpec();
+        var spec = CoreUtil.getHome().getComponentVendorSpec();
         
         spec.setComponentVendorName(findParameter(request, ParameterConstants.ORIGINAL_COMPONENT_VENDOR_NAME, actionForm.getOriginalComponentVendorName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected ComponentVendorEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ComponentVendorEdit edit = CoreUtil.getHome().getComponentVendorEdit();
+        var edit = CoreUtil.getHome().getComponentVendorEdit();
 
         edit.setComponentVendorName(actionForm.getComponentVendorName());
         edit.setDescription(actionForm.getDescription());

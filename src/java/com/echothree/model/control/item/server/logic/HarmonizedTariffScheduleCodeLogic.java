@@ -43,7 +43,7 @@ public class HarmonizedTariffScheduleCodeLogic
 
     public HarmonizedTariffScheduleCodeUnit getHarmonizedTariffScheduleCodeUnitByName(final ExecutionErrorAccumulator eea, final String harmonizedTariffScheduleCodeUnitName) {
         var itemControl = Session.getModelController(ItemControl.class);
-        HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
+        var harmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
 
         if(harmonizedTariffScheduleCodeUnit == null) {
             handleExecutionError(UnknownHarmonizedTariffScheduleCodeUnitNameException.class, eea, ExecutionErrors.UnknownHarmonizedTariffScheduleCodeUnitName.name(), harmonizedTariffScheduleCodeUnitName);
@@ -54,7 +54,7 @@ public class HarmonizedTariffScheduleCodeLogic
     
     public HarmonizedTariffScheduleCodeUseType getHarmonizedTariffScheduleCodeUseTypeByName(final ExecutionErrorAccumulator eea, final String harmonizedTariffScheduleCodeUseTypeName) {
         var itemControl = Session.getModelController(ItemControl.class);
-        HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
+        var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
 
         if(harmonizedTariffScheduleCodeUseType == null) {
             handleExecutionError(UnknownHarmonizedTariffScheduleCodeUseTypeNameException.class, eea, ExecutionErrors.UnknownHarmonizedTariffScheduleCodeUseTypeName.name(), harmonizedTariffScheduleCodeUseTypeName);

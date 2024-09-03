@@ -95,7 +95,7 @@ public class UpdateIndexesCommand
         
         queuedEntities.stream().map(QueuedEntity::getEntityInstance).filter(
                 (entityInstance) -> !queuedEntityMap.containsKey(entityInstance)).forEach((entityInstance) -> {
-            List<QueuedEntity> duplicateQueuedEntities = queueControl.getQueuedEntities(queueType, entityInstance);
+            var duplicateQueuedEntities = queueControl.getQueuedEntities(queueType, entityInstance);
             
             queuedEntityMap.put(entityInstance, duplicateQueuedEntities);
         });
@@ -188,7 +188,7 @@ public class UpdateIndexesCommand
     
     private void verifyIndexersAreSetup(final IndexControl indexControl, final Map<EntityType, List<BaseIndexer<?>>> indexersMap,
             final Map<EntityInstance, List<QueuedEntity>> queuedEntityMap) {
-        for(Map.Entry<EntityInstance, List<QueuedEntity>> queuedEntityEntry : queuedEntityMap.entrySet()) {
+        for(var queuedEntityEntry : queuedEntityMap.entrySet()) {
             var entityType = queuedEntityEntry.getKey().getEntityType();
             
             if(!indexersMap.containsKey(entityType)) {
@@ -206,7 +206,7 @@ public class UpdateIndexesCommand
         try {
             ThreadSession.pushSessionEntityCache();
 
-            for(Map.Entry<EntityInstance, List<QueuedEntity>> queuedEntityEntry : queuedEntityMap.entrySet()) {
+            for(var queuedEntityEntry : queuedEntityMap.entrySet()) {
                 indexQueuedEntity(queueControl, indexersMap, queuedEntityEntry);
 
                 if(hasExecutionErrors()) {

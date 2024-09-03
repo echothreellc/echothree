@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.core.entitybooleanattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.edit.EntityBooleanAttributeEdit;
-import com.echothree.control.user.core.common.form.EditEntityBooleanAttributeForm;
 import com.echothree.control.user.core.common.result.EditEntityBooleanAttributeResult;
-import com.echothree.control.user.core.common.spec.EntityBooleanAttributeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -57,16 +52,16 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
         
         try {
-            String entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
-            String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+            var entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
+            var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
             
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditEntityBooleanAttributeForm commandForm = CoreUtil.getHome().getEditEntityBooleanAttributeForm();
-                EntityBooleanAttributeSpec spec = CoreUtil.getHome().getEntityBooleanAttributeSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = CoreUtil.getHome().getEditEntityBooleanAttributeForm();
+                var spec = CoreUtil.getHome().getEntityBooleanAttributeSpec();
                 
                 if(entityRef == null)
                     entityRef = actionForm.getEntityRef();
@@ -80,20 +75,20 @@ public class EditAction
                 spec.setEntityAttributeName(entityAttributeName);
                 
                 if(wasPost(request)) {
-                    EntityBooleanAttributeEdit edit = CoreUtil.getHome().getEntityBooleanAttributeEdit();
+                    var edit = CoreUtil.getHome().getEntityBooleanAttributeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     
                     edit.setBooleanAttribute(actionForm.getBooleanAttribute().toString());
-                    
-                    CommandResult commandResult = CoreUtil.getHome().editEntityBooleanAttribute(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CoreUtil.getHome().editEntityBooleanAttribute(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditEntityBooleanAttributeResult result = (EditEntityBooleanAttributeResult)executionResult.getResult();
+                            var result = (EditEntityBooleanAttributeResult)executionResult.getResult();
                             
                             if(result != null) {
                                 request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
@@ -106,13 +101,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CoreUtil.getHome().editEntityBooleanAttribute(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditEntityBooleanAttributeResult result = (EditEntityBooleanAttributeResult)executionResult.getResult();
+
+                    var commandResult = CoreUtil.getHome().editEntityBooleanAttribute(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditEntityBooleanAttributeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        EntityBooleanAttributeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setEntityRef(entityRef);

@@ -17,10 +17,8 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.LotTimeTypeDescriptionTransfer;
-import com.echothree.model.control.inventory.common.transfer.LotTimeTypeTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.LotTimeControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.inventory.server.entity.LotTimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -37,11 +35,11 @@ public class LotTimeTypeDescriptionTransferCache
     
     @Override
     public LotTimeTypeDescriptionTransfer getTransfer(LotTimeTypeDescription lotTimeTypeDescription) {
-        LotTimeTypeDescriptionTransfer lotTimeTypeDescriptionTransfer = get(lotTimeTypeDescription);
+        var lotTimeTypeDescriptionTransfer = get(lotTimeTypeDescription);
         
         if(lotTimeTypeDescriptionTransfer == null) {
-            LotTimeTypeTransfer lotTimeTypeTransfer = lotTimeControl.getLotTimeTypeTransfer(userVisit, lotTimeTypeDescription.getLotTimeType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, lotTimeTypeDescription.getLanguage());
+            var lotTimeTypeTransfer = lotTimeControl.getLotTimeTypeTransfer(userVisit, lotTimeTypeDescription.getLotTimeType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, lotTimeTypeDescription.getLanguage());
             
             lotTimeTypeDescriptionTransfer = new LotTimeTypeDescriptionTransfer(languageTransfer, lotTimeTypeTransfer, lotTimeTypeDescription.getDescription());
             put(lotTimeTypeDescription, lotTimeTypeDescriptionTransfer);

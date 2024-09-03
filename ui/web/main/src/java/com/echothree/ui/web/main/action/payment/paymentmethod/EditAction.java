@@ -50,8 +50,8 @@ public class EditAction
     @Override
     protected PaymentMethodSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PaymentMethodSpec spec = PaymentUtil.getHome().getPaymentMethodSpec();
-        String originalPaymentMethodName = request.getParameter(ParameterConstants.ORIGINAL_PAYMENT_METHOD_NAME);
+        var spec = PaymentUtil.getHome().getPaymentMethodSpec();
+        var originalPaymentMethodName = request.getParameter(ParameterConstants.ORIGINAL_PAYMENT_METHOD_NAME);
 
         if(originalPaymentMethodName == null) {
             originalPaymentMethodName = actionForm.getOriginalPaymentMethodName();
@@ -65,7 +65,7 @@ public class EditAction
     @Override
     protected PaymentMethodEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PaymentMethodEdit edit = PaymentUtil.getHome().getPaymentMethodEdit();
+        var edit = PaymentUtil.getHome().getPaymentMethodEdit();
 
         edit.setPaymentMethodName(actionForm.getPaymentMethodName());
         edit.setItemSelectorName(actionForm.getItemSelectorChoice());

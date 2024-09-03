@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.geo.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.geo.common.transfer.GeoCodeCurrencyTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeCurrency;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -38,13 +36,13 @@ public class GeoCodeCurrencyTransferCache
     }
     
     public GeoCodeCurrencyTransfer getGeoCodeCurrencyTransfer(GeoCodeCurrency geoCodeCurrency) {
-        GeoCodeCurrencyTransfer geoCodeCurrencyTransfer = get(geoCodeCurrency);
+        var geoCodeCurrencyTransfer = get(geoCodeCurrency);
         
         if(geoCodeCurrencyTransfer == null) {
-            GeoCodeTransfer geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeCurrency.getGeoCode());
-            CurrencyTransfer currency = accountingControl.getCurrencyTransfer(userVisit, geoCodeCurrency.getCurrency());
-            Boolean isDefault = geoCodeCurrency.getIsDefault();
-            Integer sortOrder = geoCodeCurrency.getSortOrder();
+            var geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeCurrency.getGeoCode());
+            var currency = accountingControl.getCurrencyTransfer(userVisit, geoCodeCurrency.getCurrency());
+            var isDefault = geoCodeCurrency.getIsDefault();
+            var sortOrder = geoCodeCurrency.getSortOrder();
             
             geoCodeCurrencyTransfer = new GeoCodeCurrencyTransfer(geoCode, currency, isDefault, sortOrder);
             put(geoCodeCurrency, geoCodeCurrencyTransfer);

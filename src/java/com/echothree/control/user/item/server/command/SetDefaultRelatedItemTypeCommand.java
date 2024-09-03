@@ -21,7 +21,6 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.value.RelatedItemTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,8 +62,8 @@ public class SetDefaultRelatedItemTypeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String relatedItemTypeName = form.getRelatedItemTypeName();
-        RelatedItemTypeDetailValue relatedItemTypeDetailValue = itemControl.getRelatedItemTypeDetailValueByNameForUpdate(relatedItemTypeName);
+        var relatedItemTypeName = form.getRelatedItemTypeName();
+        var relatedItemTypeDetailValue = itemControl.getRelatedItemTypeDetailValueByNameForUpdate(relatedItemTypeName);
         
         if(relatedItemTypeDetailValue != null) {
             relatedItemTypeDetailValue.setIsDefault(Boolean.TRUE);

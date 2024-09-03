@@ -27,10 +27,8 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.queue.server.entity.QueueTypeDescription;
-import com.echothree.model.data.queue.server.value.QueueTypeDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditQueueTypeDescriptionCommand
     public QueueTypeDescription getEntity(EditQueueTypeDescriptionResult result) {
         var queueControl = Session.getModelController(QueueControl.class);
         QueueTypeDescription queueTypeDescription = null;
-        String queueTypeName = spec.getQueueTypeName();
-        QueueType queueType = queueControl.getQueueTypeByName(queueTypeName);
+        var queueTypeName = spec.getQueueTypeName();
+        var queueType = queueControl.getQueueTypeByName(queueTypeName);
 
         if(queueType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditQueueTypeDescriptionCommand
     @Override
     public void doUpdate(QueueTypeDescription queueTypeDescription) {
         var queueControl = Session.getModelController(QueueControl.class);
-        QueueTypeDescriptionValue queueTypeDescriptionValue = queueControl.getQueueTypeDescriptionValue(queueTypeDescription);
+        var queueTypeDescriptionValue = queueControl.getQueueTypeDescriptionValue(queueTypeDescription);
         queueTypeDescriptionValue.setDescription(edit.getDescription());
 
         queueControl.updateQueueTypeDescriptionFromValue(queueTypeDescriptionValue, getPartyPK());

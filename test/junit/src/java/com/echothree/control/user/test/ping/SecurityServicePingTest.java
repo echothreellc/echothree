@@ -37,7 +37,7 @@ public class SecurityServicePingTest
     }
     
     public static Test suite() {
-        TestSuite suite = new TestSuite();
+        var suite = new TestSuite();
         
         suite.addTest(new SecurityServicePingTest("testPingSecurityService"));
         

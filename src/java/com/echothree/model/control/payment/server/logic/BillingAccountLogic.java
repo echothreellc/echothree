@@ -21,9 +21,7 @@ import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.payment.common.BillingAccountRoleTypes;
 import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurpose;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.payment.server.entity.BillingAccount;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -48,17 +46,17 @@ public class BillingAccountLogic {
     public BillingAccount getBillingAccount(final ExecutionErrorAccumulator ema, final Party billFrom, PartyContactMechanism billFromPartyContactMechanism,
             final Party billTo, PartyContactMechanism billToPartyContactMechanism, final Currency currency, final String reference, final String description, final BasePK createdBy) {
         var billingControl = Session.getModelController(BillingControl.class);
-        BillingAccount billingAccount = billingControl.getBillingAccount(billFrom, billTo, currency);
+        var billingAccount = billingControl.getBillingAccount(billFrom, billTo, currency);
 
         // If the BillingAccount was found, the billFromPartyContactMechanism and billToPartyContactMechanism parameters are ignored. They're used only
         // when a new BillingAccount needs to be created.
         if(billingAccount == null) {
             if(billFromPartyContactMechanism == null || billToPartyContactMechanism == null) {
                 var contactControl = Session.getModelController(ContactControl.class);
-                ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(ContactMechanismPurposes.PHYSICAL_BILLING.name());
+                var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(ContactMechanismPurposes.PHYSICAL_BILLING.name());
                 
                 if(billFromPartyContactMechanism == null) {
-                    PartyContactMechanismPurpose partyContactMechanismPurpose = contactControl.getDefaultPartyContactMechanismPurpose(billFrom, contactMechanismPurpose);
+                    var partyContactMechanismPurpose = contactControl.getDefaultPartyContactMechanismPurpose(billFrom, contactMechanismPurpose);
                     
                     if(partyContactMechanismPurpose != null) {
                         billFromPartyContactMechanism = partyContactMechanismPurpose.getLastDetail().getPartyContactMechanism();
@@ -67,7 +65,7 @@ public class BillingAccountLogic {
                     }
                 } else {
                     // Make sure that the manually chosen PartyContactMechanism is marked with the PHYSICAL_BILLING ContactMechanismPurpose
-                    PartyContactMechanismPurpose partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(billFromPartyContactMechanism, contactMechanismPurpose);
+                    var partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(billFromPartyContactMechanism, contactMechanismPurpose);
                     
                     if(partyContactMechanismPurpose == null) {
                         contactControl.createPartyContactMechanismPurpose(billFromPartyContactMechanism, contactMechanismPurpose, Boolean.FALSE, 1, createdBy);
@@ -75,7 +73,7 @@ public class BillingAccountLogic {
                 }
 
                 if(billToPartyContactMechanism == null) {
-                    PartyContactMechanismPurpose partyContactMechanismPurpose = contactControl.getDefaultPartyContactMechanismPurpose(billTo, contactMechanismPurpose);
+                    var partyContactMechanismPurpose = contactControl.getDefaultPartyContactMechanismPurpose(billTo, contactMechanismPurpose);
                     
                     if(partyContactMechanismPurpose != null) {
                         billToPartyContactMechanism = partyContactMechanismPurpose.getLastDetail().getPartyContactMechanism();
@@ -84,7 +82,7 @@ public class BillingAccountLogic {
                     }
                 } else {
                     // Make sure that the manually chosen PartyContactMechanism is marked with the PHYSICAL_BILLING ContactMechanismPurpose
-                    PartyContactMechanismPurpose partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(billToPartyContactMechanism, contactMechanismPurpose);
+                    var partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(billToPartyContactMechanism, contactMechanismPurpose);
                     
                     if(partyContactMechanismPurpose == null) {
                         contactControl.createPartyContactMechanismPurpose(billToPartyContactMechanism, contactMechanismPurpose, Boolean.FALSE, 1, createdBy);

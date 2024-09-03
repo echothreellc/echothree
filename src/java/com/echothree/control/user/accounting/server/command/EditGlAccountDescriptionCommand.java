@@ -20,17 +20,12 @@ import com.echothree.control.user.accounting.common.edit.AccountingEditFactory;
 import com.echothree.control.user.accounting.common.edit.GlAccountDescriptionEdit;
 import com.echothree.control.user.accounting.common.form.EditGlAccountDescriptionForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.EditGlAccountDescriptionResult;
 import com.echothree.control.user.accounting.common.spec.GlAccountDescriptionSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.accounting.server.entity.GlAccount;
-import com.echothree.model.data.accounting.server.entity.GlAccountDescription;
-import com.echothree.model.data.accounting.server.value.GlAccountDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -79,25 +74,25 @@ public class EditGlAccountDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        EditGlAccountDescriptionResult result = AccountingResultFactory.getEditGlAccountDescriptionResult();
-        String glAccountName = spec.getGlAccountName();
-        GlAccount glAccount = accountingControl.getGlAccountByName(glAccountName);
+        var result = AccountingResultFactory.getEditGlAccountDescriptionResult();
+        var glAccountName = spec.getGlAccountName();
+        var glAccount = accountingControl.getGlAccountByName(glAccountName);
         
         if(glAccount != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    GlAccountDescription glAccountDescription = accountingControl.getGlAccountDescription(glAccount, language);
+                    var glAccountDescription = accountingControl.getGlAccountDescription(glAccount, language);
                     
                     if(glAccountDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setGlAccountDescription(accountingControl.getGlAccountDescriptionTransfer(getUserVisit(), glAccountDescription));
 
                             if(lockEntity(glAccount)) {
-                                GlAccountDescriptionEdit edit = AccountingEditFactory.getGlAccountDescriptionEdit();
+                                var edit = AccountingEditFactory.getGlAccountDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(glAccountDescription.getDescription());
@@ -113,12 +108,12 @@ public class EditGlAccountDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownGlAccountDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    GlAccountDescriptionValue glAccountDescriptionValue = accountingControl.getGlAccountDescriptionValueForUpdate(glAccount, language);
+                    var glAccountDescriptionValue = accountingControl.getGlAccountDescriptionValueForUpdate(glAccount, language);
                     
                     if(glAccountDescriptionValue != null) {
                         if(lockEntityForUpdate(glAccount)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 glAccountDescriptionValue.setDescription(description);
                                 

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.applicationeditor;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.SetDefaultApplicationEditorForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,15 +49,15 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultApplicationEditorForm commandForm = CoreUtil.getHome().getSetDefaultApplicationEditorForm();
-        String applicationName = request.getParameter(ParameterConstants.APPLICATION_NAME);
+        var commandForm = CoreUtil.getHome().getSetDefaultApplicationEditorForm();
+        var applicationName = request.getParameter(ParameterConstants.APPLICATION_NAME);
 
         commandForm.setApplicationName(applicationName);
         commandForm.setEditorName(request.getParameter(ParameterConstants.EDITOR_NAME));
 
         CoreUtil.getHome().setDefaultApplicationEditor(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
 
         parameters.put(ParameterConstants.APPLICATION_NAME, applicationName);

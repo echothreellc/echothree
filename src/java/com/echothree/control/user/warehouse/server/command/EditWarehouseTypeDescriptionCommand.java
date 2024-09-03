@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.warehouse.server.entity.WarehouseType;
 import com.echothree.model.data.warehouse.server.entity.WarehouseTypeDescription;
-import com.echothree.model.data.warehouse.server.value.WarehouseTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditWarehouseTypeDescriptionCommand
     public WarehouseTypeDescription getEntity(EditWarehouseTypeDescriptionResult result) {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
         WarehouseTypeDescription warehouseTypeDescription = null;
-        String warehouseTypeName = spec.getWarehouseTypeName();
-        WarehouseType warehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName);
+        var warehouseTypeName = spec.getWarehouseTypeName();
+        var warehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName);
 
         if(warehouseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditWarehouseTypeDescriptionCommand
     @Override
     public void doUpdate(WarehouseTypeDescription warehouseTypeDescription) {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        WarehouseTypeDescriptionValue warehouseTypeDescriptionValue = warehouseControl.getWarehouseTypeDescriptionValue(warehouseTypeDescription);
+        var warehouseTypeDescriptionValue = warehouseControl.getWarehouseTypeDescriptionValue(warehouseTypeDescription);
 
         warehouseTypeDescriptionValue.setDescription(edit.getDescription());
 

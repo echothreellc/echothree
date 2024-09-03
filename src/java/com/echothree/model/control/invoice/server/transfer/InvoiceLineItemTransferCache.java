@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.invoice.server.transfer;
 
-import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.invoice.common.transfer.InvoiceLineItemTransfer;
-import com.echothree.model.control.invoice.common.transfer.InvoiceLineTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -46,14 +42,14 @@ public class InvoiceLineItemTransferCache
     }
 
     public InvoiceLineItemTransfer getInvoiceLineItemTransfer(InvoiceLineItem invoiceLineItem) {
-        InvoiceLineItemTransfer invoiceLineItemTransfer = get(invoiceLineItem);
+        var invoiceLineItemTransfer = get(invoiceLineItem);
 
         if(invoiceLineItemTransfer == null) {
-            InvoiceLineTransfer invoiceLine = invoiceControl.getInvoiceLineTransfer(userVisit, invoiceLineItem.getInvoiceLine());
-            ItemTransfer item = itemControl.getItemTransfer(userVisit, invoiceLineItem.getItem());
-            InventoryConditionTransfer inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, invoiceLineItem.getInventoryCondition());
-            UnitOfMeasureTypeTransfer unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, invoiceLineItem.getUnitOfMeasureType());
-            Integer quantity = invoiceLineItem.getQuantity();
+            var invoiceLine = invoiceControl.getInvoiceLineTransfer(userVisit, invoiceLineItem.getInvoiceLine());
+            var item = itemControl.getItemTransfer(userVisit, invoiceLineItem.getItem());
+            var inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, invoiceLineItem.getInventoryCondition());
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, invoiceLineItem.getUnitOfMeasureType());
+            var quantity = invoiceLineItem.getQuantity();
             
             invoiceLineItemTransfer = new InvoiceLineItemTransfer(invoiceLine, item, inventoryCondition, unitOfMeasureType, quantity);
             put(invoiceLineItem, invoiceLineItemTransfer);

@@ -41,7 +41,7 @@ public class IndexTypeLogic
     
     public IndexType getIndexTypeByName(final ExecutionErrorAccumulator eea, final String indexTypeName) {
         var indexControl = Session.getModelController(IndexControl.class);
-        IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
+        var indexType = indexControl.getIndexTypeByName(indexTypeName);
 
         if(indexType == null) {
             handleExecutionError(UnknownIndexTypeNameException.class, eea, ExecutionErrors.UnknownIndexTypeName.name(), indexTypeName);

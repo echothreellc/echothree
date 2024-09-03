@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customercontactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.CreatePartyContactListForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
@@ -58,7 +57,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyContactListForm commandForm = ContactListUtil.getHome().getCreatePartyContactListForm();
+        var commandForm = ContactListUtil.getHome().getCreatePartyContactListForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setContactListName(actionForm.getContactListChoice());

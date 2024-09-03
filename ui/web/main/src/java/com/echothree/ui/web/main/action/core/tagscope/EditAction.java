@@ -49,8 +49,8 @@ public class EditAction
     @Override
     protected TagScopeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        TagScopeSpec spec = TagUtil.getHome().getTagScopeSpec();
-        String originalTagScopeName = request.getParameter(ParameterConstants.ORIGINAL_TAG_SCOPE_NAME);
+        var spec = TagUtil.getHome().getTagScopeSpec();
+        var originalTagScopeName = request.getParameter(ParameterConstants.ORIGINAL_TAG_SCOPE_NAME);
 
         if(originalTagScopeName == null) {
             originalTagScopeName = actionForm.getOriginalTagScopeName();
@@ -64,7 +64,7 @@ public class EditAction
     @Override
     protected TagScopeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        TagScopeEdit edit = TagUtil.getHome().getTagScopeEdit();
+        var edit = TagUtil.getHome().getTagScopeEdit();
 
         edit.setTagScopeName(actionForm.getTagScopeName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

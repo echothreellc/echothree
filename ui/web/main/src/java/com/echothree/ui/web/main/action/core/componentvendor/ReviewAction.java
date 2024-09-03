@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.core.componentvendor;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetComponentVendorForm;
 import com.echothree.control.user.core.common.result.GetComponentVendorResult;
 import com.echothree.model.control.core.common.CoreOptions;
-import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,9 +50,9 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetComponentVendorForm commandForm = CoreUtil.getHome().getGetComponentVendorForm();
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        String forwardKey;
+        var commandForm = CoreUtil.getHome().getGetComponentVendorForm();
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
 
         commandForm.setComponentVendorName(componentVendorName);
 
@@ -66,10 +62,10 @@ public class ReviewAction
         options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = CoreUtil.getHome().getComponentVendor(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetComponentVendorResult result = (GetComponentVendorResult)executionResult.getResult();
-        ComponentVendorTransfer componentVendor = result.getComponentVendor();
+        var commandResult = CoreUtil.getHome().getComponentVendor(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetComponentVendorResult)executionResult.getResult();
+        var componentVendor = result.getComponentVendor();
 
         if(componentVendor == null) {
             forwardKey = ForwardConstants.ERROR_404;

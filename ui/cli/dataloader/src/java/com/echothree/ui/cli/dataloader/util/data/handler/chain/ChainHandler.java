@@ -19,8 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.chain;
 import com.echothree.control.user.chain.common.ChainUtil;
 import com.echothree.control.user.chain.common.ChainService;
 import com.echothree.control.user.chain.common.form.ChainFormFactory;
-import com.echothree.control.user.chain.common.form.CreateChainActionSetForm;
-import com.echothree.control.user.chain.common.form.CreateChainDescriptionForm;
 import com.echothree.control.user.chain.common.spec.ChainSpec;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -62,14 +60,14 @@ public class ChainHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("chainDescription")) {
-            CreateChainDescriptionForm commandForm = ChainFormFactory.getCreateChainDescriptionForm();
+            var commandForm = ChainFormFactory.getCreateChainDescriptionForm();
 
             setupChainSpec(commandForm);
             commandForm.set(getAttrsMap(attrs));
 
             chainService.createChainDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("chainActionSet")) {
-            CreateChainActionSetForm commandForm = ChainFormFactory.getCreateChainActionSetForm();
+            var commandForm = ChainFormFactory.getCreateChainActionSetForm();
 
             setupChainSpec(commandForm);
             commandForm.set(getAttrsMap(attrs));

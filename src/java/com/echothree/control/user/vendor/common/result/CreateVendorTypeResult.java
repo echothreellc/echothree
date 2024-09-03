@@ -17,7 +17,6 @@
 package com.echothree.control.user.vendor.common.result;
 
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
-import com.echothree.control.user.vendor.common.spec.ItemPurchasingCategorySpec;
 import com.echothree.control.user.vendor.common.spec.VendorTypeSpec;
 import com.echothree.util.common.command.BaseResult;
 

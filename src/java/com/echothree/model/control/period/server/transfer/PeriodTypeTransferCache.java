@@ -16,11 +16,9 @@
 
 package com.echothree.model.control.period.server.transfer;
 
-import com.echothree.model.control.period.common.transfer.PeriodKindTransfer;
 import com.echothree.model.control.period.common.transfer.PeriodTypeTransfer;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.data.period.server.entity.PeriodType;
-import com.echothree.model.data.period.server.entity.PeriodTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class PeriodTypeTransferCache
@@ -34,15 +32,15 @@ public class PeriodTypeTransferCache
     }
     
     public PeriodTypeTransfer getPeriodTypeTransfer(PeriodType periodType) {
-        PeriodTypeTransfer periodTypeTransfer = get(periodType);
+        var periodTypeTransfer = get(periodType);
         
         if(periodTypeTransfer == null) {
-            PeriodTypeDetail periodTypeDetail = periodType.getLastDetail();
-            PeriodKindTransfer periodKindTransfer = periodControl.getPeriodKindTransfer(userVisit, periodTypeDetail.getPeriodKind());
-            String periodTypeName = periodTypeDetail.getPeriodTypeName();
-            Boolean isDefault = periodTypeDetail.getIsDefault();
-            Integer sortOrder = periodTypeDetail.getSortOrder();
-            String description = periodControl.getBestPeriodTypeDescription(periodType, getLanguage());
+            var periodTypeDetail = periodType.getLastDetail();
+            var periodKindTransfer = periodControl.getPeriodKindTransfer(userVisit, periodTypeDetail.getPeriodKind());
+            var periodTypeName = periodTypeDetail.getPeriodTypeName();
+            var isDefault = periodTypeDetail.getIsDefault();
+            var sortOrder = periodTypeDetail.getSortOrder();
+            var description = periodControl.getBestPeriodTypeDescription(periodType, getLanguage());
             
             periodTypeTransfer = new PeriodTypeTransfer(periodKindTransfer, periodTypeName, isDefault, sortOrder, description);
             put(periodType, periodTypeTransfer);

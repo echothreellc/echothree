@@ -17,16 +17,12 @@
 package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.form.GetShipmentTypeDescriptionForm;
-import com.echothree.control.user.shipment.common.result.GetShipmentTypeDescriptionResult;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.ShipmentControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.shipment.server.entity.ShipmentType;
-import com.echothree.model.data.shipment.server.entity.ShipmentTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetShipmentTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        GetShipmentTypeDescriptionResult result = ShipmentResultFactory.getGetShipmentTypeDescriptionResult();
-        String shipmentTypeName = form.getShipmentTypeName();
-        ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var result = ShipmentResultFactory.getGetShipmentTypeDescriptionResult();
+        var shipmentTypeName = form.getShipmentTypeName();
+        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
         
         if(shipmentType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                ShipmentTypeDescription shipmentTypeDescription = shipmentControl.getShipmentTypeDescription(shipmentType, language);
+                var shipmentTypeDescription = shipmentControl.getShipmentTypeDescription(shipmentType, language);
 
                 if(shipmentTypeDescription != null) {
                     result.setShipmentTypeDescription(shipmentControl.getShipmentTypeDescriptionTransfer(getUserVisit(), shipmentTypeDescription));

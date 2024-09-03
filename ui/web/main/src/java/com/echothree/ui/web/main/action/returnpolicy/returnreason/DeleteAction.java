@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnreason;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.form.DeleteReturnReasonForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,11 +51,11 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+        var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
         
         try {
-            DeleteReturnReasonForm commandForm = ReturnPolicyUtil.getHome().getDeleteReturnReasonForm();
-            String returnReasonName = request.getParameter(ParameterConstants.RETURN_REASON_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getDeleteReturnReasonForm();
+            var returnReasonName = request.getParameter(ParameterConstants.RETURN_REASON_NAME);
             
             commandForm.setReturnKindName(returnKindName);
             commandForm.setReturnReasonName(returnReasonName);
@@ -67,8 +66,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

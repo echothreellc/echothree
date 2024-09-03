@@ -17,8 +17,6 @@
 package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.GenderDescriptionTransfer;
-import com.echothree.model.control.party.common.transfer.GenderTransfer;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.GenderDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class GenderDescriptionTransferCache
     }
     
     public GenderDescriptionTransfer getGenderDescriptionTransfer(GenderDescription genderDescription) {
-        GenderDescriptionTransfer genderDescriptionTransfer = get(genderDescription);
+        var genderDescriptionTransfer = get(genderDescription);
         
         if(genderDescriptionTransfer == null) {
-            GenderTransfer genderTransfer = partyControl.getGenderTransfer(userVisit, genderDescription.getGender());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, genderDescription.getLanguage());
+            var genderTransfer = partyControl.getGenderTransfer(userVisit, genderDescription.getGender());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, genderDescription.getLanguage());
             
             genderDescriptionTransfer = new GenderDescriptionTransfer(languageTransfer, genderTransfer, genderDescription.getDescription());
             put(genderDescription, genderDescriptionTransfer);

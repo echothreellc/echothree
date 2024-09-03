@@ -21,7 +21,6 @@ import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.LotTimeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -63,8 +62,8 @@ public class DeleteLotTimeTypeCommand
     @Override
     protected BaseResult execute() {
         var lotTimeControl = Session.getModelController(LotTimeControl.class);
-        String lotTimeTypeName = form.getLotTimeTypeName();
-        LotTimeType lotTimeType = lotTimeControl.getLotTimeTypeByNameForUpdate(lotTimeTypeName);
+        var lotTimeTypeName = form.getLotTimeTypeName();
+        var lotTimeType = lotTimeControl.getLotTimeTypeByNameForUpdate(lotTimeTypeName);
 
         if(lotTimeType != null) {
             lotTimeControl.deleteLotTimeType(lotTimeType, getPartyPK());

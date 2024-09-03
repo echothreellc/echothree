@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.ItemService;
-import com.echothree.control.user.item.common.form.CreateRelatedItemTypeForm;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -48,9 +47,9 @@ public class RelatedItemTypesHandler
             String relatedItemTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("relatedItemTypeName"))
                     relatedItemTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +59,7 @@ public class RelatedItemTypesHandler
             }
             
             try {
-                CreateRelatedItemTypeForm commandForm = ItemFormFactory.getCreateRelatedItemTypeForm();
+                var commandForm = ItemFormFactory.getCreateRelatedItemTypeForm();
                 
                 commandForm.setRelatedItemTypeName(relatedItemTypeName);
                 commandForm.setIsDefault(isDefault);

@@ -19,8 +19,6 @@ package com.echothree.ui.cli.database.util;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.logging.Log;
@@ -67,14 +65,14 @@ public class DatabaseViewUtilities {
     
     void dropAllViews()
             throws Exception {
-        Statement stmt = connection.createStatement();
-        DatabaseMetaData dmd = connection.getMetaData();
-        ResultSet rs = dmd.getTables(null, null, null, new String[]{"VIEW"});
+        var stmt = connection.createStatement();
+        var dmd = connection.getMetaData();
+        var rs = dmd.getTables(null, null, null, new String[]{"VIEW"});
 
         while(rs.next()) {
-            String tableName = rs.getString("TABLE_NAME");
+            var tableName = rs.getString("TABLE_NAME");
 
-            String query = "DROP VIEW " +
+            var query = "DROP VIEW " +
                     tableName;
             log.info(query);
             stmt.execute(query);
@@ -86,7 +84,7 @@ public class DatabaseViewUtilities {
     
     Column getTablePrimaryKey(Table table)
             throws Exception {
-        Set<Column> primaryKeyColumns = table.getPrimaryKey().getIndexColumns();
+        var primaryKeyColumns = table.getPrimaryKey().getIndexColumns();
         Column result;
         
         if(primaryKeyColumns.size() == 1) {
@@ -100,7 +98,7 @@ public class DatabaseViewUtilities {
     
     Column getTableActiveDetail(Table table)
             throws Exception {
-        Column activeDetail = table.getColumn("ActiveDetailId");
+        var activeDetail = table.getColumn("ActiveDetailId");
         
         if(activeDetail == null) {
             throw new Exception("Table must have an ActiveDetail column.");
@@ -111,19 +109,19 @@ public class DatabaseViewUtilities {
     
     void createViewsWithDetails(Set<Table> tablesWithDetails)
             throws Exception {
-        Statement statement = connection.createStatement();
+        var statement = connection.createStatement();
         
-        for(Table table : tablesWithDetails) {
-            Column primaryKey = getTablePrimaryKey(table);
-            Column activeDetail = getTableActiveDetail(table);
-            Table detailTable = database.getTableByPlural(table.getNameSingular() + "Details");
-            Column detailPrimaryKey = getTablePrimaryKey(detailTable);
-            StringBuilder viewColumns = new StringBuilder();
-            StringBuilder detailColumns = new StringBuilder();
-            int usedColumnCount = 0;
+        for(var table : tablesWithDetails) {
+            var primaryKey = getTablePrimaryKey(table);
+            var activeDetail = getTableActiveDetail(table);
+            var detailTable = database.getTableByPlural(table.getNameSingular() + "Details");
+            var detailPrimaryKey = getTablePrimaryKey(detailTable);
+            var viewColumns = new StringBuilder();
+            var detailColumns = new StringBuilder();
+            var usedColumnCount = 0;
             
-            for(Column column : detailTable.getColumns()) {
-                String columnName = column.getName();
+            for(var column : detailTable.getColumns()) {
+                var columnName = column.getName();
                 
                 if(column != detailPrimaryKey && !primaryKey.getName().equals(column.getName())) {
                     if(!(columnName.equals("FromTime") || columnName.equals("ThruTime"))) {
@@ -138,7 +136,7 @@ public class DatabaseViewUtilities {
                 }
             }
 
-            String createView = "CREATE VIEW " +
+            var createView = "CREATE VIEW " +
                     table.getDbTableName() +
                     "(" +
                     primaryKey.getDbColumnName() +
@@ -156,8 +154,8 @@ public class DatabaseViewUtilities {
                     activeDetail.getDbColumnName() +
                     " = " +
                     detailPrimaryKey.getDbColumnName();
-            
-            String query = createView;
+
+            var query = createView;
             log.info(query);
             statement.execute(query);
         }
@@ -167,15 +165,15 @@ public class DatabaseViewUtilities {
     
     void createViewsWithoutDetails(Set<Table> tablesWithoutDetails)
             throws Exception {
-        Statement statement = connection.createStatement();
+        var statement = connection.createStatement();
         
-        for(Table table : tablesWithoutDetails) {
+        for(var table : tablesWithoutDetails) {
             Column thruTimeColumn = null;
-            StringBuilder columns = new StringBuilder();
-            int usedColumnCount = 0;
+            var columns = new StringBuilder();
+            var usedColumnCount = 0;
             
-            for(Column column : table.getColumns()) {
-                String columnName = column.getName();
+            for(var column : table.getColumns()) {
+                var columnName = column.getName();
                 
                 if(columnName.equals("FromTime") || columnName.equals("ThruTime")) {
                     thruTimeColumn = column;
@@ -187,8 +185,8 @@ public class DatabaseViewUtilities {
                     usedColumnCount++;
                 }
             }
-            
-            StringBuilder createView = new StringBuilder("CREATE VIEW ")
+
+            var createView = new StringBuilder("CREATE VIEW ")
                     .append(table.getDbTableName())
                     .append("(")
                     .append(columns)
@@ -203,8 +201,8 @@ public class DatabaseViewUtilities {
                         .append(" = ")
                         .append(Long.MAX_VALUE);
             }
-            
-            String query = createView.toString();
+
+            var query = createView.toString();
             log.info(query);
             statement.execute(query);
         }
@@ -218,7 +216,7 @@ public class DatabaseViewUtilities {
         Set<Table> tablesWithoutDetails = new HashSet<>();
         
         database.getTables().stream().forEach((table) -> {
-            String tableName = table.getNameSingular();
+            var tableName = table.getNameSingular();
             
             if(tableName.endsWith("Detail")) {
                 log.info("Skipping " + tableName);

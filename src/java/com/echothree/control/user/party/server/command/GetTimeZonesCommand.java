@@ -17,7 +17,6 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetTimeZonesForm;
-import com.echothree.control.user.party.common.result.GetTimeZonesResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.TimeZone;
@@ -56,7 +55,7 @@ public class GetTimeZonesCommand
     
     @Override
     protected BaseResult getResult(Collection<TimeZone> entities) {
-        GetTimeZonesResult result = PartyResultFactory.getGetTimeZonesResult();
+        var result = PartyResultFactory.getGetTimeZonesResult();
         var partyControl = Session.getModelController(PartyControl.class);
         
         result.setTimeZones(partyControl.getTimeZoneTransfers(getUserVisit(), entities));

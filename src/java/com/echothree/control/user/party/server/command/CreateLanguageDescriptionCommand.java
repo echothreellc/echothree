@@ -18,8 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreateLanguageDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.LanguageDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,16 +50,16 @@ public class CreateLanguageDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        String languageIsoName = form.getLanguageIsoName();
-        Language language = partyControl.getLanguageByIsoName(languageIsoName);
+        var languageIsoName = form.getLanguageIsoName();
+        var language = partyControl.getLanguageByIsoName(languageIsoName);
         
         if(language != null) {
-            String descriptionLanguageIsoName = form.getDescriptionLanguageIsoName();
+            var descriptionLanguageIsoName = form.getDescriptionLanguageIsoName();
             var description = form.getDescription();
-            Language descriptionLanguage = partyControl.getLanguageByIsoName(descriptionLanguageIsoName);
+            var descriptionLanguage = partyControl.getLanguageByIsoName(descriptionLanguageIsoName);
 
             if(descriptionLanguageIsoName != null) {
-                LanguageDescription languageDescription = partyControl.getLanguageDescription(language, descriptionLanguage);
+                var languageDescription = partyControl.getLanguageDescription(language, descriptionLanguage);
 
                 if(languageDescription == null) {
                     partyControl.createLanguageDescription(language, descriptionLanguage, description, getPartyPK());

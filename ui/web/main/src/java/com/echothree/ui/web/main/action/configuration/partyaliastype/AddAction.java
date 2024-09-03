@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.partyaliastype;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.CreatePartyAliasTypeForm;
-import com.echothree.control.user.party.common.form.GetPartyTypeForm;
 import com.echothree.control.user.party.common.result.GetPartyTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -62,13 +59,13 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartyTypeForm commandForm = PartyUtil.getHome().getGetPartyTypeForm();
+        var commandForm = PartyUtil.getHome().getGetPartyTypeForm();
 
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());
 
-        CommandResult commandResult = PartyUtil.getHome().getPartyType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyTypeResult result = (GetPartyTypeResult)executionResult.getResult();
+        var commandResult = PartyUtil.getHome().getPartyType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyTypeResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_TYPE, result.getPartyType());
     }
@@ -76,7 +73,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyAliasTypeForm commandForm = PartyUtil.getHome().getCreatePartyAliasTypeForm();
+        var commandForm = PartyUtil.getHome().getCreatePartyAliasTypeForm();
 
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());
         commandForm.setPartyAliasTypeName(actionForm.getPartyAliasTypeName());

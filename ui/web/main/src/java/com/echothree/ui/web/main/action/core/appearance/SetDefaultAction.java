@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.appearance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.SetDefaultAppearanceForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -48,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultAppearanceForm commandForm = CoreUtil.getHome().getSetDefaultAppearanceForm();
+        var commandForm = CoreUtil.getHome().getSetDefaultAppearanceForm();
 
         commandForm.setAppearanceName(request.getParameter(ParameterConstants.APPEARANCE_NAME));
 

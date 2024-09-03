@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.securityrolegroup;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.DeleteSecurityRoleGroupDescriptionForm;
-import com.echothree.control.user.security.common.form.GetSecurityRoleGroupDescriptionForm;
 import com.echothree.control.user.security.common.result.GetSecurityRoleGroupDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -63,15 +60,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSecurityRoleGroupDescriptionForm commandForm = SecurityUtil.getHome().getGetSecurityRoleGroupDescriptionForm();
+        var commandForm = SecurityUtil.getHome().getGetSecurityRoleGroupDescriptionForm();
         
         commandForm.setSecurityRoleGroupName(actionForm.getSecurityRoleGroupName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = SecurityUtil.getHome().getSecurityRoleGroupDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = SecurityUtil.getHome().getSecurityRoleGroupDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSecurityRoleGroupDescriptionResult result = (GetSecurityRoleGroupDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSecurityRoleGroupDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.SECURITY_ROLE_GROUP_DESCRIPTION, result.getSecurityRoleGroupDescription());
         }
@@ -80,7 +77,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteSecurityRoleGroupDescriptionForm commandForm = SecurityUtil.getHome().getDeleteSecurityRoleGroupDescriptionForm();
+        var commandForm = SecurityUtil.getHome().getDeleteSecurityRoleGroupDescriptionForm();
 
         commandForm.setSecurityRoleGroupName(actionForm.getSecurityRoleGroupName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

@@ -17,13 +17,11 @@
 package com.echothree.control.user.sales.server.command;
 
 import com.echothree.control.user.sales.common.form.GetSalesOrderBatchStatusChoicesForm;
-import com.echothree.control.user.sales.common.result.GetSalesOrderBatchStatusChoicesResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.sales.server.logic.SalesOrderBatchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -63,13 +61,13 @@ public class GetSalesOrderBatchStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetSalesOrderBatchStatusChoicesResult result = SalesResultFactory.getGetSalesOrderBatchStatusChoicesResult();
-        String batchName = form.getBatchName();
-        Batch batch = batchName == null? null: SalesOrderBatchLogic.getInstance().getBatchByName(this, batchName);
+        var result = SalesResultFactory.getGetSalesOrderBatchStatusChoicesResult();
+        var batchName = form.getBatchName();
+        var batch = batchName == null? null: SalesOrderBatchLogic.getInstance().getBatchByName(this, batchName);
 
         if(!hasExecutionErrors()) {
-            String defaultSalesOrderBatchStatusChoice = form.getDefaultSalesOrderBatchStatusChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultSalesOrderBatchStatusChoice = form.getDefaultSalesOrderBatchStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             result.setSalesOrderBatchStatusChoices(SalesOrderBatchLogic.getInstance().getSalesOrderBatchStatusChoices(defaultSalesOrderBatchStatusChoice,
                     getPreferredLanguage(), allowNullChoice, batch, getPartyPK()));

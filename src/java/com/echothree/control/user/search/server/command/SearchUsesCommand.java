@@ -24,18 +24,7 @@ import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.offer.server.search.UseSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.search.server.entity.PartySearchTypePreference;
-import com.echothree.model.data.search.server.entity.PartySearchTypePreferenceDetail;
-import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
-import com.echothree.model.data.search.server.entity.SearchKind;
-import com.echothree.model.data.search.server.entity.SearchSortDirection;
-import com.echothree.model.data.search.server.entity.SearchSortOrder;
-import com.echothree.model.data.search.server.entity.SearchType;
-import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -73,52 +62,52 @@ public class SearchUsesCommand
     
     @Override
     protected BaseResult execute() {
-        SearchUsesResult result = SearchResultFactory.getSearchUsesResult();
-        SearchLogic searchLogic = SearchLogic.getInstance();
-        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchKinds.USE.name());
+        var result = SearchResultFactory.getSearchUsesResult();
+        var searchLogic = SearchLogic.getInstance();
+        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.USE.name());
 
         if(!hasExecutionErrors()) {
-            String searchTypeName = form.getSearchTypeName();
-            SearchType searchType = searchLogic.getSearchTypeByName(this, searchKind, searchTypeName);
+            var searchTypeName = form.getSearchTypeName();
+            var searchType = searchLogic.getSearchTypeByName(this, searchKind, searchTypeName);
 
             if(!hasExecutionErrors()) {
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = languageIsoName == null ? null : LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = languageIsoName == null ? null : LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
                 
                 if(!hasExecutionErrors()) {
                     var searchControl = Session.getModelController(SearchControl.class);
-                    PartySearchTypePreference partySearchTypePreference = getPartySearchTypePreference(searchControl, searchType);
-                    PartySearchTypePreferenceDetail partySearchTypePreferenceDetail = partySearchTypePreference == null ? null : partySearchTypePreference.getLastDetail();
+                    var partySearchTypePreference = getPartySearchTypePreference(searchControl, searchType);
+                    var partySearchTypePreferenceDetail = partySearchTypePreference == null ? null : partySearchTypePreference.getLastDetail();
                     boolean rememberPreferences = Boolean.valueOf(form.getRememberPreferences());
-                    String searchDefaultOperatorName = form.getSearchDefaultOperatorName();
-                    SearchDefaultOperator searchDefaultOperator = searchDefaultOperatorName == null 
+                    var searchDefaultOperatorName = form.getSearchDefaultOperatorName();
+                    var searchDefaultOperator = searchDefaultOperatorName == null
                             ? getDefaultSearchDefaultOperator(searchLogic, rememberPreferences, partySearchTypePreferenceDetail)
                             : searchLogic.getSearchDefaultOperatorByName(this, searchDefaultOperatorName);
 
                     if(!hasExecutionErrors()) {
-                        String searchSortOrderName = form.getSearchSortOrderName();
-                        SearchSortOrder searchSortOrder = searchSortOrderName == null
+                        var searchSortOrderName = form.getSearchSortOrderName();
+                        var searchSortOrder = searchSortOrderName == null
                                 ? getDefaultSearchSortOrder(searchLogic, rememberPreferences, searchKind, partySearchTypePreferenceDetail)
                                 : searchLogic.getSearchSortOrderByName(this, searchKind, searchSortOrderName);
 
                         if(!hasExecutionErrors()) {
-                            String searchSortDirectionName = form.getSearchSortDirectionName();
-                            SearchSortDirection searchSortDirection = searchSortDirectionName == null
+                            var searchSortDirectionName = form.getSearchSortDirectionName();
+                            var searchSortDirection = searchSortDirectionName == null
                                     ? getDefaultSearchSortDirection(searchLogic, rememberPreferences, partySearchTypePreferenceDetail)
                                     : searchLogic.getSearchSortDirectionByName(this, searchSortDirectionName);
 
                             if(!hasExecutionErrors()) {
-                                String searchUseTypeName = form.getSearchUseTypeName();
-                                SearchUseType searchUseType = searchUseTypeName == null ? null : SearchLogic.getInstance().getSearchUseTypeByName(this, searchUseTypeName);
+                                var searchUseTypeName = form.getSearchUseTypeName();
+                                var searchUseType = searchUseTypeName == null ? null : SearchLogic.getInstance().getSearchUseTypeByName(this, searchUseTypeName);
 
                                 if(!hasExecutionErrors()) {
-                                    UserVisit userVisit = getUserVisit();
-                                    String createdSince = form.getCreatedSince();
-                                    String modifiedSince = form.getModifiedSince();
-                                    String fields = form.getFields();
+                                    var userVisit = getUserVisit();
+                                    var createdSince = form.getCreatedSince();
+                                    var modifiedSince = form.getModifiedSince();
+                                    var fields = form.getFields();
 
                                     if(rememberPreferences) {
-                                        Party party = getParty();
+                                        var party = getParty();
 
                                         if(party != null) {
                                             updatePartySearchTypePreferences(searchControl, searchType, partySearchTypePreference, searchDefaultOperator,
@@ -126,7 +115,7 @@ public class SearchUsesCommand
                                         }
                                     }
 
-                                    UseSearchEvaluator useSearchEvaluator = new UseSearchEvaluator(userVisit,
+                                    var useSearchEvaluator = new UseSearchEvaluator(userVisit,
                                             language, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, searchUseType);
 
                                     useSearchEvaluator.setQ(this, form.getQ());

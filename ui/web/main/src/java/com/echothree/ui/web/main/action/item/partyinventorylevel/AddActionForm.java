@@ -17,24 +17,18 @@
 package com.echothree.ui.web.main.action.item.partyinventorylevel;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.form.GetInventoryConditionChoicesForm;
 import com.echothree.control.user.inventory.common.result.GetInventoryConditionChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetCompanyChoicesForm;
 import com.echothree.control.user.party.common.result.GetCompanyChoicesResult;
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.form.GetUnitOfMeasureTypeChoicesForm;
 import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeChoicesResult;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.GetWarehouseChoicesForm;
 import com.echothree.control.user.warehouse.common.result.GetWarehouseChoicesResult;
 import com.echothree.model.control.inventory.common.InventoryConstants;
 import com.echothree.model.control.inventory.common.choice.InventoryConditionChoicesBean;
 import com.echothree.model.control.party.common.choice.CompanyChoicesBean;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureTypeChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.WarehouseChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -66,14 +60,14 @@ public class AddActionForm
     private void setupCompanyChoices() {
         if(companyChoices == null) {
             try {
-                GetCompanyChoicesForm commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
+                var commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
 
                 commandForm.setDefaultCompanyChoice(companyChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCompanyChoicesResult result = (GetCompanyChoicesResult)executionResult.getResult();
+                var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCompanyChoicesResult)executionResult.getResult();
                 companyChoices = result.getCompanyChoices();
 
                 if(companyChoice == null) {
@@ -89,14 +83,14 @@ public class AddActionForm
     private void setupWarehouseChoices() {
         if(warehouseChoices == null) {
             try {
-                GetWarehouseChoicesForm commandForm = WarehouseUtil.getHome().getGetWarehouseChoicesForm();
+                var commandForm = WarehouseUtil.getHome().getGetWarehouseChoicesForm();
 
                 commandForm.setDefaultWarehouseChoice(warehouseChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = WarehouseUtil.getHome().getWarehouseChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetWarehouseChoicesResult result = (GetWarehouseChoicesResult)executionResult.getResult();
+                var commandResult = WarehouseUtil.getHome().getWarehouseChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetWarehouseChoicesResult)executionResult.getResult();
                 warehouseChoices = result.getWarehouseChoices();
 
                 if(warehouseChoice == null) {
@@ -112,15 +106,15 @@ public class AddActionForm
     private void setupInventoryConditionChoices() {
         if(inventoryConditionChoices == null) {
             try {
-                GetInventoryConditionChoicesForm form = InventoryUtil.getHome().getGetInventoryConditionChoicesForm();
+                var form = InventoryUtil.getHome().getGetInventoryConditionChoicesForm();
 
                 form.setInventoryConditionUseTypeName(InventoryConstants.InventoryConditionUseType_PURCHASE_ORDER);
                 form.setDefaultInventoryConditionChoice(inventoryConditionChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetInventoryConditionChoicesResult result = (GetInventoryConditionChoicesResult)executionResult.getResult();
+                var commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetInventoryConditionChoicesResult)executionResult.getResult();
                 inventoryConditionChoices = result.getInventoryConditionChoices();
 
                 if(inventoryConditionChoice == null) {
@@ -136,15 +130,15 @@ public class AddActionForm
     private void setupMinimumInventoryUnitOfMeasureTypeChoices() {
         if(minimumInventoryUnitOfMeasureTypeChoices == null) {
             try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
                 
                 form.setDefaultUnitOfMeasureTypeChoice(minimumInventoryUnitOfMeasureTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 form.setItemName(itemName);
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
                 minimumInventoryUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
                 
                 if(minimumInventoryUnitOfMeasureTypeChoice == null) {
@@ -160,15 +154,15 @@ public class AddActionForm
     private void setupMaximumInventoryUnitOfMeasureTypeChoices() {
         if(maximumInventoryUnitOfMeasureTypeChoices == null) {
             try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
                 
                 form.setDefaultUnitOfMeasureTypeChoice(maximumInventoryUnitOfMeasureTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 form.setItemName(itemName);
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
                 maximumInventoryUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
                 
                 if(maximumInventoryUnitOfMeasureTypeChoice == null) {
@@ -184,15 +178,15 @@ public class AddActionForm
     private void setupReorderQuantityUnitOfMeasureTypeChoices() {
         if(reorderQuantityUnitOfMeasureTypeChoices == null) {
             try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
                 
                 form.setDefaultUnitOfMeasureTypeChoice(reorderQuantityUnitOfMeasureTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 form.setItemName(itemName);
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
                 reorderQuantityUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
                 
                 if(reorderQuantityUnitOfMeasureTypeChoice == null) {

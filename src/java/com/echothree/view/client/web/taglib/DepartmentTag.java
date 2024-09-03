@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetDepartmentForm;
 import com.echothree.control.user.party.common.result.GetDepartmentResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -110,7 +107,7 @@ public class DepartmentTag
     public int doStartTag()
             throws JspException {
         try {
-            GetDepartmentForm commandForm = PartyUtil.getHome().getGetDepartmentForm();
+            var commandForm = PartyUtil.getHome().getGetDepartmentForm();
             
             commandForm.setCompanyName(companyName);
             commandForm.setDivisionName(divisionName);
@@ -120,8 +117,8 @@ public class DepartmentTag
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = PartyUtil.getHome().getDepartment(getUserVisitPK(), commandForm);
+
+            var commandResult = PartyUtil.getHome().getDepartment(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -129,8 +126,8 @@ public class DepartmentTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetDepartmentResult result = (GetDepartmentResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetDepartmentResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getDepartment(), scope);
             }

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.postaladdressformat;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.DeletePostalAddressFormatForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            String postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
-            DeletePostalAddressFormatForm commandForm = ContactUtil.getHome().getDeletePostalAddressFormatForm();
+            var postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
+            var commandForm = ContactUtil.getHome().getDeletePostalAddressFormatForm();
             
             commandForm.setPostalAddressFormatName(postalAddressFormatName);
             

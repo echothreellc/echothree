@@ -17,7 +17,6 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEventTypeForm;
-import com.echothree.model.data.core.server.entity.EventType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -47,8 +46,8 @@ public class CreateEventTypeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String eventTypeName = form.getEventTypeName();
-        EventType eventType = coreControl.getEventTypeByName(eventTypeName);
+        var eventTypeName = form.getEventTypeName();
+        var eventType = coreControl.getEventTypeByName(eventTypeName);
         
         if(eventType == null) {
             coreControl.createEventType(eventTypeName);

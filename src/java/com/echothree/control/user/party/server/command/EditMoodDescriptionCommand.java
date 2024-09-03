@@ -19,14 +19,9 @@ package com.echothree.control.user.party.server.command;
 import com.echothree.control.user.party.common.edit.MoodDescriptionEdit;
 import com.echothree.control.user.party.common.edit.PartyEditFactory;
 import com.echothree.control.user.party.common.form.EditMoodDescriptionForm;
-import com.echothree.control.user.party.common.result.EditMoodDescriptionResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.common.spec.MoodDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.Mood;
-import com.echothree.model.data.party.server.entity.MoodDescription;
-import com.echothree.model.data.party.server.value.MoodDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -64,23 +59,23 @@ public class EditMoodDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        EditMoodDescriptionResult result = PartyResultFactory.getEditMoodDescriptionResult();
-        String moodName = spec.getMoodName();
-        Mood mood = partyControl.getMoodByName(moodName);
+        var result = PartyResultFactory.getEditMoodDescriptionResult();
+        var moodName = spec.getMoodName();
+        var mood = partyControl.getMoodByName(moodName);
         
         if(mood != null) {
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    MoodDescription moodDescription = partyControl.getMoodDescription(mood, language);
+                    var moodDescription = partyControl.getMoodDescription(mood, language);
                     
                     if(moodDescription != null) {
                         result.setMoodDescription(partyControl.getMoodDescriptionTransfer(getUserVisit(), moodDescription));
                         
                         if(lockEntity(mood)) {
-                            MoodDescriptionEdit edit = PartyEditFactory.getMoodDescriptionEdit();
+                            var edit = PartyEditFactory.getMoodDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(moodDescription.getDescription());
@@ -93,12 +88,12 @@ public class EditMoodDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownMoodDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    MoodDescriptionValue moodDescriptionValue = partyControl.getMoodDescriptionValueForUpdate(mood, language);
+                    var moodDescriptionValue = partyControl.getMoodDescriptionValueForUpdate(mood, language);
                     
                     if(moodDescriptionValue != null) {
                         if(lockEntityForUpdate(mood)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 moodDescriptionValue.setDescription(description);
                                 

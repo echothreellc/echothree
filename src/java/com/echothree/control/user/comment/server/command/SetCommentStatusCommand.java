@@ -18,7 +18,6 @@ package com.echothree.control.user.comment.server.command;
 
 import com.echothree.control.user.comment.common.form.SetCommentStatusForm;
 import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.data.comment.server.entity.Comment;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -50,11 +49,11 @@ public class SetCommentStatusCommand
     @Override
     protected BaseResult execute() {
         var commentControl = Session.getModelController(CommentControl.class);
-        String commentName = form.getCommentName();
-        Comment comment = commentControl.getCommentByName(commentName);
+        var commentName = form.getCommentName();
+        var comment = commentControl.getCommentByName(commentName);
         
         if(comment != null) {
-            String commentStatusChoice = form.getCommentStatusChoice();
+            var commentStatusChoice = form.getCommentStatusChoice();
             
             commentControl.setCommentStatus(this, comment, commentStatusChoice, getPartyPK());
         } else {

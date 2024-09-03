@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.subscription.subscriptiontype;
 
 import com.echothree.control.user.subscription.common.SubscriptionUtil;
-import com.echothree.control.user.subscription.common.edit.SubscriptionTypeDescriptionEdit;
-import com.echothree.control.user.subscription.common.form.EditSubscriptionTypeDescriptionForm;
 import com.echothree.control.user.subscription.common.result.EditSubscriptionTypeDescriptionResult;
-import com.echothree.control.user.subscription.common.spec.SubscriptionTypeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,15 +56,15 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
-        String subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
+        var subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditSubscriptionTypeDescriptionForm commandForm = SubscriptionUtil.getHome().getEditSubscriptionTypeDescriptionForm();
-                SubscriptionTypeDescriptionSpec spec = SubscriptionUtil.getHome().getSubscriptionTypeDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = SubscriptionUtil.getHome().getEditSubscriptionTypeDescriptionForm();
+                var spec = SubscriptionUtil.getHome().getSubscriptionTypeDescriptionSpec();
                 
                 if(subscriptionKindName == null)
                     subscriptionKindName = actionForm.getSubscriptionKindName();
@@ -84,19 +79,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    SubscriptionTypeDescriptionEdit edit = SubscriptionUtil.getHome().getSubscriptionTypeDescriptionEdit();
+                    var edit = SubscriptionUtil.getHome().getSubscriptionTypeDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = SubscriptionUtil.getHome().editSubscriptionTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = SubscriptionUtil.getHome().editSubscriptionTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditSubscriptionTypeDescriptionResult result = (EditSubscriptionTypeDescriptionResult)executionResult.getResult();
+                            var result = (EditSubscriptionTypeDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -109,13 +104,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = SubscriptionUtil.getHome().editSubscriptionTypeDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditSubscriptionTypeDescriptionResult result = (EditSubscriptionTypeDescriptionResult)executionResult.getResult();
+
+                    var commandResult = SubscriptionUtil.getHome().editSubscriptionTypeDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditSubscriptionTypeDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        SubscriptionTypeDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setSubscriptionKindName(subscriptionKindName);
@@ -135,8 +130,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SUBSCRIPTION_KIND_NAME, subscriptionKindName);
             request.setAttribute(AttributeConstants.SUBSCRIPTION_TYPE_NAME, subscriptionTypeName);

@@ -18,7 +18,6 @@ package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.DeletePrinterForm;
 import com.echothree.model.control.printer.server.control.PrinterControl;
-import com.echothree.model.data.printer.server.entity.Printer;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -49,8 +48,8 @@ public class DeletePrinterCommand
    @Override
     protected BaseResult execute() {
         var printerControl = Session.getModelController(PrinterControl.class);
-        String printerName = form.getPrinterName();
-        Printer printer = printerControl.getPrinterByNameForUpdate(printerName);
+       var printerName = form.getPrinterName();
+       var printer = printerControl.getPrinterByNameForUpdate(printerName);
         
         if(printer != null) {
             // TODO: printerControl.deletePrinter(printer, getPartyPK());

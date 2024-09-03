@@ -18,7 +18,6 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.CreatePostalAddressElementTypeForm;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.data.contact.server.entity.PostalAddressElementType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,8 +50,8 @@ public class CreatePostalAddressElementTypeCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String postalAddressElementTypeName = form.getPostalAddressElementTypeName();
-        PostalAddressElementType postalAddressElementType = contactControl.getPostalAddressElementTypeByName(postalAddressElementTypeName);
+        var postalAddressElementTypeName = form.getPostalAddressElementTypeName();
+        var postalAddressElementType = contactControl.getPostalAddressElementTypeByName(postalAddressElementTypeName);
         
         if(postalAddressElementType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());

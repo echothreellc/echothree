@@ -17,15 +17,12 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetOfferCustomerTypeForm;
-import com.echothree.control.user.offer.common.result.GetOfferCustomerTypeResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferCustomerType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -69,14 +66,14 @@ public class GetOfferCustomerTypeCommand
     @Override
     protected OfferCustomerType getEntity() {
         var offerControl = Session.getModelController(OfferControl.class);
-        String offerName = form.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
+        var offerName = form.getOfferName();
+        var offer = offerControl.getOfferByName(offerName);
         OfferCustomerType offerCustomerType = null;
 
         if(offer != null) {
             var customerControl = Session.getModelController(CustomerControl.class);
-            String customerTypeName = form.getCustomerTypeName();
-            CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+            var customerTypeName = form.getCustomerTypeName();
+            var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
             if(customerType != null) {
                 offerCustomerType = offerControl.getOfferCustomerType(offer, customerType);
@@ -98,7 +95,7 @@ public class GetOfferCustomerTypeCommand
     @Override
     protected BaseResult getResult(OfferCustomerType offerCustomerType) {
         var offerControl = Session.getModelController(OfferControl.class);
-        GetOfferCustomerTypeResult result = OfferResultFactory.getGetOfferCustomerTypeResult();
+        var result = OfferResultFactory.getGetOfferCustomerTypeResult();
 
         if(offerCustomerType != null) {
             result.setOfferCustomerType(offerControl.getOfferCustomerTypeTransfer(getUserVisit(), offerCustomerType));

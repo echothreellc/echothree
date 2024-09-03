@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.content.contentsection;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.DeleteContentSectionDescriptionForm;
-import com.echothree.control.user.content.common.form.GetContentSectionDescriptionForm;
 import com.echothree.control.user.content.common.result.GetContentSectionDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -65,16 +62,16 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContentSectionDescriptionForm commandForm = ContentUtil.getHome().getGetContentSectionDescriptionForm();
+        var commandForm = ContentUtil.getHome().getGetContentSectionDescriptionForm();
 
         commandForm.setContentCollectionName(actionForm.getContentCollectionName());
         commandForm.setContentSectionName(actionForm.getContentSectionName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
 
-        CommandResult commandResult = ContentUtil.getHome().getContentSectionDescription(getUserVisitPK(request), commandForm);
+        var commandResult = ContentUtil.getHome().getContentSectionDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentSectionDescriptionResult result = (GetContentSectionDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentSectionDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CONTENT_SECTION_DESCRIPTION, result.getContentSectionDescription());
         }
@@ -83,7 +80,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteContentSectionDescriptionForm commandForm = ContentUtil.getHome().getDeleteContentSectionDescriptionForm();
+        var commandForm = ContentUtil.getHome().getDeleteContentSectionDescriptionForm();
 
         commandForm.setContentCollectionName(actionForm.getContentCollectionName());
         commandForm.setContentSectionName(actionForm.getContentSectionName());

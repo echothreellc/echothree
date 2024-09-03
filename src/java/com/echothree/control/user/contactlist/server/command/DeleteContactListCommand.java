@@ -21,7 +21,6 @@ import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,8 +62,8 @@ public class DeleteContactListCommand
     @Override
     protected BaseResult execute() {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListName = form.getContactListName();
-        ContactList contactList = contactListControl.getContactListByNameForUpdate(contactListName);
+        var contactListName = form.getContactListName();
+        var contactList = contactListControl.getContactListByNameForUpdate(contactListName);
         
         if(contactList != null) {
             contactListControl.deleteContactList(contactList, getPartyPK());

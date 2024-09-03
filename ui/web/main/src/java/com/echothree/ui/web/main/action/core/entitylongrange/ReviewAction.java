@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.entitylongrange;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityLongRangeForm;
 import com.echothree.control.user.core.common.result.GetEntityLongRangeResult;
 import com.echothree.model.control.core.common.transfer.EntityLongRangeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,19 +50,19 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetEntityLongRangeForm commandForm = CoreUtil.getHome().getGetEntityLongRangeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityLongRangeForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
         commandForm.setEntityAttributeName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME));
         commandForm.setEntityLongRangeName(request.getParameter(ParameterConstants.ENTITY_LONG_RANGE_NAME));
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityLongRange(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEntityLongRange(getUserVisitPK(request), commandForm);
         EntityLongRangeTransfer entityLongRange = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityLongRangeResult result = (GetEntityLongRangeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityLongRangeResult)executionResult.getResult();
             
             entityLongRange = result.getEntityLongRange();
         }

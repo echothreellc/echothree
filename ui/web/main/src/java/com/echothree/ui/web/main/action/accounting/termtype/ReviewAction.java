@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.termtype;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.common.form.GetTermTypeForm;
 import com.echothree.control.user.term.common.result.GetTermTypeResult;
-import com.echothree.model.control.term.common.transfer.TermTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,18 +49,18 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetTermTypeForm commandForm = TermUtil.getHome().getGetTermTypeForm();
-            String termTypeName = request.getParameter(ParameterConstants.TERM_TYPE_NAME);
+            var commandForm = TermUtil.getHome().getGetTermTypeForm();
+            var termTypeName = request.getParameter(ParameterConstants.TERM_TYPE_NAME);
             
             commandForm.setTermTypeName(termTypeName);
-            
-            CommandResult commandResult = TermUtil.getHome().getTermType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTermTypeResult result = (GetTermTypeResult)executionResult.getResult();
-            TermTypeTransfer termType = result.getTermType();
+
+            var commandResult = TermUtil.getHome().getTermType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTermTypeResult)executionResult.getResult();
+            var termType = result.getTermType();
             
             if(termType == null) {
                 forwardKey = ForwardConstants.ERROR_404;

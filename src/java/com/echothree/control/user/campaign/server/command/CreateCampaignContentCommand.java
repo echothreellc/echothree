@@ -18,12 +18,10 @@ package com.echothree.control.user.campaign.server.command;
 
 import com.echothree.control.user.campaign.common.form.CreateCampaignContentForm;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
-import com.echothree.control.user.campaign.common.result.CreateCampaignContentResult;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.campaign.server.entity.CampaignContent;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,10 +65,10 @@ public class CreateCampaignContentCommand
     
     @Override
     protected BaseResult execute() {
-        CreateCampaignContentResult result = CampaignResultFactory.getCreateCampaignContentResult();
+        var result = CampaignResultFactory.getCreateCampaignContentResult();
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String value = form.getValue();
-        CampaignContent campaignContent = campaignControl.getCampaignContentByValue(value);
+        var value = form.getValue();
+        var campaignContent = campaignControl.getCampaignContentByValue(value);
         
         if(campaignContent == null) {
             var partyPK = getPartyPK();

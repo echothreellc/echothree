@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationDescriptionTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationDescription;
@@ -32,11 +30,11 @@ public class WorkflowDestinationDescriptionTransferCache
     }
     
     public WorkflowDestinationDescriptionTransfer getWorkflowDestinationDescriptionTransfer(WorkflowDestinationDescription workflowDestinationDescription) {
-        WorkflowDestinationDescriptionTransfer workflowDestinationDescriptionTransfer = get(workflowDestinationDescription);
+        var workflowDestinationDescriptionTransfer = get(workflowDestinationDescription);
         
         if(workflowDestinationDescriptionTransfer == null) {
-            WorkflowDestinationTransfer workflowDestinationTransfer = workflowControl.getWorkflowDestinationTransfer(userVisit, workflowDestinationDescription.getWorkflowDestination());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, workflowDestinationDescription.getLanguage());
+            var workflowDestinationTransfer = workflowControl.getWorkflowDestinationTransfer(userVisit, workflowDestinationDescription.getWorkflowDestination());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, workflowDestinationDescription.getLanguage());
             
             workflowDestinationDescriptionTransfer = new WorkflowDestinationDescriptionTransfer(languageTransfer, workflowDestinationTransfer, workflowDestinationDescription.getDescription());
             put(workflowDestinationDescription, workflowDestinationDescriptionTransfer);

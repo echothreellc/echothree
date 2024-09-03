@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.purchasing.vendor;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetVendorStatusChoicesForm;
 import com.echothree.control.user.party.common.result.GetVendorStatusChoicesResult;
 import com.echothree.model.control.vendor.common.choice.VendorStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -41,15 +38,15 @@ public class StatusActionForm
     public void setupVendorStatusChoices() {
         if(vendorStatusChoices == null) {
             try {
-                GetVendorStatusChoicesForm form = PartyUtil.getHome().getGetVendorStatusChoicesForm();
+                var form = PartyUtil.getHome().getGetVendorStatusChoicesForm();
                 
                 form.setVendorName(vendorName);
                 form.setDefaultVendorStatusChoice(vendorStatusChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getVendorStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetVendorStatusChoicesResult result = (GetVendorStatusChoicesResult)executionResult.getResult();
+
+                var commandResult = PartyUtil.getHome().getVendorStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetVendorStatusChoicesResult)executionResult.getResult();
                 vendorStatusChoices = result.getVendorStatusChoices();
                 
                 if(vendorStatusChoice == null) {

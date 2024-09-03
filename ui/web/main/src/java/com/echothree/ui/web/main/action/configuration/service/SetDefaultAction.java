@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.service;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.SetDefaultServiceForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -48,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultServiceForm commandForm = CoreUtil.getHome().getSetDefaultServiceForm();
+        var commandForm = CoreUtil.getHome().getSetDefaultServiceForm();
 
         commandForm.setServiceName(request.getParameter(ParameterConstants.SERVICE_NAME));
 

@@ -19,8 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.content;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.ContentService;
 import com.echothree.control.user.content.common.form.ContentFormFactory;
-import com.echothree.control.user.content.common.form.CreateContentCategoryDescriptionForm;
-import com.echothree.control.user.content.common.form.CreateContentCategoryItemForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -54,7 +52,7 @@ public class ContentCategoryHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("contentCategoryDescription")) {
-            CreateContentCategoryDescriptionForm commandForm = ContentFormFactory.getCreateContentCategoryDescriptionForm();
+            var commandForm = ContentFormFactory.getCreateContentCategoryDescriptionForm();
             
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentCatalogName(contentCatalogName);
@@ -63,7 +61,7 @@ public class ContentCategoryHandler
             
             contentService.createContentCategoryDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("contentCategoryItem")) {
-            CreateContentCategoryItemForm commandForm = ContentFormFactory.getCreateContentCategoryItemForm();
+            var commandForm = ContentFormFactory.getCreateContentCategoryItemForm();
             
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentCatalogName(contentCatalogName);

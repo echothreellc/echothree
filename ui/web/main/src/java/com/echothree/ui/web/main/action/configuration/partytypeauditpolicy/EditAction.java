@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.partytypeauditpolicy;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.edit.PartyTypeAuditPolicyEdit;
-import com.echothree.control.user.party.common.form.EditPartyTypeAuditPolicyForm;
 import com.echothree.control.user.party.common.result.EditPartyTypeAuditPolicyResult;
-import com.echothree.control.user.party.common.spec.PartyTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,10 +50,10 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
-        EditPartyTypeAuditPolicyForm commandForm = PartyUtil.getHome().getEditPartyTypeAuditPolicyForm();
-        PartyTypeSpec spec = PartyUtil.getHome().getPartyTypeSpec();
+        String forwardKey;
+        var partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
+        var commandForm = PartyUtil.getHome().getEditPartyTypeAuditPolicyForm();
+        var spec = PartyUtil.getHome().getPartyTypeSpec();
         
         if(partyTypeName == null) {
             partyTypeName = actionForm.getPartyTypeName();
@@ -68,12 +63,12 @@ public class EditAction
         spec.setPartyTypeName(partyTypeName);
         
         if(wasPost(request)) {
-            boolean wasCanceled = wasCanceled(request);
+            var wasCanceled = wasCanceled(request);
             
             if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
-                PartyTypeAuditPolicyEdit edit = PartyUtil.getHome().getPartyTypeAuditPolicyEdit();
+                var edit = PartyUtil.getHome().getPartyTypeAuditPolicyEdit();
 
                 commandForm.setEditMode(EditMode.UPDATE);
                 commandForm.setEdit(edit);
@@ -82,14 +77,14 @@ public class EditAction
                 edit.setRetainUserVisitsTime(actionForm.getRetainUserVisitsTime());
                 edit.setRetainUserVisitsTimeUnitOfMeasureTypeName(actionForm.getRetainUserVisitsTimeUnitOfMeasureTypeChoice());
             }
-            
-            CommandResult commandResult = PartyUtil.getHome().editPartyTypeAuditPolicy(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().editPartyTypeAuditPolicy(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors() && !wasCanceled) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditPartyTypeAuditPolicyResult result = (EditPartyTypeAuditPolicyResult)executionResult.getResult();
+                    var result = (EditPartyTypeAuditPolicyResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -102,13 +97,13 @@ public class EditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = PartyUtil.getHome().editPartyTypeAuditPolicy(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditPartyTypeAuditPolicyResult result = (EditPartyTypeAuditPolicyResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().editPartyTypeAuditPolicy(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditPartyTypeAuditPolicyResult)executionResult.getResult();
             
             if(result != null) {
-                PartyTypeAuditPolicyEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setPartyTypeName(partyTypeName);

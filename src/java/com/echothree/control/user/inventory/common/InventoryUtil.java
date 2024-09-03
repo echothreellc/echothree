@@ -18,7 +18,6 @@ package com.echothree.control.user.inventory.common;
 
 import com.echothree.control.user.inventory.server.InventoryLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class InventoryUtil {
@@ -30,7 +29,7 @@ public class InventoryUtil {
     public static InventoryLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
 
             cachedLocal = (InventoryLocal)ctx.lookup("ejb:echothree/echothree-server/InventoryBean!com.echothree.control.user.inventory.server.InventoryLocal");
         }
@@ -42,7 +41,7 @@ public class InventoryUtil {
     public static InventoryRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
-            InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
+            var ctx = InitialContextUtils.getInstance().getInitialContext();
             
             cachedRemote = (InventoryRemote)ctx.lookup("ejb:echothree/echothree-server/InventoryBean!com.echothree.control.user.inventory.common.InventoryRemote");
         }

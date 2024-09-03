@@ -17,7 +17,6 @@
 package com.echothree.control.user.training.server.command;
 
 import com.echothree.control.user.training.common.form.GetTrainingClassesForm;
-import com.echothree.control.user.training.common.result.GetTrainingClassesResult;
 import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -60,7 +59,7 @@ public class GetTrainingClassesCommand
     
     @Override
     protected BaseResult execute() {
-        GetTrainingClassesResult result = TrainingResultFactory.getGetTrainingClassesResult();
+        var result = TrainingResultFactory.getGetTrainingClassesResult();
         var trainingControl = Session.getModelController(TrainingControl.class);
         
         result.setTrainingClasses(trainingControl.getTrainingClassTransfers(getUserVisit()));

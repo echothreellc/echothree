@@ -29,11 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Application;
 import com.echothree.model.data.core.server.entity.ApplicationEditor;
 import com.echothree.model.data.core.server.entity.ApplicationEditorUse;
-import com.echothree.model.data.core.server.entity.ApplicationEditorUseDescription;
-import com.echothree.model.data.core.server.entity.ApplicationEditorUseDetail;
-import com.echothree.model.data.core.server.entity.Editor;
-import com.echothree.model.data.core.server.value.ApplicationEditorUseDescriptionValue;
-import com.echothree.model.data.core.server.value.ApplicationEditorUseDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -98,13 +93,13 @@ public class EditApplicationEditorUseCommand
     @Override
     public ApplicationEditorUse getEntity(EditApplicationEditorUseResult result) {
         ApplicationEditorUse applicationEditorUse = null;
-        String applicationName = spec.getApplicationName();
+        var applicationName = spec.getApplicationName();
         
         application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
             var coreControl = getCoreControl();
-            String applicationEditorUseName = spec.getApplicationEditorUseName();
+            var applicationEditorUseName = spec.getApplicationEditorUseName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 applicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
@@ -137,10 +132,10 @@ public class EditApplicationEditorUseCommand
     @Override
     public void doLock(ApplicationEditorUseEdit edit, ApplicationEditorUse applicationEditorUse) {
         var coreControl = getCoreControl();
-        ApplicationEditorUseDescription applicationEditorUseDescription = coreControl.getApplicationEditorUseDescription(applicationEditorUse, getPreferredLanguage());
-        ApplicationEditorUseDetail applicationEditorUseDetail = applicationEditorUse.getLastDetail();
-        Integer defaultHeight = applicationEditorUseDetail.getDefaultHeight();
-        Integer defaultWidth = applicationEditorUseDetail.getDefaultWidth();
+        var applicationEditorUseDescription = coreControl.getApplicationEditorUseDescription(applicationEditorUse, getPreferredLanguage());
+        var applicationEditorUseDetail = applicationEditorUse.getLastDetail();
+        var defaultHeight = applicationEditorUseDetail.getDefaultHeight();
+        var defaultWidth = applicationEditorUseDetail.getDefaultWidth();
 
         applicationEditor = applicationEditorUseDetail.getDefaultApplicationEditor();
        
@@ -159,14 +154,14 @@ public class EditApplicationEditorUseCommand
     @Override
     public void canUpdate(ApplicationEditorUse applicationEditorUse) {
         var coreControl = getCoreControl();
-        String applicationEditorUseName = edit.getApplicationEditorUseName();
-        ApplicationEditorUse duplicateApplicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
+        var applicationEditorUseName = edit.getApplicationEditorUseName();
+        var duplicateApplicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
         if(duplicateApplicationEditorUse != null && !applicationEditorUse.equals(duplicateApplicationEditorUse)) {
             addExecutionError(ExecutionErrors.DuplicateApplicationEditorUseName.name(), applicationEditorUseName);
         } else {
-            String defaultEditorName = edit.getDefaultEditorName();
-            Editor editor = defaultEditorName == null ? null : coreControl.getEditorByName(defaultEditorName);
+            var defaultEditorName = edit.getDefaultEditorName();
+            var editor = defaultEditorName == null ? null : coreControl.getEditorByName(defaultEditorName);
 
             if(defaultEditorName == null || editor != null) {
                 applicationEditor = editor == null ? null : ApplicationLogic.getInstance().getApplicationEditor(this, application, editor);
@@ -178,13 +173,13 @@ public class EditApplicationEditorUseCommand
     public void doUpdate(ApplicationEditorUse applicationEditorUse) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        ApplicationEditorUseDetailValue applicationEditorUseDetailValue = coreControl.getApplicationEditorUseDetailValueForUpdate(applicationEditorUse);
-        ApplicationEditorUseDescription applicationEditorUseDescription = coreControl.getApplicationEditorUseDescriptionForUpdate(applicationEditorUse, getPreferredLanguage());
-        String strDefaultHeight = edit.getDefaultHeight();
-        Integer defaultHeight = strDefaultHeight == null ? null : Integer.valueOf(strDefaultHeight);
-        String strDefaultWidth = edit.getDefaultWidth();
-        Integer defaultWidth = strDefaultWidth == null ? null : Integer.valueOf(strDefaultWidth);
-        String description = edit.getDescription();
+        var applicationEditorUseDetailValue = coreControl.getApplicationEditorUseDetailValueForUpdate(applicationEditorUse);
+        var applicationEditorUseDescription = coreControl.getApplicationEditorUseDescriptionForUpdate(applicationEditorUse, getPreferredLanguage());
+        var strDefaultHeight = edit.getDefaultHeight();
+        var defaultHeight = strDefaultHeight == null ? null : Integer.valueOf(strDefaultHeight);
+        var strDefaultWidth = edit.getDefaultWidth();
+        var defaultWidth = strDefaultWidth == null ? null : Integer.valueOf(strDefaultWidth);
+        var description = edit.getDescription();
 
         applicationEditorUseDetailValue.setApplicationEditorUseName(edit.getApplicationEditorUseName());
         applicationEditorUseDetailValue.setDefaultApplicationEditorPK(applicationEditor == null ? null : applicationEditor.getPrimaryKey());
@@ -202,7 +197,7 @@ public class EditApplicationEditorUseCommand
                 coreControl.deleteApplicationEditorUseDescription(applicationEditorUseDescription, partyPK);
             } else {
                 if(applicationEditorUseDescription != null && description != null) {
-                    ApplicationEditorUseDescriptionValue applicationEditorUseDescriptionValue = coreControl.getApplicationEditorUseDescriptionValue(applicationEditorUseDescription);
+                    var applicationEditorUseDescriptionValue = coreControl.getApplicationEditorUseDescriptionValue(applicationEditorUseDescription);
 
                     applicationEditorUseDescriptionValue.setDescription(description);
                     coreControl.updateApplicationEditorUseDescriptionFromValue(applicationEditorUseDescriptionValue, partyPK);

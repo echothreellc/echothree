@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.itempurchasingcategory;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.SetDefaultItemPurchasingCategoryForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultItemPurchasingCategoryForm commandForm = VendorUtil.getHome().getSetDefaultItemPurchasingCategoryForm();
-            String itemPurchasingCategoryName = request.getParameter(ParameterConstants.ITEM_PURCHASING_CATEGORY_NAME);
+            var commandForm = VendorUtil.getHome().getSetDefaultItemPurchasingCategoryForm();
+            var itemPurchasingCategoryName = request.getParameter(ParameterConstants.ITEM_PURCHASING_CATEGORY_NAME);
             
             commandForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
             

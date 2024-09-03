@@ -17,7 +17,6 @@
 package com.echothree.control.user.track.server.command;
 
 import com.echothree.control.user.track.common.form.GetTrackForm;
-import com.echothree.control.user.track.common.result.GetTrackResult;
 import com.echothree.control.user.track.common.result.TrackResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -27,7 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.track.server.control.TrackControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.track.server.entity.Track;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -73,8 +71,8 @@ public class GetTrackCommand
     
     @Override
     protected BaseResult execute() {
-        GetTrackResult result = TrackResultFactory.getGetTrackResult();
-        String trackName = form.getTrackName();
+        var result = TrackResultFactory.getGetTrackResult();
+        var trackName = form.getTrackName();
         var parameterCount = (trackName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

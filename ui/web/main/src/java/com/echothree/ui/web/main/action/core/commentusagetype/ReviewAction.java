@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.core.commentusagetype;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.form.GetCommentUsageTypeForm;
 import com.echothree.control.user.comment.common.result.GetCommentUsageTypeResult;
-import com.echothree.model.control.comment.common.transfer.CommentUsageTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,22 +48,22 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetCommentUsageTypeForm commandForm = CommentUtil.getHome().getGetCommentUsageTypeForm();
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-        String commentTypeName = request.getParameter(ParameterConstants.COMMENT_TYPE_NAME);
-        String commentUsageTypeName = request.getParameter(ParameterConstants.COMMENT_USAGE_TYPE_NAME);
+        String forwardKey;
+        var commandForm = CommentUtil.getHome().getGetCommentUsageTypeForm();
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var commentTypeName = request.getParameter(ParameterConstants.COMMENT_TYPE_NAME);
+        var commentUsageTypeName = request.getParameter(ParameterConstants.COMMENT_USAGE_TYPE_NAME);
 
         commandForm.setEntityTypeName(entityTypeName);
         commandForm.setComponentVendorName(componentVendorName);
         commandForm.setCommentTypeName(commentTypeName);
         commandForm.setCommentUsageTypeName(commentUsageTypeName);
 
-        CommandResult commandResult = CommentUtil.getHome().getCommentUsageType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCommentUsageTypeResult result = (GetCommentUsageTypeResult)executionResult.getResult();
-        CommentUsageTypeTransfer commentUsageType = result.getCommentUsageType();
+        var commandResult = CommentUtil.getHome().getCommentUsageType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCommentUsageTypeResult)executionResult.getResult();
+        var commentUsageType = result.getCommentUsageType();
 
         if(commentUsageType == null) {
             forwardKey = ForwardConstants.ERROR_404;

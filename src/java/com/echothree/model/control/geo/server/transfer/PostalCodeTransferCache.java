@@ -18,18 +18,10 @@ package com.echothree.model.control.geo.server.transfer;
 
 import com.echothree.model.control.geo.common.GeoConstants;
 import com.echothree.model.control.geo.common.GeoOptions;
-import com.echothree.model.control.geo.common.transfer.CountryTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeScopeTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeTypeTransfer;
 import com.echothree.model.control.geo.common.transfer.PostalCodeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.entity.GeoCodeDetail;
-import com.echothree.model.data.geo.server.entity.GeoCodeRelationship;
-import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import java.util.List;
-import java.util.Set;
 
 public class PostalCodeTransferCache
         extends BaseGeoCodeTransferCache<GeoCode, PostalCodeTransfer> {
@@ -49,23 +41,23 @@ public class PostalCodeTransferCache
     }
     
     public PostalCodeTransfer getPostalCodeTransfer(GeoCode geoCode) {
-        PostalCodeTransfer postalCodeTransfer = get(geoCode);
+        var postalCodeTransfer = get(geoCode);
         
         if(postalCodeTransfer == null) {
-            GeoCodeDetail geoCodeDetail = geoCode.getLastDetail();
-            String geoCodeName = geoCodeDetail.getGeoCodeName();
-            GeoCodeTypeTransfer geoCodeType = geoControl.getGeoCodeTypeTransfer(userVisit, geoCodeDetail.getGeoCodeType());
-            GeoCodeScopeTransfer geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
-            Boolean isDefault = geoCodeDetail.getIsDefault();
-            Integer sortOrder = geoCodeDetail.getSortOrder();
-            String description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
-            
-            GeoCodeType countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
-            List<GeoCodeRelationship> geoCodeRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(geoCode, countryGeoCodeType);
+            var geoCodeDetail = geoCode.getLastDetail();
+            var geoCodeName = geoCodeDetail.getGeoCodeName();
+            var geoCodeType = geoControl.getGeoCodeTypeTransfer(userVisit, geoCodeDetail.getGeoCodeType());
+            var geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
+            var isDefault = geoCodeDetail.getIsDefault();
+            var sortOrder = geoCodeDetail.getSortOrder();
+            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
+
+            var countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+            var geoCodeRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(geoCode, countryGeoCodeType);
             if(geoCodeRelationships.size() != 1) {
                 getLog().error("non-1 geoCodeRelationships.size()");
             }
-            CountryTransfer country = geoControl.getCountryTransfer(userVisit, geoCodeRelationships.iterator().next().getToGeoCode());
+            var country = geoControl.getCountryTransfer(userVisit, geoCodeRelationships.iterator().next().getToGeoCode());
             
             postalCodeTransfer = new PostalCodeTransfer(country, geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder,
                     description);

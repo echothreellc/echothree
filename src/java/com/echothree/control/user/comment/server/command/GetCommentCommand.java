@@ -18,10 +18,8 @@ package com.echothree.control.user.comment.server.command;
 
 import com.echothree.control.user.comment.common.form.GetCommentForm;
 import com.echothree.control.user.comment.common.result.CommentResultFactory;
-import com.echothree.control.user.comment.common.result.GetCommentResult;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.data.comment.server.entity.Comment;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,9 +50,9 @@ public class GetCommentCommand
     @Override
     protected BaseResult execute() {
         var commentControl = Session.getModelController(CommentControl.class);
-        GetCommentResult result = CommentResultFactory.getGetCommentResult();
-        String commentName = form.getCommentName();
-        Comment comment = commentControl.getCommentByName(commentName);
+        var result = CommentResultFactory.getGetCommentResult();
+        var commentName = form.getCommentName();
+        var comment = commentControl.getCommentByName(commentName);
 
         if(comment != null) {
             result.setComment(commentControl.getCommentTransfer(getUserVisit(), comment));

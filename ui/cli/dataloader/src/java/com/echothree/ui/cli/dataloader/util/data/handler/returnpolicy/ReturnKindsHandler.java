@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.returnpolicy;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyService;
-import com.echothree.control.user.returnpolicy.common.form.CreateReturnKindForm;
 import com.echothree.control.user.returnpolicy.common.form.ReturnPolicyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -49,9 +48,9 @@ public class ReturnKindsHandler
             String returnSequenceTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("returnKindName"))
                     returnKindName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("returnSequenceTypeName"))
@@ -63,7 +62,7 @@ public class ReturnKindsHandler
             }
             
             try {
-                CreateReturnKindForm commandForm = ReturnPolicyFormFactory.getCreateReturnKindForm();
+                var commandForm = ReturnPolicyFormFactory.getCreateReturnKindForm();
                 
                 commandForm.setReturnKindName(returnKindName);
                 commandForm.setReturnSequenceTypeName(returnSequenceTypeName);

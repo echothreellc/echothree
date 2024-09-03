@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.advertising.usenameelement;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.CreateUseNameElementForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,18 +52,18 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateUseNameElementForm commandForm = OfferUtil.getHome().getCreateUseNameElementForm();
+                    var commandForm = OfferUtil.getHome().getCreateUseNameElementForm();
                     
                     commandForm.setUseNameElementName(actionForm.getUseNameElementName());
                     commandForm.setOffset(actionForm.getOffset());
                     commandForm.setLength(actionForm.getLength());
                     commandForm.setValidationPattern(actionForm.getValidationPattern());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = OfferUtil.getHome().createUseNameElement(getUserVisitPK(request), commandForm);
+
+                    var commandResult = OfferUtil.getHome().createUseNameElement(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

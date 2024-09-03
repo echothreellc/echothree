@@ -17,10 +17,8 @@
 package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.GetTermDescriptionsForm;
-import com.echothree.control.user.term.common.result.GetTermDescriptionsResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -51,9 +49,9 @@ public class GetTermDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var termControl = Session.getModelController(TermControl.class);
-        GetTermDescriptionsResult result = TermResultFactory.getGetTermDescriptionsResult();
-        String termName = form.getTermName();
-        Term term = termControl.getTermByName(termName);
+        var result = TermResultFactory.getGetTermDescriptionsResult();
+        var termName = form.getTermName();
+        var term = termControl.getTermByName(termName);
         
         if(term != null) {
             result.setTerm(termControl.getTermTransfer(getUserVisit(), term));

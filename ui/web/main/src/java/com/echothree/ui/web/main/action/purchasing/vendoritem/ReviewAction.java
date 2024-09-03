@@ -17,18 +17,14 @@
 package com.echothree.ui.web.main.action.purchasing.vendoritem;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.GetVendorItemForm;
 import com.echothree.control.user.vendor.common.result.GetVendorItemResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.vendor.common.VendorOptions;
-import com.echothree.model.control.vendor.common.transfer.VendorItemTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,7 +54,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetVendorItemForm commandForm = VendorUtil.getHome().getGetVendorItemForm();
+        var commandForm = VendorUtil.getHome().getGetVendorItemForm();
 
         commandForm.setVendorName(request.getParameter(ParameterConstants.VENDOR_NAME));
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
@@ -74,11 +70,11 @@ public class ReviewAction
         options.add(CoreOptions.EntityStringAttributeIncludeString);
         options.add(CoreOptions.EntityInstanceIncludeNames);
         commandForm.setOptions(options);
-        
-        CommandResult commandResult = VendorUtil.getHome().getVendorItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetVendorItemResult result = (GetVendorItemResult)executionResult.getResult();
-        VendorItemTransfer vendorItem = result.getVendorItem();
+
+        var commandResult = VendorUtil.getHome().getVendorItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetVendorItemResult)executionResult.getResult();
+        var vendorItem = result.getVendorItem();
         
         if(vendorItem == null) {
             forwardKey = ForwardConstants.ERROR_404;

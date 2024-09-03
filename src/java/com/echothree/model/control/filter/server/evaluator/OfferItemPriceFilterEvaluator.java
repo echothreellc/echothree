@@ -22,23 +22,12 @@ import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.common.FilterTypes;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.evaluator.FilterItemSelectorEvaluator;
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentDetail;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentFixedAmount;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentPercent;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
-import com.echothree.model.data.filter.server.entity.FilterDetail;
 import com.echothree.model.data.filter.server.entity.FilterStep;
-import com.echothree.model.data.filter.server.entity.FilterStepDetail;
-import com.echothree.model.data.filter.server.entity.FilterStepElementDetail;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemFixedPrice;
 import com.echothree.model.data.item.server.entity.ItemPrice;
-import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
@@ -67,12 +56,12 @@ public class OfferItemPriceFilterEvaluator
     protected FilteredItemFixedPrice applyFilterFixedPriceAdjustment(FilteredItemFixedPrice filteredItemFixedPrice, FilterAdjustment filterAdjustment) {
         if(BaseFilterEvaluatorDebugFlags.OfferItemPriceFilterEvaluator)
             log.info(">>> OfferItemPriceFilterEvaluator.applyFilterFixedPriceAdjustment");
-        
-        FilterAdjustmentDetail filterAdjustmentDetail = filterAdjustment.getLastDetail();
-        String filterAdjustmentSourceName = filterAdjustmentDetail.getFilterAdjustmentSource().getFilterAdjustmentSourceName();
-        FilterAdjustmentType filterAdjustmentType = filterAdjustmentDetail.getFilterAdjustmentType();
+
+        var filterAdjustmentDetail = filterAdjustment.getLastDetail();
+        var filterAdjustmentSourceName = filterAdjustmentDetail.getFilterAdjustmentSource().getFilterAdjustmentSourceName();
+        var filterAdjustmentType = filterAdjustmentDetail.getFilterAdjustmentType();
         long initialUnitPrice = filteredItemFixedPrice.getUnitPrice();
-        long unitPrice = initialUnitPrice;
+        var unitPrice = initialUnitPrice;
         
         if(BaseFilterEvaluatorDebugFlags.OfferItemPriceFilterEvaluator) {
             log.info("--- filterAdjustmentName = " + filterAdjustmentDetail.getFilterAdjustmentName());
@@ -97,14 +86,14 @@ public class OfferItemPriceFilterEvaluator
             throw new IllegalArgumentException("Unknown filterAdjustmentSourceName");
         
         if(filterAdjustmentType != null) {
-            String filterAdjustmentTypeName = filterAdjustmentType.getFilterAdjustmentTypeName();
-            UnitOfMeasureType unitOfMeasureType = filteredItemFixedPrice.getUnitOfMeasureType();
-            Currency currency = filteredItemFixedPrice.getCurrency();
+            var filterAdjustmentTypeName = filterAdjustmentType.getFilterAdjustmentTypeName();
+            var unitOfMeasureType = filteredItemFixedPrice.getUnitOfMeasureType();
+            var currency = filteredItemFixedPrice.getCurrency();
             
             if(BaseFilterEvaluatorDebugFlags.OfferItemPriceFilterEvaluator)
                 log.info("--- filterAdjustmentTypeName = " + filterAdjustmentTypeName);
             if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.AMOUNT.name())) {
-                FilterAdjustmentAmount filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency);
+                var filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency);
                 
                 if(filterAdjustmentAmount != null) {
                     long amount = filterAdjustmentAmount.getAmount();
@@ -114,13 +103,13 @@ public class OfferItemPriceFilterEvaluator
                         unitPrice = 0;
                 }
             } else if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.FIXED_AMOUNT.name())) {
-                FilterAdjustmentFixedAmount filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmount(filterAdjustment, unitOfMeasureType, currency);
+                var filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmount(filterAdjustment, unitOfMeasureType, currency);
                 
                 if(filterAdjustmentFixedAmount != null) {
                     unitPrice = filterAdjustmentFixedAmount.getUnitAmount();
                 }
             } else if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.PERCENT.name())) {
-                FilterAdjustmentPercent filterAdjustmentPercent = filterControl.getFilterAdjustmentPercent(filterAdjustment, unitOfMeasureType, currency);
+                var filterAdjustmentPercent = filterControl.getFilterAdjustmentPercent(filterAdjustment, unitOfMeasureType, currency);
                 
                 if(filterAdjustmentPercent != null) {
                     int percent = filterAdjustmentPercent.getPercent();
@@ -147,26 +136,26 @@ public class OfferItemPriceFilterEvaluator
     }
     
     protected FilteredItemFixedPrice evaluateFilterStep(FilterStep filterStep, FilteredItemFixedPrice filteredItemFixedPrice) {
-        FilterStepDetail filterStepDetail = filterStep.getLastDetail();
+        var filterStepDetail = filterStep.getLastDetail();
         
         if(BaseFilterEvaluatorDebugFlags.OfferItemPriceFilterEvaluator)
             log.info(">>> OfferItemPriceFilterEvaluator.evaluateFilterStep, filterStepName = " + filterStepDetail.getFilterStepName());
-        
-        Selector filterItemSelector = filterStepDetail.getFilterItemSelector();
-        boolean useFilterStep = filterItemSelector == null? true: filterItemSelectorEvaluator.evaluate(selectorCache.getSelector(filterItemSelector), item);
+
+        var filterItemSelector = filterStepDetail.getFilterItemSelector();
+        var useFilterStep = filterItemSelector == null? true: filterItemSelectorEvaluator.evaluate(selectorCache.getSelector(filterItemSelector), item);
         
         if(useFilterStep) {
-            List<FilterStepElementDetail> filterStepElementDetails = cachedFilter.getFilterStepElementDetailsByFilterStep(filterStep);
-            TreeSet<FilteredItemFixedPrice> evaluatedPrices = new TreeSet<>();
+            var filterStepElementDetails = cachedFilter.getFilterStepElementDetailsByFilterStep(filterStep);
+            var evaluatedPrices = new TreeSet<FilteredItemFixedPrice>();
             
             for(var filterStepElementDetail : filterStepElementDetails) {
                 if(BaseFilterEvaluatorDebugFlags.OfferItemPriceFilterEvaluator)
                     log.info("--- filterStepElementName = " + filterStepElementDetail.getFilterStepElementName());
                 
                 filterItemSelector = filterStepElementDetail.getFilterItemSelector();
-                boolean useFilterStepElement = filterItemSelector == null? true: filterItemSelectorEvaluator.evaluate(selectorCache.getSelector(filterItemSelector), item);
+                var useFilterStepElement = filterItemSelector == null? true: filterItemSelectorEvaluator.evaluate(selectorCache.getSelector(filterItemSelector), item);
                 if(useFilterStepElement) {
-                    FilterAdjustment filterAdjustment = filterStepElementDetail.getFilterAdjustment();
+                    var filterAdjustment = filterStepElementDetail.getFilterAdjustment();
                     
                     evaluatedPrices.add(applyFilterFixedPriceAdjustment(filteredItemFixedPrice, filterAdjustment));
                 }
@@ -186,10 +175,10 @@ public class OfferItemPriceFilterEvaluator
     protected FilteredItemFixedPrice evaluateFilterSteps(List<FilterStep> nextFilterSteps, FilteredItemFixedPrice filteredItemFixedPrice) {
         if(BaseFilterEvaluatorDebugFlags.OfferItemPriceFilterEvaluator)
             log.info(">>> OfferItemPriceFilterEvaluator.evaluateFilterSteps, nextFilterSteps.size() = " + nextFilterSteps.size());
-        
-        TreeSet<FilteredItemFixedPrice> evaluatedPrices = new TreeSet<>();
+
+        var evaluatedPrices = new TreeSet<FilteredItemFixedPrice>();
         for(var filterStep : nextFilterSteps) {
-            FilteredItemFixedPrice evaluatedPrice = evaluateFilterStep(filterStep, filteredItemFixedPrice);
+            var evaluatedPrice = evaluateFilterStep(filterStep, filteredItemFixedPrice);
             
             if(evaluatedPrice != null) {
                 nextFilterSteps = cachedFilter.getFilterStepDestinationsByFilterStep(filterStep);
@@ -217,17 +206,17 @@ public class OfferItemPriceFilterEvaluator
             throw new IllegalArgumentException("itemPrice == null");
         if(itemFixedPrice == null)
             throw new IllegalArgumentException("itemFixedPrice == null");
-        
-        UnitOfMeasureType unitOfMeasureType = itemPrice.getUnitOfMeasureType();
-        Currency currency = itemPrice.getCurrency();
+
+        var unitOfMeasureType = itemPrice.getUnitOfMeasureType();
+        var currency = itemPrice.getCurrency();
         listUnitPrice = itemFixedPrice.getUnitPrice();
-        
-        FilteredItemFixedPrice filteredItemFixedPrice = new FilteredItemFixedPrice(item, unitOfMeasureType, currency, listUnitPrice);
+
+        var filteredItemFixedPrice = new FilteredItemFixedPrice(item, unitOfMeasureType, currency, listUnitPrice);
         
         if(filter != null) {
-            FilterDetail filterDetail = filter.getLastDetail();
-            Selector selector = filterDetail.getFilterItemSelector();
-            boolean useFilter = selector == null? true: filterItemSelectorEvaluator.evaluate(selectorCache.getSelector(selector), item);
+            var filterDetail = filter.getLastDetail();
+            var selector = filterDetail.getFilterItemSelector();
+            var useFilter = selector == null? true: filterItemSelectorEvaluator.evaluate(selectorCache.getSelector(selector), item);
             
             if(BaseFilterEvaluatorDebugFlags.OfferItemPriceFilterEvaluator) {
                 log.info("--- filterName = " + filterDetail.getFilterName() + ", selectorName = " + selector == null? "none": selector.getLastDetail().getSelectorName()
@@ -235,7 +224,7 @@ public class OfferItemPriceFilterEvaluator
             }
             
             if(useFilter) {
-                FilterAdjustment initialFilterAdjustment = filterDetail.getInitialFilterAdjustment();
+                var initialFilterAdjustment = filterDetail.getInitialFilterAdjustment();
                 
                 cachedFilter = filterCache.getFilter(filter);
                 this.item = item;
@@ -243,8 +232,8 @@ public class OfferItemPriceFilterEvaluator
                 this.itemFixedPrice = itemFixedPrice;
                 
                 filteredItemFixedPrice = applyFilterFixedPriceAdjustment(filteredItemFixedPrice, initialFilterAdjustment);
-                
-                List<FilterStep> filterEntranceSteps = cachedFilter.getFilterEntranceSteps();
+
+                var filterEntranceSteps = cachedFilter.getFilterEntranceSteps();
                 List<FilterStep> nextFilterSteps = new ArrayList<>(filterEntranceSteps.size());
                 
                 nextFilterSteps.addAll(filterEntranceSteps);

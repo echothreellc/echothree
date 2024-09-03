@@ -21,7 +21,6 @@ import com.echothree.model.control.content.server.logic.ContentPageLayoutLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -60,8 +59,8 @@ public class DeleteContentPageLayoutCommand
     
     @Override
     protected BaseResult execute() {
-        String contentPageLayoutName = form.getContentPageLayoutName();
-        ContentPageLayout contentPageLayout = ContentPageLayoutLogic.getInstance().getContentPageLayoutByNameForUpdate(this, contentPageLayoutName);
+        var contentPageLayoutName = form.getContentPageLayoutName();
+        var contentPageLayout = ContentPageLayoutLogic.getInstance().getContentPageLayoutByNameForUpdate(this, contentPageLayoutName);
         
         if(!hasExecutionErrors()) {
             ContentPageLayoutLogic.getInstance().deleteContentPageLayout(this, contentPageLayout, getPartyPK());

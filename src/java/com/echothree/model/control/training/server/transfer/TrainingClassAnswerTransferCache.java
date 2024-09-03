@@ -17,10 +17,8 @@
 package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.model.control.training.common.transfer.TrainingClassAnswerTransfer;
-import com.echothree.model.control.training.common.transfer.TrainingClassQuestionTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassAnswer;
-import com.echothree.model.data.training.server.entity.TrainingClassAnswerDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class TrainingClassAnswerTransferCache
@@ -34,14 +32,14 @@ public class TrainingClassAnswerTransferCache
     }
     
     public TrainingClassAnswerTransfer getTrainingClassAnswerTransfer(TrainingClassAnswer trainingClassAnswer) {
-        TrainingClassAnswerTransfer trainingClassAnswerTransfer = get(trainingClassAnswer);
+        var trainingClassAnswerTransfer = get(trainingClassAnswer);
         
         if(trainingClassAnswerTransfer == null) {
-            TrainingClassAnswerDetail trainingClassAnswerDetail = trainingClassAnswer.getLastDetail();
-            TrainingClassQuestionTransfer trainingClassQuestion = trainingControl.getTrainingClassQuestionTransfer(userVisit, trainingClassAnswerDetail.getTrainingClassQuestion());
-            String trainingClassAnswerName = trainingClassAnswerDetail.getTrainingClassAnswerName();
-            Boolean isCorrect = trainingClassAnswerDetail.getIsCorrect();
-            Integer sortOrder = trainingClassAnswerDetail.getSortOrder();
+            var trainingClassAnswerDetail = trainingClassAnswer.getLastDetail();
+            var trainingClassQuestion = trainingControl.getTrainingClassQuestionTransfer(userVisit, trainingClassAnswerDetail.getTrainingClassQuestion());
+            var trainingClassAnswerName = trainingClassAnswerDetail.getTrainingClassAnswerName();
+            var isCorrect = trainingClassAnswerDetail.getIsCorrect();
+            var sortOrder = trainingClassAnswerDetail.getSortOrder();
             
             trainingClassAnswerTransfer = new TrainingClassAnswerTransfer(trainingClassQuestion, trainingClassAnswerName, isCorrect, sortOrder);
             put(trainingClassAnswer, trainingClassAnswerTransfer);

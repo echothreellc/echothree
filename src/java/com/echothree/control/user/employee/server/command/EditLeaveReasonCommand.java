@@ -27,10 +27,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.employee.server.entity.LeaveReason;
-import com.echothree.model.data.employee.server.entity.LeaveReasonDescription;
-import com.echothree.model.data.employee.server.entity.LeaveReasonDetail;
-import com.echothree.model.data.employee.server.value.LeaveReasonDescriptionValue;
-import com.echothree.model.data.employee.server.value.LeaveReasonDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -90,8 +86,8 @@ public class EditLeaveReasonCommand
     @Override
     public LeaveReason getEntity(EditLeaveReasonResult result) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        LeaveReason leaveReason = null;
-        String leaveReasonName = spec.getLeaveReasonName();
+        LeaveReason leaveReason;
+        var leaveReasonName = spec.getLeaveReasonName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
@@ -123,8 +119,8 @@ public class EditLeaveReasonCommand
     @Override
     public void doLock(LeaveReasonEdit edit, LeaveReason leaveReason) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        LeaveReasonDescription leaveReasonDescription = employeeControl.getLeaveReasonDescription(leaveReason, getPreferredLanguage());
-        LeaveReasonDetail leaveReasonDetail = leaveReason.getLastDetail();
+        var leaveReasonDescription = employeeControl.getLeaveReasonDescription(leaveReason, getPreferredLanguage());
+        var leaveReasonDetail = leaveReason.getLastDetail();
 
         edit.setLeaveReasonName(leaveReasonDetail.getLeaveReasonName());
         edit.setIsDefault(leaveReasonDetail.getIsDefault().toString());
@@ -138,8 +134,8 @@ public class EditLeaveReasonCommand
     @Override
     public void canUpdate(LeaveReason leaveReason) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        String leaveReasonName = edit.getLeaveReasonName();
-        LeaveReason duplicateLeaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
+        var leaveReasonName = edit.getLeaveReasonName();
+        var duplicateLeaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
 
         if(duplicateLeaveReason != null && !leaveReason.equals(duplicateLeaveReason)) {
             addExecutionError(ExecutionErrors.DuplicateLeaveReasonName.name(), leaveReasonName);
@@ -150,9 +146,9 @@ public class EditLeaveReasonCommand
     public void doUpdate(LeaveReason leaveReason) {
         var employeeControl = Session.getModelController(EmployeeControl.class);
         var partyPK = getPartyPK();
-        LeaveReasonDetailValue leaveReasonDetailValue = employeeControl.getLeaveReasonDetailValueForUpdate(leaveReason);
-        LeaveReasonDescription leaveReasonDescription = employeeControl.getLeaveReasonDescriptionForUpdate(leaveReason, getPreferredLanguage());
-        String description = edit.getDescription();
+        var leaveReasonDetailValue = employeeControl.getLeaveReasonDetailValueForUpdate(leaveReason);
+        var leaveReasonDescription = employeeControl.getLeaveReasonDescriptionForUpdate(leaveReason, getPreferredLanguage());
+        var description = edit.getDescription();
 
         leaveReasonDetailValue.setLeaveReasonName(edit.getLeaveReasonName());
         leaveReasonDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -165,7 +161,7 @@ public class EditLeaveReasonCommand
         } else if(leaveReasonDescription != null && description == null) {
             employeeControl.deleteLeaveReasonDescription(leaveReasonDescription, partyPK);
         } else if(leaveReasonDescription != null && description != null) {
-            LeaveReasonDescriptionValue leaveReasonDescriptionValue = employeeControl.getLeaveReasonDescriptionValue(leaveReasonDescription);
+            var leaveReasonDescriptionValue = employeeControl.getLeaveReasonDescriptionValue(leaveReasonDescription);
 
             leaveReasonDescriptionValue.setDescription(description);
             employeeControl.updateLeaveReasonDescriptionFromValue(leaveReasonDescriptionValue, partyPK);

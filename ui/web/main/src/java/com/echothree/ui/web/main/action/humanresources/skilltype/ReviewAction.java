@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.humanresources.skilltype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetSkillTypeForm;
 import com.echothree.control.user.employee.common.result.GetSkillTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetSkillTypeForm commandForm = EmployeeUtil.getHome().getGetSkillTypeForm();
-            String skillTypeName = request.getParameter(ParameterConstants.SKILL_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getGetSkillTypeForm();
+            var skillTypeName = request.getParameter(ParameterConstants.SKILL_TYPE_NAME);
             
             commandForm.setSkillTypeName(skillTypeName);
-            
-            CommandResult commandResult = EmployeeUtil.getHome().getSkillType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSkillTypeResult result = (GetSkillTypeResult)executionResult.getResult();
+
+            var commandResult = EmployeeUtil.getHome().getSkillType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSkillTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SKILL_TYPE, result.getSkillType());
             forwardKey = ForwardConstants.DISPLAY;

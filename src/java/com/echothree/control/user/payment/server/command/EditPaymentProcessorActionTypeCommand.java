@@ -28,11 +28,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorActionTypeDescription;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorActionTypeDetail;
-import com.echothree.model.data.payment.server.value.PaymentProcessorActionTypeDescriptionValue;
-import com.echothree.model.data.payment.server.value.PaymentProcessorActionTypeDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -112,8 +107,8 @@ public class EditPaymentProcessorActionTypeCommand
     @Override
     public void doLock(PaymentProcessorActionTypeEdit edit, PaymentProcessorActionType paymentProcessorActionType) {
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-        PaymentProcessorActionTypeDescription paymentProcessorActionTypeDescription = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescription(paymentProcessorActionType, getPreferredLanguage());
-        PaymentProcessorActionTypeDetail paymentProcessorActionTypeDetail = paymentProcessorActionType.getLastDetail();
+        var paymentProcessorActionTypeDescription = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescription(paymentProcessorActionType, getPreferredLanguage());
+        var paymentProcessorActionTypeDetail = paymentProcessorActionType.getLastDetail();
         
         edit.setPaymentProcessorActionTypeName(paymentProcessorActionTypeDetail.getPaymentProcessorActionTypeName());
         edit.setIsDefault(paymentProcessorActionTypeDetail.getIsDefault().toString());
@@ -127,8 +122,8 @@ public class EditPaymentProcessorActionTypeCommand
     @Override
     public void canUpdate(PaymentProcessorActionType paymentProcessorActionType) {
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-        String paymentProcessorActionTypeName = edit.getPaymentProcessorActionTypeName();
-        PaymentProcessorActionType duplicatePaymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName);
+        var paymentProcessorActionTypeName = edit.getPaymentProcessorActionTypeName();
+        var duplicatePaymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName);
 
         if(duplicatePaymentProcessorActionType != null && !paymentProcessorActionType.equals(duplicatePaymentProcessorActionType)) {
             addExecutionError(ExecutionErrors.DuplicatePaymentProcessorActionTypeName.name(), paymentProcessorActionTypeName);
@@ -139,9 +134,9 @@ public class EditPaymentProcessorActionTypeCommand
     public void doUpdate(PaymentProcessorActionType paymentProcessorActionType) {
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         var partyPK = getPartyPK();
-        PaymentProcessorActionTypeDetailValue paymentProcessorActionTypeDetailValue = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDetailValueForUpdate(paymentProcessorActionType);
-        PaymentProcessorActionTypeDescription paymentProcessorActionTypeDescription = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescriptionForUpdate(paymentProcessorActionType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var paymentProcessorActionTypeDetailValue = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDetailValueForUpdate(paymentProcessorActionType);
+        var paymentProcessorActionTypeDescription = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescriptionForUpdate(paymentProcessorActionType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         paymentProcessorActionTypeDetailValue.setPaymentProcessorActionTypeName(edit.getPaymentProcessorActionTypeName());
         paymentProcessorActionTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -154,7 +149,7 @@ public class EditPaymentProcessorActionTypeCommand
         } else if(paymentProcessorActionTypeDescription != null && description == null) {
             paymentProcessorActionTypeControl.deletePaymentProcessorActionTypeDescription(paymentProcessorActionTypeDescription, partyPK);
         } else if(paymentProcessorActionTypeDescription != null && description != null) {
-            PaymentProcessorActionTypeDescriptionValue paymentProcessorActionTypeDescriptionValue = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescriptionValue(paymentProcessorActionTypeDescription);
+            var paymentProcessorActionTypeDescriptionValue = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescriptionValue(paymentProcessorActionTypeDescription);
 
             paymentProcessorActionTypeDescriptionValue.setDescription(description);
             paymentProcessorActionTypeControl.updatePaymentProcessorActionTypeDescriptionFromValue(paymentProcessorActionTypeDescriptionValue, partyPK);

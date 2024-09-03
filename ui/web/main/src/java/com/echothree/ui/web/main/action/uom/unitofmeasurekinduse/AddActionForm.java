@@ -17,14 +17,10 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasurekinduse;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.form.GetUnitOfMeasureKindChoicesForm;
-import com.echothree.control.user.uom.common.form.GetUnitOfMeasureKindUseTypeChoicesForm;
 import com.echothree.control.user.uom.common.result.GetUnitOfMeasureKindChoicesResult;
 import com.echothree.control.user.uom.common.result.GetUnitOfMeasureKindUseTypeChoicesResult;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureKindChoicesBean;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureKindUseTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -51,14 +47,14 @@ public class AddActionForm
     private void setupUnitOfMeasureKindChoices()
             throws NamingException {
         if(unitOfMeasureKindChoices == null) {
-            GetUnitOfMeasureKindChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureKindChoicesForm();
+            var form = UomUtil.getHome().getGetUnitOfMeasureKindChoicesForm();
 
             form.setDefaultUnitOfMeasureKindChoice(unitOfMeasureKindChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureKindChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureKindChoicesResult getUnitOfMeasureKindChoicesResult = (GetUnitOfMeasureKindChoicesResult)executionResult.getResult();
+            var commandResult = UomUtil.getHome().getUnitOfMeasureKindChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureKindChoicesResult = (GetUnitOfMeasureKindChoicesResult)executionResult.getResult();
             unitOfMeasureKindChoices = getUnitOfMeasureKindChoicesResult.getUnitOfMeasureKindChoices();
 
             if(unitOfMeasureKindChoice == null) {
@@ -70,14 +66,14 @@ public class AddActionForm
     private void setupUnitOfMeasureKindUseTypeChoices()
             throws NamingException {
         if(unitOfMeasureKindUseTypeChoices == null) {
-            GetUnitOfMeasureKindUseTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureKindUseTypeChoicesForm();
+            var form = UomUtil.getHome().getGetUnitOfMeasureKindUseTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureKindUseTypeChoice(unitOfMeasureKindUseTypeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureKindUseTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureKindUseTypeChoicesResult getUnitOfMeasureKindUseTypeChoicesResult = (GetUnitOfMeasureKindUseTypeChoicesResult)executionResult.getResult();
+            var commandResult = UomUtil.getHome().getUnitOfMeasureKindUseTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureKindUseTypeChoicesResult = (GetUnitOfMeasureKindUseTypeChoicesResult)executionResult.getResult();
             unitOfMeasureKindUseTypeChoices = getUnitOfMeasureKindUseTypeChoicesResult.getUnitOfMeasureKindUseTypeChoices();
 
             if(unitOfMeasureKindUseTypeChoice == null) {

@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.letter;
 
 import com.echothree.control.user.letter.common.LetterUtil;
 import com.echothree.control.user.letter.common.LetterService;
-import com.echothree.control.user.letter.common.form.CreateLetterSourceDescriptionForm;
 import com.echothree.control.user.letter.common.form.LetterFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -49,7 +48,7 @@ public class LetterSourceHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("letterSourceDescription")) {
-            CreateLetterSourceDescriptionForm commandForm = LetterFormFactory.getCreateLetterSourceDescriptionForm();
+            var commandForm = LetterFormFactory.getCreateLetterSourceDescriptionForm();
             
             commandForm.setLetterSourceName(letterSourceName);
             commandForm.set(getAttrsMap(attrs));

@@ -17,13 +17,10 @@
 package com.echothree.control.user.workrequirement.server.command;
 
 import com.echothree.control.user.workrequirement.common.form.GetWorkRequirementTypesForm;
-import com.echothree.control.user.workrequirement.common.result.GetWorkRequirementTypesResult;
 import com.echothree.control.user.workrequirement.common.result.WorkRequirementResultFactory;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -53,13 +50,13 @@ public class GetWorkRequirementTypesCommand
     @Override
     protected BaseResult execute() {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        GetWorkRequirementTypesResult result = WorkRequirementResultFactory.getGetWorkRequirementTypesResult();
-        String workEffortTypeName = form.getWorkEffortTypeName();
-        WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
+        var result = WorkRequirementResultFactory.getGetWorkRequirementTypesResult();
+        var workEffortTypeName = form.getWorkEffortTypeName();
+        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
         var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setWorkEffortType(workEffortControl.getWorkEffortTypeTransfer(userVisit, workEffortType));
             result.setWorkRequirementTypes(workRequirementControl.getWorkRequirementTypeTransfers(userVisit, workEffortType));

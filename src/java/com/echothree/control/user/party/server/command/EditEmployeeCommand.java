@@ -32,7 +32,6 @@ import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.employee.server.entity.EmployeeType;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
@@ -271,7 +270,7 @@ public class EditEmployeeCommand
 
         partySecurityRoleTemplateUseValue.setPartySecurityRoleTemplatePK(partySecurityRoleTemplate.getPrimaryKey());
 
-        PartyPK updatedBy = getPartyPK();
+        var updatedBy = getPartyPK();
         employeeControl.updatePartyEmployeeFromValue(partyEmployeeValue, updatedBy);
         partyControl.updatePartyFromValue(partyDetailValue, updatedBy);
         partyControl.updatePersonFromValue(personValue, updatedBy);

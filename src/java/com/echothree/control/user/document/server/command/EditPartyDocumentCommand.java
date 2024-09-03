@@ -29,18 +29,10 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.core.server.entity.MimeTypeUsage;
-import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.document.server.entity.Document;
 import com.echothree.model.data.document.server.entity.DocumentBlob;
 import com.echothree.model.data.document.server.entity.DocumentClob;
-import com.echothree.model.data.document.server.entity.DocumentDescription;
 import com.echothree.model.data.document.server.entity.PartyDocument;
-import com.echothree.model.data.document.server.value.DocumentBlobValue;
-import com.echothree.model.data.document.server.value.DocumentClobValue;
-import com.echothree.model.data.document.server.value.DocumentDescriptionValue;
-import com.echothree.model.data.document.server.value.DocumentDetailValue;
-import com.echothree.model.data.document.server.value.PartyDocumentValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -103,8 +95,8 @@ public class EditPartyDocumentCommand
     public PartyDocument getEntity(EditPartyDocumentResult result) {
         var documentControl = Session.getModelController(DocumentControl.class);
         PartyDocument partyDocument = null;
-        String documentName = spec.getDocumentName();
-        Document document = documentControl.getDocumentByName(documentName);
+        var documentName = spec.getDocumentName();
+        var document = documentControl.getDocumentByName(documentName);
 
         if(document != null) {
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -142,8 +134,8 @@ public class EditPartyDocumentCommand
     @Override
     public void doLock(PartyDocumentEdit edit, PartyDocument partyDocument) {
         var documentControl = Session.getModelController(DocumentControl.class);
-        Document document = partyDocument.getDocument();
-        DocumentDescription documentDescription = documentControl.getDocumentDescription(document, getPreferredLanguage());
+        var document = partyDocument.getDocument();
+        var documentDescription = documentControl.getDocumentDescription(document, getPreferredLanguage());
 
         mimeType = document.getLastDetail().getMimeType();
 
@@ -152,7 +144,7 @@ public class EditPartyDocumentCommand
         edit.setSortOrder(partyDocument.getSortOrder().toString());
 
         if(mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName().equals(EntityAttributeTypes.CLOB.name())) {
-            DocumentClob documentClob = documentControl.getDocumentClob(document);
+            var documentClob = documentControl.getDocumentClob(document);
 
             edit.setClob(documentClob.getClob());
         }
@@ -165,25 +157,25 @@ public class EditPartyDocumentCommand
     @Override
     public void canUpdate(PartyDocument partyDocument) {
         var coreControl = getCoreControl();
-        String mimeTypeName = edit.getMimeTypeName();
+        var mimeTypeName = edit.getMimeTypeName();
 
         mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType != null) {
-            MimeTypeUsageType mimeTypeUsageType = partyDocument.getDocument().getLastDetail().getDocumentType().getLastDetail().getMimeTypeUsageType();
-            MimeTypeUsage mimeTypeUsage = mimeTypeUsageType == null ? null : coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
+            var mimeTypeUsageType = partyDocument.getDocument().getLastDetail().getDocumentType().getLastDetail().getMimeTypeUsageType();
+            var mimeTypeUsage = mimeTypeUsageType == null ? null : coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
 
             if(mimeTypeUsageType == null || mimeTypeUsage != null) {
-                String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+                var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
 
                 if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
-                    ByteArray blob = edit.getBlob();
+                    var blob = edit.getBlob();
 
                     if(blob == null) {
                         addExecutionError(ExecutionErrors.MissingBlob.name());
                     }
                 } else if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-                    String clob = edit.getClob();
+                    var clob = edit.getClob();
 
                     if(clob == null) {
                         addExecutionError(ExecutionErrors.MissingClob.name());
@@ -202,12 +194,12 @@ public class EditPartyDocumentCommand
     @Override
     public void doUpdate(PartyDocument partyDocument) {
         var documentControl = Session.getModelController(DocumentControl.class);
-        PartyDocumentValue partyDocumentValue = documentControl.getPartyDocumentValueForUpdate(partyDocument);
-        Document document = partyDocument.getDocument();
-        DocumentDetailValue documentDetailValue = documentControl.getDocumentDetailValueForUpdate(document);
-        ByteArray blob = edit.getBlob();
-        String clob = edit.getClob();
-        Integer pages = DocumentLogic.getInstance().getPages(mimeType, blob, clob);
+        var partyDocumentValue = documentControl.getPartyDocumentValueForUpdate(partyDocument);
+        var document = partyDocument.getDocument();
+        var documentDetailValue = documentControl.getDocumentDetailValueForUpdate(document);
+        var blob = edit.getBlob();
+        var clob = edit.getClob();
+        var pages = DocumentLogic.getInstance().getPages(mimeType, blob, clob);
         var partyPK = getPartyPK();
 
         partyDocumentValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -228,8 +220,8 @@ public class EditPartyDocumentCommand
         var documentControl = Session.getModelController(DocumentControl.class);
         DocumentBlob documentBlob = null;
         DocumentClob documentClob = null;
-        String oldEntityAttributeTypeName = document.getLastDetail().getMimeType().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
-        String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+        var oldEntityAttributeTypeName = document.getLastDetail().getMimeType().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+        var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
         var partyPK = getPartyPK();
 
         if(oldEntityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
@@ -243,7 +235,7 @@ public class EditPartyDocumentCommand
                 documentControl.deleteDocumentClob(documentClob, partyPK);
                 documentControl.createDocumentBlob(document, blob, partyPK);
             } else {
-                DocumentBlobValue documentBlobValue = documentControl.getDocumentBlobValue(documentBlob);
+                var documentBlobValue = documentControl.getDocumentBlobValue(documentBlob);
                 documentBlobValue.setBlob(blob);
                 documentControl.updateDocumentBlobFromValue(documentBlobValue, partyPK);
             }
@@ -252,7 +244,7 @@ public class EditPartyDocumentCommand
                 documentControl.deleteDocumentBlob(documentBlob, partyPK);
                 documentControl.createDocumentClob(document, clob, partyPK);
             } else {
-                DocumentClobValue documentClobValue = documentControl.getDocumentClobValue(documentClob);
+                var documentClobValue = documentControl.getDocumentClobValue(documentClob);
                 documentClobValue.setClob(clob);
                 documentControl.updateDocumentClobFromValue(documentClobValue, partyPK);
             }
@@ -261,8 +253,8 @@ public class EditPartyDocumentCommand
 
     private void doDescriptionUpdate(Document document) {
         var documentControl = Session.getModelController(DocumentControl.class);
-        DocumentDescription documentDescription = documentControl.getDocumentDescriptionForUpdate(document, getPreferredLanguage());
-        String description = edit.getDescription();
+        var documentDescription = documentControl.getDocumentDescriptionForUpdate(document, getPreferredLanguage());
+        var description = edit.getDescription();
         var partyPK = getPartyPK();
 
         if(documentDescription == null && description != null) {
@@ -272,7 +264,7 @@ public class EditPartyDocumentCommand
                 documentControl.deleteDocumentDescription(documentDescription, partyPK);
             } else {
                 if(documentDescription != null && description != null) {
-                    DocumentDescriptionValue documentDescriptionValue = documentControl.getDocumentDescriptionValue(documentDescription);
+                    var documentDescriptionValue = documentControl.getDocumentDescriptionValue(documentDescription);
                     documentDescriptionValue.setDescription(description);
                     documentControl.updateDocumentDescriptionFromValue(documentDescriptionValue, partyPK);
                 }

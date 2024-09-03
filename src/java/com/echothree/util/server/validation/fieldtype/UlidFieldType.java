@@ -17,7 +17,6 @@
 package com.echothree.util.server.validation.fieldtype;
 
 import com.echothree.util.common.validation.FieldDefinition;
-import static com.echothree.util.common.validation.FieldType.ULID;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
@@ -39,16 +38,16 @@ public class UlidFieldType
     
     @Override
     public String validate() {
-        int length = fieldValue.length();
-        boolean hadErrors = false;
+        var length = fieldValue.length();
+        var hadErrors = false;
 
-        Long minimumValue = fieldDefinition.getMinimumValue();
+        var minimumValue = fieldDefinition.getMinimumValue();
         if(length < (minimumValue == null ? defaultMinimumLength : minimumValue)) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_MINIMUM_LENGTH, minimumValue == null ? defaultMinimumLengthLong : minimumValue));
             hadErrors = true;
         }
 
-        Long maximumValue = fieldDefinition.getMaximumValue();
+        var maximumValue = fieldDefinition.getMaximumValue();
         if(length > (maximumValue == null ? defaultMaximumLength : maximumValue)) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_MAXIMUM_LENGTH, maximumValue == null ? defaultMaximumLengthLong : maximumValue));
             hadErrors = true;

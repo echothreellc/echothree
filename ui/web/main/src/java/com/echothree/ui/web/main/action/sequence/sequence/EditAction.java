@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.sequence.sequence;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.edit.SequenceEdit;
-import com.echothree.control.user.sequence.common.form.EditSequenceForm;
 import com.echothree.control.user.sequence.common.result.EditSequenceResult;
-import com.echothree.control.user.sequence.common.spec.SequenceSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -58,11 +53,11 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
-        String originalSequenceName = request.getParameter(ParameterConstants.ORIGINAL_SEQUENCE_NAME);
-        EditSequenceForm commandForm = SequenceUtil.getHome().getEditSequenceForm();
-        SequenceSpec spec = SequenceUtil.getHome().getSequenceSpec();
+        String forwardKey;
+        var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
+        var originalSequenceName = request.getParameter(ParameterConstants.ORIGINAL_SEQUENCE_NAME);
+        var commandForm = SequenceUtil.getHome().getEditSequenceForm();
+        var spec = SequenceUtil.getHome().getSequenceSpec();
 
         if(sequenceTypeName == null) {
             sequenceTypeName = actionForm.getSequenceTypeName();
@@ -77,7 +72,7 @@ public class EditAction
         spec.setSequenceName(originalSequenceName);
 
         if(wasPost(request)) {
-            SequenceEdit edit = SequenceUtil.getHome().getSequenceEdit();
+            var edit = SequenceUtil.getHome().getSequenceEdit();
 
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
@@ -89,13 +84,13 @@ public class EditAction
             edit.setSortOrder(actionForm.getSortOrder());
             edit.setDescription(actionForm.getDescription());
 
-            CommandResult commandResult = SequenceUtil.getHome().editSequence(getUserVisitPK(request), commandForm);
+            var commandResult = SequenceUtil.getHome().editSequence(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {
-                    EditSequenceResult result = (EditSequenceResult)executionResult.getResult();
+                    var result = (EditSequenceResult)executionResult.getResult();
 
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -109,12 +104,12 @@ public class EditAction
         } else {
             commandForm.setEditMode(EditMode.LOCK);
 
-            CommandResult commandResult = SequenceUtil.getHome().editSequence(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditSequenceResult result = (EditSequenceResult)executionResult.getResult();
+            var commandResult = SequenceUtil.getHome().editSequence(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditSequenceResult)executionResult.getResult();
 
             if(result != null) {
-                SequenceEdit edit = result.getEdit();
+                var edit = result.getEdit();
 
                 if(edit != null) {
                     actionForm.setSequenceTypeName(sequenceTypeName);
@@ -135,7 +130,7 @@ public class EditAction
             forwardKey = ForwardConstants.FORM;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SEQUENCE_TYPE_NAME, sequenceTypeName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

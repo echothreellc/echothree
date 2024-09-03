@@ -17,16 +17,12 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetRelatedItemTypeDescriptionForm;
-import com.echothree.control.user.item.common.result.GetRelatedItemTypeDescriptionResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.RelatedItemType;
-import com.echothree.model.data.item.server.entity.RelatedItemTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetRelatedItemTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetRelatedItemTypeDescriptionResult result = ItemResultFactory.getGetRelatedItemTypeDescriptionResult();
-        String relatedItemTypeName = form.getRelatedItemTypeName();
-        RelatedItemType relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
+        var result = ItemResultFactory.getGetRelatedItemTypeDescriptionResult();
+        var relatedItemTypeName = form.getRelatedItemTypeName();
+        var relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
         
         if(relatedItemType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                RelatedItemTypeDescription relatedItemTypeDescription = itemControl.getRelatedItemTypeDescription(relatedItemType, language);
+                var relatedItemTypeDescription = itemControl.getRelatedItemTypeDescription(relatedItemType, language);
                 
                 if(relatedItemTypeDescription != null) {
                     result.setRelatedItemTypeDescription(itemControl.getRelatedItemTypeDescriptionTransfer(getUserVisit(), relatedItemTypeDescription));

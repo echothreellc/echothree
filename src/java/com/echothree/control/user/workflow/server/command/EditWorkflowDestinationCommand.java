@@ -29,7 +29,6 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.value.WorkflowDestinationDescriptionValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -151,7 +150,7 @@ public class EditWorkflowDestinationCommand
         } else if(workflowDestinationDescription != null && description == null) {
             workflowControl.deleteWorkflowDestinationDescription(workflowDestinationDescription, partyPK);
         } else if(workflowDestinationDescription != null && description != null) {
-            WorkflowDestinationDescriptionValue workflowDestinationDescriptionValue = workflowControl.getWorkflowDestinationDescriptionValue(workflowDestinationDescription);
+            var workflowDestinationDescriptionValue = workflowControl.getWorkflowDestinationDescriptionValue(workflowDestinationDescription);
 
             workflowDestinationDescriptionValue.setDescription(description);
             workflowControl.updateWorkflowDestinationDescriptionFromValue(workflowDestinationDescriptionValue, partyPK);

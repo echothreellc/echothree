@@ -19,7 +19,6 @@ package com.echothree.control.user.employee.server.command;
 import com.echothree.control.user.employee.common.edit.EmployeeEditFactory;
 import com.echothree.control.user.employee.common.edit.TerminationTypeDescriptionEdit;
 import com.echothree.control.user.employee.common.form.EditTerminationTypeDescriptionForm;
-import com.echothree.control.user.employee.common.result.EditTerminationTypeDescriptionResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.TerminationTypeDescriptionSpec;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
@@ -27,10 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.employee.server.entity.TerminationType;
-import com.echothree.model.data.employee.server.entity.TerminationTypeDescription;
-import com.echothree.model.data.employee.server.value.TerminationTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -79,24 +74,24 @@ public class EditTerminationTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        EditTerminationTypeDescriptionResult result = EmployeeResultFactory.getEditTerminationTypeDescriptionResult();
-        String terminationTypeName = spec.getTerminationTypeName();
-        TerminationType terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
+        var result = EmployeeResultFactory.getEditTerminationTypeDescriptionResult();
+        var terminationTypeName = spec.getTerminationTypeName();
+        var terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
         
         if(terminationType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    TerminationTypeDescription terminationTypeDescription = employeeControl.getTerminationTypeDescription(terminationType, language);
+                    var terminationTypeDescription = employeeControl.getTerminationTypeDescription(terminationType, language);
                     
                     if(terminationTypeDescription != null) {
                         result.setTerminationTypeDescription(employeeControl.getTerminationTypeDescriptionTransfer(getUserVisit(), terminationTypeDescription));
                         
                         if(lockEntity(terminationType)) {
-                            TerminationTypeDescriptionEdit edit = EmployeeEditFactory.getTerminationTypeDescriptionEdit();
+                            var edit = EmployeeEditFactory.getTerminationTypeDescriptionEdit();
                             
                             result.setEdit(edit);
                             edit.setDescription(terminationTypeDescription.getDescription());
@@ -109,12 +104,12 @@ public class EditTerminationTypeDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownTerminationTypeDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    TerminationTypeDescriptionValue terminationTypeDescriptionValue = employeeControl.getTerminationTypeDescriptionValueForUpdate(terminationType, language);
+                    var terminationTypeDescriptionValue = employeeControl.getTerminationTypeDescriptionValueForUpdate(terminationType, language);
                     
                     if(terminationTypeDescriptionValue != null) {
                         if(lockEntityForUpdate(terminationType)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 terminationTypeDescriptionValue.setDescription(description);
                                 

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.shipping.carrierserviceoption;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.form.DeleteCarrierServiceOptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,12 +51,12 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
-        String carrierServiceName = request.getParameter(ParameterConstants.CARRIER_SERVICE_NAME);
+        var carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
+        var carrierServiceName = request.getParameter(ParameterConstants.CARRIER_SERVICE_NAME);
         
         try {
-            DeleteCarrierServiceOptionForm commandForm = CarrierUtil.getHome().getDeleteCarrierServiceOptionForm();
-            String carrierOptionName = request.getParameter(ParameterConstants.CARRIER_OPTION_NAME);
+            var commandForm = CarrierUtil.getHome().getDeleteCarrierServiceOptionForm();
+            var carrierOptionName = request.getParameter(ParameterConstants.CARRIER_OPTION_NAME);
             
             commandForm.setCarrierName(carrierName);
             commandForm.setCarrierServiceName(carrierServiceName);
@@ -69,8 +68,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(2);
             

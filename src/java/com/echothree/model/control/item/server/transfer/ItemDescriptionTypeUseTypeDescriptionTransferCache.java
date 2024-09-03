@@ -17,9 +17,7 @@
 package com.echothree.model.control.item.server.transfer;
 
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeUseTypeDescriptionTransfer;
-import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeUseTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -33,11 +31,11 @@ public class ItemDescriptionTypeUseTypeDescriptionTransferCache
     
     @Override
     public ItemDescriptionTypeUseTypeDescriptionTransfer getTransfer(ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription) {
-        ItemDescriptionTypeUseTypeDescriptionTransfer itemDescriptionTypeUseTypeDescriptionTransfer = get(itemDescriptionTypeUseTypeDescription);
+        var itemDescriptionTypeUseTypeDescriptionTransfer = get(itemDescriptionTypeUseTypeDescription);
         
         if(itemDescriptionTypeUseTypeDescriptionTransfer == null) {
-            ItemDescriptionTypeUseTypeTransfer itemDescriptionTypeUseTypeTransfer = itemControl.getItemDescriptionTypeUseTypeTransfer(userVisit, itemDescriptionTypeUseTypeDescription.getItemDescriptionTypeUseType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, itemDescriptionTypeUseTypeDescription.getLanguage());
+            var itemDescriptionTypeUseTypeTransfer = itemControl.getItemDescriptionTypeUseTypeTransfer(userVisit, itemDescriptionTypeUseTypeDescription.getItemDescriptionTypeUseType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemDescriptionTypeUseTypeDescription.getLanguage());
             
             itemDescriptionTypeUseTypeDescriptionTransfer = new ItemDescriptionTypeUseTypeDescriptionTransfer(languageTransfer, itemDescriptionTypeUseTypeTransfer, itemDescriptionTypeUseTypeDescription.getDescription());
             put(itemDescriptionTypeUseTypeDescription, itemDescriptionTypeUseTypeDescriptionTransfer);

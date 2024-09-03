@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.leave;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetLeavesForm;
 import com.echothree.control.user.employee.common.result.GetLeavesResult;
 import com.echothree.model.control.employee.common.transfer.LeaveTransfer;
 import com.echothree.model.control.party.common.PartyOptions;
@@ -27,8 +26,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.transfer.ListWrapper;
 import static com.echothree.view.client.web.struts.BaseAction.getUserVisitPK;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -61,8 +58,8 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetLeavesForm commandForm = EmployeeUtil.getHome().getGetLeavesForm();
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = EmployeeUtil.getHome().getGetLeavesForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
 
         commandForm.setPartyName(partyName);
 
@@ -70,13 +67,13 @@ public class MainAction
         options.add(PartyOptions.PartyIncludeDescription);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = EmployeeUtil.getHome().getLeaves(getUserVisitPK(request), commandForm);
+        var commandResult = EmployeeUtil.getHome().getLeaves(getUserVisitPK(request), commandForm);
         PartyTransfer party = null;
         List<LeaveTransfer> leaves = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLeavesResult result = (GetLeavesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeavesResult)executionResult.getResult();
             
             party = result.getParty();
             leaves = result.getLeaves();

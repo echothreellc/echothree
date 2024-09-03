@@ -17,9 +17,7 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.CurrencyDescriptionTransfer;
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.accounting.server.entity.CurrencyDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -33,12 +31,12 @@ public class CurrencyDescriptionTransferCache
     
     @Override
     public CurrencyDescriptionTransfer getTransfer(CurrencyDescription currencyDescription) {
-        CurrencyDescriptionTransfer currencyDescriptionTransfer = get(currencyDescription);
+        var currencyDescriptionTransfer = get(currencyDescription);
         
         if(currencyDescriptionTransfer == null) {
-            CurrencyTransferCache currencyTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getCurrencyTransferCache();
-            CurrencyTransfer currencyTransfer = currencyTransferCache.getTransfer(currencyDescription.getCurrency());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, currencyDescription.getLanguage());
+            var currencyTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getCurrencyTransferCache();
+            var currencyTransfer = currencyTransferCache.getTransfer(currencyDescription.getCurrency());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, currencyDescription.getLanguage());
             
             currencyDescriptionTransfer = new CurrencyDescriptionTransfer(languageTransfer, currencyTransfer, currencyDescription.getDescription());
             put(currencyDescription, currencyDescriptionTransfer);

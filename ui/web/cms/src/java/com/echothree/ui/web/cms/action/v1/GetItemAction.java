@@ -17,7 +17,6 @@
 package com.echothree.ui.web.cms.action.v1;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemForm;
 import com.echothree.ui.web.cms.framework.CmsBaseJsonAction;
 import com.echothree.ui.web.cms.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
@@ -45,13 +44,13 @@ public class GetItemAction
     @Override
     protected CommandResult getCommandResult(HttpServletRequest request)
             throws Exception {
-        GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+        var commandForm = ItemUtil.getHome().getGetItemForm();
 
         commandForm.setItemName(request.getParameter(ParameterConstants.ITEM_NAME));
 
         BaseTag.setOptions(request.getParameter(ParameterConstants.OPTIONS), null, commandForm);
 
-        CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
         
         return commandResult;
     }

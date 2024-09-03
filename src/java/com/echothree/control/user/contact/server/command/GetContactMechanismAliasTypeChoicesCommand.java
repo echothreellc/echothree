@@ -18,7 +18,6 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.GetContactMechanismAliasTypeChoicesForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
-import com.echothree.control.user.contact.common.result.GetContactMechanismAliasTypeChoicesResult;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,9 +62,9 @@ public class GetContactMechanismAliasTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        GetContactMechanismAliasTypeChoicesResult result = ContactResultFactory.getGetContactMechanismAliasTypeChoicesResult();
-        String defaultContactMechanismAliasTypeChoice = form.getDefaultContactMechanismAliasTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ContactResultFactory.getGetContactMechanismAliasTypeChoicesResult();
+        var defaultContactMechanismAliasTypeChoice = form.getDefaultContactMechanismAliasTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setContactMechanismAliasTypeChoices(contactControl.getContactMechanismAliasTypeChoices(defaultContactMechanismAliasTypeChoice, getPreferredLanguage(), allowNullChoice));
         

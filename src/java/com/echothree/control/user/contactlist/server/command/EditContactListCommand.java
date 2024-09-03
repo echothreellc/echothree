@@ -29,15 +29,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
-import com.echothree.model.data.contactlist.server.entity.ContactListDescription;
-import com.echothree.model.data.contactlist.server.entity.ContactListDetail;
 import com.echothree.model.data.contactlist.server.entity.ContactListFrequency;
 import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
 import com.echothree.model.data.contactlist.server.entity.ContactListType;
-import com.echothree.model.data.contactlist.server.value.ContactListDescriptionValue;
-import com.echothree.model.data.contactlist.server.value.ContactListDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -101,8 +96,8 @@ public class EditContactListCommand
     @Override
     public ContactList getEntity(EditContactListResult result) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        ContactList contactList = null;
-        String contactListName = spec.getContactListName();
+        ContactList contactList;
+        var contactListName = spec.getContactListName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             contactList = contactListControl.getContactListByName(contactListName);
@@ -134,8 +129,8 @@ public class EditContactListCommand
     @Override
     public void doLock(ContactListEdit edit, ContactList contactList) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        ContactListDescription contactListDescription = contactListControl.getContactListDescription(contactList, getPreferredLanguage());
-        ContactListDetail contactListDetail = contactList.getLastDetail();
+        var contactListDescription = contactListControl.getContactListDescription(contactList, getPreferredLanguage());
+        var contactListDetail = contactList.getLastDetail();
 
         contactListFrequency = contactListDetail.getContactListFrequency();
 
@@ -159,29 +154,29 @@ public class EditContactListCommand
     @Override
     public void canUpdate(ContactList contactList) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListName = edit.getContactListName();
-        ContactList duplicateContactList = contactListControl.getContactListByName(contactListName);
+        var contactListName = edit.getContactListName();
+        var duplicateContactList = contactListControl.getContactListByName(contactListName);
 
         if(duplicateContactList != null && !contactList.equals(duplicateContactList)) {
             addExecutionError(ExecutionErrors.DuplicateContactListName.name(), contactListName);
         } else {
-            String contactListGroupName = edit.getContactListGroupName();
+            var contactListGroupName = edit.getContactListGroupName();
 
             contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
             if(contactListGroup != null) {
-                String contactListTypeName = edit.getContactListTypeName();
+                var contactListTypeName = edit.getContactListTypeName();
 
                 contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
 
                 if(contactListType != null) {
-                    String contactListFrequencyName = edit.getContactListFrequencyName();
+                    var contactListFrequencyName = edit.getContactListFrequencyName();
 
                     contactListFrequency = contactListFrequencyName == null ? null : contactListControl.getContactListFrequencyByName(contactListFrequencyName);
 
                     if(contactListFrequencyName == null || contactListFrequency != null) {
                         var workflowControl = Session.getModelController(WorkflowControl.class);
-                        String defaultPartyContactListStatusChoice = edit.getDefaultPartyContactListStatusChoice();
+                        var defaultPartyContactListStatusChoice = edit.getDefaultPartyContactListStatusChoice();
                         var workflow = workflowControl.getWorkflowByName(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS);
 
                         defaultPartyContactListStatus = workflowControl.getWorkflowEntranceByName(workflow, defaultPartyContactListStatusChoice);
@@ -206,9 +201,9 @@ public class EditContactListCommand
     public void doUpdate(ContactList contactList) {
         var contactListControl = Session.getModelController(ContactListControl.class);
         var partyPK = getPartyPK();
-        ContactListDetailValue contactListDetailValue = contactListControl.getContactListDetailValueForUpdate(contactList);
-        ContactListDescription contactListDescription = contactListControl.getContactListDescriptionForUpdate(contactList, getPreferredLanguage());
-        String description = edit.getDescription();
+        var contactListDetailValue = contactListControl.getContactListDetailValueForUpdate(contactList);
+        var contactListDescription = contactListControl.getContactListDescriptionForUpdate(contactList, getPreferredLanguage());
+        var description = edit.getDescription();
 
         contactListDetailValue.setContactListName(edit.getContactListName());
         contactListDetailValue.setContactListGroupPK(contactListGroup.getPrimaryKey());
@@ -225,7 +220,7 @@ public class EditContactListCommand
         } else if(contactListDescription != null && description == null) {
             contactListControl.deleteContactListDescription(contactListDescription, partyPK);
         } else if(contactListDescription != null && description != null) {
-            ContactListDescriptionValue contactListDescriptionValue = contactListControl.getContactListDescriptionValue(contactListDescription);
+            var contactListDescriptionValue = contactListControl.getContactListDescriptionValue(contactListDescription);
 
             contactListDescriptionValue.setDescription(description);
             contactListControl.updateContactListDescriptionFromValue(contactListDescriptionValue, partyPK);

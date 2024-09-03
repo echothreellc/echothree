@@ -16,18 +16,12 @@
 
 package com.echothree.model.control.club.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.club.common.transfer.ClubTransfer;
 import com.echothree.model.control.club.server.control.ClubControl;
-import com.echothree.model.control.filter.common.transfer.FilterTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeTransfer;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.club.server.entity.Club;
-import com.echothree.model.data.club.server.entity.ClubDetail;
-import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -46,19 +40,19 @@ public class ClubTransferCache
     }
     
     public ClubTransfer getClubTransfer(Club club) {
-        ClubTransfer clubTransfer = get(club);
+        var clubTransfer = get(club);
         
         if(clubTransfer == null) {
-            ClubDetail clubDetail = club.getLastDetail();
-            String clubName = clubDetail.getClubName();
-            SubscriptionTypeTransfer subscriptionTypeTransfer = subscriptionControl.getSubscriptionTypeTransfer(userVisit, clubDetail.getSubscriptionType());
-            Filter clubPriceFilter = clubDetail.getClubPriceFilter();
-            FilterTransfer clubPriceFilterTransfer = clubPriceFilter == null? null: filterControl.getFilterTransfer(userVisit, clubPriceFilter);
-            Currency currency = clubDetail.getCurrency();
-            CurrencyTransfer currencyTransfer = currency == null? null: accountingControl.getCurrencyTransfer(userVisit, currency);
-            Boolean isDefault = clubDetail.getIsDefault();
-            Integer sortOrder = clubDetail.getSortOrder();
-            String description = clubControl.getBestClubDescription(club, getLanguage());
+            var clubDetail = club.getLastDetail();
+            var clubName = clubDetail.getClubName();
+            var subscriptionTypeTransfer = subscriptionControl.getSubscriptionTypeTransfer(userVisit, clubDetail.getSubscriptionType());
+            var clubPriceFilter = clubDetail.getClubPriceFilter();
+            var clubPriceFilterTransfer = clubPriceFilter == null? null: filterControl.getFilterTransfer(userVisit, clubPriceFilter);
+            var currency = clubDetail.getCurrency();
+            var currencyTransfer = currency == null? null: accountingControl.getCurrencyTransfer(userVisit, currency);
+            var isDefault = clubDetail.getIsDefault();
+            var sortOrder = clubDetail.getSortOrder();
+            var description = clubControl.getBestClubDescription(club, getLanguage());
             
             clubTransfer = new ClubTransfer(clubName, subscriptionTypeTransfer, clubPriceFilterTransfer, currencyTransfer, isDefault, sortOrder, description);
             put(club, clubTransfer);

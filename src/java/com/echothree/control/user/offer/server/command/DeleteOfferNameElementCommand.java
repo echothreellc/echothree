@@ -21,7 +21,6 @@ import com.echothree.model.control.offer.server.logic.OfferNameElementLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -60,8 +59,8 @@ public class DeleteOfferNameElementCommand
     
     @Override
     protected BaseResult execute() {
-        String offerNameElementName = form.getOfferNameElementName();
-        OfferNameElement offerNameElement = OfferNameElementLogic.getInstance().getOfferNameElementByNameForUpdate(this, offerNameElementName);
+        var offerNameElementName = form.getOfferNameElementName();
+        var offerNameElement = OfferNameElementLogic.getInstance().getOfferNameElementByNameForUpdate(this, offerNameElementName);
         
         if(!hasExecutionErrors()) {
             OfferNameElementLogic.getInstance().deleteOfferNameElement(this, offerNameElement, getPartyPK());

@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected LeaveReasonSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        LeaveReasonSpec spec = EmployeeUtil.getHome().getLeaveReasonSpec();
+        var spec = EmployeeUtil.getHome().getLeaveReasonSpec();
         
         spec.setLeaveReasonName(findParameter(request, ParameterConstants.ORIGINAL_LEAVE_REASON_NAME, actionForm.getOriginalLeaveReasonName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected LeaveReasonEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        LeaveReasonEdit edit = EmployeeUtil.getHome().getLeaveReasonEdit();
+        var edit = EmployeeUtil.getHome().getLeaveReasonEdit();
 
         edit.setLeaveReasonName(actionForm.getLeaveReasonName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

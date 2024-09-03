@@ -21,7 +21,6 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.accounting.server.entity.GlResourceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,8 +62,8 @@ public class DeleteGlResourceTypeCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String glResourceTypeName = form.getGlResourceTypeName();
-        GlResourceType glResourceType = accountingControl.getGlResourceTypeByNameForUpdate(glResourceTypeName);
+        var glResourceTypeName = form.getGlResourceTypeName();
+        var glResourceType = accountingControl.getGlResourceTypeByNameForUpdate(glResourceTypeName);
         
         if(glResourceType != null) {
             accountingControl.deleteGlResourceType(glResourceType, getPartyPK());

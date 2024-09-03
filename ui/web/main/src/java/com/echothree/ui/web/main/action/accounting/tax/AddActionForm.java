@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.accounting.tax;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetGlAccountChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetGlAccountChoicesResult;
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.GetContactMechanismPurposeChoicesForm;
 import com.echothree.control.user.contact.common.result.GetContactMechanismPurposeChoicesResult;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.choice.ContactMechanismPurposeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -56,15 +52,15 @@ public class AddActionForm
     private void setupContactMechanismPurposeChoices() {
         if(contactMechanismPurposeChoices == null) {
             try {
-                GetContactMechanismPurposeChoicesForm form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
+                var form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
                 
                 form.setContactMechanismTypeName(ContactMechanismTypes.POSTAL_ADDRESS.name());
                 form.setDefaultContactMechanismPurposeChoice(contactMechanismPurposeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactMechanismPurposeChoicesResult getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
+
+                var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
                 contactMechanismPurposeChoices = getContactMechanismPurposeChoicesResult.getContactMechanismPurposeChoices();
                 
                 if(contactMechanismPurposeChoice == null) {
@@ -80,14 +76,14 @@ public class AddActionForm
     private void setupGlAccountChoices() {
         if(glAccountChoices == null) {
             try {
-                GetGlAccountChoicesForm form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
+                var form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
                 
                 form.setDefaultGlAccountChoice(glAccountChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGlAccountChoicesResult getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
                 glAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
                 
                 if(glAccountChoice == null) {

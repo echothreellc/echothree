@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.mimetype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.SetDefaultMimeTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -48,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultMimeTypeForm commandForm = CoreUtil.getHome().getSetDefaultMimeTypeForm();
+        var commandForm = CoreUtil.getHome().getSetDefaultMimeTypeForm();
 
         commandForm.setMimeTypeName(request.getParameter(ParameterConstants.MIME_TYPE_NAME));
 

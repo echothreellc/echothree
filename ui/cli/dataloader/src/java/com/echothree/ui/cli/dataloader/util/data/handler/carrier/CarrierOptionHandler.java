@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.carrier;
 import com.echothree.control.user.carrier.common.CarrierUtil;
 import com.echothree.control.user.carrier.common.CarrierService;
 import com.echothree.control.user.carrier.common.form.CarrierFormFactory;
-import com.echothree.control.user.carrier.common.form.CreateCarrierOptionDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -53,9 +52,9 @@ public class CarrierOptionHandler
         if(localName.equals("carrierOptionDescription")) {
             String attrLanguageIsoName = null;
             String attrDescription = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     attrLanguageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -63,7 +62,7 @@ public class CarrierOptionHandler
             }
             
             try {
-                CreateCarrierOptionDescriptionForm commandForm = CarrierFormFactory.getCreateCarrierOptionDescriptionForm();
+                var commandForm = CarrierFormFactory.getCreateCarrierOptionDescriptionForm();
                 
                 commandForm.setCarrierName(carrierName);
                 commandForm.setCarrierOptionName(carrierOptionName);

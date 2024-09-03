@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.humanresources.partytrainingclass;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.form.GetTrainingClassChoicesForm;
 import com.echothree.control.user.training.common.result.GetTrainingClassChoicesResult;
 import com.echothree.model.control.training.common.choice.TrainingClassChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -42,14 +39,14 @@ public class AddActionForm
     public void setupTrainingClassChoices() {
         if(trainingClassChoices == null) {
             try {
-                GetTrainingClassChoicesForm form = TrainingUtil.getHome().getGetTrainingClassChoicesForm();
+                var form = TrainingUtil.getHome().getGetTrainingClassChoicesForm();
                 
                 form.setDefaultTrainingClassChoice(trainingClassChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = TrainingUtil.getHome().getTrainingClassChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetTrainingClassChoicesResult result = (GetTrainingClassChoicesResult)executionResult.getResult();
+
+                var commandResult = TrainingUtil.getHome().getTrainingClassChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetTrainingClassChoicesResult)executionResult.getResult();
                 trainingClassChoices = result.getTrainingClassChoices();
                 
                 if(trainingClassChoice == null)

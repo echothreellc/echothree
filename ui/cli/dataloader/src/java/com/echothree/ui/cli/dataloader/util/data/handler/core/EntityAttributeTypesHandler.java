@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.core;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.form.CreateEntityAttributeTypeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -46,15 +45,15 @@ public class EntityAttributeTypesHandler
     throws SAXException {
         if(localName.equals("entityAttributeType")) {
             String entityAttributeTypeName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("entityAttributeTypeName"))
                     entityAttributeTypeName = attrs.getValue(i);
             }
             
             try {
-                CreateEntityAttributeTypeForm createEntityAttributeTypeForm = CoreFormFactory.getCreateEntityAttributeTypeForm();
+                var createEntityAttributeTypeForm = CoreFormFactory.getCreateEntityAttributeTypeForm();
                 
                 createEntityAttributeTypeForm.setEntityAttributeTypeName(entityAttributeTypeName);
                 

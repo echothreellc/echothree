@@ -24,12 +24,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.common.ShipmentTypes;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnType;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnTypeShippingMethod;
-import com.echothree.model.data.shipment.server.entity.ShipmentType;
-import com.echothree.model.data.shipment.server.entity.ShipmentTypeShippingMethod;
-import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -75,27 +69,27 @@ public class CreateReturnTypeShippingMethodCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
-            String returnTypeName = form.getReturnTypeName();
-            ReturnType returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
+            var returnTypeName = form.getReturnTypeName();
+            var returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
             
             if(returnType != null) {
                 var shippingControl = Session.getModelController(ShippingControl.class);
-                String shippingMethodName = form.getShippingMethodName();
-                ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+                var shippingMethodName = form.getShippingMethodName();
+                var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
                 
                 if(shippingMethod != null) {
                     var shipmentControl = Session.getModelController(ShipmentControl.class);
-                    ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(ShipmentTypes.CUSTOMER_RETURN.name());
+                    var shipmentType = shipmentControl.getShipmentTypeByName(ShipmentTypes.CUSTOMER_RETURN.name());
                     
                     if(shipmentType != null) {
-                        ShipmentTypeShippingMethod shipmentTypeShippingMethod = shipmentControl.getShipmentTypeShippingMethod(shipmentType, shippingMethod);
+                        var shipmentTypeShippingMethod = shipmentControl.getShipmentTypeShippingMethod(shipmentType, shippingMethod);
                         
                         if(shipmentTypeShippingMethod != null) {
-                            ReturnTypeShippingMethod returnTypeShippingMethod = returnPolicyControl.getReturnTypeShippingMethod(returnType,
+                            var returnTypeShippingMethod = returnPolicyControl.getReturnTypeShippingMethod(returnType,
                                     shippingMethod);
                             
                             if(returnTypeShippingMethod == null) {

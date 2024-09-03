@@ -22,9 +22,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.queue.server.entity.QueueType;
-import com.echothree.model.data.queue.server.entity.QueueTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,16 +64,16 @@ public class DeleteQueueTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var queueControl = Session.getModelController(QueueControl.class);
-        String queueTypeName = form.getQueueTypeName();
-        QueueType queueType = queueControl.getQueueTypeByName(queueTypeName);
+        var queueTypeName = form.getQueueTypeName();
+        var queueType = queueControl.getQueueTypeByName(queueTypeName);
         
         if(queueType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                QueueTypeDescription queueTypeDescription = queueControl.getQueueTypeDescriptionForUpdate(queueType, language);
+                var queueTypeDescription = queueControl.getQueueTypeDescriptionForUpdate(queueType, language);
                 
                 if(queueTypeDescription != null) {
                     queueControl.deleteQueueTypeDescription(queueTypeDescription, getPartyPK());

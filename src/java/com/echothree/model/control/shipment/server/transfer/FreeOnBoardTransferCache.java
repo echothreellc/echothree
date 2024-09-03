@@ -19,7 +19,6 @@ package com.echothree.model.control.shipment.server.transfer;
 import com.echothree.model.control.shipment.common.transfer.FreeOnBoardTransfer;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
-import com.echothree.model.data.shipment.server.entity.FreeOnBoardDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -37,14 +36,14 @@ public class FreeOnBoardTransferCache
     
     @Override
     public FreeOnBoardTransfer getTransfer(FreeOnBoard freeOnBoard) {
-        FreeOnBoardTransfer freeOnBoardTransfer = get(freeOnBoard);
+        var freeOnBoardTransfer = get(freeOnBoard);
         
         if(freeOnBoardTransfer == null) {
-            FreeOnBoardDetail freeOnBoardDetail = freeOnBoard.getLastDetail();
-            String freeOnBoardName = freeOnBoardDetail.getFreeOnBoardName();
-            Boolean isDefault = freeOnBoardDetail.getIsDefault();
-            Integer sortOrder = freeOnBoardDetail.getSortOrder();
-            String description = freeOnBoardControl.getBestFreeOnBoardDescription(freeOnBoard, getLanguage());
+            var freeOnBoardDetail = freeOnBoard.getLastDetail();
+            var freeOnBoardName = freeOnBoardDetail.getFreeOnBoardName();
+            var isDefault = freeOnBoardDetail.getIsDefault();
+            var sortOrder = freeOnBoardDetail.getSortOrder();
+            var description = freeOnBoardControl.getBestFreeOnBoardDescription(freeOnBoard, getLanguage());
             
             freeOnBoardTransfer = new FreeOnBoardTransfer(freeOnBoardName, isDefault, sortOrder, description);
             put(freeOnBoard, freeOnBoardTransfer);

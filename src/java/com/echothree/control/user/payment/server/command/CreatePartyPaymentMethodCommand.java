@@ -17,7 +17,6 @@
 package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodForm;
-import com.echothree.control.user.payment.common.result.CreatePartyPaymentMethodResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.contact.common.ContactMechanismPurposes;
 import com.echothree.model.control.contact.server.control.ContactControl;
@@ -31,18 +30,11 @@ import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.contact.server.entity.ContactMechanism;
-import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurpose;
 import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.NameSuffix;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethodContactMechanism;
-import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -138,8 +130,8 @@ public class CreatePartyPaymentMethodCommand
     private PartyPaymentMethodContactMechanism setupPartyPaymentMethodContactMechanism(final ContactControl contactControl,
             final PartyPaymentMethodControl partyPaymentMethodControl, final PartyContactMechanism partyContactMechanism,
             final PartyPaymentMethod partyPaymentMethod, final PartyPK createdBy) {
-        ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(ContactMechanismPurposes.PHYSICAL_BILLING.name());
-        PartyContactMechanismPurpose partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(partyContactMechanism,
+        var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(ContactMechanismPurposes.PHYSICAL_BILLING.name());
+        var partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(partyContactMechanism,
                 contactMechanismPurpose);
         
         if(partyContactMechanismPurpose == null) {
@@ -153,14 +145,14 @@ public class CreatePartyPaymentMethodCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        CreatePartyPaymentMethodResult result = PaymentResultFactory.getCreatePartyPaymentMethodResult();
-        Party party = getParty();
-        String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
+        var result = PaymentResultFactory.getCreatePartyPaymentMethodResult();
+        var party = getParty();
+        var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
 
         // If the caller is a CUSTOMER, then they're the Party. If they're not, the PartyName parameter is
         // required, and we'll look them up.
         if(!partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
-            String partyName = form.getPartyName();
+            var partyName = form.getPartyName();
 
             if(partyName == null) {
                 addExecutionError(ExecutionErrors.PartyNameRequired.name());
@@ -175,41 +167,41 @@ public class CreatePartyPaymentMethodCommand
 
         if(!hasExecutionErrors()) {
             var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-            String paymentMethodName = form.getPaymentMethodName();
-            PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
+            var paymentMethodName = form.getPaymentMethodName();
+            var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
             if(paymentMethod != null) {
                 PartyPaymentMethodLogic.getInstance().checkPartyPaymentMethod(session, getUserVisit(), this, party, paymentMethod, form);
 
                 if(!hasExecutionErrors()) {
-                    PaymentMethodType paymentMethodType = paymentMethod.getLastDetail().getPaymentMethodType();
-                    String paymentMethodTypeName = paymentMethodType.getLastDetail().getPaymentMethodTypeName();
+                    var paymentMethodType = paymentMethod.getLastDetail().getPaymentMethodType();
+                    var paymentMethodTypeName = paymentMethodType.getLastDetail().getPaymentMethodTypeName();
 
                     if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
                         var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
                         var contactControl = Session.getModelController(ContactControl.class);
-                        Soundex soundex = new Soundex();
-                        String personalTitleId = form.getPersonalTitleId();
-                        PersonalTitle personalTitle = personalTitleId == null ? null : partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
-                        String firstName = form.getFirstName();
-                        String middleName = form.getMiddleName();
-                        String lastName = form.getLastName();
-                        String nameSuffixId = form.getNameSuffixId();
-                        NameSuffix nameSuffix = nameSuffixId == null ? null : partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
-                        String name = form.getName();
-                        String number = form.getNumber();
-                        String securityCode = form.getSecurityCode();
-                        String strExpirationMonth = form.getExpirationMonth();
-                        Integer expirationMonth = strExpirationMonth != null? Integer.valueOf(strExpirationMonth): null;
-                        String strExpirationYear = form.getExpirationYear();
-                        Integer expirationYear = strExpirationYear != null? Integer.valueOf(strExpirationYear): null;
-                        String billingContactMechanismName = form.getBillingContactMechanismName();
-                        ContactMechanism billingContactMechanism = billingContactMechanismName == null ? null : contactControl.getContactMechanismByName(billingContactMechanismName);
-                        PartyContactMechanism billingPartyContactMechanism = billingContactMechanism == null? null: contactControl.getPartyContactMechanism(party, billingContactMechanism);
-                        String issuerName = form.getIssuerName();
-                        String issuerContactMechanismName = form.getIssuerContactMechanismName();
-                        ContactMechanism issuerContactMechanism = issuerContactMechanismName == null ? null : contactControl.getContactMechanismByName(issuerContactMechanismName);
-                        PartyContactMechanism issuerPartyContactMechanism = issuerContactMechanism == null? null: contactControl.getPartyContactMechanism(party, issuerContactMechanism);
+                        var soundex = new Soundex();
+                        var personalTitleId = form.getPersonalTitleId();
+                        var personalTitle = personalTitleId == null ? null : partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
+                        var firstName = form.getFirstName();
+                        var middleName = form.getMiddleName();
+                        var lastName = form.getLastName();
+                        var nameSuffixId = form.getNameSuffixId();
+                        var nameSuffix = nameSuffixId == null ? null : partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
+                        var name = form.getName();
+                        var number = form.getNumber();
+                        var securityCode = form.getSecurityCode();
+                        var strExpirationMonth = form.getExpirationMonth();
+                        var expirationMonth = strExpirationMonth != null? Integer.valueOf(strExpirationMonth): null;
+                        var strExpirationYear = form.getExpirationYear();
+                        var expirationYear = strExpirationYear != null? Integer.valueOf(strExpirationYear): null;
+                        var billingContactMechanismName = form.getBillingContactMechanismName();
+                        var billingContactMechanism = billingContactMechanismName == null ? null : contactControl.getContactMechanismByName(billingContactMechanismName);
+                        var billingPartyContactMechanism = billingContactMechanism == null? null: contactControl.getPartyContactMechanism(party, billingContactMechanism);
+                        var issuerName = form.getIssuerName();
+                        var issuerContactMechanismName = form.getIssuerContactMechanismName();
+                        var issuerContactMechanism = issuerContactMechanismName == null ? null : contactControl.getContactMechanismByName(issuerContactMechanismName);
+                        var issuerPartyContactMechanism = issuerContactMechanism == null? null: contactControl.getPartyContactMechanism(party, issuerContactMechanism);
 
                         String firstNameSdx;
                         try {
@@ -232,9 +224,9 @@ public class CreatePartyPaymentMethodCommand
                             lastNameSdx = null;
                         }
 
-                        PartyPK createdBy = getPartyPK();
+                        var createdBy = getPartyPK();
                         var description = form.getDescription();
-                        Boolean deleteWhenUnused = Boolean.valueOf(form.getDeleteWhenUnused());
+                        var deleteWhenUnused = Boolean.valueOf(form.getDeleteWhenUnused());
                         var isDefault = Boolean.valueOf(form.getIsDefault());
                         var sortOrder = Integer.valueOf(form.getSortOrder());
 
@@ -249,7 +241,7 @@ public class CreatePartyPaymentMethodCommand
                         partyPaymentMethodControl.createPartyPaymentMethodCreditCardSecurityCode(partyPaymentMethod, securityCode,
                                 createdBy);
 
-                        PartyPaymentMethodContactMechanism billingPartyPaymentMethodContactMechanism = billingPartyContactMechanism == null ? null
+                        var billingPartyPaymentMethodContactMechanism = billingPartyContactMechanism == null ? null
                                 : setupPartyPaymentMethodContactMechanism(contactControl, partyPaymentMethodControl, billingPartyContactMechanism, partyPaymentMethod,
                                 createdBy);
 

@@ -53,10 +53,10 @@ public class MailTransfer {
 
     public static void main(String args[])
             throws Exception {
-        CommandLine line = getCommandLine(args);
-        boolean doVerbose = line.hasOption("v");
-        boolean doCommunicationsEvents = line.hasOption("c");
-        boolean doBlogEntries = line.hasOption("b");
+        var line = getCommandLine(args);
+        var doVerbose = line.hasOption("v");
+        var doCommunicationsEvents = line.hasOption("c");
+        var doBlogEntries = line.hasOption("b");
 
         if(doCommunicationsEvents) {
             var mailTransferUtility = new MailTransferUtility();

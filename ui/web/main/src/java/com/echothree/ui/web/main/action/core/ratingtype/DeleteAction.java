@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.ratingtype;
 
 import com.echothree.control.user.rating.common.RatingUtil;
-import com.echothree.control.user.rating.common.form.DeleteRatingTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,12 +51,12 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
         
         try {
-            String ratingTypeName = request.getParameter(ParameterConstants.RATING_TYPE_NAME);
-            DeleteRatingTypeForm commandForm = RatingUtil.getHome().getDeleteRatingTypeForm();
+            var ratingTypeName = request.getParameter(ParameterConstants.RATING_TYPE_NAME);
+            var commandForm = RatingUtil.getHome().getDeleteRatingTypeForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
@@ -69,8 +68,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(3);
             

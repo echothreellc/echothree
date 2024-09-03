@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected ItemUnitLimitSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemUnitLimitSpec spec = ItemUtil.getHome().getItemUnitLimitSpec();
+        var spec = ItemUtil.getHome().getItemUnitLimitSpec();
 
         spec.setItemName(findParameter(request, ParameterConstants.ITEM_NAME, actionForm.getItemName()));
         spec.setInventoryConditionName(findParameter(request, ParameterConstants.INVENTORY_CONDITION_NAME, actionForm.getInventoryConditionName()));
@@ -63,7 +63,7 @@ public class EditAction
     @Override
     protected ItemUnitLimitEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemUnitLimitEdit edit = ItemUtil.getHome().getItemUnitLimitEdit();
+        var edit = ItemUtil.getHome().getItemUnitLimitEdit();
 
         edit.setMinimumQuantity(actionForm.getMinimumQuantity());
         edit.setMaximumQuantity(actionForm.getMaximumQuantity());

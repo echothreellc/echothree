@@ -21,7 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.training.server.value.TrainingClassDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultTrainingClassCommand
     @Override
     protected BaseResult execute() {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        String trainingClassName = form.getTrainingClassName();
-        TrainingClassDetailValue trainingClassDetailValue = trainingControl.getTrainingClassDetailValueByNameForUpdate(trainingClassName);
+        var trainingClassName = form.getTrainingClassName();
+        var trainingClassDetailValue = trainingControl.getTrainingClassDetailValueByNameForUpdate(trainingClassName);
         
         if(trainingClassDetailValue != null) {
             trainingClassDetailValue.setIsDefault(Boolean.TRUE);

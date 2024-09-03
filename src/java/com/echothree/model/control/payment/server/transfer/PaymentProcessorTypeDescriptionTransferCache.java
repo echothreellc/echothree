@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeDescriptionTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeTransfer;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,11 +34,11 @@ public class PaymentProcessorTypeDescriptionTransferCache
     
     @Override
     public PaymentProcessorTypeDescriptionTransfer getTransfer(PaymentProcessorTypeDescription paymentProcessorTypeDescription) {
-        PaymentProcessorTypeDescriptionTransfer paymentProcessorTypeDescriptionTransfer = get(paymentProcessorTypeDescription);
+        var paymentProcessorTypeDescriptionTransfer = get(paymentProcessorTypeDescription);
         
         if(paymentProcessorTypeDescriptionTransfer == null) {
-            PaymentProcessorTypeTransfer paymentProcessorTypeTransfer = paymentProcessorTypeControl.getPaymentProcessorTypeTransfer(userVisit, paymentProcessorTypeDescription.getPaymentProcessorType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorTypeDescription.getLanguage());
+            var paymentProcessorTypeTransfer = paymentProcessorTypeControl.getPaymentProcessorTypeTransfer(userVisit, paymentProcessorTypeDescription.getPaymentProcessorType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorTypeDescription.getLanguage());
             
             paymentProcessorTypeDescriptionTransfer = new PaymentProcessorTypeDescriptionTransfer(languageTransfer, paymentProcessorTypeTransfer, paymentProcessorTypeDescription.getDescription());
             put(paymentProcessorTypeDescription, paymentProcessorTypeDescriptionTransfer);

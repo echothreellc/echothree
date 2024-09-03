@@ -28,7 +28,6 @@ import com.echothree.model.control.search.server.logic.SearchResultActionTypeLog
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.search.server.entity.SearchResultActionType;
-import com.echothree.model.data.search.server.value.SearchResultActionTypeDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -151,7 +150,7 @@ public class EditSearchResultActionTypeCommand
         } else if(searchResultActionTypeDescription != null && description == null) {
             searchControl.deleteSearchResultActionTypeDescription(searchResultActionTypeDescription, partyPK);
         } else if(searchResultActionTypeDescription != null && description != null) {
-            SearchResultActionTypeDescriptionValue searchResultActionTypeDescriptionValue = searchControl.getSearchResultActionTypeDescriptionValue(searchResultActionTypeDescription);
+            var searchResultActionTypeDescriptionValue = searchControl.getSearchResultActionTypeDescriptionValue(searchResultActionTypeDescription);
 
             searchResultActionTypeDescriptionValue.setDescription(description);
             searchControl.updateSearchResultActionTypeDescriptionFromValue(searchResultActionTypeDescriptionValue, partyPK);

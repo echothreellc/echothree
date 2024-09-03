@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.advertising.use;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetUseDescriptionsForm;
 import com.echothree.control.user.offer.common.result.GetUseDescriptionsResult;
-import com.echothree.model.control.offer.common.transfer.UseTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,15 +52,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String useName = request.getParameter(ParameterConstants.USE_NAME);
-            GetUseDescriptionsForm commandForm = OfferUtil.getHome().getGetUseDescriptionsForm();
+            var useName = request.getParameter(ParameterConstants.USE_NAME);
+            var commandForm = OfferUtil.getHome().getGetUseDescriptionsForm();
             
             commandForm.setUseName(useName);
-            
-            CommandResult commandResult = OfferUtil.getHome().getUseDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUseDescriptionsResult result = (GetUseDescriptionsResult)executionResult.getResult();
-            UseTransfer useTransfer = result.getUse();
+
+            var commandResult = OfferUtil.getHome().getUseDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetUseDescriptionsResult)executionResult.getResult();
+            var useTransfer = result.getUse();
             
             request.setAttribute(AttributeConstants.USE, useTransfer);
             request.setAttribute(AttributeConstants.USE_NAME, useTransfer.getUseName());

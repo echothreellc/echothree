@@ -56,7 +56,7 @@ public class PicklistAliasUtil {
         String securityRoleGroupName = null;
 
         if(spec != null) {
-            String picklistTypeName = spec.getPicklistTypeName();
+            var picklistTypeName = spec.getPicklistTypeName();
             
             if(picklistTypeName != null) {
                 securityRoleGroupName = getSecurityRoleGroupNameByPicklistTypeName(picklistTypeName);

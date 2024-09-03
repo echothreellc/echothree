@@ -17,19 +17,13 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemTypeChoicesForm;
-import com.echothree.control.user.item.common.form.GetItemUseTypeChoicesForm;
 import com.echothree.control.user.item.common.result.GetItemTypeChoicesResult;
 import com.echothree.control.user.item.common.result.GetItemUseTypeChoicesResult;
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetSearchDefaultOperatorChoicesForm;
-import com.echothree.control.user.search.common.form.GetSearchSortDirectionChoicesForm;
-import com.echothree.control.user.search.common.form.GetSearchSortOrderChoicesForm;
 import com.echothree.control.user.search.common.result.GetSearchDefaultOperatorChoicesResult;
 import com.echothree.control.user.search.common.result.GetSearchSortDirectionChoicesResult;
 import com.echothree.control.user.search.common.result.GetSearchSortOrderChoicesResult;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.GetWorkflowStepChoicesForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowStepChoicesResult;
 import com.echothree.model.control.item.common.choice.ItemTypeChoicesBean;
 import com.echothree.model.control.item.common.choice.ItemUseTypeChoicesBean;
@@ -40,8 +34,6 @@ import com.echothree.model.control.search.common.choice.SearchDefaultOperatorCho
 import com.echothree.model.control.search.common.choice.SearchSortDirectionChoicesBean;
 import com.echothree.model.control.search.common.choice.SearchSortOrderChoicesBean;
 import com.echothree.model.control.workflow.common.choice.WorkflowStepChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -76,14 +68,14 @@ public class MainActionForm
     private void setupItemTypeChoices() {
         if(itemTypeChoices == null) {
             try {
-                GetItemTypeChoicesForm form = ItemUtil.getHome().getGetItemTypeChoicesForm();
+                var form = ItemUtil.getHome().getGetItemTypeChoicesForm();
                 
                 form.setDefaultItemTypeChoice(itemTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = ItemUtil.getHome().getItemTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemTypeChoicesResult result = (GetItemTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = ItemUtil.getHome().getItemTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemTypeChoicesResult)executionResult.getResult();
                 itemTypeChoices = result.getItemTypeChoices();
                 
                 if(itemTypeChoice == null) {
@@ -99,14 +91,14 @@ public class MainActionForm
     private void setupItemUseTypeChoices() {
         if(itemUseTypeChoices == null) {
             try {
-                GetItemUseTypeChoicesForm form = ItemUtil.getHome().getGetItemUseTypeChoicesForm();
+                var form = ItemUtil.getHome().getGetItemUseTypeChoicesForm();
                 
                 form.setDefaultItemUseTypeChoice(itemUseTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = ItemUtil.getHome().getItemUseTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemUseTypeChoicesResult result = (GetItemUseTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = ItemUtil.getHome().getItemUseTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemUseTypeChoicesResult)executionResult.getResult();
                 itemUseTypeChoices = result.getItemUseTypeChoices();
                 
                 if(itemUseTypeChoice == null) {
@@ -122,15 +114,15 @@ public class MainActionForm
     private void setupItemStatusChoices() {
         if(itemStatusChoices == null) {
             try {
-                GetWorkflowStepChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
+                var form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
                 
                 form.setWorkflowName(ItemStatusConstants.Workflow_ITEM_STATUS);
                 form.setDefaultWorkflowStepChoice(itemStatusChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetWorkflowStepChoicesResult result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+
+                var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
                 itemStatusChoices = result.getWorkflowStepChoices();
                 
                 if(itemStatusChoice == null) {
@@ -146,16 +138,16 @@ public class MainActionForm
     private void setupSearchDefaultOperatorChoices() {
         if(searchDefaultOperatorChoices == null) {
             try {
-                GetSearchDefaultOperatorChoicesForm form = SearchUtil.getHome().getGetSearchDefaultOperatorChoicesForm();
+                var form = SearchUtil.getHome().getGetSearchDefaultOperatorChoicesForm();
                 
                 form.setSearchKindName(SearchKinds.ITEM.name());
                 form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
                 form.setDefaultSearchDefaultOperatorChoice(searchDefaultOperatorChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SearchUtil.getHome().getSearchDefaultOperatorChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSearchDefaultOperatorChoicesResult result = (GetSearchDefaultOperatorChoicesResult)executionResult.getResult();
+
+                var commandResult = SearchUtil.getHome().getSearchDefaultOperatorChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSearchDefaultOperatorChoicesResult)executionResult.getResult();
                 searchDefaultOperatorChoices = result.getSearchDefaultOperatorChoices();
                 
                 if(searchDefaultOperatorChoice == null) {
@@ -171,16 +163,16 @@ public class MainActionForm
     private void setupSearchSortOrderChoices() {
         if(searchSortOrderChoices == null) {
             try {
-                GetSearchSortOrderChoicesForm form = SearchUtil.getHome().getGetSearchSortOrderChoicesForm();
+                var form = SearchUtil.getHome().getGetSearchSortOrderChoicesForm();
                 
                 form.setSearchKindName(SearchKinds.ITEM.name());
                 form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
                 form.setDefaultSearchSortOrderChoice(searchSortOrderChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SearchUtil.getHome().getSearchSortOrderChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSearchSortOrderChoicesResult result = (GetSearchSortOrderChoicesResult)executionResult.getResult();
+
+                var commandResult = SearchUtil.getHome().getSearchSortOrderChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSearchSortOrderChoicesResult)executionResult.getResult();
                 searchSortOrderChoices = result.getSearchSortOrderChoices();
                 
                 if(searchSortOrderChoice == null) {
@@ -196,16 +188,16 @@ public class MainActionForm
     private void setupSearchSortDirectionChoices() {
         if(searchSortDirectionChoices == null) {
             try {
-                GetSearchSortDirectionChoicesForm form = SearchUtil.getHome().getGetSearchSortDirectionChoicesForm();
+                var form = SearchUtil.getHome().getGetSearchSortDirectionChoicesForm();
                 
                 form.setSearchKindName(SearchKinds.ITEM.name());
                 form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
                 form.setDefaultSearchSortDirectionChoice(searchSortDirectionChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SearchUtil.getHome().getSearchSortDirectionChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSearchSortDirectionChoicesResult result = (GetSearchSortDirectionChoicesResult)executionResult.getResult();
+
+                var commandResult = SearchUtil.getHome().getSearchSortDirectionChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSearchSortDirectionChoicesResult)executionResult.getResult();
                 searchSortDirectionChoices = result.getSearchSortDirectionChoices();
                 
                 if(searchSortDirectionChoice == null) {

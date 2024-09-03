@@ -30,7 +30,6 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.TopDocsCollector;
-import org.apache.lucene.search.TopFieldDocs;
 import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.search.TotalHitCountCollector;
 
@@ -54,7 +53,7 @@ public class IndexQuery
     
     protected int getNumHits(IndexSearcher is)
             throws IOException {
-        TotalHitCountCollector collector = new TotalHitCountCollector();
+        var collector = new TotalHitCountCollector();
         
         is.search(query, collector);
         
@@ -64,11 +63,11 @@ public class IndexQuery
     @Override
     protected EntityInstancePKHolder useIndex(IndexReader ir)
             throws IOException {
-        final IndexSearcher is = new IndexSearcher(ir);
+        final var is = new IndexSearcher(ir);
         EntityInstancePKHolder entityInstancePKHolder = null;
 
         if(!eea.hasExecutionErrors()) {
-            final int numHits = getNumHits(is);
+            final var numHits = getNumHits(is);
             ScoreDoc[] hits;
 
             if(numHits == 0) {
@@ -82,17 +81,17 @@ public class IndexQuery
 
                     hits = topDocsCollector.topDocs().scoreDocs;
                 } else {
-                    final TopFieldDocs topFieldDocs = is.search(query, numHits, sort);
+                    final var topFieldDocs = is.search(query, numHits, sort);
 
                     hits = topFieldDocs.scoreDocs;
                 }
             }
 
-            final int hitCount = hits.length;
+            final var hitCount = hits.length;
             if(hitCount > 0) {
                 entityInstancePKHolder = new EntityInstancePKHolder(hitCount);
 
-                for(int i = 0 ; i < hitCount ; i++) {
+                for(var i = 0; i < hitCount ; i++) {
                     entityInstancePKHolder.add(new EntityInstancePK(is.doc(hits[i].doc).get(IndexFields.entityInstanceId.name())), i);
                 }
             }

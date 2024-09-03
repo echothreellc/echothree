@@ -17,13 +17,10 @@
 package com.echothree.model.control.chain.server.transfer;
 
 import com.echothree.model.control.chain.common.transfer.ChainActionChainActionSetTransfer;
-import com.echothree.model.control.chain.common.transfer.ChainActionSetTransfer;
-import com.echothree.model.control.chain.common.transfer.ChainActionTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.chain.server.entity.ChainActionChainActionSet;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -38,14 +35,14 @@ public class ChainActionChainActionSetTransferCache
     }
     
     public ChainActionChainActionSetTransfer getChainActionChainActionSetTransfer(ChainActionChainActionSet chainActionChainActionSet) {
-        ChainActionChainActionSetTransfer chainActionChainActionSetTransfer = get(chainActionChainActionSet);
+        var chainActionChainActionSetTransfer = get(chainActionChainActionSet);
         
         if(chainActionChainActionSetTransfer == null) {
-            ChainActionTransfer chainAction = chainControl.getChainActionTransfer(userVisit, chainActionChainActionSet.getChainAction());
-            ChainActionSetTransfer nextChainActionSet = chainControl.getChainActionSetTransfer(userVisit, chainActionChainActionSet.getNextChainActionSet());
-            Long unformattedDelayTime = chainActionChainActionSet.getDelayTime();
-            UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
-            String delayTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedDelayTime);
+            var chainAction = chainControl.getChainActionTransfer(userVisit, chainActionChainActionSet.getChainAction());
+            var nextChainActionSet = chainControl.getChainActionSetTransfer(userVisit, chainActionChainActionSet.getNextChainActionSet());
+            var unformattedDelayTime = chainActionChainActionSet.getDelayTime();
+            var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var delayTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedDelayTime);
             
             chainActionChainActionSetTransfer = new ChainActionChainActionSetTransfer(chainAction, nextChainActionSet, unformattedDelayTime, delayTime);
             put(chainActionChainActionSet, chainActionChainActionSetTransfer);

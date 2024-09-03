@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.subscription.subscriptiontype;
 
 import com.echothree.control.user.subscription.common.SubscriptionUtil;
-import com.echothree.control.user.subscription.common.form.GetSubscriptionTypesForm;
 import com.echothree.control.user.subscription.common.result.GetSubscriptionTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,17 +49,17 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetSubscriptionTypesForm getSubscriptionTypesForm = SubscriptionUtil.getHome().getGetSubscriptionTypesForm();
-            String subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
+            var getSubscriptionTypesForm = SubscriptionUtil.getHome().getGetSubscriptionTypesForm();
+            var subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
             
             getSubscriptionTypesForm.setSubscriptionKindName(subscriptionKindName);
 
-            CommandResult commandResult = SubscriptionUtil.getHome().getSubscriptionTypes(getUserVisitPK(request), getSubscriptionTypesForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSubscriptionTypesResult getSubscriptionTypesResult = (GetSubscriptionTypesResult)executionResult.getResult();
+            var commandResult = SubscriptionUtil.getHome().getSubscriptionTypes(getUserVisitPK(request), getSubscriptionTypesForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getSubscriptionTypesResult = (GetSubscriptionTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SUBSCRIPTION_KIND, getSubscriptionTypesResult.getSubscriptionKind());
             request.setAttribute(AttributeConstants.SUBSCRIPTION_TYPES, getSubscriptionTypesResult.getSubscriptionTypes());

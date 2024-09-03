@@ -19,7 +19,6 @@ package com.echothree.control.user.warehouse.server.command;
 import com.echothree.control.user.warehouse.common.edit.LocationCapacityEdit;
 import com.echothree.control.user.warehouse.common.edit.WarehouseEditFactory;
 import com.echothree.control.user.warehouse.common.form.EditLocationCapacityForm;
-import com.echothree.control.user.warehouse.common.result.EditLocationCapacityResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.control.user.warehouse.common.spec.LocationCapacitySpec;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -27,13 +26,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.Location;
-import com.echothree.model.data.warehouse.server.entity.LocationCapacity;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
-import com.echothree.model.data.warehouse.server.value.LocationCapacityValue;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -83,32 +76,32 @@ public class EditLocationCapacityCommand
     @Override
     protected BaseResult execute() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        EditLocationCapacityResult result = WarehouseResultFactory.getEditLocationCapacityResult();
-        String warehouseName = spec.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
+        var result = WarehouseResultFactory.getEditLocationCapacityResult();
+        var warehouseName = spec.getWarehouseName();
+        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            String locationName = spec.getLocationName();
-            Location location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
+            var locationName = spec.getLocationName();
+            var location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
             
             if(location != null) {
                 var uomControl = Session.getModelController(UomControl.class);
-                String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
-                UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+                var unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
+                var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
                 
                 if(unitOfMeasureKind != null) {
-                    String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-                    UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                    var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+                    var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                     
                     if(unitOfMeasureType != null) {
                         if(editMode.equals(EditMode.LOCK)) {
-                            LocationCapacity locationCapacity = warehouseControl.getLocationCapacity(location, unitOfMeasureType);
+                            var locationCapacity = warehouseControl.getLocationCapacity(location, unitOfMeasureType);
                             
                             if(locationCapacity != null) {
                                 result.setLocationCapacity(warehouseControl.getLocationCapacityTransfer(getUserVisit(), locationCapacity));
                                 
                                 if(lockEntity(location)) {
-                                    LocationCapacityEdit edit = WarehouseEditFactory.getLocationCapacityEdit();
+                                    var edit = WarehouseEditFactory.getLocationCapacityEdit();
                                     
                                     result.setEdit(edit);
                                     edit.setCapacity(locationCapacity.getCapacity().toString());
@@ -121,7 +114,7 @@ public class EditLocationCapacityCommand
                                 addExecutionError(ExecutionErrors.UnknownLocationCapacity.name());
                             }
                         } else if(editMode.equals(EditMode.UPDATE)) {
-                            LocationCapacityValue locationCapacityValue = warehouseControl.getLocationCapacityValueForUpdate(location, unitOfMeasureType);
+                            var locationCapacityValue = warehouseControl.getLocationCapacityValueForUpdate(location, unitOfMeasureType);
                             
                             if(locationCapacityValue != null) {
                                 if(lockEntityForUpdate(location)) {

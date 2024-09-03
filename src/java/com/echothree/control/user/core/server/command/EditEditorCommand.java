@@ -26,10 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Editor;
-import com.echothree.model.data.core.server.entity.EditorDescription;
-import com.echothree.model.data.core.server.entity.EditorDetail;
-import com.echothree.model.data.core.server.value.EditorDescriptionValue;
-import com.echothree.model.data.core.server.value.EditorDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -96,7 +92,7 @@ public class EditEditorCommand
     public Editor getEntity(EditEditorResult result) {
         var coreControl = getCoreControl();
         Editor editor;
-        String editorName = spec.getEditorName();
+        var editorName = spec.getEditorName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             editor = coreControl.getEditorByName(editorName);
@@ -126,14 +122,14 @@ public class EditEditorCommand
     @Override
     public void doLock(EditorEdit edit, Editor editor) {
         var coreControl = getCoreControl();
-        EditorDescription editorDescription = coreControl.getEditorDescription(editor, getPreferredLanguage());
-        EditorDetail editorDetail = editor.getLastDetail();
-        Integer minimumHeight = editorDetail.getMinimumHeight();
-        Integer minimumWidth = editorDetail.getMinimumWidth();
-        Integer maximumHeight = editorDetail.getMaximumHeight();
-        Integer maximumWidth = editorDetail.getMaximumWidth();
-        Integer defaultHeight = editorDetail.getDefaultHeight();
-        Integer defaultWidth = editorDetail.getDefaultWidth();
+        var editorDescription = coreControl.getEditorDescription(editor, getPreferredLanguage());
+        var editorDetail = editor.getLastDetail();
+        var minimumHeight = editorDetail.getMinimumHeight();
+        var minimumWidth = editorDetail.getMinimumWidth();
+        var maximumHeight = editorDetail.getMaximumHeight();
+        var maximumWidth = editorDetail.getMaximumWidth();
+        var defaultHeight = editorDetail.getDefaultHeight();
+        var defaultWidth = editorDetail.getDefaultWidth();
 
         edit.setEditorName(editorDetail.getEditorName());
         edit.setHasDimensions(editorDetail.getHasDimensions().toString());
@@ -154,8 +150,8 @@ public class EditEditorCommand
     @Override
     public void canUpdate(Editor editor) {
         var coreControl = getCoreControl();
-        String editorName = edit.getEditorName();
-        Editor duplicateEditor = coreControl.getEditorByName(editorName);
+        var editorName = edit.getEditorName();
+        var duplicateEditor = coreControl.getEditorByName(editorName);
 
         if(duplicateEditor != null && !editor.equals(duplicateEditor)) {
             addExecutionError(ExecutionErrors.DuplicateEditorName.name(), editorName);
@@ -166,15 +162,15 @@ public class EditEditorCommand
     public void doUpdate(Editor editor) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        EditorDetailValue editorDetailValue = coreControl.getEditorDetailValueForUpdate(editor);
-        EditorDescription editorDescription = coreControl.getEditorDescriptionForUpdate(editor, getPreferredLanguage());
-        String strMinimumHeight = edit.getMinimumHeight();
-        String strMinimumWidth = edit.getMinimumWidth();
-        String strMaximumHeight = edit.getMaximumHeight();
-        String strMaximumWidth = edit.getMaximumWidth();
-        String strDefaultHeight = edit.getDefaultHeight();
-        String strDefaultWidth = edit.getDefaultWidth();
-        String description = edit.getDescription();
+        var editorDetailValue = coreControl.getEditorDetailValueForUpdate(editor);
+        var editorDescription = coreControl.getEditorDescriptionForUpdate(editor, getPreferredLanguage());
+        var strMinimumHeight = edit.getMinimumHeight();
+        var strMinimumWidth = edit.getMinimumWidth();
+        var strMaximumHeight = edit.getMaximumHeight();
+        var strMaximumWidth = edit.getMaximumWidth();
+        var strDefaultHeight = edit.getDefaultHeight();
+        var strDefaultWidth = edit.getDefaultWidth();
+        var description = edit.getDescription();
 
         editorDetailValue.setEditorName(edit.getEditorName());
         editorDetailValue.setHasDimensions(Boolean.valueOf(edit.getHasDimensions()));
@@ -196,7 +192,7 @@ public class EditEditorCommand
                 coreControl.deleteEditorDescription(editorDescription, partyPK);
             } else {
                 if(editorDescription != null && description != null) {
-                    EditorDescriptionValue editorDescriptionValue = coreControl.getEditorDescriptionValue(editorDescription);
+                    var editorDescriptionValue = coreControl.getEditorDescriptionValue(editorDescription);
 
                     editorDescriptionValue.setDescription(description);
                     coreControl.updateEditorDescriptionFromValue(editorDescriptionValue, partyPK);

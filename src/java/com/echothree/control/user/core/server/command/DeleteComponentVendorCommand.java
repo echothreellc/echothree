@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.DeleteComponentVendorForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -60,9 +59,9 @@ public class DeleteComponentVendorCommand
     
     @Override
     protected BaseResult execute() {
-        String componentVendorName = form.getComponentVendorName();
+        var componentVendorName = form.getComponentVendorName();
         var coreControl = getCoreControl();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByNameForUpdate(componentVendorName);
+        var componentVendor = coreControl.getComponentVendorByNameForUpdate(componentVendorName);
         
         if(componentVendor != null) {
             coreControl.deleteComponentVendor(componentVendor, getPartyPK());

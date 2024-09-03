@@ -17,9 +17,7 @@
 package com.echothree.model.control.item.server.transfer;
 
 import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer;
-import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeUseTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -33,11 +31,11 @@ public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache
     
     @Override
     public HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer getTransfer(HarmonizedTariffScheduleCodeUseTypeDescription harmonizedTariffScheduleCodeUseTypeDescription) {
-        HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer harmonizedTariffScheduleCodeUseTypeDescriptionTransfer = get(harmonizedTariffScheduleCodeUseTypeDescription);
+        var harmonizedTariffScheduleCodeUseTypeDescriptionTransfer = get(harmonizedTariffScheduleCodeUseTypeDescription);
         
         if(harmonizedTariffScheduleCodeUseTypeDescriptionTransfer == null) {
-            HarmonizedTariffScheduleCodeUseTypeTransfer harmonizedTariffScheduleCodeUseTypeTransfer = itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(userVisit, harmonizedTariffScheduleCodeUseTypeDescription.getHarmonizedTariffScheduleCodeUseType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, harmonizedTariffScheduleCodeUseTypeDescription.getLanguage());
+            var harmonizedTariffScheduleCodeUseTypeTransfer = itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(userVisit, harmonizedTariffScheduleCodeUseTypeDescription.getHarmonizedTariffScheduleCodeUseType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, harmonizedTariffScheduleCodeUseTypeDescription.getLanguage());
             
             harmonizedTariffScheduleCodeUseTypeDescriptionTransfer = new HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer(languageTransfer, harmonizedTariffScheduleCodeUseTypeTransfer, harmonizedTariffScheduleCodeUseTypeDescription.getDescription());
             put(harmonizedTariffScheduleCodeUseTypeDescription, harmonizedTariffScheduleCodeUseTypeDescriptionTransfer);

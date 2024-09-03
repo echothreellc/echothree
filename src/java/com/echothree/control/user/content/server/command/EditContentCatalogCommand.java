@@ -32,14 +32,8 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
-import com.echothree.model.data.content.server.entity.ContentCatalogDescription;
-import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
 import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.content.server.value.ContentCatalogDescriptionValue;
-import com.echothree.model.data.content.server.value.ContentCatalogDetailValue;
 import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.offer.server.entity.OfferUseDetail;
-import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -106,12 +100,12 @@ public class EditContentCatalogCommand
     public ContentCatalog getEntity(EditContentCatalogResult result) {
         var contentControl = Session.getModelController(ContentControl.class);
         ContentCatalog contentCatalog = null;
-        String contentCollectionName = spec.getContentCollectionName();
+        var contentCollectionName = spec.getContentCollectionName();
         
         contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentCatalogName = spec.getContentCatalogName();
+            var contentCatalogName = spec.getContentCatalogName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
@@ -147,10 +141,10 @@ public class EditContentCatalogCommand
     public void doLock(ContentCatalogEdit edit, ContentCatalog contentCatalog) {
         var contentControl = Session.getModelController(ContentControl.class);
         var sourceControl = Session.getModelController(SourceControl.class);
-        ContentCatalogDescription contentCatalogDescription = contentControl.getContentCatalogDescription(contentCatalog, getPreferredLanguage());
-        ContentCatalogDetail contentCatalogDetail = contentCatalog.getLastDetail();
-        OfferUse offerUse = contentCatalogDetail.getDefaultOfferUse();
-        OfferUseDetail defaultOfferUseDetail = offerUse.getLastDetail();
+        var contentCatalogDescription = contentControl.getContentCatalogDescription(contentCatalog, getPreferredLanguage());
+        var contentCatalogDetail = contentCatalog.getLastDetail();
+        var offerUse = contentCatalogDetail.getDefaultOfferUse();
+        var defaultOfferUseDetail = offerUse.getLastDetail();
         var sources = defaultOfferUse == null ? null : sourceControl.getSourcesByOfferUse(defaultOfferUse); // List of Sources if there are any for the OfferUse
         var defaultSourceName = sources == null ? null : sources.iterator().next().getLastDetail().getSourceName(); // From the List, the first available Source's SourceName
 
@@ -185,7 +179,7 @@ public class EditContentCatalogCommand
 
                 if(defaultOffer != null) {
                     var useControl = Session.getModelController(UseControl.class);
-                    Use defaultUse = useControl.getUseByName(defaultUseName);
+                    var defaultUse = useControl.getUseByName(defaultUseName);
 
                     if(defaultUse != null) {
                         var offerUseControl = Session.getModelController(OfferUseControl.class);
@@ -238,9 +232,9 @@ public class EditContentCatalogCommand
     public void doUpdate(ContentCatalog contentCatalog) {
         var contentControl = Session.getModelController(ContentControl.class);
         var partyPK = getPartyPK();
-        ContentCatalogDetailValue contentCatalogDetailValue = contentControl.getContentCatalogDetailValueForUpdate(contentCatalog);
-        ContentCatalogDescription contentCatalogDescription = contentControl.getContentCatalogDescriptionForUpdate(contentCatalog, getPreferredLanguage());
-        String description = edit.getDescription();
+        var contentCatalogDetailValue = contentControl.getContentCatalogDetailValueForUpdate(contentCatalog);
+        var contentCatalogDescription = contentControl.getContentCatalogDescriptionForUpdate(contentCatalog, getPreferredLanguage());
+        var description = edit.getDescription();
 
         contentCatalogDetailValue.setContentCatalogName(edit.getContentCatalogName());
         contentCatalogDetailValue.setDefaultOfferUsePK(defaultOfferUse.getPrimaryKey());
@@ -254,7 +248,7 @@ public class EditContentCatalogCommand
         } else if(contentCatalogDescription != null && description == null) {
             contentControl.deleteContentCatalogDescription(contentCatalogDescription, partyPK);
         } else if(contentCatalogDescription != null && description != null) {
-            ContentCatalogDescriptionValue contentCatalogDescriptionValue = contentControl.getContentCatalogDescriptionValue(contentCatalogDescription);
+            var contentCatalogDescriptionValue = contentControl.getContentCatalogDescriptionValue(contentCatalogDescription);
 
             contentCatalogDescriptionValue.setDescription(description);
             contentControl.updateContentCatalogDescriptionFromValue(contentCatalogDescriptionValue, partyPK);

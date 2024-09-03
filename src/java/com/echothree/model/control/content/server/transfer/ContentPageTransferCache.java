@@ -19,19 +19,14 @@ package com.echothree.model.control.content.server.transfer;
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.ContentProperties;
 import com.echothree.model.control.content.common.transfer.ContentPageAreaTransfer;
-import com.echothree.model.control.content.common.transfer.ContentPageLayoutTransfer;
 import com.echothree.model.control.content.common.transfer.ContentPageTransfer;
-import com.echothree.model.control.content.common.transfer.ContentSectionTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPage;
-import com.echothree.model.data.content.server.entity.ContentPageDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.transfer.MapWrapperBuilder;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class ContentPageTransferCache
         extends BaseContentTransferCache<ContentPage, ContentPageTransfer> {
@@ -79,22 +74,22 @@ public class ContentPageTransferCache
     }
 
     public ContentPageTransfer getContentPageTransfer(ContentPage contentPage) {
-        ContentPageTransfer contentPageTransfer = get(contentPage);
+        var contentPageTransfer = get(contentPage);
         
         if(contentPageTransfer == null) {
-            ContentPageDetail contentPageDetail = contentPage.getLastDetail();
-            ContentSectionTransfer contentSection = filterContentSection ? null : contentControl.getContentSectionTransfer(userVisit, contentPageDetail.getContentSection());
-            String contentPageName = filterContentPageName ? null : contentPageDetail.getContentPageName();
-            ContentPageLayoutTransfer contentPageLayout = filterContentPageLayout ? null : contentControl.getContentPageLayoutTransfer(userVisit, contentPageDetail.getContentPageLayout());
-            Boolean isDefault = filterIsDefault ? null : contentPageDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : contentPageDetail.getSortOrder();
-            String description = filterDescription ? null : contentControl.getBestContentPageDescription(contentPage, getLanguage());
+            var contentPageDetail = contentPage.getLastDetail();
+            var contentSection = filterContentSection ? null : contentControl.getContentSectionTransfer(userVisit, contentPageDetail.getContentSection());
+            var contentPageName = filterContentPageName ? null : contentPageDetail.getContentPageName();
+            var contentPageLayout = filterContentPageLayout ? null : contentControl.getContentPageLayoutTransfer(userVisit, contentPageDetail.getContentPageLayout());
+            var isDefault = filterIsDefault ? null : contentPageDetail.getIsDefault();
+            var sortOrder = filterSortOrder ? null : contentPageDetail.getSortOrder();
+            var description = filterDescription ? null : contentControl.getBestContentPageDescription(contentPage, getLanguage());
             
             contentPageTransfer = new ContentPageTransfer(contentSection, contentPageName, contentPageLayout, isDefault, sortOrder, description);
             put(contentPage, contentPageTransfer);
 
             if(includeContentPageAreas) {
-                List<ContentPageAreaTransfer> contentPageAreaTransfers = contentControl.getContentPageAreaTransfersByContentPage(userVisit, contentPage, getLanguage());
+                var contentPageAreaTransfers = contentControl.getContentPageAreaTransfersByContentPage(userVisit, contentPage, getLanguage());
                 Map<String, ContentPageAreaTransfer> contentPageAreas = new LinkedHashMap<>(contentPageAreaTransfers.size());
 
                 contentPageAreaTransfers.forEach((contentPageAreaTransfer) -> {

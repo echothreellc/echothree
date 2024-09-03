@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.humanresources.leavetype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.CreateLeaveTypeDescriptionForm;
-import com.echothree.control.user.employee.common.form.GetLeaveTypeForm;
 import com.echothree.control.user.employee.common.result.GetLeaveTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetLeaveTypeForm commandForm = EmployeeUtil.getHome().getGetLeaveTypeForm();
+        var commandForm = EmployeeUtil.getHome().getGetLeaveTypeForm();
 
         commandForm.setLeaveTypeName(actionForm.getLeaveTypeName());
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getLeaveType(getUserVisitPK(request), commandForm);
+
+        var commandResult = EmployeeUtil.getHome().getLeaveType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLeaveTypeResult result = (GetLeaveTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.LEAVE_TYPE, result.getLeaveType());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateLeaveTypeDescriptionForm commandForm = EmployeeUtil.getHome().getCreateLeaveTypeDescriptionForm();
+        var commandForm = EmployeeUtil.getHome().getCreateLeaveTypeDescriptionForm();
 
         commandForm.setLeaveTypeName( actionForm.getLeaveTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

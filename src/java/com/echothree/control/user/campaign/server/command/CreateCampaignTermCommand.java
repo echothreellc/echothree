@@ -18,12 +18,10 @@ package com.echothree.control.user.campaign.server.command;
 
 import com.echothree.control.user.campaign.common.form.CreateCampaignTermForm;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
-import com.echothree.control.user.campaign.common.result.CreateCampaignTermResult;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.campaign.server.entity.CampaignTerm;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,10 +65,10 @@ public class CreateCampaignTermCommand
     
     @Override
     protected BaseResult execute() {
-        CreateCampaignTermResult result = CampaignResultFactory.getCreateCampaignTermResult();
+        var result = CampaignResultFactory.getCreateCampaignTermResult();
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String value = form.getValue();
-        CampaignTerm campaignTerm = campaignControl.getCampaignTermByValue(value);
+        var value = form.getValue();
+        var campaignTerm = campaignControl.getCampaignTermByValue(value);
         
         if(campaignTerm == null) {
             var partyPK = getPartyPK();

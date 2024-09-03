@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.workefforttype;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
-import com.echothree.control.user.workeffort.common.edit.WorkEffortTypeDescriptionEdit;
-import com.echothree.control.user.workeffort.common.form.EditWorkEffortTypeDescriptionForm;
 import com.echothree.control.user.workeffort.common.result.EditWorkEffortTypeDescriptionResult;
-import com.echothree.control.user.workeffort.common.spec.WorkEffortTypeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditWorkEffortTypeDescriptionForm commandForm = WorkEffortUtil.getHome().getEditWorkEffortTypeDescriptionForm();
-                WorkEffortTypeDescriptionSpec spec = WorkEffortUtil.getHome().getWorkEffortTypeDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = WorkEffortUtil.getHome().getEditWorkEffortTypeDescriptionForm();
+                var spec = WorkEffortUtil.getHome().getWorkEffortTypeDescriptionSpec();
                 
                 if(workEffortTypeName == null)
                     workEffortTypeName = actionForm.getWorkEffortTypeName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    WorkEffortTypeDescriptionEdit edit = WorkEffortUtil.getHome().getWorkEffortTypeDescriptionEdit();
+                    var edit = WorkEffortUtil.getHome().getWorkEffortTypeDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = WorkEffortUtil.getHome().editWorkEffortTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = WorkEffortUtil.getHome().editWorkEffortTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditWorkEffortTypeDescriptionResult result = (EditWorkEffortTypeDescriptionResult)executionResult.getResult();
+                            var result = (EditWorkEffortTypeDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = WorkEffortUtil.getHome().editWorkEffortTypeDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditWorkEffortTypeDescriptionResult result = (EditWorkEffortTypeDescriptionResult)executionResult.getResult();
+
+                    var commandResult = WorkEffortUtil.getHome().editWorkEffortTypeDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditWorkEffortTypeDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        WorkEffortTypeDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setWorkEffortTypeName(workEffortTypeName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WORK_EFFORT_TYPE_NAME, workEffortTypeName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

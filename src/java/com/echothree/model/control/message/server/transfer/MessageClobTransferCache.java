@@ -16,12 +16,9 @@
 
 package com.echothree.model.control.message.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.message.common.transfer.MessageClobTransfer;
-import com.echothree.model.control.message.common.transfer.MessageTransfer;
 import com.echothree.model.control.message.server.control.MessageControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.message.server.entity.MessageClob;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -42,13 +39,13 @@ public class MessageClobTransferCache
     }
     
     public MessageClobTransfer getMessageClobTransfer(MessageClob messageClob) {
-        MessageClobTransfer messageClobTransfer = get(messageClob);
+        var messageClobTransfer = get(messageClob);
         
         if(messageClobTransfer == null) {
-            MessageTransfer message = messageControl.getMessageTransfer(userVisit, messageClob.getMessage());
-            LanguageTransfer language = partyControl.getLanguageTransfer(userVisit, messageClob.getLanguage());
-            MimeTypeTransfer mimeType = coreControl.getMimeTypeTransfer(userVisit, messageClob.getMimeType());
-            String clob = messageClob.getClob();
+            var message = messageControl.getMessageTransfer(userVisit, messageClob.getMessage());
+            var language = partyControl.getLanguageTransfer(userVisit, messageClob.getLanguage());
+            var mimeType = coreControl.getMimeTypeTransfer(userVisit, messageClob.getMimeType());
+            var clob = messageClob.getClob();
             
             messageClobTransfer = new MessageClobTransfer(message, language, mimeType, clob);
             put(messageClob, messageClobTransfer);

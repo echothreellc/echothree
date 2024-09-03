@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.shipment.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.shipment.common.transfer.ShipmentAliasTypeDescriptionTransfer;
-import com.echothree.model.control.shipment.common.transfer.ShipmentAliasTypeTransfer;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,11 +34,11 @@ public class ShipmentAliasTypeDescriptionTransferCache
 
     @Override
     public ShipmentAliasTypeDescriptionTransfer getTransfer(ShipmentAliasTypeDescription shipmentAliasTypeDescription) {
-        ShipmentAliasTypeDescriptionTransfer shipmentAliasTypeDescriptionTransfer = get(shipmentAliasTypeDescription);
+        var shipmentAliasTypeDescriptionTransfer = get(shipmentAliasTypeDescription);
         
         if(shipmentAliasTypeDescriptionTransfer == null) {
-            ShipmentAliasTypeTransfer shipmentAliasTypeTransfer = shipmentControl.getShipmentAliasTypeTransfer(userVisit, shipmentAliasTypeDescription.getShipmentAliasType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, shipmentAliasTypeDescription.getLanguage());
+            var shipmentAliasTypeTransfer = shipmentControl.getShipmentAliasTypeTransfer(userVisit, shipmentAliasTypeDescription.getShipmentAliasType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, shipmentAliasTypeDescription.getLanguage());
             
             shipmentAliasTypeDescriptionTransfer = new ShipmentAliasTypeDescriptionTransfer(languageTransfer, shipmentAliasTypeTransfer, shipmentAliasTypeDescription.getDescription());
             put(shipmentAliasTypeDescription, shipmentAliasTypeDescriptionTransfer);

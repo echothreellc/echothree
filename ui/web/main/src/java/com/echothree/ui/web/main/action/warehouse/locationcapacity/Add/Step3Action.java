@@ -17,11 +17,9 @@
 package com.echothree.ui.web.main.action.warehouse.locationcapacity.Add;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.CreateLocationCapacityForm;
 import com.echothree.ui.web.main.action.warehouse.locationcapacity.AddActionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -53,10 +51,10 @@ public class Step3Action
     public ActionForward executeAction(ActionMapping mapping, AddActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-        String unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
         
         if(warehouseName == null) {
             warehouseName = form.getWarehouseName();
@@ -75,15 +73,15 @@ public class Step3Action
         }
         
         if(wasPost(request)) {
-            CreateLocationCapacityForm commandForm = WarehouseUtil.getHome().getCreateLocationCapacityForm();
+            var commandForm = WarehouseUtil.getHome().getCreateLocationCapacityForm();
             
             commandForm.setWarehouseName(warehouseName);
             commandForm.setLocationName(locationName);
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
             commandForm.setCapacity(form.getCapacity());
-            
-            CommandResult commandResult = WarehouseUtil.getHome().createLocationCapacity(getUserVisitPK(request), commandForm);
+
+            var commandResult = WarehouseUtil.getHome().createLocationCapacity(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -99,8 +97,8 @@ public class Step3Action
             form.setCapacity("1");
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupLocation(request, warehouseName, locationName);
             setupUnitOfMeasureType(request, unitOfMeasureKindName, unitOfMeasureTypeName);

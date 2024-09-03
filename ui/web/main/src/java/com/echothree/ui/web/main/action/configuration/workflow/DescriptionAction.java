@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.workflow;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.GetWorkflowDescriptionsForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,14 +52,14 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
-            GetWorkflowDescriptionsForm commandForm = WorkflowUtil.getHome().getGetWorkflowDescriptionsForm();
+            var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowDescriptionsForm();
             
             commandForm.setWorkflowName(workflowName);
-            
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowDescriptionsResult result = (GetWorkflowDescriptionsResult)executionResult.getResult();
+
+            var commandResult = WorkflowUtil.getHome().getWorkflowDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORKFLOW, result.getWorkflow());
             request.setAttribute(AttributeConstants.WORKFLOW_DESCRIPTIONS, result.getWorkflowDescriptions());

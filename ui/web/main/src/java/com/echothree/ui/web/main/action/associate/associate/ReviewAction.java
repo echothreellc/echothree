@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.associate.associate;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.common.form.GetAssociateForm;
 import com.echothree.control.user.associate.common.result.GetAssociateResult;
-import com.echothree.model.control.associate.common.transfer.AssociateTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,20 +49,20 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
-            String associateName = request.getParameter(ParameterConstants.ASSOCIATE_NAME);
-            GetAssociateForm commandForm = AssociateUtil.getHome().getGetAssociateForm();
+            var associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
+            var associateName = request.getParameter(ParameterConstants.ASSOCIATE_NAME);
+            var commandForm = AssociateUtil.getHome().getGetAssociateForm();
             
             commandForm.setAssociateProgramName(associateProgramName);
             commandForm.setAssociateName(associateName);
-            
-            CommandResult commandResult = AssociateUtil.getHome().getAssociate(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAssociateResult result = (GetAssociateResult)executionResult.getResult();
-            AssociateTransfer associateTransfer = result.getAssociate();
+
+            var commandResult = AssociateUtil.getHome().getAssociate(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAssociateResult)executionResult.getResult();
+            var associateTransfer = result.getAssociate();
             
             request.setAttribute(AttributeConstants.ASSOCIATE, associateTransfer);
             forwardKey = ForwardConstants.DISPLAY;

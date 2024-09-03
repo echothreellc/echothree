@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.content.contentcollection;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.edit.ContentCollectionDescriptionEdit;
-import com.echothree.control.user.content.common.form.EditContentCollectionDescriptionForm;
 import com.echothree.control.user.content.common.result.EditContentCollectionDescriptionResult;
-import com.echothree.control.user.content.common.spec.ContentCollectionDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditContentCollectionDescriptionForm commandForm = ContentUtil.getHome().getEditContentCollectionDescriptionForm();
-                ContentCollectionDescriptionSpec spec = ContentUtil.getHome().getContentCollectionDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = ContentUtil.getHome().getEditContentCollectionDescriptionForm();
+                var spec = ContentUtil.getHome().getContentCollectionDescriptionSpec();
                 
                 if(contentCollectionName == null)
                     contentCollectionName = actionForm.getContentCollectionName();
@@ -80,13 +75,13 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    ContentCollectionDescriptionEdit edit = ContentUtil.getHome().getContentCollectionDescriptionEdit();
+                    var edit = ContentUtil.getHome().getContentCollectionDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ContentUtil.getHome().editContentCollectionDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ContentUtil.getHome().editContentCollectionDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -96,11 +91,11 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = ContentUtil.getHome().editContentCollectionDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditContentCollectionDescriptionResult result = (EditContentCollectionDescriptionResult)executionResult.getResult();
-                    ContentCollectionDescriptionEdit edit = result.getEdit();
+
+                    var commandResult = ContentUtil.getHome().editContentCollectionDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditContentCollectionDescriptionResult)executionResult.getResult();
+                    var edit = result.getEdit();
                     
                     actionForm.setContentCollectionName(contentCollectionName);
                     actionForm.setLanguageIsoName(languageIsoName);
@@ -111,8 +106,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

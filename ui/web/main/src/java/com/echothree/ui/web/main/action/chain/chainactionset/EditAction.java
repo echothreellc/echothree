@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected ChainActionSetSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ChainActionSetSpec spec = ChainUtil.getHome().getChainActionSetSpec();
+        var spec = ChainUtil.getHome().getChainActionSetSpec();
         
         spec.setChainKindName(findParameter(request, ParameterConstants.CHAIN_KIND_NAME, actionForm.getChainKindName()));
         spec.setChainTypeName(findParameter(request, ParameterConstants.CHAIN_TYPE_NAME, actionForm.getChainTypeName()));
@@ -64,7 +64,7 @@ public class EditAction
     @Override
     protected ChainActionSetEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ChainActionSetEdit edit = ChainUtil.getHome().getChainActionSetEdit();
+        var edit = ChainUtil.getHome().getChainActionSetEdit();
 
         edit.setChainActionSetName(actionForm.getChainActionSetName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

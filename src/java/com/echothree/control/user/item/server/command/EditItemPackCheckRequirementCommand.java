@@ -26,8 +26,6 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemPackCheckRequirement;
-import com.echothree.model.data.item.server.value.ItemPackCheckRequirementValue;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -76,13 +74,13 @@ public class EditItemPackCheckRequirementCommand
     public ItemPackCheckRequirement getEntity(EditItemPackCheckRequirementResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemPackCheckRequirement itemPackCheckRequirement = null;
-        String itemName = spec.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = spec.getItemName();
+        var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
             var uomControl = Session.getModelController(UomControl.class);
-            String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
+            var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
             if(unitOfMeasureType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -130,8 +128,8 @@ public class EditItemPackCheckRequirementCommand
 
     @Override
     public void canUpdate(ItemPackCheckRequirement itemPackCheckRequirement) {
-        String strMinimumQuantity = edit.getMinimumQuantity();
-        String strMaximumQuantity = edit.getMaximumQuantity();
+        var strMinimumQuantity = edit.getMinimumQuantity();
+        var strMaximumQuantity = edit.getMaximumQuantity();
 
         minimumQuantity = strMinimumQuantity == null ? null : Long.valueOf(strMinimumQuantity);
         maximumQuantity = strMaximumQuantity == null ? null : Long.valueOf(strMaximumQuantity);
@@ -146,7 +144,7 @@ public class EditItemPackCheckRequirementCommand
     @Override
     public void doUpdate(ItemPackCheckRequirement itemPackCheckRequirement) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemPackCheckRequirementValue itemPackCheckRequirementValue = itemControl.getItemPackCheckRequirementValue(itemPackCheckRequirement);
+        var itemPackCheckRequirementValue = itemControl.getItemPackCheckRequirementValue(itemPackCheckRequirement);
 
         itemPackCheckRequirementValue.setMinimumQuantity(minimumQuantity);
         itemPackCheckRequirementValue.setMaximumQuantity(maximumQuantity);

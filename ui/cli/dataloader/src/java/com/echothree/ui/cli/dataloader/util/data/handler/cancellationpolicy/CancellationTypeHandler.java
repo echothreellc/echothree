@@ -19,8 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.cancellationpolicy;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyService;
 import com.echothree.control.user.cancellationpolicy.common.form.CancellationPolicyFormFactory;
-import com.echothree.control.user.cancellationpolicy.common.form.CreateCancellationReasonTypeForm;
-import com.echothree.control.user.cancellationpolicy.common.form.CreateCancellationTypeDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -53,9 +51,9 @@ public class CancellationTypeHandler
         if(localName.equals("cancellationTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -63,7 +61,7 @@ public class CancellationTypeHandler
             }
             
             try {
-                CreateCancellationTypeDescriptionForm commandForm = CancellationPolicyFormFactory.getCreateCancellationTypeDescriptionForm();
+                var commandForm = CancellationPolicyFormFactory.getCreateCancellationTypeDescriptionForm();
                 
                 commandForm.setCancellationKindName(cancellationKindName);
                 commandForm.setCancellationTypeName(cancellationTypeName);
@@ -78,9 +76,9 @@ public class CancellationTypeHandler
             String cancellationReasonName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("cancellationReasonName"))
                     cancellationReasonName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -90,7 +88,7 @@ public class CancellationTypeHandler
             }
             
             try {
-                CreateCancellationReasonTypeForm commandForm = CancellationPolicyFormFactory.getCreateCancellationReasonTypeForm();
+                var commandForm = CancellationPolicyFormFactory.getCreateCancellationReasonTypeForm();
                 
                 commandForm.setCancellationKindName(cancellationKindName);
                 commandForm.setCancellationReasonName(cancellationReasonName);

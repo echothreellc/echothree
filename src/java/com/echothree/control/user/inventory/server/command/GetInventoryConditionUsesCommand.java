@@ -17,13 +17,9 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryConditionUsesForm;
-import com.echothree.control.user.inventory.common.result.GetInventoryConditionUsesResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.inventory.server.entity.InventoryConditionUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -54,16 +50,16 @@ public class GetInventoryConditionUsesCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        GetInventoryConditionUsesResult result = InventoryResultFactory.getGetInventoryConditionUsesResult();
-        String inventoryConditionName = form.getInventoryConditionName();
-        String inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
+        var result = InventoryResultFactory.getGetInventoryConditionUsesResult();
+        var inventoryConditionName = form.getInventoryConditionName();
+        var inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
         var parameterCount = (inventoryConditionName == null ? 0 : 1) + (inventoryConditionUseTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             if(inventoryConditionName != null) {
-                InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
                 if(inventoryCondition != null) {
                     result.setInventoryCondition(inventoryControl.getInventoryConditionTransfer(userVisit, inventoryCondition));
@@ -72,7 +68,7 @@ public class GetInventoryConditionUsesCommand
                     addExecutionError(ExecutionErrors.UnknownInventoryConditionName.name(), inventoryConditionName);
                 }
             } else if(inventoryConditionUseTypeName != null) {
-                InventoryConditionUseType inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
+                var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
                 
                 if(inventoryConditionUseType != null) {
                     result.setInventoryConditionUseType(inventoryControl.getInventoryConditionUseTypeTransfer(userVisit, inventoryConditionUseType));

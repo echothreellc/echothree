@@ -30,13 +30,7 @@ import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
-import com.echothree.model.data.shipping.server.entity.ShippingMethodDescription;
-import com.echothree.model.data.shipping.server.entity.ShippingMethodDetail;
-import com.echothree.model.data.shipping.server.value.ShippingMethodDescriptionValue;
-import com.echothree.model.data.shipping.server.value.ShippingMethodDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -97,8 +91,8 @@ public class EditShippingMethodCommand
     @Override
     public ShippingMethod getEntity(EditShippingMethodResult result) {
         var shippingControl = Session.getModelController(ShippingControl.class);
-        ShippingMethod shippingMethod = null;
-        String shippingMethodName = spec.getShippingMethodName();
+        ShippingMethod shippingMethod;
+        var shippingMethodName = spec.getShippingMethodName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
@@ -133,8 +127,8 @@ public class EditShippingMethodCommand
     @Override
     public void doLock(ShippingMethodEdit edit, ShippingMethod shippingMethod) {
         var shippingControl = Session.getModelController(ShippingControl.class);
-        ShippingMethodDescription shippingMethodDescription = shippingControl.getShippingMethodDescription(shippingMethod, getPreferredLanguage());
-        ShippingMethodDetail shippingMethodDetail = shippingMethod.getLastDetail();
+        var shippingMethodDescription = shippingControl.getShippingMethodDescription(shippingMethod, getPreferredLanguage());
+        var shippingMethodDetail = shippingMethod.getLastDetail();
 
         geoCodeSelector = shippingMethodDetail.getGeoCodeSelector();
         shippingMethodDetail.getItemSelector();
@@ -152,18 +146,18 @@ public class EditShippingMethodCommand
     @Override
     public void canUpdate(ShippingMethod shippingMethod) {
         var shippingControl = Session.getModelController(ShippingControl.class);
-        String shippingMethodName = edit.getShippingMethodName();
-        ShippingMethod duplicateShippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+        var shippingMethodName = edit.getShippingMethodName();
+        var duplicateShippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
 
         if(duplicateShippingMethod == null || shippingMethod.equals(duplicateShippingMethod)) {
-            String geoCodeSelectorName = edit.getGeoCodeSelectorName();
+            var geoCodeSelectorName = edit.getGeoCodeSelectorName();
 
             if(geoCodeSelectorName != null) {
                 var selectorControl = Session.getModelController(SelectorControl.class);
-                SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
+                var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                 if(selectorKind != null) {
-                    SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
+                    var selectorType = selectorControl.getSelectorTypeByName(selectorKind,
                             SelectorTypes.CARRIER.name());
 
                     if(selectorType != null) {
@@ -177,14 +171,14 @@ public class EditShippingMethodCommand
             }
 
             if(geoCodeSelectorName == null || geoCodeSelector != null) {
-                String itemSelectorName = edit.getItemSelectorName();
+                var itemSelectorName = edit.getItemSelectorName();
 
                 if(itemSelectorName != null) {
                     var selectorControl = Session.getModelController(SelectorControl.class);
-                    SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
+                    var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                     if(selectorKind != null) {
-                        SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
+                        var selectorType = selectorControl.getSelectorTypeByName(selectorKind,
                                 SelectorTypes.CARRIER.name());
 
                         if(selectorType != null) {
@@ -212,9 +206,9 @@ public class EditShippingMethodCommand
     public void doUpdate(ShippingMethod shippingMethod) {
         var shippingControl = Session.getModelController(ShippingControl.class);
         var partyPK = getPartyPK();
-        ShippingMethodDetailValue shippingMethodDetailValue = shippingControl.getShippingMethodDetailValueForUpdate(shippingMethod);
-        ShippingMethodDescription shippingMethodDescription = shippingControl.getShippingMethodDescriptionForUpdate(shippingMethod, getPreferredLanguage());
-        String description = edit.getDescription();
+        var shippingMethodDetailValue = shippingControl.getShippingMethodDetailValueForUpdate(shippingMethod);
+        var shippingMethodDescription = shippingControl.getShippingMethodDescriptionForUpdate(shippingMethod, getPreferredLanguage());
+        var description = edit.getDescription();
 
         shippingMethodDetailValue.setShippingMethodName(edit.getShippingMethodName());
         shippingMethodDetailValue.setGeoCodeSelectorPK(geoCodeSelector == null ? null : geoCodeSelector.getPrimaryKey());
@@ -230,7 +224,7 @@ public class EditShippingMethodCommand
                 shippingControl.deleteShippingMethodDescription(shippingMethodDescription, partyPK);
             } else {
                 if(shippingMethodDescription != null && description != null) {
-                    ShippingMethodDescriptionValue shippingMethodDescriptionValue = shippingControl.getShippingMethodDescriptionValue(shippingMethodDescription);
+                    var shippingMethodDescriptionValue = shippingControl.getShippingMethodDescriptionValue(shippingMethodDescription);
 
                     shippingMethodDescriptionValue.setDescription(description);
                     shippingControl.updateShippingMethodDescriptionFromValue(shippingMethodDescriptionValue, partyPK);

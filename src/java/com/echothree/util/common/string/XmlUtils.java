@@ -33,8 +33,8 @@ public class XmlUtils {
     }
     
     public QName[] toQNames(final String[] tags) {
-        final QName[] qnames = new QName[tags.length];
-        for(int i = 0; i < tags.length; ++i) {
+        final var qnames = new QName[tags.length];
+        for(var i = 0; i < tags.length; ++i) {
             qnames[i] = new QName(null, tags[i], null, null);
         }
 

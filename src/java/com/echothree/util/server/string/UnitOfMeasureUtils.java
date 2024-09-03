@@ -19,13 +19,10 @@ package com.echothree.util.server.string;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureEquivalent;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
-import java.util.Iterator;
-import java.util.List;
 
 public class UnitOfMeasureUtils {
     
@@ -54,15 +51,15 @@ public class UnitOfMeasureUtils {
     }
     
     private StringBuilder formatUnitOfMeasure(UomControl uomControl, Language language, StringBuilder builder, UnitOfMeasureType unitOfMeasureType, long measure) {
-        List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents = uomControl.getUnitOfMeasureEquivalentsByToUnitOfMeasureType(unitOfMeasureType);
-        boolean appended = false;
+        var unitOfMeasureEquivalents = uomControl.getUnitOfMeasureEquivalentsByToUnitOfMeasureType(unitOfMeasureType);
+        var appended = false;
         
         for(var unitOfMeasureEquivalent : unitOfMeasureEquivalents) {
             long toQuantity = unitOfMeasureEquivalent.getToQuantity();
             
             if(measure > toQuantity) {
-                long equivMeasure = measure / toQuantity;
-                long remainMeasure = measure % toQuantity;
+                var equivMeasure = measure / toQuantity;
+                var remainMeasure = measure % toQuantity;
                 
                 formatUnitOfMeasure(uomControl, language, builder, unitOfMeasureEquivalent.getFromUnitOfMeasureType(), equivMeasure);
                 
@@ -83,11 +80,11 @@ public class UnitOfMeasureUtils {
     }
     
     private UnitOfMeasureType getLowestUnitOfMeasureType(UomControl uomControl, UnitOfMeasureType unitOfMeasureType) {
-        List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents = uomControl.getUnitOfMeasureEquivalentsByFromUnitOfMeasureType(unitOfMeasureType);
-        Iterator<UnitOfMeasureEquivalent> iter = unitOfMeasureEquivalents.iterator();
+        var unitOfMeasureEquivalents = uomControl.getUnitOfMeasureEquivalentsByFromUnitOfMeasureType(unitOfMeasureType);
+        var iter = unitOfMeasureEquivalents.iterator();
         
         if(iter.hasNext()) {
-            UnitOfMeasureEquivalent unitOfMeasureEquivalent = iter.next();
+            var unitOfMeasureEquivalent = iter.next();
             
             unitOfMeasureType = unitOfMeasureEquivalent.getToUnitOfMeasureType();
         }
@@ -97,8 +94,8 @@ public class UnitOfMeasureUtils {
     
     // TODO: This should have a cache
     public UnitOfMeasureType getLowestUnitOfMeasureType(UomControl uomControl, UnitOfMeasureKind unitOfMeasureKind) {
-        List<UnitOfMeasureType> unitOfMeasureTypes = uomControl.getUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
-        Iterator<UnitOfMeasureType> iter = unitOfMeasureTypes.iterator();
+        var unitOfMeasureTypes = uomControl.getUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
+        var iter = unitOfMeasureTypes.iterator();
         UnitOfMeasureType unitOfMeasureType = null;
         
         if(iter.hasNext()) {
@@ -114,8 +111,8 @@ public class UnitOfMeasureUtils {
         if(measure != null) {
             var uomControl = Session.getModelController(UomControl.class);
             var userControl = Session.getModelController(UserControl.class);
-            Language language = userControl.getPreferredLanguageFromUserVisit(userVisit);
-            UnitOfMeasureType unitOfMeasureType = getLowestUnitOfMeasureType(uomControl, unitOfMeasureKind);
+            var language = userControl.getPreferredLanguageFromUserVisit(userVisit);
+            var unitOfMeasureType = getLowestUnitOfMeasureType(uomControl, unitOfMeasureKind);
             
             result = formatUnitOfMeasure(uomControl, language, new StringBuilder(), unitOfMeasureType, measure).toString();
         }

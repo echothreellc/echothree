@@ -18,11 +18,9 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypeUsagesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetMimeTypeUsagesResult;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsage;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -55,7 +53,7 @@ public class GetMimeTypeUsagesCommand
     protected Collection<MimeTypeUsage> getEntities() {
         Collection<MimeTypeUsage> mimeTypeUsages = null;
         var coreControl = getCoreControl();
-        String mimeTypeName = form.getMimeTypeName();
+        var mimeTypeName = form.getMimeTypeName();
         
         mimeType = coreControl.getMimeTypeByName(mimeTypeName);
         
@@ -70,11 +68,11 @@ public class GetMimeTypeUsagesCommand
 
     @Override
     protected BaseResult getResult(Collection<MimeTypeUsage> entities) {
-        GetMimeTypeUsagesResult result = CoreResultFactory.getGetMimeTypeUsagesResult();
+        var result = CoreResultFactory.getGetMimeTypeUsagesResult();
 
         if(entities != null) {
             var coreControl = getCoreControl();
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
             result.setMimeType(coreControl.getMimeTypeTransfer(userVisit, mimeType));
             result.setMimeTypeUsages(coreControl.getMimeTypeUsageTransfersByMimeType(userVisit, entities));

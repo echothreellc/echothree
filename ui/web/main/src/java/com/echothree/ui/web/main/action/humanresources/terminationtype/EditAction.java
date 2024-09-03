@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.humanresources.terminationtype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.edit.TerminationTypeEdit;
-import com.echothree.control.user.employee.common.form.EditTerminationTypeForm;
 import com.echothree.control.user.employee.common.result.EditTerminationTypeResult;
-import com.echothree.control.user.employee.common.spec.TerminationTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,13 +53,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalTerminationTypeName = request.getParameter(ParameterConstants.ORIGINAL_TERMINATION_TYPE_NAME);
+        var originalTerminationTypeName = request.getParameter(ParameterConstants.ORIGINAL_TERMINATION_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditTerminationTypeForm commandForm = EmployeeUtil.getHome().getEditTerminationTypeForm();
-                TerminationTypeSpec spec = EmployeeUtil.getHome().getTerminationTypeSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = EmployeeUtil.getHome().getEditTerminationTypeForm();
+                var spec = EmployeeUtil.getHome().getTerminationTypeSpec();
                 
                 if(originalTerminationTypeName == null)
                     originalTerminationTypeName = actionForm.getOriginalTerminationTypeName();
@@ -73,7 +68,7 @@ public class EditAction
                 spec.setTerminationTypeName(originalTerminationTypeName);
                 
                 if(wasPost(request)) {
-                    TerminationTypeEdit edit = EmployeeUtil.getHome().getTerminationTypeEdit();
+                    var edit = EmployeeUtil.getHome().getTerminationTypeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -82,14 +77,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().editTerminationType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = EmployeeUtil.getHome().editTerminationType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditTerminationTypeResult result = (EditTerminationTypeResult)executionResult.getResult();
+                            var result = (EditTerminationTypeResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -102,13 +97,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().editTerminationType(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditTerminationTypeResult result = (EditTerminationTypeResult)executionResult.getResult();
+
+                    var commandResult = EmployeeUtil.getHome().editTerminationType(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditTerminationTypeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        TerminationTypeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalTerminationTypeName(edit.getTerminationTypeName());

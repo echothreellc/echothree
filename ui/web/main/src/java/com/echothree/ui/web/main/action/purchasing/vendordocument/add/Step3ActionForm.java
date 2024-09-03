@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.purchasing.vendordocument.add;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetMimeTypeChoicesForm;
 import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseLanguageActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -49,15 +46,15 @@ public class Step3ActionForm
     private void setupMimeTypeChoices() {
         if(mimeTypeChoices == null) {
             try {
-                GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+                var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
                 commandForm.setDefaultMimeTypeChoice(mimeTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
                 commandForm.setDocumentTypeName(documentTypeName);
 
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+                var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
                 mimeTypeChoices = result.getMimeTypeChoices();
 
                 if(mimeTypeChoice == null) {

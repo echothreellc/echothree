@@ -17,13 +17,11 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.CreateItemForm;
 import com.echothree.control.user.item.common.result.CreateItemResult;
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -58,11 +56,11 @@ public class AddAction
         String itemName = null;
         
         if(wasPost(request)) {
-            CreateItemForm commandForm = ItemUtil.getHome().getCreateItemForm();
-            String itemTypeName = actionForm.getItemTypeChoice();
-            boolean isKitOrStyle = itemTypeName == null? false: itemTypeName.equals(ItemConstants.ItemType_KIT)
+            var commandForm = ItemUtil.getHome().getCreateItemForm();
+            var itemTypeName = actionForm.getItemTypeChoice();
+            var isKitOrStyle = itemTypeName == null? false: itemTypeName.equals(ItemConstants.ItemType_KIT)
                     || itemTypeName.equals(ItemConstants.ItemType_STYLE);
-            Boolean inventorySerialized = actionForm.getInventorySerialized();
+            var inventorySerialized = actionForm.getInventorySerialized();
             
             commandForm.setItemName(actionForm.getItemName());
             commandForm.setItemTypeName(itemTypeName);
@@ -89,14 +87,14 @@ public class AddAction
             commandForm.setItemPriceTypeName(actionForm.getItemPriceTypeChoice());
             commandForm.setCancellationPolicyName(actionForm.getCancellationPolicyChoice());
             commandForm.setReturnPolicyName(actionForm.getReturnPolicyChoice());
-            
-            CommandResult commandResult = ItemUtil.getHome().createItem(getUserVisitPK(request), commandForm);
+
+            var commandResult = ItemUtil.getHome().createItem(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
                 forwardKey = ForwardConstants.FORM;
             } else {
-                CreateItemResult createItemResult = (CreateItemResult)commandResult.getExecutionResult().getResult();
+                var createItemResult = (CreateItemResult)commandResult.getExecutionResult().getResult();
                 
                 forwardKey = ForwardConstants.REVIEW;
                 itemName = createItemResult.getItemName();
@@ -104,9 +102,8 @@ public class AddAction
         } else {
             forwardKey = ForwardConstants.FORM;
         }
-        
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.REVIEW)) {
             Map<String, String> parameters = new HashMap<>(1);
             

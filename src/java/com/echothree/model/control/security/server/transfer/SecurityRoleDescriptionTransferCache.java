@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.security.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.security.common.transfer.SecurityRoleDescriptionTransfer;
-import com.echothree.model.control.security.common.transfer.SecurityRoleTransfer;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,12 +30,12 @@ public class SecurityRoleDescriptionTransferCache
     }
     
     public SecurityRoleDescriptionTransfer getSecurityRoleDescriptionTransfer(SecurityRoleDescription securityRoleDescription) {
-        SecurityRoleDescriptionTransfer securityRoleDescriptionTransfer = get(securityRoleDescription);
+        var securityRoleDescriptionTransfer = get(securityRoleDescription);
         
         if(securityRoleDescriptionTransfer == null) {
-            SecurityRoleTransferCache securityRoleTransferCache = securityControl.getSecurityTransferCaches(userVisit).getSecurityRoleTransferCache();
-            SecurityRoleTransfer securityRoleTransfer = securityRoleTransferCache.getSecurityRoleTransfer(securityRoleDescription.getSecurityRole());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, securityRoleDescription.getLanguage());
+            var securityRoleTransferCache = securityControl.getSecurityTransferCaches(userVisit).getSecurityRoleTransferCache();
+            var securityRoleTransfer = securityRoleTransferCache.getSecurityRoleTransfer(securityRoleDescription.getSecurityRole());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, securityRoleDescription.getLanguage());
             
             securityRoleDescriptionTransfer = new SecurityRoleDescriptionTransfer(languageTransfer, securityRoleTransfer, securityRoleDescription.getDescription());
             put(securityRoleDescription, securityRoleDescriptionTransfer);

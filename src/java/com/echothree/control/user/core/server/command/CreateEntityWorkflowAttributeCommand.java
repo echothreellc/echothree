@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityWorkflowAttributeForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.common.exception.DuplicateEntityLongAttributeException;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;

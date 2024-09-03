@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.search;
 
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.SearchService;
-import com.echothree.control.user.search.common.form.CreateSearchUseTypeDescriptionForm;
 import com.echothree.control.user.search.common.form.SearchFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -50,7 +49,7 @@ public class SearchUseTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("searchUseTypeDescription")) {
-            CreateSearchUseTypeDescriptionForm commandForm = SearchFormFactory.getCreateSearchUseTypeDescriptionForm();
+            var commandForm = SearchFormFactory.getCreateSearchUseTypeDescriptionForm();
 
             commandForm.setSearchUseTypeName(searchUseTypeName);
             commandForm.set(getAttrsMap(attrs));

@@ -71,7 +71,7 @@ public class SecurityRoleGroupObject
     @GraphQLField
     @GraphQLDescription("parent item category")
     public SecurityRoleGroupObject getParentSecurityRoleGroup() {
-        SecurityRoleGroup parentSecurityRoleGroup = getSecurityRoleGroupDetail().getParentSecurityRoleGroup();
+        var parentSecurityRoleGroup = getSecurityRoleGroupDetail().getParentSecurityRoleGroup();
 
         return parentSecurityRoleGroup == null ? null : new SecurityRoleGroupObject(parentSecurityRoleGroup);
     }

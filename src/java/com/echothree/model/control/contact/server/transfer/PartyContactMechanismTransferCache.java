@@ -17,14 +17,11 @@
 package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.ContactOptions;
-import com.echothree.model.control.contact.common.transfer.ContactMechanismTransfer;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismRelationshipTransfer;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanismDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
@@ -59,15 +56,15 @@ public class PartyContactMechanismTransferCache
     }
     
     public PartyContactMechanismTransfer getPartyContactMechanismTransfer(PartyContactMechanism partyContactMechanism) {
-        PartyContactMechanismTransfer partyContactMechanismTransfer = get(partyContactMechanism);
+        var partyContactMechanismTransfer = get(partyContactMechanism);
         
         if(partyContactMechanismTransfer == null) {
-            PartyContactMechanismDetail partyContactMechanismDetail = partyContactMechanism.getLastDetail();
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, partyContactMechanismDetail.getParty());
-            ContactMechanismTransfer contactMechanism = contactControl.getContactMechanismTransfer(userVisit, partyContactMechanismDetail.getContactMechanism());
-            Boolean isDefault = partyContactMechanismDetail.getIsDefault();
-            Integer sortOrder = partyContactMechanismDetail.getSortOrder();
-            String description = partyContactMechanismDetail.getDescription();
+            var partyContactMechanismDetail = partyContactMechanism.getLastDetail();
+            var party = partyControl.getPartyTransfer(userVisit, partyContactMechanismDetail.getParty());
+            var contactMechanism = contactControl.getContactMechanismTransfer(userVisit, partyContactMechanismDetail.getContactMechanism());
+            var isDefault = partyContactMechanismDetail.getIsDefault();
+            var sortOrder = partyContactMechanismDetail.getSortOrder();
+            var description = partyContactMechanismDetail.getDescription();
             
             partyContactMechanismTransfer = new PartyContactMechanismTransfer(party, contactMechanism, isDefault, sortOrder, description);
             put(partyContactMechanism, partyContactMechanismTransfer);

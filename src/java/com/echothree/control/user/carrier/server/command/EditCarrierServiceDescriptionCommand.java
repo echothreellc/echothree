@@ -27,12 +27,8 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.carrier.server.entity.Carrier;
 import com.echothree.model.data.carrier.server.entity.CarrierService;
 import com.echothree.model.data.carrier.server.entity.CarrierServiceDescription;
-import com.echothree.model.data.carrier.server.value.CarrierServiceDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -92,18 +88,18 @@ public class EditCarrierServiceDescriptionCommand
     public CarrierServiceDescription getEntity(EditCarrierServiceDescriptionResult result) {
         var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierServiceDescription carrierServiceDescription = null;
-        String carrierName = spec.getCarrierName();
-        Carrier carrier = carrierControl.getCarrierByName(carrierName);
+        var carrierName = spec.getCarrierName();
+        var carrier = carrierControl.getCarrierByName(carrierName);
 
         if(carrier != null) {
-            Party carrierParty = carrier.getParty();
-            String carrierServiceName = spec.getCarrierServiceName();
-            CarrierService carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
+            var carrierParty = carrier.getParty();
+            var carrierServiceName = spec.getCarrierServiceName();
+            var carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
 
             if(carrierService != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -148,7 +144,7 @@ public class EditCarrierServiceDescriptionCommand
     @Override
     public void doUpdate(CarrierServiceDescription carrierServiceDescription) {
         var carrierControl = Session.getModelController(CarrierControl.class);
-        CarrierServiceDescriptionValue carrierServiceDescriptionValue = carrierControl.getCarrierServiceDescriptionValue(carrierServiceDescription);
+        var carrierServiceDescriptionValue = carrierControl.getCarrierServiceDescriptionValue(carrierServiceDescription);
 
         carrierServiceDescriptionValue.setDescription(edit.getDescription());
 

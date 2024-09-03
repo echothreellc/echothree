@@ -19,16 +19,13 @@ package com.echothree.ui.web.main.action.payment.paymentprocessor;
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.edit.PaymentProcessorDescriptionEdit;
 import com.echothree.control.user.payment.common.form.EditPaymentProcessorDescriptionForm;
-import com.echothree.control.user.payment.common.form.GetPaymentProcessorForm;
 import com.echothree.control.user.payment.common.result.EditPaymentProcessorDescriptionResult;
 import com.echothree.control.user.payment.common.result.GetPaymentProcessorResult;
 import com.echothree.control.user.payment.common.spec.PaymentProcessorDescriptionSpec;
-import com.echothree.model.control.payment.common.transfer.PaymentProcessorDescriptionTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,7 +52,7 @@ public class DescriptionEditAction
     @Override
     protected PaymentProcessorDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        PaymentProcessorDescriptionSpec spec = PaymentUtil.getHome().getPaymentProcessorDescriptionSpec();
+        var spec = PaymentUtil.getHome().getPaymentProcessorDescriptionSpec();
         
         spec.setPaymentProcessorName(findParameter(request, ParameterConstants.PAYMENT_PROCESSOR_NAME, actionForm.getPaymentProcessorName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -66,7 +63,7 @@ public class DescriptionEditAction
     @Override
     protected PaymentProcessorDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        PaymentProcessorDescriptionEdit edit = PaymentUtil.getHome().getPaymentProcessorDescriptionEdit();
+        var edit = PaymentUtil.getHome().getPaymentProcessorDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 
@@ -89,11 +86,11 @@ public class DescriptionEditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditPaymentProcessorDescriptionForm commandForm)
             throws Exception {
-        CommandResult commandResult = PaymentUtil.getHome().editPaymentProcessorDescription(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditPaymentProcessorDescriptionResult result = (EditPaymentProcessorDescriptionResult)executionResult.getResult();
+        var commandResult = PaymentUtil.getHome().editPaymentProcessorDescription(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditPaymentProcessorDescriptionResult)executionResult.getResult();
 
-        PaymentProcessorDescriptionTransfer paymentProcessorDescription = result.getPaymentProcessorDescription();
+        var paymentProcessorDescription = result.getPaymentProcessorDescription();
         if(paymentProcessorDescription != null) {
             request.setAttribute(AttributeConstants.PAYMENT_PROCESSOR, paymentProcessorDescription.getPaymentProcessor());
         }
@@ -109,14 +106,14 @@ public class DescriptionEditAction
     @Override
     public void setupTransfer(DescriptionEditActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPaymentProcessorForm commandForm = PaymentUtil.getHome().getGetPaymentProcessorForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentProcessorForm();
 
         commandForm.setPaymentProcessorName(actionForm.getPaymentProcessorName());
-        
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentProcessor(getUserVisitPK(request), commandForm);
+
+        var commandResult = PaymentUtil.getHome().getPaymentProcessor(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPaymentProcessorResult result = (GetPaymentProcessorResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPaymentProcessorResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PAYMENT_PROCESSOR, result.getPaymentProcessor());
         }

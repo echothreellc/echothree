@@ -22,7 +22,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.wishlist.server.value.WishlistTypeDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -62,8 +61,8 @@ public class SetDefaultWishlistTypeCommand
     @Override
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        String wishlistTypeName = form.getWishlistTypeName();
-        WishlistTypeDetailValue wishlistTypeDetailValue = wishlistControl.getWishlistTypeDetailValueByNameForUpdate(wishlistTypeName);
+        var wishlistTypeName = form.getWishlistTypeName();
+        var wishlistTypeDetailValue = wishlistControl.getWishlistTypeDetailValueByNameForUpdate(wishlistTypeName);
         
         if(wishlistTypeDetailValue != null) {
             wishlistTypeDetailValue.setIsDefault(Boolean.TRUE);

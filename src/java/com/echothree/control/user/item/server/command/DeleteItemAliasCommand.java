@@ -21,7 +21,6 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.ItemAlias;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,8 +62,8 @@ public class DeleteItemAliasCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String alias = form.getAlias();
-        ItemAlias itemAlias = itemControl.getItemAliasByAliasForUpdate(alias);
+        var alias = form.getAlias();
+        var itemAlias = itemControl.getItemAliasByAliasForUpdate(alias);
         
         if(itemAlias != null) {
             itemControl.deleteItemAlias(itemAlias, getPartyPK());

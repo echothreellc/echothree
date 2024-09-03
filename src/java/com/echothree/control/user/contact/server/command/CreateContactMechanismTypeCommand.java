@@ -52,11 +52,11 @@ public class CreateContactMechanismTypeCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        String contactMechanismTypeName = form.getContactMechanismTypeName();
-        ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(contactMechanismTypeName);
+        var contactMechanismTypeName = form.getContactMechanismTypeName();
+        var contactMechanismType = contactControl.getContactMechanismTypeByName(contactMechanismTypeName);
         
         if(contactMechanismType == null) {
-            String parentContactMechanismTypeName = form.getParentContactMechanismTypeName();
+            var parentContactMechanismTypeName = form.getParentContactMechanismTypeName();
             ContactMechanismType parentContactMechanismType = null;
             
             if(parentContactMechanismTypeName != null)

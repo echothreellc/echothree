@@ -29,8 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
 import com.echothree.model.data.contactlist.server.entity.ContactListGroupDescription;
-import com.echothree.model.data.contactlist.server.value.ContactListGroupDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -89,13 +87,13 @@ public class EditContactListGroupDescriptionCommand
     public ContactListGroupDescription getEntity(EditContactListGroupDescriptionResult result) {
         var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListGroupDescription contactListGroupDescription = null;
-        String contactListGroupName = spec.getContactListGroupName();
-        ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+        var contactListGroupName = spec.getContactListGroupName();
+        var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
         if(contactListGroup != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -137,7 +135,7 @@ public class EditContactListGroupDescriptionCommand
     @Override
     public void doUpdate(ContactListGroupDescription contactListGroupDescription) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        ContactListGroupDescriptionValue contactListGroupDescriptionValue = contactListControl.getContactListGroupDescriptionValue(contactListGroupDescription);
+        var contactListGroupDescriptionValue = contactListControl.getContactListGroupDescriptionValue(contactListGroupDescription);
 
         contactListGroupDescriptionValue.setDescription(edit.getDescription());
 

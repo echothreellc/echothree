@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorDescriptionTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,11 +34,11 @@ public class PaymentProcessorDescriptionTransferCache
 
     @Override
     public PaymentProcessorDescriptionTransfer getTransfer(PaymentProcessorDescription paymentProcessorDescription) {
-        PaymentProcessorDescriptionTransfer paymentProcessorDescriptionTransfer = get(paymentProcessorDescription);
+        var paymentProcessorDescriptionTransfer = get(paymentProcessorDescription);
         
         if(paymentProcessorDescriptionTransfer == null) {
-            PaymentProcessorTransfer paymentProcessorTransfer = paymentProcessorControl.getPaymentProcessorTransfer(userVisit, paymentProcessorDescription.getPaymentProcessor());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorDescription.getLanguage());
+            var paymentProcessorTransfer = paymentProcessorControl.getPaymentProcessorTransfer(userVisit, paymentProcessorDescription.getPaymentProcessor());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorDescription.getLanguage());
             
             paymentProcessorDescriptionTransfer = new PaymentProcessorDescriptionTransfer(languageTransfer, paymentProcessorTransfer, paymentProcessorDescription.getDescription());
             put(paymentProcessorDescription, paymentProcessorDescriptionTransfer);

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.scaletype;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.CreateScaleTypeDescriptionForm;
-import com.echothree.control.user.scale.common.form.GetScaleTypeForm;
 import com.echothree.control.user.scale.common.result.GetScaleTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetScaleTypeForm commandForm = ScaleUtil.getHome().getGetScaleTypeForm();
+        var commandForm = ScaleUtil.getHome().getGetScaleTypeForm();
 
         commandForm.setScaleTypeName(actionForm.getScaleTypeName());
-        
-        CommandResult commandResult = ScaleUtil.getHome().getScaleType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ScaleUtil.getHome().getScaleType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetScaleTypeResult result = (GetScaleTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetScaleTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SCALE_TYPE, result.getScaleType());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateScaleTypeDescriptionForm commandForm = ScaleUtil.getHome().getCreateScaleTypeDescriptionForm();
+        var commandForm = ScaleUtil.getHome().getCreateScaleTypeDescriptionForm();
 
         commandForm.setScaleTypeName( actionForm.getScaleTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

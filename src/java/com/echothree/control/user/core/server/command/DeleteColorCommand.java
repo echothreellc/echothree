@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.DeleteColorForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -61,8 +60,8 @@ public class DeleteColorCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String colorName = form.getColorName();
-        Color color = coreControl.getColorByNameForUpdate(colorName);
+        var colorName = form.getColorName();
+        var color = coreControl.getColorByNameForUpdate(colorName);
         
         if(color != null) {
             coreControl.deleteColor(color, getPartyPK());

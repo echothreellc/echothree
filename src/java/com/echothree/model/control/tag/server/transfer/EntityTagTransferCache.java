@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.tag.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.tag.common.transfer.EntityTagTransfer;
-import com.echothree.model.control.tag.common.transfer.TagTransfer;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -37,11 +35,11 @@ public class EntityTagTransferCache
     }
     
     public EntityTagTransfer getEntityTagTransfer(EntityTag entityTag) {
-        EntityTagTransfer entityTagTransfer = get(entityTag);
+        var entityTagTransfer = get(entityTag);
         
         if(entityTagTransfer == null) {
-            EntityInstanceTransfer taggedEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityTag.getTaggedEntityInstance(), false, false, false, false, false, false);
-            TagTransfer tag = tagControl.getTagTransfer(userVisit, entityTag.getTag());
+            var taggedEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityTag.getTaggedEntityInstance(), false, false, false, false, false, false);
+            var tag = tagControl.getTagTransfer(userVisit, entityTag.getTag());
             
             entityTagTransfer = new EntityTagTransfer(taggedEntityInstance, tag);
             put(entityTag, entityTagTransfer);

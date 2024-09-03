@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.item.itemimagetype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemImageTypeDescriptionsForm;
 import com.echothree.control.user.item.common.result.GetItemImageTypeDescriptionsResult;
-import com.echothree.model.control.item.common.transfer.ItemImageTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,16 +49,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String itemImageTypeName = request.getParameter(ParameterConstants.ITEM_IMAGE_TYPE_NAME);
-        GetItemImageTypeDescriptionsForm commandForm = ItemUtil.getHome().getGetItemImageTypeDescriptionsForm();
+        var itemImageTypeName = request.getParameter(ParameterConstants.ITEM_IMAGE_TYPE_NAME);
+        var commandForm = ItemUtil.getHome().getGetItemImageTypeDescriptionsForm();
 
         commandForm.setItemImageTypeName(itemImageTypeName);
 
-        CommandResult commandResult = ItemUtil.getHome().getItemImageTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getItemImageTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemImageTypeDescriptionsResult result = (GetItemImageTypeDescriptionsResult) executionResult.getResult();
-            ItemImageTypeTransfer itemImageTypeTransfer = result.getItemImageType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemImageTypeDescriptionsResult) executionResult.getResult();
+            var itemImageTypeTransfer = result.getItemImageType();
 
             request.setAttribute(AttributeConstants.ITEM_IMAGE_TYPE, itemImageTypeTransfer);
             request.setAttribute(AttributeConstants.ITEM_IMAGE_TYPE_DESCRIPTIONS, result.getItemImageTypeDescriptions());

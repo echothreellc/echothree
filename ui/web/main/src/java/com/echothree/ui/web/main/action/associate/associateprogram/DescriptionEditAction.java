@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.associate.associateprogram;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.common.edit.AssociateProgramDescriptionEdit;
-import com.echothree.control.user.associate.common.form.EditAssociateProgramDescriptionForm;
 import com.echothree.control.user.associate.common.result.EditAssociateProgramDescriptionResult;
-import com.echothree.control.user.associate.common.spec.AssociateProgramDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditAssociateProgramDescriptionForm commandForm = AssociateUtil.getHome().getEditAssociateProgramDescriptionForm();
-                AssociateProgramDescriptionSpec spec = AssociateUtil.getHome().getAssociateProgramDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = AssociateUtil.getHome().getEditAssociateProgramDescriptionForm();
+                var spec = AssociateUtil.getHome().getAssociateProgramDescriptionSpec();
                 
                 if(associateProgramName == null)
                     associateProgramName = actionForm.getAssociateProgramName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    AssociateProgramDescriptionEdit edit = AssociateUtil.getHome().getAssociateProgramDescriptionEdit();
+                    var edit = AssociateUtil.getHome().getAssociateProgramDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AssociateUtil.getHome().editAssociateProgramDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AssociateUtil.getHome().editAssociateProgramDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditAssociateProgramDescriptionResult result = (EditAssociateProgramDescriptionResult)executionResult.getResult();
+                            var result = (EditAssociateProgramDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = AssociateUtil.getHome().editAssociateProgramDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditAssociateProgramDescriptionResult result = (EditAssociateProgramDescriptionResult)executionResult.getResult();
+
+                    var commandResult = AssociateUtil.getHome().editAssociateProgramDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditAssociateProgramDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        AssociateProgramDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setAssociateProgramName(associateProgramName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.ASSOCIATE_PROGRAM_NAME, associateProgramName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

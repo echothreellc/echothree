@@ -16,9 +16,6 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
-import com.echothree.model.control.core.common.transfer.EntityListItemTransfer;
 import com.echothree.model.control.core.common.transfer.EntityMultipleListItemAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -37,12 +34,12 @@ public class EntityMultipleListItemAttributeTransferCache
     }
     
     public EntityMultipleListItemAttributeTransfer getEntityMultipleListItemAttributeTransfer(EntityMultipleListItemAttribute entityMultipleListItemAttribute, EntityInstance entityInstance) {
-        EntityMultipleListItemAttributeTransfer entityMultipleListItemAttributeTransfer = get(entityMultipleListItemAttribute);
+        var entityMultipleListItemAttributeTransfer = get(entityMultipleListItemAttribute);
         
         if(entityMultipleListItemAttributeTransfer == null) {
-            EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityMultipleListItemAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityMultipleListItemAttribute.getEntityInstance(), false, false, false, false, false, false);
-            EntityListItemTransfer entityListItem = coreControl.getEntityListItemTransfer(userVisit, entityMultipleListItemAttribute.getEntityListItem(), entityInstance);
+            var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityMultipleListItemAttribute.getEntityAttribute(), entityInstance) : null;
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityMultipleListItemAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var entityListItem = coreControl.getEntityListItemTransfer(userVisit, entityMultipleListItemAttribute.getEntityListItem(), entityInstance);
             
             entityMultipleListItemAttributeTransfer = new EntityMultipleListItemAttributeTransfer(entityAttribute, entityInstanceTransfer, entityListItem);
             put(entityMultipleListItemAttribute, entityMultipleListItemAttributeTransfer);

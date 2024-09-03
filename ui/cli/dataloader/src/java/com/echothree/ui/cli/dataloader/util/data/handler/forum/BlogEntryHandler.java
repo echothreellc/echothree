@@ -18,16 +18,12 @@ package com.echothree.ui.cli.dataloader.util.data.handler.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
 import com.echothree.control.user.forum.common.ForumService;
-import com.echothree.control.user.forum.common.form.CreateBlogCommentForm;
 import com.echothree.control.user.forum.common.form.ForumFormFactory;
 import com.echothree.control.user.forum.common.result.CreateBlogCommentResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.tag.EntityTagsHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
-import java.util.Map;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -58,17 +54,17 @@ public class BlogEntryHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("blogComment")) {
-            CreateBlogCommentForm commandForm = ForumFormFactory.getCreateBlogCommentForm();
-            Map<String, Object> attrsMap = getAttrsMap(attrs);
+            var commandForm = ForumFormFactory.getCreateBlogCommentForm();
+            var attrsMap = getAttrsMap(attrs);
 
             commandForm.setParentForumMessageName(forumMessageName);
             commandForm.set(attrsMap);
 
-            CommandResult commandResult = forumService.createBlogComment(initialDataParser.getUserVisit(), commandForm);
+            var commandResult = forumService.createBlogComment(initialDataParser.getUserVisit(), commandForm);
 
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateBlogCommentResult result = (CreateBlogCommentResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateBlogCommentResult)executionResult.getResult();
 
                 initialDataParser.pushHandler(new BlogEntryHandler(initialDataParser, this, result.getForumMessageName(), result.getEntityRef()));
             }

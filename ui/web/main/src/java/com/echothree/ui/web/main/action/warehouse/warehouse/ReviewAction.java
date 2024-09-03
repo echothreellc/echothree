@@ -17,20 +17,16 @@
 package com.echothree.ui.web.main.action.warehouse.warehouse;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.GetWarehouseForm;
 import com.echothree.control.user.warehouse.common.result.GetWarehouseResult;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.warehouse.common.WarehouseOptions;
-import com.echothree.model.control.warehouse.common.transfer.WarehouseTransfer;
 import com.echothree.model.data.warehouse.common.LocationConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -64,7 +60,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetWarehouseForm commandForm = WarehouseUtil.getHome().getGetWarehouseForm();
+        var commandForm = WarehouseUtil.getHome().getGetWarehouseForm();
 
         commandForm.setWarehouseName(request.getParameter(ParameterConstants.WAREHOUSE_NAME));
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
@@ -92,10 +88,10 @@ public class ReviewAction
         limits.put(LocationConstants.ENTITY_TYPE_NAME, new Limit("10"));
         commandForm.setLimits(limits);
 
-        CommandResult commandResult = WarehouseUtil.getHome().getWarehouse(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetWarehouseResult result = (GetWarehouseResult)executionResult.getResult();
-        WarehouseTransfer warehouse = result.getWarehouse();
+        var commandResult = WarehouseUtil.getHome().getWarehouse(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetWarehouseResult)executionResult.getResult();
+        var warehouse = result.getWarehouse();
 
         if(warehouse != null) {
             request.setAttribute(AttributeConstants.WAREHOUSE, warehouse);

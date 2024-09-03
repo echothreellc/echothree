@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.chain.lettersource;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.form.GetLetterSourceDescriptionsForm;
 import com.echothree.control.user.letter.common.result.GetLetterSourceDescriptionsResult;
-import com.echothree.model.control.letter.common.transfer.LetterSourceTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,15 +48,15 @@ public class DescriptionAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
-        GetLetterSourceDescriptionsForm commandForm = LetterUtil.getHome().getGetLetterSourceDescriptionsForm();
+        var letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
+        var commandForm = LetterUtil.getHome().getGetLetterSourceDescriptionsForm();
         
         commandForm.setLetterSourceName(letterSourceName);
-        
-        CommandResult commandResult = LetterUtil.getHome().getLetterSourceDescriptions(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetLetterSourceDescriptionsResult result = (GetLetterSourceDescriptionsResult)executionResult.getResult();
-        LetterSourceTransfer letterSourceTransfer = result.getLetterSource();
+
+        var commandResult = LetterUtil.getHome().getLetterSourceDescriptions(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetLetterSourceDescriptionsResult)executionResult.getResult();
+        var letterSourceTransfer = result.getLetterSource();
         
         request.setAttribute(AttributeConstants.LETTER_SOURCE, letterSourceTransfer);
         request.setAttribute(AttributeConstants.LETTER_SOURCE_NAME, letterSourceTransfer.getLetterSourceName());

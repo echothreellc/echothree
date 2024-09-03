@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityListItemForm;
 import com.echothree.control.user.core.common.result.GetEntityListItemResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -110,7 +107,7 @@ public class EntityListItemTag
     public int doStartTag()
             throws JspException {
         try {
-            GetEntityListItemForm commandForm = CoreUtil.getHome().getGetEntityListItemForm();
+            var commandForm = CoreUtil.getHome().getGetEntityListItemForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
@@ -120,8 +117,8 @@ public class EntityListItemTag
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);
-            
-            CommandResult commandResult = CoreUtil.getHome().getEntityListItem(getUserVisitPK(), commandForm);
+
+            var commandResult = CoreUtil.getHome().getEntityListItem(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -129,8 +126,8 @@ public class EntityListItemTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetEntityListItemResult result = (GetEntityListItemResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetEntityListItemResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getEntityListItem(), scope);
             }

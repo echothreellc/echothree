@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected GeoCodeScopeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        GeoCodeScopeDescriptionSpec spec = GeoUtil.getHome().getGeoCodeScopeDescriptionSpec();
+        var spec = GeoUtil.getHome().getGeoCodeScopeDescriptionSpec();
         
         spec.setGeoCodeScopeName(findParameter(request, ParameterConstants.GEO_CODE_SCOPE_NAME, actionForm.getGeoCodeScopeName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected GeoCodeScopeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        GeoCodeScopeDescriptionEdit edit = GeoUtil.getHome().getGeoCodeScopeDescriptionEdit();
+        var edit = GeoUtil.getHome().getGeoCodeScopeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

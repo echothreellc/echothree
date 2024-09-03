@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.content;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.ContentService;
 import com.echothree.control.user.content.common.form.ContentFormFactory;
-import com.echothree.control.user.content.common.form.CreateContentPageAreaTypeDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -50,9 +49,9 @@ public class ContentPageAreaTypeHandler
         if(localName.equals("contentPageAreaTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +59,7 @@ public class ContentPageAreaTypeHandler
             }
             
             try {
-                CreateContentPageAreaTypeDescriptionForm createContentPageAreaTypeDescriptionForm = ContentFormFactory.getCreateContentPageAreaTypeDescriptionForm();
+                var createContentPageAreaTypeDescriptionForm = ContentFormFactory.getCreateContentPageAreaTypeDescriptionForm();
                 
                 createContentPageAreaTypeDescriptionForm.setContentPageAreaTypeName(contentPageAreaTypeName);
                 createContentPageAreaTypeDescriptionForm.setLanguageIsoName(languageIsoName);

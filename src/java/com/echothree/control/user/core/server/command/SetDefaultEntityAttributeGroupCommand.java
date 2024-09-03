@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.SetDefaultEntityAttributeGrou
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.value.EntityAttributeGroupDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -60,8 +59,8 @@ public class SetDefaultEntityAttributeGroupCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String entityAttributeGroupName = form.getEntityAttributeGroupName();
-        EntityAttributeGroupDetailValue entityAttributeGroupDetailValue = coreControl.getEntityAttributeGroupDetailValueByNameForUpdate(entityAttributeGroupName);
+        var entityAttributeGroupName = form.getEntityAttributeGroupName();
+        var entityAttributeGroupDetailValue = coreControl.getEntityAttributeGroupDetailValueByNameForUpdate(entityAttributeGroupName);
         
         if(entityAttributeGroupDetailValue != null) {
             entityAttributeGroupDetailValue.setIsDefault(Boolean.TRUE);

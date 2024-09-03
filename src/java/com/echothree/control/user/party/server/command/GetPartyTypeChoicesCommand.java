@@ -17,7 +17,6 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetPartyTypeChoicesForm;
-import com.echothree.control.user.party.common.result.GetPartyTypeChoicesResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -50,9 +49,9 @@ public class GetPartyTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyTypeChoicesResult result = PartyResultFactory.getGetPartyTypeChoicesResult();
-        String defaultPartyTypeChoice = form.getDefaultPartyTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = PartyResultFactory.getGetPartyTypeChoicesResult();
+        var defaultPartyTypeChoice = form.getDefaultPartyTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
         result.setPartyTypeChoices(partyControl.getPartyTypeChoices(defaultPartyTypeChoice, getPreferredLanguage(), allowNullChoice));
         

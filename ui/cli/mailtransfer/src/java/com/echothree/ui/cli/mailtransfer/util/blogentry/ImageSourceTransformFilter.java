@@ -43,21 +43,21 @@ public class ImageSourceTransformFilter
     @Override
     public void emptyElement(QName element, XMLAttributes attributes, Augmentations augs)
             throws XNIException {
-        String eName = element.rawname.toLowerCase(Locale.getDefault());
+        var eName = element.rawname.toLowerCase(Locale.getDefault());
 
         if(eName.equals("img")) {
-            int attributeCount = attributes.getLength();
+            var attributeCount = attributes.getLength();
 
-            for(int i = 0; i < attributeCount; i++) {
-                String aname = attributes.getQName(i).toLowerCase(Locale.getDefault());
+            for(var i = 0; i < attributeCount; i++) {
+                var aname = attributes.getQName(i).toLowerCase(Locale.getDefault());
 
                 if(aname.equalsIgnoreCase("src")) {
-                    String imgSrc = attributes.getValue(i);
+                    var imgSrc = attributes.getValue(i);
 
                     if(imgSrc.startsWith("cid:") && imgSrc.length() > 4) {
-                        String contentId = "<" + imgSrc.substring(4) + ">";
-                        CapturedMessageAttachment capturedMessageAttachment = capturedMessageAttachmentsByCid.get(contentId);
-                        String transformedUrl = "/" + cmsServlet + "/action/ForumMessageAttachment?ForumMessageName=" + forumMessageName
+                        var contentId = "<" + imgSrc.substring(4) + ">";
+                        var capturedMessageAttachment = capturedMessageAttachmentsByCid.get(contentId);
+                        var transformedUrl = "/" + cmsServlet + "/action/ForumMessageAttachment?ForumMessageName=" + forumMessageName
                                 + "&ForumMessageAttachmentSequence=" + capturedMessageAttachment.forumMessageAttachmentSequence;
 
                         attributes.setValue(i, transformedUrl);

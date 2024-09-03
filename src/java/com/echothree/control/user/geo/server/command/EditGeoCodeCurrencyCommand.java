@@ -19,7 +19,6 @@ package com.echothree.control.user.geo.server.command;
 import com.echothree.control.user.geo.common.edit.GeoCodeCurrencyEdit;
 import com.echothree.control.user.geo.common.edit.GeoEditFactory;
 import com.echothree.control.user.geo.common.form.EditGeoCodeCurrencyForm;
-import com.echothree.control.user.geo.common.result.EditGeoCodeCurrencyResult;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.spec.GeoCodeCurrencySpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
@@ -27,10 +26,6 @@ import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.entity.GeoCodeCurrency;
-import com.echothree.model.data.geo.server.value.GeoCodeCurrencyValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -80,24 +75,24 @@ public class EditGeoCodeCurrencyCommand
     @Override
     protected BaseResult execute() {
         var geoControl = Session.getModelController(GeoControl.class);
-        EditGeoCodeCurrencyResult result = GeoResultFactory.getEditGeoCodeCurrencyResult();
-        String geoCodeName = spec.getGeoCodeName();
-        GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var result = GeoResultFactory.getEditGeoCodeCurrencyResult();
+        var geoCodeName = spec.getGeoCodeName();
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
             var accountingControl = Session.getModelController(AccountingControl.class);
-            String currencyIsoName = spec.getCurrencyIsoName();
-            Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+            var currencyIsoName = spec.getCurrencyIsoName();
+            var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             
             if(currency != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    GeoCodeCurrency geoCodeCurrency = geoControl.getGeoCodeCurrency(geoCode, currency);
+                    var geoCodeCurrency = geoControl.getGeoCodeCurrency(geoCode, currency);
                     
                     if(geoCodeCurrency != null) {
                         result.setGeoCodeCurrency(geoControl.getGeoCodeCurrencyTransfer(getUserVisit(), geoCodeCurrency));
                         
                         if(lockEntity(geoCode)) {
-                            GeoCodeCurrencyEdit edit = GeoEditFactory.getGeoCodeCurrencyEdit();
+                            var edit = GeoEditFactory.getGeoCodeCurrencyEdit();
                             
                             result.setEdit(edit);
                             edit.setIsDefault(geoCodeCurrency.getIsDefault().toString());
@@ -112,10 +107,10 @@ public class EditGeoCodeCurrencyCommand
                         addExecutionError(ExecutionErrors.UnknownGeoCodeCurrency.name(), geoCodeName, currencyIsoName);
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    GeoCodeCurrency geoCodeCurrency = geoControl.getGeoCodeCurrencyForUpdate(geoCode, currency);
+                    var geoCodeCurrency = geoControl.getGeoCodeCurrencyForUpdate(geoCode, currency);
                     
                     if(geoCodeCurrency != null) {
-                        GeoCodeCurrencyValue geoCodeCurrencyValue = geoControl.getGeoCodeCurrencyValue(geoCodeCurrency);
+                        var geoCodeCurrencyValue = geoControl.getGeoCodeCurrencyValue(geoCodeCurrency);
                         
                         if(lockEntityForUpdate(geoCode)) {
                             try {

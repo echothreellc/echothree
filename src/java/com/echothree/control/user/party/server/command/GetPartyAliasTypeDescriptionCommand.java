@@ -17,16 +17,11 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetPartyAliasTypeDescriptionForm;
-import com.echothree.control.user.party.common.result.GetPartyAliasTypeDescriptionResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.PartyAliasType;
-import com.echothree.model.data.party.server.entity.PartyAliasTypeDescription;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -70,20 +65,20 @@ public class GetPartyAliasTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyAliasTypeDescriptionResult result = PartyResultFactory.getGetPartyAliasTypeDescriptionResult();
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var result = PartyResultFactory.getGetPartyAliasTypeDescriptionResult();
+        var partyTypeName = form.getPartyTypeName();
+        var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
-            String partyAliasTypeName = form.getPartyAliasTypeName();
-            PartyAliasType partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
+            var partyAliasTypeName = form.getPartyAliasTypeName();
+            var partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
 
             if(partyAliasType != null) {
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    PartyAliasTypeDescription partyAliasTypeDescription = partyControl.getPartyAliasTypeDescription(partyAliasType, language);
+                    var partyAliasTypeDescription = partyControl.getPartyAliasTypeDescription(partyAliasType, language);
 
                     if(partyAliasTypeDescription != null) {
                         result.setPartyAliasTypeDescription(partyControl.getPartyAliasTypeDescriptionTransfer(getUserVisit(), partyAliasTypeDescription));

@@ -16,13 +16,9 @@
 
 package com.echothree.model.control.tax.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
-import com.echothree.model.control.tax.common.transfer.TaxClassificationTransfer;
 import com.echothree.model.control.tax.common.transfer.TaxClassificationTranslationTransfer;
 import com.echothree.model.control.tax.server.control.TaxControl;
-import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.tax.server.entity.TaxClassificationTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -39,15 +35,15 @@ public class TaxClassificationTranslationTransferCache
     
     @Override
     public TaxClassificationTranslationTransfer getTransfer(TaxClassificationTranslation taxClassificationTranslation) {
-        TaxClassificationTranslationTransfer taxClassificationTranslationTransfer = get(taxClassificationTranslation);
+        var taxClassificationTranslationTransfer = get(taxClassificationTranslation);
         
         if(taxClassificationTranslationTransfer == null) {
-            TaxClassificationTransfer taxClassificationTransfer = taxControl.getTaxClassificationTransfer(userVisit, taxClassificationTranslation.getTaxClassification());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, taxClassificationTranslation.getLanguage());
-            String description = taxClassificationTranslation.getDescription();
-            MimeType overviewMimeType = taxClassificationTranslation.getOverviewMimeType();
-            MimeTypeTransfer overviewMimeTypeTransfer = overviewMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, overviewMimeType);
-            String overview = taxClassificationTranslation.getOverview();
+            var taxClassificationTransfer = taxControl.getTaxClassificationTransfer(userVisit, taxClassificationTranslation.getTaxClassification());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, taxClassificationTranslation.getLanguage());
+            var description = taxClassificationTranslation.getDescription();
+            var overviewMimeType = taxClassificationTranslation.getOverviewMimeType();
+            var overviewMimeTypeTransfer = overviewMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, overviewMimeType);
+            var overview = taxClassificationTranslation.getOverview();
             
             taxClassificationTranslationTransfer = new TaxClassificationTranslationTransfer(languageTransfer,
                     taxClassificationTransfer, description, overviewMimeTypeTransfer, overview);

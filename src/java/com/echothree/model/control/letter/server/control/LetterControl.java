@@ -26,34 +26,17 @@ import com.echothree.model.control.letter.common.transfer.LetterSourceDescriptio
 import com.echothree.model.control.letter.common.transfer.LetterSourceTransfer;
 import com.echothree.model.control.letter.common.transfer.LetterTransfer;
 import com.echothree.model.control.letter.common.transfer.QueuedLetterTransfer;
-import com.echothree.model.control.letter.server.transfer.LetterContactMechanismPurposeTransferCache;
-import com.echothree.model.control.letter.server.transfer.LetterDescriptionTransferCache;
-import com.echothree.model.control.letter.server.transfer.LetterSourceDescriptionTransferCache;
-import com.echothree.model.control.letter.server.transfer.LetterSourceTransferCache;
-import com.echothree.model.control.letter.server.transfer.LetterTransferCache;
 import com.echothree.model.control.letter.server.transfer.LetterTransferCaches;
-import com.echothree.model.control.letter.server.transfer.QueuedLetterTransferCache;
-import com.echothree.model.data.chain.common.pk.ChainTypePK;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
-import com.echothree.model.data.chain.server.entity.ChainInstanceStatus;
 import com.echothree.model.data.chain.server.entity.ChainType;
-import com.echothree.model.data.contact.common.pk.ContactMechanismPurposePK;
-import com.echothree.model.data.contact.common.pk.PartyContactMechanismPK;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
-import com.echothree.model.data.contactlist.common.pk.ContactListPK;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
-import com.echothree.model.data.letter.common.pk.LetterContactMechanismPurposePK;
-import com.echothree.model.data.letter.common.pk.LetterPK;
-import com.echothree.model.data.letter.common.pk.LetterSourcePK;
 import com.echothree.model.data.letter.server.entity.Letter;
 import com.echothree.model.data.letter.server.entity.LetterContactMechanismPurpose;
-import com.echothree.model.data.letter.server.entity.LetterContactMechanismPurposeDetail;
 import com.echothree.model.data.letter.server.entity.LetterDescription;
-import com.echothree.model.data.letter.server.entity.LetterDetail;
 import com.echothree.model.data.letter.server.entity.LetterSource;
 import com.echothree.model.data.letter.server.entity.LetterSourceDescription;
-import com.echothree.model.data.letter.server.entity.LetterSourceDetail;
 import com.echothree.model.data.letter.server.entity.QueuedLetter;
 import com.echothree.model.data.letter.server.factory.LetterContactMechanismPurposeDetailFactory;
 import com.echothree.model.data.letter.server.factory.LetterContactMechanismPurposeFactory;
@@ -69,7 +52,6 @@ import com.echothree.model.data.letter.server.value.LetterDescriptionValue;
 import com.echothree.model.data.letter.server.value.LetterDetailValue;
 import com.echothree.model.data.letter.server.value.LetterSourceDescriptionValue;
 import com.echothree.model.data.letter.server.value.LetterSourceDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -78,7 +60,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -118,20 +99,20 @@ public class LetterControl
     public LetterSource createLetterSource(String letterSourceName, Party companyParty,
             PartyContactMechanism emailAddressPartyContactMechanism, PartyContactMechanism postalAddressPartyContactMechanism,
             PartyContactMechanism letterSourcePartyContactMechanism, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        LetterSource defaultLetterSource = getDefaultLetterSource();
-        boolean defaultFound = defaultLetterSource != null;
+        var defaultLetterSource = getDefaultLetterSource();
+        var defaultFound = defaultLetterSource != null;
         
         if(defaultFound && isDefault) {
-            LetterSourceDetailValue defaultLetterSourceDetailValue = getDefaultLetterSourceDetailValueForUpdate();
+            var defaultLetterSourceDetailValue = getDefaultLetterSourceDetailValueForUpdate();
             
             defaultLetterSourceDetailValue.setIsDefault(Boolean.FALSE);
             updateLetterSourceFromValue(defaultLetterSourceDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        LetterSource letterSource = LetterSourceFactory.getInstance().create();
-        LetterSourceDetail letterSourceDetail = LetterSourceDetailFactory.getInstance().create(letterSource,
+
+        var letterSource = LetterSourceFactory.getInstance().create();
+        var letterSourceDetail = LetterSourceDetailFactory.getInstance().create(letterSource,
                 letterSourceName, companyParty, emailAddressPartyContactMechanism, postalAddressPartyContactMechanism,
                 letterSourcePartyContactMechanism, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -162,8 +143,8 @@ public class LetterControl
                         "WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_lettersourcename = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LetterSourceFactory.getInstance().prepareStatement(query);
+
+            var ps = LetterSourceFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, letterSourceName);
             
@@ -204,8 +185,8 @@ public class LetterControl
                     "WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_isdefault = 1 " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = LetterSourceFactory.getInstance().prepareStatement(query);
+
+        var ps = LetterSourceFactory.getInstance().prepareStatement(query);
         
         return LetterSourceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
     }
@@ -236,8 +217,8 @@ public class LetterControl
                     "WHERE lttrsrc_activedetailid = lttrsrcdt_letterSourcedetailid " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = LetterSourceFactory.getInstance().prepareStatement(query);
+
+        var ps = LetterSourceFactory.getInstance().prepareStatement(query);
         
         return LetterSourceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -268,8 +249,8 @@ public class LetterControl
                         "WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_emailaddresspartycontactmechanismid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LetterSourceFactory.getInstance().prepareStatement(query);
+
+            var ps = LetterSourceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, emailAddressPartyContactMechanism.getPrimaryKey().getEntityId());
             
@@ -307,8 +288,8 @@ public class LetterControl
                         "WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_postaladdresspartycontactmechanismid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LetterSourceFactory.getInstance().prepareStatement(query);
+
+            var ps = LetterSourceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, postalAddressPartyContactMechanism.getPrimaryKey().getEntityId());
             
@@ -346,8 +327,8 @@ public class LetterControl
                         "WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_lettersourcepartycontactmechanismid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LetterSourceFactory.getInstance().prepareStatement(query);
+
+            var ps = LetterSourceFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, letterSourcePartyContactMechanism.getPrimaryKey().getEntityId());
             
@@ -372,9 +353,9 @@ public class LetterControl
     }
     
     public List<LetterSourceTransfer> getLetterSourceTransfers(UserVisit userVisit) {
-        List<LetterSource> letterSources = getLetterSources();
+        var letterSources = getLetterSources();
         List<LetterSourceTransfer> letterSourceTransfers = new ArrayList<>(letterSources.size());
-        LetterSourceTransferCache letterSourceTransferCache = getLetterTransferCaches(userVisit).getLetterSourceTransferCache();
+        var letterSourceTransferCache = getLetterTransferCaches(userVisit).getLetterSourceTransferCache();
         
         letterSources.forEach((letterSource) ->
                 letterSourceTransfers.add(letterSourceTransferCache.getLetterSourceTransfer(letterSource))
@@ -384,7 +365,7 @@ public class LetterControl
     }
     
     public LetterSourceChoicesBean getLetterSourceChoices(String defaultLetterSourceChoice, Language language, boolean allowNullChoice) {
-        List<LetterSource> letterSources = getLetterSources();
+        var letterSources = getLetterSources();
         var size = letterSources.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -400,7 +381,7 @@ public class LetterControl
         }
         
         for(var letterSource : letterSources) {
-            LetterSourceDetail letterSourceDetail = letterSource.getLastDetail();
+            var letterSourceDetail = letterSource.getLastDetail();
             
             var label = getBestLetterSourceDescription(letterSource, language);
             var value = letterSourceDetail.getLetterSourceName();
@@ -418,29 +399,29 @@ public class LetterControl
     
     private void updateLetterSourceFromValue(LetterSourceDetailValue letterSourceDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(letterSourceDetailValue.hasBeenModified()) {
-            LetterSource letterSource = LetterSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var letterSource = LetterSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      letterSourceDetailValue.getLetterSourcePK());
-            LetterSourceDetail letterSourceDetail = letterSource.getActiveDetailForUpdate();
+            var letterSourceDetail = letterSource.getActiveDetailForUpdate();
             
             letterSourceDetail.setThruTime(session.START_TIME_LONG);
             letterSourceDetail.store();
-            
-            LetterSourcePK letterSourcePK = letterSourceDetail.getLetterSourcePK(); // Not updated
-            String letterSourceName = letterSourceDetailValue.getLetterSourceName();
-            PartyPK companyPartyPK = letterSourceDetail.getCompanyPartyPK(); // Not updated
-            PartyContactMechanismPK emailAddressPartyContactMechanismPK = letterSourceDetailValue.getEmailAddressPartyContactMechanismPK();
-            PartyContactMechanismPK postalAddressPartyContactMechanismPK = letterSourceDetailValue.getPostalAddressPartyContactMechanismPK();
-            PartyContactMechanismPK letterSourcePartyContactMechanismPK = letterSourceDetailValue.getLetterSourcePartyContactMechanismPK();
-            Boolean isDefault = letterSourceDetailValue.getIsDefault();
-            Integer sortOrder = letterSourceDetailValue.getSortOrder();
+
+            var letterSourcePK = letterSourceDetail.getLetterSourcePK(); // Not updated
+            var letterSourceName = letterSourceDetailValue.getLetterSourceName();
+            var companyPartyPK = letterSourceDetail.getCompanyPartyPK(); // Not updated
+            var emailAddressPartyContactMechanismPK = letterSourceDetailValue.getEmailAddressPartyContactMechanismPK();
+            var postalAddressPartyContactMechanismPK = letterSourceDetailValue.getPostalAddressPartyContactMechanismPK();
+            var letterSourcePartyContactMechanismPK = letterSourceDetailValue.getLetterSourcePartyContactMechanismPK();
+            var isDefault = letterSourceDetailValue.getIsDefault();
+            var sortOrder = letterSourceDetailValue.getSortOrder();
             
             if(checkDefault) {
-                LetterSource defaultLetterSource = getDefaultLetterSource();
-                boolean defaultFound = defaultLetterSource != null && !defaultLetterSource.equals(letterSource);
+                var defaultLetterSource = getDefaultLetterSource();
+                var defaultFound = defaultLetterSource != null && !defaultLetterSource.equals(letterSource);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    LetterSourceDetailValue defaultLetterSourceDetailValue = getDefaultLetterSourceDetailValueForUpdate();
+                    var defaultLetterSourceDetailValue = getDefaultLetterSourceDetailValueForUpdate();
                     
                     defaultLetterSourceDetailValue.setIsDefault(Boolean.FALSE);
                     updateLetterSourceFromValue(defaultLetterSourceDetailValue, false, updatedBy);
@@ -468,23 +449,23 @@ public class LetterControl
     public void deleteLetterSource(LetterSource letterSource, BasePK deletedBy) {
         deleteLettersByLetterSource(letterSource, deletedBy);
         deleteLetterSourceDescriptionsByLetterSource(letterSource, deletedBy);
-        
-        LetterSourceDetail letterSourceDetail = letterSource.getLastDetailForUpdate();
+
+        var letterSourceDetail = letterSource.getLastDetailForUpdate();
         letterSourceDetail.setThruTime(session.START_TIME_LONG);
         letterSource.setActiveDetail(null);
         letterSource.store();
         
         // Check for default, and pick one if necessary
-        LetterSource defaultLetterSource = getDefaultLetterSource();
+        var defaultLetterSource = getDefaultLetterSource();
         if(defaultLetterSource == null) {
-            List<LetterSource> letterSources = getLetterSourcesForUpdate();
+            var letterSources = getLetterSourcesForUpdate();
             
             if(!letterSources.isEmpty()) {
                 Iterator iter = letterSources.iterator();
                 if(iter.hasNext()) {
                     defaultLetterSource = (LetterSource)iter.next();
                 }
-                LetterSourceDetailValue letterSourceDetailValue = Objects.requireNonNull(defaultLetterSource).getLastDetailForUpdate().getLetterSourceDetailValue().clone();
+                var letterSourceDetailValue = Objects.requireNonNull(defaultLetterSource).getLastDetailForUpdate().getLetterSourceDetailValue().clone();
                 
                 letterSourceDetailValue.setIsDefault(Boolean.TRUE);
                 updateLetterSourceFromValue(letterSourceDetailValue, false, deletedBy);
@@ -523,7 +504,7 @@ public class LetterControl
     // --------------------------------------------------------------------------------
     
     public LetterSourceDescription createLetterSourceDescription(LetterSource letterSource, Language language, String description, BasePK createdBy) {
-        LetterSourceDescription letterSourceDescription = LetterSourceDescriptionFactory.getInstance().create(letterSource, language, description,
+        var letterSourceDescription = LetterSourceDescriptionFactory.getInstance().create(letterSource, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(letterSource.getPrimaryKey(), EventTypes.MODIFY, letterSourceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -547,8 +528,8 @@ public class LetterControl
                         "WHERE lttrsrcd_lttrsrc_letterSourceid = ? AND lttrsrcd_lang_languageid = ? AND lttrsrcd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LetterSourceDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = LetterSourceDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, letterSource.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -597,8 +578,8 @@ public class LetterControl
                         "WHERE lttrsrcd_lttrsrc_letterSourceid = ? AND lttrsrcd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LetterSourceDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = LetterSourceDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, letterSource.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -621,7 +602,7 @@ public class LetterControl
     
     public String getBestLetterSourceDescription(LetterSource letterSource, Language language) {
         String description;
-        LetterSourceDescription letterSourceDescription = getLetterSourceDescription(letterSource, language);
+        var letterSourceDescription = getLetterSourceDescription(letterSource, language);
         
         if(letterSourceDescription == null && !language.getIsDefault()) {
             letterSourceDescription = getLetterSourceDescription(letterSource, getPartyControl().getDefaultLanguage());
@@ -641,11 +622,11 @@ public class LetterControl
     }
     
     public List<LetterSourceDescriptionTransfer> getLetterSourceDescriptionTransfersByLetterSource(UserVisit userVisit, LetterSource letterSource) {
-        List<LetterSourceDescription> letterSourceDescriptions = getLetterSourceDescriptionsByLetterSource(letterSource);
+        var letterSourceDescriptions = getLetterSourceDescriptionsByLetterSource(letterSource);
         List<LetterSourceDescriptionTransfer> letterSourceDescriptionTransfers = null;
         
         if(letterSourceDescriptions != null) {
-            LetterSourceDescriptionTransferCache letterSourceDescriptionTransferCache = getLetterTransferCaches(userVisit).getLetterSourceDescriptionTransferCache();
+            var letterSourceDescriptionTransferCache = getLetterTransferCaches(userVisit).getLetterSourceDescriptionTransferCache();
             
             letterSourceDescriptionTransfers = new ArrayList<>(letterSourceDescriptions.size());
             
@@ -659,15 +640,15 @@ public class LetterControl
     
     public void updateLetterSourceDescriptionFromValue(LetterSourceDescriptionValue letterSourceDescriptionValue, BasePK updatedBy) {
         if(letterSourceDescriptionValue.hasBeenModified()) {
-            LetterSourceDescription letterSourceDescription = LetterSourceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var letterSourceDescription = LetterSourceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      letterSourceDescriptionValue.getPrimaryKey());
             
             letterSourceDescription.setThruTime(session.START_TIME_LONG);
             letterSourceDescription.store();
-            
-            LetterSource letterSource = letterSourceDescription.getLetterSource();
-            Language language = letterSourceDescription.getLanguage();
-            String description = letterSourceDescriptionValue.getDescription();
+
+            var letterSource = letterSourceDescription.getLetterSource();
+            var language = letterSourceDescription.getLanguage();
+            var description = letterSourceDescriptionValue.getDescription();
             
             letterSourceDescription = LetterSourceDescriptionFactory.getInstance().create(letterSource,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -683,7 +664,7 @@ public class LetterControl
     }
     
     public void deleteLetterSourceDescriptionsByLetterSource(LetterSource letterSource, BasePK deletedBy) {
-        List<LetterSourceDescription> letterSourceDescriptions = getLetterSourceDescriptionsByLetterSourceForUpdate(letterSource);
+        var letterSourceDescriptions = getLetterSourceDescriptionsByLetterSourceForUpdate(letterSource);
         
         letterSourceDescriptions.forEach((letterSourceDescription) -> 
                 deleteLetterSourceDescription(letterSourceDescription, deletedBy)
@@ -696,20 +677,20 @@ public class LetterControl
     
     public Letter createLetter(ChainType chainType, String letterName, LetterSource letterSource, ContactList contactList,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        Letter defaultLetter = getDefaultLetter(chainType);
-        boolean defaultFound = defaultLetter != null;
+        var defaultLetter = getDefaultLetter(chainType);
+        var defaultFound = defaultLetter != null;
         
         if(defaultFound && isDefault) {
-            LetterDetailValue defaultLetterDetailValue = getDefaultLetterDetailValueForUpdate(chainType);
+            var defaultLetterDetailValue = getDefaultLetterDetailValueForUpdate(chainType);
             
             defaultLetterDetailValue.setIsDefault(Boolean.FALSE);
             updateLetterFromValue(defaultLetterDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        Letter letter = LetterFactory.getInstance().create();
-        LetterDetail letterDetail = LetterDetailFactory.getInstance().create(letter, chainType, letterName,
+
+        var letter = LetterFactory.getInstance().create();
+        var letterDetail = LetterDetailFactory.getInstance().create(letter, chainType, letterName,
                 letterSource, contactList, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -739,8 +720,8 @@ public class LetterControl
                         "WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? AND lttrdt_lettername = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LetterFactory.getInstance().prepareStatement(query);
+
+            var ps = LetterFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, chainType.getPrimaryKey().getEntityId());
             ps.setString(2, letterName);
@@ -785,8 +766,8 @@ public class LetterControl
                         "WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? AND lttrdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LetterFactory.getInstance().prepareStatement(query);
+
+            var ps = LetterFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, chainType.getPrimaryKey().getEntityId());
             
@@ -827,8 +808,8 @@ public class LetterControl
                         "WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LetterFactory.getInstance().prepareStatement(query);
+
+            var ps = LetterFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, chainType.getPrimaryKey().getEntityId());
             
@@ -865,8 +846,8 @@ public class LetterControl
                         "WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_lttrsrc_lettersourceid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LetterFactory.getInstance().prepareStatement(query);
+
+            var ps = LetterFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, letterSource.getPrimaryKey().getEntityId());
             
@@ -903,8 +884,8 @@ public class LetterControl
                         "WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_clst_contactlistid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LetterFactory.getInstance().prepareStatement(query);
+
+            var ps = LetterFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contactList.getPrimaryKey().getEntityId());
             
@@ -930,7 +911,7 @@ public class LetterControl
     
     public List<LetterTransfer> getLetterTransfers(UserVisit userVisit, Collection<Letter> letters) {
         List<LetterTransfer> letterTransfers = new ArrayList<>(letters.size());
-        LetterTransferCache letterTransferCache = getLetterTransferCaches(userVisit).getLetterTransferCache();
+        var letterTransferCache = getLetterTransferCaches(userVisit).getLetterTransferCache();
         
         letters.forEach((letter) ->
                 letterTransfers.add(letterTransferCache.getLetterTransfer(letter))
@@ -948,7 +929,7 @@ public class LetterControl
     }
     
     public LetterChoicesBean getLetterChoices(ChainType chainType, String defaultLetterChoice, Language language, boolean allowNullChoice) {
-        List<Letter> letters = getLettersByChainType(chainType);
+        var letters = getLettersByChainType(chainType);
         var size = letters.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -964,7 +945,7 @@ public class LetterControl
         }
         
         for(var letter : letters) {
-            LetterDetail letterDetail = letter.getLastDetail();
+            var letterDetail = letter.getLastDetail();
             
             var label = getBestLetterDescription(letter, language);
             var value = letterDetail.getLetterName();
@@ -982,29 +963,29 @@ public class LetterControl
     
     private void updateLetterFromValue(LetterDetailValue letterDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(letterDetailValue.hasBeenModified()) {
-            Letter letter = LetterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var letter = LetterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      letterDetailValue.getLetterPK());
-            LetterDetail letterDetail = letter.getActiveDetailForUpdate();
+            var letterDetail = letter.getActiveDetailForUpdate();
             
             letterDetail.setThruTime(session.START_TIME_LONG);
             letterDetail.store();
-            
-            LetterPK letterPK = letterDetail.getLetterPK();
-            ChainType chainType = letterDetail.getChainType();
-            ChainTypePK chainTypePK = chainType.getPrimaryKey();
-            String letterName = letterDetailValue.getLetterName();
-            LetterSourcePK letterSourcePK = letterDetailValue.getLetterSourcePK();
-            ContactListPK contactListPK = letterDetailValue.getContactListPK();
-            Boolean isDefault = letterDetailValue.getIsDefault();
-            Integer sortOrder = letterDetailValue.getSortOrder();
+
+            var letterPK = letterDetail.getLetterPK();
+            var chainType = letterDetail.getChainType();
+            var chainTypePK = chainType.getPrimaryKey();
+            var letterName = letterDetailValue.getLetterName();
+            var letterSourcePK = letterDetailValue.getLetterSourcePK();
+            var contactListPK = letterDetailValue.getContactListPK();
+            var isDefault = letterDetailValue.getIsDefault();
+            var sortOrder = letterDetailValue.getSortOrder();
             
             if(checkDefault) {
-                Letter defaultLetter = getDefaultLetter(chainType);
-                boolean defaultFound = defaultLetter != null && !defaultLetter.equals(letter);
+                var defaultLetter = getDefaultLetter(chainType);
+                var defaultFound = defaultLetter != null && !defaultLetter.equals(letter);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    LetterDetailValue defaultLetterDetailValue = getDefaultLetterDetailValueForUpdate(chainType);
+                    var defaultLetterDetailValue = getDefaultLetterDetailValueForUpdate(chainType);
                     
                     defaultLetterDetailValue.setIsDefault(Boolean.FALSE);
                     updateLetterFromValue(defaultLetterDetailValue, false, updatedBy);
@@ -1031,24 +1012,24 @@ public class LetterControl
     public void deleteLetter(Letter letter, BasePK deletedBy) {
         removeQueuedLettersByLetter(letter, deletedBy);
         deleteLetterDescriptionsByLetter(letter, deletedBy);
-        
-        LetterDetail letterDetail = letter.getLastDetailForUpdate();
+
+        var letterDetail = letter.getLastDetailForUpdate();
         letterDetail.setThruTime(session.START_TIME_LONG);
         letter.setActiveDetail(null);
         letter.store();
         
         // Check for default, and pick one if necessary
-        ChainType chainType = letterDetail.getChainType();
-        Letter defaultLetter = getDefaultLetter(chainType);
+        var chainType = letterDetail.getChainType();
+        var defaultLetter = getDefaultLetter(chainType);
         if(defaultLetter == null) {
-            List<Letter> letters = getLettersByChainTypeForUpdate(chainType);
+            var letters = getLettersByChainTypeForUpdate(chainType);
             
             if(!letters.isEmpty()) {
                 Iterator iter = letters.iterator();
                 if(iter.hasNext()) {
                     defaultLetter = (Letter)iter.next();
                 }
-                LetterDetailValue letterDetailValue = Objects.requireNonNull(defaultLetter).getLastDetailForUpdate().getLetterDetailValue().clone();
+                var letterDetailValue = Objects.requireNonNull(defaultLetter).getLastDetailForUpdate().getLetterDetailValue().clone();
                 
                 letterDetailValue.setIsDefault(Boolean.TRUE);
                 updateLetterFromValue(letterDetailValue, false, deletedBy);
@@ -1077,7 +1058,7 @@ public class LetterControl
     // --------------------------------------------------------------------------------
     
     public LetterDescription createLetterDescription(Letter letter, Language language, String description, BasePK createdBy) {
-        LetterDescription letterDescription = LetterDescriptionFactory.getInstance().create(letter, language, description,
+        var letterDescription = LetterDescriptionFactory.getInstance().create(letter, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(letter.getPrimaryKey(), EventTypes.MODIFY, letterDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1101,8 +1082,8 @@ public class LetterControl
                         "WHERE lttrd_lttr_letterid = ? AND lttrd_lang_languageid = ? AND lttrd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LetterDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = LetterDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, letter.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1151,8 +1132,8 @@ public class LetterControl
                         "WHERE lttrd_lttr_letterid = ? AND lttrd_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LetterDescriptionFactory.getInstance().prepareStatement(query);
+
+            var ps = LetterDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, letter.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1175,7 +1156,7 @@ public class LetterControl
     
     public String getBestLetterDescription(Letter letter, Language language) {
         String description;
-        LetterDescription letterDescription = getLetterDescription(letter, language);
+        var letterDescription = getLetterDescription(letter, language);
         
         if(letterDescription == null && !language.getIsDefault()) {
             letterDescription = getLetterDescription(letter, getPartyControl().getDefaultLanguage());
@@ -1195,11 +1176,11 @@ public class LetterControl
     }
     
     public List<LetterDescriptionTransfer> getLetterDescriptionTransfersByLetter(UserVisit userVisit, Letter letter) {
-        List<LetterDescription> letterDescriptions = getLetterDescriptionsByLetter(letter);
+        var letterDescriptions = getLetterDescriptionsByLetter(letter);
         List<LetterDescriptionTransfer> letterDescriptionTransfers = null;
         
         if(letterDescriptions != null) {
-            LetterDescriptionTransferCache letterDescriptionTransferCache = getLetterTransferCaches(userVisit).getLetterDescriptionTransferCache();
+            var letterDescriptionTransferCache = getLetterTransferCaches(userVisit).getLetterDescriptionTransferCache();
             
             letterDescriptionTransfers = new ArrayList<>(letterDescriptions.size());
             
@@ -1213,15 +1194,15 @@ public class LetterControl
     
     public void updateLetterDescriptionFromValue(LetterDescriptionValue letterDescriptionValue, BasePK updatedBy) {
         if(letterDescriptionValue.hasBeenModified()) {
-            LetterDescription letterDescription = LetterDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var letterDescription = LetterDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      letterDescriptionValue.getPrimaryKey());
             
             letterDescription.setThruTime(session.START_TIME_LONG);
             letterDescription.store();
-            
-            Letter letter = letterDescription.getLetter();
-            Language language = letterDescription.getLanguage();
-            String description = letterDescriptionValue.getDescription();
+
+            var letter = letterDescription.getLetter();
+            var language = letterDescription.getLanguage();
+            var description = letterDescriptionValue.getDescription();
             
             letterDescription = LetterDescriptionFactory.getInstance().create(letter,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1237,7 +1218,7 @@ public class LetterControl
     }
     
     public void deleteLetterDescriptionsByLetter(Letter letter, BasePK deletedBy) {
-        List<LetterDescription> letterDescriptions = getLetterDescriptionsByLetterForUpdate(letter);
+        var letterDescriptions = getLetterDescriptionsByLetterForUpdate(letter);
         
         letterDescriptions.forEach((letterDescription) -> 
                 deleteLetterDescription(letterDescription, deletedBy)
@@ -1250,8 +1231,8 @@ public class LetterControl
     
     public LetterContactMechanismPurpose createLetterContactMechanismPurpose(Letter letter, Integer priority,
             ContactMechanismPurpose contactMechanismPurpose, BasePK createdBy) {
-        LetterContactMechanismPurpose letterContactMechanismPurpose = LetterContactMechanismPurposeFactory.getInstance().create();
-        LetterContactMechanismPurposeDetail letterContactMechanismPurposeDetail = LetterContactMechanismPurposeDetailFactory.getInstance().create(session,
+        var letterContactMechanismPurpose = LetterContactMechanismPurposeFactory.getInstance().create();
+        var letterContactMechanismPurposeDetail = LetterContactMechanismPurposeDetailFactory.getInstance().create(session,
                 letterContactMechanismPurpose, letter, priority, contactMechanismPurpose, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -1286,8 +1267,8 @@ public class LetterControl
                         "AND lttrcmprdt_lttr_letterid = ? AND lttrcmprdt_priority = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LetterContactMechanismPurposeFactory.getInstance().prepareStatement(query);
+
+            var ps = LetterContactMechanismPurposeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, letter.getPrimaryKey().getEntityId());
             ps.setInt(2, priority);
@@ -1336,8 +1317,8 @@ public class LetterControl
                         "AND lttrcmprdt_lttr_letterid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = LetterContactMechanismPurposeFactory.getInstance().prepareStatement(query);
+
+            var ps = LetterContactMechanismPurposeFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, letter.getPrimaryKey().getEntityId());
             
@@ -1362,9 +1343,9 @@ public class LetterControl
     }
     
     public List<LetterContactMechanismPurposeTransfer> getLetterContactMechanismPurposeTransfersByLetter(UserVisit userVisit, Letter letter) {
-        List<LetterContactMechanismPurpose> letterContactMechanismPurposes = getLetterContactMechanismPurposesByLetter(letter);
+        var letterContactMechanismPurposes = getLetterContactMechanismPurposesByLetter(letter);
         List<LetterContactMechanismPurposeTransfer> letterContactMechanismPurposeTransfers = new ArrayList<>(letterContactMechanismPurposes.size());
-        LetterContactMechanismPurposeTransferCache letterContactMechanismPurposeTransferCache = getLetterTransferCaches(userVisit).getLetterContactMechanismPurposeTransferCache();
+        var letterContactMechanismPurposeTransferCache = getLetterTransferCaches(userVisit).getLetterContactMechanismPurposeTransferCache();
         
         letterContactMechanismPurposes.forEach((letterContactMechanismPurpose) ->
                 letterContactMechanismPurposeTransfers.add(letterContactMechanismPurposeTransferCache.getLetterContactMechanismPurposeTransfer(letterContactMechanismPurpose))
@@ -1375,17 +1356,17 @@ public class LetterControl
     
     public void updateLetterContactMechanismPurposeFromValue(LetterContactMechanismPurposeDetailValue letterContactMechanismPurposeDetailValue, BasePK updatedBy) {
         if(letterContactMechanismPurposeDetailValue.hasBeenModified()) {
-            LetterContactMechanismPurpose letterContactMechanismPurpose = LetterContactMechanismPurposeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var letterContactMechanismPurpose = LetterContactMechanismPurposeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      letterContactMechanismPurposeDetailValue.getLetterContactMechanismPurposePK());
-            LetterContactMechanismPurposeDetail letterContactMechanismPurposeDetail = letterContactMechanismPurpose.getActiveDetailForUpdate();
+            var letterContactMechanismPurposeDetail = letterContactMechanismPurpose.getActiveDetailForUpdate();
             
             letterContactMechanismPurposeDetail.setThruTime(session.START_TIME_LONG);
             letterContactMechanismPurposeDetail.store();
-            
-            LetterContactMechanismPurposePK letterContactMechanismPurposePK = letterContactMechanismPurposeDetail.getLetterContactMechanismPurposePK();
-            LetterPK letterPK = letterContactMechanismPurposeDetail.getLetterPK();
-            Integer priority = letterContactMechanismPurposeDetailValue.getPriority();
-            ContactMechanismPurposePK contactMechanismPurposePK = letterContactMechanismPurposeDetailValue.getContactMechanismPurposePK();
+
+            var letterContactMechanismPurposePK = letterContactMechanismPurposeDetail.getLetterContactMechanismPurposePK();
+            var letterPK = letterContactMechanismPurposeDetail.getLetterPK();
+            var priority = letterContactMechanismPurposeDetailValue.getPriority();
+            var contactMechanismPurposePK = letterContactMechanismPurposeDetailValue.getContactMechanismPurposePK();
             
             letterContactMechanismPurposeDetail = LetterContactMechanismPurposeDetailFactory.getInstance().create(session,
                     letterContactMechanismPurposePK, letterPK, priority, contactMechanismPurposePK, session.START_TIME_LONG,
@@ -1399,7 +1380,7 @@ public class LetterControl
     }
     
     public void deleteLetterContactMechanismPurpose(LetterContactMechanismPurpose letterContactMechanismPurpose, BasePK deletedBy) {
-        LetterContactMechanismPurposeDetail letterContactMechanismPurposeDetail = letterContactMechanismPurpose.getLastDetailForUpdate();
+        var letterContactMechanismPurposeDetail = letterContactMechanismPurpose.getLastDetailForUpdate();
         letterContactMechanismPurposeDetail.setThruTime(session.START_TIME_LONG);
         letterContactMechanismPurpose.setActiveDetail(null);
         letterContactMechanismPurpose.store();
@@ -1408,7 +1389,7 @@ public class LetterControl
     }
     
     public void deleteLetterContactMechanismPurposesByLetter(Letter letter, BasePK deletedBy) {
-        List<LetterContactMechanismPurpose> letterContactMechanismPurposes = getLetterContactMechanismPurposesByLetterForUpdate(letter);
+        var letterContactMechanismPurposes = getLetterContactMechanismPurposesByLetterForUpdate(letter);
         
         letterContactMechanismPurposes.forEach((letterContactMechanismPurpose) -> 
                 deleteLetterContactMechanismPurpose(letterContactMechanismPurpose, deletedBy)
@@ -1421,7 +1402,7 @@ public class LetterControl
     
     public QueuedLetter createQueuedLetter(ChainInstance chainInstance, Letter letter) {
         var chainControl = Session.getModelController(ChainControl.class);
-        ChainInstanceStatus chainInstanceStatus = chainControl.getChainInstanceStatusForUpdate(chainInstance);
+        var chainInstanceStatus = chainControl.getChainInstanceStatusForUpdate(chainInstance);
         Integer queuedLetterSequence = chainInstanceStatus.getQueuedLetterSequence() + 1;
 
         chainInstanceStatus.setQueuedLetterSequence(queuedLetterSequence);
@@ -1490,8 +1471,8 @@ public class LetterControl
                     "FROM queuedletters " +
                     "FOR UPDATE";
         }
-        
-        PreparedStatement ps = QueuedLetterFactory.getInstance().prepareStatement(query);
+
+        var ps = QueuedLetterFactory.getInstance().prepareStatement(query);
         
         return QueuedLetterFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -1521,8 +1502,8 @@ public class LetterControl
                         "WHERE qlttr_chni_chaininstanceid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = QueuedLetterFactory.getInstance().prepareStatement(query);
+
+            var ps = QueuedLetterFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, chainInstance.getPrimaryKey().getEntityId());
             
@@ -1559,8 +1540,8 @@ public class LetterControl
                         "WHERE qlttr_lttr_letterid = ? " +
                         "FOR UPDATE";
             }
-            
-            PreparedStatement ps = QueuedLetterFactory.getInstance().prepareStatement(query);
+
+            var ps = QueuedLetterFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, letter.getPrimaryKey().getEntityId());
             
@@ -1586,7 +1567,7 @@ public class LetterControl
     
     public List<QueuedLetterTransfer> getQueuedLetterTransfers(UserVisit userVisit, Collection<QueuedLetter> queuedLetters) {
         List<QueuedLetterTransfer> queuedLetterTransfers = new ArrayList<>(queuedLetters.size());
-        QueuedLetterTransferCache queuedLetterTransferCache = getLetterTransferCaches(userVisit).getQueuedLetterTransferCache();
+        var queuedLetterTransferCache = getLetterTransferCaches(userVisit).getQueuedLetterTransferCache();
 
         queuedLetters.forEach((queuedLetter) ->
                 queuedLetterTransfers.add(queuedLetterTransferCache.getQueuedLetterTransfer(queuedLetter))

@@ -20,17 +20,12 @@ import com.echothree.control.user.accounting.common.edit.AccountingEditFactory;
 import com.echothree.control.user.accounting.common.edit.GlResourceTypeDescriptionEdit;
 import com.echothree.control.user.accounting.common.form.EditGlResourceTypeDescriptionForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.EditGlResourceTypeDescriptionResult;
 import com.echothree.control.user.accounting.common.spec.GlResourceTypeDescriptionSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.accounting.server.entity.GlResourceType;
-import com.echothree.model.data.accounting.server.entity.GlResourceTypeDescription;
-import com.echothree.model.data.accounting.server.value.GlResourceTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -79,25 +74,25 @@ public class EditGlResourceTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        EditGlResourceTypeDescriptionResult result = AccountingResultFactory.getEditGlResourceTypeDescriptionResult();
-        String glResourceTypeName = spec.getGlResourceTypeName();
-        GlResourceType glResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName);
+        var result = AccountingResultFactory.getEditGlResourceTypeDescriptionResult();
+        var glResourceTypeName = spec.getGlResourceTypeName();
+        var glResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName);
         
         if(glResourceType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    GlResourceTypeDescription glResourceTypeDescription = accountingControl.getGlResourceTypeDescription(glResourceType, language);
+                    var glResourceTypeDescription = accountingControl.getGlResourceTypeDescription(glResourceType, language);
                     
                     if(glResourceTypeDescription != null) {
                         if(editMode.equals(EditMode.LOCK)) {
                             result.setGlResourceTypeDescription(accountingControl.getGlResourceTypeDescriptionTransfer(getUserVisit(), glResourceTypeDescription));
 
                             if(lockEntity(glResourceType)) {
-                                GlResourceTypeDescriptionEdit edit = AccountingEditFactory.getGlResourceTypeDescriptionEdit();
+                                var edit = AccountingEditFactory.getGlResourceTypeDescriptionEdit();
 
                                 result.setEdit(edit);
                                 edit.setDescription(glResourceTypeDescription.getDescription());
@@ -113,12 +108,12 @@ public class EditGlResourceTypeDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownGlResourceTypeDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    GlResourceTypeDescriptionValue glResourceTypeDescriptionValue = accountingControl.getGlResourceTypeDescriptionValueForUpdate(glResourceType, language);
+                    var glResourceTypeDescriptionValue = accountingControl.getGlResourceTypeDescriptionValueForUpdate(glResourceType, language);
                     
                     if(glResourceTypeDescriptionValue != null) {
                         if(lockEntityForUpdate(glResourceType)) {
                             try {
-                                String description = edit.getDescription();
+                                var description = edit.getDescription();
                                 
                                 glResourceTypeDescriptionValue.setDescription(description);
                                 

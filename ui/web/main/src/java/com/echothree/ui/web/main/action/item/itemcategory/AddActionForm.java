@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.item.itemcategory;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemCategoryChoicesForm;
 import com.echothree.control.user.item.common.result.GetItemCategoryChoicesResult;
 import com.echothree.model.control.item.common.choice.ItemCategoryChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -45,14 +42,14 @@ public class AddActionForm
     private void setupParentItemCategoryChoices() {
         if(parentItemCategoryChoices == null) {
             try {
-                GetItemCategoryChoicesForm form = ItemUtil.getHome().getGetItemCategoryChoicesForm();
+                var form = ItemUtil.getHome().getGetItemCategoryChoicesForm();
 
                 form.setDefaultItemCategoryChoice(parentItemCategoryChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemCategoryChoicesResult getItemCategoryChoicesResult = (GetItemCategoryChoicesResult)executionResult.getResult();
+                var commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getItemCategoryChoicesResult = (GetItemCategoryChoicesResult)executionResult.getResult();
                 parentItemCategoryChoices = getItemCategoryChoicesResult.getItemCategoryChoices();
 
                 if(parentItemCategoryChoice == null) {

@@ -18,10 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.CountSecurityRoleResultsForm;
 import com.echothree.control.user.search.common.result.CountSecurityRoleResultsResult;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -79,11 +76,11 @@ public class CountSecurityRoleResultsTag
     public int doStartTag()
             throws JspException {
         try {
-            CountSecurityRoleResultsForm commandForm = SearchUtil.getHome().getCountSecurityRoleResultsForm();
+            var commandForm = SearchUtil.getHome().getCountSecurityRoleResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            CommandResult commandResult = SearchUtil.getHome().countSecurityRoleResults(getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().countSecurityRoleResults(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -91,8 +88,8 @@ public class CountSecurityRoleResultsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CountSecurityRoleResultsResult result = (CountSecurityRoleResultsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CountSecurityRoleResultsResult)executionResult.getResult();
 
                 pageContext.setAttribute(countVar, result.getCount(), scope);
             }

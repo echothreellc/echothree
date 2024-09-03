@@ -41,7 +41,7 @@ public class TimeZoneLogic
     
     public TimeZone getTimeZoneByName(final ExecutionErrorAccumulator eea, final String javaTimeZoneName) {
         var partyControl = Session.getModelController(PartyControl.class);
-        TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
+        var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
 
         if(timeZone == null) {
             handleExecutionError(UnknownJavaTimeZoneNameException.class, eea, ExecutionErrors.UnknownJavaTimeZoneName.name(), javaTimeZoneName);

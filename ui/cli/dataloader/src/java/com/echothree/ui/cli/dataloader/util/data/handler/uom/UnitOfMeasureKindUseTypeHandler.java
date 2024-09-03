@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.uom;
 
 import com.echothree.control.user.uom.common.UomUtil;
 import com.echothree.control.user.uom.common.UomService;
-import com.echothree.control.user.uom.common.form.CreateUnitOfMeasureKindUseTypeDescriptionForm;
 import com.echothree.control.user.uom.common.form.UomFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -50,7 +49,7 @@ public class UnitOfMeasureKindUseTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("unitOfMeasureKindUseTypeDescription")) {
-            CreateUnitOfMeasureKindUseTypeDescriptionForm form = UomFormFactory.getCreateUnitOfMeasureKindUseTypeDescriptionForm();
+            var form = UomFormFactory.getCreateUnitOfMeasureKindUseTypeDescriptionForm();
 
             form.setUnitOfMeasureKindUseTypeName(unitOfMeasureKindUseTypeName);
             form.set(getAttrsMap(attrs));

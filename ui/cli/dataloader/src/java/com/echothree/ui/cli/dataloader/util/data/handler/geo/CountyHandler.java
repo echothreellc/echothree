@@ -18,11 +18,9 @@ package com.echothree.ui.cli.dataloader.util.data.handler.geo;
 
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.GeoService;
-import com.echothree.control.user.geo.common.form.CreateGeoCodeDescriptionForm;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
 import com.echothree.control.user.tax.common.TaxUtil;
 import com.echothree.control.user.tax.common.TaxService;
-import com.echothree.control.user.tax.common.form.CreateGeoCodeTaxForm;
 import com.echothree.control.user.tax.common.form.TaxFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -57,12 +55,12 @@ public class CountyHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("geoCodeDescription")) {
-            CreateGeoCodeDescriptionForm commandForm = GeoFormFactory.getCreateGeoCodeDescriptionForm();
+            var commandForm = GeoFormFactory.getCreateGeoCodeDescriptionForm();
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -75,11 +73,11 @@ public class CountyHandler
             
             geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("geoCodeTax")) {
-            CreateGeoCodeTaxForm commandForm = TaxFormFactory.getCreateGeoCodeTaxForm();
+            var commandForm = TaxFormFactory.getCreateGeoCodeTaxForm();
             String taxName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("taxName"))
                     taxName = attrs.getValue(i);
             }

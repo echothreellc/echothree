@@ -16,11 +16,9 @@
 
 package com.echothree.model.control.security.server.transfer;
 
-import com.echothree.model.control.security.common.transfer.SecurityRoleGroupTransfer;
 import com.echothree.model.control.security.common.transfer.SecurityRoleTransfer;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRole;
-import com.echothree.model.data.security.server.entity.SecurityRoleDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class SecurityRoleTransferCache
@@ -34,15 +32,15 @@ public class SecurityRoleTransferCache
     }
     
     public SecurityRoleTransfer getSecurityRoleTransfer(SecurityRole securityRole) {
-        SecurityRoleTransfer securityRoleTransfer = get(securityRole);
+        var securityRoleTransfer = get(securityRole);
         
         if(securityRoleTransfer == null) {
-            SecurityRoleDetail securityRoleDetail = securityRole.getLastDetail();
-            String securityRoleName = securityRoleDetail.getSecurityRoleName();
-            SecurityRoleGroupTransfer securityRoleGroupTransfer = securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleDetail.getSecurityRoleGroup());
-            Boolean isDefault = securityRoleDetail.getIsDefault();
-            Integer sortOrder = securityRoleDetail.getSortOrder();
-            String description = securityControl.getBestSecurityRoleDescription(securityRole, getLanguage());
+            var securityRoleDetail = securityRole.getLastDetail();
+            var securityRoleName = securityRoleDetail.getSecurityRoleName();
+            var securityRoleGroupTransfer = securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleDetail.getSecurityRoleGroup());
+            var isDefault = securityRoleDetail.getIsDefault();
+            var sortOrder = securityRoleDetail.getSortOrder();
+            var description = securityControl.getBestSecurityRoleDescription(securityRole, getLanguage());
             
             securityRoleTransfer = new SecurityRoleTransfer(securityRoleGroupTransfer, securityRoleName, isDefault, sortOrder, description);
             put(securityRole, securityRoleTransfer);

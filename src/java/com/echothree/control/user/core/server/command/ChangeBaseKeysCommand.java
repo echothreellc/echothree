@@ -17,7 +17,6 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.ChangeBaseKeysForm;
-import com.echothree.control.user.core.common.result.ChangeBaseKeysResult;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -53,7 +52,7 @@ public class ChangeBaseKeysCommand
     
     @Override
     protected BaseResult execute() {
-        ChangeBaseKeysResult result = CoreResultFactory.getChangeBaseKeysResult();
+        var result = CoreResultFactory.getChangeBaseKeysResult();
         
         result.setBaseKeys(EncryptionUtils.getInstance().changeBaseKeys(this, form.getBaseKeys(), getPartyPK()));
         

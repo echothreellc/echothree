@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.editor;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.CreateEditorDescriptionForm;
-import com.echothree.control.user.core.common.form.GetEditorForm;
 import com.echothree.control.user.core.common.result.GetEditorResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,14 +53,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEditorForm commandForm = CoreUtil.getHome().getGetEditorForm();
+        var commandForm = CoreUtil.getHome().getGetEditorForm();
 
         commandForm.setEditorName(actionForm.getEditorName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEditor(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEditor(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEditorResult result = (GetEditorResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEditorResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.EDITOR, result.getEditor());
         }
@@ -72,7 +69,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateEditorDescriptionForm commandForm = CoreUtil.getHome().getCreateEditorDescriptionForm();
+        var commandForm = CoreUtil.getHome().getCreateEditorDescriptionForm();
 
         commandForm.setEditorName( actionForm.getEditorName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

@@ -30,11 +30,11 @@ public class InvoiceLineUseTypeTransferCache
     }
     
     public InvoiceLineUseTypeTransfer getInvoiceLineUseTypeTransfer(InvoiceLineUseType invoiceLineUseType) {
-        InvoiceLineUseTypeTransfer invoiceLineUseTypeTransfer = get(invoiceLineUseType);
+        var invoiceLineUseTypeTransfer = get(invoiceLineUseType);
         
         if(invoiceLineUseTypeTransfer == null) {
-            String invoiceLineUseTypeName = invoiceLineUseType.getInvoiceLineUseTypeName();
-            String description = invoiceControl.getBestInvoiceLineUseTypeDescription(invoiceLineUseType, getLanguage());
+            var invoiceLineUseTypeName = invoiceLineUseType.getInvoiceLineUseTypeName();
+            var description = invoiceControl.getBestInvoiceLineUseTypeDescription(invoiceLineUseType, getLanguage());
             
             invoiceLineUseTypeTransfer = new InvoiceLineUseTypeTransfer(invoiceLineUseTypeName, description);
             put(invoiceLineUseType, invoiceLineUseTypeTransfer);

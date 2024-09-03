@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.workflow.server.command;
 
-import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.workflow.common.form.CreateWorkflowForm;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -25,9 +24,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -75,25 +71,25 @@ public class CreateWorkflowCommand
     protected BaseResult execute() {
         var result = WorkflowResultFactory.getCreateWorkflowResult();
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        String workflowName = form.getWorkflowName();
+        var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow == null) {
             var selectorControl = Session.getModelController(SelectorControl.class);
-            String selectorKindName = form.getSelectorKindName();
-            String selectorTypeName = form.getSelectorTypeName();
+            var selectorKindName = form.getSelectorKindName();
+            var selectorTypeName = form.getSelectorTypeName();
             var parameterCount = (selectorKindName == null ? 0 : 1) + (selectorTypeName == null ? 0 : 1);
 
             if(parameterCount == 0 || parameterCount == 2) {
-                SelectorKind selectorKind = selectorKindName == null? null: selectorControl.getSelectorKindByName(selectorKindName);
+                var selectorKind = selectorKindName == null? null: selectorControl.getSelectorKindByName(selectorKindName);
 
                 if(selectorKindName == null || selectorKind != null) {
-                    SelectorType selectorType = selectorTypeName == null? null: selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
+                    var selectorType = selectorTypeName == null? null: selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
 
                     if(selectorTypeName == null || selectorType != null) {
                         var securityControl = Session.getModelController(SecurityControl.class);
-                        String securityRoleGroupName = form.getSecurityRoleGroupName();
-                        SecurityRoleGroup securityRoleGroup = securityRoleGroupName == null? null: securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
+                        var securityRoleGroupName = form.getSecurityRoleGroupName();
+                        var securityRoleGroup = securityRoleGroupName == null? null: securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
 
                         if(securityRoleGroupName == null || securityRoleGroup != null) {
                             var partyPK = getPartyPK();

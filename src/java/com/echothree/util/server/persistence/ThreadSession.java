@@ -27,7 +27,7 @@ public class ThreadSession {
     private ThreadSession() {}
 
     public static Session currentSession() {
-        Session session = sessions.get();
+        var session = sessions.get();
         
         if(session == null) {
             session = SessionFactory.getInstance().getSession();
@@ -59,7 +59,7 @@ public class ThreadSession {
 
     // Utilize via ThreadUtils
     static PreservedSession preserve() {
-        Session session = sessions.get();
+        var session = sessions.get();
 
         if(session != null) {
             sessions.remove();
@@ -87,7 +87,7 @@ public class ThreadSession {
 
     // Utilize via ThreadUtils
     static void close() {
-        Session session = sessions.get();
+        var session = sessions.get();
         
         if(session != null) {
             session.close();

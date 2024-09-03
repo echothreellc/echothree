@@ -18,9 +18,7 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.RemoveCacheEntryForm;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.command.CommandResult;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 
@@ -53,11 +51,11 @@ public class FlushTag
     public int doStartTag()
             throws JspException {
         try {
-            RemoveCacheEntryForm commandForm = CoreUtil.getHome().getRemoveCacheEntryForm();
+            var commandForm = CoreUtil.getHome().getRemoveCacheEntryForm();
 
             commandForm.setCacheEntryKey(key);
 
-            CommandResult commandResult = CoreUtil.getHome().removeCacheEntry(getUserVisitPK(), commandForm);
+            var commandResult = CoreUtil.getHome().removeCacheEntry(getUserVisitPK(), commandForm);
             if(commandResult.hasErrors() && !commandResult.containsExecutionError(ExecutionErrors.UnknownCacheEntryKey.name())) {
                 getLog().error(commandResult);
             }

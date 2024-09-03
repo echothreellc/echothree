@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.accounting.glaccountclass;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.edit.GlAccountClassDescriptionEdit;
-import com.echothree.control.user.accounting.common.form.EditGlAccountClassDescriptionForm;
 import com.echothree.control.user.accounting.common.result.EditGlAccountClassDescriptionResult;
-import com.echothree.control.user.accounting.common.spec.GlAccountClassDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String glAccountClassName = request.getParameter(ParameterConstants.GL_ACCOUNT_CLASS_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var glAccountClassName = request.getParameter(ParameterConstants.GL_ACCOUNT_CLASS_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditGlAccountClassDescriptionForm commandForm = AccountingUtil.getHome().getEditGlAccountClassDescriptionForm();
-                GlAccountClassDescriptionSpec spec = AccountingUtil.getHome().getGlAccountClassDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = AccountingUtil.getHome().getEditGlAccountClassDescriptionForm();
+                var spec = AccountingUtil.getHome().getGlAccountClassDescriptionSpec();
                 
                 if(glAccountClassName == null)
                     glAccountClassName = actionForm.getGlAccountClassName();
@@ -80,19 +75,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    GlAccountClassDescriptionEdit edit = AccountingUtil.getHome().getGlAccountClassDescriptionEdit();
+                    var edit = AccountingUtil.getHome().getGlAccountClassDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().editGlAccountClassDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AccountingUtil.getHome().editGlAccountClassDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditGlAccountClassDescriptionResult result = (EditGlAccountClassDescriptionResult)executionResult.getResult();
+                            var result = (EditGlAccountClassDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +100,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().editGlAccountClassDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditGlAccountClassDescriptionResult result = (EditGlAccountClassDescriptionResult)executionResult.getResult();
+
+                    var commandResult = AccountingUtil.getHome().editGlAccountClassDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditGlAccountClassDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        GlAccountClassDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setGlAccountClassName(glAccountClassName);
@@ -130,8 +125,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.GL_ACCOUNT_CLASS_NAME, glAccountClassName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

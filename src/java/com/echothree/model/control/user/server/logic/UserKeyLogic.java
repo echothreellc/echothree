@@ -21,7 +21,6 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyRelationship;
 import com.echothree.model.data.user.server.entity.UserKey;
 import com.echothree.model.data.user.server.factory.UserKeyFactory;
-import com.echothree.model.data.user.server.value.UserKeyDetailValue;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
@@ -42,10 +41,10 @@ public class UserKeyLogic {
     
     public void removeInactiveUserKeys(final Long remainingTime, final Long inactiveTime) {
         var userControl = Session.getModelController(UserControl.class);
-        long startTime = System.currentTimeMillis();
+        var startTime = System.currentTimeMillis();
         long entityCount = 0;
         
-        for(UserKey userKey : userControl.getInactiveUserKeys(inactiveTime)) {
+        for(var userKey : userControl.getInactiveUserKeys(inactiveTime)) {
             entityCount++;
             if(entityCount % 1000 == 0 && System.currentTimeMillis() - startTime > remainingTime) {
                 break;
@@ -61,7 +60,7 @@ public class UserKeyLogic {
      */
     public void clearUserKey(UserKey userKey) {
         var userControl = Session.getModelController(UserControl.class);
-        UserKeyDetailValue userKeyDetailValue = userControl.getUserKeyDetailValueForUpdate(userKey);
+        var userKeyDetailValue = userControl.getUserKeyDetailValueForUpdate(userKey);
 
         userKeyDetailValue.setPartyPK(null);
         userKeyDetailValue.setPartyRelationshipPK(null);

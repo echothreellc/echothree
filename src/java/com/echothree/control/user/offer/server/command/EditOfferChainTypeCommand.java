@@ -19,7 +19,6 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.edit.OfferChainTypeEdit;
 import com.echothree.control.user.offer.common.edit.OfferEditFactory;
 import com.echothree.control.user.offer.common.form.EditOfferChainTypeForm;
-import com.echothree.control.user.offer.common.result.EditOfferChainTypeResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.OfferChainTypeSpec;
 import com.echothree.model.control.chain.server.control.ChainControl;
@@ -27,12 +26,6 @@ import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.chain.server.entity.Chain;
-import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.model.data.chain.server.entity.ChainType;
-import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.OfferChainType;
-import com.echothree.model.data.offer.server.value.OfferChainTypeValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -82,29 +75,29 @@ public class EditOfferChainTypeCommand
     @Override
     protected BaseResult execute() {
         var offerControl = Session.getModelController(OfferControl.class);
-        EditOfferChainTypeResult result = OfferResultFactory.getEditOfferChainTypeResult();
-        String offerName = spec.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
+        var result = OfferResultFactory.getEditOfferChainTypeResult();
+        var offerName = spec.getOfferName();
+        var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
             var chainControl = Session.getModelController(ChainControl.class);
-            String chainKindName = spec.getChainKindName();
-            ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+            var chainKindName = spec.getChainKindName();
+            var chainKind = chainControl.getChainKindByName(chainKindName);
             
             if(chainKind != null) {
-                String chainTypeName = spec.getChainTypeName();
-                ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+                var chainTypeName = spec.getChainTypeName();
+                var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
                 
                 if(chainType != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        OfferChainType offerChainType = offerControl.getOfferChainTypeForUpdate(offer, chainType);
+                        var offerChainType = offerControl.getOfferChainTypeForUpdate(offer, chainType);
                         
                         if(offerChainType != null) {
                             result.setOfferChainType(offerControl.getOfferChainTypeTransfer(getUserVisit(), offerChainType));
                             
                             if(lockEntity(offer)) {
-                                OfferChainTypeEdit edit = OfferEditFactory.getOfferChainTypeEdit();
-                                Chain chain = offerChainType.getChain();
+                                var edit = OfferEditFactory.getOfferChainTypeEdit();
+                                var chain = offerChainType.getChain();
                                 
                                 result.setEdit(edit);
                                 edit.setChainName(chain == null? null: chain.getLastDetail().getChainName());
@@ -117,17 +110,17 @@ public class EditOfferChainTypeCommand
                             addExecutionError(ExecutionErrors.UnknownOfferChainType.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        OfferChainType offerChainType = offerControl.getOfferChainTypeForUpdate(offer, chainType);
+                        var offerChainType = offerControl.getOfferChainTypeForUpdate(offer, chainType);
                         
                         if(offerChainType != null) {
-                            String chainName = edit.getChainName();
-                            Chain chain = chainName == null? null: chainControl.getChainByName(chainType, chainName);
+                            var chainName = edit.getChainName();
+                            var chain = chainName == null? null: chainControl.getChainByName(chainType, chainName);
                             
                             if(chainName == null || chain != null) {
                                 if(lockEntityForUpdate(offer)) {
                                     try {
                                         var partyPK = getPartyPK();
-                                        OfferChainTypeValue offerChainTypeValue = offerControl.getOfferChainTypeValue(offerChainType);
+                                        var offerChainTypeValue = offerControl.getOfferChainTypeValue(offerChainType);
                                         
                                         offerChainTypeValue.setChainPK(chain == null? null: chain.getPrimaryKey());
                                         

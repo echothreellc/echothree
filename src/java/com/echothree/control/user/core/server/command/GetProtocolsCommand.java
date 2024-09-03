@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetProtocolsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetProtocolsResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -59,7 +58,7 @@ public class GetProtocolsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetProtocolsResult result = CoreResultFactory.getGetProtocolsResult();
+        var result = CoreResultFactory.getGetProtocolsResult();
         
         result.setProtocols(coreControl.getProtocolTransfers(getUserVisit()));
         

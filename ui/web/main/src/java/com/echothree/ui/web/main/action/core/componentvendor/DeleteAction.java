@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.componentvendor;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteComponentVendorForm;
-import com.echothree.control.user.core.common.form.GetComponentVendorForm;
 import com.echothree.control.user.core.common.result.GetComponentVendorResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -61,13 +58,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetComponentVendorForm commandForm = CoreUtil.getHome().getGetComponentVendorForm();
+        var commandForm = CoreUtil.getHome().getGetComponentVendorForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
 
-        CommandResult commandResult = CoreUtil.getHome().getComponentVendor(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetComponentVendorResult result = (GetComponentVendorResult)executionResult.getResult();
+        var commandResult = CoreUtil.getHome().getComponentVendor(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetComponentVendorResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.COMPONENT_VENDOR, result.getComponentVendor());
     }
@@ -75,7 +72,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteComponentVendorForm commandForm = CoreUtil.getHome().getDeleteComponentVendorForm();
+        var commandForm = CoreUtil.getHome().getDeleteComponentVendorForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
 

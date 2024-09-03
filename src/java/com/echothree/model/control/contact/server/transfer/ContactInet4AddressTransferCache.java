@@ -30,10 +30,10 @@ public class ContactInet4AddressTransferCache
     }
     
     public ContactInet4AddressTransfer getContactInet4AddressTransfer(ContactInet4Address contactInet4Address) {
-        ContactInet4AddressTransfer contactInet4AddressTransfer = get(contactInet4Address);
+        var contactInet4AddressTransfer = get(contactInet4Address);
         
         if(contactInet4AddressTransfer == null) {
-            String inet4Address = formatInet4Address(contactInet4Address.getInet4Address());
+            var inet4Address = formatInet4Address(contactInet4Address.getInet4Address());
             
             contactInet4AddressTransfer = new ContactInet4AddressTransfer(inet4Address);
             put(contactInet4Address, contactInet4AddressTransfer);

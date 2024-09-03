@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.payment.paymentmethod.add;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.GetPaymentProcessorChoicesForm;
 import com.echothree.control.user.payment.common.result.GetPaymentProcessorChoicesResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.form.GetSelectorChoicesForm;
 import com.echothree.control.user.selector.common.result.GetSelectorChoicesResult;
 import com.echothree.model.control.payment.common.choice.PaymentProcessorChoicesBean;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.common.choice.SelectorChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -77,14 +73,14 @@ public class Step2ActionForm
     private void setupPaymentProcessorChoices() {
         if(paymentProcessorChoices == null) {
             try {
-                GetPaymentProcessorChoicesForm form = PaymentUtil.getHome().getGetPaymentProcessorChoicesForm();
+                var form = PaymentUtil.getHome().getGetPaymentProcessorChoicesForm();
                 
                 form.setDefaultPaymentProcessorChoice(paymentProcessorChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = PaymentUtil.getHome().getPaymentProcessorChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPaymentProcessorChoicesResult getPaymentProcessorChoicesResult = (GetPaymentProcessorChoicesResult)executionResult.getResult();
+
+                var commandResult = PaymentUtil.getHome().getPaymentProcessorChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getPaymentProcessorChoicesResult = (GetPaymentProcessorChoicesResult)executionResult.getResult();
                 paymentProcessorChoices = getPaymentProcessorChoicesResult.getPaymentProcessorChoices();
                 
                 if(paymentProcessorChoice == null) {
@@ -100,16 +96,16 @@ public class Step2ActionForm
     public void setupItemSelectorChoices() {
         if(itemSelectorChoices == null) {
             try {
-                GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
+                var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
 
                 form.setSelectorKindName(SelectorKinds.ITEM.name());
                 form.setSelectorTypeName(SelectorTypes.PAYMENT_METHOD.name());
                 form.setDefaultSelectorChoice(itemSelectorChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSelectorChoicesResult result = (GetSelectorChoicesResult)executionResult.getResult();
+                var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSelectorChoicesResult)executionResult.getResult();
                 itemSelectorChoices = result.getSelectorChoices();
 
                 if(itemSelectorChoice == null) {
@@ -125,16 +121,16 @@ public class Step2ActionForm
     public void setupSalesOrderItemSelectorChoices() {
         if(salesOrderItemSelectorChoices == null) {
             try {
-                GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
+                var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
 
                 form.setSelectorKindName(SelectorKinds.SALES_ORDER_ITEM.name());
                 form.setSelectorTypeName(SelectorTypes.PAYMENT_METHOD.name());
                 form.setDefaultSelectorChoice(salesOrderItemSelectorChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSelectorChoicesResult result = (GetSelectorChoicesResult)executionResult.getResult();
+                var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSelectorChoicesResult)executionResult.getResult();
                 salesOrderItemSelectorChoices = result.getSelectorChoices();
 
                 if(salesOrderItemSelectorChoice == null) {

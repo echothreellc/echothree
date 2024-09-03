@@ -19,9 +19,6 @@ package com.echothree.control.user.customer.server.command;
 import com.echothree.control.user.customer.common.form.SetCustomerCreditStatusForm;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.server.logic.PartyChainLogic;
-import com.echothree.model.data.customer.server.entity.Customer;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,13 +50,13 @@ public class SetCustomerCreditStatusCommand
     @Override
     protected BaseResult execute() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        String customerName = form.getCustomerName();
-        Customer customer = customerControl.getCustomerByName(customerName);
+        var customerName = form.getCustomerName();
+        var customer = customerControl.getCustomerByName(customerName);
         
         if(customer != null) {
-            String customerCreditStatusChoice = form.getCustomerCreditStatusChoice();
-            Party party = customer.getParty();
-            PartyPK updatedBy = getPartyPK();
+            var customerCreditStatusChoice = form.getCustomerCreditStatusChoice();
+            var party = customer.getParty();
+            var updatedBy = getPartyPK();
             
             customerControl.setCustomerCreditStatus(this, party, customerCreditStatusChoice, updatedBy);
             

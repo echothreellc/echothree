@@ -45,7 +45,6 @@ import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSecuri
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSelector;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
-import com.echothree.model.data.workflow.server.entity.WorkflowStepDetail;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -54,7 +53,6 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -76,11 +74,11 @@ public class WorkflowDestinationLogic
     public WorkflowDestination getWorkflowDestinationByName(final ExecutionErrorAccumulator eea, final WorkflowStep workflowStep,
             final String workflowDestinationName, final EntityPermission entityPermission) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName,
+        var workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName,
                 entityPermission);
 
         if(workflowDestination == null) {
-            WorkflowStepDetail workflowStepDetail = workflowStep.getLastDetail();
+            var workflowStepDetail = workflowStep.getLastDetail();
             
             handleExecutionError(UnknownWorkflowNameException.class, eea, ExecutionErrors.UnknownWorkflowDestinationName.name(),
                     workflowStepDetail.getWorkflow().getLastDetail().getWorkflowName(), workflowStepDetail.getWorkflowStepName(), workflowDestinationName);
@@ -101,7 +99,7 @@ public class WorkflowDestinationLogic
 
     public WorkflowDestination getWorkflowDestinationByName(final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName,
             final String workflowDestinationName) {
-        WorkflowStep workflowStep = WorkflowStepLogic.getInstance().getWorkflowStepByName(eea, workflow, workflowStepName);
+        var workflowStep = WorkflowStepLogic.getInstance().getWorkflowStepByName(eea, workflow, workflowStepName);
         WorkflowDestination workflowDestination = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -113,7 +111,7 @@ public class WorkflowDestinationLogic
 
     public WorkflowDestination getWorkflowDestinationByName(final ExecutionErrorAccumulator eea, final String workflowName, final String workflowStepName,
             final String workflowDestinationName) {
-        WorkflowStep workflowStep = WorkflowStepLogic.getInstance().getWorkflowStepByName(eea, workflowName, workflowStepName);
+        var workflowStep = WorkflowStepLogic.getInstance().getWorkflowStepByName(eea, workflowName, workflowStepName);
         WorkflowDestination workflowDestination = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -189,7 +187,7 @@ public class WorkflowDestinationLogic
 
     public Set<WorkflowStep> getWorkflowDestinationStepsAsSet(final WorkflowDestination workflowDestination) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        List<WorkflowDestinationStep> workflowDestinationSteps = workflowControl.getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
+        var workflowDestinationSteps = workflowControl.getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
         Set<WorkflowStep> workflowSteps = new HashSet<>(workflowDestinationSteps.size());
         
         workflowDestinationSteps.forEach((workflowDestinationStep) -> {
@@ -201,12 +199,12 @@ public class WorkflowDestinationLogic
     
     public Map<String, Set<String>> getWorkflowDestinationsAsMap(final WorkflowDestination workflowDestination) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        List<WorkflowDestinationStep> workflowDestinationSteps = workflowControl.getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
+        var workflowDestinationSteps = workflowControl.getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
         Map<String, Set<String>> map = new HashMap<>();
         
         workflowDestinationSteps.stream().map((workflowDestinationStep) -> workflowDestinationStep.getWorkflowStep().getLastDetail()).forEach((workflowStepDetail) -> {
-            String workflowStepName = workflowStepDetail.getWorkflowStepName();
-            String workflowName = workflowStepDetail.getWorkflow().getLastDetail().getWorkflowName();
+            var workflowStepName = workflowStepDetail.getWorkflowStepName();
+            var workflowName = workflowStepDetail.getWorkflow().getLastDetail().getWorkflowName();
             
             workflowDestinationMapContainsStep(map, workflowName, workflowStepName, true);
         });

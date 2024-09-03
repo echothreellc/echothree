@@ -18,11 +18,8 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.GetForumsForm;
 import com.echothree.control.user.forum.common.result.GetForumsResult;
 import com.echothree.model.data.forum.common.ForumConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -115,7 +112,7 @@ public class ForumsTag
     public int doStartTag()
             throws JspException {
         try {
-            GetForumsForm commandForm = ForumUtil.getHome().getGetForumsForm();
+            var commandForm = ForumUtil.getHome().getGetForumsForm();
             Map<String, Limit> limits = new HashMap<>();
 
             commandForm.setForumGroupName(forumGroupName);
@@ -128,8 +125,8 @@ public class ForumsTag
                 limits.put(ForumConstants.ENTITY_TYPE_NAME, new Limit(forumCount, forumOffset));
             }
             commandForm.setLimits(limits);
-            
-            CommandResult commandResult = ForumUtil.getHome().getForums(getUserVisitPK(), commandForm);
+
+            var commandResult = ForumUtil.getHome().getForums(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
@@ -137,8 +134,8 @@ public class ForumsTag
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetForumsResult result = (GetForumsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetForumsResult)executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getForums()), scope);
 

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.commandmessage;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetCommandMessagesForm;
 import com.echothree.control.user.core.common.result.GetCommandMessagesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,15 +48,15 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetCommandMessagesForm commandForm = CoreUtil.getHome().getGetCommandMessagesForm();
+        String forwardKey;
+        var commandForm = CoreUtil.getHome().getGetCommandMessagesForm();
 
         commandForm.setCommandMessageTypeName(request.getParameter(ParameterConstants.COMMAND_MESSAGE_TYPE_NAME));
 
-        CommandResult commandResult = CoreUtil.getHome().getCommandMessages(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getCommandMessages(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommandMessagesResult result = (GetCommandMessagesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommandMessagesResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.COMMAND_MESSAGE_TYPE, result.getCommandMessageType());
             request.setAttribute(AttributeConstants.COMMAND_MESSAGES, result.getCommandMessages());

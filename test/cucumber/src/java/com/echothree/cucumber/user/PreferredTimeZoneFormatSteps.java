@@ -18,7 +18,6 @@ package com.echothree.cucumber.user;
 
 import com.echothree.control.user.user.common.UserService;
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.SetUserVisitPreferredTimeZoneForm;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import io.cucumber.java8.En;
@@ -29,7 +28,7 @@ public class PreferredTimeZoneFormatSteps implements En {
         When("^the user sets their preferred time zone to \"([^\"]*)\"$",
                 (String javaTimeZoneName) -> {
                     UserService userService = UserUtil.getHome();
-                    SetUserVisitPreferredTimeZoneForm userVisitPreferredTimeZoneForm = userService.getSetUserVisitPreferredTimeZoneForm();
+                    var userVisitPreferredTimeZoneForm = userService.getSetUserVisitPreferredTimeZoneForm();
                     var persona = CurrentPersona.persona;
 
                     userVisitPreferredTimeZoneForm.setJavaTimeZoneName(javaTimeZoneName);

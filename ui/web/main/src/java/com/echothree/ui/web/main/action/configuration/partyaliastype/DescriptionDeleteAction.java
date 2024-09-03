@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.configuration.partyaliastype;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.DeletePartyAliasTypeDescriptionForm;
-import com.echothree.control.user.party.common.form.GetPartyAliasTypeDescriptionForm;
 import com.echothree.control.user.party.common.result.GetPartyAliasTypeDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -64,16 +61,16 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartyAliasTypeDescriptionForm commandForm = PartyUtil.getHome().getGetPartyAliasTypeDescriptionForm();
+        var commandForm = PartyUtil.getHome().getGetPartyAliasTypeDescriptionForm();
         
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());
         commandForm.setPartyAliasTypeName(actionForm.getPartyAliasTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = PartyUtil.getHome().getPartyAliasTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = PartyUtil.getHome().getPartyAliasTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyAliasTypeDescriptionResult result = (GetPartyAliasTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyAliasTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.PARTY_ALIAS_TYPE_DESCRIPTION, result.getPartyAliasTypeDescription());
         }
@@ -82,7 +79,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyAliasTypeDescriptionForm commandForm = PartyUtil.getHome().getDeletePartyAliasTypeDescriptionForm();
+        var commandForm = PartyUtil.getHome().getDeletePartyAliasTypeDescriptionForm();
 
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());
         commandForm.setPartyAliasTypeName(actionForm.getPartyAliasTypeName());

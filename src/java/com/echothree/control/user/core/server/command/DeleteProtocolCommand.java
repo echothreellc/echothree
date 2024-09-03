@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.DeleteProtocolForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.Protocol;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -61,8 +60,8 @@ public class DeleteProtocolCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String protocolName = form.getProtocolName();
-        Protocol protocol = coreControl.getProtocolByNameForUpdate(protocolName);
+        var protocolName = form.getProtocolName();
+        var protocol = coreControl.getProtocolByNameForUpdate(protocolName);
         
         if(protocol != null) {
             coreControl.deleteProtocol(protocol, getPartyPK());

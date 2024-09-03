@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.associate.associateprogram;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.common.form.CreateAssociateProgramForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,10 +52,10 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateAssociateProgramForm commandForm = AssociateUtil.getHome().getCreateAssociateProgramForm();
+                    var commandForm = AssociateUtil.getHome().getCreateAssociateProgramForm();
                     
                     commandForm.setAssociateProgramName(actionForm.getAssociateProgramName());
                     commandForm.setAssociateSequenceName(actionForm.getAssociateSequenceChoice());
@@ -68,8 +66,8 @@ public class AddAction
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AssociateUtil.getHome().createAssociateProgram(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AssociateUtil.getHome().createAssociateProgram(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.personaltitle;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.SetDefaultPersonalTitleForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,8 +50,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultPersonalTitleForm commandForm = PartyUtil.getHome().getSetDefaultPersonalTitleForm();
-            String personalTitleId = request.getParameter(ParameterConstants.PERSONAL_TITLE_ID);
+            var commandForm = PartyUtil.getHome().getSetDefaultPersonalTitleForm();
+            var personalTitleId = request.getParameter(ParameterConstants.PERSONAL_TITLE_ID);
             
             commandForm.setPersonalTitleId(personalTitleId);
             

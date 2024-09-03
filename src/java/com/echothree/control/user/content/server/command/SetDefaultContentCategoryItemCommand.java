@@ -26,17 +26,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.content.server.entity.ContentCatalog;
-import com.echothree.model.data.content.server.entity.ContentCatalogItem;
-import com.echothree.model.data.content.server.entity.ContentCategory;
-import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.content.server.value.ContentCategoryItemValue;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemDetail;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -83,45 +72,45 @@ public class SetDefaultContentCategoryItemCommand
     @Override
     protected BaseResult execute() {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentCatalogName = form.getContentCatalogName();
-            ContentCatalog contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
+            var contentCatalogName = form.getContentCatalogName();
+            var contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             if(contentCatalog != null) {
-                String contentCategoryName = form.getContentCategoryName();
-                ContentCategory contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
+                var contentCategoryName = form.getContentCategoryName();
+                var contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
                 
                 if(contentCategory != null) {
                     var itemControl = Session.getModelController(ItemControl.class);
-                    String itemName = form.getItemName();
-                    Item item = itemControl.getItemByName(itemName);
+                    var itemName = form.getItemName();
+                    var item = itemControl.getItemByName(itemName);
                     
                     if(item != null) {
                         var inventoryControl = Session.getModelController(InventoryControl.class);
-                        String inventoryConditionName = form.getInventoryConditionName();
-                        InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                        var inventoryConditionName = form.getInventoryConditionName();
+                        var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                         
                         if(inventoryCondition != null) {
                             var uomControl = Session.getModelController(UomControl.class);
-                            String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                            ItemDetail itemDetail = item.getLastDetail();
-                            UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
-                            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                            var itemDetail = item.getLastDetail();
+                            var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
+                            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                             
                             if(unitOfMeasureType != null) {
                                 var accountingControl = Session.getModelController(AccountingControl.class);
-                                String currencyIsoName = form.getCurrencyIsoName();
-                                Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+                                var currencyIsoName = form.getCurrencyIsoName();
+                                var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 
                                 if(currency != null) {
-                                    ContentCatalogItem contentCatalogItem = contentControl.getContentCatalogItem(contentCatalog,
+                                    var contentCatalogItem = contentControl.getContentCatalogItem(contentCatalog,
                                             item, inventoryCondition, unitOfMeasureType, currency);
                                     
                                     if(contentCatalogItem != null) {
-                                        ContentCategoryItemValue contentCategoryItemValue = contentControl.getContentCategoryItemValueForUpdate(contentCategory,
+                                        var contentCategoryItemValue = contentControl.getContentCategoryItemValueForUpdate(contentCategory,
                                                 contentCatalogItem);
                                         
                                         if(contentCategoryItemValue != null) {

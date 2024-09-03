@@ -22,7 +22,6 @@ import com.echothree.control.user.document.common.form.EditPartyDocumentForm;
 import com.echothree.control.user.document.common.result.EditPartyDocumentResult;
 import com.echothree.control.user.document.common.spec.DocumentSpec;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.core.common.transfer.MimeTypeUsageTypeTransfer;
 import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
@@ -38,7 +37,6 @@ import java.io.IOException;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.struts.upload.FormFile;
 
 @SproutAction(
     path = "/HumanResources/EmployeeDocument/Edit",
@@ -58,7 +56,7 @@ public class EditAction
     @Override
     protected DocumentSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        DocumentSpec spec = DocumentUtil.getHome().getDocumentSpec();
+        var spec = DocumentUtil.getHome().getDocumentSpec();
 
         actionForm.setPartyName(findParameter(request, ParameterConstants.PARTY_NAME, actionForm.getPartyName()));
         spec.setDocumentName(findParameter(request, ParameterConstants.DOCUMENT_NAME, actionForm.getDocumentName()));
@@ -79,10 +77,10 @@ public class EditAction
     @Override
     protected PartyDocumentEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyDocumentEdit edit = DocumentUtil.getHome().getPartyDocumentEdit();
-        PartyDocumentTransfer partyDocument = getPartyDocumentTransfer(actionForm, request);
-        MimeTypeUsageTypeTransfer mimeTypeUsageType = partyDocument.getDocument().getDocumentType().getMimeTypeUsageType();
-        String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
+        var edit = DocumentUtil.getHome().getPartyDocumentEdit();
+        var partyDocument = getPartyDocumentTransfer(actionForm, request);
+        var mimeTypeUsageType = partyDocument.getDocument().getDocumentType().getMimeTypeUsageType();
+        var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
 
         edit.setIsDefault(actionForm.getIsDefault().toString());
         edit.setSortOrder(actionForm.getSortOrder());
@@ -92,7 +90,7 @@ public class EditAction
             edit.setMimeTypeName(actionForm.getMimeTypeChoice());
             edit.setClob(actionForm.getClob());
         } else {
-            FormFile blob = actionForm.getBlob();
+            var blob = actionForm.getBlob();
 
             edit.setMimeTypeName(blob.getContentType());
 
@@ -117,8 +115,8 @@ public class EditAction
     @Override
     protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditPartyDocumentResult result, DocumentSpec spec, PartyDocumentEdit edit)
             throws NamingException {
-        PartyDocumentTransfer partyDocument = getPartyDocumentTransfer(spec, request);
-        MimeTypeUsageTypeTransfer mimeTypeUsageType = partyDocument.getDocument().getDocumentType().getMimeTypeUsageType();
+        var partyDocument = getPartyDocumentTransfer(spec, request);
+        var mimeTypeUsageType = partyDocument.getDocument().getDocumentType().getMimeTypeUsageType();
 
         actionForm.setDocumentName(spec.getDocumentName());
         actionForm.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

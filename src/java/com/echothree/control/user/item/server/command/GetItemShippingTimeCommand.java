@@ -17,13 +17,9 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemShippingTimeForm;
-import com.echothree.control.user.item.common.result.GetItemShippingTimeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemShippingTime;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -55,17 +51,17 @@ public class GetItemShippingTimeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemShippingTimeResult result = ItemResultFactory.getGetItemShippingTimeResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var result = ItemResultFactory.getGetItemShippingTimeResult();
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
             var customerControl = Session.getModelController(CustomerControl.class);
-            String customerTypeName = form.getCustomerTypeName();
-            CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+            var customerTypeName = form.getCustomerTypeName();
+            var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
             if(customerType != null) {
-                ItemShippingTime itemShippingTime = itemControl.getItemShippingTime(item, customerType);
+                var itemShippingTime = itemControl.getItemShippingTime(item, customerType);
 
                 if(itemShippingTime != null) {
                     result.setItemShippingTime(itemControl.getItemShippingTimeTransfer(getUserVisit(), itemShippingTime));

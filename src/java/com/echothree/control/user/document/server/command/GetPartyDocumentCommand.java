@@ -18,11 +18,8 @@ package com.echothree.control.user.document.server.command;
 
 import com.echothree.control.user.document.common.form.GetPartyDocumentForm;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
-import com.echothree.control.user.document.common.result.GetPartyDocumentResult;
 import com.echothree.model.control.content.server.logic.ContentLogic;
 import com.echothree.model.control.document.server.control.DocumentControl;
-import com.echothree.model.data.document.server.entity.Document;
-import com.echothree.model.data.document.server.entity.PartyDocument;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,16 +49,16 @@ public class GetPartyDocumentCommand
     
     @Override
     protected BaseResult execute() {
-        GetPartyDocumentResult result = DocumentResultFactory.getGetPartyDocumentResult();
+        var result = DocumentResultFactory.getGetPartyDocumentResult();
         ContentLogic.getInstance().checkReferrer(this, form.getReferrer());
         
         if(!hasExecutionErrors()) {
             var documentControl = Session.getModelController(DocumentControl.class);
-            String documentName = form.getDocumentName();
-            Document document = documentControl.getDocumentByName(documentName);
+            var documentName = form.getDocumentName();
+            var document = documentControl.getDocumentByName(documentName);
 
             if(document != null) {
-                PartyDocument partyDocument = documentControl.getPartyDocumentByDocument(document);
+                var partyDocument = documentControl.getPartyDocumentByDocument(document);
 
                 if(partyDocument != null) {
                     result.setPartyDocument(documentControl.getPartyDocumentTransfer(getUserVisit(), partyDocument));

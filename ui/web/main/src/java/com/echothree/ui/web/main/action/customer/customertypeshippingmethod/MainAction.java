@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.customer.customertypeshippingmethod;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerTypeShippingMethodsForm;
 import com.echothree.control.user.customer.common.result.GetCustomerTypeShippingMethodsResult;
-import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -53,18 +49,18 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
-            GetCustomerTypeShippingMethodsForm commandForm = CustomerUtil.getHome().getGetCustomerTypeShippingMethodsForm();
+            var customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
+            var commandForm = CustomerUtil.getHome().getGetCustomerTypeShippingMethodsForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
-            
-            CommandResult commandResult = CustomerUtil.getHome().getCustomerTypeShippingMethods(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypeShippingMethodsResult result = (GetCustomerTypeShippingMethodsResult)executionResult.getResult();
-            CustomerTypeTransfer customerTypeTransfer = result.getCustomerType();
+
+            var commandResult = CustomerUtil.getHome().getCustomerTypeShippingMethods(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypeShippingMethodsResult)executionResult.getResult();
+            var customerTypeTransfer = result.getCustomerType();
             
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE, customerTypeTransfer);
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_SHIPPING_METHODS, result.getCustomerTypeShippingMethods());

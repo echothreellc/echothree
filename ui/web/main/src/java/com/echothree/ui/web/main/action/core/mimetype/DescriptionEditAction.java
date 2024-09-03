@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected MimeTypeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        MimeTypeDescriptionSpec spec = CoreUtil.getHome().getMimeTypeDescriptionSpec();
+        var spec = CoreUtil.getHome().getMimeTypeDescriptionSpec();
         
         spec.setMimeTypeName(findParameter(request, ParameterConstants.MIME_TYPE_NAME, actionForm.getMimeTypeName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected MimeTypeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        MimeTypeDescriptionEdit edit = CoreUtil.getHome().getMimeTypeDescriptionEdit();
+        var edit = CoreUtil.getHome().getMimeTypeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

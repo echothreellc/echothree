@@ -23,10 +23,7 @@ import com.echothree.model.control.printer.server.trigger.PrinterGroupJobTrigger
 import com.echothree.model.control.training.server.trigger.PartyTrainingClassTrigger;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.trigger.EntityTypeTrigger;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.model.data.workflow.server.entity.WorkflowTrigger;
 import com.echothree.model.data.workflow.server.factory.WorkflowTriggerFactory;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -70,12 +67,12 @@ public class WorkflowTriggerLogic {
     }
     
     private void processWorkflowTrigger(final Session session, final ExecutionErrorAccumulator eea, final WorkflowTrigger workflowTrigger, final PartyPK triggeredBy) {
-        WorkflowEntityStatus workflowEntityStatus = workflowTrigger.getWorkflowEntityStatusForUpdate();
-        EntityInstance entityInstance = workflowEntityStatus.getEntityInstance();
-        EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-        String entityTypeName = entityTypeDetail.getEntityTypeName();
-        String componentVendorName = entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName();
-        EntityTypeTrigger entityTypeTrigger = locateTrigger(eea, componentVendorName, entityTypeName);
+        var workflowEntityStatus = workflowTrigger.getWorkflowEntityStatusForUpdate();
+        var entityInstance = workflowEntityStatus.getEntityInstance();
+        var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+        var entityTypeName = entityTypeDetail.getEntityTypeName();
+        var componentVendorName = entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName();
+        var entityTypeTrigger = locateTrigger(eea, componentVendorName, entityTypeName);
         
         if(eea == null || !eea.hasExecutionErrors()) {
             entityTypeTrigger.handleTrigger(session, eea, workflowEntityStatus, triggeredBy);
@@ -84,13 +81,13 @@ public class WorkflowTriggerLogic {
     
     public void processWorkflowTriggers(final Session session, final ExecutionErrorAccumulator eea, final PartyPK triggeredBy) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        long remainingTime = (long) 1 * 60 * 1000; // 1 minute
+        var remainingTime = (long) 1 * 60 * 1000; // 1 minute
         
-        for(WorkflowTrigger workflowTrigger : workflowControl.getWorkflowTriggersByTriggerTime(session.START_TIME_LONG)) {
-            Boolean errorsOccurred = workflowTrigger.getErrorsOccurred();
+        for(var workflowTrigger : workflowControl.getWorkflowTriggersByTriggerTime(session.START_TIME_LONG)) {
+            var errorsOccurred = workflowTrigger.getErrorsOccurred();
 
             if(errorsOccurred == null || errorsOccurred == false) {
-                long startTime = System.currentTimeMillis();
+                var startTime = System.currentTimeMillis();
 
                 workflowTrigger = WorkflowTriggerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowTrigger.getPrimaryKey());
                 processWorkflowTrigger(session, eea, workflowTrigger, triggeredBy);

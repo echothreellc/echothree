@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.search.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.search.common.transfer.SearchResultActionTypeDescriptionTransfer;
-import com.echothree.model.control.search.common.transfer.SearchResultActionTypeTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchResultActionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,11 +30,11 @@ public class SearchResultActionTypeDescriptionTransferCache
     }
     
     public SearchResultActionTypeDescriptionTransfer getSearchResultActionTypeDescriptionTransfer(SearchResultActionTypeDescription searchResultActionTypeDescription) {
-        SearchResultActionTypeDescriptionTransfer searchResultActionTypeDescriptionTransfer = get(searchResultActionTypeDescription);
+        var searchResultActionTypeDescriptionTransfer = get(searchResultActionTypeDescription);
         
         if(searchResultActionTypeDescriptionTransfer == null) {
-            SearchResultActionTypeTransfer searchResultActionTypeTransfer = searchControl.getSearchResultActionTypeTransfer(userVisit, searchResultActionTypeDescription.getSearchResultActionType());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, searchResultActionTypeDescription.getLanguage());
+            var searchResultActionTypeTransfer = searchControl.getSearchResultActionTypeTransfer(userVisit, searchResultActionTypeDescription.getSearchResultActionType());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchResultActionTypeDescription.getLanguage());
             
             searchResultActionTypeDescriptionTransfer = new SearchResultActionTypeDescriptionTransfer(languageTransfer, searchResultActionTypeTransfer, searchResultActionTypeDescription.getDescription());
             put(searchResultActionTypeDescription, searchResultActionTypeDescriptionTransfer);

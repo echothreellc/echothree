@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnreasontype;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.form.GetReturnReasonTypesForm;
 import com.echothree.control.user.returnpolicy.common.result.GetReturnReasonTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,19 +49,19 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            GetReturnReasonTypesForm commandForm = ReturnPolicyUtil.getHome().getGetReturnReasonTypesForm();
-            String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-            String returnReasonName = request.getParameter(ParameterConstants.RETURN_REASON_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getGetReturnReasonTypesForm();
+            var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+            var returnReasonName = request.getParameter(ParameterConstants.RETURN_REASON_NAME);
             
             commandForm.setReturnKindName(returnKindName);
             commandForm.setReturnReasonName(returnReasonName);
 
-            CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnReasonTypes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetReturnReasonTypesResult result = (GetReturnReasonTypesResult)executionResult.getResult();
+            var commandResult = ReturnPolicyUtil.getHome().getReturnReasonTypes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnReasonTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RETURN_REASON, result.getReturnReason());
             request.setAttribute(AttributeConstants.RETURN_REASON_TYPES, result.getReturnReasonTypes());

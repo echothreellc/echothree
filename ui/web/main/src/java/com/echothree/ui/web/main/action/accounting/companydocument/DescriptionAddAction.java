@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.companydocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.form.CreateDocumentDescriptionForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
@@ -60,7 +59,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateDocumentDescriptionForm commandForm = DocumentUtil.getHome().getCreateDocumentDescriptionForm();
+        var commandForm = DocumentUtil.getHome().getCreateDocumentDescriptionForm();
 
         commandForm.setDocumentName( actionForm.getDocumentName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

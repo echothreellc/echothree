@@ -21,7 +21,6 @@ import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.document.server.value.DocumentTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultDocumentTypeCommand
     @Override
     protected BaseResult execute() {
         var documentControl = Session.getModelController(DocumentControl.class);
-        String documentTypeName = form.getDocumentTypeName();
-        DocumentTypeDetailValue documentTypeDetailValue = documentControl.getDocumentTypeDetailValueByNameForUpdate(documentTypeName);
+        var documentTypeName = form.getDocumentTypeName();
+        var documentTypeDetailValue = documentControl.getDocumentTypeDetailValueByNameForUpdate(documentTypeName);
         
         if(documentTypeDetailValue != null) {
             documentTypeDetailValue.setIsDefault(Boolean.TRUE);

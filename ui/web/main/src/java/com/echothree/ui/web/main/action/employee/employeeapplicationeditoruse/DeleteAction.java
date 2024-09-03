@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.employee.employeeapplicationeditoruse;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeletePartyApplicationEditorUseForm;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.action.humanresources.employeeapplicationeditoruse.BaseEmployeeApplicationEditorUseAction;
 import com.echothree.ui.web.main.action.humanresources.employeeapplicationeditoruse.DeleteActionForm;
@@ -68,7 +67,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyApplicationEditorUseForm commandForm = CoreUtil.getHome().getDeletePartyApplicationEditorUseForm();
+        var commandForm = CoreUtil.getHome().getDeletePartyApplicationEditorUseForm();
 
         commandForm.setApplicationName(actionForm.getApplicationName());
         commandForm.setApplicationEditorUseName(actionForm.getApplicationEditorUseName());

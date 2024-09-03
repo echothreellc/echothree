@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.selector.selectornode;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.form.DeleteSelectorNodeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,13 +50,13 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        final String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-        final String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-        final String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+        final var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+        final var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+        final var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
         
         try {
-            String selectorNodeName = request.getParameter(ParameterConstants.SELECTOR_NODE_NAME);
-            DeleteSelectorNodeForm commandForm = SelectorUtil.getHome().getDeleteSelectorNodeForm();
+            var selectorNodeName = request.getParameter(ParameterConstants.SELECTOR_NODE_NAME);
+            var commandForm = SelectorUtil.getHome().getDeleteSelectorNodeForm();
             
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setSelectorTypeName(selectorTypeName);
@@ -70,8 +69,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             customActionForward.setParameters(Map.of(
                     ParameterConstants.SELECTOR_KIND_NAME, selectorKindName,

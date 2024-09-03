@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.employee.employeeentitytype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeletePartyEntityTypeForm;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.action.humanresources.employeeentitytype.BaseEmployeeEntityTypeAction;
 import com.echothree.ui.web.main.action.humanresources.employeeentitytype.DeleteActionForm;
@@ -68,7 +67,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyEntityTypeForm commandForm = CoreUtil.getHome().getDeletePartyEntityTypeForm();
+        var commandForm = CoreUtil.getHome().getDeletePartyEntityTypeForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());

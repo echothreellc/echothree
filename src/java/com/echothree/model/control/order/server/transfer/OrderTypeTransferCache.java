@@ -18,17 +18,10 @@ package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderTypeTransfer;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
-import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.order.server.entity.OrderType;
-import com.echothree.model.data.order.server.entity.OrderTypeDetail;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.server.persistence.Session;
 
 public class OrderTypeTransferCache
@@ -46,22 +39,22 @@ public class OrderTypeTransferCache
     }
     
     public OrderTypeTransfer getOrderTypeTransfer(OrderType orderType) {
-        OrderTypeTransfer orderTypeTransfer = get(orderType);
+        var orderTypeTransfer = get(orderType);
         
         if(orderTypeTransfer == null) {
-            OrderTypeDetail orderTypeDetail = orderType.getLastDetail();
-            String orderTypeName = orderTypeDetail.getOrderTypeName();
-            OrderType parentOrderType = orderTypeDetail.getParentOrderType();
-            OrderTypeTransfer parentOrderTypeTransfer = parentOrderType == null? null: getOrderTypeTransfer(parentOrderType);
-            SequenceType orderSequenceType = orderTypeDetail.getOrderSequenceType();
-            SequenceTypeTransfer orderSequenceTypeTransfer = orderSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, orderSequenceType);
-            Workflow orderWorkflow = orderTypeDetail.getOrderWorkflow();
-            WorkflowTransfer orderWorkflowTransfer = orderWorkflow == null? null: workflowControl.getWorkflowTransfer(userVisit, orderWorkflow);
-            WorkflowEntrance orderWorkflowEntrance = orderTypeDetail.getOrderWorkflowEntrance();
-            WorkflowEntranceTransfer orderWorkflowEntranceTransfer = orderWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, orderWorkflowEntrance);
-            Boolean isDefault = orderTypeDetail.getIsDefault();
-            Integer sortOrder = orderTypeDetail.getSortOrder();
-            String description = orderTypeControl.getBestOrderTypeDescription(orderType, getLanguage());
+            var orderTypeDetail = orderType.getLastDetail();
+            var orderTypeName = orderTypeDetail.getOrderTypeName();
+            var parentOrderType = orderTypeDetail.getParentOrderType();
+            var parentOrderTypeTransfer = parentOrderType == null? null: getOrderTypeTransfer(parentOrderType);
+            var orderSequenceType = orderTypeDetail.getOrderSequenceType();
+            var orderSequenceTypeTransfer = orderSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, orderSequenceType);
+            var orderWorkflow = orderTypeDetail.getOrderWorkflow();
+            var orderWorkflowTransfer = orderWorkflow == null? null: workflowControl.getWorkflowTransfer(userVisit, orderWorkflow);
+            var orderWorkflowEntrance = orderTypeDetail.getOrderWorkflowEntrance();
+            var orderWorkflowEntranceTransfer = orderWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, orderWorkflowEntrance);
+            var isDefault = orderTypeDetail.getIsDefault();
+            var sortOrder = orderTypeDetail.getSortOrder();
+            var description = orderTypeControl.getBestOrderTypeDescription(orderType, getLanguage());
             
             orderTypeTransfer = new OrderTypeTransfer(orderTypeName, parentOrderTypeTransfer, orderSequenceTypeTransfer, orderWorkflowTransfer,
                     orderWorkflowEntranceTransfer, isDefault, sortOrder, description);

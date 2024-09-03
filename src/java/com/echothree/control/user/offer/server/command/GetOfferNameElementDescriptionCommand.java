@@ -18,15 +18,11 @@ package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetOfferNameElementDescriptionForm;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.control.user.offer.common.result.GetOfferNameElementDescriptionResult;
 import com.echothree.model.control.offer.server.control.OfferNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.entity.OfferNameElement;
-import com.echothree.model.data.offer.server.entity.OfferNameElementDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -69,17 +65,17 @@ public class GetOfferNameElementDescriptionCommand
     @Override
     protected BaseResult execute() {
         var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
-        GetOfferNameElementDescriptionResult result = OfferResultFactory.getGetOfferNameElementDescriptionResult();
-        String offerNameElementName = form.getOfferNameElementName();
-        OfferNameElement offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
+        var result = OfferResultFactory.getGetOfferNameElementDescriptionResult();
+        var offerNameElementName = form.getOfferNameElementName();
+        var offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
         
         if(offerNameElement != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = form.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = form.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                OfferNameElementDescription offerNameElementDescription = offerNameElementControl.getOfferNameElementDescription(offerNameElement, language);
+                var offerNameElementDescription = offerNameElementControl.getOfferNameElementDescription(offerNameElement, language);
                 
                 if(offerNameElementDescription != null) {
                     result.setOfferNameElementDescription(offerNameElementControl.getOfferNameElementDescriptionTransfer(getUserVisit(), offerNameElementDescription));

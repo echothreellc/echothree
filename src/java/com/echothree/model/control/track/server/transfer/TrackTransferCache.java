@@ -21,14 +21,10 @@ import com.echothree.model.control.track.common.TrackOptions;
 import com.echothree.model.control.track.common.transfer.TrackTransfer;
 import com.echothree.model.control.track.server.control.TrackControl;
 import com.echothree.model.control.track.common.workflow.TrackStatusConstants;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.track.server.entity.Track;
-import com.echothree.model.data.track.server.entity.TrackDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class TrackTransferCache
         extends BaseTrackTransferCache<Track, TrackTransfer> {
@@ -50,19 +46,19 @@ public class TrackTransferCache
     }
 
     public TrackTransfer getTrackTransfer(Track track) {
-        TrackTransfer trackTransfer = get(track);
+        var trackTransfer = get(track);
 
         if(trackTransfer == null) {
-            TrackDetail trackDetail = track.getLastDetail();
-            String trackName = trackDetail.getTrackName();
-            String valueSha1Hash = trackDetail.getValueSha1Hash();
-            String value = trackDetail.getValue();
-            Boolean isDefault = trackDetail.getIsDefault();
-            Integer sortOrder = trackDetail.getSortOrder();
-            String description = trackControl.getBestTrackDescription(track, getLanguage());
+            var trackDetail = track.getLastDetail();
+            var trackName = trackDetail.getTrackName();
+            var valueSha1Hash = trackDetail.getValueSha1Hash();
+            var value = trackDetail.getValue();
+            var isDefault = trackDetail.getIsDefault();
+            var sortOrder = trackDetail.getSortOrder();
+            var description = trackControl.getBestTrackDescription(track, getLanguage());
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(track.getPrimaryKey());
-            WorkflowEntityStatusTransfer trackStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(track.getPrimaryKey());
+            var trackStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     TrackStatusConstants.Workflow_TRACK_STATUS, entityInstance);
             
             trackTransfer = new TrackTransfer(trackName, valueSha1Hash, value, isDefault, sortOrder, description,

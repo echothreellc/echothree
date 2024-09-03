@@ -17,7 +17,6 @@
 package com.echothree.service.job;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.control.user.authentication.common.form.InvalidateAbandonedUserVisitsForm;
 import com.echothree.model.control.job.common.Jobs;
 import com.echothree.util.common.service.job.BaseScheduledJob;
 import javax.ejb.Schedule;
@@ -45,7 +44,7 @@ public class InvalidateAbandonedUserVisitsJob
     @Override
     public void execute()
             throws NamingException {
-        InvalidateAbandonedUserVisitsForm commandForm = AuthenticationUtil.getHome().getInvalidateAbandonedUserVisitsForm();
+        var commandForm = AuthenticationUtil.getHome().getInvalidateAbandonedUserVisitsForm();
         
         commandForm.setAbandonedTime(Long.toString(ABANDONED_TIME));
         

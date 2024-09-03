@@ -19,7 +19,6 @@ package com.echothree.control.user.vendor.server.command;
 import com.echothree.control.user.vendor.common.edit.VendorEditFactory;
 import com.echothree.control.user.vendor.common.edit.VendorItemCostEdit;
 import com.echothree.control.user.vendor.common.form.EditVendorItemCostForm;
-import com.echothree.control.user.vendor.common.result.EditVendorItemCostResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.control.user.vendor.common.spec.VendorItemCostSpec;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
@@ -28,15 +27,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.entity.Vendor;
-import com.echothree.model.data.vendor.server.entity.VendorItem;
-import com.echothree.model.data.vendor.server.entity.VendorItemCost;
-import com.echothree.model.data.vendor.server.value.VendorItemCostValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -89,11 +80,11 @@ public class EditVendorItemCostCommand
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
         var vendorControl = Session.getModelController(VendorControl.class);
-        String vendorName = spec.getVendorName();
-        Vendor vendor = vendorControl.getVendorByName(vendorName);
+        var vendorName = spec.getVendorName();
+        var vendor = vendorControl.getVendorByName(vendorName);
         
         if(vendor != null) {
-            Party vendorParty = vendor.getParty();
+            var vendorParty = vendor.getParty();
             
             validator.setCurrency(getPreferredCurrency(vendorParty));
         }
@@ -102,36 +93,36 @@ public class EditVendorItemCostCommand
     @Override
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
-        EditVendorItemCostResult result = VendorResultFactory.getEditVendorItemCostResult();
-        String vendorName = spec.getVendorName();
-        Vendor vendor = vendorControl.getVendorByName(vendorName);
+        var result = VendorResultFactory.getEditVendorItemCostResult();
+        var vendorName = spec.getVendorName();
+        var vendor = vendorControl.getVendorByName(vendorName);
         
         if(vendor != null) {
-            Party vendorParty = vendor.getParty();
-            String vendorItemName = spec.getVendorItemName();
-            VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
+            var vendorParty = vendor.getParty();
+            var vendorItemName = spec.getVendorItemName();
+            var vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
             
             if(vendorItem != null) {
                 var inventoryControl = Session.getModelController(InventoryControl.class);
-                String inventoryConditionName = spec.getInventoryConditionName();
-                InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                var inventoryConditionName = spec.getInventoryConditionName();
+                var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
                 if(inventoryCondition != null) {
                     var uomControl = Session.getModelController(UomControl.class);
-                    UnitOfMeasureKind unitOfMeasureKind = vendorItem.getLastDetail().getItem().getLastDetail().getUnitOfMeasureKind();
-                    String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-                    UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                    var unitOfMeasureKind = vendorItem.getLastDetail().getItem().getLastDetail().getUnitOfMeasureKind();
+                    var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+                    var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                     
                     if(unitOfMeasureType != null) {
                         if(editMode.equals(EditMode.LOCK)) {
-                            VendorItemCost vendorItemCost = vendorControl.getVendorItemCost(vendorItem, inventoryCondition,
+                            var vendorItemCost = vendorControl.getVendorItemCost(vendorItem, inventoryCondition,
                                     unitOfMeasureType);
                             
                             if(vendorItemCost != null) {
                                 result.setVendorItemCost(vendorControl.getVendorItemCostTransfer(getUserVisit(), vendorItemCost));
                                 
                                 if(lockEntity(vendorItem)) {
-                                    VendorItemCostEdit edit = VendorEditFactory.getVendorItemCostEdit();
+                                    var edit = VendorEditFactory.getVendorItemCostEdit();
                                     
                                     result.setEdit(edit);
                                     edit.setUnitCost(AmountUtils.getInstance().formatCostUnit(getPreferredCurrency(vendorParty),
@@ -145,7 +136,7 @@ public class EditVendorItemCostCommand
                                 addExecutionError(ExecutionErrors.UnknownVendorItemCost.name());
                             }
                         } else if(editMode.equals(EditMode.UPDATE)) {
-                            VendorItemCostValue vendorItemCostValue = vendorControl.getVendorItemCostValueForUpdate(vendorItem,
+                            var vendorItemCostValue = vendorControl.getVendorItemCostValueForUpdate(vendorItem,
                                     inventoryCondition, unitOfMeasureType);
                             
                             if(vendorItemCostValue != null) {

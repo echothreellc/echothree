@@ -24,12 +24,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.filter.server.entity.FilterAdjustment;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentPercent;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -76,19 +70,19 @@ public class CreateFilterAdjustmentPercentCommand
     @Override
     protected BaseResult execute() {
         var filterControl = Session.getModelController(FilterControl.class);
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            String filterAdjustmentName = form.getFilterAdjustmentName();
-            FilterAdjustment filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustmentName = form.getFilterAdjustmentName();
+            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             if(filterAdjustment != null) {
-                String filterAdjustmentTypeName = filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName();
+                var filterAdjustmentTypeName = filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName();
                 
                 if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.PERCENT.name())) {
                     var uomControl = Session.getModelController(UomControl.class);
-                    String unitOfMeasureName = form.getUnitOfMeasureName();
+                    var unitOfMeasureName = form.getUnitOfMeasureName();
                     String unitOfMeasureKindName = null;
                     String unitOfMeasureTypeName = null;
                     
@@ -105,23 +99,23 @@ public class CreateFilterAdjustmentPercentCommand
                     }
                     
                     if(unitOfMeasureKindName != null && unitOfMeasureTypeName != null) {
-                        UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+                        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
                         
                         if(unitOfMeasureKind != null) {
-                            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind,
+                            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind,
                                     unitOfMeasureTypeName);
                             
                             if(unitOfMeasureType != null) {
                                 var accountingControl = Session.getModelController(AccountingControl.class);
-                                String currencyIsoName = form.getCurrencyIsoName();
-                                Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
+                                var currencyIsoName = form.getCurrencyIsoName();
+                                var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 
                                 if(currency != null) {
-                                    FilterAdjustmentPercent filterAdjustmentPercent = filterControl.getFilterAdjustmentPercent(filterAdjustment,
+                                    var filterAdjustmentPercent = filterControl.getFilterAdjustmentPercent(filterAdjustment,
                                             unitOfMeasureType, currency);
                                     
                                     if(filterAdjustmentPercent == null) {
-                                        Integer percent = Integer.valueOf(form.getPercent());
+                                        var percent = Integer.valueOf(form.getPercent());
                                         
                                         filterControl.createFilterAdjustmentPercent(filterAdjustment, unitOfMeasureType, currency,
                                                 percent, getPartyPK());

@@ -44,7 +44,6 @@ package com.echothree.util.server.ulid;
 
 import com.echothree.util.server.persistence.EncryptionUtils;
 import com.google.common.primitives.Longs;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ULID {
@@ -76,7 +75,7 @@ public class ULID {
     }
     
     private static byte[] getRandom() {
-        byte[] random = new byte[RANDOM_LENGTH];
+        var random = new byte[RANDOM_LENGTH];
 
         EncryptionUtils.getInstance().getRandom().nextBytes(random);
 
@@ -84,7 +83,7 @@ public class ULID {
     }
     
     private static String encodeTimeAndRandom(byte[] time, byte[] random) {
-        char[] ulid = new char[ULID_LENGTH];
+        var ulid = new char[ULID_LENGTH];
 
         // 0                   1                   2                   3
         //  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -149,7 +148,7 @@ public class ULID {
     }
     
     public static ULID fromString(String ulid) {
-        Matcher matcher = ULID.matcher(ulid);
+        var matcher = ULID.matcher(ulid);
         
         if(!matcher.matches()) {
             throw new IllegalArgumentException();

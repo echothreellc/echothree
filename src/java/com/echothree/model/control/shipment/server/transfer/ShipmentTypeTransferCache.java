@@ -16,19 +16,12 @@
 
 package com.echothree.model.control.shipment.server.transfer;
 
-import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.shipment.common.transfer.ShipmentTypeTransfer;
 import com.echothree.model.control.shipment.server.ShipmentControl;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
-import com.echothree.model.data.shipment.server.entity.ShipmentTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.server.persistence.Session;
 
 public class ShipmentTypeTransferCache
@@ -47,22 +40,22 @@ public class ShipmentTypeTransferCache
 
     @Override
     public ShipmentTypeTransfer getTransfer(ShipmentType shipmentType) {
-        ShipmentTypeTransfer shipmentTypeTransfer = get(shipmentType);
+        var shipmentTypeTransfer = get(shipmentType);
         
         if(shipmentTypeTransfer == null) {
-            ShipmentTypeDetail shipmentTypeDetail = shipmentType.getLastDetail();
-            String shipmentTypeName = shipmentTypeDetail.getShipmentTypeName();
-            ShipmentType parentShipmentType = shipmentTypeDetail.getParentShipmentType();
-            ShipmentTypeTransfer parentShipmentTypeTransfer = parentShipmentType == null? null: getTransfer(parentShipmentType);
-            SequenceType shipmentSequenceType = shipmentTypeDetail.getShipmentSequenceType();
-            SequenceTypeTransfer shipmentSequenceTypeTransfer = shipmentSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, shipmentSequenceType);
-            Workflow shipmentWorkflow = shipmentTypeDetail.getShipmentWorkflow();
-            WorkflowTransfer shipmentWorkflowTransfer = shipmentWorkflow == null? null: workflowControl.getWorkflowTransfer(userVisit, shipmentWorkflow);
-            WorkflowEntrance shipmentWorkflowEntrance = shipmentTypeDetail.getShipmentWorkflowEntrance();
-            WorkflowEntranceTransfer shipmentWorkflowEntranceTransfer = shipmentWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, shipmentWorkflowEntrance);
-            Boolean isDefault = shipmentTypeDetail.getIsDefault();
-            Integer sortOrder = shipmentTypeDetail.getSortOrder();
-            String description = shipmentControl.getBestShipmentTypeDescription(shipmentType, getLanguage());
+            var shipmentTypeDetail = shipmentType.getLastDetail();
+            var shipmentTypeName = shipmentTypeDetail.getShipmentTypeName();
+            var parentShipmentType = shipmentTypeDetail.getParentShipmentType();
+            var parentShipmentTypeTransfer = parentShipmentType == null? null: getTransfer(parentShipmentType);
+            var shipmentSequenceType = shipmentTypeDetail.getShipmentSequenceType();
+            var shipmentSequenceTypeTransfer = shipmentSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, shipmentSequenceType);
+            var shipmentWorkflow = shipmentTypeDetail.getShipmentWorkflow();
+            var shipmentWorkflowTransfer = shipmentWorkflow == null? null: workflowControl.getWorkflowTransfer(userVisit, shipmentWorkflow);
+            var shipmentWorkflowEntrance = shipmentTypeDetail.getShipmentWorkflowEntrance();
+            var shipmentWorkflowEntranceTransfer = shipmentWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, shipmentWorkflowEntrance);
+            var isDefault = shipmentTypeDetail.getIsDefault();
+            var sortOrder = shipmentTypeDetail.getSortOrder();
+            var description = shipmentControl.getBestShipmentTypeDescription(shipmentType, getLanguage());
             
             shipmentTypeTransfer = new ShipmentTypeTransfer(shipmentTypeName, parentShipmentTypeTransfer, shipmentSequenceTypeTransfer, shipmentWorkflowTransfer,
                     shipmentWorkflowEntranceTransfer, isDefault, sortOrder, description);

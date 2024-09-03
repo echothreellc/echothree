@@ -20,7 +20,6 @@ import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.rating.common.exception.UnknownRatingTypeNameException;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
@@ -44,10 +43,10 @@ public class RatingTypeLogic
     
     public RatingType getRatingTypeByName(final ExecutionErrorAccumulator eea, final EntityType entityType, final String ratingTypeName) {
         var ratingControl = Session.getModelController(RatingControl.class);
-        RatingType ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
+        var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
 
         if(ratingType == null) {
-            EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
+            var entityTypeDetail = entityType.getLastDetail();
             
             handleExecutionError(UnknownRatingTypeNameException.class, eea, ExecutionErrors.UnknownRatingTypeName.name(),
                     entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(), ratingTypeName);
@@ -57,7 +56,7 @@ public class RatingTypeLogic
     }
 
     public RatingType getRatingTypeByName(final ExecutionErrorAccumulator eea, final String componentVendorName, final String entityTypeName, final String ratingTypeName) {
-        EntityType entityType = EntityTypeLogic.getInstance().getEntityTypeByName(eea, componentVendorName, entityTypeName);
+        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(eea, componentVendorName, entityTypeName);
         RatingType ratingType = null;
         
         if(!hasExecutionErrors(eea)) {

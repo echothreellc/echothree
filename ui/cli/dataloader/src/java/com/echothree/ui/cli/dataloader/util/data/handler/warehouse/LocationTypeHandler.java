@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.warehouse;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
 import com.echothree.control.user.warehouse.common.WarehouseService;
-import com.echothree.control.user.warehouse.common.form.CreateLocationNameElementForm;
-import com.echothree.control.user.warehouse.common.form.CreateLocationTypeDescriptionForm;
 import com.echothree.control.user.warehouse.common.form.WarehouseFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -54,9 +52,9 @@ public class LocationTypeHandler
         if(localName.equals("locationTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -64,7 +62,7 @@ public class LocationTypeHandler
             }
             
             try {
-                CreateLocationTypeDescriptionForm form = WarehouseFormFactory.getCreateLocationTypeDescriptionForm();
+                var form = WarehouseFormFactory.getCreateLocationTypeDescriptionForm();
                 
                 form.setWarehouseName(warehouseName);
                 form.setLocationTypeName(locationTypeName);
@@ -80,9 +78,9 @@ public class LocationTypeHandler
             String offset = null;
             String length = null;
             String validationPattern = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("locationNameElementName"))
                     locationNameElementName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("offset"))
@@ -94,7 +92,7 @@ public class LocationTypeHandler
             }
             
             try {
-                CreateLocationNameElementForm form = WarehouseFormFactory.getCreateLocationNameElementForm();
+                var form = WarehouseFormFactory.getCreateLocationNameElementForm();
                 
                 form.setWarehouseName(warehouseName);
                 form.setLocationTypeName(locationTypeName);

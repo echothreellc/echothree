@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected SearchTypeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        SearchTypeDescriptionSpec spec = SearchUtil.getHome().getSearchTypeDescriptionSpec();
+        var spec = SearchUtil.getHome().getSearchTypeDescriptionSpec();
         
         spec.setSearchKindName(findParameter(request, ParameterConstants.SEARCH_KIND_NAME, actionForm.getSearchKindName()));
         spec.setSearchTypeName(findParameter(request, ParameterConstants.SEARCH_TYPE_NAME, actionForm.getSearchTypeName()));
@@ -63,7 +63,7 @@ public class DescriptionEditAction
     @Override
     protected SearchTypeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        SearchTypeDescriptionEdit edit = SearchUtil.getHome().getSearchTypeDescriptionEdit();
+        var edit = SearchUtil.getHome().getSearchTypeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

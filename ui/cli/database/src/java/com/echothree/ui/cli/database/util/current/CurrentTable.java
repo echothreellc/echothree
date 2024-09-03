@@ -86,7 +86,7 @@ public class CurrentTable {
     public CurrentForeignKey getForeignKeyByColumnName(String columnName) {
         CurrentForeignKey result = null;
         
-        for(CurrentForeignKey cfk: foreignKeys.values()) {
+        for(var cfk: foreignKeys.values()) {
             if(cfk.getColumn().getColumnName().equals(columnName)) {
                 result = cfk;
                 break;

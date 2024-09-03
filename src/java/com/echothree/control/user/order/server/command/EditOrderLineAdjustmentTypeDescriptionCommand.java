@@ -30,8 +30,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderLineAdjustmentType;
 import com.echothree.model.data.order.server.entity.OrderLineAdjustmentTypeDescription;
-import com.echothree.model.data.order.server.value.OrderLineAdjustmentTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -91,18 +89,18 @@ public class EditOrderLineAdjustmentTypeDescriptionCommand
     public OrderLineAdjustmentTypeDescription getEntity(EditOrderLineAdjustmentTypeDescriptionResult result) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription = null;
-        String orderTypeName = spec.getOrderTypeName();
+        var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
-            String orderLineAdjustmentTypeName = spec.getOrderLineAdjustmentTypeName();
-            OrderLineAdjustmentType orderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
+            var orderLineAdjustmentTypeName = spec.getOrderLineAdjustmentTypeName();
+            var orderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
 
             if(orderLineAdjustmentType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = spec.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -147,7 +145,7 @@ public class EditOrderLineAdjustmentTypeDescriptionCommand
     @Override
     public void doUpdate(OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription) {
         var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
-        OrderLineAdjustmentTypeDescriptionValue orderLineAdjustmentTypeDescriptionValue = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescriptionValue(orderLineAdjustmentTypeDescription);
+        var orderLineAdjustmentTypeDescriptionValue = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescriptionValue(orderLineAdjustmentTypeDescription);
 
         orderLineAdjustmentTypeDescriptionValue.setDescription(edit.getDescription());
 

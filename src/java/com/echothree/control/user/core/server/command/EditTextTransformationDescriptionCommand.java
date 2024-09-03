@@ -28,8 +28,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.model.data.core.server.entity.TextTransformationDescription;
-import com.echothree.model.data.core.server.value.TextTransformationDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -88,13 +86,13 @@ public class EditTextTransformationDescriptionCommand
     public TextTransformationDescription getEntity(EditTextTransformationDescriptionResult result) {
         var coreControl = getCoreControl();
         TextTransformationDescription textTransformationDescription = null;
-        String textTransformationName = spec.getTextTransformationName();
-        TextTransformation textTransformation = coreControl.getTextTransformationByName(textTransformationName);
+        var textTransformationName = spec.getTextTransformationName();
+        var textTransformation = coreControl.getTextTransformationByName(textTransformationName);
 
         if(textTransformation != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            String languageIsoName = spec.getLanguageIsoName();
-            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -136,7 +134,7 @@ public class EditTextTransformationDescriptionCommand
     @Override
     public void doUpdate(TextTransformationDescription textTransformationDescription) {
         var coreControl = getCoreControl();
-        TextTransformationDescriptionValue textTransformationDescriptionValue = coreControl.getTextTransformationDescriptionValue(textTransformationDescription);
+        var textTransformationDescriptionValue = coreControl.getTextTransformationDescriptionValue(textTransformationDescription);
         textTransformationDescriptionValue.setDescription(edit.getDescription());
 
         coreControl.updateTextTransformationDescriptionFromValue(textTransformationDescriptionValue, getPartyPK());

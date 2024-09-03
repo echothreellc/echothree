@@ -21,7 +21,6 @@ import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.value.UseTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultUseTypeCommand
     @Override
     protected BaseResult execute() {
         var useTypeControl = Session.getModelController(UseTypeControl.class);
-        String useTypeName = form.getUseTypeName();
-        UseTypeDetailValue useTypeDetailValue = useTypeControl.getUseTypeDetailValueByNameForUpdate(useTypeName);
+        var useTypeName = form.getUseTypeName();
+        var useTypeDetailValue = useTypeControl.getUseTypeDetailValueByNameForUpdate(useTypeName);
         
         if(useTypeDetailValue != null) {
             useTypeDetailValue.setIsDefault(Boolean.TRUE);

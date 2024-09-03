@@ -19,7 +19,6 @@ package com.echothree.model.control.search.server.graphql;
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.EntityIntegerRangeObject;
 import com.echothree.model.data.core.server.entity.EntityIntegerRange;
-import com.echothree.model.data.core.server.entity.EntityLongRange;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;

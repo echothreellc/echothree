@@ -18,7 +18,6 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.GetContactMechanismTypesForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
-import com.echothree.control.user.contact.common.result.GetContactMechanismTypesResult;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -47,7 +46,7 @@ public class GetContactMechanismTypesCommand
     @Override
     protected BaseResult execute() {
         var contactControl = Session.getModelController(ContactControl.class);
-        GetContactMechanismTypesResult result = ContactResultFactory.getGetContactMechanismTypesResult();
+        var result = ContactResultFactory.getGetContactMechanismTypesResult();
         
         result.setContactMechanismTypes(contactControl.getContactMechanismTypeTransfers(getUserVisit()));
         

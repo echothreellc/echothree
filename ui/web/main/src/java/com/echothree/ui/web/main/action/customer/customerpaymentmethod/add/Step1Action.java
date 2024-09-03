@@ -17,18 +17,14 @@
 package com.echothree.ui.web.main.action.customer.customerpaymentmethod.add;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.GetPaymentMethodsForm;
 import com.echothree.control.user.payment.common.result.GetPaymentMethodsResult;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,13 +51,13 @@ public class Step1Action
 
     public void setupCustomer(HttpServletRequest request)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }
@@ -69,13 +65,13 @@ public class Step1Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetPaymentMethodsForm commandForm = PaymentUtil.getHome().getGetPaymentMethodsForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentMethodsForm();
 
         commandForm.setPaymentMethodTypeName(PaymentMethodTypes.CREDIT_CARD.name());
 
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentMethods(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPaymentMethodsResult result = (GetPaymentMethodsResult)executionResult.getResult();
+        var commandResult = PaymentUtil.getHome().getPaymentMethods(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPaymentMethodsResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PAYMENT_METHODS, result.getPaymentMethods());
 

@@ -19,9 +19,6 @@ package com.echothree.control.user.associate.server.command;
 import com.echothree.control.user.associate.common.form.CreateAssociateProgramDescriptionForm;
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.associate.server.entity.AssociateProgram;
-import com.echothree.model.data.associate.server.entity.AssociateProgramDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -54,16 +51,16 @@ public class CreateAssociateProgramDescriptionCommand
     @Override
     protected BaseResult execute() {
         var associateControl = Session.getModelController(AssociateControl.class);
-            String associateProgramName = form.getAssociateProgramName();
-            AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+        var associateProgramName = form.getAssociateProgramName();
+        var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
             
             if(associateProgram != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    AssociateProgramDescription associateProgramDescription = associateControl.getAssociateProgramDescription(associateProgram, language);
+                    var associateProgramDescription = associateControl.getAssociateProgramDescription(associateProgram, language);
                     
                     if(associateProgramDescription == null) {
                         var description = form.getDescription();

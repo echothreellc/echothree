@@ -28,7 +28,6 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemWeight;
-import com.echothree.model.data.item.server.value.ItemWeightValue;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -82,12 +81,12 @@ public class EditItemWeightCommand
         var itemControl = Session.getModelController(ItemControl.class);
         var uomControl = Session.getModelController(UomControl.class);
         ItemWeight itemWeight = null;
-        String itemName = spec.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = spec.getItemName();
+        var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
-            String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
+            var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
             if(unitOfMeasureType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -134,7 +133,7 @@ public class EditItemWeightCommand
         var uomControl = Session.getModelController(UomControl.class);
 
         weight = itemWeight.getWeight();
-        Conversion weightConversion = weight == null ? null : new Conversion(uomControl, volumeUnitOfMeasureKind, weight).convertToHighestUnitOfMeasureType();
+        var weightConversion = weight == null ? null : new Conversion(uomControl, volumeUnitOfMeasureKind, weight).convertToHighestUnitOfMeasureType();
 
         edit.setWeight(weightConversion.getQuantity().toString());
         edit.setWeightUnitOfMeasureTypeName(weightConversion.getUnitOfMeasureType().getLastDetail().getUnitOfMeasureTypeName());
@@ -146,7 +145,7 @@ public class EditItemWeightCommand
     @Override
     public void canUpdate(ItemWeight itemWeight) {
         var uomControl = Session.getModelController(UomControl.class);
-        String weightUnitOfMeasureTypeName = edit.getWeightUnitOfMeasureTypeName();
+        var weightUnitOfMeasureTypeName = edit.getWeightUnitOfMeasureTypeName();
 
         weightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind, weightUnitOfMeasureTypeName);
 
@@ -165,9 +164,9 @@ public class EditItemWeightCommand
     public void doUpdate(ItemWeight itemWeight) {
         var itemControl = Session.getModelController(ItemControl.class);
         var uomControl = Session.getModelController(UomControl.class);
-        ItemWeightValue itemWeightValue = itemControl.getItemWeightValue(itemWeight);
+        var itemWeightValue = itemControl.getItemWeightValue(itemWeight);
 
-        Conversion weightConversion = new Conversion(uomControl, weightUnitOfMeasureType, weight).convertToLowestUnitOfMeasureType();
+        var weightConversion = new Conversion(uomControl, weightUnitOfMeasureType, weight).convertToLowestUnitOfMeasureType();
 
         itemWeightValue.setWeight(weightConversion.getQuantity());
 

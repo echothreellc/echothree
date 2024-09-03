@@ -26,12 +26,8 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAliasTypeDescription;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.value.EntityAliasTypeDescriptionValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -92,21 +88,21 @@ public class EditEntityAliasTypeDescriptionCommand
     public EntityAliasTypeDescription getEntity(EditEntityAliasTypeDescriptionResult result) {
         var coreControl = getCoreControl();
         EntityAliasTypeDescription entityAliasTypeDescription = null;
-        String componentVendorName = spec.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = spec.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
-            String entityTypeName = spec.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = spec.getEntityTypeName();
+            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
-                String entityAliasTypeName = spec.getEntityAliasTypeName();
-                EntityAliasType entityAliasType = coreControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
+                var entityAliasTypeName = spec.getEntityAliasTypeName();
+                var entityAliasType = coreControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
 
                 if(entityAliasType != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = spec.getLanguageIsoName();
-                    Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = spec.getLanguageIsoName();
+                    var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                     if(language != null) {
                         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -154,7 +150,7 @@ public class EditEntityAliasTypeDescriptionCommand
     @Override
     public void doUpdate(EntityAliasTypeDescription entityAliasTypeDescription) {
         var coreControl = getCoreControl();
-        EntityAliasTypeDescriptionValue entityAliasTypeDescriptionValue = coreControl.getEntityAliasTypeDescriptionValue(entityAliasTypeDescription);
+        var entityAliasTypeDescriptionValue = coreControl.getEntityAliasTypeDescriptionValue(entityAliasTypeDescription);
         entityAliasTypeDescriptionValue.setDescription(edit.getDescription());
 
         coreControl.updateEntityAliasTypeDescriptionFromValue(entityAliasTypeDescriptionValue, getPartyPK());

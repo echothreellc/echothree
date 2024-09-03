@@ -26,21 +26,13 @@ import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
-import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
-import com.echothree.model.data.content.server.entity.ContentCatalogItemFixedPrice;
-import com.echothree.model.data.content.server.entity.ContentCatalogItemVariablePrice;
 import com.echothree.model.data.content.server.entity.ContentCategory;
-import com.echothree.model.data.content.server.entity.ContentCategoryDetail;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
-import com.echothree.model.data.content.server.value.ContentCatalogItemFixedPriceValue;
-import com.echothree.model.data.content.server.value.ContentCatalogItemVariablePriceValue;
 import com.echothree.model.data.content.server.value.ContentCategoryItemValue;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.OfferItem;
-import com.echothree.model.data.offer.server.entity.OfferItemFixedPrice;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
 import com.echothree.model.data.offer.server.entity.OfferItemVariablePrice;
 import com.echothree.model.data.offer.server.entity.OfferUse;
@@ -54,7 +46,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -78,8 +69,8 @@ public class ContentLogic
         if(referrer != null) {
             try {
                 var contentControl = Session.getModelController(ContentControl.class);
-                URL url = new URL(referrer);
-                String contentWebAddressName = url.getHost();
+                var url = new URL(referrer);
+                var contentWebAddressName = url.getHost();
 
                 if(!contentControl.validContentWebAddressName(contentWebAddressName)) {
                     handleExecutionError(UnknownContentWebAddressNameException.class, eea, ExecutionErrors.UnknownContentWebAddressName.name(), contentWebAddressName);
@@ -92,7 +83,7 @@ public class ContentLogic
 
     /** Find a ContentCategory where a DefaultOfferUse is not null by following parents. */
     public ContentCategory getParentContentCategoryByNonNullDefaultOfferUse(final ContentCategory startingContentCategory) {
-        ContentCategory currentContentCategory = startingContentCategory;
+        var currentContentCategory = startingContentCategory;
 
         // Keep checking from the currentContentCategory through all its parents, until a DefaultOfferUse has been
         // found. If all else fails, the "ROOT" one will contain the same DefaultOfferUse as the ContentCatalog.
@@ -112,7 +103,7 @@ public class ContentLogic
     private Set<OfferUse> getOfferUsesByContentCatalogItem(final ContentCatalogItem contentCatalogItem) {
         var contentControl = Session.getModelController(ContentControl.class);
         Set<OfferUse> offerUses = new HashSet<>();
-        List<ContentCategoryItem> contentCategoryItems = contentControl.getContentCategoryItemsByContentCatalogItem(contentCatalogItem);
+        var contentCategoryItems = contentControl.getContentCategoryItemsByContentCatalogItem(contentCatalogItem);
 
         contentCategoryItems.forEach((contentCategoryItem) -> {
             offerUses.add(getContentCategoryDefaultOfferUse(contentCategoryItem.getContentCategory()));
@@ -124,14 +115,14 @@ public class ContentLogic
     /** Checks across all Offers utilized in a ContentCatalog, and finds the lowest price that the ContentCatalogItem is offered for. */
     private Long getLowestUnitPrice(final ContentCatalogItem contentCatalogItem) {
         var offerItemControl = Session.getModelController(OfferItemControl.class);
-        Set<OfferUse> offerUses = getOfferUsesByContentCatalogItem(contentCatalogItem);
+        var offerUses = getOfferUsesByContentCatalogItem(contentCatalogItem);
         long unitPrice = Integer.MAX_VALUE;
 
         for(var offerUse : offerUses) {
-            OfferItem offerItem = offerItemControl.getOfferItem(offerUse.getLastDetail().getOffer(), contentCatalogItem.getItem());
-            OfferItemPrice offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, contentCatalogItem.getInventoryCondition(),
+            var offerItem = offerItemControl.getOfferItem(offerUse.getLastDetail().getOffer(), contentCatalogItem.getItem());
+            var offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, contentCatalogItem.getInventoryCondition(),
                     contentCatalogItem.getUnitOfMeasureType(), contentCatalogItem.getCurrency());
-            OfferItemFixedPrice offerItemFixedPrice = offerItemControl.getOfferItemFixedPrice(offerItemPrice);
+            var offerItemFixedPrice = offerItemControl.getOfferItemFixedPrice(offerItemPrice);
 
             unitPrice = Math.min(unitPrice, offerItemFixedPrice.getUnitPrice());
         }
@@ -143,13 +134,13 @@ public class ContentLogic
      OfferItemVariablePrices should be the same, so we'll just use the first one that's found. */
     private OfferItemVariablePrice getOfferItemVariablePrice(final ContentCatalogItem contentCatalogItem) {
         var offerItemControl = Session.getModelController(OfferItemControl.class);
-        Set<OfferUse> offerUses = getOfferUsesByContentCatalogItem(contentCatalogItem);
-        Iterator<OfferUse> offerUsesIterator = offerUses.iterator();
-        OfferUse offerUse = offerUsesIterator.hasNext() ? offerUsesIterator.next() : null;
-        OfferItem offerItem = offerUse == null ? null : offerItemControl.getOfferItem(offerUse.getLastDetail().getOffer(), contentCatalogItem.getItem());
-        OfferItemPrice offerItemPrice = offerItem == null ? null : offerItemControl.getOfferItemPrice(offerItem, contentCatalogItem.getInventoryCondition(),
+        var offerUses = getOfferUsesByContentCatalogItem(contentCatalogItem);
+        var offerUsesIterator = offerUses.iterator();
+        var offerUse = offerUsesIterator.hasNext() ? offerUsesIterator.next() : null;
+        var offerItem = offerUse == null ? null : offerItemControl.getOfferItem(offerUse.getLastDetail().getOffer(), contentCatalogItem.getItem());
+        var offerItemPrice = offerItem == null ? null : offerItemControl.getOfferItemPrice(offerItem, contentCatalogItem.getInventoryCondition(),
                 contentCatalogItem.getUnitOfMeasureType(), contentCatalogItem.getCurrency());
-        OfferItemVariablePrice offerItemVariablePrice = offerItemPrice == null ? null : offerItemControl.getOfferItemVariablePrice(offerItemPrice);
+        var offerItemVariablePrice = offerItemPrice == null ? null : offerItemControl.getOfferItemVariablePrice(offerItemPrice);
 
         return offerItemVariablePrice;
     }
@@ -162,35 +153,35 @@ public class ContentLogic
         if(contentControl.countContentCategoryItemsByContentCatalogItem(contentCatalogItem) == 0) {
             contentControl.deleteContentCatalogItem(contentCatalogItem, updatedBy);
         } else {
-            Item item = contentCatalogItem.getItem();
-            String itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
+            var item = contentCatalogItem.getItem();
+            var itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
 
             if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
-                Long unitPrice = getLowestUnitPrice(contentCatalogItem);
-                ContentCatalogItemFixedPrice contentCatalogItemFixedPrice = contentControl.getContentCatalogItemFixedPriceForUpdate(contentCatalogItem);
+                var unitPrice = getLowestUnitPrice(contentCatalogItem);
+                var contentCatalogItemFixedPrice = contentControl.getContentCatalogItemFixedPriceForUpdate(contentCatalogItem);
 
                 if(contentCatalogItemFixedPrice == null) {
                     contentControl.createContentCatalogItemFixedPrice(contentCatalogItem, unitPrice, updatedBy);
                 } else {
-                    ContentCatalogItemFixedPriceValue contentCatalogItemFixedPriceValue = contentControl.getContentCatalogItemFixedPriceValue(contentCatalogItemFixedPrice);
+                    var contentCatalogItemFixedPriceValue = contentControl.getContentCatalogItemFixedPriceValue(contentCatalogItemFixedPrice);
 
                     contentCatalogItemFixedPriceValue.setUnitPrice(unitPrice);
 
                     contentControl.updateContentCatalogItemFixedPriceFromValue(contentCatalogItemFixedPriceValue, updatedBy);
                 }
             } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
-                ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = contentControl.getContentCatalogItemVariablePriceForUpdate(contentCatalogItem);
-                OfferItemVariablePrice offerItemVariablePrice = getOfferItemVariablePrice(contentCatalogItem);
-                Long minimumUnitPrice = offerItemVariablePrice.getMinimumUnitPrice();
-                Long maximumUnitPrice = offerItemVariablePrice.getMaximumUnitPrice();
-                Long unitPriceIncrement = offerItemVariablePrice.getUnitPriceIncrement();
+                var contentCatalogItemVariablePrice = contentControl.getContentCatalogItemVariablePriceForUpdate(contentCatalogItem);
+                var offerItemVariablePrice = getOfferItemVariablePrice(contentCatalogItem);
+                var minimumUnitPrice = offerItemVariablePrice.getMinimumUnitPrice();
+                var maximumUnitPrice = offerItemVariablePrice.getMaximumUnitPrice();
+                var unitPriceIncrement = offerItemVariablePrice.getUnitPriceIncrement();
 
                 if(contentCatalogItemVariablePrice == null) {
                     contentControl.createContentCatalogItemVariablePrice(contentCatalogItem, minimumUnitPrice, maximumUnitPrice, unitPriceIncrement, updatedBy);
                 } else if(!minimumUnitPrice.equals(contentCatalogItemVariablePrice.getMinimumUnitPrice())
                         || !maximumUnitPrice.equals(contentCatalogItemVariablePrice.getMaximumUnitPrice())
                         || !unitPriceIncrement.equals(contentCatalogItemVariablePrice.getUnitPriceIncrement())) {
-                    ContentCatalogItemVariablePriceValue contentCatalogItemVariablePriceValue = contentControl.getContentCatalogItemVariablePriceValue(contentCatalogItemVariablePrice);
+                    var contentCatalogItemVariablePriceValue = contentControl.getContentCatalogItemVariablePriceValue(contentCatalogItemVariablePrice);
 
                     contentCatalogItemVariablePriceValue.setMinimumUnitPrice(minimumUnitPrice);
                     contentCatalogItemVariablePriceValue.setMaximumUnitPrice(maximumUnitPrice);
@@ -214,7 +205,7 @@ public class ContentLogic
         Set<ContentCatalog> contentCatalogs = new HashSet<>();
 
         for(var offerUse : offerUses) {
-            List<ContentCategory> contentCategories = contentControl.getContentCategoriesByDefaultOfferUse(offerUse);
+            var contentCategories = contentControl.getContentCategoriesByDefaultOfferUse(offerUse);
 
             contentCategories.forEach((contentCategory) -> {
                 contentCatalogs.add(contentCategory.getLastDetail().getContentCatalog());
@@ -229,7 +220,7 @@ public class ContentLogic
         Set<ContentCatalogItem> contentCatalogItems = new HashSet<>();
 
         for(var contentCatalog : contentCatalogs) {
-            ContentCatalogItem contentCatalogItem = contentControl.getContentCatalogItem(contentCatalog, offerItemPrice.getOfferItem().getItem(),
+            var contentCatalogItem = contentControl.getContentCatalogItem(contentCatalog, offerItemPrice.getOfferItem().getItem(),
                     offerItemPrice.getInventoryCondition(), offerItemPrice.getUnitOfMeasureType(), offerItemPrice.getCurrency());
 
             if(contentCatalogItem != null) {
@@ -280,14 +271,14 @@ public class ContentLogic
             final InventoryCondition inventoryCondition, final UnitOfMeasureType unitOfMeasureType, final Currency currency, final Boolean isDefault,
             final Integer sortOrder, final BasePK createdBy) {
         ContentCategoryItem contentCategoryItem = null;
-        OfferUse offerUse = getContentCategoryDefaultOfferUse(contentCategory);
-        Offer offer = offerUse.getLastDetail().getOffer();
+        var offerUse = getContentCategoryDefaultOfferUse(contentCategory);
+        var offer = offerUse.getLastDetail().getOffer();
 
         if(OfferItemLogic.getInstance().getOfferItemPrice(eea, offer, item, inventoryCondition, unitOfMeasureType, currency) != null) {
             var contentControl = Session.getModelController(ContentControl.class);
-            ContentCategoryDetail contentCategoryDetail = contentCategory.getLastDetail();
-            ContentCatalog contentCatalog = contentCategoryDetail.getContentCatalog();
-            ContentCatalogItem contentCatalogItem = contentControl.getContentCatalogItem(contentCatalog, item, inventoryCondition, unitOfMeasureType, currency);
+            var contentCategoryDetail = contentCategory.getLastDetail();
+            var contentCatalog = contentCategoryDetail.getContentCatalog();
+            var contentCatalogItem = contentControl.getContentCatalogItem(contentCatalog, item, inventoryCondition, unitOfMeasureType, currency);
 
             if(contentCatalogItem == null) {
                 contentCatalogItem = contentControl.createContentCatalogItem(contentCatalog, item, inventoryCondition, unitOfMeasureType, currency, createdBy);
@@ -301,7 +292,7 @@ public class ContentLogic
 
                     updateContentCatalogItemPriceByContentCatalogItem(contentCatalogItem, createdBy);
                 } else {
-                    ContentCatalogDetail contentCatalogDetail = contentCatalog.getLastDetail();
+                    var contentCatalogDetail = contentCatalog.getLastDetail();
 
                     handleExecutionError(DuplicateContentCategoryItemException.class, eea, ExecutionErrors.DuplicateContentCategoryItem.name(),
                             contentCatalogDetail.getContentCollection().getLastDetail().getContentCollectionName(), contentCatalogDetail.getContentCatalogName(),
@@ -323,7 +314,7 @@ public class ContentLogic
 
     public void deleteContentCategoryItem(final ContentCategoryItem contentCategoryItem, final BasePK deletedBy) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentCatalogItem contentCatalogItem = contentCategoryItem.getContentCatalogItemForUpdate();
+        var contentCatalogItem = contentCategoryItem.getContentCatalogItemForUpdate();
 
         contentControl.deleteContentCategoryItem(contentCategoryItem, deletedBy);
 
@@ -376,7 +367,7 @@ public class ContentLogic
         Set<ContentCatalogItem> contentCatalogItems = new HashSet<>();
 
         for(var contentCatalog : contentCatalogs) {
-            ContentCatalogItem contentCatalogItem = contentControl.getContentCatalogItem(contentCatalog, offerItemPrice.getOfferItem().getItem(),
+            var contentCatalogItem = contentControl.getContentCatalogItem(contentCatalog, offerItemPrice.getOfferItem().getItem(),
                     offerItemPrice.getInventoryCondition(), offerItemPrice.getUnitOfMeasureType(), offerItemPrice.getCurrency());
 
             if(contentCatalogItem != null) {
@@ -389,7 +380,7 @@ public class ContentLogic
 
     public void deleteContentCategoryItemByOfferItemPrice(final OfferItemPrice offerItemPrice, final BasePK deletedBy) {
         var contentControl = Session.getModelController(ContentControl.class);
-        OfferItem offerItem = offerItemPrice.getOfferItem();
+        var offerItem = offerItemPrice.getOfferItem();
 
         // Create a list of all ContentCategories whose DefaultOfferUse is one that could be form this OfferItemPrice.
         Iterable<ContentCategory> contentCategories = getContentCategoriesByOffer(offerItem.getOffer());
@@ -401,7 +392,7 @@ public class ContentLogic
         // Go through the list of all the ContentCategories...
         for(var contentCategory : contentCategories) {
             List<ContentCategory> contentCategoriesToCheck = null;
-            ContentCatalog contentCatalog = contentCategory.getLastDetail().getContentCatalog();
+            var contentCatalog = contentCategory.getLastDetail().getContentCatalog();
 
             // And the list of all the ContentCatalogItems...
             for(var contentCatalogItem : contentCatalogItems) {
@@ -413,7 +404,7 @@ public class ContentLogic
                     }
 
                     for(var contentCategoryToCheck : contentCategoriesToCheck) {
-                        ContentCategoryItem contentCategoryItem = contentControl.getContentCategoryItemForUpdate(contentCategoryToCheck, contentCatalogItem);
+                        var contentCategoryItem = contentControl.getContentCategoryItemForUpdate(contentCategoryToCheck, contentCatalogItem);
 
                         // If a ContentCategoryItem was found, delete it.
                         if(contentCategoryItem != null) {

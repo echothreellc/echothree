@@ -27,14 +27,11 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.core.server.entity.MimeTypeUsage;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDescription;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
-import com.echothree.model.data.item.server.entity.ItemImageDescriptionType;
 import com.echothree.model.data.item.server.entity.ItemImageType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -90,10 +87,10 @@ public class CreateItemDescriptionCommand
         ItemDescription itemDescription = null;
 
         if(mimeTypeUsageType != null) {
-            String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
+            var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
 
             if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.IMAGE.name())) {
-                String itemImageTypeName = form.getItemImageTypeName();
+                var itemImageTypeName = form.getItemImageTypeName();
 
                 if(itemImageTypeName != null) {
                     itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
@@ -107,15 +104,15 @@ public class CreateItemDescriptionCommand
                         if(imageDimensions == null) {
                             addExecutionError(ExecutionErrors.InvalidImage.name());
                         } else {
-                            ItemImageDescriptionType itemImageDescriptionType = itemControl.getItemImageDescriptionType(itemDescriptionType);
+                            var itemImageDescriptionType = itemControl.getItemImageDescriptionType(itemDescriptionType);
 
                             if(itemImageDescriptionType != null) {
-                                Integer minimumHeight = itemImageDescriptionType.getMinimumHeight();
-                                Integer minimumWidth = itemImageDescriptionType.getMinimumWidth();
-                                Integer maximumHeight = itemImageDescriptionType.getMaximumHeight();
-                                Integer maximumWidth = itemImageDescriptionType.getMaximumWidth();
-                                Integer imageHeight = imageDimensions.getHeight();
-                                Integer imageWidth = imageDimensions.getWidth();
+                                var minimumHeight = itemImageDescriptionType.getMinimumHeight();
+                                var minimumWidth = itemImageDescriptionType.getMinimumWidth();
+                                var maximumHeight = itemImageDescriptionType.getMaximumHeight();
+                                var maximumWidth = itemImageDescriptionType.getMaximumWidth();
+                                var imageHeight = imageDimensions.getHeight();
+                                var imageWidth = imageDimensions.getWidth();
 
                                 if(minimumHeight != null && imageHeight < minimumHeight) {
                                     addExecutionError(ExecutionErrors.ImageHeightLessThanMinimum.name(), imageHeight.toString(), minimumHeight.toString());
@@ -170,18 +167,18 @@ public class CreateItemDescriptionCommand
     protected BaseResult execute() {
         var result = ItemResultFactory.getCreateItemDescriptionResult();
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         ItemDescription itemDescription = null;
         
         if(item != null) {
-            String itemDescriptionTypeName = form.getItemDescriptionTypeName();
-            ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
+            var itemDescriptionTypeName = form.getItemDescriptionTypeName();
+            var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
             
             if(itemDescriptionType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
                     BasePK createdBy = getPartyPK();
@@ -189,11 +186,11 @@ public class CreateItemDescriptionCommand
                     itemDescription = itemControl.getItemDescription(itemDescriptionType, item, language);
                     
                     if(itemDescription == null) {
-                        String mimeTypeName = form.getMimeTypeName();
+                        var mimeTypeName = form.getMimeTypeName();
                         
                         if(mimeTypeName == null) {
                             if(itemDescriptionType.getLastDetail().getMimeTypeUsageType() == null) {
-                                String stringDescription = form.getStringDescription();
+                                var stringDescription = form.getStringDescription();
                                 
                                 if(stringDescription != null) {
                                     itemDescription = createItemDescription(itemControl, itemDescriptionType, item, language, null, createdBy, null,
@@ -207,20 +204,20 @@ public class CreateItemDescriptionCommand
                             }
                         } else {
                             var coreControl = getCoreControl();
-                            MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+                            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
                             
                             if(mimeType != null) {
-                                MimeTypeUsageType mimeTypeUsageType = itemDescriptionType.getLastDetail().getMimeTypeUsageType();
+                                var mimeTypeUsageType = itemDescriptionType.getLastDetail().getMimeTypeUsageType();
                                 
                                 if(mimeTypeUsageType != null) {
-                                    MimeTypeUsage mimeTypeUsage = coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
+                                    var mimeTypeUsage = coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
                                     
                                     if(mimeTypeUsage != null) {
-                                        EntityAttributeType entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();
-                                        String entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+                                        var entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();
+                                        var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
                                         
                                         if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
-                                            ByteArray blobDescription = form.getBlobDescription();
+                                            var blobDescription = form.getBlobDescription();
                                             
                                             if(blobDescription != null) {
                                                 itemDescription = createItemDescription(itemControl, itemDescriptionType, item, language, mimeType,
@@ -229,7 +226,7 @@ public class CreateItemDescriptionCommand
                                                 addExecutionError(ExecutionErrors.MissingBlobDescription.name());
                                             }
                                         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-                                            String clobDescription = form.getClobDescription();
+                                            var clobDescription = form.getClobDescription();
                                             
                                             if(clobDescription != null) {
                                                 itemDescription = createItemDescription(itemControl, itemDescriptionType, item, language, mimeType,

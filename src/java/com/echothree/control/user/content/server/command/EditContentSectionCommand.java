@@ -29,10 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentSection;
-import com.echothree.model.data.content.server.entity.ContentSectionDescription;
-import com.echothree.model.data.content.server.entity.ContentSectionDetail;
-import com.echothree.model.data.content.server.value.ContentSectionDescriptionValue;
-import com.echothree.model.data.content.server.value.ContentSectionDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -97,12 +93,12 @@ public class EditContentSectionCommand
     public ContentSection getEntity(EditContentSectionResult result) {
         var contentControl = Session.getModelController(ContentControl.class);
         ContentSection contentSection = null;
-        String contentCollectionName = spec.getContentCollectionName();
+        var contentCollectionName = spec.getContentCollectionName();
         
         contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            String contentSectionName = spec.getContentSectionName();
+            var contentSectionName = spec.getContentSectionName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
@@ -137,9 +133,9 @@ public class EditContentSectionCommand
     @Override
     public void doLock(ContentSectionEdit edit, ContentSection contentSection) {
         var contentControl = Session.getModelController(ContentControl.class);
-        ContentSectionDescription contentSectionDescription = contentControl.getContentSectionDescription(contentSection, getPreferredLanguage());
-        ContentSectionDetail contentSectionDetail = contentSection.getLastDetail();
-        ContentSection parentContentSection = contentSectionDetail.getParentContentSection();
+        var contentSectionDescription = contentControl.getContentSectionDescription(contentSection, getPreferredLanguage());
+        var contentSectionDetail = contentSection.getLastDetail();
+        var parentContentSection = contentSectionDetail.getParentContentSection();
 
         edit.setContentSectionName(contentSectionDetail.getContentSectionName());
         edit.setParentContentSectionName(parentContentSection == null? null: parentContentSection.getLastDetail().getContentSectionName());
@@ -156,11 +152,11 @@ public class EditContentSectionCommand
     @Override
     public void canUpdate(ContentSection contentSection) {
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentSectionName = edit.getContentSectionName();
-        ContentSection duplicateContentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
+        var contentSectionName = edit.getContentSectionName();
+        var duplicateContentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
 
         if(duplicateContentSection == null || contentSection.equals(duplicateContentSection)) {
-            String parentContentSectionName = edit.getParentContentSectionName();
+            var parentContentSectionName = edit.getParentContentSectionName();
             
             parentContentSection = contentControl.getContentSectionByName(contentCollection, parentContentSectionName == null ?
                     ContentSections.ROOT.toString() : parentContentSectionName);
@@ -181,9 +177,9 @@ public class EditContentSectionCommand
     public void doUpdate(ContentSection contentSection) {
         var contentControl = Session.getModelController(ContentControl.class);
         var partyPK = getPartyPK();
-        ContentSectionDetailValue contentSectionDetailValue = contentControl.getContentSectionDetailValueForUpdate(contentSection);
-        ContentSectionDescription contentSectionDescription = contentControl.getContentSectionDescriptionForUpdate(contentSection, getPreferredLanguage());
-        String description = edit.getDescription();
+        var contentSectionDetailValue = contentControl.getContentSectionDetailValueForUpdate(contentSection);
+        var contentSectionDescription = contentControl.getContentSectionDescriptionForUpdate(contentSection, getPreferredLanguage());
+        var description = edit.getDescription();
 
         contentSectionDetailValue.setContentSectionName(edit.getContentSectionName());
         contentSectionDetailValue.setParentContentSectionPK(parentContentSection == null? null: parentContentSection.getPrimaryKey());
@@ -197,7 +193,7 @@ public class EditContentSectionCommand
         } else if(contentSectionDescription != null && description == null) {
             contentControl.deleteContentSectionDescription(contentSectionDescription, partyPK);
         } else if(contentSectionDescription != null && description != null) {
-            ContentSectionDescriptionValue contentSectionDescriptionValue = contentControl.getContentSectionDescriptionValue(contentSectionDescription);
+            var contentSectionDescriptionValue = contentControl.getContentSectionDescriptionValue(contentSectionDescription);
 
             contentSectionDescriptionValue.setDescription(description);
             contentControl.updateContentSectionDescriptionFromValue(contentSectionDescriptionValue, partyPK);

@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeTransfer;
 import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeUseTransfer;
-import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeUseTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -35,11 +33,11 @@ public class HarmonizedTariffScheduleCodeUseTransferCache
     
     @Override
     public HarmonizedTariffScheduleCodeUseTransfer getTransfer(HarmonizedTariffScheduleCodeUse harmonizedTariffScheduleCodeUse) {
-        HarmonizedTariffScheduleCodeUseTransfer harmonizedTariffScheduleCodeUseTransfer = get(harmonizedTariffScheduleCodeUse);
+        var harmonizedTariffScheduleCodeUseTransfer = get(harmonizedTariffScheduleCodeUse);
         
         if(harmonizedTariffScheduleCodeUseTransfer == null) {
-            HarmonizedTariffScheduleCodeTransfer harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeTransfer(userVisit, harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCode());
-            HarmonizedTariffScheduleCodeUseTypeTransfer harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(userVisit, harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCodeUseType());
+            var harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeTransfer(userVisit, harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCode());
+            var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(userVisit, harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCodeUseType());
             
             harmonizedTariffScheduleCodeUseTransfer = new HarmonizedTariffScheduleCodeUseTransfer(harmonizedTariffScheduleCode, harmonizedTariffScheduleCodeUseType);
             put(harmonizedTariffScheduleCodeUse, harmonizedTariffScheduleCodeUseTransfer);

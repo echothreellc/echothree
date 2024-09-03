@@ -21,8 +21,6 @@ import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.LotAliasType;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -68,12 +66,12 @@ public class CreateLotAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var lotAliasControl = Session.getModelController(LotAliasControl.class);
-        String lotAliasTypeName = form.getLotAliasTypeName();
-        LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
+        var lotAliasTypeName = form.getLotAliasTypeName();
+        var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
         if(lotAliasType == null) {
-            PartyPK createdBy = getPartyPK();
-            String validationPattern = form.getValidationPattern();
+            var createdBy = getPartyPK();
+            var validationPattern = form.getValidationPattern();
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

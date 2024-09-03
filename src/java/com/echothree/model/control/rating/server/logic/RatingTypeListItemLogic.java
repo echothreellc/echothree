@@ -18,9 +18,7 @@ package com.echothree.model.control.rating.server.logic;
 
 import com.echothree.model.control.rating.common.exception.UnknownRatingTypeListItemNameException;
 import com.echothree.model.control.rating.server.control.RatingControl;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.rating.server.entity.RatingType;
-import com.echothree.model.data.rating.server.entity.RatingTypeDetail;
 import com.echothree.model.data.rating.server.entity.RatingTypeListItem;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
@@ -44,11 +42,11 @@ public class RatingTypeListItemLogic
     
     public RatingTypeListItem getRatingTypeListItemByName(final ExecutionErrorAccumulator eea, final RatingType ratingType, final String ratingTypeListItemName) {
         var ratingControl = Session.getModelController(RatingControl.class);
-        RatingTypeListItem ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
+        var ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
 
         if(ratingTypeListItem == null) {
-            RatingTypeDetail ratingTypeDetail = ratingType.getLastDetail();
-            EntityTypeDetail entityTypeDetail = ratingTypeDetail.getEntityType().getLastDetail();
+            var ratingTypeDetail = ratingType.getLastDetail();
+            var entityTypeDetail = ratingTypeDetail.getEntityType().getLastDetail();
             
             handleExecutionError(UnknownRatingTypeListItemNameException.class, eea, ExecutionErrors.UnknownRatingTypeListItemName.name(),
                     entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
@@ -60,7 +58,7 @@ public class RatingTypeListItemLogic
 
     public RatingTypeListItem getRatingTypeListItemByName(final ExecutionErrorAccumulator eea, final String componentVendorName, final String entityTypeName,
             final String ratingTypeName, final String ratingTypeListItemName) {
-        RatingType ratingType = RatingTypeLogic.getInstance().getRatingTypeByName(eea, componentVendorName, entityTypeName, ratingTypeName);
+        var ratingType = RatingTypeLogic.getInstance().getRatingTypeByName(eea, componentVendorName, entityTypeName, ratingTypeName);
         RatingTypeListItem ratingTypeListItem = null;
         
         if(!hasExecutionErrors(eea)) {

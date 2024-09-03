@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.shipping;
 
 import com.echothree.control.user.shipping.common.ShippingUtil;
 import com.echothree.control.user.shipping.common.ShippingService;
-import com.echothree.control.user.shipping.common.form.CreateShippingMethodCarrierServiceForm;
-import com.echothree.control.user.shipping.common.form.CreateShippingMethodDescriptionForm;
 import com.echothree.control.user.shipping.common.form.ShippingFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -51,9 +49,9 @@ public class ShippingMethodHandler
         if(localName.equals("shippingMethodDescription")) {
             String attrLanguageIsoName = null;
             String attrDescription = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     attrLanguageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -61,7 +59,7 @@ public class ShippingMethodHandler
             }
             
             try {
-                CreateShippingMethodDescriptionForm commandForm = ShippingFormFactory.getCreateShippingMethodDescriptionForm();
+                var commandForm = ShippingFormFactory.getCreateShippingMethodDescriptionForm();
                 
                 commandForm.setShippingMethodName(shippingMethodName);
                 commandForm.setLanguageIsoName(attrLanguageIsoName);
@@ -74,9 +72,9 @@ public class ShippingMethodHandler
         } else if(localName.equals("shippingMethodCarrierService")) {
             String carrierName = null;
             String carrierServiceName = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("carrierName"))
                     carrierName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("carrierServiceName"))
@@ -84,7 +82,7 @@ public class ShippingMethodHandler
             }
             
             try {
-                CreateShippingMethodCarrierServiceForm commandForm = ShippingFormFactory.getCreateShippingMethodCarrierServiceForm();
+                var commandForm = ShippingFormFactory.getCreateShippingMethodCarrierServiceForm();
                 
                 commandForm.setShippingMethodName(shippingMethodName);
                 commandForm.setCarrierName(carrierName);

@@ -17,7 +17,6 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.SetEventGroupStatusForm;
-import com.echothree.model.data.core.server.entity.EventGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -48,11 +47,11 @@ public class SetEventGroupStatusCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        String eventGroupName = form.getEventGroupName();
-        EventGroup eventGroup = coreControl.getEventGroupByName(eventGroupName);
+        var eventGroupName = form.getEventGroupName();
+        var eventGroup = coreControl.getEventGroupByName(eventGroupName);
         
         if(eventGroup != null) {
-            String eventGroupStatusChoice = form.getEventGroupStatusChoice();
+            var eventGroupStatusChoice = form.getEventGroupStatusChoice();
             
             coreControl.setEventGroupStatus(this, eventGroup, eventGroupStatusChoice, getPartyPK());
         } else {

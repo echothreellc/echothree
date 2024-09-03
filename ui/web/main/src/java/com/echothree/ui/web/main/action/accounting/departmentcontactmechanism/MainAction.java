@@ -17,18 +17,14 @@
 package com.echothree.ui.web.main.action.accounting.departmentcontactmechanism;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetDepartmentForm;
 import com.echothree.control.user.party.common.result.GetDepartmentResult;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.party.common.PartyOptions;
-import com.echothree.model.control.party.common.transfer.DepartmentTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -58,11 +54,11 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetDepartmentForm commandForm = PartyUtil.getHome().getGetDepartmentForm();
-        String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
-        String divisionName = request.getParameter(ParameterConstants.DIVISION_NAME);
-        String departmentName = request.getParameter(ParameterConstants.DEPARTMENT_NAME);
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = PartyUtil.getHome().getGetDepartmentForm();
+        var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
+        var divisionName = request.getParameter(ParameterConstants.DIVISION_NAME);
+        var departmentName = request.getParameter(ParameterConstants.DEPARTMENT_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         
         commandForm.setCompanyName(companyName);
         commandForm.setDivisionName(divisionName);
@@ -74,11 +70,11 @@ public class MainAction
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismPurposes);
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismRelationshipsByFromPartyContactMechanism);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
-        
-        CommandResult commandResult = PartyUtil.getHome().getDepartment(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetDepartmentResult result = (GetDepartmentResult)executionResult.getResult();
-        DepartmentTransfer department = result.getDepartment();
+
+        var commandResult = PartyUtil.getHome().getDepartment(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetDepartmentResult)executionResult.getResult();
+        var department = result.getDepartment();
         
         if(department == null) {
             forwardKey = ForwardConstants.ERROR_404;

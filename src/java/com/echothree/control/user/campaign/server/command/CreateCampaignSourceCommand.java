@@ -18,12 +18,10 @@ package com.echothree.control.user.campaign.server.command;
 
 import com.echothree.control.user.campaign.common.form.CreateCampaignSourceForm;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
-import com.echothree.control.user.campaign.common.result.CreateCampaignSourceResult;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.campaign.server.entity.CampaignSource;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,10 +65,10 @@ public class CreateCampaignSourceCommand
     
     @Override
     protected BaseResult execute() {
-        CreateCampaignSourceResult result = CampaignResultFactory.getCreateCampaignSourceResult();
+        var result = CampaignResultFactory.getCreateCampaignSourceResult();
         var campaignControl = Session.getModelController(CampaignControl.class);
-        String value = form.getValue();
-        CampaignSource campaignSource = campaignControl.getCampaignSourceByValue(value);
+        var value = form.getValue();
+        var campaignSource = campaignControl.getCampaignSourceByValue(value);
         
         if(campaignSource == null) {
             var partyPK = getPartyPK();

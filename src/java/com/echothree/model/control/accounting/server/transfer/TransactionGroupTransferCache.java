@@ -21,15 +21,11 @@ import com.echothree.model.control.accounting.common.transfer.TransactionGroupTr
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.accounting.common.workflow.TransactionGroupStatusConstants;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.TransactionGroup;
-import com.echothree.model.data.accounting.server.entity.TransactionGroupDetail;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class TransactionGroupTransferCache
         extends BaseAccountingTransferCache<TransactionGroup, TransactionGroupTransfer> {
@@ -52,14 +48,14 @@ public class TransactionGroupTransferCache
     
     @Override
     public TransactionGroupTransfer getTransfer(TransactionGroup transactionGroup) {
-        TransactionGroupTransfer transactionGroupTransfer = get(transactionGroup);
+        var transactionGroupTransfer = get(transactionGroup);
         
         if(transactionGroupTransfer == null) {
-            TransactionGroupDetail transactionGroupDetail = transactionGroup.getLastDetail();
-            String transactionGroupName = transactionGroupDetail.getTransactionGroupName();
-            
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(transactionGroup.getPrimaryKey());
-            WorkflowEntityStatusTransfer transactionGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var transactionGroupDetail = transactionGroup.getLastDetail();
+            var transactionGroupName = transactionGroupDetail.getTransactionGroupName();
+
+            var entityInstance = coreControl.getEntityInstanceByBasePK(transactionGroup.getPrimaryKey());
+            var transactionGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     TransactionGroupStatusConstants.Workflow_TRANSACTION_GROUP_STATUS, entityInstance);
             
             transactionGroupTransfer = new TransactionGroupTransfer(transactionGroupName, transactionGroupStatusTransfer);

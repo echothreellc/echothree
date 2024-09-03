@@ -19,7 +19,6 @@ package com.echothree.model.control.inventory.server.transfer;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.inventory.server.entity.InventoryConditionDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class InventoryConditionTransferCache
@@ -34,14 +33,14 @@ public class InventoryConditionTransferCache
     
     @Override
     public InventoryConditionTransfer getTransfer(InventoryCondition inventoryCondition) {
-        InventoryConditionTransfer inventoryConditionTransfer = get(inventoryCondition);
+        var inventoryConditionTransfer = get(inventoryCondition);
         
         if(inventoryConditionTransfer == null) {
-            InventoryConditionDetail inventoryConditionDetail = inventoryCondition.getLastDetail();
-            String inventoryConditionName = inventoryConditionDetail.getInventoryConditionName();
-            Boolean isDefault = inventoryConditionDetail.getIsDefault();
-            Integer sortOrder = inventoryConditionDetail.getSortOrder();
-            String description = inventoryControl.getBestInventoryConditionDescription(inventoryCondition, getLanguage());
+            var inventoryConditionDetail = inventoryCondition.getLastDetail();
+            var inventoryConditionName = inventoryConditionDetail.getInventoryConditionName();
+            var isDefault = inventoryConditionDetail.getIsDefault();
+            var sortOrder = inventoryConditionDetail.getSortOrder();
+            var description = inventoryControl.getBestInventoryConditionDescription(inventoryCondition, getLanguage());
             
             inventoryConditionTransfer = new InventoryConditionTransfer(inventoryConditionName, isDefault, sortOrder, description);
             put(inventoryCondition, inventoryConditionTransfer);

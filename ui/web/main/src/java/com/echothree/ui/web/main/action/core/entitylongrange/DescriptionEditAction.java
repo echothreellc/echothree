@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected EntityLongRangeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        EntityLongRangeDescriptionSpec spec = CoreUtil.getHome().getEntityLongRangeDescriptionSpec();
+        var spec = CoreUtil.getHome().getEntityLongRangeDescriptionSpec();
         
         spec.setComponentVendorName(findParameter(request, ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName()));
         spec.setEntityTypeName(findParameter(request, ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName()));
@@ -65,7 +65,7 @@ public class DescriptionEditAction
     @Override
     protected EntityLongRangeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        EntityLongRangeDescriptionEdit edit = CoreUtil.getHome().getEntityLongRangeDescriptionEdit();
+        var edit = CoreUtil.getHome().getEntityLongRangeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

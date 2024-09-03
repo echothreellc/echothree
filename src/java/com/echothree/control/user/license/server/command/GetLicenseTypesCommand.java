@@ -17,7 +17,6 @@
 package com.echothree.control.user.license.server.command;
 
 import com.echothree.control.user.license.common.form.GetLicenseTypesForm;
-import com.echothree.control.user.license.common.result.GetLicenseTypesResult;
 import com.echothree.control.user.license.common.result.LicenseResultFactory;
 import com.echothree.model.control.license.server.control.LicenseControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -61,7 +60,7 @@ public class GetLicenseTypesCommand
     @Override
     protected BaseResult execute() {
         var licenseControl = Session.getModelController(LicenseControl.class);
-        GetLicenseTypesResult result = LicenseResultFactory.getGetLicenseTypesResult();
+        var result = LicenseResultFactory.getGetLicenseTypesResult();
         
         result.setLicenseTypes(licenseControl.getLicenseTypeTransfers(getUserVisit()));
         

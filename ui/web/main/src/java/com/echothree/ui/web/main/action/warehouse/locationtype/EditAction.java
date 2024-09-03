@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.warehouse.locationtype;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.edit.LocationTypeEdit;
-import com.echothree.control.user.warehouse.common.form.EditLocationTypeForm;
 import com.echothree.control.user.warehouse.common.result.EditLocationTypeResult;
-import com.echothree.control.user.warehouse.common.spec.LocationTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -61,14 +56,14 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String originalLocationTypeName = request.getParameter(ParameterConstants.ORIGINAL_LOCATION_TYPE_NAME);
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var originalLocationTypeName = request.getParameter(ParameterConstants.ORIGINAL_LOCATION_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditLocationTypeForm commandForm = WarehouseUtil.getHome().getEditLocationTypeForm();
-                LocationTypeSpec spec = WarehouseUtil.getHome().getLocationTypeSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = WarehouseUtil.getHome().getEditLocationTypeForm();
+                var spec = WarehouseUtil.getHome().getLocationTypeSpec();
                 
                 if(warehouseName == null)
                     warehouseName = actionForm.getWarehouseName();
@@ -80,7 +75,7 @@ public class EditAction
                 spec.setLocationTypeName(originalLocationTypeName);
                 
                 if(wasPost(request)) {
-                    LocationTypeEdit edit = WarehouseUtil.getHome().getLocationTypeEdit();
+                    var edit = WarehouseUtil.getHome().getLocationTypeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -89,14 +84,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = WarehouseUtil.getHome().editLocationType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = WarehouseUtil.getHome().editLocationType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditLocationTypeResult result = (EditLocationTypeResult)executionResult.getResult();
+                            var result = (EditLocationTypeResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -109,13 +104,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = WarehouseUtil.getHome().editLocationType(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditLocationTypeResult result = (EditLocationTypeResult)executionResult.getResult();
+
+                    var commandResult = WarehouseUtil.getHome().editLocationType(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditLocationTypeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        LocationTypeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setWarehouseName(warehouseName);
@@ -137,8 +132,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WAREHOUSE_NAME, warehouseName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

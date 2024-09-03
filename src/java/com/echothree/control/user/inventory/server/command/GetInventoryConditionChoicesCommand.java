@@ -18,12 +18,10 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryConditionChoicesForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.control.user.inventory.common.result.GetInventoryConditionChoicesResult;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.InventoryConditionUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -66,13 +64,13 @@ public class GetInventoryConditionChoicesCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        GetInventoryConditionChoicesResult result = InventoryResultFactory.getGetInventoryConditionChoicesResult();
-        String inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
-        InventoryConditionUseType inventoryConditionUseType = inventoryConditionUseTypeName == null? null: inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
+        var result = InventoryResultFactory.getGetInventoryConditionChoicesResult();
+        var inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
+        var inventoryConditionUseType = inventoryConditionUseTypeName == null? null: inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
         
         if(inventoryConditionUseTypeName == null || inventoryConditionUseType != null) {
-        String defaultInventoryConditionChoice = form.getDefaultInventoryConditionChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+            var defaultInventoryConditionChoice = form.getDefaultInventoryConditionChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
             if(inventoryConditionUseType == null) {
                 result.setInventoryConditionChoices(inventoryControl.getInventoryConditionChoices(defaultInventoryConditionChoice,

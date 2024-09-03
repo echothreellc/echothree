@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.accounting.company;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.edit.CompanyEdit;
-import com.echothree.control.user.party.common.form.EditCompanyForm;
 import com.echothree.control.user.party.common.result.EditCompanyResult;
-import com.echothree.control.user.party.common.spec.CompanySpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -56,11 +51,11 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        String originalCompanyName = request.getParameter(ParameterConstants.ORIGINAL_COMPANY_NAME);
-        EditActionForm actionForm = (EditActionForm)form;
-        EditCompanyForm commandForm = PartyUtil.getHome().getEditCompanyForm();
-        CompanySpec spec = PartyUtil.getHome().getCompanySpec();
+        String forwardKey;
+        var originalCompanyName = request.getParameter(ParameterConstants.ORIGINAL_COMPANY_NAME);
+        var actionForm = (EditActionForm)form;
+        var commandForm = PartyUtil.getHome().getEditCompanyForm();
+        var spec = PartyUtil.getHome().getCompanySpec();
         
         if(originalCompanyName == null)
             originalCompanyName = actionForm.getOriginalCompanyName();
@@ -69,12 +64,12 @@ public class EditAction
         spec.setCompanyName(originalCompanyName);
         
         if(wasPost(request)) {
-            boolean wasCanceled = wasCanceled(request);
+            var wasCanceled = wasCanceled(request);
             
             if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
-                CompanyEdit edit = PartyUtil.getHome().getCompanyEdit();
+                var edit = PartyUtil.getHome().getCompanyEdit();
 
                 commandForm.setEditMode(EditMode.UPDATE);
                 commandForm.setEdit(edit);
@@ -88,14 +83,14 @@ public class EditAction
                 edit.setIsDefault(actionForm.getIsDefault().toString());
                 edit.setSortOrder(actionForm.getSortOrder());
             }
-            
-            CommandResult commandResult = PartyUtil.getHome().editCompany(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().editCompany(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors() && !wasCanceled) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditCompanyResult result = (EditCompanyResult)executionResult.getResult();
+                    var result = (EditCompanyResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -108,13 +103,13 @@ public class EditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = PartyUtil.getHome().editCompany(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditCompanyResult result = (EditCompanyResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().editCompany(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditCompanyResult)executionResult.getResult();
             
             if(result != null) {
-                CompanyEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setOriginalCompanyName(edit.getCompanyName());

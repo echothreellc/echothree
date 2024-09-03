@@ -17,7 +17,6 @@
 package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.form.GetShipmentTypesForm;
-import com.echothree.control.user.shipment.common.result.GetShipmentTypesResult;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -61,7 +60,7 @@ public class GetShipmentTypesCommand
     @Override
     protected BaseResult execute() {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
-        GetShipmentTypesResult result = ShipmentResultFactory.getGetShipmentTypesResult();
+        var result = ShipmentResultFactory.getGetShipmentTypesResult();
         
         result.setShipmentTypes(shipmentControl.getShipmentTypeTransfers(getUserVisit()));
         

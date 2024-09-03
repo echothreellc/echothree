@@ -19,7 +19,6 @@ package com.echothree.model.control.payment.server.transfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTransfer;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
-import com.echothree.model.data.payment.server.entity.PaymentMethodTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -37,14 +36,14 @@ public class PaymentMethodTypeTransferCache
     
     @Override
     public PaymentMethodTypeTransfer getTransfer(PaymentMethodType paymentMethodType) {
-        PaymentMethodTypeTransfer paymentMethodTypeTransfer = get(paymentMethodType);
+        var paymentMethodTypeTransfer = get(paymentMethodType);
         
         if(paymentMethodTypeTransfer == null) {
-            PaymentMethodTypeDetail paymentMethodTypeDetail = paymentMethodType.getLastDetail();
-            String paymentMethodTypeName = paymentMethodTypeDetail.getPaymentMethodTypeName();
-            Boolean isDefault = paymentMethodTypeDetail.getIsDefault();
-            Integer sortOrder = paymentMethodTypeDetail.getSortOrder();
-            String description = paymentMethodTypeControl.getBestPaymentMethodTypeDescription(paymentMethodType, getLanguage());
+            var paymentMethodTypeDetail = paymentMethodType.getLastDetail();
+            var paymentMethodTypeName = paymentMethodTypeDetail.getPaymentMethodTypeName();
+            var isDefault = paymentMethodTypeDetail.getIsDefault();
+            var sortOrder = paymentMethodTypeDetail.getSortOrder();
+            var description = paymentMethodTypeControl.getBestPaymentMethodTypeDescription(paymentMethodType, getLanguage());
             
             paymentMethodTypeTransfer = new PaymentMethodTypeTransfer(paymentMethodTypeName, isDefault, sortOrder, description);
             put(paymentMethodType, paymentMethodTypeTransfer);

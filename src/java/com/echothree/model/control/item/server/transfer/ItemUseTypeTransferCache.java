@@ -31,13 +31,13 @@ public class ItemUseTypeTransferCache
     
     @Override
     public ItemUseTypeTransfer getTransfer(ItemUseType itemUseType) {
-        ItemUseTypeTransfer itemUseTypeTransfer = get(itemUseType);
+        var itemUseTypeTransfer = get(itemUseType);
         
         if(itemUseTypeTransfer == null) {
-            String itemUseTypeName = itemUseType.getItemUseTypeName();
-            Boolean isDefault = itemUseType.getIsDefault();
-            Integer sortOrder = itemUseType.getSortOrder();
-            String description = itemControl.getBestItemUseTypeDescription(itemUseType, getLanguage());
+            var itemUseTypeName = itemUseType.getItemUseTypeName();
+            var isDefault = itemUseType.getIsDefault();
+            var sortOrder = itemUseType.getSortOrder();
+            var description = itemControl.getBestItemUseTypeDescription(itemUseType, getLanguage());
             
             itemUseTypeTransfer = new ItemUseTypeTransfer(itemUseTypeName, isDefault, sortOrder, description);
             put(itemUseType, itemUseTypeTransfer);

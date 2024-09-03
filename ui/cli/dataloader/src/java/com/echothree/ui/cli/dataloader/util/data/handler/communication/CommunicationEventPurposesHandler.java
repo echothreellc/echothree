@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.communication;
 import com.echothree.control.user.communication.common.CommunicationUtil;
 import com.echothree.control.user.communication.common.CommunicationService;
 import com.echothree.control.user.communication.common.form.CommunicationFormFactory;
-import com.echothree.control.user.communication.common.form.CreateCommunicationEventPurposeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -48,9 +47,9 @@ public class CommunicationEventPurposesHandler
             String communicationEventPurposeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("communicationEventPurposeName"))
                     communicationEventPurposeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +59,7 @@ public class CommunicationEventPurposesHandler
             }
             
             try {
-                CreateCommunicationEventPurposeForm form = CommunicationFormFactory.getCreateCommunicationEventPurposeForm();
+                var form = CommunicationFormFactory.getCreateCommunicationEventPurposeForm();
                 
                 form.setCommunicationEventPurposeName(communicationEventPurposeName);
                 form.setIsDefault(isDefault);

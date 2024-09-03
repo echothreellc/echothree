@@ -21,7 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.search.server.value.SearchKindDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,8 +61,8 @@ public class SetDefaultSearchKindCommand
     @Override
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
-        String searchKindName = form.getSearchKindName();
-        SearchKindDetailValue searchKindDetailValue = searchControl.getSearchKindDetailValueByNameForUpdate(searchKindName);
+        var searchKindName = form.getSearchKindName();
+        var searchKindDetailValue = searchControl.getSearchKindDetailValueByNameForUpdate(searchKindName);
         
         if(searchKindDetailValue != null) {
             searchKindDetailValue.setIsDefault(Boolean.TRUE);

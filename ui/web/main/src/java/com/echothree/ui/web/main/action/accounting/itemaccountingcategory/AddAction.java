@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.accounting.itemaccountingcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.CreateItemAccountingCategoryForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -54,18 +52,18 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateItemAccountingCategoryForm commandForm = AccountingUtil.getHome().getCreateItemAccountingCategoryForm();
+                    var commandForm = AccountingUtil.getHome().getCreateItemAccountingCategoryForm();
                     
                     commandForm.setItemAccountingCategoryName(actionForm.getItemAccountingCategoryName());
                     commandForm.setParentItemAccountingCategoryName(actionForm.getParentItemAccountingCategoryChoice());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().createItemAccountingCategory(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AccountingUtil.getHome().createItemAccountingCategory(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
