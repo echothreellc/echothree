@@ -53,15 +53,15 @@ public class AddActionForm
     private void setupFilterAdjustmentChoices()
             throws NamingException {
         if(filterAdjustmentChoices == null) {
-            GetFilterAdjustmentChoicesForm form = FilterUtil.getHome().getGetFilterAdjustmentChoicesForm();
+            var form = FilterUtil.getHome().getGetFilterAdjustmentChoicesForm();
 
             form.setFilterKindName(filterKindName);
             form.setDefaultFilterAdjustmentChoice(filterAdjustmentChoice);
             form.setInitialAdjustmentsOnly(Boolean.FALSE.toString());
 
-            CommandResult commandResult = FilterUtil.getHome().getFilterAdjustmentChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterAdjustmentChoicesResult result = (GetFilterAdjustmentChoicesResult)executionResult.getResult();
+            var commandResult = FilterUtil.getHome().getFilterAdjustmentChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetFilterAdjustmentChoicesResult)executionResult.getResult();
             filterAdjustmentChoices = result.getFilterAdjustmentChoices();
 
             if(filterAdjustmentChoice == null)
@@ -72,16 +72,16 @@ public class AddActionForm
     private void setupFilterItemSelectorChoices()
             throws NamingException {
         if(filterItemSelectorChoices == null) {
-            GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
+            var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
 
             form.setSelectorKindName(SelectorKinds.ITEM.name());
             form.setSelectorTypeName(SelectorTypes.FILTER.name());
             form.setDefaultSelectorChoice(filterItemSelectorChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSelectorChoicesResult result = (GetSelectorChoicesResult)executionResult.getResult();
+            var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSelectorChoicesResult)executionResult.getResult();
             filterItemSelectorChoices = result.getSelectorChoices();
 
             if(filterItemSelectorChoice == null)

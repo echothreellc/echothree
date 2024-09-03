@@ -53,16 +53,16 @@ public class TextDecorationAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String appearanceName = request.getParameter(ParameterConstants.APPEARANCE_NAME);
-        GetAppearanceTextDecorationsForm commandForm = CoreUtil.getHome().getGetAppearanceTextDecorationsForm();
+        var appearanceName = request.getParameter(ParameterConstants.APPEARANCE_NAME);
+        var commandForm = CoreUtil.getHome().getGetAppearanceTextDecorationsForm();
 
         commandForm.setAppearanceName(appearanceName);
 
-        CommandResult commandResult = CoreUtil.getHome().getAppearanceTextDecorations(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getAppearanceTextDecorations(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAppearanceTextDecorationsResult result = (GetAppearanceTextDecorationsResult) executionResult.getResult();
-            AppearanceTransfer appearanceTransfer = result.getAppearance();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAppearanceTextDecorationsResult) executionResult.getResult();
+            var appearanceTransfer = result.getAppearance();
 
             request.setAttribute(AttributeConstants.APPEARANCE, appearanceTransfer);
             request.setAttribute(AttributeConstants.APPEARANCE_TEXT_DECORATIONS, result.getAppearanceTextDecorations());

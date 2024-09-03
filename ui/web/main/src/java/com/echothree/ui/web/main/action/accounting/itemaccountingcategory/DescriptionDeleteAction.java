@@ -52,11 +52,11 @@ public class DescriptionDeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String itemAccountingCategoryName = request.getParameter(ParameterConstants.ITEM_ACCOUNTING_CATEGORY_NAME);
+        var itemAccountingCategoryName = request.getParameter(ParameterConstants.ITEM_ACCOUNTING_CATEGORY_NAME);
         
         try {
-            String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-            DeleteItemAccountingCategoryDescriptionForm commandForm = AccountingUtil.getHome().getDeleteItemAccountingCategoryDescriptionForm();
+            var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+            var commandForm = AccountingUtil.getHome().getDeleteItemAccountingCategoryDescriptionForm();
             
             commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
             commandForm.setLanguageIsoName(languageIsoName);
@@ -67,8 +67,8 @@ public class DescriptionDeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

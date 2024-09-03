@@ -53,9 +53,9 @@ public class SubscriptionTypeHandler
         if(localName.equals("subscriptionTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -63,7 +63,7 @@ public class SubscriptionTypeHandler
             }
             
             try {
-                CreateSubscriptionTypeDescriptionForm commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeDescriptionForm();
+                var commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeDescriptionForm();
                 
                 commandForm.setSubscriptionKindName(subscriptionKindName);
                 commandForm.setSubscriptionTypeName(subscriptionTypeName);
@@ -79,9 +79,9 @@ public class SubscriptionTypeHandler
             String chainName = null;
             String unitOfMeasureTypeName = null;
             String remainingTime = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("chainTypeName"))
                     chainTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("chainName"))
@@ -93,7 +93,7 @@ public class SubscriptionTypeHandler
             }
             
             try {
-                CreateSubscriptionTypeChainForm commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeChainForm();
+                var commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeChainForm();
                 
                 commandForm.setSubscriptionKindName(subscriptionKindName);
                 commandForm.setSubscriptionTypeName(subscriptionTypeName);

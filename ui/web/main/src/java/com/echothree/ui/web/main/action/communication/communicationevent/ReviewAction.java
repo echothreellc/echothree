@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetCommunicationEventForm commandForm = CommunicationUtil.getHome().getGetCommunicationEventForm();
-            String communicationEventName = request.getParameter(ParameterConstants.COMMUNICATION_EVENT_NAME);
+            var commandForm = CommunicationUtil.getHome().getGetCommunicationEventForm();
+            var communicationEventName = request.getParameter(ParameterConstants.COMMUNICATION_EVENT_NAME);
             
             commandForm.setCommunicationEventName(communicationEventName);
-            
-            CommandResult commandResult = CommunicationUtil.getHome().getCommunicationEvent(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommunicationEventResult result = (GetCommunicationEventResult)executionResult.getResult();
+
+            var commandResult = CommunicationUtil.getHome().getCommunicationEvent(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommunicationEventResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMMUNICATION_EVENT, result.getCommunicationEvent());
             forwardKey = ForwardConstants.DISPLAY;

@@ -52,9 +52,9 @@ public class EditAction
     @Override
     protected ContentCatalogSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ContentCatalogSpec spec = ContentUtil.getHome().getContentCatalogSpec();
-        String contentCollectioNname = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-        String originalContentCatalogName = request.getParameter(ParameterConstants.ORIGINAL_CONTENT_CATALOG_NAME);
+        var spec = ContentUtil.getHome().getContentCatalogSpec();
+        var contentCollectioNname = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+        var originalContentCatalogName = request.getParameter(ParameterConstants.ORIGINAL_CONTENT_CATALOG_NAME);
 
         if(contentCollectioNname == null) {
             contentCollectioNname = actionForm.getContentCollectionName();
@@ -72,7 +72,7 @@ public class EditAction
     @Override
     protected ContentCatalogEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException{
-        ContentCatalogEdit edit = ContentUtil.getHome().getContentCatalogEdit();
+        var edit = ContentUtil.getHome().getContentCatalogEdit();
 
         edit.setContentCatalogName(actionForm.getContentCatalogName());
         edit.setDefaultSourceName(actionForm.getDefaultSourceChoice());
@@ -103,9 +103,9 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditContentCatalogForm commandForm)
             throws Exception {
-        CommandResult commandResult = ContentUtil.getHome().editContentCatalog(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditContentCatalogResult result = (EditContentCatalogResult)executionResult.getResult();
+        var commandResult = ContentUtil.getHome().editContentCatalog(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditContentCatalogResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CONTENT_CATALOG, result.getContentCatalog());
         

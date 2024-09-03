@@ -63,14 +63,14 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCountryForm commandForm = GeoUtil.getHome().getGetCountryForm();
+        var commandForm = GeoUtil.getHome().getGetCountryForm();
 
         commandForm.setGeoCodeName(actionForm.getCountryName());
-        
-        CommandResult commandResult = GeoUtil.getHome().getCountry(getUserVisitPK(request), commandForm);
+
+        var commandResult = GeoUtil.getHome().getCountry(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCountryResult result = (GetCountryResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCountryResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COUNTRY, result.getCountry());
         }
@@ -79,7 +79,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateHarmonizedTariffScheduleCodeForm commandForm = ItemUtil.getHome().getCreateHarmonizedTariffScheduleCodeForm();
+        var commandForm = ItemUtil.getHome().getCreateHarmonizedTariffScheduleCodeForm();
 
         commandForm.setCountryName(actionForm.getCountryName());
         commandForm.setHarmonizedTariffScheduleCodeName(actionForm.getHarmonizedTariffScheduleCodeName());

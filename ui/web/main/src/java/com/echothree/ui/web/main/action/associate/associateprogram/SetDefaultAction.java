@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultAssociateProgramForm commandForm = AssociateUtil.getHome().getSetDefaultAssociateProgramForm();
-            String associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
+            var commandForm = AssociateUtil.getHome().getSetDefaultAssociateProgramForm();
+            var associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
             
             commandForm.setAssociateProgramName(associateProgramName);
             

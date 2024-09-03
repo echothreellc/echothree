@@ -100,14 +100,14 @@ public class FinalStepForm
     private void setupSelectorBooleanTypeChoices() {
         if(selectorBooleanTypeChoices == null) {
             try {
-                GetSelectorBooleanTypeChoicesForm commandForm = SelectorUtil.getHome().getGetSelectorBooleanTypeChoicesForm();
+                var commandForm = SelectorUtil.getHome().getGetSelectorBooleanTypeChoicesForm();
                 
                 commandForm.setDefaultSelectorBooleanTypeChoice(selectorBooleanTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = SelectorUtil.getHome().getSelectorBooleanTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSelectorBooleanTypeChoicesResult result = (GetSelectorBooleanTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = SelectorUtil.getHome().getSelectorBooleanTypeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSelectorBooleanTypeChoicesResult)executionResult.getResult();
                 selectorBooleanTypeChoices = result.getSelectorBooleanTypeChoices();
                 
                 if(selectorBooleanTypeChoice == null)
@@ -121,17 +121,17 @@ public class FinalStepForm
     private void setupLeftSelectorNodeChoices() {
         if(leftSelectorNodeChoices == null) {
             try {
-                GetSelectorNodeChoicesForm commandForm = SelectorUtil.getHome().getGetSelectorNodeChoicesForm();
+                var commandForm = SelectorUtil.getHome().getGetSelectorNodeChoicesForm();
                 
                 commandForm.setSelectorKindName(selectorKindName);
                 commandForm.setSelectorTypeName(selectorTypeName);
                 commandForm.setSelectorName(selectorName);
                 commandForm.setDefaultSelectorNodeChoice(leftSelectorNodeChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = SelectorUtil.getHome().getSelectorNodeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSelectorNodeChoicesResult result = (GetSelectorNodeChoicesResult)executionResult.getResult();
+
+                var commandResult = SelectorUtil.getHome().getSelectorNodeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSelectorNodeChoicesResult)executionResult.getResult();
                 leftSelectorNodeChoices = result.getSelectorNodeChoices();
                 
                 if(leftSelectorNodeChoice == null)
@@ -145,17 +145,17 @@ public class FinalStepForm
     private void setupRightSelectorNodeChoices() {
         if(rightSelectorNodeChoices == null) {
             try {
-                GetSelectorNodeChoicesForm commandForm = SelectorUtil.getHome().getGetSelectorNodeChoicesForm();
+                var commandForm = SelectorUtil.getHome().getGetSelectorNodeChoicesForm();
                 
                 commandForm.setSelectorKindName(selectorKindName);
                 commandForm.setSelectorTypeName(selectorTypeName);
                 commandForm.setSelectorName(selectorName);
                 commandForm.setDefaultSelectorNodeChoice(rightSelectorNodeChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = SelectorUtil.getHome().getSelectorNodeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSelectorNodeChoicesResult result = (GetSelectorNodeChoicesResult)executionResult.getResult();
+
+                var commandResult = SelectorUtil.getHome().getSelectorNodeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSelectorNodeChoicesResult)executionResult.getResult();
                 rightSelectorNodeChoices = result.getSelectorNodeChoices();
                 
                 if(rightSelectorNodeChoice == null)
@@ -169,14 +169,14 @@ public class FinalStepForm
     private void setupItemCategoryChoices() {
         if(itemCategoryChoices == null) {
             try {
-                GetItemCategoryChoicesForm commandForm = ItemUtil.getHome().getGetItemCategoryChoicesForm();
+                var commandForm = ItemUtil.getHome().getGetItemCategoryChoicesForm();
                 
                 commandForm.setDefaultItemCategoryChoice(itemCategoryChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemCategoryChoicesResult result = (GetItemCategoryChoicesResult)executionResult.getResult();
+
+                var commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemCategoryChoicesResult)executionResult.getResult();
                 itemCategoryChoices = result.getItemCategoryChoices();
                 
                 if(itemCategoryChoice == null)
@@ -190,14 +190,14 @@ public class FinalStepForm
     private void setupItemAccountingCategoryChoices() {
         if(itemAccountingCategoryChoices == null) {
             try {
-                GetItemAccountingCategoryChoicesForm commandForm = AccountingUtil.getHome().getGetItemAccountingCategoryChoicesForm();
+                var commandForm = AccountingUtil.getHome().getGetItemAccountingCategoryChoicesForm();
                 
                 commandForm.setDefaultItemAccountingCategoryChoice(itemAccountingCategoryChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemAccountingCategoryChoicesResult result = (GetItemAccountingCategoryChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemAccountingCategoryChoicesResult)executionResult.getResult();
                 itemAccountingCategoryChoices = result.getItemAccountingCategoryChoices();
                 
                 if(itemAccountingCategoryChoice == null)
@@ -211,14 +211,14 @@ public class FinalStepForm
     private void setupItemPurchasingCategoryChoices() {
         if(itemPurchasingCategoryChoices == null) {
             try {
-                GetItemPurchasingCategoryChoicesForm commandForm = VendorUtil.getHome().getGetItemPurchasingCategoryChoicesForm();
+                var commandForm = VendorUtil.getHome().getGetItemPurchasingCategoryChoicesForm();
                 
                 commandForm.setDefaultItemPurchasingCategoryChoice(itemPurchasingCategoryChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemPurchasingCategoryChoicesResult result = (GetItemPurchasingCategoryChoicesResult)executionResult.getResult();
+
+                var commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemPurchasingCategoryChoicesResult)executionResult.getResult();
                 itemPurchasingCategoryChoices = result.getItemPurchasingCategoryChoices();
                 
                 if(itemPurchasingCategoryChoice == null)
@@ -232,14 +232,14 @@ public class FinalStepForm
     public void setupResponsibilityTypeChoices() {
         if(responsibilityTypeChoices == null) {
             try {
-                GetResponsibilityTypeChoicesForm form = EmployeeUtil.getHome().getGetResponsibilityTypeChoicesForm();
+                var form = EmployeeUtil.getHome().getGetResponsibilityTypeChoicesForm();
                 
                 form.setDefaultResponsibilityTypeChoice(responsibilityTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = EmployeeUtil.getHome().getResponsibilityTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetResponsibilityTypeChoicesResult result = (GetResponsibilityTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = EmployeeUtil.getHome().getResponsibilityTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetResponsibilityTypeChoicesResult)executionResult.getResult();
                 responsibilityTypeChoices = result.getResponsibilityTypeChoices();
                 
                 if(responsibilityTypeChoice == null)
@@ -254,14 +254,14 @@ public class FinalStepForm
     public void setupSkillTypeChoices() {
         if(skillTypeChoices == null) {
             try {
-                GetSkillTypeChoicesForm form = EmployeeUtil.getHome().getGetSkillTypeChoicesForm();
+                var form = EmployeeUtil.getHome().getGetSkillTypeChoicesForm();
                 
                 form.setDefaultSkillTypeChoice(skillTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = EmployeeUtil.getHome().getSkillTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSkillTypeChoicesResult result = (GetSkillTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = EmployeeUtil.getHome().getSkillTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSkillTypeChoicesResult)executionResult.getResult();
                 skillTypeChoices = result.getSkillTypeChoices();
                 
                 if(skillTypeChoice == null)
@@ -276,14 +276,14 @@ public class FinalStepForm
     public void setupTrainingClassChoices() {
         if(trainingClassChoices == null) {
             try {
-                GetTrainingClassChoicesForm form = TrainingUtil.getHome().getGetTrainingClassChoicesForm();
+                var form = TrainingUtil.getHome().getGetTrainingClassChoicesForm();
                 
                 form.setDefaultTrainingClassChoice(trainingClassChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = TrainingUtil.getHome().getTrainingClassChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetTrainingClassChoicesResult result = (GetTrainingClassChoicesResult)executionResult.getResult();
+
+                var commandResult = TrainingUtil.getHome().getTrainingClassChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetTrainingClassChoicesResult)executionResult.getResult();
                 trainingClassChoices = result.getTrainingClassChoices();
                 
                 if(trainingClassChoice == null)

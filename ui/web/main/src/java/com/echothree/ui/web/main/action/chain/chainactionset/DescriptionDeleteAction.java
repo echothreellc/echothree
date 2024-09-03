@@ -66,18 +66,18 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetChainActionSetDescriptionForm commandForm = ChainUtil.getHome().getGetChainActionSetDescriptionForm();
+        var commandForm = ChainUtil.getHome().getGetChainActionSetDescriptionForm();
         
         commandForm.setChainKindName(actionForm.getChainKindName());
         commandForm.setChainTypeName(actionForm.getChainTypeName());
         commandForm.setChainName(actionForm.getChainName());
         commandForm.setChainActionSetName(actionForm.getChainActionSetName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = ChainUtil.getHome().getChainActionSetDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = ChainUtil.getHome().getChainActionSetDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetChainActionSetDescriptionResult result = (GetChainActionSetDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetChainActionSetDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CHAIN_ACTION_SET_DESCRIPTION, result.getChainActionSetDescription());
         }
@@ -86,7 +86,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteChainActionSetDescriptionForm commandForm = ChainUtil.getHome().getDeleteChainActionSetDescriptionForm();
+        var commandForm = ChainUtil.getHome().getDeleteChainActionSetDescriptionForm();
 
         commandForm.setChainKindName(actionForm.getChainKindName());
         commandForm.setChainTypeName(actionForm.getChainTypeName());

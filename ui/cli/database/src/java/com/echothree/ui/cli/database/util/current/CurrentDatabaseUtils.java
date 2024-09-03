@@ -48,7 +48,7 @@ public class CurrentDatabaseUtils {
         
         System.out.println("---   Index name: " + indexName + ", " + columnNames +  ", " + unique);
 
-        CurrentIndex ci = new CurrentIndex(ct, indexName, unique, columns);
+        var ci = new CurrentIndex(ct, indexName, unique, columns);
         ct.addIndex(ci);
         columns.stream().forEach((cc) -> {
             cc.addIndex(ci);
@@ -59,13 +59,13 @@ public class CurrentDatabaseUtils {
             throws SQLException {
         String currentIndexName = null;
         List<String> currentColumnNames = new ArrayList<>();
-        boolean currentUnique = false;
+        var currentUnique = false;
 
-        try(ResultSet ii = dmd.getIndexInfo(catalog, null, ct.getTableName(), false, true)) {
+        try(var ii = dmd.getIndexInfo(catalog, null, ct.getTableName(), false, true)) {
             while(ii.next()) {
-                String indexName = ii.getString("INDEX_NAME");
-                String columnName = ii.getString("COLUMN_NAME");
-                boolean unique = !ii.getBoolean("NON_UNIQUE");
+                var indexName = ii.getString("INDEX_NAME");
+                var columnName = ii.getString("COLUMN_NAME");
+                var unique = !ii.getBoolean("NON_UNIQUE");
 
                 if(currentIndexName != null && !currentIndexName.equals(indexName)) {
                     handleIndex(ct, currentIndexName, currentColumnNames, currentUnique);
@@ -84,13 +84,13 @@ public class CurrentDatabaseUtils {
         }
 
         // Determine the name of the primary key index by getting one component of it, and marking the index as such.
-        try(ResultSet pkColumns = dmd.getPrimaryKeys(catalog, null, ct.getTableName())) {
+        try(var pkColumns = dmd.getPrimaryKeys(catalog, null, ct.getTableName())) {
             if(pkColumns.next()) {
-                String pkName = pkColumns.getString("PK_NAME");
+                var pkName = pkColumns.getString("PK_NAME");
 
                 System.out.println("---   PK index name: " + pkName);
 
-                CurrentIndex ci = ct.getIndex(pkName);
+                var ci = ct.getIndex(pkName);
 
                 ci.setPrimaryKey(true);
             }
@@ -99,12 +99,12 @@ public class CurrentDatabaseUtils {
 
     private void getColumns(String catalog, DatabaseMetaData dmd, CurrentTable ct)
             throws SQLException {
-        try(ResultSet c = dmd.getColumns(catalog, null, ct.getTableName(), null)) {
+        try(var c = dmd.getColumns(catalog, null, ct.getTableName(), null)) {
             while(c.next()) {
-                String columnName = c.getString("COLUMN_NAME");
-                int type = c.getInt("DATA_TYPE");
-                int columnSize = c.getInt("COLUMN_SIZE");
-                int nullable = c.getInt("NULLABLE");
+                var columnName = c.getString("COLUMN_NAME");
+                var type = c.getInt("DATA_TYPE");
+                var columnSize = c.getInt("COLUMN_SIZE");
+                var nullable = c.getInt("NULLABLE");
 
                 System.out.println("---   Column name: " + columnName + ", " + type +  ", " + columnSize +  ", " + nullable);
 
@@ -115,10 +115,10 @@ public class CurrentDatabaseUtils {
 
     public void getTables(String catalog, DatabaseMetaData dmd, CurrentDatabase cd)
             throws SQLException {
-        try(ResultSet rs = dmd.getTables(catalog, null, null, new String[]{"TABLE"})) {
+        try(var rs = dmd.getTables(catalog, null, null, new String[]{"TABLE"})) {
             while(rs.next()) {
-                String tableName = rs.getString("TABLE_NAME");
-                CurrentTable ct = new CurrentTable(tableName);
+                var tableName = rs.getString("TABLE_NAME");
+                var ct = new CurrentTable(tableName);
 
                 System.out.println("--- Table: " + tableName);
 
@@ -131,23 +131,23 @@ public class CurrentDatabaseUtils {
 
     private void getForeignKeys(String catalog, DatabaseMetaData dmd, CurrentDatabase cd)
             throws SQLException {
-        for(CurrentTable ct: cd.getTables().values()) {
-            String tableName = ct.getTableName();
+        for(var ct: cd.getTables().values()) {
+            var tableName = ct.getTableName();
 
-            try(ResultSet ik = dmd.getImportedKeys(catalog, null, tableName)) {
+            try(var ik = dmd.getImportedKeys(catalog, null, tableName)) {
                 System.out.println("--- Table: " + tableName);
 
                 while(ik.next()) {
-                    String importedKeyName = ik.getString("FK_NAME");
-                    String fkColumnName = ik.getString("FKCOLUMN_NAME");
-                    String pkTableName = ik.getString("PKTABLE_NAME");
-                    String pkColumnName = ik.getString("PKCOLUMN_NAME");
-                    CurrentColumn column = ct.getColumn(fkColumnName);
-                    CurrentColumn targetColumn = cd.getTable(pkTableName).getColumn(pkColumnName);
+                    var importedKeyName = ik.getString("FK_NAME");
+                    var fkColumnName = ik.getString("FKCOLUMN_NAME");
+                    var pkTableName = ik.getString("PKTABLE_NAME");
+                    var pkColumnName = ik.getString("PKCOLUMN_NAME");
+                    var column = ct.getColumn(fkColumnName);
+                    var targetColumn = cd.getTable(pkTableName).getColumn(pkColumnName);
 
                     System.out.println("---   Foreign key: " + importedKeyName +  ", " + fkColumnName + ", " + pkTableName +  ", " + pkColumnName);
-                    
-                    CurrentForeignKey cfk = new CurrentForeignKey(ct, importedKeyName, column, targetColumn);
+
+                    var cfk = new CurrentForeignKey(ct, importedKeyName, column, targetColumn);
                     ct.addForeignKey(cfk);
                     column.addForeignKey(cfk);
                     targetColumn.addTargetForeignKey(cfk);
@@ -158,9 +158,9 @@ public class CurrentDatabaseUtils {
     
     public CurrentDatabase getCurrentDatabase(Connection conn)
             throws SQLException {
-        String catalog = conn.getCatalog();
-        DatabaseMetaData dmd = conn.getMetaData();
-        CurrentDatabase cd = new CurrentDatabase();
+        var catalog = conn.getCatalog();
+        var dmd = conn.getMetaData();
+        var cd = new CurrentDatabase();
         
         getTables(catalog, dmd, cd);
         getForeignKeys(catalog, dmd, cd);

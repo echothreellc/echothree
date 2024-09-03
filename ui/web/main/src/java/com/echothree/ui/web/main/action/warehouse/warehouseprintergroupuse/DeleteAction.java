@@ -66,7 +66,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyPrinterGroupUseForm commandForm = PrinterUtil.getHome().getDeletePartyPrinterGroupUseForm();
+        var commandForm = PrinterUtil.getHome().getDeletePartyPrinterGroupUseForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setPrinterGroupUseTypeName(actionForm.getPrinterGroupUseTypeName());

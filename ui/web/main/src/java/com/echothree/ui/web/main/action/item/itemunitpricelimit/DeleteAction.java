@@ -65,16 +65,16 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemUnitPriceLimitForm commandForm = ItemUtil.getHome().getGetItemUnitPriceLimitForm();
+        var commandForm = ItemUtil.getHome().getGetItemUnitPriceLimitForm();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setInventoryConditionName(actionForm.getInventoryConditionName());
         commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeName());
         commandForm.setCurrencyIsoName(actionForm.getCurrencyIsoName());
 
-        CommandResult commandResult = ItemUtil.getHome().getItemUnitPriceLimit(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemUnitPriceLimitResult result = (GetItemUnitPriceLimitResult)executionResult.getResult();
+        var commandResult = ItemUtil.getHome().getItemUnitPriceLimit(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemUnitPriceLimitResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM_UNIT_PRICE_LIMIT, result.getItemUnitPriceLimit());
     }
@@ -82,7 +82,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteItemUnitPriceLimitForm commandForm = ItemUtil.getHome().getDeleteItemUnitPriceLimitForm();
+        var commandForm = ItemUtil.getHome().getDeleteItemUnitPriceLimitForm();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setInventoryConditionName(actionForm.getInventoryConditionName());

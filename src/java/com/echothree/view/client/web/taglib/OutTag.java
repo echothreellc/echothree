@@ -97,7 +97,7 @@ public class OutTag
     protected String absolutifyUrls(final String html)
             throws JspException {
         XMLParserConfiguration parser = new HTMLConfiguration();
-        StringWriter stringWriter = new StringWriter();
+        var stringWriter = new StringWriter();
         var writer = new org.cyberneko.html.filters.Writer(stringWriter, "UTF-8");
 
         XMLDocumentFilter[] filters = {

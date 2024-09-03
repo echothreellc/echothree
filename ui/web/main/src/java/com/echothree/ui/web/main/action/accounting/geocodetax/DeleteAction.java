@@ -52,11 +52,11 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String taxName = request.getParameter(ParameterConstants.TAX_NAME);
+        var taxName = request.getParameter(ParameterConstants.TAX_NAME);
         
         try {
-            String geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
-            DeleteGeoCodeTaxForm commandForm = TaxUtil.getHome().getDeleteGeoCodeTaxForm();
+            var geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
+            var commandForm = TaxUtil.getHome().getDeleteGeoCodeTaxForm();
             
             commandForm.setGeoCodeName(geoCodeName);
             commandForm.setTaxName(taxName);
@@ -67,8 +67,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

@@ -29,7 +29,7 @@ public class PreferredDateTimeFormatSteps implements En {
         When("^the user sets their preferred date time format to \"([^\"]*)\"$",
                 (String dateTimeFormatName) -> {
                     UserService userService = UserUtil.getHome();
-                    SetUserVisitPreferredDateTimeFormatForm userVisitPreferredDateTimeFormatForm = userService.getSetUserVisitPreferredDateTimeFormatForm();
+                    var userVisitPreferredDateTimeFormatForm = userService.getSetUserVisitPreferredDateTimeFormatForm();
                     var persona = CurrentPersona.persona;
 
                     userVisitPreferredDateTimeFormatForm.setDateTimeFormatName(dateTimeFormatName);

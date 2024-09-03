@@ -61,14 +61,14 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String originalLocationName = request.getParameter(ParameterConstants.ORIGINAL_LOCATION_NAME);
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var originalLocationName = request.getParameter(ParameterConstants.ORIGINAL_LOCATION_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditLocationForm commandForm = WarehouseUtil.getHome().getEditLocationForm();
-                LocationSpec spec = WarehouseUtil.getHome().getLocationSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = WarehouseUtil.getHome().getEditLocationForm();
+                var spec = WarehouseUtil.getHome().getLocationSpec();
                 
                 if(warehouseName == null)
                     warehouseName = actionForm.getWarehouseName();
@@ -80,7 +80,7 @@ public class EditAction
                 spec.setLocationName(originalLocationName);
                 
                 if(wasPost(request)) {
-                    LocationEdit edit = WarehouseUtil.getHome().getLocationEdit();
+                    var edit = WarehouseUtil.getHome().getLocationEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -91,14 +91,14 @@ public class EditAction
                     edit.setVelocity(actionForm.getVelocity());
                     edit.setInventoryLocationGroupName(actionForm.getInventoryLocationGroupChoice());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = WarehouseUtil.getHome().editLocation(getUserVisitPK(request), commandForm);
+
+                    var commandResult = WarehouseUtil.getHome().editLocation(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditLocationResult result = (EditLocationResult)executionResult.getResult();
+                            var result = (EditLocationResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -111,13 +111,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = WarehouseUtil.getHome().editLocation(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditLocationResult result = (EditLocationResult)executionResult.getResult();
+
+                    var commandResult = WarehouseUtil.getHome().editLocation(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditLocationResult)executionResult.getResult();
                     
                     if(result != null) {
-                        LocationEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setWarehouseName(warehouseName);
@@ -141,8 +141,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WAREHOUSE_NAME, warehouseName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

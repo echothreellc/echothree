@@ -55,16 +55,16 @@ public class TranslationAction
         String forwardKey;
         
         try {
-            String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-            String returnPolicyName = request.getParameter(ParameterConstants.RETURN_POLICY_NAME);
-            GetReturnPolicyTranslationsForm commandForm = ReturnPolicyUtil.getHome().getGetReturnPolicyTranslationsForm();
+            var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+            var returnPolicyName = request.getParameter(ParameterConstants.RETURN_POLICY_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getGetReturnPolicyTranslationsForm();
             
             commandForm.setReturnKindName(returnKindName);
             commandForm.setReturnPolicyName(returnPolicyName);
-            
-            CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnPolicyTranslations(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetReturnPolicyTranslationsResult result = (GetReturnPolicyTranslationsResult)executionResult.getResult();
+
+            var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyTranslations(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnPolicyTranslationsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RETURN_POLICY, result.getReturnPolicy());
             request.setAttribute(AttributeConstants.RETURN_POLICY_TRANSLATIONS, result.getReturnPolicyTranslations());

@@ -2093,7 +2093,7 @@ public class EmployeeControl
     public LeaveStatusChoicesBean getLeaveStatusChoices(String defaultLeaveStatusChoice, Language language,
             boolean allowNullChoice, Leave leave, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        LeaveStatusChoicesBean leaveStatusChoicesBean = new LeaveStatusChoicesBean();
+        var leaveStatusChoicesBean = new LeaveStatusChoicesBean();
 
         if(leave == null) {
             workflowControl.getWorkflowEntranceChoices(leaveStatusChoicesBean, defaultLeaveStatusChoice, language, allowNullChoice,
@@ -3928,7 +3928,7 @@ public class EmployeeControl
     public EmployeeStatusChoicesBean getEmployeeStatusChoices(String defaultEmployeeStatusChoice, Language language,
             boolean allowNullChoice, Party employeeParty, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        EmployeeStatusChoicesBean employeeStatusChoicesBean = new EmployeeStatusChoicesBean();
+        var employeeStatusChoicesBean = new EmployeeStatusChoicesBean();
         
         if(employeeParty == null) {
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultEmployeeStatusChoice, language, allowNullChoice,
@@ -3963,7 +3963,7 @@ public class EmployeeControl
     public EmployeeAvailabilityChoicesBean getEmployeeAvailabilityChoices(String defaultEmployeeAvailabilityChoice, Language language,
             boolean allowNullChoice, Party employeeParty, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        EmployeeAvailabilityChoicesBean employeeAvailabilityChoicesBean = new EmployeeAvailabilityChoicesBean();
+        var employeeAvailabilityChoicesBean = new EmployeeAvailabilityChoicesBean();
         
         if(employeeParty == null) {
             workflowControl.getWorkflowEntranceChoices(employeeAvailabilityChoicesBean, defaultEmployeeAvailabilityChoice, language, allowNullChoice,

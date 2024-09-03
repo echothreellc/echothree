@@ -61,14 +61,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String glAccountName = request.getParameter(ParameterConstants.GL_ACCOUNT_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var glAccountName = request.getParameter(ParameterConstants.GL_ACCOUNT_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditGlAccountDescriptionForm commandForm = AccountingUtil.getHome().getEditGlAccountDescriptionForm();
-                GlAccountDescriptionSpec spec = AccountingUtil.getHome().getGlAccountDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = AccountingUtil.getHome().getEditGlAccountDescriptionForm();
+                var spec = AccountingUtil.getHome().getGlAccountDescriptionSpec();
                 
                 if(glAccountName == null)
                     glAccountName = actionForm.getGlAccountName();
@@ -80,15 +80,15 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    GlAccountDescriptionEdit edit = AccountingUtil.getHome().getGlAccountDescriptionEdit();
+                    var edit = AccountingUtil.getHome().getGlAccountDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().editGlAccountDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditGlAccountDescriptionResult result = (EditGlAccountDescriptionResult)executionResult.getResult();
+
+                    var commandResult = AccountingUtil.getHome().editGlAccountDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditGlAccountDescriptionResult)executionResult.getResult();
                     
                     if(commandResult.hasErrors()) {
                         request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
@@ -100,11 +100,11 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().editGlAccountDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditGlAccountDescriptionResult result = (EditGlAccountDescriptionResult)executionResult.getResult();
-                    GlAccountDescriptionEdit edit = result.getEdit();
+
+                    var commandResult = AccountingUtil.getHome().editGlAccountDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditGlAccountDescriptionResult)executionResult.getResult();
+                    var edit = result.getEdit();
                     
                     if(edit != null) {
                         actionForm.setGlAccountName(glAccountName);
@@ -121,8 +121,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.GL_ACCOUNT_NAME, glAccountName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

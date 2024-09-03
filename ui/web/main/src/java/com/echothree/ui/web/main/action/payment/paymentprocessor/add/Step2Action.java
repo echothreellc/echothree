@@ -57,13 +57,13 @@ public class Step2Action
     
     private PaymentProcessorTypeTransfer getPaymentProcessorTypeTransfer(UserVisitPK userVisitPK, String paymentProcessorTypeName)
             throws NamingException {
-        GetPaymentProcessorTypeForm commandForm = PaymentUtil.getHome().getGetPaymentProcessorTypeForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentProcessorTypeForm();
         
         commandForm.setPaymentProcessorTypeName(paymentProcessorTypeName);
-        
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentProcessorType(userVisitPK, commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPaymentProcessorTypeResult result = (GetPaymentProcessorTypeResult)executionResult.getResult();
+
+        var commandResult = PaymentUtil.getHome().getPaymentProcessorType(userVisitPK, commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPaymentProcessorTypeResult)executionResult.getResult();
         
         return result.getPaymentProcessorType();
     }
@@ -73,9 +73,9 @@ public class Step2Action
             throws Exception {
         String forwardKey;
         PaymentProcessorTypeTransfer paymentProcessorType;
-        UserVisitPK userVisitPK = getUserVisitPK(request);
-        Step2ActionForm actionForm = (Step2ActionForm)form;
-        String paymentProcessorTypeName = request.getParameter(ParameterConstants.PAYMENT_PROCESSOR_TYPE_NAME);
+        var userVisitPK = getUserVisitPK(request);
+        var actionForm = (Step2ActionForm)form;
+        var paymentProcessorTypeName = request.getParameter(ParameterConstants.PAYMENT_PROCESSOR_TYPE_NAME);
 
         if(paymentProcessorTypeName == null)
             paymentProcessorTypeName = actionForm.getPaymentProcessorTypeName();
@@ -83,7 +83,7 @@ public class Step2Action
         paymentProcessorType = getPaymentProcessorTypeTransfer(userVisitPK, paymentProcessorTypeName);
 
         if(wasPost(request)) {
-            CreatePaymentProcessorForm commandForm = PaymentUtil.getHome().getCreatePaymentProcessorForm();
+            var commandForm = PaymentUtil.getHome().getCreatePaymentProcessorForm();
 
             commandForm.setPaymentProcessorName(actionForm.getPaymentProcessorName());
             commandForm.setPaymentProcessorTypeName(actionForm.getPaymentProcessorTypeName());
@@ -91,7 +91,7 @@ public class Step2Action
             commandForm.setSortOrder(actionForm.getSortOrder());
             commandForm.setDescription(actionForm.getDescription());
 
-            CommandResult commandResult = PaymentUtil.getHome().createPaymentProcessor(userVisitPK, commandForm);
+            var commandResult = PaymentUtil.getHome().createPaymentProcessor(userVisitPK, commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -104,8 +104,8 @@ public class Step2Action
             actionForm.setPaymentProcessorTypeName(paymentProcessorTypeName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.PAYMENT_PROCESSOR_TYPE, paymentProcessorType);
         }

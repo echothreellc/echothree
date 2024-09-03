@@ -64,15 +64,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetDocumentDescriptionForm commandForm = DocumentUtil.getHome().getGetDocumentDescriptionForm();
+        var commandForm = DocumentUtil.getHome().getGetDocumentDescriptionForm();
         
         commandForm.setDocumentName(actionForm.getDocumentName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = DocumentUtil.getHome().getDocumentDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = DocumentUtil.getHome().getDocumentDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetDocumentDescriptionResult result = (GetDocumentDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetDocumentDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.DOCUMENT_DESCRIPTION, result.getDocumentDescription());
         }
@@ -83,7 +83,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteDocumentDescriptionForm commandForm = DocumentUtil.getHome().getDeleteDocumentDescriptionForm();
+        var commandForm = DocumentUtil.getHome().getDeleteDocumentDescriptionForm();
 
         commandForm.setDocumentName(actionForm.getDocumentName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

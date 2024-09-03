@@ -95,7 +95,7 @@ public class OrderControl
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Order */
     public Order getOrderByEntityInstance(EntityInstance entityInstance) {
-        OrderPK pk = new OrderPK(entityInstance.getEntityUniqueId());
+        var pk = new OrderPK(entityInstance.getEntityUniqueId());
         var order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return order;

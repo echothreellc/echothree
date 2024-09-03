@@ -58,15 +58,15 @@ public class Step2Action
     @Override
     public void setupTransfer(Step2ActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSecurityRoleForm commandForm = SecurityUtil.getHome().getGetSecurityRoleForm();
+        var commandForm = SecurityUtil.getHome().getGetSecurityRoleForm();
 
         commandForm.setSecurityRoleGroupName(actionForm.getSecurityRoleGroupName());
         commandForm.setSecurityRoleName(actionForm.getSecurityRoleName());
-        
-        CommandResult commandResult = SecurityUtil.getHome().getSecurityRole(getUserVisitPK(request), commandForm);
+
+        var commandResult = SecurityUtil.getHome().getSecurityRole(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSecurityRoleResult result = (GetSecurityRoleResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSecurityRoleResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SECURITY_ROLE, result.getSecurityRole());
         }
@@ -75,7 +75,7 @@ public class Step2Action
     @Override
     public CommandResult doAdd(Step2ActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateSecurityRolePartyTypeForm commandForm = SecurityUtil.getHome().getCreateSecurityRolePartyTypeForm();
+        var commandForm = SecurityUtil.getHome().getCreateSecurityRolePartyTypeForm();
 
         commandForm.setSecurityRoleGroupName(actionForm.getSecurityRoleGroupName());
         commandForm.setSecurityRoleName(actionForm.getSecurityRoleName());

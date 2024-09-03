@@ -64,14 +64,14 @@ public class Step2ActionForm
     private void setupParentItemDescriptionTypeChoices() {
         if(parentItemDescriptionTypeChoices == null) {
             try {
-                GetItemDescriptionTypeChoicesForm form = ItemUtil.getHome().getGetItemDescriptionTypeChoicesForm();
+                var form = ItemUtil.getHome().getGetItemDescriptionTypeChoicesForm();
 
                 form.setDefaultItemDescriptionTypeChoice(parentItemDescriptionTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = ItemUtil.getHome().getItemDescriptionTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemDescriptionTypeChoicesResult getItemDescriptionTypeChoicesResult = (GetItemDescriptionTypeChoicesResult)executionResult.getResult();
+                var commandResult = ItemUtil.getHome().getItemDescriptionTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getItemDescriptionTypeChoicesResult = (GetItemDescriptionTypeChoicesResult)executionResult.getResult();
                 parentItemDescriptionTypeChoices = getItemDescriptionTypeChoicesResult.getItemDescriptionTypeChoices();
 
                 if(parentItemDescriptionTypeChoice == null) {
@@ -87,15 +87,15 @@ public class Step2ActionForm
     public void setupPreferredMimeTypeChoices() {
         if(preferredMimeTypeChoices == null) {
             try {
-                GetMimeTypeChoicesForm form = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+                var form = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
                 form.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
                 form.setDefaultMimeTypeChoice(preferredMimeTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+                var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
                 preferredMimeTypeChoices = result.getMimeTypeChoices();
 
                 if(preferredMimeTypeChoice == null) {

@@ -57,7 +57,7 @@ public class EntityLongRangeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("entityLongRangeDescription")) {
-            CreateEntityLongRangeDescriptionForm commandForm = CoreFormFactory.getCreateEntityLongRangeDescriptionForm();
+            var commandForm = CoreFormFactory.getCreateEntityLongRangeDescriptionForm();
 
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);

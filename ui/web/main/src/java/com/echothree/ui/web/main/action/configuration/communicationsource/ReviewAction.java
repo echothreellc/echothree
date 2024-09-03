@@ -58,18 +58,18 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetCommunicationSourceForm commandForm = CommunicationUtil.getHome().getGetCommunicationSourceForm();
-            String communicationSourceName = request.getParameter(ParameterConstants.COMMUNICATION_SOURCE_NAME);
+            var commandForm = CommunicationUtil.getHome().getGetCommunicationSourceForm();
+            var communicationSourceName = request.getParameter(ParameterConstants.COMMUNICATION_SOURCE_NAME);
             
             commandForm.setCommunicationSourceName(communicationSourceName);
             
             Set<String> options = new HashSet<>();
             options.add(CommunicationOptions.CommunicationSourceIncludeRelated);
             commandForm.setOptions(options);
-            
-            CommandResult commandResult = CommunicationUtil.getHome().getCommunicationSource(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommunicationSourceResult result = (GetCommunicationSourceResult)executionResult.getResult();
+
+            var commandResult = CommunicationUtil.getHome().getCommunicationSource(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommunicationSourceResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMMUNICATION_SOURCE, result.getCommunicationSource());
             forwardKey = ForwardConstants.DISPLAY;

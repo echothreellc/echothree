@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetScaleUseTypeForm commandForm = ScaleUtil.getHome().getGetScaleUseTypeForm();
+        var commandForm = ScaleUtil.getHome().getGetScaleUseTypeForm();
         
         commandForm.setScaleUseTypeName(actionForm.getScaleUseTypeName());
-        
-        CommandResult commandResult = ScaleUtil.getHome().getScaleUseType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetScaleUseTypeResult result = (GetScaleUseTypeResult)executionResult.getResult();
+
+        var commandResult = ScaleUtil.getHome().getScaleUseType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetScaleUseTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.SCALE_USE_TYPE, result.getScaleUseType());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteScaleUseTypeForm commandForm = ScaleUtil.getHome().getDeleteScaleUseTypeForm();
+        var commandForm = ScaleUtil.getHome().getDeleteScaleUseTypeForm();
 
         commandForm.setScaleUseTypeName(actionForm.getScaleUseTypeName());
 

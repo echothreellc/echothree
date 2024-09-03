@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationKinds(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCancellationKindsResult result = (GetCancellationKindsResult)executionResult.getResult();
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationKinds(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCancellationKindsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CANCELLATION_KINDS, result.getCancellationKinds());
             forwardKey = ForwardConstants.DISPLAY;

@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = AssociateUtil.getHome().getAssociatePrograms(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAssociateProgramsResult result = (GetAssociateProgramsResult)executionResult.getResult();
+            var commandResult = AssociateUtil.getHome().getAssociatePrograms(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAssociateProgramsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ASSOCIATE_PROGRAMS, result.getAssociatePrograms());
             forwardKey = ForwardConstants.DISPLAY;

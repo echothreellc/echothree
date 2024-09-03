@@ -5038,7 +5038,7 @@ public class AccountingControl
     public TransactionGroupStatusChoicesBean getTransactionGroupStatusChoices(String defaultTransactionGroupStatusChoice, Language language, boolean allowNullChoice,
             TransactionGroup transactionGroup, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        TransactionGroupStatusChoicesBean transactionGroupStatusChoicesBean = new TransactionGroupStatusChoicesBean();
+        var transactionGroupStatusChoicesBean = new TransactionGroupStatusChoicesBean();
         
         if(transactionGroup == null) {
             workflowControl.getWorkflowEntranceChoices(transactionGroupStatusChoicesBean, defaultTransactionGroupStatusChoice, language, allowNullChoice,

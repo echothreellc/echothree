@@ -51,7 +51,7 @@ public class AddAction
         String forwardKey = null;
         
         if(wasPost(request)) {
-            CreateTaxForm commandForm = TaxUtil.getHome().getCreateTaxForm();
+            var commandForm = TaxUtil.getHome().getCreateTaxForm();
             
             commandForm.setTaxName(actionForm.getTaxName());
             commandForm.setContactMechanismPurposeName(actionForm.getContactMechanismPurposeChoice());
@@ -63,8 +63,8 @@ public class AddAction
             commandForm.setIsDefault(actionForm.getIsDefault().toString());
             commandForm.setSortOrder(actionForm.getSortOrder());
             commandForm.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = TaxUtil.getHome().createTax(getUserVisitPK(request), commandForm);
+
+            var commandResult = TaxUtil.getHome().createTax(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

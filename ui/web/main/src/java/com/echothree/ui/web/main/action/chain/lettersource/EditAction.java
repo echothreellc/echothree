@@ -56,9 +56,9 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String originalLetterSourceName = request.getParameter(ParameterConstants.ORIGINAL_LETTER_SOURCE_NAME);
-        EditLetterSourceForm commandForm = LetterUtil.getHome().getEditLetterSourceForm();
-        LetterSourceSpec spec = LetterUtil.getHome().getLetterSourceSpec();
+        var originalLetterSourceName = request.getParameter(ParameterConstants.ORIGINAL_LETTER_SOURCE_NAME);
+        var commandForm = LetterUtil.getHome().getEditLetterSourceForm();
+        var spec = LetterUtil.getHome().getLetterSourceSpec();
         
         if(originalLetterSourceName == null) {
             originalLetterSourceName = actionForm.getOriginalLetterSourceName();
@@ -68,7 +68,7 @@ public class EditAction
         spec.setLetterSourceName(originalLetterSourceName);
         
         if(wasPost(request)) {
-            LetterSourceEdit edit = LetterUtil.getHome().getLetterSourceEdit();
+            var edit = LetterUtil.getHome().getLetterSourceEdit();
             
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
@@ -80,14 +80,14 @@ public class EditAction
             edit.setIsDefault(actionForm.getIsDefault().toString());
             edit.setSortOrder(actionForm.getSortOrder());
             edit.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = LetterUtil.getHome().editLetterSource(getUserVisitPK(request), commandForm);
+
+            var commandResult = LetterUtil.getHome().editLetterSource(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditLetterSourceResult result = (EditLetterSourceResult)executionResult.getResult();
+                    var result = (EditLetterSourceResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -100,13 +100,13 @@ public class EditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = LetterUtil.getHome().editLetterSource(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditLetterSourceResult result = (EditLetterSourceResult)executionResult.getResult();
+
+            var commandResult = LetterUtil.getHome().editLetterSource(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditLetterSourceResult)executionResult.getResult();
             
             if(result != null) {
-                LetterSourceEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setPartyName(getUserSession(request).getPartyRelationship().getFromParty().getPartyName());

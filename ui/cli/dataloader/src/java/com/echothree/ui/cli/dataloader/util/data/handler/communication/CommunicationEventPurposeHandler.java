@@ -50,9 +50,9 @@ public class CommunicationEventPurposeHandler
         if(localName.equals("communicationEventPurposeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +60,7 @@ public class CommunicationEventPurposeHandler
             }
             
             try {
-                CreateCommunicationEventPurposeDescriptionForm form = CommunicationFormFactory.getCreateCommunicationEventPurposeDescriptionForm();
+                var form = CommunicationFormFactory.getCreateCommunicationEventPurposeDescriptionForm();
                 
                 form.setCommunicationEventPurposeName(communicationEventPurposeName);
                 form.setLanguageIsoName(languageIsoName);

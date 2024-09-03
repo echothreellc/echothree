@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = CommunicationUtil.getHome().getCommunicationEventPurposes(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommunicationEventPurposesResult result = (GetCommunicationEventPurposesResult)executionResult.getResult();
+            var commandResult = CommunicationUtil.getHome().getCommunicationEventPurposes(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommunicationEventPurposesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMMUNICATION_EVENT_PURPOSES, result.getCommunicationEventPurposes());
             forwardKey = ForwardConstants.DISPLAY;

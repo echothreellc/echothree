@@ -53,9 +53,9 @@ public class ContactPostalAddressAddAction
     public ActionForward executeAction(ActionMapping mapping, ContactPostalAddressAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
-        CreateContactPostalAddressForm commandForm = ContactUtil.getHome().getCreateContactPostalAddressForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
+        var commandForm = ContactUtil.getHome().getCreateContactPostalAddressForm();
 
         if(partyName == null) {
             partyName = actionForm.getPartyName();
@@ -85,7 +85,7 @@ public class ContactPostalAddressAddAction
             commandForm.setIsCommercial(actionForm.getIsCommercial().toString());
             commandForm.setDescription(actionForm.getDescription());
 
-            CommandResult commandResult = ContactUtil.getHome().createContactPostalAddress(getUserVisitPK(request), commandForm);
+            var commandResult = ContactUtil.getHome().createContactPostalAddress(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -98,8 +98,8 @@ public class ContactPostalAddressAddAction
             actionForm.setCountryName(countryName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupCompany(request, partyName);
             setupCountry(request, countryName);

@@ -46,7 +46,7 @@ public class CommandMessageTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("commandMessageType")) {
-            CreateCommandMessageTypeForm commandForm = CoreFormFactory.getCreateCommandMessageTypeForm();
+            var commandForm = CoreFormFactory.getCreateCommandMessageTypeForm();
             
             commandForm.set(getAttrsMap(attrs));
             

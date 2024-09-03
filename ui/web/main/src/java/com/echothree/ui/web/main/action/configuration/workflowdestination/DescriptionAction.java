@@ -55,18 +55,18 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
-            String workflowStepName = request.getParameter(ParameterConstants.WORKFLOW_STEP_NAME);
-            String workflowDestinationName = request.getParameter(ParameterConstants.WORKFLOW_DESTINATION_NAME);
-            GetWorkflowDestinationDescriptionsForm commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationDescriptionsForm();
+            var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+            var workflowStepName = request.getParameter(ParameterConstants.WORKFLOW_STEP_NAME);
+            var workflowDestinationName = request.getParameter(ParameterConstants.WORKFLOW_DESTINATION_NAME);
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationDescriptionsForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);
             commandForm.setWorkflowDestinationName(workflowDestinationName);
-            
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowDestinationDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowDestinationDescriptionsResult result = (GetWorkflowDestinationDescriptionsResult)executionResult.getResult();
+
+            var commandResult = WorkflowUtil.getHome().getWorkflowDestinationDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowDestinationDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORKFLOW_DESTINATION, result.getWorkflowDestination());
             request.setAttribute(AttributeConstants.WORKFLOW_DESTINATION_DESCRIPTIONS, result.getWorkflowDestinationDescriptions());

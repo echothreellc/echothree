@@ -47,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultSearchKindForm commandForm = SearchUtil.getHome().getSetDefaultSearchKindForm();
+        var commandForm = SearchUtil.getHome().getSetDefaultSearchKindForm();
 
         commandForm.setSearchKindName(request.getParameter(ParameterConstants.SEARCH_KIND_NAME));
 

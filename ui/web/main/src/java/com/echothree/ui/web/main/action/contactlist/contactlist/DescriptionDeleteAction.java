@@ -63,15 +63,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContactListDescriptionForm commandForm = ContactListUtil.getHome().getGetContactListDescriptionForm();
+        var commandForm = ContactListUtil.getHome().getGetContactListDescriptionForm();
         
         commandForm.setContactListName(actionForm.getContactListName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getContactListDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getContactListDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListDescriptionResult result = (GetContactListDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CONTACT_LIST_DESCRIPTION, result.getContactListDescription());
         }
@@ -80,7 +80,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteContactListDescriptionForm commandForm = ContactListUtil.getHome().getDeleteContactListDescriptionForm();
+        var commandForm = ContactListUtil.getHome().getDeleteContactListDescriptionForm();
 
         commandForm.setContactListName(actionForm.getContactListName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

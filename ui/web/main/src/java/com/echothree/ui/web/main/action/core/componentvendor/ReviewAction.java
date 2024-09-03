@@ -55,8 +55,8 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetComponentVendorForm commandForm = CoreUtil.getHome().getGetComponentVendorForm();
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var commandForm = CoreUtil.getHome().getGetComponentVendorForm();
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
 
         commandForm.setComponentVendorName(componentVendorName);
 
@@ -66,10 +66,10 @@ public class ReviewAction
         options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = CoreUtil.getHome().getComponentVendor(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetComponentVendorResult result = (GetComponentVendorResult)executionResult.getResult();
-        ComponentVendorTransfer componentVendor = result.getComponentVendor();
+        var commandResult = CoreUtil.getHome().getComponentVendor(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetComponentVendorResult)executionResult.getResult();
+        var componentVendor = result.getComponentVendor();
 
         if(componentVendor == null) {
             forwardKey = ForwardConstants.ERROR_404;

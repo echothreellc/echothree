@@ -56,12 +56,12 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-        String returnReasonName = request.getParameter(ParameterConstants.RETURN_REASON_NAME);
+        var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+        var returnReasonName = request.getParameter(ParameterConstants.RETURN_REASON_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(returnKindName == null)
                     returnKindName = actionForm.getReturnKindName();
@@ -69,15 +69,15 @@ public class AddAction
                     returnReasonName = actionForm.getReturnReasonName();
                 
                 if(wasPost(request)) {
-                    CreateReturnReasonTypeForm commandForm = ReturnPolicyUtil.getHome().getCreateReturnReasonTypeForm();
+                    var commandForm = ReturnPolicyUtil.getHome().getCreateReturnReasonTypeForm();
                     
                     commandForm.setReturnKindName(returnKindName);
                     commandForm.setReturnReasonName(returnReasonName);
                     commandForm.setReturnTypeName(actionForm.getReturnTypeChoice());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
-                    
-                    CommandResult commandResult = ReturnPolicyUtil.getHome().createReturnReasonType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ReturnPolicyUtil.getHome().createReturnReasonType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -95,8 +95,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.RETURN_KIND_NAME, returnKindName);
             request.setAttribute(AttributeConstants.RETURN_REASON_NAME, returnReasonName);

@@ -60,13 +60,13 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
-        String letterName = request.getParameter(ParameterConstants.LETTER_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-        DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-        EditLetterDescriptionForm commandForm = LetterUtil.getHome().getEditLetterDescriptionForm();
-        LetterDescriptionSpec spec = LetterUtil.getHome().getLetterDescriptionSpec();
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
+        var letterName = request.getParameter(ParameterConstants.LETTER_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var actionForm = (DescriptionEditActionForm)form;
+        var commandForm = LetterUtil.getHome().getEditLetterDescriptionForm();
+        var spec = LetterUtil.getHome().getLetterDescriptionSpec();
         
         if(chainKindName == null)
             chainKindName = actionForm.getChainKindName();
@@ -84,19 +84,19 @@ public class DescriptionEditAction
         spec.setLanguageIsoName(languageIsoName);
         
         if(wasPost(request)) {
-            LetterDescriptionEdit edit = LetterUtil.getHome().getLetterDescriptionEdit();
+            var edit = LetterUtil.getHome().getLetterDescriptionEdit();
             
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
             edit.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = LetterUtil.getHome().editLetterDescription(getUserVisitPK(request), commandForm);
+
+            var commandResult = LetterUtil.getHome().editLetterDescription(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditLetterDescriptionResult result = (EditLetterDescriptionResult)executionResult.getResult();
+                    var result = (EditLetterDescriptionResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -109,13 +109,13 @@ public class DescriptionEditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = LetterUtil.getHome().editLetterDescription(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditLetterDescriptionResult result = (EditLetterDescriptionResult)executionResult.getResult();
+
+            var commandResult = LetterUtil.getHome().editLetterDescription(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditLetterDescriptionResult)executionResult.getResult();
             
             if(result != null) {
-                LetterDescriptionEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setChainKindName(chainKindName);
@@ -132,8 +132,8 @@ public class DescriptionEditAction
             
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CHAIN_KIND_NAME, chainKindName);
             request.setAttribute(AttributeConstants.CHAIN_TYPE_NAME, chainTypeName);

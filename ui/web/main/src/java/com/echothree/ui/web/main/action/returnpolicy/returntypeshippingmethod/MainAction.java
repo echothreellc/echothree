@@ -55,16 +55,16 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetReturnTypeShippingMethodsForm commandForm = ReturnPolicyUtil.getHome().getGetReturnTypeShippingMethodsForm();
-            String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-            String returnTypeName = request.getParameter(ParameterConstants.RETURN_TYPE_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getGetReturnTypeShippingMethodsForm();
+            var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+            var returnTypeName = request.getParameter(ParameterConstants.RETURN_TYPE_NAME);
             
             commandForm.setReturnKindName(returnKindName);
             commandForm.setReturnTypeName(returnTypeName);
 
-            CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnTypeShippingMethods(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetReturnTypeShippingMethodsResult result = (GetReturnTypeShippingMethodsResult)executionResult.getResult();
+            var commandResult = ReturnPolicyUtil.getHome().getReturnTypeShippingMethods(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnTypeShippingMethodsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RETURN_TYPE, result.getReturnType());
             request.setAttribute(AttributeConstants.RETURN_TYPE_SHIPPING_METHODS, result.getReturnTypeShippingMethods());

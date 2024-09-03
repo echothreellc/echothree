@@ -45,7 +45,7 @@ public class GetContentCategoryAction
     @Override
     protected CommandResult getCommandResult(HttpServletRequest request)
             throws Exception {
-        GetContentCategoryForm commandForm = ContentUtil.getHome().getGetContentCategoryForm();
+        var commandForm = ContentUtil.getHome().getGetContentCategoryForm();
 
         commandForm.setContentCollectionName(request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME));
         commandForm.setContentCatalogName(request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME));
@@ -53,7 +53,7 @@ public class GetContentCategoryAction
 
         BaseTag.setOptions(request.getParameter(ParameterConstants.OPTIONS), null, commandForm);
 
-        CommandResult commandResult = ContentUtil.getHome().getContentCategory(getUserVisitPK(request), commandForm);
+        var commandResult = ContentUtil.getHome().getContentCategory(getUserVisitPK(request), commandForm);
         
         return commandResult;
     }

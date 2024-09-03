@@ -58,9 +58,9 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetFilterAdjustmentForm commandForm = FilterUtil.getHome().getGetFilterAdjustmentForm();
-            String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-            String filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
+            var commandForm = FilterUtil.getHome().getGetFilterAdjustmentForm();
+            var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+            var filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
             
             commandForm.setFilterKindName(filterKindName);
             commandForm.setFilterAdjustmentName(filterAdjustmentName);
@@ -70,10 +70,10 @@ public class ReviewAction
             options.add(FilterOptions.FilterAdjustmentIncludeFilterAdjustmentFixedAmounts);
             options.add(FilterOptions.FilterAdjustmentIncludeFilterAdjustmentPercents);
             commandForm.setOptions(options);
-            
-            CommandResult commandResult = FilterUtil.getHome().getFilterAdjustment(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterAdjustmentResult result = (GetFilterAdjustmentResult)executionResult.getResult();
+
+            var commandResult = FilterUtil.getHome().getFilterAdjustment(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetFilterAdjustmentResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FILTER_ADJUSTMENT, result.getFilterAdjustment());
             forwardKey = ForwardConstants.DISPLAY;

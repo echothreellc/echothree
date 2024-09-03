@@ -49,15 +49,15 @@ public class EditActionForm
     private void setupMimeTypeChoices() {
         if(mimeTypeChoices == null) {
             try {
-                GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+                var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
                 commandForm.setDefaultMimeTypeChoice(mimeTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
                 commandForm.setDocumentName(documentName);
 
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+                var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
                 mimeTypeChoices = result.getMimeTypeChoices();
 
                 if(mimeTypeChoice == null) {

@@ -63,15 +63,15 @@ public class AddActionForm
     private void setupMinimumPasswordLifetimeUnitOfMeasureTypeChoices() {
         if(minimumPasswordLifetimeUnitOfMeasureTypeChoices == null) {
             try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
                 
                 form.setDefaultUnitOfMeasureTypeChoice(minimumPasswordLifetimeUnitOfMeasureTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
                 minimumPasswordLifetimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
                 
                 if(minimumPasswordLifetimeUnitOfMeasureTypeChoice == null) {
@@ -87,15 +87,15 @@ public class AddActionForm
     private void setupMaximumPasswordLifetimeUnitOfMeasureTypeChoices() {
         if(maximumPasswordLifetimeUnitOfMeasureTypeChoices == null) {
             try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
                 
                 form.setDefaultUnitOfMeasureTypeChoice(maximumPasswordLifetimeUnitOfMeasureTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
                 maximumPasswordLifetimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
                 
                 if(maximumPasswordLifetimeUnitOfMeasureTypeChoice == null) {
@@ -111,15 +111,15 @@ public class AddActionForm
     private void setupExpirationWarningTimeUnitOfMeasureTypeChoices() {
         if(expirationWarningTimeUnitOfMeasureTypeChoices == null) {
             try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
                 
                 form.setDefaultUnitOfMeasureTypeChoice(expirationWarningTimeUnitOfMeasureTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
                 expirationWarningTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
                 
                 if(expirationWarningTimeUnitOfMeasureTypeChoice == null) {

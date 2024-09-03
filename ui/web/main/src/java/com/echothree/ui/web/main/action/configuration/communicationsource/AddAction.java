@@ -55,10 +55,10 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateCommunicationSourceForm commandForm = CommunicationUtil.getHome().getCreateCommunicationSourceForm();
+                    var commandForm = CommunicationUtil.getHome().getCreateCommunicationSourceForm();
                     
                     commandForm.setCommunicationSourceName(actionForm.getCommunicationSourceName());
                     commandForm.setCommunicationSourceTypeName(CommunicationConstants.CommunicationSourceType_EMAIL);
@@ -70,8 +70,8 @@ public class AddAction
                     commandForm.setSendWorkEffortScopeName(actionForm.getSendWorkEffortScopeChoice());
                     commandForm.setReviewEmployeeSelectorName(actionForm.getReviewEmployeeSelectorChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CommunicationUtil.getHome().createCommunicationSource(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CommunicationUtil.getHome().createCommunicationSource(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

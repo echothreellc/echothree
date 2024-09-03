@@ -60,15 +60,15 @@ public class AddActionForm
     private void setupAssociateSequenceChoices() {
         if(associateSequenceChoices == null) {
             try {
-                GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
+                var commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
                 commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE.name());
                 commandForm.setDefaultSequenceChoice(associateSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+
+                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSequenceChoicesResult)executionResult.getResult();
                 associateSequenceChoices = result.getSequenceChoices();
                 
                 if(associateSequenceChoice == null)
@@ -102,15 +102,15 @@ public class AddActionForm
     private void setupAssociatePartyContactMechanismSequenceChoices() {
         if(associatePartyContactMechanismSequenceChoices == null) {
             try {
-                GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
+                var commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
                 commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.name());
                 commandForm.setDefaultSequenceChoice(associatePartyContactMechanismSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+
+                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSequenceChoicesResult)executionResult.getResult();
                 associatePartyContactMechanismSequenceChoices = result.getSequenceChoices();
                 
                 if(associatePartyContactMechanismSequenceChoice == null)
@@ -144,15 +144,15 @@ public class AddActionForm
     private void setupAssociateReferralSequenceChoices() {
         if(associateReferralSequenceChoices == null) {
             try {
-                GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
+                var commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
                 commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE_REFERRAL.name());
                 commandForm.setDefaultSequenceChoice(associateReferralSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+
+                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSequenceChoicesResult)executionResult.getResult();
                 associateReferralSequenceChoices = result.getSequenceChoices();
                 
                 if(associateReferralSequenceChoice == null)

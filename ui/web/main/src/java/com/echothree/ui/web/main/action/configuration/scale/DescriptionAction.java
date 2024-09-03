@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String scaleName = request.getParameter(ParameterConstants.SCALE_NAME);
-            GetScaleDescriptionsForm commandForm = ScaleUtil.getHome().getGetScaleDescriptionsForm();
+            var scaleName = request.getParameter(ParameterConstants.SCALE_NAME);
+            var commandForm = ScaleUtil.getHome().getGetScaleDescriptionsForm();
             
             commandForm.setScaleName(scaleName);
-            
-            CommandResult commandResult = ScaleUtil.getHome().getScaleDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetScaleDescriptionsResult result = (GetScaleDescriptionsResult)executionResult.getResult();
-            ScaleTransfer scaleTransfer = result.getScale();
+
+            var commandResult = ScaleUtil.getHome().getScaleDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetScaleDescriptionsResult)executionResult.getResult();
+            var scaleTransfer = result.getScale();
             
             request.setAttribute(AttributeConstants.SCALE, scaleTransfer);
             request.setAttribute(AttributeConstants.SCALE_DESCRIPTIONS, result.getScaleDescriptions());

@@ -57,15 +57,15 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetChainTypeForm commandForm = ChainUtil.getHome().getGetChainTypeForm();
+        var commandForm = ChainUtil.getHome().getGetChainTypeForm();
 
         commandForm.setChainKindName(actionForm.getChainKindName());
         commandForm.setChainTypeName(actionForm.getChainTypeName());
-        
-        CommandResult commandResult = ChainUtil.getHome().getChainType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ChainUtil.getHome().getChainType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetChainTypeResult result = (GetChainTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetChainTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CHAIN_TYPE, result.getChainType());
         }
@@ -74,7 +74,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateChainTypeDescriptionForm commandForm = ChainUtil.getHome().getCreateChainTypeDescriptionForm();
+        var commandForm = ChainUtil.getHome().getCreateChainTypeDescriptionForm();
 
         commandForm.setChainKindName(actionForm.getChainKindName());
         commandForm.setChainTypeName(actionForm.getChainTypeName());

@@ -48,7 +48,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultContactListTypeForm commandForm = ContactListUtil.getHome().getSetDefaultContactListTypeForm();
+        var commandForm = ContactListUtil.getHome().getSetDefaultContactListTypeForm();
 
         commandForm.setContactListTypeName(request.getParameter(ParameterConstants.CONTACT_LIST_TYPE_NAME));
 

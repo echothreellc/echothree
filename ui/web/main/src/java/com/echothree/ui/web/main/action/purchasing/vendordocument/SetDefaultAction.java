@@ -50,15 +50,15 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultPartyDocumentForm commandForm = DocumentUtil.getHome().getSetDefaultPartyDocumentForm();
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String documentName = request.getParameter(ParameterConstants.DOCUMENT_NAME);
+        var commandForm = DocumentUtil.getHome().getSetDefaultPartyDocumentForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var documentName = request.getParameter(ParameterConstants.DOCUMENT_NAME);
 
         commandForm.setDocumentName(documentName);
 
         DocumentUtil.getHome().setDefaultPartyDocument(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
 
         parameters.put(ParameterConstants.PARTY_NAME, partyName);

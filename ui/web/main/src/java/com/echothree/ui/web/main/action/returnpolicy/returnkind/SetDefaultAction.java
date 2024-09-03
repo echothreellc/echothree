@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultReturnKindForm commandForm = ReturnPolicyUtil.getHome().getSetDefaultReturnKindForm();
-            String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getSetDefaultReturnKindForm();
+            var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
             
             commandForm.setReturnKindName(returnKindName);
             

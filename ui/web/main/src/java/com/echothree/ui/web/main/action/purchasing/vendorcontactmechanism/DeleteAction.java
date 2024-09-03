@@ -66,7 +66,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteContactMechanismForm commandForm = ContactUtil.getHome().getDeleteContactMechanismForm();
+        var commandForm = ContactUtil.getHome().getDeleteContactMechanismForm();
         
         commandForm.setContactMechanismName(actionForm.getContactMechanismName());
 

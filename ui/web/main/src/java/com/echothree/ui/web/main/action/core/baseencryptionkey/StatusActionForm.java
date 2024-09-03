@@ -40,15 +40,15 @@ public class StatusActionForm
     public void setupBaseEncryptionKeyStatusChoices()
             throws NamingException {
         if(baseEncryptionKeyStatusChoices == null) {
-            GetBaseEncryptionKeyStatusChoicesForm form = CoreUtil.getHome().getGetBaseEncryptionKeyStatusChoicesForm();
+            var form = CoreUtil.getHome().getGetBaseEncryptionKeyStatusChoicesForm();
 
             form.setBaseEncryptionKeyName(baseEncryptionKeyName);
             form.setDefaultBaseEncryptionKeyStatusChoice(baseEncryptionKeyStatusChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getBaseEncryptionKeyStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetBaseEncryptionKeyStatusChoicesResult result = (GetBaseEncryptionKeyStatusChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getBaseEncryptionKeyStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetBaseEncryptionKeyStatusChoicesResult)executionResult.getResult();
             baseEncryptionKeyStatusChoices = result.getBaseEncryptionKeyStatusChoices();
 
             if(baseEncryptionKeyStatusChoice == null) {

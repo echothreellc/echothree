@@ -54,16 +54,16 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-            String filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
-            GetFilterAdjustmentDescriptionsForm getFilterAdjustmentDescriptionsForm = FilterUtil.getHome().getGetFilterAdjustmentDescriptionsForm();
+            var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+            var filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
+            var getFilterAdjustmentDescriptionsForm = FilterUtil.getHome().getGetFilterAdjustmentDescriptionsForm();
             
             getFilterAdjustmentDescriptionsForm.setFilterKindName(filterKindName);
             getFilterAdjustmentDescriptionsForm.setFilterAdjustmentName(filterAdjustmentName);
-            
-            CommandResult commandResult = FilterUtil.getHome().getFilterAdjustmentDescriptions(getUserVisitPK(request), getFilterAdjustmentDescriptionsForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterAdjustmentDescriptionsResult getFilterAdjustmentDescriptionsResult = (GetFilterAdjustmentDescriptionsResult)executionResult.getResult();
+
+            var commandResult = FilterUtil.getHome().getFilterAdjustmentDescriptions(getUserVisitPK(request), getFilterAdjustmentDescriptionsForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getFilterAdjustmentDescriptionsResult = (GetFilterAdjustmentDescriptionsResult)executionResult.getResult();
             
             request.setAttribute("filterKind", getFilterAdjustmentDescriptionsResult.getFilterKind());
             request.setAttribute("filterAdjustment", getFilterAdjustmentDescriptionsResult.getFilterAdjustment());

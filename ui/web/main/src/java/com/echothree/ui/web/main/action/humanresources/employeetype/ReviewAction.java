@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetEmployeeTypeForm commandForm = EmployeeUtil.getHome().getGetEmployeeTypeForm();
-            String employeeTypeName = request.getParameter(ParameterConstants.EMPLOYEE_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getGetEmployeeTypeForm();
+            var employeeTypeName = request.getParameter(ParameterConstants.EMPLOYEE_TYPE_NAME);
             
             commandForm.setEmployeeTypeName(employeeTypeName);
-            
-            CommandResult commandResult = EmployeeUtil.getHome().getEmployeeType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmployeeTypeResult result = (GetEmployeeTypeResult)executionResult.getResult();
+
+            var commandResult = EmployeeUtil.getHome().getEmployeeType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmployeeTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.EMPLOYEE_TYPE, result.getEmployeeType());
             forwardKey = ForwardConstants.DISPLAY;

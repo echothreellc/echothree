@@ -59,10 +59,10 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
-        String originalSequenceName = request.getParameter(ParameterConstants.ORIGINAL_SEQUENCE_NAME);
-        EditSequenceForm commandForm = SequenceUtil.getHome().getEditSequenceForm();
-        SequenceSpec spec = SequenceUtil.getHome().getSequenceSpec();
+        var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
+        var originalSequenceName = request.getParameter(ParameterConstants.ORIGINAL_SEQUENCE_NAME);
+        var commandForm = SequenceUtil.getHome().getEditSequenceForm();
+        var spec = SequenceUtil.getHome().getSequenceSpec();
 
         if(sequenceTypeName == null) {
             sequenceTypeName = actionForm.getSequenceTypeName();
@@ -77,7 +77,7 @@ public class EditAction
         spec.setSequenceName(originalSequenceName);
 
         if(wasPost(request)) {
-            SequenceEdit edit = SequenceUtil.getHome().getSequenceEdit();
+            var edit = SequenceUtil.getHome().getSequenceEdit();
 
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
@@ -89,13 +89,13 @@ public class EditAction
             edit.setSortOrder(actionForm.getSortOrder());
             edit.setDescription(actionForm.getDescription());
 
-            CommandResult commandResult = SequenceUtil.getHome().editSequence(getUserVisitPK(request), commandForm);
+            var commandResult = SequenceUtil.getHome().editSequence(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {
-                    EditSequenceResult result = (EditSequenceResult)executionResult.getResult();
+                    var result = (EditSequenceResult)executionResult.getResult();
 
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -109,12 +109,12 @@ public class EditAction
         } else {
             commandForm.setEditMode(EditMode.LOCK);
 
-            CommandResult commandResult = SequenceUtil.getHome().editSequence(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditSequenceResult result = (EditSequenceResult)executionResult.getResult();
+            var commandResult = SequenceUtil.getHome().editSequence(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditSequenceResult)executionResult.getResult();
 
             if(result != null) {
-                SequenceEdit edit = result.getEdit();
+                var edit = result.getEdit();
 
                 if(edit != null) {
                     actionForm.setSequenceTypeName(sequenceTypeName);
@@ -135,7 +135,7 @@ public class EditAction
             forwardKey = ForwardConstants.FORM;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SEQUENCE_TYPE_NAME, sequenceTypeName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

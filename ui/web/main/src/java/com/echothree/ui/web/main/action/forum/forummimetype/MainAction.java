@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetForumMimeTypesForm commandForm = ForumUtil.getHome().getGetForumMimeTypesForm();
-            String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+            var commandForm = ForumUtil.getHome().getGetForumMimeTypesForm();
+            var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
             
             commandForm.setForumName(forumName);
 
-            CommandResult commandResult = ForumUtil.getHome().getForumMimeTypes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetForumMimeTypesResult result = (GetForumMimeTypesResult)executionResult.getResult();
+            var commandResult = ForumUtil.getHome().getForumMimeTypes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetForumMimeTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FORUM, result.getForum());
             request.setAttribute(AttributeConstants.FORUM_MIME_TYPES, result.getForumMimeTypes());

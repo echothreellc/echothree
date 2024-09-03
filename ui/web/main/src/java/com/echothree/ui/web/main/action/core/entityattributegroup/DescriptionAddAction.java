@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEntityAttributeGroupForm commandForm = CoreUtil.getHome().getGetEntityAttributeGroupForm();
+        var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupForm();
 
         commandForm.setEntityAttributeGroupName(actionForm.getEntityAttributeGroupName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityAttributeGroup(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEntityAttributeGroup(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeGroupResult result = (GetEntityAttributeGroupResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityAttributeGroupResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE_GROUP, result.getEntityAttributeGroup());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateEntityAttributeGroupDescriptionForm commandForm = CoreUtil.getHome().getCreateEntityAttributeGroupDescriptionForm();
+        var commandForm = CoreUtil.getHome().getCreateEntityAttributeGroupDescriptionForm();
 
         commandForm.setEntityAttributeGroupName( actionForm.getEntityAttributeGroupName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

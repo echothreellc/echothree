@@ -63,15 +63,15 @@ public class ContactListContactMechanismPurposeDeleteAction
     @Override
     public void setupTransfer(ContactListContactMechanismPurposeDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContactListContactMechanismPurposeForm commandForm = ContactListUtil.getHome().getGetContactListContactMechanismPurposeForm();
+        var commandForm = ContactListUtil.getHome().getGetContactListContactMechanismPurposeForm();
         
         commandForm.setContactListName(actionForm.getContactListName());
         commandForm.setContactMechanismPurposeName(actionForm.getContactMechanismPurposeName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getContactListContactMechanismPurpose(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getContactListContactMechanismPurpose(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListContactMechanismPurposeResult result = (GetContactListContactMechanismPurposeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListContactMechanismPurposeResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CONTACT_LIST_CONTACT_MECHANISM_PURPOSE, result.getContactListContactMechanismPurpose());
         }
@@ -80,7 +80,7 @@ public class ContactListContactMechanismPurposeDeleteAction
     @Override
     public CommandResult doDelete(ContactListContactMechanismPurposeDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteContactListContactMechanismPurposeForm commandForm = ContactListUtil.getHome().getDeleteContactListContactMechanismPurposeForm();
+        var commandForm = ContactListUtil.getHome().getDeleteContactListContactMechanismPurposeForm();
 
         commandForm.setContactListName(actionForm.getContactListName());
         commandForm.setContactMechanismPurposeName(actionForm.getContactMechanismPurposeName());

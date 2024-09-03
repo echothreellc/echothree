@@ -48,14 +48,14 @@ public class AddActionForm
     public void setupPostalAddressElementTypeChoices() {
         if(postalAddressElementTypeChoices == null) {
             try {
-                GetPostalAddressElementTypeChoicesForm form = ContactUtil.getHome().getGetPostalAddressElementTypeChoicesForm();
+                var form = ContactUtil.getHome().getGetPostalAddressElementTypeChoicesForm();
                 
                 form.setDefaultPostalAddressElementTypeChoice(postalAddressElementTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ContactUtil.getHome().getPostalAddressElementTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPostalAddressElementTypeChoicesResult result = (GetPostalAddressElementTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = ContactUtil.getHome().getPostalAddressElementTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPostalAddressElementTypeChoicesResult)executionResult.getResult();
                 postalAddressElementTypeChoices = result.getPostalAddressElementTypeChoices();
                 
                 if(postalAddressElementTypeChoice == null) {

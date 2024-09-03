@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetScaleUseTypeForm commandForm = ScaleUtil.getHome().getGetScaleUseTypeForm();
+        var commandForm = ScaleUtil.getHome().getGetScaleUseTypeForm();
 
         commandForm.setScaleUseTypeName(actionForm.getScaleUseTypeName());
-        
-        CommandResult commandResult = ScaleUtil.getHome().getScaleUseType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ScaleUtil.getHome().getScaleUseType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetScaleUseTypeResult result = (GetScaleUseTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetScaleUseTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SCALE_USE_TYPE, result.getScaleUseType());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateScaleUseTypeDescriptionForm commandForm = ScaleUtil.getHome().getCreateScaleUseTypeDescriptionForm();
+        var commandForm = ScaleUtil.getHome().getCreateScaleUseTypeDescriptionForm();
 
         commandForm.setScaleUseTypeName( actionForm.getScaleUseTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

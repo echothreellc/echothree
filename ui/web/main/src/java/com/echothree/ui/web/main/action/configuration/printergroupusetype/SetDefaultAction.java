@@ -48,7 +48,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultPrinterGroupUseTypeForm commandForm = PrinterUtil.getHome().getSetDefaultPrinterGroupUseTypeForm();
+        var commandForm = PrinterUtil.getHome().getSetDefaultPrinterGroupUseTypeForm();
 
         commandForm.setPrinterGroupUseTypeName(request.getParameter(ParameterConstants.PRINTER_GROUP_USE_TYPE_NAME));
 

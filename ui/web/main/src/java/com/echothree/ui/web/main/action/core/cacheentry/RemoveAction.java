@@ -47,7 +47,7 @@ public class RemoveAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        RemoveCacheEntryForm commandForm = CoreUtil.getHome().getRemoveCacheEntryForm();
+        var commandForm = CoreUtil.getHome().getRemoveCacheEntryForm();
 
         commandForm.setCacheEntryKey(request.getParameter(ParameterConstants.CACHE_ENTRY_KEY));
 

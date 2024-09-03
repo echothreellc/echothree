@@ -69,14 +69,14 @@ public class MainActionForm
     private void setupCustomerTypeChoices()
             throws NamingException {
         if(customerTypeChoices == null) {
-            GetCustomerTypeChoicesForm form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
+            var form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
 
             form.setDefaultCustomerTypeChoice(customerTypeChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypeChoicesResult getCustomerTypeChoicesResult = (GetCustomerTypeChoicesResult)executionResult.getResult();
+            var commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getCustomerTypeChoicesResult = (GetCustomerTypeChoicesResult)executionResult.getResult();
             customerTypeChoices = getCustomerTypeChoicesResult.getCustomerTypeChoices();
 
             if(customerTypeChoice == null) {
@@ -88,14 +88,14 @@ public class MainActionForm
     private void setupCountryChoices()
             throws NamingException {
         if(countryChoices == null) {
-            GetCountryChoicesForm commandForm = GeoUtil.getHome().getGetCountryChoicesForm();
+            var commandForm = GeoUtil.getHome().getGetCountryChoicesForm();
 
             commandForm.setDefaultCountryChoice(countryChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = GeoUtil.getHome().getCountryChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCountryChoicesResult result = (GetCountryChoicesResult)executionResult.getResult();
+            var commandResult = GeoUtil.getHome().getCountryChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCountryChoicesResult)executionResult.getResult();
             countryChoices = result.getCountryChoices();
 
             if(countryChoice == null) {
@@ -107,15 +107,15 @@ public class MainActionForm
     private void setupPartyAliasTypeChoices()
             throws NamingException {
         if(partyAliasTypeChoices == null) {
-            GetPartyAliasTypeChoicesForm form = PartyUtil.getHome().getGetPartyAliasTypeChoicesForm();
+            var form = PartyUtil.getHome().getGetPartyAliasTypeChoicesForm();
 
             form.setPartyTypeName(PartyTypes.CUSTOMER.name());
             form.setDefaultPartyAliasTypeChoice(partyAliasTypeChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getPartyAliasTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyAliasTypeChoicesResult getPartyAliasTypeChoicesResult = (GetPartyAliasTypeChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getPartyAliasTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getPartyAliasTypeChoicesResult = (GetPartyAliasTypeChoicesResult)executionResult.getResult();
             partyAliasTypeChoices = getPartyAliasTypeChoicesResult.getPartyAliasTypeChoices();
 
             if(partyAliasTypeChoice == null) {

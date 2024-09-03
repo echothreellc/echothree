@@ -61,15 +61,15 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
+        var customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
         
         try {
-            String currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
+            var currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
             
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditCustomerTypeCreditLimitForm commandForm = TermUtil.getHome().getEditCustomerTypeCreditLimitForm();
-                CustomerTypeCreditLimitSpec spec = TermUtil.getHome().getCustomerTypeCreditLimitSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = TermUtil.getHome().getEditCustomerTypeCreditLimitForm();
+                var spec = TermUtil.getHome().getCustomerTypeCreditLimitSpec();
                 
                 if(customerTypeName == null)
                     customerTypeName = actionForm.getCustomerTypeName();
@@ -81,20 +81,20 @@ public class EditAction
                 spec.setCurrencyIsoName(currencyIsoName);
                 
                 if(wasPost(request)) {
-                    CustomerTypeCreditLimitEdit edit = TermUtil.getHome().getCustomerTypeCreditLimitEdit();
+                    var edit = TermUtil.getHome().getCustomerTypeCreditLimitEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setPotentialCreditLimit(actionForm.getPotentialCreditLimit());
                     edit.setCreditLimit(actionForm.getCreditLimit());
-                    
-                    CommandResult commandResult = TermUtil.getHome().editCustomerTypeCreditLimit(getUserVisitPK(request), commandForm);
+
+                    var commandResult = TermUtil.getHome().editCustomerTypeCreditLimit(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditCustomerTypeCreditLimitResult result = (EditCustomerTypeCreditLimitResult)executionResult.getResult();
+                            var result = (EditCustomerTypeCreditLimitResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -107,13 +107,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = TermUtil.getHome().editCustomerTypeCreditLimit(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditCustomerTypeCreditLimitResult result = (EditCustomerTypeCreditLimitResult)executionResult.getResult();
+
+                    var commandResult = TermUtil.getHome().editCustomerTypeCreditLimit(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditCustomerTypeCreditLimitResult)executionResult.getResult();
                     
                     if(result != null) {
-                        CustomerTypeCreditLimitEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setCustomerTypeName(customerTypeName);
@@ -133,8 +133,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_NAME, customerTypeName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

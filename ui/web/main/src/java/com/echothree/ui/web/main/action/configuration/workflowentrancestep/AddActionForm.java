@@ -42,15 +42,15 @@ public class AddActionForm
     private void setupEntranceWorkflowStepChoices()
             throws NamingException {
         if(entranceWorkflowStepChoices == null) {
-            GetWorkflowStepChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
+            var form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
 
             form.setWorkflowName(entranceWorkflowName);
             form.setDefaultWorkflowStepChoice(entranceWorkflowStepChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowStepChoicesResult result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
             entranceWorkflowStepChoices = result.getWorkflowStepChoices();
 
             if(entranceWorkflowStepChoice == null) {

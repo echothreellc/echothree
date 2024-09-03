@@ -58,13 +58,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalPartySecurityRoleTemplateName = request.getParameter(ParameterConstants.ORIGINAL_PARTY_SECURITY_ROLE_TEMPLATE_NAME);
+        var originalPartySecurityRoleTemplateName = request.getParameter(ParameterConstants.ORIGINAL_PARTY_SECURITY_ROLE_TEMPLATE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditPartySecurityRoleTemplateForm commandForm = SecurityUtil.getHome().getEditPartySecurityRoleTemplateForm();
-                PartySecurityRoleTemplateSpec spec = SecurityUtil.getHome().getPartySecurityRoleTemplateSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = SecurityUtil.getHome().getEditPartySecurityRoleTemplateForm();
+                var spec = SecurityUtil.getHome().getPartySecurityRoleTemplateSpec();
                 
                 if(originalPartySecurityRoleTemplateName == null)
                     originalPartySecurityRoleTemplateName = actionForm.getOriginalPartySecurityRoleTemplateName();
@@ -73,12 +73,12 @@ public class EditAction
                 spec.setPartySecurityRoleTemplateName(originalPartySecurityRoleTemplateName);
                 
                 if(wasPost(request)) {
-                    boolean wasCanceled = wasCanceled(request);
+                    var wasCanceled = wasCanceled(request);
 
                     if(wasCanceled) {
                         commandForm.setEditMode(EditMode.ABANDON);
                     } else {
-                        PartySecurityRoleTemplateEdit edit = SecurityUtil.getHome().getPartySecurityRoleTemplateEdit();
+                        var edit = SecurityUtil.getHome().getPartySecurityRoleTemplateEdit();
 
                         commandForm.setEditMode(EditMode.UPDATE);
                         commandForm.setEdit(edit);
@@ -88,14 +88,14 @@ public class EditAction
                         edit.setSortOrder(actionForm.getSortOrder());
                         edit.setDescription(actionForm.getDescription());
                     }
-            
-                    CommandResult commandResult = SecurityUtil.getHome().editPartySecurityRoleTemplate(getUserVisitPK(request), commandForm);
+
+                    var commandResult = SecurityUtil.getHome().editPartySecurityRoleTemplate(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors() && !wasCanceled) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditPartySecurityRoleTemplateResult result = (EditPartySecurityRoleTemplateResult)executionResult.getResult();
+                            var result = (EditPartySecurityRoleTemplateResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -108,13 +108,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = SecurityUtil.getHome().editPartySecurityRoleTemplate(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditPartySecurityRoleTemplateResult result = (EditPartySecurityRoleTemplateResult)executionResult.getResult();
+
+                    var commandResult = SecurityUtil.getHome().editPartySecurityRoleTemplate(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditPartySecurityRoleTemplateResult)executionResult.getResult();
                     
                     if(result != null) {
-                        PartySecurityRoleTemplateEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalPartySecurityRoleTemplateName(edit.getPartySecurityRoleTemplateName());

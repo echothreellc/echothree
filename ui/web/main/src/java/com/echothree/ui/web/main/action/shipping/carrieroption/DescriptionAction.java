@@ -55,16 +55,16 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
-            String carrierOptionName = request.getParameter(ParameterConstants.CARRIER_OPTION_NAME);
-            GetCarrierOptionDescriptionsForm commandForm = CarrierUtil.getHome().getGetCarrierOptionDescriptionsForm();
+            var carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
+            var carrierOptionName = request.getParameter(ParameterConstants.CARRIER_OPTION_NAME);
+            var commandForm = CarrierUtil.getHome().getGetCarrierOptionDescriptionsForm();
             
             commandForm.setCarrierName(carrierName);
             commandForm.setCarrierOptionName(carrierOptionName);
-            
-            CommandResult commandResult = CarrierUtil.getHome().getCarrierOptionDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCarrierOptionDescriptionsResult result = (GetCarrierOptionDescriptionsResult)executionResult.getResult();
+
+            var commandResult = CarrierUtil.getHome().getCarrierOptionDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCarrierOptionDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CARRIER_OPTION, result.getCarrierOption());
             request.setAttribute(AttributeConstants.CARRIER_OPTION_DESCRIPTIONS, result.getCarrierOptionDescriptions());

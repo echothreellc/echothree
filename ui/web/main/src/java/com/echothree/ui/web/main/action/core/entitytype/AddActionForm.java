@@ -49,15 +49,15 @@ public class AddActionForm
     private void setupLockTimeoutUnitOfMeasureTypeChoices()
             throws NamingException {
         if(lockTimeoutUnitOfMeasureTypeChoices == null) {
-            GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(lockTimeoutUnitOfMeasureTypeChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
             lockTimeoutUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(lockTimeoutUnitOfMeasureTypeChoice == null) {

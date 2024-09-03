@@ -55,7 +55,7 @@ public class DescriptionEditAction
     @Override
     protected PaymentMethodDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        PaymentMethodDescriptionSpec spec = PaymentUtil.getHome().getPaymentMethodDescriptionSpec();
+        var spec = PaymentUtil.getHome().getPaymentMethodDescriptionSpec();
         
         spec.setPaymentMethodName(findParameter(request, ParameterConstants.PAYMENT_METHOD_NAME, actionForm.getPaymentMethodName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -66,7 +66,7 @@ public class DescriptionEditAction
     @Override
     protected PaymentMethodDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        PaymentMethodDescriptionEdit edit = PaymentUtil.getHome().getPaymentMethodDescriptionEdit();
+        var edit = PaymentUtil.getHome().getPaymentMethodDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 
@@ -89,11 +89,11 @@ public class DescriptionEditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditPaymentMethodDescriptionForm commandForm)
             throws Exception {
-        CommandResult commandResult = PaymentUtil.getHome().editPaymentMethodDescription(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditPaymentMethodDescriptionResult result = (EditPaymentMethodDescriptionResult)executionResult.getResult();
+        var commandResult = PaymentUtil.getHome().editPaymentMethodDescription(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditPaymentMethodDescriptionResult)executionResult.getResult();
 
-        PaymentMethodDescriptionTransfer paymentMethodDescription = result.getPaymentMethodDescription();
+        var paymentMethodDescription = result.getPaymentMethodDescription();
         if(paymentMethodDescription != null) {
             request.setAttribute(AttributeConstants.PAYMENT_METHOD, paymentMethodDescription.getPaymentMethod());
         }
@@ -109,14 +109,14 @@ public class DescriptionEditAction
     @Override
     public void setupTransfer(DescriptionEditActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPaymentMethodForm commandForm = PaymentUtil.getHome().getGetPaymentMethodForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentMethodForm();
 
         commandForm.setPaymentMethodName(actionForm.getPaymentMethodName());
-        
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentMethod(getUserVisitPK(request), commandForm);
+
+        var commandResult = PaymentUtil.getHome().getPaymentMethod(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPaymentMethodResult result = (GetPaymentMethodResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPaymentMethodResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PAYMENT_METHOD, result.getPaymentMethod());
         }

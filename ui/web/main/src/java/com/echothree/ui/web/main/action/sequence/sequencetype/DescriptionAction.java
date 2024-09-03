@@ -54,14 +54,14 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
-            GetSequenceTypeDescriptionsForm getSequenceTypeDescriptionsForm = SequenceUtil.getHome().getGetSequenceTypeDescriptionsForm();
+            var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
+            var getSequenceTypeDescriptionsForm = SequenceUtil.getHome().getGetSequenceTypeDescriptionsForm();
             
             getSequenceTypeDescriptionsForm.setSequenceTypeName(sequenceTypeName);
-            
-            CommandResult commandResult = SequenceUtil.getHome().getSequenceTypeDescriptions(getUserVisitPK(request), getSequenceTypeDescriptionsForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSequenceTypeDescriptionsResult getSequenceTypeDescriptionsResult = (GetSequenceTypeDescriptionsResult)executionResult.getResult();
+
+            var commandResult = SequenceUtil.getHome().getSequenceTypeDescriptions(getUserVisitPK(request), getSequenceTypeDescriptionsForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getSequenceTypeDescriptionsResult = (GetSequenceTypeDescriptionsResult)executionResult.getResult();
             
             request.setAttribute("sequenceType", getSequenceTypeDescriptionsResult.getSequenceType());
             request.setAttribute("sequenceTypeDescriptions", getSequenceTypeDescriptionsResult.getSequenceTypeDescriptions());

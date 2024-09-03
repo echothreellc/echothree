@@ -57,12 +57,12 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalTypeCustomerName = request.getParameter(ParameterConstants.ORIGINAL_CUSTOMER_TYPE_NAME);
+        var originalTypeCustomerName = request.getParameter(ParameterConstants.ORIGINAL_CUSTOMER_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditCustomerTypeForm commandForm = CustomerUtil.getHome().getEditCustomerTypeForm();
+                var actionForm = (EditActionForm)form;
+                var commandForm = CustomerUtil.getHome().getEditCustomerTypeForm();
                 var spec = CustomerUtil.getHome().getCustomerTypeUniversalSpec();
                 
                 if(originalTypeCustomerName == null)
@@ -72,7 +72,7 @@ public class EditAction
                 spec.setCustomerTypeName(originalTypeCustomerName);
                 
                 if(wasPost(request)) {
-                    CustomerTypeEdit edit = CustomerUtil.getHome().getCustomerTypeEdit();
+                    var edit = CustomerUtil.getHome().getCustomerTypeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -99,14 +99,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CustomerUtil.getHome().editCustomerType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CustomerUtil.getHome().editCustomerType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditCustomerTypeResult result = (EditCustomerTypeResult)executionResult.getResult();
+                            var result = (EditCustomerTypeResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -119,13 +119,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CustomerUtil.getHome().editCustomerType(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditCustomerTypeResult result = (EditCustomerTypeResult)executionResult.getResult();
+
+                    var commandResult = CustomerUtil.getHome().editCustomerType(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditCustomerTypeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        CustomerTypeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalCustomerTypeName(edit.getCustomerTypeName());

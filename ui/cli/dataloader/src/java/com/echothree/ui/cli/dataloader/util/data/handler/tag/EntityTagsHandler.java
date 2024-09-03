@@ -48,7 +48,7 @@ public class EntityTagsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("entityTag")) {
-            CreateEntityTagForm commandForm = TagFormFactory.getCreateEntityTagForm();
+            var commandForm = TagFormFactory.getCreateEntityTagForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));

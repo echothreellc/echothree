@@ -50,7 +50,7 @@ public class UnitOfMeasureKindUseTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("unitOfMeasureKindUseTypeDescription")) {
-            CreateUnitOfMeasureKindUseTypeDescriptionForm form = UomFormFactory.getCreateUnitOfMeasureKindUseTypeDescriptionForm();
+            var form = UomFormFactory.getCreateUnitOfMeasureKindUseTypeDescriptionForm();
 
             form.setUnitOfMeasureKindUseTypeName(unitOfMeasureKindUseTypeName);
             form.set(getAttrsMap(attrs));

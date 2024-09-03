@@ -57,14 +57,14 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-        String contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
-        String contentPageName = request.getParameter(ParameterConstants.CONTENT_PAGE_NAME);
-        String sortOrder = request.getParameter(ParameterConstants.SORT_ORDER);
-        String parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
+        var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+        var contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
+        var contentPageName = request.getParameter(ParameterConstants.CONTENT_PAGE_NAME);
+        var sortOrder = request.getParameter(ParameterConstants.SORT_ORDER);
+        var parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
 
         if(wasPost(request)) {
-            CreateContentPageAreaForm commandForm = ContentUtil.getHome().getCreateContentPageAreaForm();
+            var commandForm = ContentUtil.getHome().getCreateContentPageAreaForm();
 
             if(contentCollectionName == null)
                 contentCollectionName = actionForm.getContentCollectionName();
@@ -87,7 +87,7 @@ public class AddAction
             commandForm.setContentPageAreaClob(actionForm.getContentPageAreaClob());
             commandForm.setContentPageAreaUrl(actionForm.getContentPageAreaUrl());
 
-            CommandResult commandResult = ContentUtil.getHome().createContentPageArea(getUserVisitPK(request), commandForm);
+            var commandResult = ContentUtil.getHome().createContentPageArea(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -103,19 +103,19 @@ public class AddAction
             actionForm.setParentContentSectionName(parentContentSectionName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
-            GetContentPageLayoutAreaForm getContentPageLayoutAreaForm = ContentUtil.getHome().getGetContentPageLayoutAreaForm();
+            var getContentPageLayoutAreaForm = ContentUtil.getHome().getGetContentPageLayoutAreaForm();
 
             getContentPageLayoutAreaForm.setContentCollectionName(contentCollectionName);
             getContentPageLayoutAreaForm.setContentSectionName(contentSectionName);
             getContentPageLayoutAreaForm.setContentPageName(contentPageName);
             getContentPageLayoutAreaForm.setSortOrder(sortOrder);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentPageLayoutArea(getUserVisitPK(request), getContentPageLayoutAreaForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentPageLayoutAreaResult result = (GetContentPageLayoutAreaResult)executionResult.getResult();
+            var commandResult = ContentUtil.getHome().getContentPageLayoutArea(getUserVisitPK(request), getContentPageLayoutAreaForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentPageLayoutAreaResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionName);
             request.setAttribute(AttributeConstants.CONTENT_SECTION_NAME, contentSectionName);

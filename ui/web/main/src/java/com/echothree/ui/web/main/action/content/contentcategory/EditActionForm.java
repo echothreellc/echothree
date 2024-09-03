@@ -39,16 +39,16 @@ public class EditActionForm
     private void setupParentContentCategoryChoices()
             throws NamingException {
         if(parentContentCategoryChoices == null) {
-            GetContentCategoryChoicesForm form = ContentUtil.getHome().getGetContentCategoryChoicesForm();
+            var form = ContentUtil.getHome().getGetContentCategoryChoicesForm();
 
             form.setContentCollectionName(contentCollectionName);
             form.setContentCatalogName(contentCatalogName);
             form.setDefaultContentCategoryChoice(parentContentCategoryChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = ContentUtil.getHome().getContentCategoryChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentCategoryChoicesResult getContentCategoryChoicesResult = (GetContentCategoryChoicesResult)executionResult.getResult();
+            var commandResult = ContentUtil.getHome().getContentCategoryChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getContentCategoryChoicesResult = (GetContentCategoryChoicesResult)executionResult.getResult();
             parentContentCategoryChoices = getContentCategoryChoicesResult.getContentCategoryChoices();
 
             if(parentContentCategoryChoice == null) {

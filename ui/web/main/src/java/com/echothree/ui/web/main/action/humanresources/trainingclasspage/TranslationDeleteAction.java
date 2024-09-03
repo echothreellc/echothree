@@ -65,17 +65,17 @@ public class TranslationDeleteAction
     @Override
     public void setupTransfer(TranslationDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTrainingClassPageTranslationForm commandForm = TrainingUtil.getHome().getGetTrainingClassPageTranslationForm();
+        var commandForm = TrainingUtil.getHome().getGetTrainingClassPageTranslationForm();
         
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());
         commandForm.setTrainingClassPageName(actionForm.getTrainingClassPageName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = TrainingUtil.getHome().getTrainingClassPageTranslation(getUserVisitPK(request), commandForm);
+
+        var commandResult = TrainingUtil.getHome().getTrainingClassPageTranslation(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTrainingClassPageTranslationResult result = (GetTrainingClassPageTranslationResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTrainingClassPageTranslationResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.TRAINING_CLASS_PAGE_TRANSLATION, result.getTrainingClassPageTranslation());
         }
@@ -84,7 +84,7 @@ public class TranslationDeleteAction
     @Override
     public CommandResult doDelete(TranslationDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteTrainingClassPageTranslationForm commandForm = TrainingUtil.getHome().getDeleteTrainingClassPageTranslationForm();
+        var commandForm = TrainingUtil.getHome().getDeleteTrainingClassPageTranslationForm();
 
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());

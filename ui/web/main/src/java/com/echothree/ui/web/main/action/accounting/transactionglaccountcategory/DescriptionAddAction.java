@@ -57,15 +57,15 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTransactionGlAccountCategoryForm commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoryForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoryForm();
 
         commandForm.setTransactionTypeName(actionForm.getTransactionTypeName());
         commandForm.setTransactionGlAccountCategoryName(actionForm.getTransactionGlAccountCategoryName());
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionGlAccountCategory(getUserVisitPK(request), commandForm);
+
+        var commandResult = AccountingUtil.getHome().getTransactionGlAccountCategory(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTransactionGlAccountCategoryResult result = (GetTransactionGlAccountCategoryResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionGlAccountCategoryResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRANSACTION_GL_ACCOUNT_CATEGORY, result.getTransactionGlAccountCategory());
         }
@@ -74,7 +74,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateTransactionGlAccountCategoryDescriptionForm commandForm = AccountingUtil.getHome().getCreateTransactionGlAccountCategoryDescriptionForm();
+        var commandForm = AccountingUtil.getHome().getCreateTransactionGlAccountCategoryDescriptionForm();
 
         commandForm.setTransactionTypeName( actionForm.getTransactionTypeName());
         commandForm.setTransactionGlAccountCategoryName( actionForm.getTransactionGlAccountCategoryName());

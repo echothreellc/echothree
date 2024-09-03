@@ -55,16 +55,16 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            String carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
-            String carrierServiceName = request.getParameter(ParameterConstants.CARRIER_SERVICE_NAME);
-            GetCarrierServiceForm commandForm = CarrierUtil.getHome().getGetCarrierServiceForm();
+            var carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
+            var carrierServiceName = request.getParameter(ParameterConstants.CARRIER_SERVICE_NAME);
+            var commandForm = CarrierUtil.getHome().getGetCarrierServiceForm();
             
             commandForm.setCarrierName(carrierName);
             commandForm.setCarrierServiceName(carrierServiceName);
-            
-            CommandResult commandResult = CarrierUtil.getHome().getCarrierService(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCarrierServiceResult result = (GetCarrierServiceResult)executionResult.getResult();
+
+            var commandResult = CarrierUtil.getHome().getCarrierService(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCarrierServiceResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CARRIER_SERVICE, result.getCarrierService());
             forwardKey = ForwardConstants.DISPLAY;

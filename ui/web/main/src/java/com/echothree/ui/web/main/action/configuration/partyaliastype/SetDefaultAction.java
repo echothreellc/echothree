@@ -50,15 +50,15 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
-        SetDefaultPartyAliasTypeForm commandForm = PartyUtil.getHome().getSetDefaultPartyAliasTypeForm();
+        var partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
+        var commandForm = PartyUtil.getHome().getSetDefaultPartyAliasTypeForm();
 
         commandForm.setPartyTypeName(request.getParameter(ParameterConstants.PARTY_TYPE_NAME));
         commandForm.setPartyAliasTypeName(request.getParameter(ParameterConstants.PARTY_ALIAS_TYPE_NAME));
 
         PartyUtil.getHome().setDefaultPartyAliasType(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
 
         parameters.put(ParameterConstants.PARTY_TYPE_NAME, partyTypeName);

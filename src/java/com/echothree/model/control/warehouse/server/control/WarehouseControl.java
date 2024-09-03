@@ -2014,7 +2014,7 @@ public class WarehouseControl
     public LocationStatusChoicesBean getLocationStatusChoices(String defaultLocationStatusChoice, Language language,
             Location location, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        LocationStatusChoicesBean locationStatusChoicesBean = new LocationStatusChoicesBean();
+        var locationStatusChoicesBean = new LocationStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(location);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(LocationStatusConstants.Workflow_LOCATION_STATUS,
                 entityInstance);

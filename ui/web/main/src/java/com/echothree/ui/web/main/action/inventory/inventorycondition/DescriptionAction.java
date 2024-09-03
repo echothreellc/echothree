@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
-            GetInventoryConditionDescriptionsForm commandForm = InventoryUtil.getHome().getGetInventoryConditionDescriptionsForm();
+            var inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
+            var commandForm = InventoryUtil.getHome().getGetInventoryConditionDescriptionsForm();
             
             commandForm.setInventoryConditionName(inventoryConditionName);
-            
-            CommandResult commandResult = InventoryUtil.getHome().getInventoryConditionDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetInventoryConditionDescriptionsResult result = (GetInventoryConditionDescriptionsResult)executionResult.getResult();
-            InventoryConditionTransfer inventoryConditionTransfer = result.getInventoryCondition();
+
+            var commandResult = InventoryUtil.getHome().getInventoryConditionDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetInventoryConditionDescriptionsResult)executionResult.getResult();
+            var inventoryConditionTransfer = result.getInventoryCondition();
             
             request.setAttribute(AttributeConstants.INVENTORY_CONDITION, inventoryConditionTransfer);
             request.setAttribute(AttributeConstants.INVENTORY_CONDITION_NAME, inventoryConditionTransfer.getInventoryConditionName());

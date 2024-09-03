@@ -58,7 +58,7 @@ public class DocumentLogic
 
             if(mimeTypeName.equals(MimeTypes.APPLICATION_PDF.mimeTypeName()) && blob != null) {
                 try {
-                    PdfReader pdfReader = new PdfReader(blob.getByteArrayInputStream());
+                    var pdfReader = new PdfReader(blob.getByteArrayInputStream());
 
                     pages = pdfReader.getNumberOfPages();
                 } catch(IOException ioe) {

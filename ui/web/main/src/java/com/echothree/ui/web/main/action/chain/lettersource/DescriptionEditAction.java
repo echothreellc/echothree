@@ -59,10 +59,10 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, DescriptionEditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-        EditLetterSourceDescriptionForm commandForm = LetterUtil.getHome().getEditLetterSourceDescriptionForm();
-        LetterSourceDescriptionSpec spec = LetterUtil.getHome().getLetterSourceDescriptionSpec();
+        var letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var commandForm = LetterUtil.getHome().getEditLetterSourceDescriptionForm();
+        var spec = LetterUtil.getHome().getLetterSourceDescriptionSpec();
         
         if(letterSourceName == null) {
             letterSourceName = actionForm.getLetterSourceName();
@@ -76,19 +76,19 @@ public class DescriptionEditAction
         spec.setLanguageIsoName(languageIsoName);
         
         if(wasPost(request)) {
-            LetterSourceDescriptionEdit edit = LetterUtil.getHome().getLetterSourceDescriptionEdit();
+            var edit = LetterUtil.getHome().getLetterSourceDescriptionEdit();
             
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
             edit.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = LetterUtil.getHome().editLetterSourceDescription(getUserVisitPK(request), commandForm);
+
+            var commandResult = LetterUtil.getHome().editLetterSourceDescription(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditLetterSourceDescriptionResult result = (EditLetterSourceDescriptionResult)executionResult.getResult();
+                    var result = (EditLetterSourceDescriptionResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -101,13 +101,13 @@ public class DescriptionEditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = LetterUtil.getHome().editLetterSourceDescription(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditLetterSourceDescriptionResult result = (EditLetterSourceDescriptionResult)executionResult.getResult();
+
+            var commandResult = LetterUtil.getHome().editLetterSourceDescription(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditLetterSourceDescriptionResult)executionResult.getResult();
             
             if(result != null) {
-                LetterSourceDescriptionEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setLetterSourceName(letterSourceName);
@@ -122,8 +122,8 @@ public class DescriptionEditAction
             
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.LETTER_SOURCE_NAME, letterSourceName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

@@ -55,16 +55,16 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetCancellationReasonTypesForm commandForm = CancellationPolicyUtil.getHome().getGetCancellationReasonTypesForm();
-            String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
-            String cancellationReasonName = request.getParameter(ParameterConstants.CANCELLATION_REASON_NAME);
+            var commandForm = CancellationPolicyUtil.getHome().getGetCancellationReasonTypesForm();
+            var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+            var cancellationReasonName = request.getParameter(ParameterConstants.CANCELLATION_REASON_NAME);
             
             commandForm.setCancellationKindName(cancellationKindName);
             commandForm.setCancellationReasonName(cancellationReasonName);
 
-            CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationReasonTypes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCancellationReasonTypesResult result = (GetCancellationReasonTypesResult)executionResult.getResult();
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationReasonTypes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCancellationReasonTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CANCELLATION_REASON, result.getCancellationReason());
             request.setAttribute(AttributeConstants.CANCELLATION_REASON_TYPES, result.getCancellationReasonTypes());

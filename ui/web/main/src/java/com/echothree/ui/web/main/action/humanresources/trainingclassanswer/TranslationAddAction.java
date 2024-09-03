@@ -59,17 +59,17 @@ public class TranslationAddAction
     @Override
     public void setupTransfer(TranslationAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTrainingClassAnswerForm commandForm = TrainingUtil.getHome().getGetTrainingClassAnswerForm();
+        var commandForm = TrainingUtil.getHome().getGetTrainingClassAnswerForm();
 
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());
         commandForm.setTrainingClassQuestionName(actionForm.getTrainingClassQuestionName());
         commandForm.setTrainingClassAnswerName(actionForm.getTrainingClassAnswerName());
-        
-        CommandResult commandResult = TrainingUtil.getHome().getTrainingClassAnswer(getUserVisitPK(request), commandForm);
+
+        var commandResult = TrainingUtil.getHome().getTrainingClassAnswer(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTrainingClassAnswerResult result = (GetTrainingClassAnswerResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTrainingClassAnswerResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRAINING_CLASS_ANSWER, result.getTrainingClassAnswer());
         }
@@ -78,7 +78,7 @@ public class TranslationAddAction
     @Override
     public CommandResult doAdd(TranslationAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateTrainingClassAnswerTranslationForm commandForm = TrainingUtil.getHome().getCreateTrainingClassAnswerTranslationForm();
+        var commandForm = TrainingUtil.getHome().getCreateTrainingClassAnswerTranslationForm();
 
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());

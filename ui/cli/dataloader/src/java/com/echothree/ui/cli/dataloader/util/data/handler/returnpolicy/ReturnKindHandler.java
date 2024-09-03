@@ -53,9 +53,9 @@ public class ReturnKindHandler
         if(localName.equals("returnKindDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -63,7 +63,7 @@ public class ReturnKindHandler
             }
             
             try {
-                CreateReturnKindDescriptionForm commandForm = ReturnPolicyFormFactory.getCreateReturnKindDescriptionForm();
+                var commandForm = ReturnPolicyFormFactory.getCreateReturnKindDescriptionForm();
                 
                 commandForm.setReturnKindName(returnKindName);
                 commandForm.setLanguageIsoName(languageIsoName);
@@ -77,9 +77,9 @@ public class ReturnKindHandler
             String returnPolicyName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("returnPolicyName"))
                     returnPolicyName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -89,7 +89,7 @@ public class ReturnKindHandler
             }
             
             try {
-                CreateReturnPolicyForm commandForm = ReturnPolicyFormFactory.getCreateReturnPolicyForm();
+                var commandForm = ReturnPolicyFormFactory.getCreateReturnPolicyForm();
                 
                 commandForm.setReturnKindName(returnKindName);
                 commandForm.setReturnPolicyName(returnPolicyName);
@@ -107,9 +107,9 @@ public class ReturnKindHandler
             String isDefault = null;
             String sortOrder = null;
             String description = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("returnReasonName"))
                     returnReasonName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -121,7 +121,7 @@ public class ReturnKindHandler
             }
             
             try {
-                CreateReturnReasonForm commandForm = ReturnPolicyFormFactory.getCreateReturnReasonForm();
+                var commandForm = ReturnPolicyFormFactory.getCreateReturnReasonForm();
                 
                 commandForm.setReturnKindName(returnKindName);
                 commandForm.setReturnReasonName(returnReasonName);
@@ -141,9 +141,9 @@ public class ReturnKindHandler
             String isDefault = null;
             String sortOrder = null;
             String description = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("returnTypeName"))
                     returnTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("returnSequenceName"))
@@ -157,7 +157,7 @@ public class ReturnKindHandler
             }
             
             try {
-                CreateReturnTypeForm commandForm = ReturnPolicyFormFactory.getCreateReturnTypeForm();
+                var commandForm = ReturnPolicyFormFactory.getCreateReturnTypeForm();
                 
                 commandForm.setReturnKindName(returnKindName);
                 commandForm.setReturnTypeName(returnTypeName);

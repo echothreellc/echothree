@@ -54,18 +54,18 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetQueueTypesForm commandForm = QueueUtil.getHome().getGetQueueTypesForm();
+        var commandForm = QueueUtil.getHome().getGetQueueTypesForm();
 
         Set<String> options = new HashSet<>();
         options.add(QueueOptions.QueueTypeIncludeQueuedEntitiesCount);
         options.add(QueueOptions.QueueTypeIncludeOldestQueuedEntityTime);
         options.add(QueueOptions.QueueTypeIncludeLatestQueuedEntityTime);
         commandForm.setOptions(options);
-        
-        CommandResult commandResult = QueueUtil.getHome().getQueueTypes(getUserVisitPK(request), commandForm);
+
+        var commandResult = QueueUtil.getHome().getQueueTypes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetQueueTypesResult result = (GetQueueTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetQueueTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.QUEUE_TYPES, result.getQueueTypes());
             forwardKey = ForwardConstants.DISPLAY;

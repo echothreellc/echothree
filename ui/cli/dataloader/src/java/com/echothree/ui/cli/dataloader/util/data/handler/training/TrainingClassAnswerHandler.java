@@ -57,7 +57,7 @@ public class TrainingClassAnswerHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("trainingClassAnswerTranslation")) {
-            CreateTrainingClassAnswerTranslationForm commandForm = TrainingFormFactory.getCreateTrainingClassAnswerTranslationForm();
+            var commandForm = TrainingFormFactory.getCreateTrainingClassAnswerTranslationForm();
 
             commandForm.setTrainingClassName(trainingClassName);
             commandForm.setTrainingClassSectionName(trainingClassSectionName);

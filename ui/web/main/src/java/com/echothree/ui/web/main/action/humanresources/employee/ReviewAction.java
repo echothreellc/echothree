@@ -82,7 +82,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetEmployeeForm commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
+        var commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
         
         commandForm.setEmployeeName(request.getParameter(ParameterConstants.EMPLOYEE_NAME));
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
@@ -108,11 +108,11 @@ public class ReviewAction
         options.add(CoreOptions.EntityInstanceIncludeNames);
         options.add(CommentOptions.CommentIncludeClob);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEmployeeResult result = (GetEmployeeResult)executionResult.getResult();
-        EmployeeTransfer employee = result.getEmployee();
+
+        var commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEmployeeResult)executionResult.getResult();
+        var employee = result.getEmployee();
 
         if(employee == null) {
             forwardKey = ForwardConstants.ERROR_404;

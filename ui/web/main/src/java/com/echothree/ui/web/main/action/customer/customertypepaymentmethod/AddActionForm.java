@@ -45,14 +45,14 @@ public class AddActionForm
     private void setupPaymentMethodChoices()
             throws NamingException {
         if(paymentMethodChoices == null) {
-                GetPaymentMethodChoicesForm form = PaymentUtil.getHome().getGetPaymentMethodChoicesForm();
+            var form = PaymentUtil.getHome().getGetPaymentMethodChoicesForm();
                 
                 form.setDefaultPaymentMethodChoice(paymentMethodChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPaymentMethodChoicesResult getPaymentMethodChoicesResult = (GetPaymentMethodChoicesResult)executionResult.getResult();
+
+            var commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getPaymentMethodChoicesResult = (GetPaymentMethodChoicesResult)executionResult.getResult();
                 paymentMethodChoices = getPaymentMethodChoicesResult.getPaymentMethodChoices();
                 
                 if(paymentMethodChoice == null)

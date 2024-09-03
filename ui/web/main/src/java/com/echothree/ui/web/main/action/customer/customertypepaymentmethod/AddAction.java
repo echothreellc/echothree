@@ -56,14 +56,14 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerTypeForm commandForm = CustomerUtil.getHome().getGetCustomerTypeForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerTypeForm();
 
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());
-        
-        CommandResult commandResult = CustomerUtil.getHome().getCustomerType(getUserVisitPK(request), commandForm);
+
+        var commandResult = CustomerUtil.getHome().getCustomerType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypeResult result = (GetCustomerTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE, result.getCustomerType());
         }
@@ -79,7 +79,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCustomerTypePaymentMethodForm commandForm = CustomerUtil.getHome().getCreateCustomerTypePaymentMethodForm();
+        var commandForm = CustomerUtil.getHome().getCreateCustomerTypePaymentMethodForm();
 
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());
         commandForm.setPaymentMethodName(actionForm.getPaymentMethodChoice());

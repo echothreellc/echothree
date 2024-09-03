@@ -51,7 +51,7 @@ public class WorkEffortScopeHandler
     throws SAXException {
         if(localName.equals("workEffortScopeDescription")) {
             try {
-                CreateWorkEffortScopeDescriptionForm commandForm = WorkEffortFormFactory.getCreateWorkEffortScopeDescriptionForm();
+                var commandForm = WorkEffortFormFactory.getCreateWorkEffortScopeDescriptionForm();
                 
                 commandForm.setWorkEffortTypeName(workEffortTypeName);
                 commandForm.setWorkEffortScopeName(workEffortScopeName);

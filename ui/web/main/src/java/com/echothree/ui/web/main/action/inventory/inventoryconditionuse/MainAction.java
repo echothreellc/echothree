@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String inventoryConditionUseTypeName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_USE_TYPE_NAME);
-            GetInventoryConditionUsesForm commandForm = InventoryUtil.getHome().getGetInventoryConditionUsesForm();
+            var inventoryConditionUseTypeName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_USE_TYPE_NAME);
+            var commandForm = InventoryUtil.getHome().getGetInventoryConditionUsesForm();
             
             commandForm.setInventoryConditionUseTypeName(inventoryConditionUseTypeName);
-            
-            CommandResult commandResult = InventoryUtil.getHome().getInventoryConditionUses(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetInventoryConditionUsesResult result = (GetInventoryConditionUsesResult)executionResult.getResult();
+
+            var commandResult = InventoryUtil.getHome().getInventoryConditionUses(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetInventoryConditionUsesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.INVENTORY_CONDITION_USE_TYPE, result.getInventoryConditionUseType());
             request.setAttribute(AttributeConstants.INVENTORY_CONDITION_USES, result.getInventoryConditionUses());

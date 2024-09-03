@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetWorkRequirementTypesForm commandForm = WorkRequirementUtil.getHome().getGetWorkRequirementTypesForm();
-            String workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
+            var commandForm = WorkRequirementUtil.getHome().getGetWorkRequirementTypesForm();
+            var workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
             
             commandForm.setWorkEffortTypeName(workEffortTypeName);
 
-            CommandResult commandResult = WorkRequirementUtil.getHome().getWorkRequirementTypes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkRequirementTypesResult result = (GetWorkRequirementTypesResult)executionResult.getResult();
+            var commandResult = WorkRequirementUtil.getHome().getWorkRequirementTypes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkRequirementTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORK_EFFORT_TYPE, result.getWorkEffortType());
             request.setAttribute(AttributeConstants.WORK_REQUIREMENT_TYPES, result.getWorkRequirementTypes());

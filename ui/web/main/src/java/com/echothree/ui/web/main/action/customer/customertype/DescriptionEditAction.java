@@ -61,14 +61,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditCustomerTypeDescriptionForm commandForm = CustomerUtil.getHome().getEditCustomerTypeDescriptionForm();
-                CustomerTypeDescriptionSpec spec = CustomerUtil.getHome().getCustomerTypeDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = CustomerUtil.getHome().getEditCustomerTypeDescriptionForm();
+                var spec = CustomerUtil.getHome().getCustomerTypeDescriptionSpec();
                 
                 if(customerTypeName == null)
                     customerTypeName = actionForm.getCustomerTypeName();
@@ -80,19 +80,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    CustomerTypeDescriptionEdit edit = CustomerUtil.getHome().getCustomerTypeDescriptionEdit();
+                    var edit = CustomerUtil.getHome().getCustomerTypeDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CustomerUtil.getHome().editCustomerTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CustomerUtil.getHome().editCustomerTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditCustomerTypeDescriptionResult result = (EditCustomerTypeDescriptionResult)executionResult.getResult();
+                            var result = (EditCustomerTypeDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +105,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CustomerUtil.getHome().editCustomerTypeDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditCustomerTypeDescriptionResult result = (EditCustomerTypeDescriptionResult)executionResult.getResult();
+
+                    var commandResult = CustomerUtil.getHome().editCustomerTypeDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditCustomerTypeDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        CustomerTypeDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setCustomerTypeName(customerTypeName);
@@ -130,8 +130,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_NAME, customerTypeName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

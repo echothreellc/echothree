@@ -52,9 +52,9 @@ public class ClubsHandler
             String isDefault = null;
             String sortOrder = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("clubName"))
                     clubName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("subscriptionTypeName"))
@@ -72,7 +72,7 @@ public class ClubsHandler
             }
             
             try {
-                CreateClubForm commandForm = ClubFormFactory.getCreateClubForm();
+                var commandForm = ClubFormFactory.getCreateClubForm();
                 
                 commandForm.setClubName(clubName);
                 commandForm.setSubscriptionTypeName(subscriptionTypeName);

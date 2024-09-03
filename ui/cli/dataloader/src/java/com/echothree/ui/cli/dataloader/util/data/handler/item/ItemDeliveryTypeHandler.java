@@ -49,7 +49,7 @@ public class ItemDeliveryTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("itemDeliveryTypeDescription")) {
-            CreateItemDeliveryTypeDescriptionForm commandForm = ItemFormFactory.getCreateItemDeliveryTypeDescriptionForm();
+            var commandForm = ItemFormFactory.getCreateItemDeliveryTypeDescriptionForm();
             
             commandForm.setItemDeliveryTypeName(itemDeliveryTypeName);
             commandForm.set(getAttrsMap(attrs));

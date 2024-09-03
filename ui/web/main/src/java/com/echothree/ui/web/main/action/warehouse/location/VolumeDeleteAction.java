@@ -50,16 +50,16 @@ public class VolumeDeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
-        DeleteLocationVolumeForm commandForm = WarehouseUtil.getHome().getDeleteLocationVolumeForm();
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
+        var commandForm = WarehouseUtil.getHome().getDeleteLocationVolumeForm();
         
         commandForm.setWarehouseName(warehouseName);
         commandForm.setLocationName(locationName);
         
         WarehouseUtil.getHome().deleteLocationVolume(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.WAREHOUSE_NAME, warehouseName);

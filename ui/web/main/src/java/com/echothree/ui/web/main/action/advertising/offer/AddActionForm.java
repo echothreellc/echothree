@@ -65,15 +65,15 @@ public class AddActionForm
     public void setupSalesOrderSequenceChoices() {
         if(salesOrderSequenceChoices == null) {
             try {
-                GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
+                var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
                 form.setSequenceTypeName(SequenceTypes.SALES_ORDER.name());
                 form.setDefaultSequenceChoice(salesOrderSequenceChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+
+                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSequenceChoicesResult)executionResult.getResult();
                 salesOrderSequenceChoices = result.getSequenceChoices();
                 
                 if(salesOrderSequenceChoice == null) {
@@ -89,16 +89,16 @@ public class AddActionForm
     public void setupOfferItemSelectorChoices() {
         if(offerItemSelectorChoices == null) {
             try {
-                GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
+                var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
                 
                 form.setSelectorKindName(SelectorKinds.ITEM.name());
                 form.setSelectorTypeName(SelectorTypes.OFFER.name());
                 form.setDefaultSelectorChoice(offerItemSelectorChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSelectorChoicesResult result = (GetSelectorChoicesResult)executionResult.getResult();
+
+                var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSelectorChoicesResult)executionResult.getResult();
                 offerItemSelectorChoices = result.getSelectorChoices();
                 
                 if(offerItemSelectorChoice == null) {
@@ -114,16 +114,16 @@ public class AddActionForm
     public void setupOfferItemPriceFilterChoices() {
         if(offerItemPriceFilterChoices == null) {
             try {
-                GetFilterChoicesForm form = FilterUtil.getHome().getGetFilterChoicesForm();
+                var form = FilterUtil.getHome().getGetFilterChoicesForm();
                 
                 form.setFilterKindName(FilterKinds.PRICE.name());
                 form.setFilterTypeName(FilterTypes.OFFER_ITEM_PRICE.name());
                 form.setDefaultFilterChoice(offerItemPriceFilterChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = FilterUtil.getHome().getFilterChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetFilterChoicesResult result = (GetFilterChoicesResult)executionResult.getResult();
+
+                var commandResult = FilterUtil.getHome().getFilterChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetFilterChoicesResult)executionResult.getResult();
                 offerItemPriceFilterChoices = result.getFilterChoices();
                 
                 if(offerItemPriceFilterChoice == null) {

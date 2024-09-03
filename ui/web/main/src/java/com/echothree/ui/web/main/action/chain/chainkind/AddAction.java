@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateChainKindForm commandForm = ChainUtil.getHome().getCreateChainKindForm();
+        var commandForm = ChainUtil.getHome().getCreateChainKindForm();
 
         commandForm.setChainKindName(actionForm.getChainKindName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());

@@ -37,13 +37,13 @@ public abstract class BaseEmployeeApplicationEditorUseAction<A extends ActionFor
 
     public static void setupEmployee(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetEmployeeForm commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
+        var commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEmployeeResult result = (GetEmployeeResult)executionResult.getResult();
+        var commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEmployeeResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.EMPLOYEE, result.getEmployee());
     }
@@ -56,15 +56,15 @@ public abstract class BaseEmployeeApplicationEditorUseAction<A extends ActionFor
     public static PartyApplicationEditorUseTransfer getPartyApplicationEditorUseTransfer(HttpServletRequest request, String partyName, String applicationName,
             String applicationEditorUseName)
             throws NamingException {
-        GetPartyApplicationEditorUseForm commandForm = CoreUtil.getHome().getGetPartyApplicationEditorUseForm();
+        var commandForm = CoreUtil.getHome().getGetPartyApplicationEditorUseForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setApplicationName(applicationName);
         commandForm.setApplicationEditorUseName(applicationEditorUseName);
 
-        CommandResult commandResult = CoreUtil.getHome().getPartyApplicationEditorUse(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyApplicationEditorUseResult result = (GetPartyApplicationEditorUseResult)executionResult.getResult();
+        var commandResult = CoreUtil.getHome().getPartyApplicationEditorUse(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyApplicationEditorUseResult)executionResult.getResult();
 
         return result.getPartyApplicationEditorUse();
     }

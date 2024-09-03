@@ -55,12 +55,12 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        AddActionForm actionForm = (AddActionForm)form;
+        var actionForm = (AddActionForm)form;
         String forwardKey = null;
         String customerName = null;
         
         if(wasPost(request)) {
-            CreateCustomerForm commandForm = PartyUtil.getHome().getCreateCustomerForm();
+            var commandForm = PartyUtil.getHome().getCreateCustomerForm();
             
             commandForm.setCustomerTypeName(actionForm.getCustomerTypeChoice());
             commandForm.setCancellationPolicyName(actionForm.getCancellationPolicyChoice());
@@ -81,15 +81,15 @@ public class AddAction
             commandForm.setAllowSolicitation(actionForm.getAllowSolicitation().toString());
             commandForm.setCustomerStatusChoice(actionForm.getCustomerStatusChoice());
             commandForm.setCustomerCreditStatusChoice(actionForm.getCustomerCreditStatusChoice());
-            
-            CommandResult commandResult = PartyUtil.getHome().createCustomer(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().createCustomer(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
                 forwardKey = ForwardConstants.FORM;
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateCustomerResult result = (CreateCustomerResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateCustomerResult)executionResult.getResult();
                 
                 forwardKey = ForwardConstants.REVIEW;
                 customerName = result.getCustomerName();
@@ -101,9 +101,8 @@ public class AddAction
             actionForm.setName(request.getParameter(ParameterConstants.NAME));
             forwardKey = ForwardConstants.FORM;
         }
-        
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.REVIEW)) {
             Map<String, String> parameters = new HashMap<>(1);
             

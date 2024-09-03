@@ -47,8 +47,8 @@ public class WorkEffortTypesHandler
     throws SAXException {
         if(localName.equals("workEffortType")) {
             try {
-                CreateWorkEffortTypeForm commandForm = WorkEffortFormFactory.getCreateWorkEffortTypeForm();
-                Map<String, Object> attrsMap = getAttrsMap(attrs);
+                var commandForm = WorkEffortFormFactory.getCreateWorkEffortTypeForm();
+                var attrsMap = getAttrsMap(attrs);
                 
                 commandForm.set(attrsMap);
                 

@@ -56,11 +56,11 @@ public class CustomerCreditStatusAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
+        var customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
         
         try {
-            CustomerCreditStatusActionForm actionForm = (CustomerCreditStatusActionForm)form;
-            SetCustomerCreditStatusForm commandForm = CustomerUtil.getHome().getSetCustomerCreditStatusForm();
+            var actionForm = (CustomerCreditStatusActionForm)form;
+            var commandForm = CustomerUtil.getHome().getSetCustomerCreditStatusForm();
             
             if(customerName == null)
                 customerName = actionForm.getCustomerName();
@@ -68,8 +68,8 @@ public class CustomerCreditStatusAction
             if(wasPost(request)) {
                 commandForm.setCustomerName(customerName);
                 commandForm.setCustomerCreditStatusChoice(actionForm.getCustomerCreditStatusChoice());
-                
-                CommandResult commandResult = CustomerUtil.getHome().setCustomerCreditStatus(getUserVisitPK(request), commandForm);
+
+                var commandResult = CustomerUtil.getHome().setCustomerCreditStatus(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);
@@ -85,8 +85,8 @@ public class CustomerCreditStatusAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CUSTOMER_NAME, customerName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

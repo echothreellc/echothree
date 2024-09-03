@@ -51,7 +51,7 @@ public class TranslationEditAction
     @Override
     protected TrainingClassPageTranslationSpec getSpec(HttpServletRequest request, TranslationEditActionForm actionForm)
             throws NamingException {
-        TrainingClassPageTranslationSpec spec = TrainingUtil.getHome().getTrainingClassPageTranslationSpec();
+        var spec = TrainingUtil.getHome().getTrainingClassPageTranslationSpec();
         
         spec.setTrainingClassName(findParameter(request, ParameterConstants.TRAINING_CLASS_NAME, actionForm.getTrainingClassName()));
         spec.setTrainingClassSectionName(findParameter(request, ParameterConstants.TRAINING_CLASS_SECTION_NAME, actionForm.getTrainingClassSectionName()));
@@ -64,7 +64,7 @@ public class TranslationEditAction
     @Override
     protected TrainingClassPageTranslationEdit getEdit(HttpServletRequest request, TranslationEditActionForm actionForm)
             throws NamingException {
-        TrainingClassPageTranslationEdit edit = TrainingUtil.getHome().getTrainingClassPageTranslationEdit();
+        var edit = TrainingUtil.getHome().getTrainingClassPageTranslationEdit();
 
         edit.setDescription(actionForm.getDescription());
         edit.setPageMimeTypeName(actionForm.getPageMimeTypeChoice());

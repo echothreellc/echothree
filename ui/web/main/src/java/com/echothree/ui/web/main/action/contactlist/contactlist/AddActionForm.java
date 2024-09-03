@@ -60,14 +60,14 @@ public class AddActionForm
     private void setupContactListGroupChoices() {
         if(contactListGroupChoices == null) {
             try {
-                GetContactListGroupChoicesForm commandForm = ContactListUtil.getHome().getGetContactListGroupChoicesForm();
+                var commandForm = ContactListUtil.getHome().getGetContactListGroupChoicesForm();
 
                 commandForm.setDefaultContactListGroupChoice(contactListGroupChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = ContactListUtil.getHome().getContactListGroupChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactListGroupChoicesResult getContactListGroupChoicesResult = (GetContactListGroupChoicesResult)executionResult.getResult();
+                var commandResult = ContactListUtil.getHome().getContactListGroupChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getContactListGroupChoicesResult = (GetContactListGroupChoicesResult)executionResult.getResult();
                 contactListGroupChoices = getContactListGroupChoicesResult.getContactListGroupChoices();
 
                 if(contactListGroupChoice == null) {
@@ -82,14 +82,14 @@ public class AddActionForm
     private void setupContactListTypeChoices() {
         if(contactListTypeChoices == null) {
             try {
-                GetContactListTypeChoicesForm commandForm = ContactListUtil.getHome().getGetContactListTypeChoicesForm();
+                var commandForm = ContactListUtil.getHome().getGetContactListTypeChoicesForm();
 
                 commandForm.setDefaultContactListTypeChoice(contactListTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = ContactListUtil.getHome().getContactListTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactListTypeChoicesResult getContactListTypeChoicesResult = (GetContactListTypeChoicesResult)executionResult.getResult();
+                var commandResult = ContactListUtil.getHome().getContactListTypeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getContactListTypeChoicesResult = (GetContactListTypeChoicesResult)executionResult.getResult();
                 contactListTypeChoices = getContactListTypeChoicesResult.getContactListTypeChoices();
 
                 if(contactListTypeChoice == null) {
@@ -104,14 +104,14 @@ public class AddActionForm
     private void setupContactListFrequencyChoices() {
         if(contactListFrequencyChoices == null) {
             try {
-                GetContactListFrequencyChoicesForm commandForm = ContactListUtil.getHome().getGetContactListFrequencyChoicesForm();
+                var commandForm = ContactListUtil.getHome().getGetContactListFrequencyChoicesForm();
 
                 commandForm.setDefaultContactListFrequencyChoice(contactListFrequencyChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = ContactListUtil.getHome().getContactListFrequencyChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactListFrequencyChoicesResult getContactListFrequencyChoicesResult = (GetContactListFrequencyChoicesResult)executionResult.getResult();
+                var commandResult = ContactListUtil.getHome().getContactListFrequencyChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getContactListFrequencyChoicesResult = (GetContactListFrequencyChoicesResult)executionResult.getResult();
                 contactListFrequencyChoices = getContactListFrequencyChoicesResult.getContactListFrequencyChoices();
 
                 if(contactListFrequencyChoice == null) {
@@ -126,14 +126,14 @@ public class AddActionForm
     private void setupDefaultPartyContactListStatusChoices() {
         if(defaultPartyContactListStatusChoices == null) {
             try {
-                GetPartyContactListStatusChoicesForm commandForm = ContactListUtil.getHome().getGetPartyContactListStatusChoicesForm();
+                var commandForm = ContactListUtil.getHome().getGetPartyContactListStatusChoicesForm();
 
                 commandForm.setDefaultPartyContactListStatusChoice(defaultPartyContactListStatusChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = ContactListUtil.getHome().getPartyContactListStatusChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPartyContactListStatusChoicesResult getPartyContactListStatusChoicesResult = (GetPartyContactListStatusChoicesResult)executionResult.getResult();
+                var commandResult = ContactListUtil.getHome().getPartyContactListStatusChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getPartyContactListStatusChoicesResult = (GetPartyContactListStatusChoicesResult)executionResult.getResult();
                 defaultPartyContactListStatusChoices = getPartyContactListStatusChoicesResult.getPartyContactListStatusChoices();
 
                 if(defaultPartyContactListStatusChoice == null) {

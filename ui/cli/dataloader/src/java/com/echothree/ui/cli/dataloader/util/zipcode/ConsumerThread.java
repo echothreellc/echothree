@@ -165,7 +165,7 @@ public class ConsumerThread
     private String loadCity(String stateGeoCodeName, ZipCodeData zipCodeData) {
         var description = zipCodeData.getCityStateName();
         var cityName = StringUtils.getInstance().cleanStringToName(description);
-        Map citiesByState = (Map)zipCodeParser.getCityGeoCodeNames().get(stateGeoCodeName);
+        var citiesByState = (Map)zipCodeParser.getCityGeoCodeNames().get(stateGeoCodeName);
         
         if(citiesByState == null) {
             citiesByState = Collections.synchronizedMap(new HashMap());

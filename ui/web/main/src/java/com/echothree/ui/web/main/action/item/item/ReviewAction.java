@@ -59,9 +59,9 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
-        String itemNameOrAlias = request.getParameter(ParameterConstants.ITEM_NAME_OR_ALIAS);
+        var commandForm = ItemUtil.getHome().getGetItemForm();
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        var itemNameOrAlias = request.getParameter(ParameterConstants.ITEM_NAME_OR_ALIAS);
 
         commandForm.setItemName(itemName);
         commandForm.setItemNameOrAlias(itemNameOrAlias);
@@ -103,11 +103,11 @@ public class ReviewAction
         options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemResult result = (GetItemResult)executionResult.getResult();
-            ItemTransfer item = result.getItem();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemResult)executionResult.getResult();
+            var item = result.getItem();
 
             if(item != null) {
                 request.setAttribute(AttributeConstants.ITEM, item);

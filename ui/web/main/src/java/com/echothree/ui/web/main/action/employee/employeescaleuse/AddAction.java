@@ -53,7 +53,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyScaleUseForm commandForm = ScaleUtil.getHome().getCreatePartyScaleUseForm();
+        var commandForm = ScaleUtil.getHome().getCreatePartyScaleUseForm();
 
         commandForm.setScaleUseTypeName(actionForm.getScaleUseTypeChoice());
         commandForm.setScaleName(actionForm.getScaleChoice());

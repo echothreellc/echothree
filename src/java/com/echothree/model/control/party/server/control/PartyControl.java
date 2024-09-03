@@ -927,7 +927,7 @@ public class PartyControl
     }
     
     public PersonalTitlePK convertPersonalTitleIdToPK(String personalTitleId) {
-        PersonalTitlePK personalTitlePK = new PersonalTitlePK(Long.valueOf(personalTitleId));
+        var personalTitlePK = new PersonalTitlePK(Long.valueOf(personalTitleId));
         
         return validPersonalTitlePK(personalTitlePK)? personalTitlePK: null;
     }
@@ -1199,7 +1199,7 @@ public class PartyControl
     }
     
     public NameSuffixPK convertNameSuffixIdToPK(String nameSuffixId) {
-        NameSuffixPK nameSuffixPK = new NameSuffixPK(Long.valueOf(nameSuffixId));
+        var nameSuffixPK = new NameSuffixPK(Long.valueOf(nameSuffixId));
         
         return validNameSuffixPK(nameSuffixPK)? nameSuffixPK: null;
     }
@@ -2329,7 +2329,7 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     
     public String getBestPartyDescription(final Party party, final Language language) {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
 
         if(party != null) {
             var partyDetail = party.getLastDetail();

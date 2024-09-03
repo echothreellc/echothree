@@ -51,7 +51,7 @@ public class AddAction
         String forwardKey = null;
 
         if(wasPost(request)) {
-            CreateSequenceTypeForm commandForm = SequenceUtil.getHome().getCreateSequenceTypeForm();
+            var commandForm = SequenceUtil.getHome().getCreateSequenceTypeForm();
 
             commandForm.setSequenceTypeName(actionForm.getSequenceTypeName());
             commandForm.setPrefix(actionForm.getPrefix());
@@ -63,7 +63,7 @@ public class AddAction
             commandForm.setSortOrder(actionForm.getSortOrder());
             commandForm.setDescription(actionForm.getDescription());
 
-            CommandResult commandResult = SequenceUtil.getHome().createSequenceType(getUserVisitPK(request), commandForm);
+            var commandResult = SequenceUtil.getHome().createSequenceType(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

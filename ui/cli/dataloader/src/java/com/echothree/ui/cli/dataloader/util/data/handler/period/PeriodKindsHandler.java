@@ -48,7 +48,7 @@ public class PeriodKindsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("periodKind")) {
-            CreatePeriodKindForm commandForm = PeriodFormFactory.getCreatePeriodKindForm();
+            var commandForm = PeriodFormFactory.getCreatePeriodKindForm();
 
             commandForm.set(getAttrsMap(attrs));
 
@@ -56,7 +56,7 @@ public class PeriodKindsHandler
 
             initialDataParser.pushHandler(new PeriodKindHandler(initialDataParser, this, commandForm.getPeriodKindName()));
         } else if(localName.equals("fiscalYear")) {
-            CreateFiscalYearForm commandForm = PeriodFormFactory.getCreateFiscalYearForm();
+            var commandForm = PeriodFormFactory.getCreateFiscalYearForm();
 
             commandForm.set(getAttrsMap(attrs));
 

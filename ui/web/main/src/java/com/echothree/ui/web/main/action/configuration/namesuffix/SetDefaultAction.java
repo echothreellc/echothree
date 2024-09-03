@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultNameSuffixForm commandForm = PartyUtil.getHome().getSetDefaultNameSuffixForm();
-            String nameSuffixId = request.getParameter(ParameterConstants.NAME_SUFFIX_ID);
+            var commandForm = PartyUtil.getHome().getSetDefaultNameSuffixForm();
+            var nameSuffixId = request.getParameter(ParameterConstants.NAME_SUFFIX_ID);
             
             commandForm.setNameSuffixId(nameSuffixId);
             

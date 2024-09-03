@@ -56,15 +56,15 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-        String contentCatalogName = request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME);
+        var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+        var contentCatalogName = request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateContentCatalogDescriptionForm commandForm = ContentUtil.getHome().getCreateContentCatalogDescriptionForm();
+                    var commandForm = ContentUtil.getHome().getCreateContentCatalogDescriptionForm();
                     
                     if(contentCollectionName == null)
                         contentCollectionName = actionForm.getContentCollectionName();
@@ -75,8 +75,8 @@ public class DescriptionAddAction
                     commandForm.setContentCatalogName(contentCatalogName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ContentUtil.getHome().createContentCatalogDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ContentUtil.getHome().createContentCatalogDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -93,8 +93,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionName);
             request.setAttribute(AttributeConstants.CONTENT_CATALOG_NAME, contentCatalogName);

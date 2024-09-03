@@ -64,16 +64,16 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetChainTypeDescriptionForm commandForm = ChainUtil.getHome().getGetChainTypeDescriptionForm();
+        var commandForm = ChainUtil.getHome().getGetChainTypeDescriptionForm();
         
         commandForm.setChainKindName(actionForm.getChainKindName());
         commandForm.setChainTypeName(actionForm.getChainTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = ChainUtil.getHome().getChainTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = ChainUtil.getHome().getChainTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetChainTypeDescriptionResult result = (GetChainTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetChainTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CHAIN_TYPE_DESCRIPTION, result.getChainTypeDescription());
         }
@@ -82,7 +82,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteChainTypeDescriptionForm commandForm = ChainUtil.getHome().getDeleteChainTypeDescriptionForm();
+        var commandForm = ChainUtil.getHome().getDeleteChainTypeDescriptionForm();
 
         commandForm.setChainKindName(actionForm.getChainKindName());
         commandForm.setChainTypeName(actionForm.getChainTypeName());

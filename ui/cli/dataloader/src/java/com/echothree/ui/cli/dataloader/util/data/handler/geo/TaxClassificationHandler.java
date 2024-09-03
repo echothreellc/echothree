@@ -54,7 +54,7 @@ public class TaxClassificationHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("taxClassificationTranslation")) {
-            CreateTaxClassificationTranslationForm commandForm = TaxFormFactory.getCreateTaxClassificationTranslationForm();
+            var commandForm = TaxFormFactory.getCreateTaxClassificationTranslationForm();
 
             commandForm.setCountryName(countryGeoCodeName);
             commandForm.setTaxClassificationName(taxClassificationName);

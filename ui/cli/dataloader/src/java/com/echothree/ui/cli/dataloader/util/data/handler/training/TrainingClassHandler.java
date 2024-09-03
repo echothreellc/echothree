@@ -51,14 +51,14 @@ public class TrainingClassHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("trainingClassTranslation")) {
-            CreateTrainingClassTranslationForm commandForm = TrainingFormFactory.getCreateTrainingClassTranslationForm();
+            var commandForm = TrainingFormFactory.getCreateTrainingClassTranslationForm();
 
             commandForm.setTrainingClassName(trainingClassName);
             commandForm.set(getAttrsMap(attrs));
 
             trainingService.createTrainingClassTranslation(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("trainingClassSection")) {
-            CreateTrainingClassSectionForm commandForm = TrainingFormFactory.getCreateTrainingClassSectionForm();
+            var commandForm = TrainingFormFactory.getCreateTrainingClassSectionForm();
 
             commandForm.setTrainingClassName(trainingClassName);
             commandForm.set(getAttrsMap(attrs));

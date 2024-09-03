@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteShippingMethodForm commandForm = ShippingUtil.getHome().getDeleteShippingMethodForm();
-            String shippingMethodName = request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME);
+            var commandForm = ShippingUtil.getHome().getDeleteShippingMethodForm();
+            var shippingMethodName = request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME);
             
             commandForm.setShippingMethodName(shippingMethodName);
             

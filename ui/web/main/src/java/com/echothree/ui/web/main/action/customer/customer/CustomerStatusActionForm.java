@@ -41,15 +41,15 @@ public class CustomerStatusActionForm
     public void setupCustomerStatusChoices()
             throws NamingException {
         if(customerStatusChoices == null) {
-            GetCustomerStatusChoicesForm form = CustomerUtil.getHome().getGetCustomerStatusChoicesForm();
+            var form = CustomerUtil.getHome().getGetCustomerStatusChoicesForm();
 
             form.setCustomerName(customerName);
             form.setDefaultCustomerStatusChoice(customerStatusChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CustomerUtil.getHome().getCustomerStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerStatusChoicesResult result = (GetCustomerStatusChoicesResult)executionResult.getResult();
+            var commandResult = CustomerUtil.getHome().getCustomerStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerStatusChoicesResult)executionResult.getResult();
             customerStatusChoices = result.getCustomerStatusChoices();
 
             if(customerStatusChoice == null) {

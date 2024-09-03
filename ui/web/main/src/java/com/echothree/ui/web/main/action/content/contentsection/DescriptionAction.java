@@ -57,19 +57,19 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-            String contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
-            GetContentSectionDescriptionsForm commandForm = ContentUtil.getHome().getGetContentSectionDescriptionsForm();
+            var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+            var contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
+            var commandForm = ContentUtil.getHome().getGetContentSectionDescriptionsForm();
             
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentSectionName(contentSectionName);
-            
-            CommandResult commandResult = ContentUtil.getHome().getContentSectionDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentSectionDescriptionsResult result = (GetContentSectionDescriptionsResult)executionResult.getResult();
-            ContentCollectionTransfer contentCollectionTransfer = result.getContentCollection();
-            ContentSectionTransfer contentSectionTransfer = result.getContentSection();
-            ContentSectionTransfer parentContentSectionTransfer = contentSectionTransfer.getParentContentSection();
+
+            var commandResult = ContentUtil.getHome().getContentSectionDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentSectionDescriptionsResult)executionResult.getResult();
+            var contentCollectionTransfer = result.getContentCollection();
+            var contentSectionTransfer = result.getContentSection();
+            var parentContentSectionTransfer = contentSectionTransfer.getParentContentSection();
             
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION, contentCollectionTransfer);
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionTransfer.getContentCollectionName());

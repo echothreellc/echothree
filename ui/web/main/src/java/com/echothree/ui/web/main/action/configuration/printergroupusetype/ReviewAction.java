@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetPrinterGroupUseTypeForm commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypeForm();
+        var commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypeForm();
 
         commandForm.setPrinterGroupUseTypeName(request.getParameter(ParameterConstants.PRINTER_GROUP_USE_TYPE_NAME));
-        
-        CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupUseType(getUserVisitPK(request), commandForm);
+
+        var commandResult = PrinterUtil.getHome().getPrinterGroupUseType(getUserVisitPK(request), commandForm);
         PrinterGroupUseTypeTransfer printerGroupUseType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterGroupUseTypeResult result = (GetPrinterGroupUseTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPrinterGroupUseTypeResult)executionResult.getResult();
             
             printerGroupUseType = result.getPrinterGroupUseType();
         }

@@ -48,7 +48,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultScaleUseTypeForm commandForm = ScaleUtil.getHome().getSetDefaultScaleUseTypeForm();
+        var commandForm = ScaleUtil.getHome().getSetDefaultScaleUseTypeForm();
 
         commandForm.setScaleUseTypeName(request.getParameter(ParameterConstants.SCALE_USE_TYPE_NAME));
 

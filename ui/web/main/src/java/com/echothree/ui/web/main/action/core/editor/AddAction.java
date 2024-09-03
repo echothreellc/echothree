@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateEditorForm commandForm = CoreUtil.getHome().getCreateEditorForm();
+        var commandForm = CoreUtil.getHome().getCreateEditorForm();
 
         commandForm.setEditorName(actionForm.getEditorName());
         commandForm.setHasDimensions(actionForm.getHasDimensions().toString());

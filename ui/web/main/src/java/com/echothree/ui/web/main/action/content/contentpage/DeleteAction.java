@@ -65,16 +65,16 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContentPageForm commandForm = ContentUtil.getHome().getGetContentPageForm();
+        var commandForm = ContentUtil.getHome().getGetContentPageForm();
 
         commandForm.setContentCollectionName(actionForm.getContentCollectionName());
         commandForm.setContentSectionName(actionForm.getContentSectionName());
         commandForm.setContentPageName(actionForm.getContentPageName());
 
-        CommandResult commandResult = ContentUtil.getHome().getContentPage(getUserVisitPK(request), commandForm);
+        var commandResult = ContentUtil.getHome().getContentPage(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentPageResult result = (GetContentPageResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentPageResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CONTENT_PAGE, result.getContentPage());
         }
@@ -83,7 +83,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteContentPageForm commandForm = ContentUtil.getHome().getDeleteContentPageForm();
+        var commandForm = ContentUtil.getHome().getDeleteContentPageForm();
 
         commandForm.setContentCollectionName(actionForm.getContentCollectionName());
         commandForm.setContentSectionName(actionForm.getContentSectionName());

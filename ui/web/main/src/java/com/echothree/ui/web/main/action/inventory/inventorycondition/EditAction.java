@@ -58,13 +58,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalInventoryConditionName = request.getParameter(ParameterConstants.ORIGINAL_INVENTORY_CONDITION_NAME);
+        var originalInventoryConditionName = request.getParameter(ParameterConstants.ORIGINAL_INVENTORY_CONDITION_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditInventoryConditionForm commandForm = InventoryUtil.getHome().getEditInventoryConditionForm();
-                InventoryConditionUniversalSpec spec = InventoryUtil.getHome().getInventoryConditionUniversalSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = InventoryUtil.getHome().getEditInventoryConditionForm();
+                var spec = InventoryUtil.getHome().getInventoryConditionUniversalSpec();
                 
                 if(originalInventoryConditionName == null)
                     originalInventoryConditionName = actionForm.getOriginalInventoryConditionName();
@@ -73,7 +73,7 @@ public class EditAction
                 spec.setInventoryConditionName(originalInventoryConditionName);
                 
                 if(wasPost(request)) {
-                    InventoryConditionEdit edit = InventoryUtil.getHome().getInventoryConditionEdit();
+                    var edit = InventoryUtil.getHome().getInventoryConditionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -82,14 +82,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = InventoryUtil.getHome().editInventoryCondition(getUserVisitPK(request), commandForm);
+
+                    var commandResult = InventoryUtil.getHome().editInventoryCondition(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditInventoryConditionResult result = (EditInventoryConditionResult)executionResult.getResult();
+                            var result = (EditInventoryConditionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -102,13 +102,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = InventoryUtil.getHome().editInventoryCondition(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditInventoryConditionResult result = (EditInventoryConditionResult)executionResult.getResult();
+
+                    var commandResult = InventoryUtil.getHome().editInventoryCondition(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditInventoryConditionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        InventoryConditionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalInventoryConditionName(edit.getInventoryConditionName());

@@ -56,13 +56,13 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSearchKindForm commandForm = SearchUtil.getHome().getGetSearchKindForm();
+        var commandForm = SearchUtil.getHome().getGetSearchKindForm();
         
         commandForm.setSearchKindName(actionForm.getSearchKindName());
 
-        CommandResult commandResult = SearchUtil.getHome().getSearchKind(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetSearchKindResult result = (GetSearchKindResult)executionResult.getResult();
+        var commandResult = SearchUtil.getHome().getSearchKind(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetSearchKindResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.SEARCH_KIND, result.getSearchKind());
     }
@@ -76,7 +76,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateSearchSortOrderForm commandForm = SearchUtil.getHome().getCreateSearchSortOrderForm();
+        var commandForm = SearchUtil.getHome().getCreateSearchSortOrderForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchSortOrderName(actionForm.getSearchSortOrderName());

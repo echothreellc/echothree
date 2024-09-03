@@ -353,7 +353,7 @@ public class PrinterControl
     public PrinterGroupStatusChoicesBean getPrinterGroupStatusChoices(String defaultPrinterGroupStatusChoice, Language language, PrinterGroup printerGroup,
             PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        PrinterGroupStatusChoicesBean printerGroupStatusChoicesBean = new PrinterGroupStatusChoicesBean();
+        var printerGroupStatusChoicesBean = new PrinterGroupStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(printerGroup);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PrinterGroupStatusConstants.Workflow_PRINTER_GROUP_STATUS,
                 entityInstance);
@@ -779,7 +779,7 @@ public class PrinterControl
 
     public PrinterStatusChoicesBean getPrinterStatusChoices(String defaultPrinterStatusChoice, Language language, Printer printer, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        PrinterStatusChoicesBean printerStatusChoicesBean = new PrinterStatusChoicesBean();
+        var printerStatusChoicesBean = new PrinterStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(printer);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PrinterStatusConstants.Workflow_PRINTER_STATUS,
                 entityInstance);
@@ -1009,7 +1009,7 @@ public class PrinterControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.PrinterGroupJob */
     public PrinterGroupJob getPrinterGroupJobByEntityInstance(EntityInstance entityInstance) {
-        PrinterGroupJobPK pk = new PrinterGroupJobPK(entityInstance.getEntityUniqueId());
+        var pk = new PrinterGroupJobPK(entityInstance.getEntityUniqueId());
         var printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return printerGroupJob;
@@ -1281,7 +1281,7 @@ public class PrinterControl
     public PrinterGroupJobStatusChoicesBean getPrinterGroupJobStatusChoices(String defaultPrinterGroupJobStatusChoice, Language language,
             PrinterGroupJob printerGroupJob, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        PrinterGroupJobStatusChoicesBean printerGroupJobStatusChoicesBean = new PrinterGroupJobStatusChoicesBean();
+        var printerGroupJobStatusChoicesBean = new PrinterGroupJobStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(printerGroupJob);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS,
                 entityInstance);

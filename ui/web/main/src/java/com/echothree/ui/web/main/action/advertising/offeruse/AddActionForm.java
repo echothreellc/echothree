@@ -47,14 +47,14 @@ public class AddActionForm
     public void setupUseChoices() {
         if(useChoices == null) {
             try {
-                GetUseChoicesForm form = OfferUtil.getHome().getGetUseChoicesForm();
+                var form = OfferUtil.getHome().getGetUseChoicesForm();
                 
                 form.setDefaultUseChoice(useChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = OfferUtil.getHome().getUseChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUseChoicesResult result = (GetUseChoicesResult)executionResult.getResult();
+
+                var commandResult = OfferUtil.getHome().getUseChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetUseChoicesResult)executionResult.getResult();
                 useChoices = result.getUseChoices();
                 
                 if(useChoice == null)
@@ -69,15 +69,15 @@ public class AddActionForm
     public void setupSalesOrderSequenceChoices() {
         if(salesOrderSequenceChoices == null) {
             try {
-                GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
+                var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
                 form.setSequenceTypeName(SequenceTypes.SALES_ORDER.name());
                 form.setDefaultSequenceChoice(salesOrderSequenceChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+
+                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSequenceChoicesResult)executionResult.getResult();
                 salesOrderSequenceChoices = result.getSequenceChoices();
                 
                 if(salesOrderSequenceChoice == null)

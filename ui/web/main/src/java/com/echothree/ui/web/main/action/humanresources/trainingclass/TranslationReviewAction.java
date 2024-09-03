@@ -53,17 +53,17 @@ public class TranslationReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetTrainingClassTranslationForm commandForm = TrainingUtil.getHome().getGetTrainingClassTranslationForm();
+        var commandForm = TrainingUtil.getHome().getGetTrainingClassTranslationForm();
 
         commandForm.setTrainingClassName(request.getParameter(ParameterConstants.TRAINING_CLASS_NAME));
         commandForm.setLanguageIsoName(request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME));
-        
-        CommandResult commandResult = TrainingUtil.getHome().getTrainingClassTranslation(getUserVisitPK(request), commandForm);
+
+        var commandResult = TrainingUtil.getHome().getTrainingClassTranslation(getUserVisitPK(request), commandForm);
         TrainingClassTranslationTransfer trainingClassTranslation = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTrainingClassTranslationResult result = (GetTrainingClassTranslationResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTrainingClassTranslationResult)executionResult.getResult();
             
             trainingClassTranslation = result.getTrainingClassTranslation();
         }

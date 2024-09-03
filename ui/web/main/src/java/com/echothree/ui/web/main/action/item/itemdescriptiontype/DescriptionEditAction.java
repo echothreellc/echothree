@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected ItemDescriptionTypeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ItemDescriptionTypeDescriptionSpec spec = ItemUtil.getHome().getItemDescriptionTypeDescriptionSpec();
+        var spec = ItemUtil.getHome().getItemDescriptionTypeDescriptionSpec();
         
         spec.setItemDescriptionTypeName(findParameter(request, ParameterConstants.ITEM_DESCRIPTION_TYPE_NAME, actionForm.getItemDescriptionTypeName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected ItemDescriptionTypeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ItemDescriptionTypeDescriptionEdit edit = ItemUtil.getHome().getItemDescriptionTypeDescriptionEdit();
+        var edit = ItemUtil.getHome().getItemDescriptionTypeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

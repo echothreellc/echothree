@@ -295,7 +295,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
             } else if (entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
                 var entityMultipleListItemAttributes = coreControl.getEntityMultipleListItemAttributes(entityAttribute, entityInstance);
                 if (entityMultipleListItemAttributes != null && !entityMultipleListItemAttributes.isEmpty()) {
-                    StringBuilder entityListItemNamesBuilder = new StringBuilder();
+                    var entityListItemNamesBuilder = new StringBuilder();
                     entityMultipleListItemAttributes.forEach((entityMultipleListItemAttribute) -> {
                         if(entityListItemNamesBuilder.length() != 0) {
                             entityListItemNamesBuilder.append(' ');
@@ -369,7 +369,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         if(!hasExecutionErrors(eea)) {
             try {
                 Directory fsDir = FSDirectory.open(Paths.get(index.getLastDetail().getDirectory()));
-                IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
+                var indexWriterConfig = new IndexWriterConfig(analyzer);
 
                 indexWriterConfig.setMergeScheduler(new SerialMergeScheduler());
                 indexWriterConfig.setOpenMode(createIndex ? IndexWriterConfig.OpenMode.CREATE : IndexWriterConfig.OpenMode.APPEND);
@@ -444,7 +444,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         }
         Long indexCreatedTime = null;
         var strDirectory = index.getLastDetail().getDirectory();
-        File directory = new File(strDirectory);
+        var directory = new File(strDirectory);
         
         if(directory.exists()) {
             if(directory.isDirectory()) {

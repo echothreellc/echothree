@@ -55,18 +55,18 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String commentTypeName = request.getParameter(ParameterConstants.COMMENT_TYPE_NAME);
-            GetCommentTypeDescriptionsForm commandForm = CommentUtil.getHome().getGetCommentTypeDescriptionsForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var commentTypeName = request.getParameter(ParameterConstants.COMMENT_TYPE_NAME);
+            var commandForm = CommentUtil.getHome().getGetCommentTypeDescriptionsForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setCommentTypeName(commentTypeName);
-            
-            CommandResult commandResult = CommentUtil.getHome().getCommentTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommentTypeDescriptionsResult result = (GetCommentTypeDescriptionsResult)executionResult.getResult();
+
+            var commandResult = CommentUtil.getHome().getCommentTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommentTypeDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMMENT_TYPE, result.getCommentType());
             request.setAttribute(AttributeConstants.COMMENT_TYPE_DESCRIPTIONS, result.getCommentTypeDescriptions());

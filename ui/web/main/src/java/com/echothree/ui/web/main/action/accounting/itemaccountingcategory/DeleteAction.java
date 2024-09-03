@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteItemAccountingCategoryForm commandForm = AccountingUtil.getHome().getDeleteItemAccountingCategoryForm();
-            String itemAccountingCategoryName = request.getParameter(ParameterConstants.ITEM_ACCOUNTING_CATEGORY_NAME);
+            var commandForm = AccountingUtil.getHome().getDeleteItemAccountingCategoryForm();
+            var itemAccountingCategoryName = request.getParameter(ParameterConstants.ITEM_ACCOUNTING_CATEGORY_NAME);
             
             commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
             

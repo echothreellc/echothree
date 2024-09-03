@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = PartyUtil.getHome().getPersonalTitles(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPersonalTitlesResult result = (GetPersonalTitlesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getPersonalTitles(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPersonalTitlesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PERSONAL_TITLES, result.getPersonalTitles());
             forwardKey = ForwardConstants.DISPLAY;

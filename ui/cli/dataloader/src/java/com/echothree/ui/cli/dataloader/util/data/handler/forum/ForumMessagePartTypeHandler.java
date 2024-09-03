@@ -50,9 +50,9 @@ public class ForumMessagePartTypeHandler
         if(localName.equals("forumMessagePartTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +60,7 @@ public class ForumMessagePartTypeHandler
             }
             
             try {
-                CreateForumMessagePartTypeDescriptionForm form = ForumFormFactory.getCreateForumMessagePartTypeDescriptionForm();
+                var form = ForumFormFactory.getCreateForumMessagePartTypeDescriptionForm();
                 
                 form.setForumMessagePartTypeName(forumMessagePartTypeName);
                 form.setLanguageIsoName(languageIsoName);

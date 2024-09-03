@@ -44,14 +44,14 @@ public class AddActionForm
     private void setupLanguageChoices() {
         if(languageChoices == null) {
             try {
-                GetLanguageChoicesForm commandForm = PartyUtil.getHome().getGetLanguageChoicesForm();
+                var commandForm = PartyUtil.getHome().getGetLanguageChoicesForm();
                 
                 commandForm.setDefaultLanguageChoice(languageChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getLanguageChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetLanguageChoicesResult getLanguageChoicesResult = (GetLanguageChoicesResult)executionResult.getResult();
+
+                var commandResult = PartyUtil.getHome().getLanguageChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getLanguageChoicesResult = (GetLanguageChoicesResult)executionResult.getResult();
                 languageChoices = getLanguageChoicesResult.getLanguageChoices();
                 
                 if(languageChoice == null)

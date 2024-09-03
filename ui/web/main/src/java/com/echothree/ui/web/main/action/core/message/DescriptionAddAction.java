@@ -56,17 +56,17 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-        String messageTypeName = request.getParameter(ParameterConstants.MESSAGE_TYPE_NAME);
-        String messageName = request.getParameter(ParameterConstants.MESSAGE_NAME);
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var messageTypeName = request.getParameter(ParameterConstants.MESSAGE_TYPE_NAME);
+        var messageName = request.getParameter(ParameterConstants.MESSAGE_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateMessageDescriptionForm commandForm = MessageUtil.getHome().getCreateMessageDescriptionForm();
+                    var commandForm = MessageUtil.getHome().getCreateMessageDescriptionForm();
                     
                     if(componentVendorName == null)
                         componentVendorName = actionForm.getComponentVendorName();
@@ -83,8 +83,8 @@ public class DescriptionAddAction
                     commandForm.setMessageName(messageName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = MessageUtil.getHome().createMessageDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = MessageUtil.getHome().createMessageDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -103,8 +103,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorName);
             request.setAttribute(AttributeConstants.ENTITY_TYPE_NAME, entityTypeName);

@@ -64,14 +64,14 @@ public class AddActionForm
     public void setupPostalAddressFormatChoices() {
         if(postalAddressFormatChoices == null) {
             try {
-                GetPostalAddressFormatChoicesForm form = ContactUtil.getHome().getGetPostalAddressFormatChoicesForm();
+                var form = ContactUtil.getHome().getGetPostalAddressFormatChoicesForm();
 
                 form.setDefaultPostalAddressFormatChoice(postalAddressFormatChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = ContactUtil.getHome().getPostalAddressFormatChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPostalAddressFormatChoicesResult result = (GetPostalAddressFormatChoicesResult)executionResult.getResult();
+                var commandResult = ContactUtil.getHome().getPostalAddressFormatChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPostalAddressFormatChoicesResult)executionResult.getResult();
                 postalAddressFormatChoices = result.getPostalAddressFormatChoices();
 
                 if(postalAddressFormatChoice == null) {

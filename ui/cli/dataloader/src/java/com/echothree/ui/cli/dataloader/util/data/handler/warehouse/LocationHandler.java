@@ -58,7 +58,7 @@ public class LocationHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("locationDescription")) {
-            CreateLocationDescriptionForm commandForm = WarehouseFormFactory.getCreateLocationDescriptionForm();
+            var commandForm = WarehouseFormFactory.getCreateLocationDescriptionForm();
 
             commandForm.setWarehouseName(warehouseName);
             commandForm.setLocationName(locationName);
@@ -66,7 +66,7 @@ public class LocationHandler
 
             warehouseService.createLocationDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("locationVolume")) {
-            CreateLocationVolumeForm commandForm = WarehouseFormFactory.getCreateLocationVolumeForm();
+            var commandForm = WarehouseFormFactory.getCreateLocationVolumeForm();
 
             commandForm.setWarehouseName(warehouseName);
             commandForm.setLocationName(locationName);
@@ -74,7 +74,7 @@ public class LocationHandler
 
             warehouseService.createLocationVolume(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("locationCapacity")) {
-            CreateLocationCapacityForm commandForm = WarehouseFormFactory.getCreateLocationCapacityForm();
+            var commandForm = WarehouseFormFactory.getCreateLocationCapacityForm();
 
             commandForm.setWarehouseName(warehouseName);
             commandForm.setLocationName(locationName);

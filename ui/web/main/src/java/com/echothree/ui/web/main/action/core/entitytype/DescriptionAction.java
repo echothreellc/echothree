@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetEntityTypeDescriptionsForm commandForm = CoreUtil.getHome().getGetEntityTypeDescriptionsForm();
+        var commandForm = CoreUtil.getHome().getGetEntityTypeDescriptionsForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
 
-        CommandResult commandResult = CoreUtil.getHome().getEntityTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getEntityTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityTypeDescriptionsResult result = (GetEntityTypeDescriptionsResult) executionResult.getResult();
-            EntityTypeTransfer entityTypeTransfer = result.getEntityType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityTypeDescriptionsResult) executionResult.getResult();
+            var entityTypeTransfer = result.getEntityType();
 
             request.setAttribute(AttributeConstants.ENTITY_TYPE, entityTypeTransfer);
             request.setAttribute(AttributeConstants.ENTITY_TYPE_DESCRIPTIONS, result.getEntityTypeDescriptions());

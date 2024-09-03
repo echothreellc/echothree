@@ -103,18 +103,18 @@ public class PrintPrinterGroupJobsJob
     private Map<String, PrinterGroupTransfer> getPrinterGroups()
             throws NamingException {
         Map<String, PrinterGroupTransfer> printerGroupsMap = new HashMap<>();
-        GetPrinterGroupsForm commandForm = PrinterUtil.getHome().getGetPrinterGroupsForm();
+        var commandForm = PrinterUtil.getHome().getGetPrinterGroupsForm();
 
         Set<String> options = new HashSet<>();
         options.add(PrinterOptions.PrinterGroupIncludePrinters);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = PrinterUtil.getHome().getPrinterGroups(userVisitPK, commandForm);
+        var commandResult = PrinterUtil.getHome().getPrinterGroups(userVisitPK, commandForm);
 
         if(!commandResult.getHasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterGroupsResult result = (GetPrinterGroupsResult)executionResult.getResult();
-            List<PrinterGroupTransfer> printerGroups = result.getPrinterGroups();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPrinterGroupsResult)executionResult.getResult();
+            var printerGroups = result.getPrinterGroups();
 
             printerGroups.stream().forEach((printerGroup) -> {
                 printerGroupsMap.put(printerGroup.getPrinterGroupName(), printerGroup);
@@ -126,7 +126,7 @@ public class PrintPrinterGroupJobsJob
 
     private void setPrinterGroupJobStatus(PrinterGroupJobTransfer printerGroupJob, String workflowDestinationName)
             throws NamingException {
-        SetPrinterGroupJobStatusForm commandForm = PrinterUtil.getHome().getSetPrinterGroupJobStatusForm();
+        var commandForm = PrinterUtil.getHome().getSetPrinterGroupJobStatusForm();
 
         commandForm.setPrinterGroupJobName(printerGroupJob.getPrinterGroupJobName());
         commandForm.setPrinterGroupJobStatusChoice(workflowDestinationName);
@@ -136,16 +136,16 @@ public class PrintPrinterGroupJobsJob
 
     private PrintService locatePrintService(PrinterGroupTransfer printerGroup, DocFlavor docFlavor, PrintRequestAttributeSet printRequestAttributeSet) {
         PrintService result = null;
-        PrintService[] printServices = PrintServiceLookup.lookupPrintServices(docFlavor, printRequestAttributeSet);
-        int count = printServices.length;
+        var printServices = PrintServiceLookup.lookupPrintServices(docFlavor, printRequestAttributeSet);
+        var count = printServices.length;
         Set<String> printerNames = new HashSet<>(printerGroup.getPrinters().getSize());
 
         printerGroup.getPrinters().getList().stream().filter((printer) -> (printer.getPrinterStatus().getWorkflowStep().getWorkflowStepName().equals(PrinterStatusConstants.WorkflowStep_ACCEPTING_JOBS))).forEach((printer) -> {
             printerNames.add(printer.getPrinterName());
         });
 
-        for(int i = 0; i < count; i++) {
-            PrintService printService = printServices[i];
+        for(var i = 0; i < count; i++) {
+            var printService = printServices[i];
 
             if(printerNames.contains(printService.getName())) {
                 result = printService;
@@ -159,15 +159,15 @@ public class PrintPrinterGroupJobsJob
     private void printPrinterGroupJobs(List<PrinterGroupJobTransfer> printerGroupJobs)
             throws NamingException {
         if(!printerGroupJobs.isEmpty()) {
-            Map<String, PrinterGroupTransfer> printerGroups = getPrinterGroups();
+            var printerGroups = getPrinterGroups();
 
-            for(PrinterGroupJobTransfer printerGroupJob : printerGroupJobs) {
-                PrinterGroupTransfer printerGroup = printerGroups.get(printerGroupJob.getPrinterGroup().getPrinterGroupName());
+            for(var printerGroupJob : printerGroupJobs) {
+                var printerGroup = printerGroups.get(printerGroupJob.getPrinterGroup().getPrinterGroupName());
 
                 if(printerGroup != null && printerGroup.getPrinterGroupStatus().getWorkflowStep().getWorkflowStepName().equals(PrinterGroupStatusConstants.WorkflowStep_QUEUEING_JOBS)) {
-                    boolean wasPrinted = false;
-                    MimeTypeTransfer mimeType = printerGroupJob.getDocument().getMimeType();
-                    DocFlavor docFlavor = new DocFlavor(mimeType.getMimeTypeName(), InputStream.class.getCanonicalName());
+                    var wasPrinted = false;
+                    var mimeType = printerGroupJob.getDocument().getMimeType();
+                    var docFlavor = new DocFlavor(mimeType.getMimeTypeName(), InputStream.class.getCanonicalName());
                     PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
 
                     printRequestAttributeSet.add(MediaSizeName.NA_LETTER);
@@ -175,17 +175,17 @@ public class PrintPrinterGroupJobsJob
                     //printRequestAttributeSet.add(new JobPriority(printerGroupJob.getPriority()));
                     //printRequestAttributeSet.add(SheetCollate.COLLATED);
 
-                    PrintService printService = locatePrintService(printerGroup, docFlavor, printRequestAttributeSet);
+                    var printService = locatePrintService(printerGroup, docFlavor, printRequestAttributeSet);
 
                     if(printService != null) {
-			DocPrintJob docPrintJob = printService.createPrintJob();
+                        var docPrintJob = printService.createPrintJob();
 
 			docPrintJob.addPrintJobListener(new PrintJobListener(printerGroupJob.getPrinterGroupJobName()));
 
 			try {
                             InputStream inputStream = null;
-                            DocumentTransfer document = printerGroupJob.getDocument();
-                            String entityAttributeTypeName = mimeType.getEntityAttributeType().getEntityAttributeTypeName();
+                var document = printerGroupJob.getDocument();
+                var entityAttributeTypeName = mimeType.getEntityAttributeType().getEntityAttributeTypeName();
 
                             if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
                                 inputStream = document.getBlob().getByteArrayInputStream();
@@ -215,7 +215,7 @@ public class PrintPrinterGroupJobsJob
     @Override
     public void execute()
             throws NamingException {
-        GetPrinterGroupJobsForm commandForm = PrinterUtil.getHome().getGetPrinterGroupJobsForm();
+        var commandForm = PrinterUtil.getHome().getGetPrinterGroupJobsForm();
 
         commandForm.setPrinterGroupJobStatusChoice(PrinterGroupJobStatusConstants.WorkflowStep_QUEUED);
 
@@ -224,11 +224,11 @@ public class PrintPrinterGroupJobsJob
         options.add(DocumentOptions.DocumentIncludeClob);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupJobs(userVisitPK, commandForm);
+        var commandResult = PrinterUtil.getHome().getPrinterGroupJobs(userVisitPK, commandForm);
 
         if(!commandResult.getHasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterGroupJobsResult result = (GetPrinterGroupJobsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPrinterGroupJobsResult)executionResult.getResult();
 
             printPrinterGroupJobs(result.getPrinterGroupJobs());
         }

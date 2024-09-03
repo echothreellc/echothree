@@ -50,9 +50,9 @@ public class SkillTypeHandler
         if(localName.equals("skillTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +60,7 @@ public class SkillTypeHandler
             }
             
             try {
-                CreateSkillTypeDescriptionForm form = EmployeeFormFactory.getCreateSkillTypeDescriptionForm();
+                var form = EmployeeFormFactory.getCreateSkillTypeDescriptionForm();
                 
                 form.setSkillTypeName(skillTypeName);
                 form.setLanguageIsoName(languageIsoName);

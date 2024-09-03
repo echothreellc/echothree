@@ -48,7 +48,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultHarmonizedTariffScheduleCodeUnitForm commandForm = ItemUtil.getHome().getSetDefaultHarmonizedTariffScheduleCodeUnitForm();
+        var commandForm = ItemUtil.getHome().getSetDefaultHarmonizedTariffScheduleCodeUnitForm();
 
         commandForm.setHarmonizedTariffScheduleCodeUnitName(request.getParameter(ParameterConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT_NAME));
 

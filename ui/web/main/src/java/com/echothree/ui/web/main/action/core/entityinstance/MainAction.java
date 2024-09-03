@@ -54,16 +54,16 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            GetEntityInstancesForm getEntityInstancesForm = CoreUtil.getHome().getGetEntityInstancesForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var getEntityInstancesForm = CoreUtil.getHome().getGetEntityInstancesForm();
             
             getEntityInstancesForm.setComponentVendorName(componentVendorName);
             getEntityInstancesForm.setEntityTypeName(entityTypeName);
-            
-            CommandResult commandResult = CoreUtil.getHome().getEntityInstances(getUserVisitPK(request), getEntityInstancesForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityInstancesResult getEntityInstancesResult = (GetEntityInstancesResult)executionResult.getResult();
+
+            var commandResult = CoreUtil.getHome().getEntityInstances(getUserVisitPK(request), getEntityInstancesForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getEntityInstancesResult = (GetEntityInstancesResult)executionResult.getResult();
             
             request.setAttribute("componentVendorName", componentVendorName); // TODO: pull from result
             request.setAttribute("entityTypeName", entityTypeName); // TODO: pull from result

@@ -66,7 +66,7 @@ public class ContactMechanismIndexer
     }
     
     private void addPartyNamesToDocument(Document document, Set<Party> parties) {
-        StringBuilder partyNamesBuilder = new StringBuilder();
+        var partyNamesBuilder = new StringBuilder();
 
         parties.forEach((party) -> {
             if(partyNamesBuilder.length() != 0) {
@@ -80,7 +80,7 @@ public class ContactMechanismIndexer
     }
     
     private void addPartyTypeNamesToDocument(Document document, Set<PartyType> partyTypes) {
-        StringBuilder partyTypeNamesBuilder = new StringBuilder();
+        var partyTypeNamesBuilder = new StringBuilder();
 
         partyTypes.forEach((partyType) -> {
             if(partyTypeNamesBuilder.length() != 0) {
@@ -94,7 +94,7 @@ public class ContactMechanismIndexer
     }
     
     private void addContactMechanismPurposeNamesToDocument(Document document, Set<ContactMechanismPurpose> contactMechanismPurposes) {
-        StringBuilder contactMechanismPurposesNamesBuilder = new StringBuilder();
+        var contactMechanismPurposesNamesBuilder = new StringBuilder();
 
         contactMechanismPurposes.forEach((contactMechanismPurpose) -> {
             if(contactMechanismPurposesNamesBuilder.length() != 0) {

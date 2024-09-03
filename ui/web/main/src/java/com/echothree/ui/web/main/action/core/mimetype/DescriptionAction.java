@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String mimeTypeName = request.getParameter(ParameterConstants.MIME_TYPE_NAME);
-        GetMimeTypeDescriptionsForm commandForm = CoreUtil.getHome().getGetMimeTypeDescriptionsForm();
+        var mimeTypeName = request.getParameter(ParameterConstants.MIME_TYPE_NAME);
+        var commandForm = CoreUtil.getHome().getGetMimeTypeDescriptionsForm();
 
         commandForm.setMimeTypeName(mimeTypeName);
 
-        CommandResult commandResult = CoreUtil.getHome().getMimeTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getMimeTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeDescriptionsResult result = (GetMimeTypeDescriptionsResult) executionResult.getResult();
-            MimeTypeTransfer mimeTypeTransfer = result.getMimeType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeDescriptionsResult) executionResult.getResult();
+            var mimeTypeTransfer = result.getMimeType();
 
             request.setAttribute(AttributeConstants.MIME_TYPE, mimeTypeTransfer);
             request.setAttribute(AttributeConstants.MIME_TYPE_DESCRIPTIONS, result.getMimeTypeDescriptions());

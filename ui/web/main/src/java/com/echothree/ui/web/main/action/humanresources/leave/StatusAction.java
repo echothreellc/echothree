@@ -64,14 +64,14 @@ public class StatusAction
    @Override
     public void setupTransfer(StatusActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetLeaveForm commandForm = EmployeeUtil.getHome().getGetLeaveForm();
+       var commandForm = EmployeeUtil.getHome().getGetLeaveForm();
 
         commandForm.setLeaveName(actionForm.getLeaveName());
 
-        CommandResult commandResult = EmployeeUtil.getHome().getLeave(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetLeaveResult result = (GetLeaveResult)executionResult.getResult();
-        LeaveTransfer leave = result.getLeave();
+       var commandResult = EmployeeUtil.getHome().getLeave(getUserVisitPK(request), commandForm);
+       var executionResult = commandResult.getExecutionResult();
+       var result = (GetLeaveResult)executionResult.getResult();
+       var leave = result.getLeave();
 
         request.setAttribute(AttributeConstants.LEAVE, leave);
         request.setAttribute(AttributeConstants.EMPLOYEE, EmployeeUtils.getInstance().getEmployee(getUserVisitPK(request), leave.getParty().getPartyName(),
@@ -81,7 +81,7 @@ public class StatusAction
     @Override
     public CommandResult doStatus(StatusActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        SetLeaveStatusForm commandForm = EmployeeUtil.getHome().getSetLeaveStatusForm();
+        var commandForm = EmployeeUtil.getHome().getSetLeaveStatusForm();
 
         commandForm.setLeaveName(actionForm.getLeaveName());
         commandForm.setLeaveStatusChoice(actionForm.getLeaveStatusChoice());
@@ -97,8 +97,8 @@ public class StatusAction
     
     @Override
     public void setupForwardParameters(StatusActionForm actionForm, Map<String, String> parameters) {
-        String partyName = actionForm.getPartyName();
-        String leaveName = actionForm.getLeaveName();
+        var partyName = actionForm.getPartyName();
+        var leaveName = actionForm.getLeaveName();
         
         if(partyName != null) {
             parameters.put(ParameterConstants.PARTY_NAME, partyName);

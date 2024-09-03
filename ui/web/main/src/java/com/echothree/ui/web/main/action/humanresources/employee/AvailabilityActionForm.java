@@ -41,15 +41,15 @@ public class AvailabilityActionForm
     public void setupEmployeeAvailabilityChoices()
             throws NamingException {
         if(employeeAvailabilityChoices == null) {
-            GetEmployeeAvailabilityChoicesForm form = PartyUtil.getHome().getGetEmployeeAvailabilityChoicesForm();
+            var form = PartyUtil.getHome().getGetEmployeeAvailabilityChoicesForm();
 
             form.setEmployeeName(employeeName);
             form.setDefaultEmployeeAvailabilityChoice(employeeAvailabilityChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getEmployeeAvailabilityChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmployeeAvailabilityChoicesResult result = (GetEmployeeAvailabilityChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getEmployeeAvailabilityChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmployeeAvailabilityChoicesResult)executionResult.getResult();
             employeeAvailabilityChoices = result.getEmployeeAvailabilityChoices();
 
             if(employeeAvailabilityChoice == null)

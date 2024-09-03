@@ -53,7 +53,7 @@ public class SequenceHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("sequenceDescription")) {
-            CreateSequenceDescriptionForm commandForm = SequenceFormFactory.getCreateSequenceDescriptionForm();
+            var commandForm = SequenceFormFactory.getCreateSequenceDescriptionForm();
 
             commandForm.setSequenceTypeName(sequenceTypeName);
             commandForm.setSequenceName(sequenceName);
@@ -61,7 +61,7 @@ public class SequenceHandler
 
             sequenceService.createSequenceDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("sequenceValue")) {
-            SetSequenceValueForm commandForm = SequenceFormFactory.getSetSequenceValueForm();
+            var commandForm = SequenceFormFactory.getSetSequenceValueForm();
 
             commandForm.setSequenceTypeName(sequenceTypeName);
             commandForm.setSequenceName(sequenceName);

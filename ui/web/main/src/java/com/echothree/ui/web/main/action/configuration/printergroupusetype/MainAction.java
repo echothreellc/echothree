@@ -51,12 +51,12 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetPrinterGroupUseTypesForm commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypesForm();
+        var commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypesForm();
 
-        CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupUseTypes(getUserVisitPK(request), commandForm);
+        var commandResult = PrinterUtil.getHome().getPrinterGroupUseTypes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterGroupUseTypesResult result = (GetPrinterGroupUseTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPrinterGroupUseTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PRINTER_GROUP_USE_TYPES, result.getPrinterGroupUseTypes());
             forwardKey = ForwardConstants.DISPLAY;

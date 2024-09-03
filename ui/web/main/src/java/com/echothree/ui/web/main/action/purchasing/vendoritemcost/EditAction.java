@@ -61,16 +61,16 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
-        String vendorItemName = request.getParameter(ParameterConstants.VENDOR_ITEM_NAME);
-        String inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
-        String unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
+        var vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
+        var vendorItemName = request.getParameter(ParameterConstants.VENDOR_ITEM_NAME);
+        var inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
+        var unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditVendorItemCostForm commandForm = VendorUtil.getHome().getEditVendorItemCostForm();
-                VendorItemCostSpec spec = VendorUtil.getHome().getVendorItemCostSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = VendorUtil.getHome().getEditVendorItemCostForm();
+                var spec = VendorUtil.getHome().getVendorItemCostSpec();
                 
                 if(vendorName == null)
                     vendorName = actionForm.getVendorName();
@@ -88,20 +88,20 @@ public class EditAction
                 spec.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
                 
                 if(wasPost(request)) {
-                    VendorItemCostEdit edit = VendorUtil.getHome().getVendorItemCostEdit();
+                    var edit = VendorUtil.getHome().getVendorItemCostEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     
                     edit.setUnitCost(actionForm.getUnitCost());
-                    
-                    CommandResult commandResult = VendorUtil.getHome().editVendorItemCost(getUserVisitPK(request), commandForm);
+
+                    var commandResult = VendorUtil.getHome().editVendorItemCost(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditVendorItemCostResult result = (EditVendorItemCostResult)executionResult.getResult();
+                            var result = (EditVendorItemCostResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -114,13 +114,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = VendorUtil.getHome().editVendorItemCost(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditVendorItemCostResult result = (EditVendorItemCostResult)executionResult.getResult();
+
+                    var commandResult = VendorUtil.getHome().editVendorItemCost(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditVendorItemCostResult)executionResult.getResult();
                     
                     if(result != null) {
-                        VendorItemCostEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setVendorName(vendorName);
@@ -141,8 +141,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.VENDOR_NAME, vendorName);
             request.setAttribute(AttributeConstants.VENDOR_ITEM_NAME, vendorItemName);

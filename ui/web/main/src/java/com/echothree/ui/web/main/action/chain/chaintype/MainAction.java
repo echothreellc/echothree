@@ -52,15 +52,15 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetChainTypesForm commandForm = ChainUtil.getHome().getGetChainTypesForm();
+        var commandForm = ChainUtil.getHome().getGetChainTypesForm();
 
         commandForm.setChainKindName(request.getParameter(ParameterConstants.CHAIN_KIND_NAME));
 
-        CommandResult commandResult = ChainUtil.getHome().getChainTypes(getUserVisitPK(request), commandForm);
+        var commandResult = ChainUtil.getHome().getChainTypes(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetChainTypesResult result = (GetChainTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetChainTypesResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CHAIN_KIND, result.getChainKind());
             request.setAttribute(AttributeConstants.CHAIN_TYPES, result.getChainTypes());

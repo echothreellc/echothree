@@ -59,12 +59,12 @@ public class CityHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("geoCodeDescription")) {
-            CreateGeoCodeDescriptionForm commandForm = GeoFormFactory.getCreateGeoCodeDescriptionForm();
+            var commandForm = GeoFormFactory.getCreateGeoCodeDescriptionForm();
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -77,11 +77,11 @@ public class CityHandler
             
             geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("cityCounty")) {
-            AddCityToCountyForm commandForm = GeoFormFactory.getAddCityToCountyForm();
+            var commandForm = GeoFormFactory.getAddCityToCountyForm();
             String countyName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("countyName"))
                     countyName = attrs.getValue(i);
             }
@@ -91,11 +91,11 @@ public class CityHandler
             
             geoService.addCityToCounty(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("cityZipCode")) {
-            AddZipCodeToCityForm commandForm = GeoFormFactory.getAddZipCodeToCityForm();
+            var commandForm = GeoFormFactory.getAddZipCodeToCityForm();
             String zipCodeName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("zipCodeName"))
                     zipCodeName = attrs.getValue(i);
             }
@@ -105,11 +105,11 @@ public class CityHandler
             
             geoService.addZipCodeToCity(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("geoCodeTax")) {
-            CreateGeoCodeTaxForm commandForm = TaxFormFactory.getCreateGeoCodeTaxForm();
+            var commandForm = TaxFormFactory.getCreateGeoCodeTaxForm();
             String taxName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("taxName"))
                     taxName = attrs.getValue(i);
             }

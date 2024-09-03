@@ -56,14 +56,14 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String glResourceTypeName = request.getParameter(ParameterConstants.GL_RESOURCE_TYPE_NAME);
+        var glResourceTypeName = request.getParameter(ParameterConstants.GL_RESOURCE_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateGlResourceTypeDescriptionForm commandForm = AccountingUtil.getHome().getCreateGlResourceTypeDescriptionForm();
+                    var commandForm = AccountingUtil.getHome().getCreateGlResourceTypeDescriptionForm();
                     
                     if(glResourceTypeName == null)
                         glResourceTypeName = actionForm.getGlResourceTypeName();
@@ -71,8 +71,8 @@ public class DescriptionAddAction
                     commandForm.setGlResourceTypeName(glResourceTypeName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().createGlResourceTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AccountingUtil.getHome().createGlResourceTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -88,8 +88,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.GL_RESOURCE_TYPE_NAME, glResourceTypeName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

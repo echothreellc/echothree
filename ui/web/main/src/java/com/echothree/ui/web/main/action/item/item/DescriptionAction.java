@@ -58,9 +58,9 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            GetItemDescriptionsForm commandForm = ItemUtil.getHome().getGetItemDescriptionsForm();
-            String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
-            String itemDescriptionTypeUseTypeName = request.getParameter(ParameterConstants.ITEM_DESCRIPTION_TYPE_USE_TYPE_NAME);
+            var commandForm = ItemUtil.getHome().getGetItemDescriptionsForm();
+            var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+            var itemDescriptionTypeUseTypeName = request.getParameter(ParameterConstants.ITEM_DESCRIPTION_TYPE_USE_TYPE_NAME);
 
             commandForm.setItemName(itemName);
             commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
@@ -69,10 +69,10 @@ public class DescriptionAction
             options.add(ItemOptions.ItemDescriptionIncludeString);
             options.add(ItemOptions.ItemDescriptionIncludeImageDescription);
             commandForm.setOptions(options);
-            
-            CommandResult commandResult = ItemUtil.getHome().getItemDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemDescriptionsResult result = (GetItemDescriptionsResult)executionResult.getResult();
+
+            var commandResult = ItemUtil.getHome().getItemDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ITEM, result.getItem());
             request.setAttribute(AttributeConstants.ITEM_DESCRIPTIONS, result.getItemDescriptions());

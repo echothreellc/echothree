@@ -40,14 +40,14 @@ public class Step2ActionForm
     private void setupCountryChoices() {
         if(countryChoices == null) {
             try {
-                GetCountryChoicesForm commandForm = GeoUtil.getHome().getGetCountryChoicesForm();
+                var commandForm = GeoUtil.getHome().getGetCountryChoicesForm();
 
                 commandForm.setDefaultCountryChoice(countryChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = GeoUtil.getHome().getCountryChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCountryChoicesResult result = (GetCountryChoicesResult)executionResult.getResult();
+                var commandResult = GeoUtil.getHome().getCountryChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCountryChoicesResult)executionResult.getResult();
                 countryChoices = result.getCountryChoices();
 
                 if(countryChoice == null) {

@@ -52,8 +52,8 @@ public class ContactTelephoneStatusAction
     public ActionForward executeAction(ActionMapping mapping, ContactTelephoneStatusActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);
 
         if(partyName == null) {
             partyName = actionForm.getPartyName();
@@ -63,11 +63,11 @@ public class ContactTelephoneStatusAction
         }
 
         if(wasPost(request)) {
-            SetTelephoneStatusForm commandForm = ContactUtil.getHome().getSetTelephoneStatusForm();
+            var commandForm = ContactUtil.getHome().getSetTelephoneStatusForm();
             commandForm.setContactMechanismName(contactMechanismName);
             commandForm.setTelephoneStatusChoice(actionForm.getTelephoneStatusChoice());
 
-            CommandResult commandResult = ContactUtil.getHome().setTelephoneStatus(getUserVisitPK(request), commandForm);
+            var commandResult = ContactUtil.getHome().setTelephoneStatus(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -81,7 +81,7 @@ public class ContactTelephoneStatusAction
             forwardKey = ForwardConstants.FORM;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupCustomer(request, partyName);
             setupPartyContactMechanismTransfer(request, partyName, contactMechanismName);

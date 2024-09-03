@@ -41,15 +41,15 @@ public class ContactWebAddressStatusActionForm
     public void setupWebAddressStatusChoices()
             throws NamingException {
         if(webAddressStatusChoices == null) {
-            GetWebAddressStatusChoicesForm form = ContactUtil.getHome().getGetWebAddressStatusChoicesForm();
+            var form = ContactUtil.getHome().getGetWebAddressStatusChoicesForm();
 
             form.setContactMechanismName(contactMechanismName);
             form.setDefaultWebAddressStatusChoice(webAddressStatusChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getWebAddressStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWebAddressStatusChoicesResult result = (GetWebAddressStatusChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getWebAddressStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWebAddressStatusChoicesResult)executionResult.getResult();
             webAddressStatusChoices = result.getWebAddressStatusChoices();
 
             if(webAddressStatusChoice == null) {

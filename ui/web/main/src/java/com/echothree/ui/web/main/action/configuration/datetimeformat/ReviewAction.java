@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetDateTimeFormatForm commandForm = PartyUtil.getHome().getGetDateTimeFormatForm();
-            String dateTimeFormatName = request.getParameter(ParameterConstants.DATE_TIME_FORMAT_NAME);
+            var commandForm = PartyUtil.getHome().getGetDateTimeFormatForm();
+            var dateTimeFormatName = request.getParameter(ParameterConstants.DATE_TIME_FORMAT_NAME);
             
             commandForm.setDateTimeFormatName(dateTimeFormatName);
-            
-            CommandResult commandResult = PartyUtil.getHome().getDateTimeFormat(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetDateTimeFormatResult result = (GetDateTimeFormatResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().getDateTimeFormat(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetDateTimeFormatResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.DATE_TIME_FORMAT, result.getDateTimeFormat());
             forwardKey = ForwardConstants.DISPLAY;

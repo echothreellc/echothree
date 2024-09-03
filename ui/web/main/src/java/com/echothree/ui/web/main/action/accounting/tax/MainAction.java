@@ -49,9 +49,9 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        CommandResult commandResult = TaxUtil.getHome().getTaxes(getUserVisitPK(request), null);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTaxesResult result = (GetTaxesResult)executionResult.getResult();
+        var commandResult = TaxUtil.getHome().getTaxes(getUserVisitPK(request), null);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTaxesResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.TAXES, result.getTaxes());
         

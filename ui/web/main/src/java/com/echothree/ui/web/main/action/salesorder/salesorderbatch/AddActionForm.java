@@ -49,14 +49,14 @@ public class AddActionForm
     public void setupCurrencyChoices() {
         if(currencyChoices == null) {
             try {
-                GetCurrencyChoicesForm form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
+                var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
                 
                 form.setDefaultCurrencyChoice(currencyChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCurrencyChoicesResult getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
                 currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
                 
                 if(currencyChoice == null)
@@ -71,14 +71,14 @@ public class AddActionForm
     public void setupPaymentMethodChoices() {
         if(paymentMethodChoices == null) {
             try {
-                GetPaymentMethodChoicesForm form = PaymentUtil.getHome().getGetPaymentMethodChoicesForm();
+                var form = PaymentUtil.getHome().getGetPaymentMethodChoicesForm();
                 
                 form.setDefaultPaymentMethodChoice(paymentMethodChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPaymentMethodChoicesResult getPaymentMethodChoicesResult = (GetPaymentMethodChoicesResult)executionResult.getResult();
+
+                var commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getPaymentMethodChoicesResult = (GetPaymentMethodChoicesResult)executionResult.getResult();
                 paymentMethodChoices = getPaymentMethodChoicesResult.getPaymentMethodChoices();
                 
                 if(paymentMethodChoice == null)

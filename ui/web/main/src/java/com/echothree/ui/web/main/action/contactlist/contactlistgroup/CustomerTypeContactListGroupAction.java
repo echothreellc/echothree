@@ -53,16 +53,16 @@ public class CustomerTypeContactListGroupAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String contactListGroupName = request.getParameter(ParameterConstants.CONTACT_LIST_GROUP_NAME);
-        GetCustomerTypeContactListGroupsForm commandForm = ContactListUtil.getHome().getGetCustomerTypeContactListGroupsForm();
+        var contactListGroupName = request.getParameter(ParameterConstants.CONTACT_LIST_GROUP_NAME);
+        var commandForm = ContactListUtil.getHome().getGetCustomerTypeContactListGroupsForm();
 
         commandForm.setContactListGroupName(contactListGroupName);
 
-        CommandResult commandResult = ContactListUtil.getHome().getCustomerTypeContactListGroups(getUserVisitPK(request), commandForm);
+        var commandResult = ContactListUtil.getHome().getCustomerTypeContactListGroups(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypeContactListGroupsResult result = (GetCustomerTypeContactListGroupsResult) executionResult.getResult();
-            ContactListGroupTransfer contactListGroupTransfer = result.getContactListGroup();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypeContactListGroupsResult) executionResult.getResult();
+            var contactListGroupTransfer = result.getContactListGroup();
 
             request.setAttribute(AttributeConstants.CONTACT_LIST_GROUP, contactListGroupTransfer);
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_CONTACT_LIST_GROUPS, result.getCustomerTypeContactListGroups());

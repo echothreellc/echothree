@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String securityRoleGroupName = request.getParameter(ParameterConstants.SECURITY_ROLE_GROUP_NAME);
-        GetSecurityRoleGroupDescriptionsForm commandForm = SecurityUtil.getHome().getGetSecurityRoleGroupDescriptionsForm();
+        var securityRoleGroupName = request.getParameter(ParameterConstants.SECURITY_ROLE_GROUP_NAME);
+        var commandForm = SecurityUtil.getHome().getGetSecurityRoleGroupDescriptionsForm();
 
         commandForm.setSecurityRoleGroupName(securityRoleGroupName);
 
-        CommandResult commandResult = SecurityUtil.getHome().getSecurityRoleGroupDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = SecurityUtil.getHome().getSecurityRoleGroupDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSecurityRoleGroupDescriptionsResult result = (GetSecurityRoleGroupDescriptionsResult) executionResult.getResult();
-            SecurityRoleGroupTransfer securityRoleGroupTransfer = result.getSecurityRoleGroup();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSecurityRoleGroupDescriptionsResult) executionResult.getResult();
+            var securityRoleGroupTransfer = result.getSecurityRoleGroup();
 
             request.setAttribute(AttributeConstants.SECURITY_ROLE_GROUP, securityRoleGroupTransfer);
             request.setAttribute(AttributeConstants.SECURITY_ROLE_GROUP_DESCRIPTIONS, result.getSecurityRoleGroupDescriptions());

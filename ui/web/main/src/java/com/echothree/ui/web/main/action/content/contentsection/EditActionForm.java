@@ -39,15 +39,15 @@ public class EditActionForm
     private void setupParentContentSectionChoices()
             throws NamingException {
         if(parentContentSectionChoices == null) {
-            GetContentSectionChoicesForm form = ContentUtil.getHome().getGetContentSectionChoicesForm();
+            var form = ContentUtil.getHome().getGetContentSectionChoicesForm();
 
             form.setContentCollectionName(contentCollectionName);
             form.setDefaultContentSectionChoice(parentContentSectionChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = ContentUtil.getHome().getContentSectionChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentSectionChoicesResult getContentSectionChoicesResult = (GetContentSectionChoicesResult)executionResult.getResult();
+            var commandResult = ContentUtil.getHome().getContentSectionChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getContentSectionChoicesResult = (GetContentSectionChoicesResult)executionResult.getResult();
             parentContentSectionChoices = getContentSectionChoicesResult.getContentSectionChoices();
 
             if(parentContentSectionChoice == null)

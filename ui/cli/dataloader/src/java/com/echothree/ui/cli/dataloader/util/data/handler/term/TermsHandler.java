@@ -55,9 +55,9 @@ public class TermsHandler
             String netDueDayOfMonth = null;
             String dueNextMonthDays = null;
             String discountBeforeDayOfMonth = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("termName"))
                     termName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("termTypeName"))
@@ -81,7 +81,7 @@ public class TermsHandler
             }
             
             try {
-                CreateTermForm commandForm = TermFormFactory.getCreateTermForm();
+                var commandForm = TermFormFactory.getCreateTermForm();
                 
                 commandForm.setTermName(termName);
                 commandForm.setTermTypeName(termTypeName);

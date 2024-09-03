@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetLeaveReasonForm commandForm = EmployeeUtil.getHome().getGetLeaveReasonForm();
+        var commandForm = EmployeeUtil.getHome().getGetLeaveReasonForm();
 
         commandForm.setLeaveReasonName(actionForm.getLeaveReasonName());
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getLeaveReason(getUserVisitPK(request), commandForm);
+
+        var commandResult = EmployeeUtil.getHome().getLeaveReason(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLeaveReasonResult result = (GetLeaveReasonResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveReasonResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.LEAVE_REASON, result.getLeaveReason());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateLeaveReasonDescriptionForm commandForm = EmployeeUtil.getHome().getCreateLeaveReasonDescriptionForm();
+        var commandForm = EmployeeUtil.getHome().getCreateLeaveReasonDescriptionForm();
 
         commandForm.setLeaveReasonName( actionForm.getLeaveReasonName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

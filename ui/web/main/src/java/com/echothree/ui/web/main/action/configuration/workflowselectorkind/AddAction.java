@@ -56,22 +56,22 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+        var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateWorkflowSelectorKindForm commandForm = WorkflowUtil.getHome().getCreateWorkflowSelectorKindForm();
+                    var commandForm = WorkflowUtil.getHome().getCreateWorkflowSelectorKindForm();
                     
                     if(workflowName == null)
                         workflowName = actionForm.getWorkflowName();
                     
                     commandForm.setWorkflowName(workflowName);
                     commandForm.setSelectorKindName(actionForm.getSelectorKindChoice());
-                    
-                    CommandResult commandResult = WorkflowUtil.getHome().createWorkflowSelectorKind(getUserVisitPK(request), commandForm);
+
+                    var commandResult = WorkflowUtil.getHome().createWorkflowSelectorKind(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -87,8 +87,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WORKFLOW_NAME, workflowName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

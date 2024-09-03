@@ -51,14 +51,14 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
-        GetOfferChainTypesForm commandForm = OfferUtil.getHome().getGetOfferChainTypesForm();
+        var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+        var commandForm = OfferUtil.getHome().getGetOfferChainTypesForm();
         
         commandForm.setOfferName(offerName);
-        
-        CommandResult commandResult = OfferUtil.getHome().getOfferChainTypes(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetOfferChainTypesResult result = (GetOfferChainTypesResult)executionResult.getResult();
+
+        var commandResult = OfferUtil.getHome().getOfferChainTypes(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetOfferChainTypesResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.OFFER, result.getOffer());
         request.setAttribute(AttributeConstants.OFFER_CHAIN_TYPES, result.getOfferChainTypes());

@@ -143,7 +143,7 @@ public class SalesOrderBatchLogic
     public SalesOrderBatchStatusChoicesBean getSalesOrderBatchStatusChoices(String defaultSalesOrderBatchStatusChoice, Language language, boolean allowNullChoice,
             Batch batch, PartyPK partyPK) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        SalesOrderBatchStatusChoicesBean salesOrderBatchStatusChoicesBean = new SalesOrderBatchStatusChoicesBean();
+        var salesOrderBatchStatusChoicesBean = new SalesOrderBatchStatusChoicesBean();
 
         if(batch == null) {
             workflowControl.getWorkflowEntranceChoices(salesOrderBatchStatusChoicesBean, defaultSalesOrderBatchStatusChoice, language, allowNullChoice,

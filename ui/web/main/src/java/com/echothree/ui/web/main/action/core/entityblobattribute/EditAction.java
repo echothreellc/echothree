@@ -59,18 +59,18 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
         
         try {
-            String entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
-            String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-            String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+            var entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
+            var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+            var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
             
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditEntityBlobAttributeForm commandForm = CoreUtil.getHome().getEditEntityBlobAttributeForm();
-                EntityBlobAttributeSpec spec = CoreUtil.getHome().getEntityBlobAttributeSpec();
-                FormFile blobAttribute = actionForm.getBlobAttribute();
+                var actionForm = (EditActionForm)form;
+                var commandForm = CoreUtil.getHome().getEditEntityBlobAttributeForm();
+                var spec = CoreUtil.getHome().getEntityBlobAttributeSpec();
+                var blobAttribute = actionForm.getBlobAttribute();
                 
                 if(entityRef == null)
                     entityRef = actionForm.getEntityRef();
@@ -87,21 +87,21 @@ public class EditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    EntityBlobAttributeEdit edit = CoreUtil.getHome().getEntityBlobAttributeEdit();
+                    var edit = CoreUtil.getHome().getEntityBlobAttributeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     
                     edit.setMimeTypeName(blobAttribute.getContentType());
                     edit.setBlobAttribute(new ByteArray(blobAttribute.getFileData()));
-                    
-                    CommandResult commandResult = CoreUtil.getHome().editEntityBlobAttribute(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CoreUtil.getHome().editEntityBlobAttribute(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditEntityBlobAttributeResult result = (EditEntityBlobAttributeResult)executionResult.getResult();
+                            var result = (EditEntityBlobAttributeResult)executionResult.getResult();
                             
                             if(result != null) {
                                 request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
@@ -114,13 +114,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CoreUtil.getHome().editEntityBlobAttribute(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditEntityBlobAttributeResult result = (EditEntityBlobAttributeResult)executionResult.getResult();
+
+                    var commandResult = CoreUtil.getHome().editEntityBlobAttribute(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditEntityBlobAttributeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        EntityBlobAttributeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setEntityRef(entityRef);

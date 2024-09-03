@@ -48,7 +48,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultGeoCodeScopeForm commandForm = GeoUtil.getHome().getSetDefaultGeoCodeScopeForm();
+        var commandForm = GeoUtil.getHome().getSetDefaultGeoCodeScopeForm();
 
         commandForm.setGeoCodeScopeName(request.getParameter(ParameterConstants.GEO_CODE_SCOPE_NAME));
 

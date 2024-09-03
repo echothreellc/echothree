@@ -58,7 +58,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetPaymentMethodForm commandForm = PaymentUtil.getHome().getGetPaymentMethodForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentMethodForm();
 
         commandForm.setPaymentMethodName(request.getParameter(ParameterConstants.PAYMENT_METHOD_NAME));
 
@@ -72,12 +72,12 @@ public class ReviewAction
         options.add(PaymentOptions.PaymentMethodIncludeEntityAttributeGroups);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentMethod(getUserVisitPK(request), commandForm);
+        var commandResult = PaymentUtil.getHome().getPaymentMethod(getUserVisitPK(request), commandForm);
         PaymentMethodTransfer paymentMethod = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPaymentMethodResult result = (GetPaymentMethodResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPaymentMethodResult)executionResult.getResult();
 
             paymentMethod = result.getPaymentMethod();
         }

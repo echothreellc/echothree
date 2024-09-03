@@ -42,15 +42,15 @@ public class StatusActionForm
     public void setupSalesOrderBatchStatusChoices() {
         if(salesOrderBatchStatusChoices == null) {
             try {
-                GetSalesOrderBatchStatusChoicesForm form = SalesUtil.getHome().getGetSalesOrderBatchStatusChoicesForm();
+                var form = SalesUtil.getHome().getGetSalesOrderBatchStatusChoicesForm();
                 
                 form.setBatchName(batchName);
                 form.setDefaultSalesOrderBatchStatusChoice(salesOrderBatchStatusChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = SalesUtil.getHome().getSalesOrderBatchStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSalesOrderBatchStatusChoicesResult getSalesOrderBatchStatusChoicesResult = (GetSalesOrderBatchStatusChoicesResult)executionResult.getResult();
+
+                var commandResult = SalesUtil.getHome().getSalesOrderBatchStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getSalesOrderBatchStatusChoicesResult = (GetSalesOrderBatchStatusChoicesResult)executionResult.getResult();
                 salesOrderBatchStatusChoices = getSalesOrderBatchStatusChoicesResult.getSalesOrderBatchStatusChoices();
                 
                 if(salesOrderBatchStatusChoice == null) {

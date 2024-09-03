@@ -50,7 +50,7 @@ public class PartyApplicationEditorUsesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("partyApplicationEditorUse")) {
-            CreatePartyApplicationEditorUseForm commandForm = CoreFormFactory.getCreatePartyApplicationEditorUseForm();
+            var commandForm = CoreFormFactory.getCreatePartyApplicationEditorUseForm();
 
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));

@@ -53,14 +53,14 @@ public class AddActionForm
     private void setupLetterSourceChoices() {
         if(letterSourceChoices == null) {
             try {
-                GetLetterSourceChoicesForm commandForm = LetterUtil.getHome().getGetLetterSourceChoicesForm();
+                var commandForm = LetterUtil.getHome().getGetLetterSourceChoicesForm();
                 
                 commandForm.setDefaultLetterSourceChoice(letterSourceChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = LetterUtil.getHome().getLetterSourceChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetLetterSourceChoicesResult result = (GetLetterSourceChoicesResult)executionResult.getResult();
+
+                var commandResult = LetterUtil.getHome().getLetterSourceChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetLetterSourceChoicesResult)executionResult.getResult();
                 letterSourceChoices = result.getLetterSourceChoices();
                 
                 if(letterSourceChoice == null) {
@@ -76,14 +76,14 @@ public class AddActionForm
     private void setupContactListChoices() {
         if(contactListChoices == null) {
             try {
-                GetContactListChoicesForm commandForm = ContactListUtil.getHome().getGetContactListChoicesForm();
+                var commandForm = ContactListUtil.getHome().getGetContactListChoicesForm();
                 
                 commandForm.setDefaultContactListChoice(contactListChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = ContactListUtil.getHome().getContactListChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactListChoicesResult result = (GetContactListChoicesResult)executionResult.getResult();
+
+                var commandResult = ContactListUtil.getHome().getContactListChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContactListChoicesResult)executionResult.getResult();
                 contactListChoices = result.getContactListChoices();
                 
                 if(contactListChoice == null) {

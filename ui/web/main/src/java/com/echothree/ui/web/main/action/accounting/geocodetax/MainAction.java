@@ -56,15 +56,15 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String taxName = request.getParameter(ParameterConstants.TAX_NAME);
-            GetGeoCodeTaxesForm commandForm = TaxUtil.getHome().getGetGeoCodeTaxesForm();
+            var taxName = request.getParameter(ParameterConstants.TAX_NAME);
+            var commandForm = TaxUtil.getHome().getGetGeoCodeTaxesForm();
             
             commandForm.setTaxName(taxName);
-            
-            CommandResult commandResult = TaxUtil.getHome().getGeoCodeTaxes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeTaxesResult result = (GetGeoCodeTaxesResult)executionResult.getResult();
-            TaxTransfer taxTransfer = result.getTax();
+
+            var commandResult = TaxUtil.getHome().getGeoCodeTaxes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeTaxesResult)executionResult.getResult();
+            var taxTransfer = result.getTax();
             
             request.setAttribute(AttributeConstants.TAX, taxTransfer);
             request.setAttribute(AttributeConstants.GEO_CODE_TAXES, result.getGeoCodeTaxes());

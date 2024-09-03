@@ -49,7 +49,7 @@ public class GlAccountHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("glAccountDescription")) {
-            CreateGlAccountDescriptionForm commandForm = AccountingFormFactory.getCreateGlAccountDescriptionForm();
+            var commandForm = AccountingFormFactory.getCreateGlAccountDescriptionForm();
             
             commandForm.setGlAccountName(glAccountName);
             commandForm.set(getAttrsMap(attrs));

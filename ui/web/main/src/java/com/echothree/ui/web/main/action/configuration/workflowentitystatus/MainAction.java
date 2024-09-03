@@ -56,20 +56,20 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetWorkflowEntityStatusesForm commandForm = WorkflowUtil.getHome().getGetWorkflowEntityStatusesForm();
+        var commandForm = WorkflowUtil.getHome().getGetWorkflowEntityStatusesForm();
 
         commandForm.setWorkflowName(request.getParameter(ParameterConstants.WORKFLOW_NAME));
 
         Set<String> options = new HashSet<>();
         options.add(WorkflowOptions.WorkflowEntityStatusIncludeTriggerTime);
         commandForm.setOptions(options);
-        
-        CommandResult commandResult = WorkflowUtil.getHome().getWorkflowEntityStatuses(getUserVisitPK(request), commandForm);
+
+        var commandResult = WorkflowUtil.getHome().getWorkflowEntityStatuses(getUserVisitPK(request), commandForm);
         GetWorkflowEntityStatusesResult result = null;
         WorkflowTransfer workflow = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
+            var executionResult = commandResult.getExecutionResult();
             
             result = (GetWorkflowEntityStatusesResult)executionResult.getResult();
             workflow = result.getWorkflow();

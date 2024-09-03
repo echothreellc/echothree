@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetPaymentProcessorTypeForm commandForm = PaymentUtil.getHome().getGetPaymentProcessorTypeForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentProcessorTypeForm();
 
         commandForm.setPaymentProcessorTypeName(request.getParameter(ParameterConstants.PAYMENT_PROCESSOR_TYPE_NAME));
 
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentProcessorType(getUserVisitPK(request), commandForm);
+        var commandResult = PaymentUtil.getHome().getPaymentProcessorType(getUserVisitPK(request), commandForm);
         PaymentProcessorTypeTransfer paymentProcessorType = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPaymentProcessorTypeResult result = (GetPaymentProcessorTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPaymentProcessorTypeResult)executionResult.getResult();
 
             paymentProcessorType = result.getPaymentProcessorType();
         }

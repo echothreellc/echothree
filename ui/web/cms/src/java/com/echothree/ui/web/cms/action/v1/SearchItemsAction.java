@@ -44,7 +44,7 @@ public class SearchItemsAction
     @Override
     protected CommandResult getCommandResult(HttpServletRequest request)
             throws Exception {
-        SearchItemsForm commandForm = SearchUtil.getHome().getSearchItemsForm();
+        var commandForm = SearchUtil.getHome().getSearchItemsForm();
 
         commandForm.setSearchDefaultOperatorName(request.getParameter(ParameterConstants.SEARCH_DEFAULT_ORDERATOR_NAME));
         commandForm.setSearchSortDirectionName(request.getParameter(ParameterConstants.SEARCH_SORT_DIRECTION_NAME));

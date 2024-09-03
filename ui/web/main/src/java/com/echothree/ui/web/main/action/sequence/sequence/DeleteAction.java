@@ -52,11 +52,11 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-            String sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
+        var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
         
         try {
-            String sequenceName = request.getParameter(ParameterConstants.SEQUENCE_NAME);
-            DeleteSequenceForm commandForm = SequenceUtil.getHome().getDeleteSequenceForm();
+            var sequenceName = request.getParameter(ParameterConstants.SEQUENCE_NAME);
+            var commandForm = SequenceUtil.getHome().getDeleteSequenceForm();
             
             commandForm.setSequenceTypeName(sequenceTypeName);
             commandForm.setSequenceName(sequenceName);
@@ -67,8 +67,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

@@ -53,7 +53,7 @@ public class PartyLogic
     
     /** Assume that the entityInstance passed to this function is an ECHO_THREE.Party. */
     public Party getPartyFromEntityInstance(final EntityInstance entityInstance) {
-        PartyPK pk = new PartyPK(entityInstance.getEntityUniqueId());
+        var pk = new PartyPK(entityInstance.getEntityUniqueId());
         
         return PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }

@@ -55,16 +55,16 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetLocationTypeForm commandForm = WarehouseUtil.getHome().getGetLocationTypeForm();
-            String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-            String locationTypeName = request.getParameter(ParameterConstants.LOCATION_TYPE_NAME);
+            var commandForm = WarehouseUtil.getHome().getGetLocationTypeForm();
+            var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+            var locationTypeName = request.getParameter(ParameterConstants.LOCATION_TYPE_NAME);
             
             commandForm.setWarehouseName(warehouseName);
             commandForm.setLocationTypeName(locationTypeName);
-            
-            CommandResult commandResult = WarehouseUtil.getHome().getLocationType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLocationTypeResult result = (GetLocationTypeResult)executionResult.getResult();
+
+            var commandResult = WarehouseUtil.getHome().getLocationType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLocationTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.LOCATION_TYPE, result.getLocationType());
             

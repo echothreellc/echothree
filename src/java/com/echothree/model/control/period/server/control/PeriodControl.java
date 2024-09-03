@@ -1464,7 +1464,7 @@ public class PeriodControl
     public FiscalPeriodStatusChoicesBean getFiscalPeriodStatusChoices(String defaultFiscalPeriodStatusChoice, Language language, boolean allowNullChoice,
             Period period, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        FiscalPeriodStatusChoicesBean fiscalPeriodStatusChoicesBean = new FiscalPeriodStatusChoicesBean();
+        var fiscalPeriodStatusChoicesBean = new FiscalPeriodStatusChoicesBean();
         
         if(period == null) {
             workflowControl.getWorkflowEntranceChoices(fiscalPeriodStatusChoicesBean, defaultFiscalPeriodStatusChoice, language, allowNullChoice,

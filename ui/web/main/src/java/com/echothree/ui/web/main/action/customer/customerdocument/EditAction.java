@@ -58,7 +58,7 @@ public class EditAction
     @Override
     protected DocumentSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        DocumentSpec spec = DocumentUtil.getHome().getDocumentSpec();
+        var spec = DocumentUtil.getHome().getDocumentSpec();
 
         actionForm.setPartyName(findParameter(request, ParameterConstants.PARTY_NAME, actionForm.getPartyName()));
         spec.setDocumentName(findParameter(request, ParameterConstants.DOCUMENT_NAME, actionForm.getDocumentName()));
@@ -79,10 +79,10 @@ public class EditAction
     @Override
     protected PartyDocumentEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyDocumentEdit edit = DocumentUtil.getHome().getPartyDocumentEdit();
-        PartyDocumentTransfer partyDocument = getPartyDocumentTransfer(actionForm, request);
-        MimeTypeUsageTypeTransfer mimeTypeUsageType = partyDocument.getDocument().getDocumentType().getMimeTypeUsageType();
-        String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
+        var edit = DocumentUtil.getHome().getPartyDocumentEdit();
+        var partyDocument = getPartyDocumentTransfer(actionForm, request);
+        var mimeTypeUsageType = partyDocument.getDocument().getDocumentType().getMimeTypeUsageType();
+        var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
 
         edit.setIsDefault(actionForm.getIsDefault().toString());
         edit.setSortOrder(actionForm.getSortOrder());
@@ -92,7 +92,7 @@ public class EditAction
             edit.setMimeTypeName(actionForm.getMimeTypeChoice());
             edit.setClob(actionForm.getClob());
         } else {
-            FormFile blob = actionForm.getBlob();
+            var blob = actionForm.getBlob();
 
             edit.setMimeTypeName(blob.getContentType());
 
@@ -117,8 +117,8 @@ public class EditAction
     @Override
     protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditPartyDocumentResult result, DocumentSpec spec, PartyDocumentEdit edit)
             throws NamingException {
-        PartyDocumentTransfer partyDocument = getPartyDocumentTransfer(spec, request);
-        MimeTypeUsageTypeTransfer mimeTypeUsageType = partyDocument.getDocument().getDocumentType().getMimeTypeUsageType();
+        var partyDocument = getPartyDocumentTransfer(spec, request);
+        var mimeTypeUsageType = partyDocument.getDocument().getDocumentType().getMimeTypeUsageType();
 
         actionForm.setDocumentName(spec.getDocumentName());
         actionForm.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

@@ -55,18 +55,18 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-            String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-            String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
-            GetSelectorDescriptionsForm getSelectorDescriptionsForm = SelectorUtil.getHome().getGetSelectorDescriptionsForm();
+            var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+            var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+            var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+            var getSelectorDescriptionsForm = SelectorUtil.getHome().getGetSelectorDescriptionsForm();
             
             getSelectorDescriptionsForm.setSelectorKindName(selectorKindName);
             getSelectorDescriptionsForm.setSelectorTypeName(selectorTypeName);
             getSelectorDescriptionsForm.setSelectorName(selectorName);
-            
-            CommandResult commandResult = SelectorUtil.getHome().getSelectorDescriptions(getUserVisitPK(request), getSelectorDescriptionsForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSelectorDescriptionsResult result = (GetSelectorDescriptionsResult)executionResult.getResult();
+
+            var commandResult = SelectorUtil.getHome().getSelectorDescriptions(getUserVisitPK(request), getSelectorDescriptionsForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSelectorDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SELECTOR_KIND, result.getSelectorKind());
             request.setAttribute(AttributeConstants.SELECTOR_TYPE, result.getSelectorType());

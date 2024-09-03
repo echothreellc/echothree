@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetSequenceTypeForm commandForm = SequenceUtil.getHome().getGetSequenceTypeForm();
-            String sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
+            var commandForm = SequenceUtil.getHome().getGetSequenceTypeForm();
+            var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
             
             commandForm.setSequenceTypeName(sequenceTypeName);
-            
-            CommandResult commandResult = SequenceUtil.getHome().getSequenceType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSequenceTypeResult result = (GetSequenceTypeResult)executionResult.getResult();
+
+            var commandResult = SequenceUtil.getHome().getSequenceType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SEQUENCE_TYPE, result.getSequenceType());
             forwardKey = ForwardConstants.DISPLAY;

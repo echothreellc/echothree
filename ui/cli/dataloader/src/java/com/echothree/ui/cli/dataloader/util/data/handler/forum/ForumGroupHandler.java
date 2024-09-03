@@ -50,16 +50,16 @@ public class ForumGroupHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("forumGroupDescription")) {
-            CreateForumGroupDescriptionForm commandForm = ForumFormFactory.getCreateForumGroupDescriptionForm();
-            Map<String, Object> attrsMap = getAttrsMap(attrs);
+            var commandForm = ForumFormFactory.getCreateForumGroupDescriptionForm();
+            var attrsMap = getAttrsMap(attrs);
             
             commandForm.setForumGroupName(forumGroupName);
             commandForm.set(attrsMap);
             
             forumService.createForumGroupDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("forumGroupForum")) {
-            CreateForumGroupForumForm commandForm = ForumFormFactory.getCreateForumGroupForumForm();
-            Map<String, Object> attrsMap = getAttrsMap(attrs);
+            var commandForm = ForumFormFactory.getCreateForumGroupForumForm();
+            var attrsMap = getAttrsMap(attrs);
             
             commandForm.setForumGroupName(forumGroupName);
             commandForm.set(attrsMap);

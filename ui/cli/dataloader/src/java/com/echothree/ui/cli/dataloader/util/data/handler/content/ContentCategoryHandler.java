@@ -54,7 +54,7 @@ public class ContentCategoryHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("contentCategoryDescription")) {
-            CreateContentCategoryDescriptionForm commandForm = ContentFormFactory.getCreateContentCategoryDescriptionForm();
+            var commandForm = ContentFormFactory.getCreateContentCategoryDescriptionForm();
             
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentCatalogName(contentCatalogName);
@@ -63,7 +63,7 @@ public class ContentCategoryHandler
             
             contentService.createContentCategoryDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("contentCategoryItem")) {
-            CreateContentCategoryItemForm commandForm = ContentFormFactory.getCreateContentCategoryItemForm();
+            var commandForm = ContentFormFactory.getCreateContentCategoryItemForm();
             
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentCatalogName(contentCatalogName);

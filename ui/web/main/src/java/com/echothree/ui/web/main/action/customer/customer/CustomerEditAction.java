@@ -52,8 +52,8 @@ public class CustomerEditAction
     @Override
     protected CustomerSpec getSpec(HttpServletRequest request, CustomerEditActionForm actionForm)
             throws NamingException {
-        CustomerSpec spec = CustomerUtil.getHome().getCustomerSpec();
-        String customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
+        var spec = CustomerUtil.getHome().getCustomerSpec();
+        var customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
 
         if(customerName == null) {
             customerName = actionForm.getCustomerName();
@@ -67,7 +67,7 @@ public class CustomerEditAction
     @Override
     protected CustomerEdit getEdit(HttpServletRequest request, CustomerEditActionForm actionForm)
             throws NamingException {
-        CustomerEdit edit = CustomerUtil.getHome().getCustomerEdit();
+        var edit = CustomerUtil.getHome().getCustomerEdit();
 
         edit.setCustomerTypeName(actionForm.getCustomerTypeChoice());
         edit.setPersonalTitleId(actionForm.getPersonalTitleChoice());
@@ -129,9 +129,9 @@ public class CustomerEditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditCustomerForm commandForm)
             throws Exception {
-        CommandResult commandResult = CustomerUtil.getHome().editCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditCustomerResult result = (EditCustomerResult)executionResult.getResult();
+        var commandResult = CustomerUtil.getHome().editCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditCustomerResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
         

@@ -54,17 +54,17 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateUseTypeForm commandForm = OfferUtil.getHome().getCreateUseTypeForm();
+                    var commandForm = OfferUtil.getHome().getCreateUseTypeForm();
                     
                     commandForm.setUseTypeName(actionForm.getUseTypeName());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = OfferUtil.getHome().createUseType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = OfferUtil.getHome().createUseType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

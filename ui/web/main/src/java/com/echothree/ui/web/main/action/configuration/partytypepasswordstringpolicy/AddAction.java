@@ -51,11 +51,11 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
-        AddActionForm actionForm = (AddActionForm)form;
+        var partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
+        var actionForm = (AddActionForm)form;
         
         if(wasPost(request)) {
-            CreatePartyTypePasswordStringPolicyForm commandForm = PartyUtil.getHome().getCreatePartyTypePasswordStringPolicyForm();
+            var commandForm = PartyUtil.getHome().getCreatePartyTypePasswordStringPolicyForm();
             
             if(partyTypeName == null)
                 partyTypeName = actionForm.getPartyTypeName();
@@ -80,8 +80,8 @@ public class AddAction
             commandForm.setRequiredLowerCaseCount(actionForm.getRequiredLowerCaseCount());
             commandForm.setMaximumRepeated(actionForm.getMaximumRepeated());
             commandForm.setMinimumCharacterTypes(actionForm.getMinimumCharacterTypes());
-            
-            CommandResult commandResult = PartyUtil.getHome().createPartyTypePasswordStringPolicy(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().createPartyTypePasswordStringPolicy(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

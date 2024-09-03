@@ -55,16 +55,16 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetWorkRequirementTypeForm commandForm = WorkRequirementUtil.getHome().getGetWorkRequirementTypeForm();
-            String workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
-            String workRequirementTypeName = request.getParameter(ParameterConstants.WORK_REQUIREMENT_TYPE_NAME);
+            var commandForm = WorkRequirementUtil.getHome().getGetWorkRequirementTypeForm();
+            var workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
+            var workRequirementTypeName = request.getParameter(ParameterConstants.WORK_REQUIREMENT_TYPE_NAME);
             
             commandForm.setWorkEffortTypeName(workEffortTypeName);
             commandForm.setWorkRequirementTypeName(workRequirementTypeName);
-            
-            CommandResult commandResult = WorkRequirementUtil.getHome().getWorkRequirementType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkRequirementTypeResult result = (GetWorkRequirementTypeResult)executionResult.getResult();
+
+            var commandResult = WorkRequirementUtil.getHome().getWorkRequirementType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkRequirementTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORK_REQUIREMENT_TYPE, result.getWorkRequirementType());
             forwardKey = ForwardConstants.DISPLAY;

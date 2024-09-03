@@ -55,8 +55,8 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String originalGlAccountName = request.getParameter(ParameterConstants.ORIGINAL_GL_ACCOUNT_NAME);
-        EditGlAccountForm commandForm = AccountingUtil.getHome().getEditGlAccountForm();
+        var originalGlAccountName = request.getParameter(ParameterConstants.ORIGINAL_GL_ACCOUNT_NAME);
+        var commandForm = AccountingUtil.getHome().getEditGlAccountForm();
         var spec = AccountingUtil.getHome().getGlAccountUniversalSpec();
         
         if(originalGlAccountName == null)
@@ -66,7 +66,7 @@ public class EditAction
         spec.setGlAccountName(originalGlAccountName);
         
         if(wasPost(request)) {
-            GlAccountEdit edit = AccountingUtil.getHome().getGlAccountEdit();
+            var edit = AccountingUtil.getHome().getGlAccountEdit();
             
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
@@ -78,14 +78,14 @@ public class EditAction
             edit.setGlResourceTypeName(actionForm.getGlResourceTypeChoice());
             edit.setIsDefault(actionForm.getIsDefault().toString());
             edit.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = AccountingUtil.getHome().editGlAccount(getUserVisitPK(request), commandForm);
+
+            var commandResult = AccountingUtil.getHome().editGlAccount(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditGlAccountResult result = (EditGlAccountResult)executionResult.getResult();
+                    var result = (EditGlAccountResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -98,13 +98,13 @@ public class EditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = AccountingUtil.getHome().editGlAccount(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditGlAccountResult result = (EditGlAccountResult)executionResult.getResult();
+
+            var commandResult = AccountingUtil.getHome().editGlAccount(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditGlAccountResult)executionResult.getResult();
             
             if(result != null) {
-                GlAccountEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setOriginalGlAccountName(edit.getGlAccountName());

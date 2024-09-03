@@ -105,7 +105,7 @@ public class AppearanceTag
             throws JspException {
         
         if(appearance != null) {
-            StringBuilder style = new StringBuilder("<span");
+            var style = new StringBuilder("<span");
             List<StringBuilder> appliedStyles = new ArrayList<>();
             var textColor = appearance.getTextColor();
             var backgroundColor = appearance.getBackgroundColor();
@@ -116,14 +116,14 @@ public class AppearanceTag
             
             // color:rgb(255,0,0);
             if(textColor != null) {
-                StringBuilder appliedStyle = new StringBuilder("color:");
+                var appliedStyle = new StringBuilder("color:");
                 
                 appliedStyles.add(colorToRgb(appliedStyle, textColor).append(';'));
             }
             
             // background-color:rgb(255,0,0);
             if(backgroundColor != null) {
-                StringBuilder appliedStyle = new StringBuilder("background-color:");
+                var appliedStyle = new StringBuilder("background-color:");
                 
                 appliedStyles.add(colorToRgb(appliedStyle, backgroundColor).append(';'));
             }
@@ -140,7 +140,7 @@ public class AppearanceTag
             
             // text-decoration:overline; (may be multiple, separated by spaces)
             if(appearanceTextDecorations != null && !appearanceTextDecorations.isEmpty()) {
-                StringBuilder appliedStyle = new StringBuilder("text-decoration:");
+                var appliedStyle = new StringBuilder("text-decoration:");
                 var secondOrLater = false;
                 
                 for(var appearanceTextDecoration : appearanceTextDecorations) {
@@ -158,7 +158,7 @@ public class AppearanceTag
             
             // text-transform:uppercase; (may be multiple, separated by spaces)
             if(appearanceTextTransformations != null && !appearanceTextTransformations.isEmpty()) {
-                StringBuilder appliedStyle = new StringBuilder("text-transform:");
+                var appliedStyle = new StringBuilder("text-transform:");
                 var secondOrLater = false;
                 
                 for(var appearanceTextTransformation : appearanceTextTransformations) {

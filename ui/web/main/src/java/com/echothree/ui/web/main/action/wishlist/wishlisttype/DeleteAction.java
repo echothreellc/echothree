@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteWishlistTypeForm commandForm = WishlistUtil.getHome().getDeleteWishlistTypeForm();
-            String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
+            var commandForm = WishlistUtil.getHome().getDeleteWishlistTypeForm();
+            var wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
             
             commandForm.setWishlistTypeName(wishlistTypeName);
             

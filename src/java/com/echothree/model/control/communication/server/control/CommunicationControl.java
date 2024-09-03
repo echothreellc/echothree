@@ -760,7 +760,7 @@ public class CommunicationControl
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CommunicationEvent */
     public CommunicationEvent getCommunicationEventByEntityInstance(EntityInstance entityInstance) {
-        CommunicationEventPK pk = new CommunicationEventPK(entityInstance.getEntityUniqueId());
+        var pk = new CommunicationEventPK(entityInstance.getEntityUniqueId());
         var communicationEvent = CommunicationEventFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return communicationEvent;

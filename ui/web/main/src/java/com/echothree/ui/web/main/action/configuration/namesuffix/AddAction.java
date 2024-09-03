@@ -54,16 +54,16 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateNameSuffixForm commandForm = PartyUtil.getHome().getCreateNameSuffixForm();
+                    var commandForm = PartyUtil.getHome().getCreateNameSuffixForm();
                     
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = PartyUtil.getHome().createNameSuffix(getUserVisitPK(request), commandForm);
+
+                    var commandResult = PartyUtil.getHome().createNameSuffix(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

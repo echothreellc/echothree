@@ -50,18 +50,18 @@ public class DeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String returnKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-        String fromUnitOfMeasureTypeName = request.getParameter(ParameterConstants.FROM_UNIT_OF_MEASURE_TYPE_NAME);
-        String toUnitOfMeasureTypeName = request.getParameter(ParameterConstants.TO_UNIT_OF_MEASURE_TYPE_NAME);
-        DeleteUnitOfMeasureEquivalentForm commandForm = UomUtil.getHome().getDeleteUnitOfMeasureEquivalentForm();
+        var returnKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var fromUnitOfMeasureTypeName = request.getParameter(ParameterConstants.FROM_UNIT_OF_MEASURE_TYPE_NAME);
+        var toUnitOfMeasureTypeName = request.getParameter(ParameterConstants.TO_UNIT_OF_MEASURE_TYPE_NAME);
+        var commandForm = UomUtil.getHome().getDeleteUnitOfMeasureEquivalentForm();
         
         commandForm.setUnitOfMeasureKindName(returnKindName);
         commandForm.setFromUnitOfMeasureTypeName(fromUnitOfMeasureTypeName);
         commandForm.setToUnitOfMeasureTypeName(toUnitOfMeasureTypeName);
         
         UomUtil.getHome().deleteUnitOfMeasureEquivalent(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME, returnKindName);

@@ -56,14 +56,14 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
+        var geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateGeoCodeDateTimeFormatForm commandForm = GeoUtil.getHome().getCreateGeoCodeDateTimeFormatForm();
+                    var commandForm = GeoUtil.getHome().getCreateGeoCodeDateTimeFormatForm();
                     
                     if(geoCodeName == null)
                         geoCodeName = actionForm.getGeoCodeName();
@@ -72,8 +72,8 @@ public class AddAction
                     commandForm.setDateTimeFormatName(actionForm.getDateTimeFormatChoice());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
-                    
-                    CommandResult commandResult = GeoUtil.getHome().createGeoCodeDateTimeFormat(getUserVisitPK(request), commandForm);
+
+                    var commandResult = GeoUtil.getHome().createGeoCodeDateTimeFormat(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -90,8 +90,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.GEO_CODE_NAME, geoCodeName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

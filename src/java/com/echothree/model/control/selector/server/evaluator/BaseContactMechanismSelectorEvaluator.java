@@ -68,10 +68,10 @@ public class BaseContactMechanismSelectorEvaluator
         
         if(componentVendorName.equals(ComponentVendors.ECHO_THREE.name())) {
             if(entityTypeName.equals(EntityTypes.ContactMechanism.name())) {
-                ContactMechanismPK pk = new ContactMechanismPK(entityInstance.getEntityUniqueId());
+                var pk = new ContactMechanismPK(entityInstance.getEntityUniqueId());
                 contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
             } else if(entityTypeName.equals(EntityTypes.PartyPaymentMethodContactMechanism.name())) {
-                PartyPaymentMethodContactMechanismPK pk = new PartyPaymentMethodContactMechanismPK(entityInstance.getEntityUniqueId());
+                var pk = new PartyPaymentMethodContactMechanismPK(entityInstance.getEntityUniqueId());
                 var partyPaymentMethodContactMechanism = PartyPaymentMethodContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
                 
                 contactMechanism = partyPaymentMethodContactMechanism.getPartyContactMechanismPurpose().getLastDetail().getPartyContactMechanism().getLastDetail().getContactMechanism();

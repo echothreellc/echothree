@@ -61,17 +61,17 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-        String commentTypeName = request.getParameter(ParameterConstants.COMMENT_TYPE_NAME);
-        String commentUsageTypeName = request.getParameter(ParameterConstants.COMMENT_USAGE_TYPE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var commentTypeName = request.getParameter(ParameterConstants.COMMENT_TYPE_NAME);
+        var commentUsageTypeName = request.getParameter(ParameterConstants.COMMENT_USAGE_TYPE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditCommentUsageTypeDescriptionForm commandForm = CommentUtil.getHome().getEditCommentUsageTypeDescriptionForm();
-                CommentUsageTypeDescriptionSpec spec = CommentUtil.getHome().getCommentUsageTypeDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = CommentUtil.getHome().getEditCommentUsageTypeDescriptionForm();
+                var spec = CommentUtil.getHome().getCommentUsageTypeDescriptionSpec();
                 
                 if(componentVendorName == null)
                     componentVendorName = actionForm.getComponentVendorName();
@@ -92,19 +92,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    CommentUsageTypeDescriptionEdit edit = CommentUtil.getHome().getCommentUsageTypeDescriptionEdit();
+                    var edit = CommentUtil.getHome().getCommentUsageTypeDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CommentUtil.getHome().editCommentUsageTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CommentUtil.getHome().editCommentUsageTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditCommentUsageTypeDescriptionResult result = (EditCommentUsageTypeDescriptionResult)executionResult.getResult();
+                            var result = (EditCommentUsageTypeDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -117,13 +117,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CommentUtil.getHome().editCommentUsageTypeDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditCommentUsageTypeDescriptionResult result = (EditCommentUsageTypeDescriptionResult)executionResult.getResult();
+
+                    var commandResult = CommentUtil.getHome().editCommentUsageTypeDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditCommentUsageTypeDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        CommentUsageTypeDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setComponentVendorName(componentVendorName);
@@ -145,8 +145,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorName);
             request.setAttribute(AttributeConstants.ENTITY_TYPE_NAME, entityTypeName);

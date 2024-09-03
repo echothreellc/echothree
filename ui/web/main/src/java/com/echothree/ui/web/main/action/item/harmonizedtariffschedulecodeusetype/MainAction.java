@@ -51,10 +51,10 @@ public class MainAction
             throws Exception {
         String forwardKey = null;
 
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseTypes(getUserVisitPK(request), null);
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseTypes(getUserVisitPK(request), null);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeUseTypesResult result = (GetHarmonizedTariffScheduleCodeUseTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodeUseTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPES, result.getHarmonizedTariffScheduleCodeUseTypes());
             forwardKey = ForwardConstants.DISPLAY;

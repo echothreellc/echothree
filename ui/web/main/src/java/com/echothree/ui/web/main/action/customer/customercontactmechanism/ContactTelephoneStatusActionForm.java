@@ -41,15 +41,15 @@ public class ContactTelephoneStatusActionForm
     public void setupTelephoneStatusChoices()
             throws NamingException {
         if(telephoneStatusChoices == null) {
-            GetTelephoneStatusChoicesForm form = ContactUtil.getHome().getGetTelephoneStatusChoicesForm();
+            var form = ContactUtil.getHome().getGetTelephoneStatusChoicesForm();
 
             form.setContactMechanismName(contactMechanismName);
             form.setDefaultTelephoneStatusChoice(telephoneStatusChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getTelephoneStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTelephoneStatusChoicesResult result = (GetTelephoneStatusChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getTelephoneStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTelephoneStatusChoicesResult)executionResult.getResult();
             telephoneStatusChoices = result.getTelephoneStatusChoices();
 
             if(telephoneStatusChoice == null) {

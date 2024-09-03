@@ -59,10 +59,10 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
-        String originalDivisionName = request.getParameter(ParameterConstants.ORIGINAL_DIVISION_NAME);
-        EditDivisionForm commandForm = PartyUtil.getHome().getEditDivisionForm();
-        DivisionSpec spec = PartyUtil.getHome().getDivisionSpec();
+        var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
+        var originalDivisionName = request.getParameter(ParameterConstants.ORIGINAL_DIVISION_NAME);
+        var commandForm = PartyUtil.getHome().getEditDivisionForm();
+        var spec = PartyUtil.getHome().getDivisionSpec();
         
         if(companyName == null)
             companyName = actionForm.getCompanyName();
@@ -74,12 +74,12 @@ public class EditAction
         spec.setDivisionName(originalDivisionName);
         
         if(wasPost(request)) {
-            boolean wasCanceled = wasCanceled(request);
+            var wasCanceled = wasCanceled(request);
             
             if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
-                DivisionEdit edit = PartyUtil.getHome().getDivisionEdit();
+                var edit = PartyUtil.getHome().getDivisionEdit();
 
                 commandForm.setEditMode(EditMode.UPDATE);
                 commandForm.setEdit(edit);
@@ -93,14 +93,14 @@ public class EditAction
                 edit.setIsDefault(actionForm.getIsDefault().toString());
                 edit.setSortOrder(actionForm.getSortOrder());
             }
-            
-            CommandResult commandResult = PartyUtil.getHome().editDivision(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().editDivision(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors() && !wasCanceled) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditDivisionResult result = (EditDivisionResult)executionResult.getResult();
+                    var result = (EditDivisionResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -113,13 +113,13 @@ public class EditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = PartyUtil.getHome().editDivision(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditDivisionResult result = (EditDivisionResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().editDivision(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditDivisionResult)executionResult.getResult();
             
             if(result != null) {
-                DivisionEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setCompanyName(companyName);
@@ -141,8 +141,8 @@ public class EditAction
             
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.COMPANY_NAME, companyName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

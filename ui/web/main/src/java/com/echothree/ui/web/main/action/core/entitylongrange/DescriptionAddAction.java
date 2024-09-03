@@ -59,17 +59,17 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEntityLongRangeForm commandForm = CoreUtil.getHome().getGetEntityLongRangeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityLongRangeForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityAttributeName(actionForm.getEntityAttributeName());
         commandForm.setEntityLongRangeName(actionForm.getEntityLongRangeName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityLongRange(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEntityLongRange(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityLongRangeResult result = (GetEntityLongRangeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityLongRangeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ENTITY_LONG_RANGE, result.getEntityLongRange());
         }
@@ -78,7 +78,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateEntityLongRangeDescriptionForm commandForm = CoreUtil.getHome().getCreateEntityLongRangeDescriptionForm();
+        var commandForm = CoreUtil.getHome().getCreateEntityLongRangeDescriptionForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());

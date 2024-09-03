@@ -49,9 +49,9 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        CommandResult commandResult = ForumUtil.getHome().getForumGroups(getUserVisitPK(request), null);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetForumGroupsResult result = (GetForumGroupsResult)executionResult.getResult();
+        var commandResult = ForumUtil.getHome().getForumGroups(getUserVisitPK(request), null);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetForumGroupsResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.FORUM_GROUPS, result.getForumGroups());
 

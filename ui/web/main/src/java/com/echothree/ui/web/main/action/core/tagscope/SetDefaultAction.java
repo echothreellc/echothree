@@ -47,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        SetDefaultTagScopeForm commandForm = TagUtil.getHome().getSetDefaultTagScopeForm();
+        var commandForm = TagUtil.getHome().getSetDefaultTagScopeForm();
 
         commandForm.setTagScopeName(request.getParameter(ParameterConstants.TAG_SCOPE_NAME));
 

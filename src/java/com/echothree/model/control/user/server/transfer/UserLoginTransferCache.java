@@ -66,7 +66,7 @@ public class UserLoginTransferCache
 
             if(includeUserLoginPasswords) {
                 var userLoginPasswordTransfers = userControl.getUserLoginPasswordTransfersByParty(userVisit, userLogin.getParty());
-                MapWrapper<UserLoginPasswordTransfer> userLoginPasswords = new MapWrapper<>(userLoginPasswordTransfers.size());
+                var userLoginPasswords = new MapWrapper<UserLoginPasswordTransfer>(userLoginPasswordTransfers.size());
 
                 userLoginPasswordTransfers.forEach((userLoginPasswordTransfer) -> {
                     userLoginPasswords.put(userLoginPasswordTransfer.getUserLoginPasswordType().getUserLoginPasswordTypeName(), userLoginPasswordTransfer);

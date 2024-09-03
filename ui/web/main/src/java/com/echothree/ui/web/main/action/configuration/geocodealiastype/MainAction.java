@@ -56,15 +56,15 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String geoCodeTypeName = request.getParameter(ParameterConstants.GEO_CODE_TYPE_NAME);
-            GetGeoCodeAliasTypesForm commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypesForm();
+            var geoCodeTypeName = request.getParameter(ParameterConstants.GEO_CODE_TYPE_NAME);
+            var commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypesForm();
             
             commandForm.setGeoCodeTypeName(geoCodeTypeName);
-            
-            CommandResult commandResult = GeoUtil.getHome().getGeoCodeAliasTypes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeAliasTypesResult result = (GetGeoCodeAliasTypesResult)executionResult.getResult();
-            GeoCodeTypeTransfer geoCodeTypeTransfer = result.getGeoCodeType();
+
+            var commandResult = GeoUtil.getHome().getGeoCodeAliasTypes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeAliasTypesResult)executionResult.getResult();
+            var geoCodeTypeTransfer = result.getGeoCodeType();
             
             request.setAttribute(AttributeConstants.GEO_CODE_TYPE, geoCodeTypeTransfer);
             request.setAttribute(AttributeConstants.GEO_CODE_ALIAS_TYPES, result.getGeoCodeAliasTypes());

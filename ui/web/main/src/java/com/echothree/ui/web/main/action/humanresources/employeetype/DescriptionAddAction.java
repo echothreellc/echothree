@@ -56,14 +56,14 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String employeeTypeName = request.getParameter(ParameterConstants.EMPLOYEE_TYPE_NAME);
+        var employeeTypeName = request.getParameter(ParameterConstants.EMPLOYEE_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateEmployeeTypeDescriptionForm commandForm = EmployeeUtil.getHome().getCreateEmployeeTypeDescriptionForm();
+                    var commandForm = EmployeeUtil.getHome().getCreateEmployeeTypeDescriptionForm();
                     
                     if(employeeTypeName == null)
                         employeeTypeName = actionForm.getEmployeeTypeName();
@@ -71,8 +71,8 @@ public class DescriptionAddAction
                     commandForm.setEmployeeTypeName(employeeTypeName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().createEmployeeTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = EmployeeUtil.getHome().createEmployeeTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -88,8 +88,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.EMPLOYEE_TYPE_NAME, employeeTypeName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

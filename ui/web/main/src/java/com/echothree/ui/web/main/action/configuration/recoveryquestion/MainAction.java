@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = UserUtil.getHome().getRecoveryQuestions(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetRecoveryQuestionsResult result = (GetRecoveryQuestionsResult)executionResult.getResult();
+            var commandResult = UserUtil.getHome().getRecoveryQuestions(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetRecoveryQuestionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RECOVERY_QUESTIONS, result.getRecoveryQuestions());
             forwardKey = ForwardConstants.DISPLAY;

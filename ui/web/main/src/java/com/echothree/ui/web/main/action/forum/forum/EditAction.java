@@ -49,8 +49,8 @@ public class EditAction
     @Override
     protected ForumSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ForumSpec spec = ForumUtil.getHome().getForumSpec();
-        String originalForumName = request.getParameter(ParameterConstants.ORIGINAL_FORUM_NAME);
+        var spec = ForumUtil.getHome().getForumSpec();
+        var originalForumName = request.getParameter(ParameterConstants.ORIGINAL_FORUM_NAME);
 
         if(originalForumName == null) {
             originalForumName = actionForm.getOriginalForumName();
@@ -64,7 +64,7 @@ public class EditAction
     @Override
     protected ForumEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ForumEdit edit = ForumUtil.getHome().getForumEdit();
+        var edit = ForumUtil.getHome().getForumEdit();
 
         edit.setForumName(actionForm.getForumName());
         edit.setIconName(actionForm.getIconChoice());

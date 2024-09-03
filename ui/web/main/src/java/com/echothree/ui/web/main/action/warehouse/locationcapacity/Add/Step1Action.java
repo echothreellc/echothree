@@ -49,12 +49,12 @@ public class Step1Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
-        
-        CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureKinds(getUserVisitPK(request), null);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetUnitOfMeasureKindsResult result = (GetUnitOfMeasureKindsResult)executionResult.getResult();
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
+
+        var commandResult = UomUtil.getHome().getUnitOfMeasureKinds(getUserVisitPK(request), null);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetUnitOfMeasureKindsResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_KINDS, result.getUnitOfMeasureKinds());
         

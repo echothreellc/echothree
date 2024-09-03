@@ -63,15 +63,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPrinterGroupUseTypeDescriptionForm commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypeDescriptionForm();
+        var commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypeDescriptionForm();
         
         commandForm.setPrinterGroupUseTypeName(actionForm.getPrinterGroupUseTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupUseTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = PrinterUtil.getHome().getPrinterGroupUseTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterGroupUseTypeDescriptionResult result = (GetPrinterGroupUseTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPrinterGroupUseTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.PRINTER_GROUP_USE_TYPE_DESCRIPTION, result.getPrinterGroupUseTypeDescription());
         }
@@ -80,7 +80,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePrinterGroupUseTypeDescriptionForm commandForm = PrinterUtil.getHome().getDeletePrinterGroupUseTypeDescriptionForm();
+        var commandForm = PrinterUtil.getHome().getDeletePrinterGroupUseTypeDescriptionForm();
 
         commandForm.setPrinterGroupUseTypeName(actionForm.getPrinterGroupUseTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

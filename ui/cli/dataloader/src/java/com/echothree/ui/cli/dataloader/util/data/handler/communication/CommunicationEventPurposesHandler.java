@@ -48,9 +48,9 @@ public class CommunicationEventPurposesHandler
             String communicationEventPurposeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("communicationEventPurposeName"))
                     communicationEventPurposeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class CommunicationEventPurposesHandler
             }
             
             try {
-                CreateCommunicationEventPurposeForm form = CommunicationFormFactory.getCreateCommunicationEventPurposeForm();
+                var form = CommunicationFormFactory.getCreateCommunicationEventPurposeForm();
                 
                 form.setCommunicationEventPurposeName(communicationEventPurposeName);
                 form.setIsDefault(isDefault);

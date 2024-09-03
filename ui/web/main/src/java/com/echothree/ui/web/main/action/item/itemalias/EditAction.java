@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected ItemAliasSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemAliasSpec spec = ItemUtil.getHome().getItemAliasSpec();
+        var spec = ItemUtil.getHome().getItemAliasSpec();
 
         spec.setAlias(findParameter(request, ParameterConstants.ORIGINAL_ALIAS, actionForm.getOriginalAlias()));
         actionForm.setItemName(findParameter(request, ParameterConstants.ITEM_NAME, actionForm.getItemName()));
@@ -62,7 +62,7 @@ public class EditAction
     @Override
     protected ItemAliasEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemAliasEdit edit = ItemUtil.getHome().getItemAliasEdit();
+        var edit = ItemUtil.getHome().getItemAliasEdit();
 
         edit.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeChoice());
         edit.setItemAliasTypeName(actionForm.getItemAliasTypeChoice());

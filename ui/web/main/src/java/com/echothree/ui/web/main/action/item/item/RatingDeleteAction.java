@@ -65,26 +65,26 @@ public class RatingDeleteAction
     
     public void setupItemTransfer(RatingDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+        var commandForm = ItemUtil.getHome().getGetItemForm();
         
         commandForm.setItemName(actionForm.getItemName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemResult result = (GetItemResult)executionResult.getResult();
+
+        var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ITEM, result.getItem());
     }
     
     public void setupRatingTransfer(RatingDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetRatingForm commandForm = RatingUtil.getHome().getGetRatingForm();
+        var commandForm = RatingUtil.getHome().getGetRatingForm();
         
         commandForm.setRatingName(actionForm.getRatingName());
 
-        CommandResult commandResult = RatingUtil.getHome().getRating(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetRatingResult result = (GetRatingResult)executionResult.getResult();
+        var commandResult = RatingUtil.getHome().getRating(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetRatingResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.RATING, result.getRating());
     }
@@ -99,7 +99,7 @@ public class RatingDeleteAction
     @Override
     public CommandResult doDelete(RatingDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteRatingForm commandForm = RatingUtil.getHome().getDeleteRatingForm();
+        var commandForm = RatingUtil.getHome().getDeleteRatingForm();
         
         commandForm.setRatingName(actionForm.getRatingName());
 

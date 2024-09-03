@@ -49,7 +49,7 @@ public class GetForumMessageResultsAction
     @Override
     protected CommandResult getCommandResult(HttpServletRequest request)
             throws Exception {
-        GetForumMessageResultsForm commandForm = SearchUtil.getHome().getGetForumMessageResultsForm();
+        var commandForm = SearchUtil.getHome().getGetForumMessageResultsForm();
 
         commandForm.setSearchTypeName(request.getParameter(ParameterConstants.SEARCH_TYPE_NAME));
 

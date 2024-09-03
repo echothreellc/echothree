@@ -66,17 +66,17 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetWorkflowDestinationStepForm commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationStepForm();
+        var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationStepForm();
         
         commandForm.setWorkflowName(actionForm.getWorkflowName());
         commandForm.setWorkflowStepName(actionForm.getWorkflowStepName());
         commandForm.setWorkflowDestinationName(actionForm.getWorkflowDestinationName());
         commandForm.setDestinationWorkflowName(actionForm.getDestinationWorkflowName());
         commandForm.setDestinationWorkflowStepName(actionForm.getDestinationWorkflowStepName());
-        
-        CommandResult commandResult = WorkflowUtil.getHome().getWorkflowDestinationStep(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetWorkflowDestinationStepResult result = (GetWorkflowDestinationStepResult)executionResult.getResult();
+
+        var commandResult = WorkflowUtil.getHome().getWorkflowDestinationStep(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetWorkflowDestinationStepResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.WORKFLOW_DESTINATION_STEP, result.getWorkflowDestinationStep());
     }
@@ -84,7 +84,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteWorkflowDestinationStepForm commandForm = WorkflowUtil.getHome().getDeleteWorkflowDestinationStepForm();
+        var commandForm = WorkflowUtil.getHome().getDeleteWorkflowDestinationStepForm();
 
         commandForm.setWorkflowName(actionForm.getWorkflowName());
         commandForm.setWorkflowStepName(actionForm.getWorkflowStepName());

@@ -59,26 +59,26 @@ public class Step2Action
     
     public void setupCustomer(Step2ActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }
 
     public void setupPaymentMethod(Step2ActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPaymentMethodForm commandForm = PaymentUtil.getHome().getGetPaymentMethodForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentMethodForm();
 
         commandForm.setPaymentMethodName(actionForm.getPaymentMethodName());
 
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentMethod(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPaymentMethodResult result = (GetPaymentMethodResult)executionResult.getResult();
+        var commandResult = PaymentUtil.getHome().getPaymentMethod(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPaymentMethodResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PAYMENT_METHOD, result.getPaymentMethod());
     }
@@ -99,7 +99,7 @@ public class Step2Action
     @Override
     public CommandResult doAdd(Step2ActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyPaymentMethodForm commandForm = PaymentUtil.getHome().getCreatePartyPaymentMethodForm();
+        var commandForm = PaymentUtil.getHome().getCreatePartyPaymentMethodForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setDescription(actionForm.getDescription());

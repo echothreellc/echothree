@@ -47,14 +47,14 @@ public class AddActionForm
     public void setupItemAliasChecksumTypeChoices() {
         if(itemAliasChecksumTypeChoices == null) {
             try {
-                GetItemAliasChecksumTypeChoicesForm form = ItemUtil.getHome().getGetItemAliasChecksumTypeChoicesForm();
+                var form = ItemUtil.getHome().getGetItemAliasChecksumTypeChoicesForm();
 
                 form.setDefaultItemAliasChecksumTypeChoice(itemAliasChecksumTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = ItemUtil.getHome().getItemAliasChecksumTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemAliasChecksumTypeChoicesResult getItemAliasChecksumTypeChoicesResult = (GetItemAliasChecksumTypeChoicesResult)executionResult.getResult();
+                var commandResult = ItemUtil.getHome().getItemAliasChecksumTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getItemAliasChecksumTypeChoicesResult = (GetItemAliasChecksumTypeChoicesResult)executionResult.getResult();
                 itemAliasChecksumTypeChoices = getItemAliasChecksumTypeChoicesResult.getItemAliasChecksumTypeChoices();
 
                 if(itemAliasChecksumTypeChoice == null) {

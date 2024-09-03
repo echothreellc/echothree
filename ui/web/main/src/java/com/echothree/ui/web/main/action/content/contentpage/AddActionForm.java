@@ -48,13 +48,13 @@ public class AddActionForm
     private void setupContentPageLayoutChoices()
             throws NamingException {
         if(contentPageLayoutChoices == null) {
-            GetContentPageLayoutChoicesForm getContentPageLayoutChoicesForm = ContentUtil.getHome().getGetContentPageLayoutChoicesForm();
+            var getContentPageLayoutChoicesForm = ContentUtil.getHome().getGetContentPageLayoutChoicesForm();
 
             getContentPageLayoutChoicesForm.setDefaultContentPageLayoutChoice(contentPageLayoutChoice);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentPageLayoutChoices(userVisitPK, getContentPageLayoutChoicesForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentPageLayoutChoicesResult getContentPageLayoutChoicesResult = (GetContentPageLayoutChoicesResult)executionResult.getResult();
+            var commandResult = ContentUtil.getHome().getContentPageLayoutChoices(userVisitPK, getContentPageLayoutChoicesForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getContentPageLayoutChoicesResult = (GetContentPageLayoutChoicesResult)executionResult.getResult();
             contentPageLayoutChoices = getContentPageLayoutChoicesResult.getContentPageLayoutChoices();
 
             if(contentPageLayoutChoice == null)

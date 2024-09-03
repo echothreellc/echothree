@@ -60,7 +60,7 @@ public class ChainInstanceTransferCache
             
             if(includeChainInstanceEntityRoles) {
                 var chainInstanceEntityRoleTransfers = chainControl.getChainInstanceEntityRoleTransfersByChainInstance(userVisit, chainInstance);
-                MapWrapper<ChainInstanceEntityRoleTransfer> chainInstanceEntityRoles = new MapWrapper<>(chainInstanceEntityRoleTransfers.size());
+                var chainInstanceEntityRoles = new MapWrapper<ChainInstanceEntityRoleTransfer>(chainInstanceEntityRoleTransfers.size());
 
                 chainInstanceEntityRoleTransfers.forEach((chainInstanceEntityRoleTransfer) -> {
                     chainInstanceEntityRoles.put(chainInstanceEntityRoleTransfer.getChainEntityRoleType().getChainEntityRoleTypeName(), chainInstanceEntityRoleTransfer);

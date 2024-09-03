@@ -55,18 +55,18 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String messageTypeName = request.getParameter(ParameterConstants.MESSAGE_TYPE_NAME);
-            GetMessageTypeDescriptionsForm commandForm = MessageUtil.getHome().getGetMessageTypeDescriptionsForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var messageTypeName = request.getParameter(ParameterConstants.MESSAGE_TYPE_NAME);
+            var commandForm = MessageUtil.getHome().getGetMessageTypeDescriptionsForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setMessageTypeName(messageTypeName);
-            
-            CommandResult commandResult = MessageUtil.getHome().getMessageTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMessageTypeDescriptionsResult result = (GetMessageTypeDescriptionsResult)executionResult.getResult();
+
+            var commandResult = MessageUtil.getHome().getMessageTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMessageTypeDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.MESSAGE_TYPE, result.getMessageType());
             request.setAttribute(AttributeConstants.MESSAGE_TYPE_DESCRIPTIONS, result.getMessageTypeDescriptions());

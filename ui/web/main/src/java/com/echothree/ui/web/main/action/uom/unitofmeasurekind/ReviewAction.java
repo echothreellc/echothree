@@ -51,14 +51,14 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetUnitOfMeasureKindForm commandForm = UomUtil.getHome().getGetUnitOfMeasureKindForm();
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindForm();
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
         
         commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
-        
-        CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureKind(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetUnitOfMeasureKindResult result = (GetUnitOfMeasureKindResult)executionResult.getResult();
+
+        var commandResult = UomUtil.getHome().getUnitOfMeasureKind(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetUnitOfMeasureKindResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_KIND, result.getUnitOfMeasureKind());
         

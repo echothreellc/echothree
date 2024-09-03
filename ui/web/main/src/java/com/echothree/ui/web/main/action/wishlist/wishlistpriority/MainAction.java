@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetWishlistPrioritiesForm commandForm = WishlistUtil.getHome().getGetWishlistPrioritiesForm();
-            String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
+            var commandForm = WishlistUtil.getHome().getGetWishlistPrioritiesForm();
+            var wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
             
             commandForm.setWishlistTypeName(wishlistTypeName);
 
-            CommandResult commandResult = WishlistUtil.getHome().getWishlistPriorities(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWishlistPrioritiesResult result = (GetWishlistPrioritiesResult)executionResult.getResult();
+            var commandResult = WishlistUtil.getHome().getWishlistPriorities(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWishlistPrioritiesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WISHLIST_TYPE, result.getWishlistType());
             request.setAttribute(AttributeConstants.WISHLIST_TYPE_PRIORITIES, result.getWishlistPriorities());

@@ -63,14 +63,14 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTransactionTypeDescriptionForm commandForm = AccountingUtil.getHome().getGetTransactionTypeDescriptionForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionTypeDescriptionForm();
         
         commandForm.setTransactionTypeName(actionForm.getTransactionTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionTypeDescription(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTransactionTypeDescriptionResult result = (GetTransactionTypeDescriptionResult)executionResult.getResult();
+
+        var commandResult = AccountingUtil.getHome().getTransactionTypeDescription(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTransactionTypeDescriptionResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.TRANSACTION_TYPE_DESCRIPTION, result.getTransactionTypeDescription());
     }
@@ -78,7 +78,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteTransactionTypeDescriptionForm commandForm = AccountingUtil.getHome().getDeleteTransactionTypeDescriptionForm();
+        var commandForm = AccountingUtil.getHome().getDeleteTransactionTypeDescriptionForm();
 
         commandForm.setTransactionTypeName(actionForm.getTransactionTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

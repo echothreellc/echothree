@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemAliasTypeForm commandForm = ItemUtil.getHome().getGetItemAliasTypeForm();
+        var commandForm = ItemUtil.getHome().getGetItemAliasTypeForm();
 
         commandForm.setItemAliasTypeName(actionForm.getItemAliasTypeName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getItemAliasType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getItemAliasType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemAliasTypeResult result = (GetItemAliasTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemAliasTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ITEM_ALIAS_TYPE, result.getItemAliasType());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateItemAliasTypeDescriptionForm commandForm = ItemUtil.getHome().getCreateItemAliasTypeDescriptionForm();
+        var commandForm = ItemUtil.getHome().getCreateItemAliasTypeDescriptionForm();
 
         commandForm.setItemAliasTypeName( actionForm.getItemAliasTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

@@ -53,15 +53,15 @@ public class CustomerProfileReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
-        String customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
         
         commandForm.setCustomerName(customerName);
-        
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
-        CustomerTransfer customer = result.getCustomer();
+
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
+        var customer = result.getCustomer();
         
         if(customer == null) {
             forwardKey = ForwardConstants.ERROR_404;

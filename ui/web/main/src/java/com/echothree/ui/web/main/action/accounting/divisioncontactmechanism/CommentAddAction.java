@@ -59,14 +59,14 @@ public class CommentAddAction
     
     public String getContactMechanismEntityRef(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContactMechanismForm commandForm = ContactUtil.getHome().getGetContactMechanismForm();
+        var commandForm = ContactUtil.getHome().getGetContactMechanismForm();
         
         commandForm.setContactMechanismName(actionForm.getContactMechanismName());
-        
-        CommandResult commandResult = ContactUtil.getHome().getContactMechanism(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetContactMechanismResult result = (GetContactMechanismResult)executionResult.getResult();
-        ContactMechanismTransfer contactMechanism = result.getContactMechanism();
+
+        var commandResult = ContactUtil.getHome().getContactMechanism(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetContactMechanismResult)executionResult.getResult();
+        var contactMechanism = result.getContactMechanism();
         
         request.setAttribute(AttributeConstants.CONTACT_MECHANISM, contactMechanism);
         
@@ -86,7 +86,7 @@ public class CommentAddAction
     @Override
     public CommandResult doAdd(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCommentForm commandForm = CommentUtil.getHome().getCreateCommentForm();
+        var commandForm = CommentUtil.getHome().getCreateCommentForm();
 
         commandForm.setEntityRef(getContactMechanismEntityRef(actionForm, request));
         commandForm.setCommentTypeName(CommentConstants.CommentType_CONTACT_MECHANISM);

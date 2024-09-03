@@ -61,15 +61,15 @@ public class TranslationEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-        String returnPolicyName = request.getParameter(ParameterConstants.RETURN_POLICY_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+        var returnPolicyName = request.getParameter(ParameterConstants.RETURN_POLICY_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                TranslationEditActionForm actionForm = (TranslationEditActionForm)form;
-                EditReturnPolicyTranslationForm commandForm = ReturnPolicyUtil.getHome().getEditReturnPolicyTranslationForm();
-                ReturnPolicyTranslationSpec spec = ReturnPolicyUtil.getHome().getReturnPolicyTranslationSpec();
+                var actionForm = (TranslationEditActionForm)form;
+                var commandForm = ReturnPolicyUtil.getHome().getEditReturnPolicyTranslationForm();
+                var spec = ReturnPolicyUtil.getHome().getReturnPolicyTranslationSpec();
                 
                 if(returnKindName == null)
                     returnKindName = actionForm.getReturnKindName();
@@ -84,21 +84,21 @@ public class TranslationEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    ReturnPolicyTranslationEdit edit = ReturnPolicyUtil.getHome().getReturnPolicyTranslationEdit();
+                    var edit = ReturnPolicyUtil.getHome().getReturnPolicyTranslationEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
                     edit.setPolicyMimeTypeName(actionForm.getPolicyMimeTypeChoice());
                     edit.setPolicy(actionForm.getPolicy());
-                    
-                    CommandResult commandResult = ReturnPolicyUtil.getHome().editReturnPolicyTranslation(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ReturnPolicyUtil.getHome().editReturnPolicyTranslation(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditReturnPolicyTranslationResult result = (EditReturnPolicyTranslationResult)executionResult.getResult();
+                            var result = (EditReturnPolicyTranslationResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -111,13 +111,13 @@ public class TranslationEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = ReturnPolicyUtil.getHome().editReturnPolicyTranslation(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditReturnPolicyTranslationResult result = (EditReturnPolicyTranslationResult)executionResult.getResult();
+
+                    var commandResult = ReturnPolicyUtil.getHome().editReturnPolicyTranslation(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditReturnPolicyTranslationResult)executionResult.getResult();
                     
                     if(result != null) {
-                        ReturnPolicyTranslationEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setReturnKindName(returnKindName);
@@ -139,8 +139,8 @@ public class TranslationEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.RETURN_KIND_NAME, returnKindName);
             request.setAttribute(AttributeConstants.RETURN_POLICY_NAME, returnPolicyName);

@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetForumGroupForm commandForm = ForumUtil.getHome().getGetForumGroupForm();
+        var commandForm = ForumUtil.getHome().getGetForumGroupForm();
         
         commandForm.setForumGroupName(actionForm.getForumGroupName());
-        
-        CommandResult commandResult = ForumUtil.getHome().getForumGroup(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetForumGroupResult result = (GetForumGroupResult)executionResult.getResult();
+
+        var commandResult = ForumUtil.getHome().getForumGroup(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetForumGroupResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.FORUM_GROUP, result.getForumGroup());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteForumGroupForm commandForm = ForumUtil.getHome().getDeleteForumGroupForm();
+        var commandForm = ForumUtil.getHome().getDeleteForumGroupForm();
 
         commandForm.setForumGroupName(actionForm.getForumGroupName());
 

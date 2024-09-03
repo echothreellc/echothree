@@ -63,15 +63,15 @@ public class TranslationDeleteAction
     @Override
     public void setupTransfer(TranslationDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTrainingClassTranslationForm commandForm = TrainingUtil.getHome().getGetTrainingClassTranslationForm();
+        var commandForm = TrainingUtil.getHome().getGetTrainingClassTranslationForm();
         
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = TrainingUtil.getHome().getTrainingClassTranslation(getUserVisitPK(request), commandForm);
+
+        var commandResult = TrainingUtil.getHome().getTrainingClassTranslation(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTrainingClassTranslationResult result = (GetTrainingClassTranslationResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTrainingClassTranslationResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.TRAINING_CLASS_TRANSLATION, result.getTrainingClassTranslation());
         }
@@ -80,7 +80,7 @@ public class TranslationDeleteAction
     @Override
     public CommandResult doDelete(TranslationDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteTrainingClassTranslationForm commandForm = TrainingUtil.getHome().getDeleteTrainingClassTranslationForm();
+        var commandForm = TrainingUtil.getHome().getDeleteTrainingClassTranslationForm();
 
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

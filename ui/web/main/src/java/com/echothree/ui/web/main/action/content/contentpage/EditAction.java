@@ -52,10 +52,10 @@ public class EditAction
     @Override
     protected ContentPageSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ContentPageSpec spec = ContentUtil.getHome().getContentPageSpec();
-        String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-        String contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
-        String originalContentPageName = request.getParameter(ParameterConstants.ORIGINAL_CONTENT_PAGE_NAME);
+        var spec = ContentUtil.getHome().getContentPageSpec();
+        var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+        var contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
+        var originalContentPageName = request.getParameter(ParameterConstants.ORIGINAL_CONTENT_PAGE_NAME);
 
         if(contentCollectionName == null) {
             contentCollectionName = actionForm.getContentCollectionName();
@@ -77,7 +77,7 @@ public class EditAction
     @Override
     protected ContentPageEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ContentPageEdit edit = ContentUtil.getHome().getContentPageEdit();
+        var edit = ContentUtil.getHome().getContentPageEdit();
 
         edit.setContentPageName(actionForm.getContentPageName());
         edit.setContentPageLayoutName(actionForm.getContentPageLayoutChoice());
@@ -110,9 +110,9 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditContentPageForm commandForm)
             throws Exception {
-        CommandResult commandResult = ContentUtil.getHome().editContentPage(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditContentPageResult result = (EditContentPageResult)executionResult.getResult();
+        var commandResult = ContentUtil.getHome().editContentPage(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditContentPageResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CONTENT_PAGE, result.getContentPage());
         

@@ -41,15 +41,15 @@ public class StatusActionForm
     public void setupPartyTrainingClassStatusChoices() {
         if(partyTrainingClassStatusChoices == null) {
             try {
-                GetPartyTrainingClassStatusChoicesForm form = TrainingUtil.getHome().getGetPartyTrainingClassStatusChoicesForm();
+                var form = TrainingUtil.getHome().getGetPartyTrainingClassStatusChoicesForm();
                 
                 form.setPartyTrainingClassName(partyTrainingClassName);
                 form.setDefaultPartyTrainingClassStatusChoice(partyTrainingClassStatusChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = TrainingUtil.getHome().getPartyTrainingClassStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPartyTrainingClassStatusChoicesResult result = (GetPartyTrainingClassStatusChoicesResult)executionResult.getResult();
+
+                var commandResult = TrainingUtil.getHome().getPartyTrainingClassStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPartyTrainingClassStatusChoicesResult)executionResult.getResult();
                 partyTrainingClassStatusChoices = result.getPartyTrainingClassStatusChoices();
                 
                 if(partyTrainingClassStatusChoice == null) {

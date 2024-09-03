@@ -56,15 +56,15 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            String associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
-            GetAssociateProgramForm commandForm = AssociateUtil.getHome().getGetAssociateProgramForm();
+            var associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
+            var commandForm = AssociateUtil.getHome().getGetAssociateProgramForm();
             
             commandForm.setAssociateProgramName(associateProgramName);
-            
-            CommandResult commandResult = AssociateUtil.getHome().getAssociateProgram(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAssociateProgramResult result = (GetAssociateProgramResult)executionResult.getResult();
-            AssociateProgramTransfer associateProgramTransfer = result.getAssociateProgram();
+
+            var commandResult = AssociateUtil.getHome().getAssociateProgram(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAssociateProgramResult)executionResult.getResult();
+            var associateProgramTransfer = result.getAssociateProgram();
             
             request.setAttribute(AttributeConstants.ASSOCIATE_PROGRAM, associateProgramTransfer);
             forwardKey = ForwardConstants.DISPLAY;

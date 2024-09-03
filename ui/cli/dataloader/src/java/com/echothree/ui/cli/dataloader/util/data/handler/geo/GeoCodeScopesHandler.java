@@ -48,9 +48,9 @@ public class GeoCodeScopesHandler
             String geoCodeScopeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("geoCodeScopeName"))
                     geoCodeScopeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class GeoCodeScopesHandler
             }
             
             try {
-                CreateGeoCodeScopeForm createGeoCodeScopeForm = GeoFormFactory.getCreateGeoCodeScopeForm();
+                var createGeoCodeScopeForm = GeoFormFactory.getCreateGeoCodeScopeForm();
                 
                 createGeoCodeScopeForm.setGeoCodeScopeName(geoCodeScopeName);
                 createGeoCodeScopeForm.setIsDefault(isDefault);

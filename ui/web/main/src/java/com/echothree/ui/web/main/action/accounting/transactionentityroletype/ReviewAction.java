@@ -53,17 +53,17 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetTransactionEntityRoleTypeForm commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypeForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypeForm();
 
         commandForm.setTransactionTypeName(request.getParameter(ParameterConstants.TRANSACTION_TYPE_NAME));
         commandForm.setTransactionEntityRoleTypeName(request.getParameter(ParameterConstants.TRANSACTION_ENTITY_ROLE_TYPE_NAME));
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionEntityRoleType(getUserVisitPK(request), commandForm);
+
+        var commandResult = AccountingUtil.getHome().getTransactionEntityRoleType(getUserVisitPK(request), commandForm);
         TransactionEntityRoleTypeTransfer transactionEntityRoleType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTransactionEntityRoleTypeResult result = (GetTransactionEntityRoleTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionEntityRoleTypeResult)executionResult.getResult();
             
             transactionEntityRoleType = result.getTransactionEntityRoleType();
         }

@@ -66,14 +66,14 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartyTrainingClassForm commandForm = TrainingUtil.getHome().getGetPartyTrainingClassForm();
+        var commandForm = TrainingUtil.getHome().getGetPartyTrainingClassForm();
         
         commandForm.setPartyTrainingClassName(actionForm.getPartyTrainingClassName());
-        
-        CommandResult commandResult = TrainingUtil.getHome().getPartyTrainingClass(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyTrainingClassResult result = (GetPartyTrainingClassResult)executionResult.getResult();
-        PartyTrainingClassTransfer partyTrainingClass = result.getPartyTrainingClass();
+
+        var commandResult = TrainingUtil.getHome().getPartyTrainingClass(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyTrainingClassResult)executionResult.getResult();
+        var partyTrainingClass = result.getPartyTrainingClass();
         
         request.setAttribute(AttributeConstants.PARTY_TRAINING_CLASS, partyTrainingClass);
         request.setAttribute(AttributeConstants.EMPLOYEE, EmployeeUtils.getInstance().getEmployee(getUserVisitPK(request),
@@ -83,7 +83,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyTrainingClassForm commandForm = TrainingUtil.getHome().getDeletePartyTrainingClassForm();
+        var commandForm = TrainingUtil.getHome().getDeletePartyTrainingClassForm();
 
         commandForm.setPartyTrainingClassName(actionForm.getPartyTrainingClassName());
 

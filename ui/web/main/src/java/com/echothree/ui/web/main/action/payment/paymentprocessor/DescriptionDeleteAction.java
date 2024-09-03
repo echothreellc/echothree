@@ -63,14 +63,14 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPaymentProcessorDescriptionForm commandForm = PaymentUtil.getHome().getGetPaymentProcessorDescriptionForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentProcessorDescriptionForm();
         
         commandForm.setPaymentProcessorName(actionForm.getPaymentProcessorName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentProcessorDescription(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPaymentProcessorDescriptionResult result = (GetPaymentProcessorDescriptionResult)executionResult.getResult();
+
+        var commandResult = PaymentUtil.getHome().getPaymentProcessorDescription(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPaymentProcessorDescriptionResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.PAYMENT_PROCESSOR_DESCRIPTION, result.getPaymentProcessorDescription());
     }
@@ -78,7 +78,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePaymentProcessorDescriptionForm commandForm = PaymentUtil.getHome().getDeletePaymentProcessorDescriptionForm();
+        var commandForm = PaymentUtil.getHome().getDeletePaymentProcessorDescriptionForm();
 
         commandForm.setPaymentProcessorName(actionForm.getPaymentProcessorName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

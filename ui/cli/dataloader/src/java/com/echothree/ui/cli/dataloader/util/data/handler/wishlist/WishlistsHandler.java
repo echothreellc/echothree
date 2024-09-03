@@ -48,9 +48,9 @@ public class WishlistsHandler
             String wishlistTypeName = null;
             String currencyIsoName = null;
             String sourceName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("wishlistTypeName"))
                     wishlistTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("currencyIsoName"))

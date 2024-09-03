@@ -57,7 +57,7 @@ public class EditAction
     @Override
     protected LeaveSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        LeaveSpec spec = EmployeeUtil.getHome().getLeaveSpec();
+        var spec = EmployeeUtil.getHome().getLeaveSpec();
         
         actionForm.setPartyName(findParameter(request, ParameterConstants.PARTY_NAME, actionForm.getPartyName()));
         spec.setLeaveName(findParameter(request, ParameterConstants.LEAVE_NAME, actionForm.getLeaveName()));
@@ -68,7 +68,7 @@ public class EditAction
     @Override
     protected LeaveEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        LeaveEdit edit = EmployeeUtil.getHome().getLeaveEdit();
+        var edit = EmployeeUtil.getHome().getLeaveEdit();
 
         edit.setCompanyName(actionForm.getCompanyChoice());
         edit.setLeaveTypeName(actionForm.getLeaveTypeChoice());
@@ -113,7 +113,7 @@ public class EditAction
     @Override
     protected void setupTransferForForm(HttpServletRequest request, EditActionForm actionForm, EditLeaveResult result)
             throws NamingException {
-        LeaveTransfer leave = result.getLeave();
+        var leave = result.getLeave();
         
         request.setAttribute(AttributeConstants.LEAVE, leave);
         request.setAttribute(AttributeConstants.EMPLOYEE, EmployeeUtils.getInstance().getEmployee(getUserVisitPK(request), leave.getParty().getPartyName(),
@@ -122,7 +122,7 @@ public class EditAction
 
     @Override
     protected boolean displayForm(ExecutionResult executionResult) {
-        Messages executionErrors = executionResult.getExecutionErrors();
+        var executionErrors = executionResult.getExecutionErrors();
         
         return executionErrors == null ? true
                 : !executionErrors.containsKeys(Messages.EXECUTION_ERROR, ExecutionErrors.InvalidLeaveStatus.name());

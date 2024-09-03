@@ -58,9 +58,9 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetWarehouseForm commandForm = WarehouseUtil.getHome().getGetWarehouseForm();
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = WarehouseUtil.getHome().getGetWarehouseForm();
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         
         commandForm.setWarehouseName(warehouseName);
         commandForm.setPartyName(partyName);
@@ -70,11 +70,11 @@ public class MainAction
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismPurposes);
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismRelationshipsByFromPartyContactMechanism);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
-        
-        CommandResult commandResult = WarehouseUtil.getHome().getWarehouse(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetWarehouseResult result = (GetWarehouseResult)executionResult.getResult();
-        WarehouseTransfer warehouse = result.getWarehouse();
+
+        var commandResult = WarehouseUtil.getHome().getWarehouse(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetWarehouseResult)executionResult.getResult();
+        var warehouse = result.getWarehouse();
         
         if(warehouse == null) {
             forwardKey = ForwardConstants.ERROR_404;

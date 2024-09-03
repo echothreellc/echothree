@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String scaleTypeName = request.getParameter(ParameterConstants.SCALE_TYPE_NAME);
-        GetScaleTypeDescriptionsForm commandForm = ScaleUtil.getHome().getGetScaleTypeDescriptionsForm();
+        var scaleTypeName = request.getParameter(ParameterConstants.SCALE_TYPE_NAME);
+        var commandForm = ScaleUtil.getHome().getGetScaleTypeDescriptionsForm();
 
         commandForm.setScaleTypeName(scaleTypeName);
 
-        CommandResult commandResult = ScaleUtil.getHome().getScaleTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ScaleUtil.getHome().getScaleTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetScaleTypeDescriptionsResult result = (GetScaleTypeDescriptionsResult) executionResult.getResult();
-            ScaleTypeTransfer scaleTypeTransfer = result.getScaleType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetScaleTypeDescriptionsResult) executionResult.getResult();
+            var scaleTypeTransfer = result.getScaleType();
 
             request.setAttribute(AttributeConstants.SCALE_TYPE, scaleTypeTransfer);
             request.setAttribute(AttributeConstants.SCALE_TYPE_DESCRIPTIONS, result.getScaleTypeDescriptions());

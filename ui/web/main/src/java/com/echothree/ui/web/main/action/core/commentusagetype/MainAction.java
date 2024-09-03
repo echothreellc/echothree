@@ -58,21 +58,21 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String commentTypeName = request.getParameter(ParameterConstants.COMMENT_TYPE_NAME);
-            GetCommentUsageTypesForm commandForm = CommentUtil.getHome().getGetCommentUsageTypesForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var commentTypeName = request.getParameter(ParameterConstants.COMMENT_TYPE_NAME);
+            var commandForm = CommentUtil.getHome().getGetCommentUsageTypesForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setCommentTypeName(commentTypeName);
-            
-            CommandResult commandResult = CommentUtil.getHome().getCommentUsageTypes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommentUsageTypesResult result = (GetCommentUsageTypesResult)executionResult.getResult();
-            ComponentVendorTransfer componentVendorTransfer = result.getComponentVendor();
-            EntityTypeTransfer entityTypeTransfer = result.getEntityType();
-            CommentTypeTransfer commentTypeTransfer = result.getCommentType();
+
+            var commandResult = CommentUtil.getHome().getCommentUsageTypes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommentUsageTypesResult)executionResult.getResult();
+            var componentVendorTransfer = result.getComponentVendor();
+            var entityTypeTransfer = result.getEntityType();
+            var commentTypeTransfer = result.getCommentType();
             
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR, componentVendorTransfer);
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorTransfer.getComponentVendorName());

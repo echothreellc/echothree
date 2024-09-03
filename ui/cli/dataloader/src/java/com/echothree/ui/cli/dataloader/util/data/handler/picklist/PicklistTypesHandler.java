@@ -47,7 +47,7 @@ public class PicklistTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("picklistType")) {
-            CreatePicklistTypeForm commandForm = PicklistFormFactory.getCreatePicklistTypeForm();
+            var commandForm = PicklistFormFactory.getCreatePicklistTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

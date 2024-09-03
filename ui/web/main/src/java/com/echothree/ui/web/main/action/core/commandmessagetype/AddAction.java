@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCommandMessageTypeForm commandForm = CoreUtil.getHome().getCreateCommandMessageTypeForm();
+        var commandForm = CoreUtil.getHome().getCreateCommandMessageTypeForm();
 
         commandForm.setCommandMessageTypeName(actionForm.getCommandMessageTypeName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());

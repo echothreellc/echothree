@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = InventoryUtil.getHome().getInventoryConditionUseTypes(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetInventoryConditionUseTypesResult result = (GetInventoryConditionUseTypesResult)executionResult.getResult();
+            var commandResult = InventoryUtil.getHome().getInventoryConditionUseTypes(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetInventoryConditionUseTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.INVENTORY_CONDITION_USE_TYPES, result.getInventoryConditionUseTypes());
             forwardKey = ForwardConstants.DISPLAY;

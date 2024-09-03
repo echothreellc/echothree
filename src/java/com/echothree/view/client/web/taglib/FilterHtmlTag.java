@@ -85,7 +85,7 @@ public class FilterHtmlTag
     private String replaceImageURLs(XMLInputSource source)
             throws IOException {
         XMLParserConfiguration parser = new HTMLConfiguration();
-        StringWriter stringWriter = new StringWriter();
+        var stringWriter = new StringWriter();
         var writer = new org.cyberneko.html.filters.Writer(stringWriter, "UTF-8");
 
         XMLDocumentFilter[] filters = {

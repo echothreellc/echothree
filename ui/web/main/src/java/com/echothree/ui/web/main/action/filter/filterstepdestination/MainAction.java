@@ -55,20 +55,20 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetFilterStepDestinationsForm getFilterStepDestinationsForm = FilterUtil.getHome().getGetFilterStepDestinationsForm();
-            String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-            String filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
-            String filterName = request.getParameter(ParameterConstants.FILTER_NAME);
-            String filterStepName = request.getParameter(ParameterConstants.FILTER_STEP_NAME);
+            var getFilterStepDestinationsForm = FilterUtil.getHome().getGetFilterStepDestinationsForm();
+            var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+            var filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
+            var filterName = request.getParameter(ParameterConstants.FILTER_NAME);
+            var filterStepName = request.getParameter(ParameterConstants.FILTER_STEP_NAME);
             
             getFilterStepDestinationsForm.setFilterKindName(filterKindName);
             getFilterStepDestinationsForm.setFilterTypeName(filterTypeName);
             getFilterStepDestinationsForm.setFilterName(filterName);
             getFilterStepDestinationsForm.setFromFilterStepName(filterStepName);
-            
-            CommandResult commandResult = FilterUtil.getHome().getFilterStepDestinations(getUserVisitPK(request), getFilterStepDestinationsForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterStepDestinationsResult result = (GetFilterStepDestinationsResult)executionResult.getResult();
+
+            var commandResult = FilterUtil.getHome().getFilterStepDestinations(getUserVisitPK(request), getFilterStepDestinationsForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetFilterStepDestinationsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FILTER_KIND, result.getFilterKind());
             request.setAttribute(AttributeConstants.FILTER_TYPE, result.getFilterType());

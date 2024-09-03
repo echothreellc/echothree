@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateProtocolForm commandForm = CoreUtil.getHome().getCreateProtocolForm();
+        var commandForm = CoreUtil.getHome().getCreateProtocolForm();
 
         commandForm.setProtocolName(actionForm.getProtocolName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());

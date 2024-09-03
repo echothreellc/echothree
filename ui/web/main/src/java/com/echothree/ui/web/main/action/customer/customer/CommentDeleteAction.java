@@ -65,26 +65,26 @@ public class CommentDeleteAction
     
     public void setupCustomerTransfer(CommentDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
         
         commandForm.setPartyName(actionForm.getPartyName());
-        
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
+
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }
     
     public void setupCommentTransfer(CommentDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCommentForm commandForm = CommentUtil.getHome().getGetCommentForm();
+        var commandForm = CommentUtil.getHome().getGetCommentForm();
         
         commandForm.setCommentName(actionForm.getCommentName());
 
-        CommandResult commandResult = CommentUtil.getHome().getComment(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCommentResult result = (GetCommentResult)executionResult.getResult();
+        var commandResult = CommentUtil.getHome().getComment(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCommentResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.COMMENT, result.getComment());
     }
@@ -99,7 +99,7 @@ public class CommentDeleteAction
     @Override
     public CommandResult doDelete(CommentDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteCommentForm commandForm = CommentUtil.getHome().getDeleteCommentForm();
+        var commandForm = CommentUtil.getHome().getDeleteCommentForm();
         
         commandForm.setCommentName(actionForm.getCommentName());
 

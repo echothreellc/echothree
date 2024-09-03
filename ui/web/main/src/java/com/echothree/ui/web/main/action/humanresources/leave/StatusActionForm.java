@@ -42,15 +42,15 @@ public class StatusActionForm
     public void setupLeaveStatusChoices() {
         if(leaveStatusChoices == null) {
             try {
-                GetLeaveStatusChoicesForm form = EmployeeUtil.getHome().getGetLeaveStatusChoicesForm();
+                var form = EmployeeUtil.getHome().getGetLeaveStatusChoicesForm();
 
                 form.setLeaveName(leaveName);
                 form.setDefaultLeaveStatusChoice(leaveStatusChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = EmployeeUtil.getHome().getLeaveStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetLeaveStatusChoicesResult result = (GetLeaveStatusChoicesResult)executionResult.getResult();
+                var commandResult = EmployeeUtil.getHome().getLeaveStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetLeaveStatusChoicesResult)executionResult.getResult();
                 leaveStatusChoices = result.getLeaveStatusChoices();
 
                 if(leaveStatusChoice == null) {

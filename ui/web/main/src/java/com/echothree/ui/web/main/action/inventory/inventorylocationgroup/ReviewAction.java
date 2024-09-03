@@ -55,16 +55,16 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetInventoryLocationGroupForm commandForm = InventoryUtil.getHome().getGetInventoryLocationGroupForm();
-            String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-            String inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
+            var commandForm = InventoryUtil.getHome().getGetInventoryLocationGroupForm();
+            var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+            var inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
             
             commandForm.setWarehouseName(warehouseName);
             commandForm.setInventoryLocationGroupName(inventoryLocationGroupName);
-            
-            CommandResult commandResult = InventoryUtil.getHome().getInventoryLocationGroup(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetInventoryLocationGroupResult result = (GetInventoryLocationGroupResult)executionResult.getResult();
+
+            var commandResult = InventoryUtil.getHome().getInventoryLocationGroup(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetInventoryLocationGroupResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.INVENTORY_LOCATION_GROUP, result.getInventoryLocationGroup());
             

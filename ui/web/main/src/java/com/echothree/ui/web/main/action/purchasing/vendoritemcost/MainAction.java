@@ -55,16 +55,16 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetVendorItemCostsForm commandForm = VendorUtil.getHome().getGetVendorItemCostsForm();
-            String vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
-            String vendorItemName = request.getParameter(ParameterConstants.VENDOR_ITEM_NAME);
+            var commandForm = VendorUtil.getHome().getGetVendorItemCostsForm();
+            var vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
+            var vendorItemName = request.getParameter(ParameterConstants.VENDOR_ITEM_NAME);
             
             commandForm.setVendorName(vendorName);
             commandForm.setVendorItemName(vendorItemName);
-            
-            CommandResult commandResult = VendorUtil.getHome().getVendorItemCosts(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetVendorItemCostsResult result = (GetVendorItemCostsResult)executionResult.getResult();
+
+            var commandResult = VendorUtil.getHome().getVendorItemCosts(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetVendorItemCostsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.VENDOR, result.getVendor());
             request.setAttribute(AttributeConstants.VENDOR_ITEM, result.getVendorItem());

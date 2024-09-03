@@ -61,14 +61,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String jobName = request.getParameter(ParameterConstants.JOB_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var jobName = request.getParameter(ParameterConstants.JOB_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditJobDescriptionForm commandForm = JobUtil.getHome().getEditJobDescriptionForm();
-                JobDescriptionSpec spec = JobUtil.getHome().getJobDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = JobUtil.getHome().getEditJobDescriptionForm();
+                var spec = JobUtil.getHome().getJobDescriptionSpec();
                 
                 if(jobName == null)
                     jobName = actionForm.getJobName();
@@ -80,19 +80,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    JobDescriptionEdit edit = JobUtil.getHome().getJobDescriptionEdit();
+                    var edit = JobUtil.getHome().getJobDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = JobUtil.getHome().editJobDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = JobUtil.getHome().editJobDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditJobDescriptionResult result = (EditJobDescriptionResult)executionResult.getResult();
+                            var result = (EditJobDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +105,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = JobUtil.getHome().editJobDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditJobDescriptionResult result = (EditJobDescriptionResult)executionResult.getResult();
+
+                    var commandResult = JobUtil.getHome().editJobDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditJobDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        JobDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setJobName(jobName);
@@ -130,8 +130,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.JOB_NAME, jobName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

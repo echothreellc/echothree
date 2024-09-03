@@ -100,20 +100,20 @@ public class MailTransferUtility {
     public void transfer()
             throws Exception {
         try {
-            GetCommunicationSourcesForm commandForm = CommunicationFormFactory.getGetCommunicationSourcesForm();
+            var commandForm = CommunicationFormFactory.getGetCommunicationSourcesForm();
             
             commandForm.setCommunicationSourceTypeName(CommunicationConstants.CommunicationSourceType_EMAIL);
             
             Set<String> options = new HashSet<>();
             options.add(CommunicationOptions.CommunicationSourceIncludeRelated);
             commandForm.setOptions(options);
+
+            var commandResult = getCommunicationService().getCommunicationSources(getUserVisit(), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommunicationSourcesResult)executionResult.getResult();
+            var communicationSources = result.getCommunicationSources();
             
-            CommandResult commandResult = getCommunicationService().getCommunicationSources(getUserVisit(), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommunicationSourcesResult result = (GetCommunicationSourcesResult)executionResult.getResult();
-            List<CommunicationSourceTransfer> communicationSources = result.getCommunicationSources();
-            
-            for(CommunicationSourceTransfer communicationSource: communicationSources) {
+            for(var communicationSource: communicationSources) {
                 transferFromServer(communicationSource);
             }
         } catch (NamingException ne) {
@@ -125,48 +125,48 @@ public class MailTransferUtility {
     
     private void transferFromServer(CommunicationSourceTransfer communicationSource)
             throws Exception {
-        CommunicationEmailSourceTransfer communicationEmailSource = communicationSource.getCommunicationEmailSource();
+        var communicationEmailSource = communicationSource.getCommunicationEmailSource();
         POP3Client pop3Client = null;
         
         try {
-            String serverName = communicationEmailSource.getServer().getServerName();
+            var serverName = communicationEmailSource.getServer().getServerName();
             
             pop3Client = new POP3Client();
             pop3Client.connect(serverName);
             if(pop3Client.getState() == POP3.AUTHORIZATION_STATE) {
-                String username = communicationEmailSource.getUsername();
+                var username = communicationEmailSource.getUsername();
                 
                 pop3Client.login(username, communicationEmailSource.getPassword());
                 
                 if(pop3Client.getState() == POP3.TRANSACTION_STATE) {
-                    POP3MessageInfo[] pop3MessageInfos = pop3Client.listMessages();
+                    var pop3MessageInfos = pop3Client.listMessages();
 
                     logger.info("message count: " + pop3MessageInfos.length);
                     
                     if(pop3MessageInfos.length > 0) {
-                        int successfulMessages = 0;
+                        var successfulMessages = 0;
                         
-                        for(int i = 0; i < pop3MessageInfos.length && successfulMessages < 10; i++) {
-                            POP3MessageInfo pop3MessageInfo = pop3MessageInfos[i];
-                            int messageId = pop3MessageInfo.number;
-                            Reader reader = pop3Client.retrieveMessage(messageId);
-                            BufferedReader bufferedReader = new BufferedReader(reader);
-                            StringBuilder stringBuilder = new StringBuilder();
+                        for(var i = 0; i < pop3MessageInfos.length && successfulMessages < 10; i++) {
+                            var pop3MessageInfo = pop3MessageInfos[i];
+                            var messageId = pop3MessageInfo.number;
+                            var reader = pop3Client.retrieveMessage(messageId);
+                            var bufferedReader = new BufferedReader(reader);
+                            var stringBuilder = new StringBuilder();
 
                             logger.info("message " + pop3MessageInfo.number + ", size = " + pop3MessageInfo.size);
                             
-                            for(String line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()) {
+                            for(var line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()) {
                                 stringBuilder.append(line);
                                 stringBuilder.append('\n');
                             }
-                            
-                            CreateCommunicationEventForm form = CommunicationFormFactory.getCreateCommunicationEventForm();
+
+                            var form = CommunicationFormFactory.getCreateCommunicationEventForm();
                             
                             form.setCommunicationSourceName(communicationSource.getCommunicationSourceName());
                             form.setCommunicationEventTypeName(CommunicationConstants.CommunicationEventType_EMAIL);
                             form.setBlobDocument(new ByteArray(stringBuilder.toString().getBytes(Charsets.UTF_8)));
-                            
-                            CommandResult commandResult = getCommunicationService().createCommunicationEvent(getUserVisit(), form);
+
+                            var commandResult = getCommunicationService().createCommunicationEvent(getUserVisit(), form);
                             
                             if(!commandResult.hasErrors()) {
                                 successfulMessages++;

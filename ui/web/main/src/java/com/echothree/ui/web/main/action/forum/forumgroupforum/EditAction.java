@@ -61,14 +61,14 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+        var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditForumGroupForumForm commandForm = ForumUtil.getHome().getEditForumGroupForumForm();
-                ForumGroupForumSpec spec = ForumUtil.getHome().getForumGroupForumSpec();
-                String forumGroupName = request.getParameter(ParameterConstants.FORUM_GROUP_NAME);
+                var actionForm = (EditActionForm)form;
+                var commandForm = ForumUtil.getHome().getEditForumGroupForumForm();
+                var spec = ForumUtil.getHome().getForumGroupForumSpec();
+                var forumGroupName = request.getParameter(ParameterConstants.FORUM_GROUP_NAME);
                 
                 if(forumGroupName == null)
                     forumGroupName = actionForm.getForumGroupName();
@@ -80,21 +80,21 @@ public class EditAction
                 spec.setForumName(forumName);
                 
                 if(wasPost(request)) {
-                    ForumGroupForumEdit edit = ForumUtil.getHome().getForumGroupForumEdit();
+                    var edit = ForumUtil.getHome().getForumGroupForumEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
-                    
-                    CommandResult commandResult = ForumUtil.getHome().editForumGroupForum(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ForumUtil.getHome().editForumGroupForum(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditForumGroupForumResult result = (EditForumGroupForumResult)executionResult.getResult();
+                            var result = (EditForumGroupForumResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -107,13 +107,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = ForumUtil.getHome().editForumGroupForum(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditForumGroupForumResult result = (EditForumGroupForumResult)executionResult.getResult();
+
+                    var commandResult = ForumUtil.getHome().editForumGroupForum(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditForumGroupForumResult)executionResult.getResult();
                     
                     if(result != null) {
-                        ForumGroupForumEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setForumGroupName(forumGroupName);
@@ -133,8 +133,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.FORUM_NAME, forumName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

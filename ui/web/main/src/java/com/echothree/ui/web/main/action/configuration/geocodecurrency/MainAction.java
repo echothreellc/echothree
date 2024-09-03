@@ -56,15 +56,15 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
-            GetGeoCodeCurrenciesForm commandForm = GeoUtil.getHome().getGetGeoCodeCurrenciesForm();
+            var geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
+            var commandForm = GeoUtil.getHome().getGetGeoCodeCurrenciesForm();
             
             commandForm.setGeoCodeName(geoCodeName);
-            
-            CommandResult commandResult = GeoUtil.getHome().getGeoCodeCurrencies(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeCurrenciesResult result = (GetGeoCodeCurrenciesResult)executionResult.getResult();
-            GeoCodeTransfer geoCode = result.getGeoCode();
+
+            var commandResult = GeoUtil.getHome().getGeoCodeCurrencies(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeCurrenciesResult)executionResult.getResult();
+            var geoCode = result.getGeoCode();
             
             if(geoCode == null) {
                 forwardKey = ForwardConstants.ERROR_404;

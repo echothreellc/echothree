@@ -50,7 +50,7 @@ public class EditorHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("editorDescription")) {
-            CreateEditorDescriptionForm commandForm = CoreFormFactory.getCreateEditorDescriptionForm();
+            var commandForm = CoreFormFactory.getCreateEditorDescriptionForm();
             
             commandForm.setEditorName(editorName);
             commandForm.set(getAttrsMap(attrs));

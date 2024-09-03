@@ -53,9 +53,9 @@ public class CancellationKindHandler
         if(localName.equals("cancellationKindDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -63,7 +63,7 @@ public class CancellationKindHandler
             }
             
             try {
-                CreateCancellationKindDescriptionForm commandForm = CancellationPolicyFormFactory.getCreateCancellationKindDescriptionForm();
+                var commandForm = CancellationPolicyFormFactory.getCreateCancellationKindDescriptionForm();
                 
                 commandForm.setCancellationKindName(cancellationKindName);
                 commandForm.setLanguageIsoName(languageIsoName);
@@ -77,9 +77,9 @@ public class CancellationKindHandler
             String cancellationPolicyName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("cancellationPolicyName"))
                     cancellationPolicyName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -89,7 +89,7 @@ public class CancellationKindHandler
             }
             
             try {
-                CreateCancellationPolicyForm commandForm = CancellationPolicyFormFactory.getCreateCancellationPolicyForm();
+                var commandForm = CancellationPolicyFormFactory.getCreateCancellationPolicyForm();
                 
                 commandForm.setCancellationKindName(cancellationKindName);
                 commandForm.setCancellationPolicyName(cancellationPolicyName);
@@ -107,9 +107,9 @@ public class CancellationKindHandler
             String isDefault = null;
             String sortOrder = null;
             String description = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("cancellationReasonName"))
                     cancellationReasonName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -121,7 +121,7 @@ public class CancellationKindHandler
             }
             
             try {
-                CreateCancellationReasonForm commandForm = CancellationPolicyFormFactory.getCreateCancellationReasonForm();
+                var commandForm = CancellationPolicyFormFactory.getCreateCancellationReasonForm();
                 
                 commandForm.setCancellationKindName(cancellationKindName);
                 commandForm.setCancellationReasonName(cancellationReasonName);
@@ -141,9 +141,9 @@ public class CancellationKindHandler
             String isDefault = null;
             String sortOrder = null;
             String description = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("cancellationTypeName"))
                     cancellationTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("cancellationSequenceName"))
@@ -157,7 +157,7 @@ public class CancellationKindHandler
             }
             
             try {
-                CreateCancellationTypeForm commandForm = CancellationPolicyFormFactory.getCreateCancellationTypeForm();
+                var commandForm = CancellationPolicyFormFactory.getCreateCancellationTypeForm();
                 
                 commandForm.setCancellationKindName(cancellationKindName);
                 commandForm.setCancellationTypeName(cancellationTypeName);

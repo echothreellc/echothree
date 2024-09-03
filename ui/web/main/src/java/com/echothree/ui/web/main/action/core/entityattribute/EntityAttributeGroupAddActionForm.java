@@ -43,14 +43,14 @@ public class EntityAttributeGroupAddActionForm
     private void setupEntityAttributeGroupChoices()
             throws NamingException {
         if(entityAttributeGroupChoices == null) {
-            GetEntityAttributeGroupChoicesForm commandForm = CoreUtil.getHome().getGetEntityAttributeGroupChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupChoicesForm();
 
             commandForm.setDefaultEntityAttributeGroupChoice(entityAttributeGroupChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getEntityAttributeGroupChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeGroupChoicesResult getEntityAttributeGroupChoicesResult = (GetEntityAttributeGroupChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getEntityAttributeGroupChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getEntityAttributeGroupChoicesResult = (GetEntityAttributeGroupChoicesResult)executionResult.getResult();
             entityAttributeGroupChoices = getEntityAttributeGroupChoicesResult.getEntityAttributeGroupChoices();
 
             if(entityAttributeGroupChoice == null) {

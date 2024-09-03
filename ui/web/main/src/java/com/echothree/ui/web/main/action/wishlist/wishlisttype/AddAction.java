@@ -54,17 +54,17 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateWishlistTypeForm commandForm = WishlistUtil.getHome().getCreateWishlistTypeForm();
+                    var commandForm = WishlistUtil.getHome().getCreateWishlistTypeForm();
                     
                     commandForm.setWishlistTypeName(actionForm.getWishlistTypeName());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = WishlistUtil.getHome().createWishlistType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = WishlistUtil.getHome().createWishlistType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

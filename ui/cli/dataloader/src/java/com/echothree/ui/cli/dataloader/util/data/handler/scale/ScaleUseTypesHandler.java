@@ -47,7 +47,7 @@ public class ScaleUseTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("scaleUseType")) {
-            CreateScaleUseTypeForm commandForm = ScaleFormFactory.getCreateScaleUseTypeForm();
+            var commandForm = ScaleFormFactory.getCreateScaleUseTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

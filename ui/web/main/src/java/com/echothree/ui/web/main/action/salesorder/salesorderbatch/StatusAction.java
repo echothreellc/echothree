@@ -52,11 +52,11 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String batchName = request.getParameter(ParameterConstants.BATCH_NAME);
+        var batchName = request.getParameter(ParameterConstants.BATCH_NAME);
         
         try {
-            StatusActionForm actionForm = (StatusActionForm)form;
-            SetSalesOrderBatchStatusForm commandForm = SalesUtil.getHome().getSetSalesOrderBatchStatusForm();
+            var actionForm = (StatusActionForm)form;
+            var commandForm = SalesUtil.getHome().getSetSalesOrderBatchStatusForm();
             
             if(batchName == null)
                 batchName = actionForm.getBatchName();
@@ -64,8 +64,8 @@ public class StatusAction
             if(wasPost(request)) {
                 commandForm.setBatchName(batchName);
                 commandForm.setSalesOrderBatchStatusChoice(actionForm.getSalesOrderBatchStatusChoice());
-                
-                CommandResult commandResult = SalesUtil.getHome().setSalesOrderBatchStatus(getUserVisitPK(request), commandForm);
+
+                var commandResult = SalesUtil.getHome().setSalesOrderBatchStatus(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);

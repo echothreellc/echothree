@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetForumPartyTypeRolesForm commandForm = ForumUtil.getHome().getGetForumPartyTypeRolesForm();
-            String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+            var commandForm = ForumUtil.getHome().getGetForumPartyTypeRolesForm();
+            var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
             
             commandForm.setForumName(forumName);
 
-            CommandResult commandResult = ForumUtil.getHome().getForumPartyTypeRoles(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetForumPartyTypeRolesResult result = (GetForumPartyTypeRolesResult)executionResult.getResult();
+            var commandResult = ForumUtil.getHome().getForumPartyTypeRoles(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetForumPartyTypeRolesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FORUM, result.getForum());
             request.setAttribute(AttributeConstants.FORUM_PARTY_TYPE_ROLES, result.getForumPartyTypeRoles());

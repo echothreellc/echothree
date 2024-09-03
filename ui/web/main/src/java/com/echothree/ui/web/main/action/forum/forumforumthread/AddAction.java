@@ -55,21 +55,21 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String forumThreadName = request.getParameter(ParameterConstants.FORUM_THREAD_NAME);
-        AddActionForm actionForm = (AddActionForm)form;
+        var forumThreadName = request.getParameter(ParameterConstants.FORUM_THREAD_NAME);
+        var actionForm = (AddActionForm)form;
         
         if(forumThreadName == null)
             forumThreadName = actionForm.getForumThreadName();
         
         if(wasPost(request)) {
-            CreateForumForumThreadForm commandForm = ForumUtil.getHome().getCreateForumForumThreadForm();
+            var commandForm = ForumUtil.getHome().getCreateForumForumThreadForm();
             
             commandForm.setForumName(actionForm.getForumChoice());
             commandForm.setForumThreadName(forumThreadName);
             commandForm.setIsDefault(actionForm.getIsDefault().toString());
             commandForm.setSortOrder(actionForm.getSortOrder());
-            
-            CommandResult commandResult = ForumUtil.getHome().createForumForumThread(getUserVisitPK(request), commandForm);
+
+            var commandResult = ForumUtil.getHome().createForumForumThread(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -82,8 +82,8 @@ public class AddAction
             actionForm.setSortOrder("1");
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.FORUM_THREAD_NAME, forumThreadName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

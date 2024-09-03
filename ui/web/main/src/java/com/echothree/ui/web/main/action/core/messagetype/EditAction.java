@@ -61,15 +61,15 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditMessageTypeForm commandForm = MessageUtil.getHome().getEditMessageTypeForm();
-                MessageTypeSpec spec = MessageUtil.getHome().getMessageTypeSpec();
-                String originalTypeMessageName = request.getParameter(ParameterConstants.ORIGINAL_MESSAGE_TYPE_NAME);
+                var actionForm = (EditActionForm)form;
+                var commandForm = MessageUtil.getHome().getEditMessageTypeForm();
+                var spec = MessageUtil.getHome().getMessageTypeSpec();
+                var originalTypeMessageName = request.getParameter(ParameterConstants.ORIGINAL_MESSAGE_TYPE_NAME);
                 
                 if(componentVendorName == null)
                     componentVendorName = actionForm.getComponentVendorName();
@@ -84,7 +84,7 @@ public class EditAction
                 spec.setMessageTypeName(originalTypeMessageName);
                 
                 if(wasPost(request)) {
-                    MessageTypeEdit edit = MessageUtil.getHome().getMessageTypeEdit();
+                    var edit = MessageUtil.getHome().getMessageTypeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -92,14 +92,14 @@ public class EditAction
                     edit.setMessageTypeName(actionForm.getMessageTypeName());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = MessageUtil.getHome().editMessageType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = MessageUtil.getHome().editMessageType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditMessageTypeResult result = (EditMessageTypeResult)executionResult.getResult();
+                            var result = (EditMessageTypeResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -112,13 +112,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = MessageUtil.getHome().editMessageType(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditMessageTypeResult result = (EditMessageTypeResult)executionResult.getResult();
+
+                    var commandResult = MessageUtil.getHome().editMessageType(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditMessageTypeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        MessageTypeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setComponentVendorName(componentVendorName);
@@ -140,8 +140,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorName);
             request.setAttribute(AttributeConstants.ENTITY_TYPE_NAME, entityTypeName);

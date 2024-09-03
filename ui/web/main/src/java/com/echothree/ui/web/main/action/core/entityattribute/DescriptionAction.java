@@ -55,18 +55,18 @@ public class DescriptionAction
         String forwardKey = null;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-            GetEntityAttributeDescriptionsForm commandForm = CoreUtil.getHome().getGetEntityAttributeDescriptionsForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeDescriptionsForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeName(entityAttributeName);
-            
-            CommandResult commandResult = CoreUtil.getHome().getEntityAttributeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeDescriptionsResult result = (GetEntityAttributeDescriptionsResult)executionResult.getResult();
+
+            var commandResult = CoreUtil.getHome().getEntityAttributeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityAttributeDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE, result.getEntityAttribute());
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE_DESCRIPTIONS, result.getEntityAttributeDescriptions());

@@ -51,18 +51,18 @@ public class DescriptionAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
-        String letterName = request.getParameter(ParameterConstants.LETTER_NAME);
-        GetLetterDescriptionsForm getLetterDescriptionsForm = LetterUtil.getHome().getGetLetterDescriptionsForm();
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
+        var letterName = request.getParameter(ParameterConstants.LETTER_NAME);
+        var getLetterDescriptionsForm = LetterUtil.getHome().getGetLetterDescriptionsForm();
         
         getLetterDescriptionsForm.setChainKindName(chainKindName);
         getLetterDescriptionsForm.setChainTypeName(chainTypeName);
         getLetterDescriptionsForm.setLetterName(letterName);
-        
-        CommandResult commandResult = LetterUtil.getHome().getLetterDescriptions(getUserVisitPK(request), getLetterDescriptionsForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetLetterDescriptionsResult getLetterDescriptionsResult = (GetLetterDescriptionsResult)executionResult.getResult();
+
+        var commandResult = LetterUtil.getHome().getLetterDescriptions(getUserVisitPK(request), getLetterDescriptionsForm);
+        var executionResult = commandResult.getExecutionResult();
+        var getLetterDescriptionsResult = (GetLetterDescriptionsResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.LETTER, getLetterDescriptionsResult.getLetter());
         request.setAttribute(AttributeConstants.LETTER_DESCRIPTIONS, getLetterDescriptionsResult.getLetterDescriptions());

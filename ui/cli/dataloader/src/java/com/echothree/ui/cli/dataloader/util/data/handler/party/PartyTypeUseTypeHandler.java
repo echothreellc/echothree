@@ -51,9 +51,9 @@ public class PartyTypeUseTypeHandler
         if(localName.equals("partyTypeUseTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -61,7 +61,7 @@ public class PartyTypeUseTypeHandler
             }
             
             try {
-                CreatePartyTypeUseTypeDescriptionForm form = PartyFormFactory.getCreatePartyTypeUseTypeDescriptionForm();
+                var form = PartyFormFactory.getCreatePartyTypeUseTypeDescriptionForm();
                 
                 form.setPartyTypeUseTypeName(partyTypeUseTypeName);
                 form.setLanguageIsoName(languageIsoName);
@@ -74,9 +74,9 @@ public class PartyTypeUseTypeHandler
         } else if(localName.equals("partyTypeUse")) {
             String partyTypeName = null;
             String isDefault = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("partyTypeName"))
                     partyTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -84,7 +84,7 @@ public class PartyTypeUseTypeHandler
             }
             
             try {
-                CreatePartyTypeUseForm form = PartyFormFactory.getCreatePartyTypeUseForm();
+                var form = PartyFormFactory.getCreatePartyTypeUseForm();
                 
                 form.setPartyTypeUseTypeName(partyTypeUseTypeName);
                 form.setPartyTypeName(partyTypeName);

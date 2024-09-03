@@ -61,14 +61,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditInventoryConditionDescriptionForm commandForm = InventoryUtil.getHome().getEditInventoryConditionDescriptionForm();
-                InventoryConditionDescriptionSpec spec = InventoryUtil.getHome().getInventoryConditionDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = InventoryUtil.getHome().getEditInventoryConditionDescriptionForm();
+                var spec = InventoryUtil.getHome().getInventoryConditionDescriptionSpec();
                 
                 if(inventoryConditionName == null)
                     inventoryConditionName = actionForm.getInventoryConditionName();
@@ -80,19 +80,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    InventoryConditionDescriptionEdit edit = InventoryUtil.getHome().getInventoryConditionDescriptionEdit();
+                    var edit = InventoryUtil.getHome().getInventoryConditionDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = InventoryUtil.getHome().editInventoryConditionDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = InventoryUtil.getHome().editInventoryConditionDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditInventoryConditionDescriptionResult result = (EditInventoryConditionDescriptionResult)executionResult.getResult();
+                            var result = (EditInventoryConditionDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +105,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = InventoryUtil.getHome().editInventoryConditionDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditInventoryConditionDescriptionResult result = (EditInventoryConditionDescriptionResult)executionResult.getResult();
+
+                    var commandResult = InventoryUtil.getHome().editInventoryConditionDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditInventoryConditionDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        InventoryConditionDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setInventoryConditionName(inventoryConditionName);
@@ -130,8 +130,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.INVENTORY_CONDITION_NAME, inventoryConditionName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

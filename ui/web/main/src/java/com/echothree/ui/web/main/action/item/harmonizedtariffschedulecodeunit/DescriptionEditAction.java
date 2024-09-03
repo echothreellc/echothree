@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected HarmonizedTariffScheduleCodeUnitDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        HarmonizedTariffScheduleCodeUnitDescriptionSpec spec = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitDescriptionSpec();
+        var spec = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitDescriptionSpec();
         
         spec.setHarmonizedTariffScheduleCodeUnitName(findParameter(request, ParameterConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT_NAME, actionForm.getHarmonizedTariffScheduleCodeUnitName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected HarmonizedTariffScheduleCodeUnitDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        HarmonizedTariffScheduleCodeUnitDescriptionEdit edit = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitDescriptionEdit();
+        var edit = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

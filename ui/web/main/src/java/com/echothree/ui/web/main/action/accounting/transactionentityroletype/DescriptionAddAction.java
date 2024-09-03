@@ -57,15 +57,15 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTransactionEntityRoleTypeForm commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypeForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypeForm();
 
         commandForm.setTransactionTypeName(actionForm.getTransactionTypeName());
         commandForm.setTransactionEntityRoleTypeName(actionForm.getTransactionEntityRoleTypeName());
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionEntityRoleType(getUserVisitPK(request), commandForm);
+
+        var commandResult = AccountingUtil.getHome().getTransactionEntityRoleType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTransactionEntityRoleTypeResult result = (GetTransactionEntityRoleTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionEntityRoleTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRANSACTION_ENTITY_ROLE_TYPE, result.getTransactionEntityRoleType());
         }
@@ -74,7 +74,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateTransactionEntityRoleTypeDescriptionForm commandForm = AccountingUtil.getHome().getCreateTransactionEntityRoleTypeDescriptionForm();
+        var commandForm = AccountingUtil.getHome().getCreateTransactionEntityRoleTypeDescriptionForm();
 
         commandForm.setTransactionTypeName( actionForm.getTransactionTypeName());
         commandForm.setTransactionEntityRoleTypeName( actionForm.getTransactionEntityRoleTypeName());

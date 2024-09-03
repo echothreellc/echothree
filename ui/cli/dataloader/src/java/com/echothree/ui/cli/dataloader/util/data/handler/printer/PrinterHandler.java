@@ -50,7 +50,7 @@ public class PrinterHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("printerDescription")) {
-            CreatePrinterDescriptionForm commandForm = PrinterFormFactory.getCreatePrinterDescriptionForm();
+            var commandForm = PrinterFormFactory.getCreatePrinterDescriptionForm();
 
             commandForm.setPrinterName(printerName);
             commandForm.set(getAttrsMap(attrs));

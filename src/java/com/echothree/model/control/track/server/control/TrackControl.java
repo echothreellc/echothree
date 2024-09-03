@@ -129,7 +129,7 @@ public class TrackControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Track */
     public Track getTrackByEntityInstance(EntityInstance entityInstance) {
-        TrackPK pk = new TrackPK(entityInstance.getEntityUniqueId());
+        var pk = new TrackPK(entityInstance.getEntityUniqueId());
         var track = TrackFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return track;
@@ -275,7 +275,7 @@ public class TrackControl
     public TrackStatusChoicesBean getTrackStatusChoices(String defaultTrackStatusChoice, Language language,
             boolean allowNullChoice, Track track, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        TrackStatusChoicesBean employeeStatusChoicesBean = new TrackStatusChoicesBean();
+        var employeeStatusChoicesBean = new TrackStatusChoicesBean();
         
         if(track == null) {
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultTrackStatusChoice, language, allowNullChoice,

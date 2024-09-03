@@ -52,11 +52,11 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+        var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
         
         try {
-            SetDefaultForumGroupForumForm commandForm = ForumUtil.getHome().getSetDefaultForumGroupForumForm();
-            String forumGroupName = request.getParameter(ParameterConstants.FORUM_GROUP_NAME);
+            var commandForm = ForumUtil.getHome().getSetDefaultForumGroupForumForm();
+            var forumGroupName = request.getParameter(ParameterConstants.FORUM_GROUP_NAME);
             
             commandForm.setForumGroupName(forumGroupName);
             commandForm.setForumName(forumName);
@@ -67,8 +67,8 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

@@ -61,16 +61,16 @@ public class MainAction
     
     private String getPartyName(HttpServletRequest request)
             throws NamingException {
-        GetVendorResultsForm commandForm = SearchUtil.getHome().getGetVendorResultsForm();
+        var commandForm = SearchUtil.getHome().getGetVendorResultsForm();
         String partyName = null;
         
         commandForm.setSearchTypeName(SearchTypes.VENDOR_REVIEW.name());
-        
-        CommandResult commandResult = SearchUtil.getHome().getVendorResults(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetVendorResultsResult result = (GetVendorResultsResult)executionResult.getResult();
+
+        var commandResult = SearchUtil.getHome().getVendorResults(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetVendorResultsResult)executionResult.getResult();
         Collection vendorResults = result.getVendorResults();
-        Iterator iter = vendorResults.iterator();
+        var iter = vendorResults.iterator();
         if(iter.hasNext()) {
             partyName = ((VendorResultTransfer)iter.next()).getPartyName();
         }
@@ -85,7 +85,7 @@ public class MainAction
         String partyName = null;
 
         if(wasPost(request)) {
-            SearchVendorsForm commandForm = SearchUtil.getHome().getSearchVendorsForm();
+            var commandForm = SearchUtil.getHome().getSearchVendorsForm();
 
             commandForm.setSearchTypeName(SearchTypes.VENDOR_REVIEW.name());
             commandForm.setFirstName(actionForm.getFirstName());
@@ -99,14 +99,14 @@ public class MainAction
             commandForm.setCreatedSince(actionForm.getCreatedSince());
             commandForm.setModifiedSince(actionForm.getModifiedSince());
 
-            CommandResult commandResult = SearchUtil.getHome().searchVendors(getUserVisitPK(request), commandForm);
+            var commandResult = SearchUtil.getHome().searchVendors(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
                 forwardKey = ForwardConstants.FORM;
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                SearchVendorsResult result = (SearchVendorsResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (SearchVendorsResult)executionResult.getResult();
                 var count = result.getCount();
 
                 if(count == 0 || count > 1) {
@@ -117,15 +117,15 @@ public class MainAction
                 }
             }
         } else {
-            String firstName = request.getParameter(ParameterConstants.FIRST_NAME);
-            String lastName = request.getParameter(ParameterConstants.LAST_NAME);
+            var firstName = request.getParameter(ParameterConstants.FIRST_NAME);
+            var lastName = request.getParameter(ParameterConstants.LAST_NAME);
 
             actionForm.setFirstName(firstName);
             actionForm.setLastName(lastName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.REVIEW)) {
             Map<String, String> parameters = new HashMap<>(1);
             

@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String documentName = request.getParameter(ParameterConstants.DOCUMENT_NAME);
-        GetDocumentDescriptionsForm commandForm = DocumentUtil.getHome().getGetDocumentDescriptionsForm();
+        var documentName = request.getParameter(ParameterConstants.DOCUMENT_NAME);
+        var commandForm = DocumentUtil.getHome().getGetDocumentDescriptionsForm();
 
         commandForm.setDocumentName(documentName);
 
-        CommandResult commandResult = DocumentUtil.getHome().getDocumentDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = DocumentUtil.getHome().getDocumentDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetDocumentDescriptionsResult result = (GetDocumentDescriptionsResult) executionResult.getResult();
-            DocumentTransfer documentTransfer = result.getDocument();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetDocumentDescriptionsResult) executionResult.getResult();
+            var documentTransfer = result.getDocument();
 
 
             request.setAttribute(AttributeConstants.DOCUMENT, documentTransfer);

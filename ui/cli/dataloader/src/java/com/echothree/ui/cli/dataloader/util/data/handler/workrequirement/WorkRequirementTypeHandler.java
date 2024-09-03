@@ -51,7 +51,7 @@ public class WorkRequirementTypeHandler
     throws SAXException {
         if(localName.equals("workRequirementTypeDescription")) {
             try {
-                CreateWorkRequirementTypeDescriptionForm commandForm = WorkRequirementFormFactory.getCreateWorkRequirementTypeDescriptionForm();
+                var commandForm = WorkRequirementFormFactory.getCreateWorkRequirementTypeDescriptionForm();
                 
                 commandForm.setWorkEffortTypeName(workEffortTypeName);
                 commandForm.setWorkRequirementTypeName(workRequirementTypeName);

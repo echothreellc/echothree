@@ -51,9 +51,9 @@ public class ContentWebAddressHandler
         if(localName.equals("contentWebAddressDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -61,7 +61,7 @@ public class ContentWebAddressHandler
             }
             
             try {
-                CreateContentWebAddressDescriptionForm createContentWebAddressDescriptionForm = ContentFormFactory.getCreateContentWebAddressDescriptionForm();
+                var createContentWebAddressDescriptionForm = ContentFormFactory.getCreateContentWebAddressDescriptionForm();
                 
                 createContentWebAddressDescriptionForm.setContentWebAddressName(contentWebAddressName);
                 createContentWebAddressDescriptionForm.setLanguageIsoName(languageIsoName);
@@ -73,15 +73,15 @@ public class ContentWebAddressHandler
             }
         } else if(localName.equals("contentWebAddressServer")) {
             String serverName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("serverName"))
                     serverName = attrs.getValue(i);
             }
             
             try {
-                CreateContentWebAddressServerForm createContentWebAddressServerForm = ContentFormFactory.getCreateContentWebAddressServerForm();
+                var createContentWebAddressServerForm = ContentFormFactory.getCreateContentWebAddressServerForm();
                 
                 createContentWebAddressServerForm.setContentWebAddressName(contentWebAddressName);
                 createContentWebAddressServerForm.setServerName(serverName);

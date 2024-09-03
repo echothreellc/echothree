@@ -26,7 +26,7 @@ import org.apache.commons.cli.DefaultParser;
 public class Form {
 
     static Options getOptions() {
-        Options options = new Options();
+        var options = new Options();
         options.addOption(new Option("v", "verbose", false, "verbose debugging messages"));
         options.addOption(new Option("g", "generated", true, "target directory for generated code"));
         options.addOption(new Option("s", "source", true, "source directory for java classes"));
@@ -40,15 +40,15 @@ public class Form {
     }
 
     public static void main(String args[]) throws Exception {
-        CommandLine line = getCommandLine(args);
-        boolean doVerbose = line.hasOption("v");
-        boolean doGenerated = line.hasOption("g");
-        boolean doSource = line.hasOption("s");
+        var line = getCommandLine(args);
+        var doVerbose = line.hasOption("v");
+        var doGenerated = line.hasOption("g");
+        var doSource = line.hasOption("s");
 
         if(doGenerated && doSource) {
-            String generatedDirectory = line.getOptionValue("g");
-            String sourceDirectory = line.getOptionValue("s");
-            FormUtils formUtils = FormUtils.getInstance();
+            var generatedDirectory = line.getOptionValue("g");
+            var sourceDirectory = line.getOptionValue("s");
+            var formUtils = FormUtils.getInstance();
 
             formUtils.generateClasses(generatedDirectory + "/java", sourceDirectory);
 

@@ -49,7 +49,7 @@ public class CurrencyHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("currencyDescription")) {
-            CreateCurrencyDescriptionForm commandForm = AccountingFormFactory.getCreateCurrencyDescriptionForm();
+            var commandForm = AccountingFormFactory.getCreateCurrencyDescriptionForm();
             
             commandForm.setCurrencyIsoName(currencyIsoName);
             commandForm.set(getAttrsMap(attrs));

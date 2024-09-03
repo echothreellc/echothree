@@ -62,16 +62,16 @@ public class MainAction
     
     private String getBatchName(HttpServletRequest request)
             throws NamingException {
-        GetSalesOrderBatchResultsForm commandForm = SearchUtil.getHome().getGetSalesOrderBatchResultsForm();
+        var commandForm = SearchUtil.getHome().getGetSalesOrderBatchResultsForm();
         String batchName = null;
         
         commandForm.setSearchTypeName(SearchTypes.SALES_ORDER_BATCH_MAINTENANCE.name());
-        
-        CommandResult commandResult = SearchUtil.getHome().getSalesOrderBatchResults(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetSalesOrderBatchResultsResult result = (GetSalesOrderBatchResultsResult)executionResult.getResult();
-        List<SalesOrderBatchResultTransfer> salesOrderBatchResults = result.getSalesOrderBatchResults();
-        Iterator<SalesOrderBatchResultTransfer> iter = salesOrderBatchResults.iterator();
+
+        var commandResult = SearchUtil.getHome().getSalesOrderBatchResults(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetSalesOrderBatchResultsResult)executionResult.getResult();
+        var salesOrderBatchResults = result.getSalesOrderBatchResults();
+        var iter = salesOrderBatchResults.iterator();
         if(iter.hasNext()) {
             batchName = (iter.next()).getBatchName();
         }
@@ -86,10 +86,10 @@ public class MainAction
         String batchName = null;
         
         if(forwardKey == null) {
-            MainActionForm actionForm = (MainActionForm)form;
+            var actionForm = (MainActionForm)form;
 
             if(wasPost(request)) {
-                SearchSalesOrderBatchesForm commandForm = SearchUtil.getHome().getSearchSalesOrderBatchesForm();
+                var commandForm = SearchUtil.getHome().getSearchSalesOrderBatchesForm();
 
                 commandForm.setSearchTypeName(SearchTypes.SALES_ORDER_BATCH_MAINTENANCE.name());
                 commandForm.setBatchName(actionForm.getBatchName());
@@ -101,14 +101,14 @@ public class MainAction
                 commandForm.setCreatedSince(actionForm.getCreatedSince());
                 commandForm.setModifiedSince(actionForm.getModifiedSince());
 
-                CommandResult commandResult = SearchUtil.getHome().searchSalesOrderBatches(getUserVisitPK(request), commandForm);
+                var commandResult = SearchUtil.getHome().searchSalesOrderBatches(getUserVisitPK(request), commandForm);
 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);
                     forwardKey = ForwardConstants.FORM;
                 } else {
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    SearchSalesOrderBatchesResult result = (SearchSalesOrderBatchesResult)executionResult.getResult();
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (SearchSalesOrderBatchesResult)executionResult.getResult();
                     var count = result.getCount();
 
                     if(count == 0 || count > 1) {
@@ -122,8 +122,8 @@ public class MainAction
                 forwardKey = ForwardConstants.FORM;
             }
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.REVIEW)) {
             Map<String, String> parameters = new HashMap<>(1);
             

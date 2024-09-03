@@ -48,9 +48,9 @@ public class SelectorTextSearchTypesHandler
             String selectorTextSearchTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("selectorTextSearchTypeName"))
                     selectorTextSearchTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class SelectorTextSearchTypesHandler
             }
             
             try {
-                CreateSelectorTextSearchTypeForm form = SelectorFormFactory.getCreateSelectorTextSearchTypeForm();
+                var form = SelectorFormFactory.getCreateSelectorTextSearchTypeForm();
                 
                 form.setSelectorTextSearchTypeName(selectorTextSearchTypeName);
                 form.setIsDefault(isDefault);

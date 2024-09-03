@@ -44,7 +44,7 @@ public class SearchForumMessagesAction
     @Override
     protected CommandResult getCommandResult(HttpServletRequest request)
             throws Exception {
-        SearchForumMessagesForm commandForm = SearchUtil.getHome().getSearchForumMessagesForm();
+        var commandForm = SearchUtil.getHome().getSearchForumMessagesForm();
 
         commandForm.setSearchDefaultOperatorName(request.getParameter(ParameterConstants.SEARCH_DEFAULT_ORDERATOR_NAME));
         commandForm.setSearchSortDirectionName(request.getParameter(ParameterConstants.SEARCH_SORT_DIRECTION_NAME));

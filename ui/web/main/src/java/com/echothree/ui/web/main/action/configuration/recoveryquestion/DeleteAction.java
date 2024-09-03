@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteRecoveryQuestionForm commandForm = UserUtil.getHome().getDeleteRecoveryQuestionForm();
-            String recoveryQuestionName = request.getParameter(ParameterConstants.RECOVERY_QUESTION_NAME);
+            var commandForm = UserUtil.getHome().getDeleteRecoveryQuestionForm();
+            var recoveryQuestionName = request.getParameter(ParameterConstants.RECOVERY_QUESTION_NAME);
             
             commandForm.setRecoveryQuestionName(recoveryQuestionName);
             

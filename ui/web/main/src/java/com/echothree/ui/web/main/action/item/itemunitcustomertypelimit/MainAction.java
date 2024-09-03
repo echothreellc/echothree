@@ -51,14 +51,14 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetItemUnitCustomerTypeLimitsForm commandForm = ItemUtil.getHome().getGetItemUnitCustomerTypeLimitsForm();
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        var commandForm = ItemUtil.getHome().getGetItemUnitCustomerTypeLimitsForm();
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
         
         commandForm.setItemName(itemName);
-        
-        CommandResult commandResult = ItemUtil.getHome().getItemUnitCustomerTypeLimits(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemUnitCustomerTypeLimitsResult result = (GetItemUnitCustomerTypeLimitsResult)executionResult.getResult();
+
+        var commandResult = ItemUtil.getHome().getItemUnitCustomerTypeLimits(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemUnitCustomerTypeLimitsResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ITEM, result.getItem());
         request.setAttribute(AttributeConstants.ITEM_UNIT_CUSTOMER_TYPE_LIMITS, result.getItemUnitCustomerTypeLimits());

@@ -209,7 +209,7 @@ public class SearchControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchUseType */
     public SearchUseType getSearchUseTypeByEntityInstance(EntityInstance entityInstance) {
-        SearchUseTypePK pk = new SearchUseTypePK(entityInstance.getEntityUniqueId());
+        var pk = new SearchUseTypePK(entityInstance.getEntityUniqueId());
         var searchUseType = SearchUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return searchUseType;
@@ -1550,7 +1550,7 @@ public class SearchControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchDefaultOperator */
     public SearchDefaultOperator getSearchDefaultOperatorByEntityInstance(EntityInstance entityInstance) {
-        SearchDefaultOperatorPK pk = new SearchDefaultOperatorPK(entityInstance.getEntityUniqueId());
+        var pk = new SearchDefaultOperatorPK(entityInstance.getEntityUniqueId());
         var searchDefaultOperator = SearchDefaultOperatorFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return searchDefaultOperator;
@@ -1985,7 +1985,7 @@ public class SearchControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchSortDirection */
     public SearchSortDirection getSearchSortDirectionByEntityInstance(EntityInstance entityInstance) {
-        SearchSortDirectionPK pk = new SearchSortDirectionPK(entityInstance.getEntityUniqueId());
+        var pk = new SearchSortDirectionPK(entityInstance.getEntityUniqueId());
         var searchSortDirection = SearchSortDirectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return searchSortDirection;
@@ -4539,7 +4539,7 @@ public class SearchControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartySearchTypePreference */
     public PartySearchTypePreference getPartySearchTypePreferenceByEntityInstance(EntityInstance entityInstance) {
-        PartySearchTypePreferencePK pk = new PartySearchTypePreferencePK(entityInstance.getEntityUniqueId());
+        var pk = new PartySearchTypePreferencePK(entityInstance.getEntityUniqueId());
         var partySearchTypePreference = PartySearchTypePreferenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return partySearchTypePreference;

@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetHarmonizedTariffScheduleCodeUnitForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitForm();
+        var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitForm();
         
         commandForm.setHarmonizedTariffScheduleCodeUnitName(actionForm.getHarmonizedTariffScheduleCodeUnitName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnit(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetHarmonizedTariffScheduleCodeUnitResult result = (GetHarmonizedTariffScheduleCodeUnitResult)executionResult.getResult();
+
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnit(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetHarmonizedTariffScheduleCodeUnitResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT, result.getHarmonizedTariffScheduleCodeUnit());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteHarmonizedTariffScheduleCodeUnitForm commandForm = ItemUtil.getHome().getDeleteHarmonizedTariffScheduleCodeUnitForm();
+        var commandForm = ItemUtil.getHome().getDeleteHarmonizedTariffScheduleCodeUnitForm();
 
         commandForm.setHarmonizedTariffScheduleCodeUnitName(actionForm.getHarmonizedTariffScheduleCodeUnitName());
 

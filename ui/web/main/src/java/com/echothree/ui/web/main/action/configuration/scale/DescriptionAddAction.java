@@ -56,14 +56,14 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String scaleName = request.getParameter(ParameterConstants.SCALE_NAME);
+        var scaleName = request.getParameter(ParameterConstants.SCALE_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateScaleDescriptionForm commandForm = ScaleUtil.getHome().getCreateScaleDescriptionForm();
+                    var commandForm = ScaleUtil.getHome().getCreateScaleDescriptionForm();
                     
                     if(scaleName == null)
                         scaleName = actionForm.getScaleName();
@@ -71,8 +71,8 @@ public class DescriptionAddAction
                     commandForm.setScaleName(scaleName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ScaleUtil.getHome().createScaleDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ScaleUtil.getHome().createScaleDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -88,8 +88,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SCALE_NAME, scaleName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

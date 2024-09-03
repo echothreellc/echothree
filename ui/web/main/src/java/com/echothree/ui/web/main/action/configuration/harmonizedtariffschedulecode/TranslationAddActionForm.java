@@ -44,15 +44,15 @@ public class TranslationAddActionForm
      private void setupOverviewMimeTypeChoices() {
         if(overviewMimeTypeChoices == null) {
             try {
-                GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+                var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
                 
                 commandForm.setDefaultMimeTypeChoice(overviewMimeTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
-                
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
                 overviewMimeTypeChoices = result.getMimeTypeChoices();
                 
                 if(overviewMimeTypeChoice == null) {

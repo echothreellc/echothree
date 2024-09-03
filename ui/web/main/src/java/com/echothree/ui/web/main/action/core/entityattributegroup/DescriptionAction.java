@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String entityAttributeGroupName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME);
-        GetEntityAttributeGroupDescriptionsForm commandForm = CoreUtil.getHome().getGetEntityAttributeGroupDescriptionsForm();
+        var entityAttributeGroupName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME);
+        var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupDescriptionsForm();
 
         commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
 
-        CommandResult commandResult = CoreUtil.getHome().getEntityAttributeGroupDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getEntityAttributeGroupDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeGroupDescriptionsResult result = (GetEntityAttributeGroupDescriptionsResult) executionResult.getResult();
-            EntityAttributeGroupTransfer entityAttributeGroupTransfer = result.getEntityAttributeGroup();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityAttributeGroupDescriptionsResult) executionResult.getResult();
+            var entityAttributeGroupTransfer = result.getEntityAttributeGroup();
 
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE_GROUP, entityAttributeGroupTransfer);
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE_GROUP_DESCRIPTIONS, result.getEntityAttributeGroupDescriptions());

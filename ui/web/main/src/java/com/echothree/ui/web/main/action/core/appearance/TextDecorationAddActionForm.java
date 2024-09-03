@@ -40,14 +40,14 @@ public class TextDecorationAddActionForm
     private void setupTextDecorationChoices()
             throws NamingException {
         if(textDecorationChoices == null) {
-            GetTextDecorationChoicesForm commandForm = CoreUtil.getHome().getGetTextDecorationChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetTextDecorationChoicesForm();
 
             commandForm.setDefaultTextDecorationChoice(textDecorationChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getTextDecorationChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTextDecorationChoicesResult getTextDecorationChoicesResult = (GetTextDecorationChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getTextDecorationChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getTextDecorationChoicesResult = (GetTextDecorationChoicesResult)executionResult.getResult();
             textDecorationChoices = getTextDecorationChoicesResult.getTextDecorationChoices();
 
             if(textDecorationChoice == null) {

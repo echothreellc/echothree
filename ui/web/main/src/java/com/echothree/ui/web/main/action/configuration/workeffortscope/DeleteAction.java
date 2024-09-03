@@ -63,14 +63,14 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetWorkEffortScopeForm commandForm = WorkEffortUtil.getHome().getGetWorkEffortScopeForm();
+        var commandForm = WorkEffortUtil.getHome().getGetWorkEffortScopeForm();
         
         commandForm.setWorkEffortTypeName(actionForm.getWorkEffortTypeName());
         commandForm.setWorkEffortScopeName(actionForm.getWorkEffortScopeName());
-        
-        CommandResult commandResult = WorkEffortUtil.getHome().getWorkEffortScope(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetWorkEffortScopeResult result = (GetWorkEffortScopeResult)executionResult.getResult();
+
+        var commandResult = WorkEffortUtil.getHome().getWorkEffortScope(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetWorkEffortScopeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.WORK_EFFORT_SCOPE, result.getWorkEffortScope());
     }
@@ -78,7 +78,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteWorkEffortScopeForm commandForm = WorkEffortUtil.getHome().getDeleteWorkEffortScopeForm();
+        var commandForm = WorkEffortUtil.getHome().getDeleteWorkEffortScopeForm();
 
         commandForm.setWorkEffortTypeName(actionForm.getWorkEffortTypeName());
         commandForm.setWorkEffortScopeName(actionForm.getWorkEffortScopeName());

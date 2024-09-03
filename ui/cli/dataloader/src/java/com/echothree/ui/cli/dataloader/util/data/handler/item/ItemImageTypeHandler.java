@@ -50,7 +50,7 @@ public class ItemImageTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("itemImageTypeDescription")) {
-            CreateItemImageTypeDescriptionForm commandForm = ItemFormFactory.getCreateItemImageTypeDescriptionForm();
+            var commandForm = ItemFormFactory.getCreateItemImageTypeDescriptionForm();
 
             commandForm.setItemImageTypeName(itemImageTypeName);
             commandForm.set(getAttrsMap(attrs));

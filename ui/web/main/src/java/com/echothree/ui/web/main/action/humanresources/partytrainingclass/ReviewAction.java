@@ -58,7 +58,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetPartyTrainingClassForm commandForm = TrainingUtil.getHome().getGetPartyTrainingClassForm();
+        var commandForm = TrainingUtil.getHome().getGetPartyTrainingClassForm();
 
         commandForm.setPartyTrainingClassName(request.getParameter(ParameterConstants.PARTY_TRAINING_CLASS_NAME));
         
@@ -66,12 +66,12 @@ public class ReviewAction
         options.add(TrainingOptions.PartyTrainingClassIncludePartyTrainingClassSessions);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = TrainingUtil.getHome().getPartyTrainingClass(getUserVisitPK(request), commandForm);
+        var commandResult = TrainingUtil.getHome().getPartyTrainingClass(getUserVisitPK(request), commandForm);
         PartyTrainingClassTransfer partyTrainingClass = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyTrainingClassResult result = (GetPartyTrainingClassResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyTrainingClassResult)executionResult.getResult();
             
             partyTrainingClass = result.getPartyTrainingClass();
         }

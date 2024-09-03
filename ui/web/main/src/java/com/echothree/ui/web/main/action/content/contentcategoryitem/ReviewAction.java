@@ -53,7 +53,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetContentCategoryItemForm commandForm = ContentUtil.getHome().getGetContentCategoryItemForm();
+        var commandForm = ContentUtil.getHome().getGetContentCategoryItemForm();
 
         commandForm.setContentCollectionName(request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME));
         commandForm.setContentCatalogName(request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME));
@@ -63,10 +63,10 @@ public class ReviewAction
         commandForm.setUnitOfMeasureTypeName(request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME));
         commandForm.setCurrencyIsoName(request.getParameter(ParameterConstants.CURRENCY_ISO_NAME));
 
-        CommandResult commandResult = ContentUtil.getHome().getContentCategoryItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetContentCategoryItemResult result = (GetContentCategoryItemResult)executionResult.getResult();
-        ContentCategoryItemTransfer contentCategoryItem = result == null? null: result.getContentCategoryItem();
+        var commandResult = ContentUtil.getHome().getContentCategoryItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetContentCategoryItemResult)executionResult.getResult();
+        var contentCategoryItem = result == null? null: result.getContentCategoryItem();
 
         if(contentCategoryItem == null) {
             forwardKey = ForwardConstants.ERROR_404;

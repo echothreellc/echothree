@@ -41,14 +41,14 @@ public class EditActionForm
     private void setupPrinterGroupChoices() {
         if(printerGroupChoices == null) {
             try {
-                GetPrinterGroupChoicesForm commandForm = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
+                var commandForm = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
 
                 commandForm.setDefaultPrinterGroupChoice(printerGroupChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPrinterGroupChoicesResult result = (GetPrinterGroupChoicesResult)executionResult.getResult();
+                var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPrinterGroupChoicesResult)executionResult.getResult();
                 printerGroupChoices = result.getPrinterGroupChoices();
 
                 if(printerGroupChoice == null) {

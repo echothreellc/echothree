@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateSearchKindForm commandForm = SearchUtil.getHome().getCreateSearchKindForm();
+        var commandForm = SearchUtil.getHome().getCreateSearchKindForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());

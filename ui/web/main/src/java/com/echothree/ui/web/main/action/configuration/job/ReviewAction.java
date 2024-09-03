@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetJobForm commandForm = JobUtil.getHome().getGetJobForm();
-            String jobName = request.getParameter(ParameterConstants.JOB_NAME);
+            var commandForm = JobUtil.getHome().getGetJobForm();
+            var jobName = request.getParameter(ParameterConstants.JOB_NAME);
             
             commandForm.setJobName(jobName);
-            
-            CommandResult commandResult = JobUtil.getHome().getJob(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetJobResult result = (GetJobResult)executionResult.getResult();
+
+            var commandResult = JobUtil.getHome().getJob(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetJobResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.JOB, result.getJob());
             forwardKey = ForwardConstants.DISPLAY;

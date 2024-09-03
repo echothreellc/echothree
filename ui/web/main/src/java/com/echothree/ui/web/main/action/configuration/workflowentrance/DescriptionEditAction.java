@@ -61,15 +61,15 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
-        String workflowEntranceName = request.getParameter(ParameterConstants.WORKFLOW_ENTRANCE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+        var workflowEntranceName = request.getParameter(ParameterConstants.WORKFLOW_ENTRANCE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditWorkflowEntranceDescriptionForm commandForm = WorkflowUtil.getHome().getEditWorkflowEntranceDescriptionForm();
-                WorkflowEntranceDescriptionSpec spec = WorkflowUtil.getHome().getWorkflowEntranceDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = WorkflowUtil.getHome().getEditWorkflowEntranceDescriptionForm();
+                var spec = WorkflowUtil.getHome().getWorkflowEntranceDescriptionSpec();
                 
                 if(workflowName == null)
                     workflowName = actionForm.getWorkflowName();
@@ -84,19 +84,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    WorkflowEntranceDescriptionEdit edit = WorkflowUtil.getHome().getWorkflowEntranceDescriptionEdit();
+                    var edit = WorkflowUtil.getHome().getWorkflowEntranceDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = WorkflowUtil.getHome().editWorkflowEntranceDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = WorkflowUtil.getHome().editWorkflowEntranceDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditWorkflowEntranceDescriptionResult result = (EditWorkflowEntranceDescriptionResult)executionResult.getResult();
+                            var result = (EditWorkflowEntranceDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -109,13 +109,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = WorkflowUtil.getHome().editWorkflowEntranceDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditWorkflowEntranceDescriptionResult result = (EditWorkflowEntranceDescriptionResult)executionResult.getResult();
+
+                    var commandResult = WorkflowUtil.getHome().editWorkflowEntranceDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditWorkflowEntranceDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        WorkflowEntranceDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setWorkflowName(workflowName);
@@ -135,8 +135,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WORKFLOW_NAME, workflowName);
             request.setAttribute(AttributeConstants.WORKFLOW_ENTRANCE_NAME, workflowEntranceName);

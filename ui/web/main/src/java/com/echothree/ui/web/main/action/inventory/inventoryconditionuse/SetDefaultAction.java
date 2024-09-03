@@ -52,11 +52,11 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String inventoryConditionUseTypeName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_USE_TYPE_NAME);
+        var inventoryConditionUseTypeName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_USE_TYPE_NAME);
         
         try {
-            SetDefaultInventoryConditionUseForm commandForm = InventoryUtil.getHome().getSetDefaultInventoryConditionUseForm();
-            String inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
+            var commandForm = InventoryUtil.getHome().getSetDefaultInventoryConditionUseForm();
+            var inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
             
             commandForm.setInventoryConditionUseTypeName(inventoryConditionUseTypeName);
             commandForm.setInventoryConditionName(inventoryConditionName);
@@ -67,8 +67,8 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

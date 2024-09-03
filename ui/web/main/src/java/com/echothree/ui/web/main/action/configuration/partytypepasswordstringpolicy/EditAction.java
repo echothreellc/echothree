@@ -57,10 +57,10 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
-        EditActionForm actionForm = (EditActionForm)form;
-        EditPartyTypePasswordStringPolicyForm commandForm = PartyUtil.getHome().getEditPartyTypePasswordStringPolicyForm();
-        PartyTypeSpec spec = PartyUtil.getHome().getPartyTypeSpec();
+        var partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
+        var actionForm = (EditActionForm)form;
+        var commandForm = PartyUtil.getHome().getEditPartyTypePasswordStringPolicyForm();
+        var spec = PartyUtil.getHome().getPartyTypeSpec();
         
         if(partyTypeName == null)
             partyTypeName = actionForm.getPartyTypeName();
@@ -69,12 +69,12 @@ public class EditAction
         spec.setPartyTypeName(partyTypeName);
         
         if(wasPost(request)) {
-            boolean wasCanceled = wasCanceled(request);
+            var wasCanceled = wasCanceled(request);
             
             if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
-                PartyTypePasswordStringPolicyEdit edit = PartyUtil.getHome().getPartyTypePasswordStringPolicyEdit();
+                var edit = PartyUtil.getHome().getPartyTypePasswordStringPolicyEdit();
 
                 commandForm.setEditMode(EditMode.UPDATE);
                 commandForm.setEdit(edit);
@@ -99,14 +99,14 @@ public class EditAction
                 edit.setMaximumRepeated(actionForm.getMaximumRepeated());
                 edit.setMinimumCharacterTypes(actionForm.getMinimumCharacterTypes());
             }
-            
-            CommandResult commandResult = PartyUtil.getHome().editPartyTypePasswordStringPolicy(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().editPartyTypePasswordStringPolicy(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors() && !wasCanceled) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditPartyTypePasswordStringPolicyResult result = (EditPartyTypePasswordStringPolicyResult)executionResult.getResult();
+                    var result = (EditPartyTypePasswordStringPolicyResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -119,13 +119,13 @@ public class EditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = PartyUtil.getHome().editPartyTypePasswordStringPolicy(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditPartyTypePasswordStringPolicyResult result = (EditPartyTypePasswordStringPolicyResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().editPartyTypePasswordStringPolicy(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditPartyTypePasswordStringPolicyResult)executionResult.getResult();
             
             if(result != null) {
-                PartyTypePasswordStringPolicyEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setPartyTypeName(partyTypeName);

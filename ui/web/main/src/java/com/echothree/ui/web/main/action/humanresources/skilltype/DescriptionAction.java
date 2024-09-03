@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String skillTypeName = request.getParameter(ParameterConstants.SKILL_TYPE_NAME);
-            GetSkillTypeDescriptionsForm commandForm = EmployeeUtil.getHome().getGetSkillTypeDescriptionsForm();
+            var skillTypeName = request.getParameter(ParameterConstants.SKILL_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getGetSkillTypeDescriptionsForm();
             
             commandForm.setSkillTypeName(skillTypeName);
-            
-            CommandResult commandResult = EmployeeUtil.getHome().getSkillTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSkillTypeDescriptionsResult result = (GetSkillTypeDescriptionsResult)executionResult.getResult();
-            SkillTypeTransfer skillTypeTransfer = result.getSkillType();
+
+            var commandResult = EmployeeUtil.getHome().getSkillTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSkillTypeDescriptionsResult)executionResult.getResult();
+            var skillTypeTransfer = result.getSkillType();
             
             request.setAttribute(AttributeConstants.SKILL_TYPE, skillTypeTransfer);
             request.setAttribute(AttributeConstants.SKILL_TYPE_NAME, skillTypeTransfer.getSkillTypeName());

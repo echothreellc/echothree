@@ -58,7 +58,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyCarrierAccountForm commandForm = CarrierUtil.getHome().getCreatePartyCarrierAccountForm();
+        var commandForm = CarrierUtil.getHome().getCreatePartyCarrierAccountForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setCarrierName(actionForm.getCarrierChoice());

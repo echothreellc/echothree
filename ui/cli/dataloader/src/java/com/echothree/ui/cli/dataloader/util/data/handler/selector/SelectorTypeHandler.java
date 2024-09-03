@@ -52,7 +52,7 @@ public class SelectorTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("selectorTypeDescription")) {
-            CreateSelectorTypeDescriptionForm commandForm = SelectorFormFactory.getCreateSelectorTypeDescriptionForm();
+            var commandForm = SelectorFormFactory.getCreateSelectorTypeDescriptionForm();
 
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setSelectorTypeName(selectorTypeName);
@@ -60,7 +60,7 @@ public class SelectorTypeHandler
 
             selectorService.createSelectorTypeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("selector")) {
-            CreateSelectorForm commandForm = SelectorFormFactory.getCreateSelectorForm();
+            var commandForm = SelectorFormFactory.getCreateSelectorForm();
 
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setSelectorTypeName(selectorTypeName);

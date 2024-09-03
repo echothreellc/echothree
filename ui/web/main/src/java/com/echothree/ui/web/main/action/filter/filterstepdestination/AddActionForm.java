@@ -43,7 +43,7 @@ public class AddActionForm
     private void setupToFilterStepChoices()
             throws NamingException {
         if(toFilterStepChoices == null) {
-            GetFilterStepChoicesForm form = FilterUtil.getHome().getGetFilterStepChoicesForm();
+            var form = FilterUtil.getHome().getGetFilterStepChoicesForm();
 
             form.setFilterKindName(filterKindName);
             form.setFilterTypeName(filterTypeName);
@@ -51,9 +51,9 @@ public class AddActionForm
             form.setDefaultFilterStepChoice(toFilterStepChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = FilterUtil.getHome().getFilterStepChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterStepChoicesResult result = (GetFilterStepChoicesResult)executionResult.getResult();
+            var commandResult = FilterUtil.getHome().getFilterStepChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetFilterStepChoicesResult)executionResult.getResult();
             toFilterStepChoices = result.getFilterStepChoices();
 
             if(toFilterStepChoice == null)

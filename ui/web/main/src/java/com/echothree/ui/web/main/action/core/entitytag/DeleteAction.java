@@ -67,15 +67,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEntityTagForm commandForm = TagUtil.getHome().getGetEntityTagForm();
+        var commandForm = TagUtil.getHome().getGetEntityTagForm();
 
         commandForm.setTagScopeName(actionForm.getTagScopeName());
         commandForm.setEntityRef(actionForm.getEntityRef());
         commandForm.setTagName(actionForm.getTagName());
 
-        CommandResult commandResult = TagUtil.getHome().getEntityTag(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEntityTagResult result = (GetEntityTagResult)executionResult.getResult();
+        var commandResult = TagUtil.getHome().getEntityTag(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEntityTagResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ENTITY_TAG, result.getEntityTag());
     }
@@ -83,7 +83,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteEntityTagForm commandForm = TagUtil.getHome().getDeleteEntityTagForm();
+        var commandForm = TagUtil.getHome().getDeleteEntityTagForm();
 
         commandForm.setTagScopeName(actionForm.getTagScopeName());
         commandForm.setEntityRef(actionForm.getEntityRef());

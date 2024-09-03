@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultTerminationReasonForm commandForm = EmployeeUtil.getHome().getSetDefaultTerminationReasonForm();
-            String terminationReasonName = request.getParameter(ParameterConstants.TERMINATION_REASON_NAME);
+            var commandForm = EmployeeUtil.getHome().getSetDefaultTerminationReasonForm();
+            var terminationReasonName = request.getParameter(ParameterConstants.TERMINATION_REASON_NAME);
             
             commandForm.setTerminationReasonName(terminationReasonName);
             

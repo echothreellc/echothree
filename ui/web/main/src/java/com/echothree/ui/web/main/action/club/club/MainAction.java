@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = ClubUtil.getHome().getClubs(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetClubsResult getClubsResult = (GetClubsResult)executionResult.getResult();
+            var commandResult = ClubUtil.getHome().getClubs(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var getClubsResult = (GetClubsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CLUBS, getClubsResult.getClubs());
             forwardKey = ForwardConstants.DISPLAY;

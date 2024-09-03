@@ -61,16 +61,16 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-        String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditEntityAttributeDescriptionForm commandForm = CoreUtil.getHome().getEditEntityAttributeDescriptionForm();
-                EntityAttributeDescriptionSpec spec = CoreUtil.getHome().getEntityAttributeDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = CoreUtil.getHome().getEditEntityAttributeDescriptionForm();
+                var spec = CoreUtil.getHome().getEntityAttributeDescriptionSpec();
                 
                 if(componentVendorName == null)
                     componentVendorName = actionForm.getComponentVendorName();
@@ -88,19 +88,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    EntityAttributeDescriptionEdit edit = CoreUtil.getHome().getEntityAttributeDescriptionEdit();
+                    var edit = CoreUtil.getHome().getEntityAttributeDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CoreUtil.getHome().editEntityAttributeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CoreUtil.getHome().editEntityAttributeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditEntityAttributeDescriptionResult result = (EditEntityAttributeDescriptionResult)executionResult.getResult();
+                            var result = (EditEntityAttributeDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -113,13 +113,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CoreUtil.getHome().editEntityAttributeDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditEntityAttributeDescriptionResult result = (EditEntityAttributeDescriptionResult)executionResult.getResult();
+
+                    var commandResult = CoreUtil.getHome().editEntityAttributeDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditEntityAttributeDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        EntityAttributeDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setComponentVendorName(componentVendorName);
@@ -140,8 +140,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorName);
             request.setAttribute(AttributeConstants.ENTITY_TYPE_NAME, entityTypeName);

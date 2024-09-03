@@ -50,7 +50,7 @@ public class TextDecorationHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("textDecorationDescription")) {
-            CreateTextDecorationDescriptionForm commandForm = CoreFormFactory.getCreateTextDecorationDescriptionForm();
+            var commandForm = CoreFormFactory.getCreateTextDecorationDescriptionForm();
             
             commandForm.setTextDecorationName(textDecorationName);
             commandForm.set(getAttrsMap(attrs));

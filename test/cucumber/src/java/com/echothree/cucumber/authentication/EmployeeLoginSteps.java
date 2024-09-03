@@ -31,7 +31,7 @@ public class EmployeeLoginSteps implements En {
 
     public EmployeeLoginSteps() {
         After(() -> {
-                    for(Map.Entry<String, EmployeePersona> employeePersona : EmployeePersonas.getPersonaEntries()) {
+                    for(var employeePersona : EmployeePersonas.getPersonaEntries()) {
                         var authenticationService = AuthenticationUtil.getHome();
                         var commandResult = authenticationService.logout(employeePersona.getValue().userVisitPK);
 

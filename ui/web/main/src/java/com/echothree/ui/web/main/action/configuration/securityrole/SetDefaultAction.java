@@ -50,14 +50,14 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultSecurityRoleForm commandForm = SecurityUtil.getHome().getSetDefaultSecurityRoleForm();
+        var commandForm = SecurityUtil.getHome().getSetDefaultSecurityRoleForm();
 
         commandForm.setSecurityRoleGroupName(request.getParameter(ParameterConstants.SECURITY_ROLE_GROUP_NAME));
         commandForm.setSecurityRoleName(request.getParameter(ParameterConstants.SECURITY_ROLE_NAME));
 
         SecurityUtil.getHome().setDefaultSecurityRole(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
 
         parameters.put(ParameterConstants.SECURITY_ROLE_GROUP_NAME, request.getParameter(ParameterConstants.SECURITY_ROLE_GROUP_NAME));

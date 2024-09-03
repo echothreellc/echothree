@@ -53,15 +53,15 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetLetterSourceForm commandForm = LetterUtil.getHome().getGetLetterSourceForm();
-        String letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
+        var commandForm = LetterUtil.getHome().getGetLetterSourceForm();
+        var letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
         
         commandForm.setLetterSourceName(letterSourceName);
-        
-        CommandResult commandResult = LetterUtil.getHome().getLetterSource(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetLetterSourceResult result = (GetLetterSourceResult)executionResult.getResult();
-        LetterSourceTransfer letterSource = result.getLetterSource();
+
+        var commandResult = LetterUtil.getHome().getLetterSource(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetLetterSourceResult)executionResult.getResult();
+        var letterSource = result.getLetterSource();
         
         if(letterSource == null) {
             forwardKey = ForwardConstants.ERROR_404;

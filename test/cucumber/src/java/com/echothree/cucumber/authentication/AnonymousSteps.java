@@ -29,9 +29,9 @@ public class AnonymousSteps implements En {
 
     public AnonymousSteps() {
         After(() -> {
-                    for(Map.Entry<String, AnonymousPersona> anonymousPersona : AnonymousPersonas.getPersonaEntries()) {
+                    for(var anonymousPersona : AnonymousPersonas.getPersonaEntries()) {
                         AuthenticationService authenticationService = AuthenticationUtil.getHome();
-                        CommandResult commandResult = authenticationService.logout(anonymousPersona.getValue().userVisitPK);
+                        var commandResult = authenticationService.logout(anonymousPersona.getValue().userVisitPK);
 
                         assertThat(commandResult.hasErrors()).isFalse();
                     }

@@ -45,15 +45,15 @@ public class AddActionForm
     private void setupCancellationTypeChoices() {
         if(cancellationTypeChoices == null) {
             try {
-                GetCancellationTypeChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationTypeChoicesForm();
+                var form = CancellationPolicyUtil.getHome().getGetCancellationTypeChoicesForm();
                 
                 form.setCancellationKindName(cancellationKindName);
                 form.setDefaultCancellationTypeChoice(cancellationTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCancellationTypeChoicesResult getCancellationTypeChoicesResult = (GetCancellationTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = CancellationPolicyUtil.getHome().getCancellationTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getCancellationTypeChoicesResult = (GetCancellationTypeChoicesResult)executionResult.getResult();
                 cancellationTypeChoices = getCancellationTypeChoicesResult.getCancellationTypeChoices();
                 
                 if(cancellationTypeChoice == null) {

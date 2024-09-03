@@ -49,9 +49,9 @@ public class MoodsHandler
             String iconName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("moodName"))
                     moodName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("iconName"))
@@ -63,7 +63,7 @@ public class MoodsHandler
             }
             
             try {
-                CreateMoodForm commandForm = PartyFormFactory.getCreateMoodForm();
+                var commandForm = PartyFormFactory.getCreateMoodForm();
                 
                 commandForm.setMoodName(moodName);
                 commandForm.setIconName(iconName);

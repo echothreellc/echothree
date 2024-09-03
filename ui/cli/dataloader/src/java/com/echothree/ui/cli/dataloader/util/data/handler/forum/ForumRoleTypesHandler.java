@@ -48,9 +48,9 @@ public class ForumRoleTypesHandler
             String forumRoleTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("forumRoleTypeName"))
                     forumRoleTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class ForumRoleTypesHandler
             }
             
             try {
-                CreateForumRoleTypeForm form = ForumFormFactory.getCreateForumRoleTypeForm();
+                var form = ForumFormFactory.getCreateForumRoleTypeForm();
                 
                 form.setForumRoleTypeName(forumRoleTypeName);
                 form.setIsDefault(isDefault);

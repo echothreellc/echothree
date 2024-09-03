@@ -54,10 +54,10 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
         
         if(wasPost(request)) {
-            CreateUnitOfMeasureEquivalentForm commandForm = UomUtil.getHome().getCreateUnitOfMeasureEquivalentForm();
+            var commandForm = UomUtil.getHome().getCreateUnitOfMeasureEquivalentForm();
             
             if(unitOfMeasureKindName == null)
                 unitOfMeasureKindName = actionForm.getUnitOfMeasureKindName();
@@ -66,8 +66,8 @@ public class AddAction
             commandForm.setFromUnitOfMeasureTypeName(actionForm.getFromUnitOfMeasureTypeChoice());
             commandForm.setToUnitOfMeasureTypeName(actionForm.getToUnitOfMeasureTypeChoice());
             commandForm.setToQuantity(actionForm.getToQuantity());
-            
-            CommandResult commandResult = UomUtil.getHome().createUnitOfMeasureEquivalent(getUserVisitPK(request), commandForm);
+
+            var commandResult = UomUtil.getHome().createUnitOfMeasureEquivalent(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -80,8 +80,8 @@ public class AddAction
             actionForm.setToQuantity("1");
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_KIND_NAME, unitOfMeasureKindName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

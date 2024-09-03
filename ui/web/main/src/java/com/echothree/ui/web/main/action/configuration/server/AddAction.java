@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateServerForm commandForm = CoreUtil.getHome().getCreateServerForm();
+        var commandForm = CoreUtil.getHome().getCreateServerForm();
 
         commandForm.setServerName(actionForm.getServerName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());

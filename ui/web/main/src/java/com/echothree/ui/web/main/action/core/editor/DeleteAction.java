@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEditorForm commandForm = CoreUtil.getHome().getGetEditorForm();
+        var commandForm = CoreUtil.getHome().getGetEditorForm();
         
         commandForm.setEditorName(actionForm.getEditorName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEditor(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEditorResult result = (GetEditorResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getEditor(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEditorResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.EDITOR, result.getEditor());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteEditorForm commandForm = CoreUtil.getHome().getDeleteEditorForm();
+        var commandForm = CoreUtil.getHome().getDeleteEditorForm();
 
         commandForm.setEditorName(actionForm.getEditorName());
 

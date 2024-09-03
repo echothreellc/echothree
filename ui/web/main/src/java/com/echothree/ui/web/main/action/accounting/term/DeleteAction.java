@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            String termName = request.getParameter(ParameterConstants.TERM_NAME);
-            DeleteTermForm commandForm = TermUtil.getHome().getDeleteTermForm();
+            var termName = request.getParameter(ParameterConstants.TERM_NAME);
+            var commandForm = TermUtil.getHome().getDeleteTermForm();
             
             commandForm.setTermName(termName);
             

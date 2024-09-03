@@ -56,8 +56,8 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetEntityBlobAttributeForm commandForm = CoreUtil.getHome().getGetEntityBlobAttributeForm();
-        String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+        var commandForm = CoreUtil.getHome().getGetEntityBlobAttributeForm();
+        var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
 
         commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));
         commandForm.setEntityAttributeName(entityAttributeName);
@@ -67,14 +67,14 @@ public class ReviewAction
         options.add(CoreOptions.EntityBlobAttributeIncludeBlob);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = CoreUtil.getHome().getEntityBlobAttribute(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getEntityBlobAttribute(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityBlobAttributeResult result = (GetEntityBlobAttributeResult)executionResult.getResult();
-            EntityBlobAttributeTransfer entityBlobAttribute = result.getEntityBlobAttribute();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityBlobAttributeResult)executionResult.getResult();
+            var entityBlobAttribute = result.getEntityBlobAttribute();
 
             if(entityBlobAttribute != null) {
-                String contextPath = request.getContextPath();
+                var contextPath = request.getContextPath();
                 
                 request.setAttribute(AttributeConstants.ENTITY_BLOB_ATTRIBUTE, entityBlobAttribute);
                 request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE_NAME, entityAttributeName);

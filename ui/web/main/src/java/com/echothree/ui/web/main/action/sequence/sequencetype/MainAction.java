@@ -52,9 +52,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = SequenceUtil.getHome().getSequenceTypes(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSequenceTypesResult getSequenceTypesResult = (GetSequenceTypesResult)executionResult.getResult();
+            var commandResult = SequenceUtil.getHome().getSequenceTypes(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var getSequenceTypesResult = (GetSequenceTypesResult)executionResult.getResult();
             
             request.setAttribute("sequenceTypes", getSequenceTypesResult.getSequenceTypes());
             forwardKey = ForwardConstants.DISPLAY;

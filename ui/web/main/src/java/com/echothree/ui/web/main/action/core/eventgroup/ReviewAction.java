@@ -56,15 +56,15 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetEventGroupForm commandForm = CoreUtil.getHome().getGetEventGroupForm();
-            String eventGroupName = request.getParameter(ParameterConstants.EVENT_GROUP_NAME);
+            var commandForm = CoreUtil.getHome().getGetEventGroupForm();
+            var eventGroupName = request.getParameter(ParameterConstants.EVENT_GROUP_NAME);
             
             commandForm.setEventGroupName(eventGroupName);
-            
-            CommandResult commandResult = CoreUtil.getHome().getEventGroup(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEventGroupResult result = (GetEventGroupResult)executionResult.getResult();
-            EventGroupTransfer eventGroup = result.getEventGroup();
+
+            var commandResult = CoreUtil.getHome().getEventGroup(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEventGroupResult)executionResult.getResult();
+            var eventGroup = result.getEventGroup();
             
             if(eventGroup == null) {
                 forwardKey = ForwardConstants.ERROR_404;

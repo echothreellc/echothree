@@ -64,16 +64,16 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContentCatalogDescriptionForm commandForm = ContentUtil.getHome().getGetContentCatalogDescriptionForm();
+        var commandForm = ContentUtil.getHome().getGetContentCatalogDescriptionForm();
 
         commandForm.setContentCollectionName(actionForm.getContentCollectionName());
         commandForm.setContentCatalogName(actionForm.getContentCatalogName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
 
-        CommandResult commandResult = ContentUtil.getHome().getContentCatalogDescription(getUserVisitPK(request), commandForm);
+        var commandResult = ContentUtil.getHome().getContentCatalogDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentCatalogDescriptionResult result = (GetContentCatalogDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentCatalogDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CONTENT_CATALOG_DESCRIPTION, result.getContentCatalogDescription());
         }
@@ -82,7 +82,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteContentCatalogDescriptionForm commandForm = ContentUtil.getHome().getDeleteContentCatalogDescriptionForm();
+        var commandForm = ContentUtil.getHome().getDeleteContentCatalogDescriptionForm();
 
         commandForm.setContentCollectionName(actionForm.getContentCollectionName());
         commandForm.setContentCatalogName(actionForm.getContentCatalogName());

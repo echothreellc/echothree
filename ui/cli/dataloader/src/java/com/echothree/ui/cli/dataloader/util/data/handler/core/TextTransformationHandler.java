@@ -50,7 +50,7 @@ public class TextTransformationHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("textTransformationDescription")) {
-            CreateTextTransformationDescriptionForm commandForm = CoreFormFactory.getCreateTextTransformationDescriptionForm();
+            var commandForm = CoreFormFactory.getCreateTextTransformationDescriptionForm();
             
             commandForm.setTextTransformationName(textTransformationName);
             commandForm.set(getAttrsMap(attrs));

@@ -52,11 +52,11 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+        var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
         
         try {
-            DeleteCancellationTypeForm commandForm = CancellationPolicyUtil.getHome().getDeleteCancellationTypeForm();
-            String cancellationTypeName = request.getParameter(ParameterConstants.CANCELLATION_TYPE_NAME);
+            var commandForm = CancellationPolicyUtil.getHome().getDeleteCancellationTypeForm();
+            var cancellationTypeName = request.getParameter(ParameterConstants.CANCELLATION_TYPE_NAME);
             
             commandForm.setCancellationKindName(cancellationKindName);
             commandForm.setCancellationTypeName(cancellationTypeName);
@@ -67,8 +67,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

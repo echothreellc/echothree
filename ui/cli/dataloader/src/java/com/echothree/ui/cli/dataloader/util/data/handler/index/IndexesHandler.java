@@ -47,7 +47,7 @@ public class IndexesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("index")) {
-            CreateIndexForm commandForm = IndexFormFactory.getCreateIndexForm();
+            var commandForm = IndexFormFactory.getCreateIndexForm();
 
             commandForm.set(getAttrsMap(attrs));
 

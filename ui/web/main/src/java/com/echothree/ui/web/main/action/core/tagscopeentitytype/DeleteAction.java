@@ -64,15 +64,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTagScopeEntityTypeForm commandForm = TagUtil.getHome().getGetTagScopeEntityTypeForm();
+        var commandForm = TagUtil.getHome().getGetTagScopeEntityTypeForm();
         
         commandForm.setTagScopeName(actionForm.getTagScopeName());
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());
-        
-        CommandResult commandResult = TagUtil.getHome().getTagScopeEntityType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTagScopeEntityTypeResult result = (GetTagScopeEntityTypeResult)executionResult.getResult();
+
+        var commandResult = TagUtil.getHome().getTagScopeEntityType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTagScopeEntityTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.TAG_SCOPE_ENTITY_TYPE, result.getTagScopeEntityType());
     }
@@ -80,7 +80,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteTagScopeEntityTypeForm commandForm = TagUtil.getHome().getDeleteTagScopeEntityTypeForm();
+        var commandForm = TagUtil.getHome().getDeleteTagScopeEntityTypeForm();
 
         commandForm.setTagScopeName(actionForm.getTagScopeName());
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());

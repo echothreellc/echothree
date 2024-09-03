@@ -50,15 +50,15 @@ public class ReindexAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        ForceReindexForm commandForm = IndexUtil.getHome().getForceReindexForm();
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var commandForm = IndexUtil.getHome().getForceReindexForm();
 
         commandForm.setComponentVendorName(componentVendorName);
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
 
         IndexUtil.getHome().forceReindex(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
 
         parameters.put(ParameterConstants.COMPONENT_VENDOR_NAME, componentVendorName);

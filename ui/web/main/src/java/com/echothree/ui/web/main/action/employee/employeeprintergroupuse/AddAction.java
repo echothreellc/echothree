@@ -53,7 +53,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyPrinterGroupUseForm commandForm = PrinterUtil.getHome().getCreatePartyPrinterGroupUseForm();
+        var commandForm = PrinterUtil.getHome().getCreatePartyPrinterGroupUseForm();
 
         commandForm.setPrinterGroupUseTypeName(actionForm.getPrinterGroupUseTypeChoice());
         commandForm.setPrinterGroupName(actionForm.getPrinterGroupChoice());

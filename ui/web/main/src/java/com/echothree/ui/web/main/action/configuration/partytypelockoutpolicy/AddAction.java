@@ -51,11 +51,11 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
-        AddActionForm actionForm = (AddActionForm)form;
+        var partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
+        var actionForm = (AddActionForm)form;
         
         if(wasPost(request)) {
-            CreatePartyTypeLockoutPolicyForm commandForm = PartyUtil.getHome().getCreatePartyTypeLockoutPolicyForm();
+            var commandForm = PartyUtil.getHome().getCreatePartyTypeLockoutPolicyForm();
             
             if(partyTypeName == null)
                 partyTypeName = actionForm.getPartyTypeName();
@@ -67,8 +67,8 @@ public class AddAction
             commandForm.setManualLockoutReset(actionForm.getManualLockoutReset().toString());
             commandForm.setLockoutInactiveTime(actionForm.getLockoutInactiveTime());
             commandForm.setLockoutInactiveTimeUnitOfMeasureTypeName(actionForm.getLockoutInactiveTimeUnitOfMeasureTypeChoice());
-            
-            CommandResult commandResult = PartyUtil.getHome().createPartyTypeLockoutPolicy(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().createPartyTypeLockoutPolicy(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

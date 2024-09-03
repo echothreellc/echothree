@@ -58,10 +58,10 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetFilterForm commandForm = FilterUtil.getHome().getGetFilterForm();
-            String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-            String filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
-            String filterName = request.getParameter(ParameterConstants.FILTER_NAME);
+            var commandForm = FilterUtil.getHome().getGetFilterForm();
+            var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+            var filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
+            var filterName = request.getParameter(ParameterConstants.FILTER_NAME);
             
             commandForm.setFilterKindName(filterKindName);
             commandForm.setFilterTypeName(filterTypeName);
@@ -73,10 +73,10 @@ public class ReviewAction
             options.add(FilterOptions.FilterStepIncludeFilterStepElements);
             options.add(FilterOptions.FilterStepIncludeFilterStepDestinations);
             commandForm.setOptions(options);
-            
-            CommandResult commandResult = FilterUtil.getHome().getFilter(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterResult result = (GetFilterResult)executionResult.getResult();
+
+            var commandResult = FilterUtil.getHome().getFilter(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetFilterResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FILTER, result.getFilter());
             forwardKey = ForwardConstants.DISPLAY;

@@ -56,19 +56,19 @@ public class SequenceTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("sequenceType")) {
-            SequenceTypeSpec spec = SequenceSpecFactory.getSequenceTypeSpec();
-            EditSequenceTypeForm editForm = SequenceFormFactory.getEditSequenceTypeForm();
+            var spec = SequenceSpecFactory.getSequenceTypeSpec();
+            var editForm = SequenceFormFactory.getEditSequenceTypeForm();
 
             spec.set(getAttrsMap(attrs));
 
             editForm.setSpec(spec);
             editForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = sequenceService.editSequenceType(initialDataParser.getUserVisit(), editForm);
+
+            var commandResult = sequenceService.editSequenceType(initialDataParser.getUserVisit(), editForm);
             
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownSequenceTypeName.name())) {
-                    CreateSequenceTypeForm createForm = SequenceFormFactory.getCreateSequenceTypeForm();
+                    var createForm = SequenceFormFactory.getCreateSequenceTypeForm();
 
                     createForm.set(getAttrsMap(attrs));
 
@@ -81,17 +81,17 @@ public class SequenceTypesHandler
                     getLogger().error(commandResult.toString());
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditSequenceTypeResult result = (EditSequenceTypeResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditSequenceTypeResult)executionResult.getResult();
 
                 if(result != null) {
-                    SequenceTypeEdit edit = (SequenceTypeEdit)result.getEdit();
-                    String prefix = attrs.getValue("prefix");
-                    String sequenceEncoderTypeName = attrs.getValue("sequenceEncoderTypeName");
-                    String sequenceChecksumTypeName = attrs.getValue("sequenceChecksumTypeName");
-                    String isDefault = attrs.getValue("isDefault");
-                    String sortOrder = attrs.getValue("sortOrder");
-                    boolean changed = false;
+                    var edit = (SequenceTypeEdit)result.getEdit();
+                    var prefix = attrs.getValue("prefix");
+                    var sequenceEncoderTypeName = attrs.getValue("sequenceEncoderTypeName");
+                    var sequenceChecksumTypeName = attrs.getValue("sequenceChecksumTypeName");
+                    var isDefault = attrs.getValue("isDefault");
+                    var sortOrder = attrs.getValue("sortOrder");
+                    var changed = false;
                     
                     if(!edit.getPrefix().equals(prefix)) {
                         edit.setPrefix(prefix);

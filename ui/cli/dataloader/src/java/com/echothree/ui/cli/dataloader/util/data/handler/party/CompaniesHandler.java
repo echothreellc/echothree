@@ -48,18 +48,18 @@ public class CompaniesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("company")) {
-            CreateCompanyForm commandForm = PartyFormFactory.getCreateCompanyForm();
+            var commandForm = PartyFormFactory.getCreateCompanyForm();
             
             commandForm.set(getAttrsMap(attrs));
-            
-            CommandResult commandResult = partyService.createCompany(initialDataParser.getUserVisit(), commandForm);
+
+            var commandResult = partyService.createCompany(initialDataParser.getUserVisit(), commandForm);
             
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateCompanyResult result = (CreateCompanyResult)executionResult.getResult();
-                String partyName = result.getPartyName();
-                String companyName = result.getCompanyName();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateCompanyResult)executionResult.getResult();
+                var partyName = result.getPartyName();
+                var companyName = result.getCompanyName();
+                var entityRef = result.getEntityRef();
                 
                 initialDataParser.pushHandler(new CompanyHandler(initialDataParser, this, partyName, companyName, entityRef));
             }

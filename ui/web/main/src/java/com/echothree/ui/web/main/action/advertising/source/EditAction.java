@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected SourceSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        SourceSpec spec = OfferUtil.getHome().getSourceSpec();
+        var spec = OfferUtil.getHome().getSourceSpec();
 
         spec.setSourceName(findParameter(request, ParameterConstants.ORIGINAL_SOURCE_NAME, actionForm.getOriginalSourceName()));
 
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected SourceEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        SourceEdit edit = OfferUtil.getHome().getSourceEdit();
+        var edit = OfferUtil.getHome().getSourceEdit();
 
         edit.setSourceName(actionForm.getSourceName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

@@ -46,14 +46,14 @@ public class BatchTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("batchTypeDescription")) {
-            CreateBatchTypeDescriptionForm commandForm = BatchFormFactory.getCreateBatchTypeDescriptionForm();
+            var commandForm = BatchFormFactory.getCreateBatchTypeDescriptionForm();
             
             commandForm.setBatchTypeName(batchTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             batchService.createBatchTypeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("batchTypeEntityType")) {
-            CreateBatchTypeEntityTypeForm commandForm = BatchFormFactory.getCreateBatchTypeEntityTypeForm();
+            var commandForm = BatchFormFactory.getCreateBatchTypeEntityTypeForm();
 
             commandForm.setBatchTypeName(batchTypeName);
             commandForm.set(getAttrsMap(attrs));

@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultCommunicationEventPurposeForm commandForm = CommunicationUtil.getHome().getSetDefaultCommunicationEventPurposeForm();
-            String communicationEventPurposeName = request.getParameter(ParameterConstants.COMMUNICATION_EVENT_PURPOSE_NAME);
+            var commandForm = CommunicationUtil.getHome().getSetDefaultCommunicationEventPurposeForm();
+            var communicationEventPurposeName = request.getParameter(ParameterConstants.COMMUNICATION_EVENT_PURPOSE_NAME);
             
             commandForm.setCommunicationEventPurposeName(communicationEventPurposeName);
             

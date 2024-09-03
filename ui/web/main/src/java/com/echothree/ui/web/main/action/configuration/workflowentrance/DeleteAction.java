@@ -63,14 +63,14 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetWorkflowEntranceForm commandForm = WorkflowUtil.getHome().getGetWorkflowEntranceForm();
+        var commandForm = WorkflowUtil.getHome().getGetWorkflowEntranceForm();
         
         commandForm.setWorkflowName(actionForm.getWorkflowName());
         commandForm.setWorkflowEntranceName(actionForm.getWorkflowEntranceName());
-        
-        CommandResult commandResult = WorkflowUtil.getHome().getWorkflowEntrance(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetWorkflowEntranceResult result = (GetWorkflowEntranceResult)executionResult.getResult();
+
+        var commandResult = WorkflowUtil.getHome().getWorkflowEntrance(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetWorkflowEntranceResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.WORKFLOW_ENTRANCE, result.getWorkflowEntrance());
     }
@@ -78,7 +78,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteWorkflowEntranceForm commandForm = WorkflowUtil.getHome().getDeleteWorkflowEntranceForm();
+        var commandForm = WorkflowUtil.getHome().getDeleteWorkflowEntranceForm();
 
         commandForm.setWorkflowName(actionForm.getWorkflowName());
         commandForm.setWorkflowEntranceName(actionForm.getWorkflowEntranceName());

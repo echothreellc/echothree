@@ -49,9 +49,9 @@ public class Step1Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentProcessorTypes(getUserVisitPK(request), null);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPaymentProcessorTypesResult result = (GetPaymentProcessorTypesResult)executionResult.getResult();
+        var commandResult = PaymentUtil.getHome().getPaymentProcessorTypes(getUserVisitPK(request), null);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPaymentProcessorTypesResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PAYMENT_PROCESSOR_TYPES, result.getPaymentProcessorTypes());
 

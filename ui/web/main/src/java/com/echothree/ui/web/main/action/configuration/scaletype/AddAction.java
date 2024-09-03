@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateScaleTypeForm commandForm = ScaleUtil.getHome().getCreateScaleTypeForm();
+        var commandForm = ScaleUtil.getHome().getCreateScaleTypeForm();
 
         commandForm.setScaleTypeName(actionForm.getScaleTypeName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());

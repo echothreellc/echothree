@@ -47,7 +47,7 @@ public class WarehouseTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("warehouseType")) {
-            CreateWarehouseTypeForm commandForm = WarehouseFormFactory.getCreateWarehouseTypeForm();
+            var commandForm = WarehouseFormFactory.getCreateWarehouseTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

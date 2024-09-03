@@ -50,11 +50,11 @@ public class DeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-        String unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
-        DeleteInventoryLocationGroupCapacityForm commandForm = InventoryUtil.getHome().getDeleteInventoryLocationGroupCapacityForm();
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
+        var commandForm = InventoryUtil.getHome().getDeleteInventoryLocationGroupCapacityForm();
         
         commandForm.setWarehouseName(warehouseName);
         commandForm.setInventoryLocationGroupName(inventoryLocationGroupName);
@@ -62,8 +62,8 @@ public class DeleteAction
         commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
         
         InventoryUtil.getHome().deleteInventoryLocationGroupCapacity(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(2);
         
         parameters.put(ParameterConstants.WAREHOUSE_NAME, warehouseName);

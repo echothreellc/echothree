@@ -54,15 +54,15 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws NamingException {
         String forwardKey;
-        GetTagsForm commandForm = TagUtil.getHome().getGetTagsForm();
+        var commandForm = TagUtil.getHome().getGetTagsForm();
 
         commandForm.setTagScopeName(request.getParameter(ParameterConstants.TAG_SCOPE_NAME));
 
-        CommandResult commandResult = TagUtil.getHome().getTags(getUserVisitPK(request), commandForm);
+        var commandResult = TagUtil.getHome().getTags(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTagsResult result = (GetTagsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTagsResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.TAG_SCOPE, result.getTagScope());
             request.setAttribute(AttributeConstants.TAGS, new ListWrapper<>(result.getTags()));

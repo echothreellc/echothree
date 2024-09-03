@@ -54,15 +54,15 @@ public class AddActionForm
     private void setupScheduledTimeUnitOfMeasureTypeChoices()
             throws NamingException {
         if(scheduledTimeUnitOfMeasureTypeChoices == null) {
-            GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(scheduledTimeUnitOfMeasureTypeChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
             scheduledTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(scheduledTimeUnitOfMeasureTypeChoice == null) {
@@ -74,15 +74,15 @@ public class AddActionForm
     private void setupEstimatedTimeAllowedUnitOfMeasureTypeChoices()
             throws NamingException {
         if(estimatedTimeAllowedUnitOfMeasureTypeChoices == null) {
-            GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(estimatedTimeAllowedUnitOfMeasureTypeChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
             estimatedTimeAllowedUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(estimatedTimeAllowedUnitOfMeasureTypeChoice == null) {
@@ -94,15 +94,15 @@ public class AddActionForm
     private void setupMaximumTimeAllowedUnitOfMeasureTypeChoices()
             throws NamingException {
         if(maximumTimeAllowedUnitOfMeasureTypeChoices == null) {
-            GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(maximumTimeAllowedUnitOfMeasureTypeChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
             maximumTimeAllowedUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(maximumTimeAllowedUnitOfMeasureTypeChoice == null) {

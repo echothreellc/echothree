@@ -57,18 +57,18 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
-            String postalAddressLineSortOrder = request.getParameter(ParameterConstants.POSTAL_ADDRESS_LINE_SORT_ORDER);
-            GetPostalAddressLineElementsForm commandForm = ContactUtil.getHome().getGetPostalAddressLineElementsForm();
+            var postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
+            var postalAddressLineSortOrder = request.getParameter(ParameterConstants.POSTAL_ADDRESS_LINE_SORT_ORDER);
+            var commandForm = ContactUtil.getHome().getGetPostalAddressLineElementsForm();
             
             commandForm.setPostalAddressFormatName(postalAddressFormatName);
             commandForm.setPostalAddressLineSortOrder(postalAddressLineSortOrder);
-            
-            CommandResult commandResult = ContactUtil.getHome().getPostalAddressLineElements(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPostalAddressLineElementsResult result = (GetPostalAddressLineElementsResult)executionResult.getResult();
-            PostalAddressFormatTransfer postalAddressFormatTransfer = result.getPostalAddressFormat();
-            PostalAddressLineTransfer postalAddressLineTransfer = result.getPostalAddressLine();
+
+            var commandResult = ContactUtil.getHome().getPostalAddressLineElements(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPostalAddressLineElementsResult)executionResult.getResult();
+            var postalAddressFormatTransfer = result.getPostalAddressFormat();
+            var postalAddressLineTransfer = result.getPostalAddressLine();
             
             request.setAttribute(AttributeConstants.POSTAL_ADDRESS_FORMAT, postalAddressFormatTransfer);
             request.setAttribute(AttributeConstants.POSTAL_ADDRESS_LINE, postalAddressLineTransfer);

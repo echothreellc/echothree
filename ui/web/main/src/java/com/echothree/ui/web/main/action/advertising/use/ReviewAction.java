@@ -57,15 +57,15 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetUseForm commandForm = OfferUtil.getHome().getGetUseForm();
-            String useName = request.getParameter(ParameterConstants.USE_NAME);
+            var commandForm = OfferUtil.getHome().getGetUseForm();
+            var useName = request.getParameter(ParameterConstants.USE_NAME);
             
             commandForm.setUseName(useName);
-            
-            CommandResult commandResult = OfferUtil.getHome().getUse(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUseResult result = (GetUseResult)executionResult.getResult();
-            List<UseNameElementTransfer> useNameElements = result.getUseNameElements();
+
+            var commandResult = OfferUtil.getHome().getUse(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetUseResult)executionResult.getResult();
+            var useNameElements = result.getUseNameElements();
             
             request.setAttribute(AttributeConstants.USE, result.getUse());
             request.setAttribute(AttributeConstants.USE_NAME_ELEMENTS, useNameElements.isEmpty()? null: useNameElements);

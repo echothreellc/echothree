@@ -40,14 +40,14 @@ public class AddActionForm
     public void setupResponsibilityTypeChoices() {
         if(responsibilityTypeChoices == null) {
             try {
-                GetResponsibilityTypeChoicesForm form = EmployeeUtil.getHome().getGetResponsibilityTypeChoicesForm();
+                var form = EmployeeUtil.getHome().getGetResponsibilityTypeChoicesForm();
                 
                 form.setDefaultResponsibilityTypeChoice(responsibilityTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = EmployeeUtil.getHome().getResponsibilityTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetResponsibilityTypeChoicesResult result = (GetResponsibilityTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = EmployeeUtil.getHome().getResponsibilityTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetResponsibilityTypeChoicesResult)executionResult.getResult();
                 responsibilityTypeChoices = result.getResponsibilityTypeChoices();
                 
                 if(responsibilityTypeChoice == null)

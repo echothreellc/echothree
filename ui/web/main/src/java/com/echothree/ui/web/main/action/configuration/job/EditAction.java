@@ -58,13 +58,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalJobName = request.getParameter(ParameterConstants.ORIGINAL_JOB_NAME);
+        var originalJobName = request.getParameter(ParameterConstants.ORIGINAL_JOB_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditJobForm commandForm = JobUtil.getHome().getEditJobForm();
-                JobSpec spec = JobUtil.getHome().getJobSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = JobUtil.getHome().getEditJobForm();
+                var spec = JobUtil.getHome().getJobSpec();
                 
                 if(originalJobName == null)
                     originalJobName = actionForm.getOriginalJobName();
@@ -73,7 +73,7 @@ public class EditAction
                 spec.setJobName(originalJobName);
                 
                 if(wasPost(request)) {
-                    JobEdit edit = JobUtil.getHome().getJobEdit();
+                    var edit = JobUtil.getHome().getJobEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -81,14 +81,14 @@ public class EditAction
                     edit.setJobName(actionForm.getJobName());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = JobUtil.getHome().editJob(getUserVisitPK(request), commandForm);
+
+                    var commandResult = JobUtil.getHome().editJob(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditJobResult result = (EditJobResult)executionResult.getResult();
+                            var result = (EditJobResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -101,13 +101,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = JobUtil.getHome().editJob(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditJobResult result = (EditJobResult)executionResult.getResult();
+
+                    var commandResult = JobUtil.getHome().editJob(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditJobResult)executionResult.getResult();
                     
                     if(result != null) {
-                        JobEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalJobName(edit.getJobName());

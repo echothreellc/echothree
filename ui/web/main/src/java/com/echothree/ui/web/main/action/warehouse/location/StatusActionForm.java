@@ -43,15 +43,15 @@ public class StatusActionForm
     public void setupLocationStatusChoices()
             throws NamingException {
         if(locationStatusChoices == null) {
-            GetLocationStatusChoicesForm form = WarehouseUtil.getHome().getGetLocationStatusChoicesForm();
+            var form = WarehouseUtil.getHome().getGetLocationStatusChoicesForm();
 
             form.setWarehouseName(warehouseName);
             form.setLocationName(locationName);
             form.setDefaultLocationStatusChoice(locationStatusChoice);
 
-            CommandResult commandResult = WarehouseUtil.getHome().getLocationStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLocationStatusChoicesResult getLocationStatusChoicesResult = (GetLocationStatusChoicesResult)executionResult.getResult();
+            var commandResult = WarehouseUtil.getHome().getLocationStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getLocationStatusChoicesResult = (GetLocationStatusChoicesResult)executionResult.getResult();
             locationStatusChoices = getLocationStatusChoicesResult.getLocationStatusChoices();
 
             if(locationStatusChoice == null)

@@ -50,7 +50,7 @@ public class CancellationPolicyHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("cancellationPolicyTranslation")) {
-            CreateCancellationPolicyTranslationForm commandForm = CancellationPolicyFormFactory.getCreateCancellationPolicyTranslationForm();
+            var commandForm = CancellationPolicyFormFactory.getCreateCancellationPolicyTranslationForm();
 
             commandForm.setCancellationKindName(cancellationKindName);
             commandForm.setCancellationPolicyName(cancellationPolicyName);

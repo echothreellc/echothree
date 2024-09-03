@@ -47,8 +47,8 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultLetterSourceForm commandForm = LetterUtil.getHome().getSetDefaultLetterSourceForm();
-        String letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
+        var commandForm = LetterUtil.getHome().getSetDefaultLetterSourceForm();
+        var letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
         
         commandForm.setLetterSourceName(letterSourceName);
         

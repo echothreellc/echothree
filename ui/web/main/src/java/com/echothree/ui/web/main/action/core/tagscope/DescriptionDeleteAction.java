@@ -63,14 +63,14 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTagScopeDescriptionForm commandForm = TagUtil.getHome().getGetTagScopeDescriptionForm();
+        var commandForm = TagUtil.getHome().getGetTagScopeDescriptionForm();
         
         commandForm.setTagScopeName(actionForm.getTagScopeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = TagUtil.getHome().getTagScopeDescription(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTagScopeDescriptionResult result = (GetTagScopeDescriptionResult)executionResult.getResult();
+
+        var commandResult = TagUtil.getHome().getTagScopeDescription(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTagScopeDescriptionResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.TAG_SCOPE_DESCRIPTION, result.getTagScopeDescription());
     }
@@ -78,7 +78,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteTagScopeDescriptionForm commandForm = TagUtil.getHome().getDeleteTagScopeDescriptionForm();
+        var commandForm = TagUtil.getHome().getDeleteTagScopeDescriptionForm();
 
         commandForm.setTagScopeName(actionForm.getTagScopeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

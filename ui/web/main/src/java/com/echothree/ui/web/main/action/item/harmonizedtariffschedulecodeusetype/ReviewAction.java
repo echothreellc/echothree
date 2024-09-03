@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetHarmonizedTariffScheduleCodeUseTypeForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseTypeForm();
+        var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseTypeForm();
 
         commandForm.setHarmonizedTariffScheduleCodeUseTypeName(request.getParameter(ParameterConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_NAME));
-        
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseType(getUserVisitPK(request), commandForm);
         HarmonizedTariffScheduleCodeUseTypeTransfer harmonizedTariffScheduleCodeUseType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeUseTypeResult result = (GetHarmonizedTariffScheduleCodeUseTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodeUseTypeResult)executionResult.getResult();
             
             harmonizedTariffScheduleCodeUseType = result.getHarmonizedTariffScheduleCodeUseType();
         }

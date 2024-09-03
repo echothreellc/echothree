@@ -51,14 +51,14 @@ public class ForumMessageTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("forumMessageTypeDescription")) {
-            CreateForumMessageTypeDescriptionForm commandForm = ForumFormFactory.getCreateForumMessageTypeDescriptionForm();
+            var commandForm = ForumFormFactory.getCreateForumMessageTypeDescriptionForm();
 
             commandForm.setForumMessageTypeName(forumMessageTypeName);
             commandForm.set(getAttrsMap(attrs));
 
             forumService.createForumMessageTypeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("forumMessageTypePartType")) {
-            CreateForumMessageTypePartTypeForm commandForm = ForumFormFactory.getCreateForumMessageTypePartTypeForm();
+            var commandForm = ForumFormFactory.getCreateForumMessageTypePartTypeForm();
 
             commandForm.setForumMessageTypeName(forumMessageTypeName);
             commandForm.set(getAttrsMap(attrs));

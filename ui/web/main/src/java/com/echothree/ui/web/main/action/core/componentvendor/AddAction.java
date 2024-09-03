@@ -54,15 +54,15 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateComponentVendorForm commandForm = CoreUtil.getHome().getCreateComponentVendorForm();
+                    var commandForm = CoreUtil.getHome().getCreateComponentVendorForm();
                     
                     commandForm.setComponentVendorName(actionForm.getComponentVendorName());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CoreUtil.getHome().createComponentVendor(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CoreUtil.getHome().createComponentVendor(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

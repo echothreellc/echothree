@@ -46,14 +46,14 @@ public class AddActionForm
     public void setupContactListChoices()
             throws NamingException {
         if(contactListChoices == null) {
-            GetContactListChoicesForm form = ContactListUtil.getHome().getGetContactListChoicesForm();
+            var form = ContactListUtil.getHome().getGetContactListChoicesForm();
 
             form.setDefaultContactListChoice(contactListChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ContactListUtil.getHome().getContactListChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListChoicesResult getContactListChoicesResult = (GetContactListChoicesResult)executionResult.getResult();
+            var commandResult = ContactListUtil.getHome().getContactListChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getContactListChoicesResult = (GetContactListChoicesResult)executionResult.getResult();
             contactListChoices = getContactListChoicesResult.getContactListChoices();
 
             if(contactListChoice == null) {
@@ -65,14 +65,14 @@ public class AddActionForm
     public void setupPreferredContactMechanismPurposeChoices()
             throws NamingException {
         if(preferredContactMechanismPurposeChoices == null) {
-            GetContactMechanismPurposeChoicesForm form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
+            var form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
 
             form.setDefaultContactMechanismPurposeChoice(preferredContactMechanismPurposeChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactMechanismPurposeChoicesResult getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
             preferredContactMechanismPurposeChoices = getContactMechanismPurposeChoicesResult.getContactMechanismPurposeChoices();
 
             if(preferredContactMechanismPurposeChoice == null) {

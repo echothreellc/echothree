@@ -63,8 +63,8 @@ public class ResultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetSalesOrderBatchResultsForm commandForm = SearchUtil.getHome().getGetSalesOrderBatchResultsForm();
-        String results = request.getParameter(ParameterConstants.RESULTS);
+        var commandForm = SearchUtil.getHome().getGetSalesOrderBatchResultsForm();
+        var results = request.getParameter(ParameterConstants.RESULTS);
 
         commandForm.setSearchTypeName(SearchTypes.SALES_ORDER_BATCH_MAINTENANCE.name());
 
@@ -73,18 +73,18 @@ public class ResultAction
         commandForm.setOptions(options);
 
         if(results == null) {
-            String offsetParameter = request.getParameter(new ParamEncoder("salesOrderBatchResult").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
-            Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
+            var offsetParameter = request.getParameter(new ParamEncoder("salesOrderBatchResult").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
+            var offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
             Map<String, Limit> limits = new HashMap<>();
             limits.put(SearchResultConstants.ENTITY_TYPE_NAME, new Limit("20", offset == null ? null : offset.toString()));
             commandForm.setLimits(limits);
         }
 
-        CommandResult commandResult = setCommandResultAttribute(request, SearchUtil.getHome().getSalesOrderBatchResults(getUserVisitPK(request), commandForm));
+        var commandResult = setCommandResultAttribute(request, SearchUtil.getHome().getSalesOrderBatchResults(getUserVisitPK(request), commandForm));
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSalesOrderBatchResultsResult result = (GetSalesOrderBatchResultsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSalesOrderBatchResultsResult)executionResult.getResult();
 
             var salesOrderBatchResultCount = result.getSalesOrderBatchResultCount();
             if(salesOrderBatchResultCount != null) {

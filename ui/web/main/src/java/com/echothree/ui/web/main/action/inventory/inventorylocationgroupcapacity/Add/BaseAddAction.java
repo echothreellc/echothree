@@ -36,28 +36,28 @@ public abstract class BaseAddAction<A
     
     protected void setupInventoryLocationGroup(HttpServletRequest request, String warehouseName, String inventoryLocationGroupName)
             throws NamingException {
-        GetInventoryLocationGroupForm commandForm = InventoryUtil.getHome().getGetInventoryLocationGroupForm();
+        var commandForm = InventoryUtil.getHome().getGetInventoryLocationGroupForm();
         
         commandForm.setWarehouseName(warehouseName);
         commandForm.setInventoryLocationGroupName(inventoryLocationGroupName);
-        
-        CommandResult commandResult = InventoryUtil.getHome().getInventoryLocationGroup(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetInventoryLocationGroupResult result = (GetInventoryLocationGroupResult)executionResult.getResult();
+
+        var commandResult = InventoryUtil.getHome().getInventoryLocationGroup(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetInventoryLocationGroupResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.INVENTORY_LOCATION_GROUP, result.getInventoryLocationGroup());
     }
     
     protected void setupUnitOfMeasureType(HttpServletRequest request, String unitOfMeasureKindName, String unitOfMeasureTypeName)
             throws NamingException {
-            GetUnitOfMeasureTypeForm commandForm = UomUtil.getHome().getGetUnitOfMeasureTypeForm();
+        var commandForm = UomUtil.getHome().getGetUnitOfMeasureTypeForm();
             
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
-            
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureTypeResult result = (GetUnitOfMeasureTypeResult)executionResult.getResult();
+
+        var commandResult = UomUtil.getHome().getUnitOfMeasureType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetUnitOfMeasureTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_TYPE, result.getUnitOfMeasureType());
     }

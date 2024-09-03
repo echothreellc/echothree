@@ -45,14 +45,14 @@ public class AddActionForm
     private void setupUseTypeChoices() {
         if(useTypeChoices == null) {
             try {
-                GetUseTypeChoicesForm form = OfferUtil.getHome().getGetUseTypeChoicesForm();
+                var form = OfferUtil.getHome().getGetUseTypeChoicesForm();
                 
                 form.setDefaultUseTypeChoice(useTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = OfferUtil.getHome().getUseTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUseTypeChoicesResult result = (GetUseTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = OfferUtil.getHome().getUseTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetUseTypeChoicesResult)executionResult.getResult();
                 useTypeChoices = result.getUseTypeChoices();
                 
                 if(useTypeChoice == null)

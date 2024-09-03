@@ -49,7 +49,7 @@ public class GlResourceTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("glResourceTypeDescription")) {
-            CreateGlResourceTypeDescriptionForm commandForm = AccountingFormFactory.getCreateGlResourceTypeDescriptionForm();
+            var commandForm = AccountingFormFactory.getCreateGlResourceTypeDescriptionForm();
             
             commandForm.setGlResourceTypeName(glResourceTypeName);
             commandForm.set(getAttrsMap(attrs));

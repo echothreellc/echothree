@@ -66,14 +66,14 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEmploymentForm commandForm = EmployeeUtil.getHome().getGetEmploymentForm();
+        var commandForm = EmployeeUtil.getHome().getGetEmploymentForm();
         
         commandForm.setEmploymentName(actionForm.getEmploymentName());
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getEmployment(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEmploymentResult result = (GetEmploymentResult)executionResult.getResult();
-        EmploymentTransfer employment = result.getEmployment();
+
+        var commandResult = EmployeeUtil.getHome().getEmployment(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEmploymentResult)executionResult.getResult();
+        var employment = result.getEmployment();
         
         request.setAttribute(AttributeConstants.EMPLOYMENT, result.getEmployment());
         request.setAttribute(AttributeConstants.EMPLOYEE, EmployeeUtils.getInstance().getEmployee(getUserVisitPK(request), employment.getParty().getPartyName(),
@@ -83,7 +83,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteEmploymentForm commandForm = EmployeeUtil.getHome().getDeleteEmploymentForm();
+        var commandForm = EmployeeUtil.getHome().getDeleteEmploymentForm();
 
         commandForm.setEmploymentName(actionForm.getEmploymentName());
 

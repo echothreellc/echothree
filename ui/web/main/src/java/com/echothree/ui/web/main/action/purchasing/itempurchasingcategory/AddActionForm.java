@@ -45,14 +45,14 @@ public class AddActionForm
     private void setupParentItemPurchasingCategoryChoices() {
         if(parentItemPurchasingCategoryChoices == null) {
             try {
-                GetItemPurchasingCategoryChoicesForm form = VendorUtil.getHome().getGetItemPurchasingCategoryChoicesForm();
+                var form = VendorUtil.getHome().getGetItemPurchasingCategoryChoicesForm();
                 
                 form.setDefaultItemPurchasingCategoryChoice(parentItemPurchasingCategoryChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemPurchasingCategoryChoicesResult getItemPurchasingCategoryChoicesResult = (GetItemPurchasingCategoryChoicesResult)executionResult.getResult();
+
+                var commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getItemPurchasingCategoryChoicesResult = (GetItemPurchasingCategoryChoicesResult)executionResult.getResult();
                 parentItemPurchasingCategoryChoices = getItemPurchasingCategoryChoicesResult.getItemPurchasingCategoryChoices();
                 
                 if(parentItemPurchasingCategoryChoice == null)

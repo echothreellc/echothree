@@ -56,14 +56,14 @@ public class PartyTypeContactListGroupAddAction
     @Override
     public void setupTransfer(PartyTypeContactListGroupAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContactListGroupForm commandForm = ContactListUtil.getHome().getGetContactListGroupForm();
+        var commandForm = ContactListUtil.getHome().getGetContactListGroupForm();
 
         commandForm.setContactListGroupName(actionForm.getContactListGroupName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getContactListGroup(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getContactListGroup(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListGroupResult result = (GetContactListGroupResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListGroupResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CONTACT_LIST_GROUP, result.getContactListGroup());
         }
@@ -72,7 +72,7 @@ public class PartyTypeContactListGroupAddAction
     @Override
     public CommandResult doAdd(PartyTypeContactListGroupAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyTypeContactListGroupForm commandForm = ContactListUtil.getHome().getCreatePartyTypeContactListGroupForm();
+        var commandForm = ContactListUtil.getHome().getCreatePartyTypeContactListGroupForm();
 
         commandForm.setContactListGroupName( actionForm.getContactListGroupName());
         commandForm.setPartyTypeName(actionForm.getPartyTypeChoice());

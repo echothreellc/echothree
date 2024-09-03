@@ -62,8 +62,8 @@ public class EditAction
     @Override
     protected ItemDescriptionTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemDescriptionTypeEdit edit = ItemUtil.getHome().getItemDescriptionTypeEdit();
-        String mimeTypeUsageTypeName = actionForm.getMimeTypeUsageTypeName();
+        var edit = ItemUtil.getHome().getItemDescriptionTypeEdit();
+        var mimeTypeUsageTypeName = actionForm.getMimeTypeUsageTypeName();
 
         edit.setItemDescriptionTypeName(actionForm.getItemDescriptionTypeName());
         edit.setParentItemDescriptionTypeName(actionForm.getParentItemDescriptionTypeChoice());
@@ -100,8 +100,8 @@ public class EditAction
     
     @Override
     protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditItemDescriptionTypeResult result, ItemDescriptionTypeSpec spec, ItemDescriptionTypeEdit edit) {
-        MimeTypeUsageTypeTransfer mimeTypeUsageType = result.getItemDescriptionType().getMimeTypeUsageType();
-        String mimeTypeUsageTypeName = mimeTypeUsageType == null ? null : mimeTypeUsageType.getMimeTypeUsageTypeName();
+        var mimeTypeUsageType = result.getItemDescriptionType().getMimeTypeUsageType();
+        var mimeTypeUsageTypeName = mimeTypeUsageType == null ? null : mimeTypeUsageType.getMimeTypeUsageTypeName();
 
         actionForm.setOriginalItemDescriptionTypeName(spec.getItemDescriptionTypeName());
         actionForm.setItemDescriptionTypeName(edit.getItemDescriptionTypeName());

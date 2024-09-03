@@ -57,15 +57,15 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSecurityRoleForm commandForm = SecurityUtil.getHome().getGetSecurityRoleForm();
+        var commandForm = SecurityUtil.getHome().getGetSecurityRoleForm();
 
         commandForm.setSecurityRoleGroupName(actionForm.getSecurityRoleGroupName());
         commandForm.setSecurityRoleName(actionForm.getSecurityRoleName());
-        
-        CommandResult commandResult = SecurityUtil.getHome().getSecurityRole(getUserVisitPK(request), commandForm);
+
+        var commandResult = SecurityUtil.getHome().getSecurityRole(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSecurityRoleResult result = (GetSecurityRoleResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSecurityRoleResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SECURITY_ROLE, result.getSecurityRole());
         }
@@ -74,7 +74,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateSecurityRoleDescriptionForm commandForm = SecurityUtil.getHome().getCreateSecurityRoleDescriptionForm();
+        var commandForm = SecurityUtil.getHome().getCreateSecurityRoleDescriptionForm();
 
         commandForm.setSecurityRoleGroupName(actionForm.getSecurityRoleGroupName());
         commandForm.setSecurityRoleName(actionForm.getSecurityRoleName());

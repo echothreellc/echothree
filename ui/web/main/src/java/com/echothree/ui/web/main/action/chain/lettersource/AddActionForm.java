@@ -51,16 +51,16 @@ public class AddActionForm
     private void setupEmailAddressContactMechanismChoices() {
         if(emailAddressContactMechanismChoices == null) {
             try {
-                GetContactMechanismChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
+                var commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
                 
                 commandForm.setPartyName(partyName);
                 commandForm.setContactMechanismTypeName(ContactMechanismTypes.EMAIL_ADDRESS.name());
                 commandForm.setDefaultContactMechanismChoice(emailAddressContactMechanismChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactMechanismChoicesResult result = (GetContactMechanismChoicesResult)executionResult.getResult();
+
+                var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContactMechanismChoicesResult)executionResult.getResult();
                 emailAddressContactMechanismChoices = result.getContactMechanismChoices();
                 
                 if(emailAddressContactMechanismChoice == null) {
@@ -76,16 +76,16 @@ public class AddActionForm
     private void setupPostalAddressContactMechanismChoices() {
         if(postalAddressContactMechanismChoices == null) {
             try {
-                GetContactMechanismChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
+                var commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
                 
                 commandForm.setPartyName(partyName);
                 commandForm.setContactMechanismTypeName(ContactMechanismTypes.POSTAL_ADDRESS.name());
                 commandForm.setDefaultContactMechanismChoice(postalAddressContactMechanismChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactMechanismChoicesResult result = (GetContactMechanismChoicesResult)executionResult.getResult();
+
+                var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContactMechanismChoicesResult)executionResult.getResult();
                 postalAddressContactMechanismChoices = result.getContactMechanismChoices();
                 
                 if(postalAddressContactMechanismChoice == null) {
@@ -101,16 +101,16 @@ public class AddActionForm
     private void setupLetterSourceContactMechanismChoices() {
         if(letterSourceContactMechanismChoices == null) {
             try {
-                GetContactMechanismChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
+                var commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
                 
                 commandForm.setPartyName(partyName);
                 commandForm.setContactMechanismTypeName(ContactMechanismTypes.WEB_ADDRESS.name());
                 commandForm.setDefaultContactMechanismChoice(letterSourceContactMechanismChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactMechanismChoicesResult result = (GetContactMechanismChoicesResult)executionResult.getResult();
+
+                var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetContactMechanismChoicesResult)executionResult.getResult();
                 letterSourceContactMechanismChoices = result.getContactMechanismChoices();
                 
                 if(letterSourceContactMechanismChoice == null) {

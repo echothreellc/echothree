@@ -50,15 +50,15 @@ public class ContactListContactMechanismPurposeSetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultContactListContactMechanismPurposeForm commandForm = ContactListUtil.getHome().getSetDefaultContactListContactMechanismPurposeForm();
-        String contactListName = request.getParameter(ParameterConstants.CONTACT_LIST_NAME);
+        var commandForm = ContactListUtil.getHome().getSetDefaultContactListContactMechanismPurposeForm();
+        var contactListName = request.getParameter(ParameterConstants.CONTACT_LIST_NAME);
 
         commandForm.setContactListName(contactListName);
         commandForm.setContactMechanismPurposeName(request.getParameter(ParameterConstants.CONTACT_MECHANISM_PURPOSE_NAME));
 
         ContactListUtil.getHome().setDefaultContactListContactMechanismPurpose(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>();
 
         parameters.put(ParameterConstants.CONTACT_LIST_NAME, contactListName);

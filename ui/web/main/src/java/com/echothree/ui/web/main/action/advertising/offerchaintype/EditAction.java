@@ -60,12 +60,12 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
-        EditActionForm actionForm = (EditActionForm)form;
-        EditOfferChainTypeForm commandForm = OfferUtil.getHome().getEditOfferChainTypeForm();
-        OfferChainTypeSpec spec = OfferUtil.getHome().getOfferChainTypeSpec();
+        var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
+        var actionForm = (EditActionForm)form;
+        var commandForm = OfferUtil.getHome().getEditOfferChainTypeForm();
+        var spec = OfferUtil.getHome().getOfferChainTypeSpec();
         
         if(offerName == null)
             offerName = actionForm.getOfferName();
@@ -80,20 +80,20 @@ public class EditAction
         spec.setChainTypeName(chainTypeName);
         
         if(wasPost(request)) {
-            OfferChainTypeEdit edit = OfferUtil.getHome().getOfferChainTypeEdit();
+            var edit = OfferUtil.getHome().getOfferChainTypeEdit();
             
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
             
             edit.setChainName(actionForm.getChainChoice());
-            
-            CommandResult commandResult = OfferUtil.getHome().editOfferChainType(getUserVisitPK(request), commandForm);
+
+            var commandResult = OfferUtil.getHome().editOfferChainType(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditOfferChainTypeResult result = (EditOfferChainTypeResult)executionResult.getResult();
+                    var result = (EditOfferChainTypeResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -106,13 +106,13 @@ public class EditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = OfferUtil.getHome().editOfferChainType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditOfferChainTypeResult result = (EditOfferChainTypeResult)executionResult.getResult();
+
+            var commandResult = OfferUtil.getHome().editOfferChainType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditOfferChainTypeResult)executionResult.getResult();
             
             if(result != null) {
-                OfferChainTypeEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setOfferName(offerName);
@@ -128,8 +128,8 @@ public class EditAction
             
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.OFFER_NAME, offerName);
             request.setAttribute(AttributeConstants.CHAIN_KIND_NAME, chainKindName);

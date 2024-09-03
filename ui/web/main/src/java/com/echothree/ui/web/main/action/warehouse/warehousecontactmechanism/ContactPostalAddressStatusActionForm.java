@@ -41,15 +41,15 @@ public class ContactPostalAddressStatusActionForm
     public void setupPostalAddressStatusChoices()
             throws NamingException {
         if(postalAddressStatusChoices == null) {
-            GetPostalAddressStatusChoicesForm form = ContactUtil.getHome().getGetPostalAddressStatusChoicesForm();
+            var form = ContactUtil.getHome().getGetPostalAddressStatusChoicesForm();
 
             form.setContactMechanismName(contactMechanismName);
             form.setDefaultPostalAddressStatusChoice(postalAddressStatusChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getPostalAddressStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPostalAddressStatusChoicesResult result = (GetPostalAddressStatusChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getPostalAddressStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPostalAddressStatusChoicesResult)executionResult.getResult();
             postalAddressStatusChoices = result.getPostalAddressStatusChoices();
 
             if(postalAddressStatusChoice == null) {

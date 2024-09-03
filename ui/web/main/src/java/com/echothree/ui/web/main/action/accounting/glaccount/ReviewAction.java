@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetGlAccountForm commandForm = AccountingUtil.getHome().getGetGlAccountForm();
-            String glAccountName = request.getParameter(ParameterConstants.GL_ACCOUNT_NAME);
+            var commandForm = AccountingUtil.getHome().getGetGlAccountForm();
+            var glAccountName = request.getParameter(ParameterConstants.GL_ACCOUNT_NAME);
             
             commandForm.setGlAccountName(glAccountName);
-            
-            CommandResult commandResult = AccountingUtil.getHome().getGlAccount(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGlAccountResult result = (GetGlAccountResult)executionResult.getResult();
+
+            var commandResult = AccountingUtil.getHome().getGlAccount(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGlAccountResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.GL_ACCOUNT, result.getGlAccount());
             forwardKey = ForwardConstants.DISPLAY;

@@ -49,15 +49,15 @@ public class EditActionForm
     private void setupHeightUnitOfMeasureTypeChoices() {
         if(heightUnitOfMeasureTypeChoices == null) {
             try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
                 
                 form.setDefaultUnitOfMeasureTypeChoice(heightUnitOfMeasureTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
                 form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_VOLUME);
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
                 heightUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
                 
                 if(heightUnitOfMeasureTypeChoice == null) {
@@ -73,15 +73,15 @@ public class EditActionForm
     private void setupWidthUnitOfMeasureTypeChoices() {
         if(widthUnitOfMeasureTypeChoices == null) {
             try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
                 
                 form.setDefaultUnitOfMeasureTypeChoice(widthUnitOfMeasureTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
                 form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_VOLUME);
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
                 widthUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
                 
                 if(widthUnitOfMeasureTypeChoice == null) {
@@ -97,15 +97,15 @@ public class EditActionForm
     private void setupDepthUnitOfMeasureTypeChoices() {
         if(depthUnitOfMeasureTypeChoices == null) {
             try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
                 
                 form.setDefaultUnitOfMeasureTypeChoice(depthUnitOfMeasureTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
                 form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_VOLUME);
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
                 depthUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
                 
                 if(depthUnitOfMeasureTypeChoice == null) {

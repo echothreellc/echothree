@@ -59,13 +59,13 @@ public class VolumeEditAction
     public ActionForward executeAction(ActionMapping mapping, VolumeEditActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-        String unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
         
         if(forwardKey == null) {
-            VolumeEditActionForm actionForm = form;
-            EditUnitOfMeasureTypeVolumeForm commandForm = UomUtil.getHome().getEditUnitOfMeasureTypeVolumeForm();
-            UnitOfMeasureTypeSpec spec = UomUtil.getHome().getUnitOfMeasureTypeSpec();
+            var actionForm = form;
+            var commandForm = UomUtil.getHome().getEditUnitOfMeasureTypeVolumeForm();
+            var spec = UomUtil.getHome().getUnitOfMeasureTypeSpec();
             
             if(unitOfMeasureKindName == null)
                 unitOfMeasureKindName = actionForm.getUnitOfMeasureKindName();
@@ -77,7 +77,7 @@ public class VolumeEditAction
             spec.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
             
             if(wasPost(request)) {
-                UnitOfMeasureTypeVolumeEdit edit = UomUtil.getHome().getUnitOfMeasureTypeVolumeEdit();
+                var edit = UomUtil.getHome().getUnitOfMeasureTypeVolumeEdit();
                 
                 commandForm.setEditMode(EditMode.UPDATE);
                 commandForm.setEdit(edit);
@@ -88,14 +88,14 @@ public class VolumeEditAction
                 edit.setWidth(actionForm.getWidth());
                 edit.setDepthUnitOfMeasureTypeName(actionForm.getDepthUnitOfMeasureTypeChoice());
                 edit.setDepth(actionForm.getDepth());
-                
-                CommandResult commandResult = UomUtil.getHome().editUnitOfMeasureTypeVolume(getUserVisitPK(request), commandForm);
+
+                var commandResult = UomUtil.getHome().editUnitOfMeasureTypeVolume(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
+                    var executionResult = commandResult.getExecutionResult();
                     
                     if(executionResult != null) {
-                        EditUnitOfMeasureTypeVolumeResult result = (EditUnitOfMeasureTypeVolumeResult)executionResult.getResult();
+                        var result = (EditUnitOfMeasureTypeVolumeResult)executionResult.getResult();
                         
                         request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                     }
@@ -108,13 +108,13 @@ public class VolumeEditAction
                 }
             } else {
                 commandForm.setEditMode(EditMode.LOCK);
-                
-                CommandResult commandResult = UomUtil.getHome().editUnitOfMeasureTypeVolume(getUserVisitPK(request), commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditUnitOfMeasureTypeVolumeResult result = (EditUnitOfMeasureTypeVolumeResult)executionResult.getResult();
+
+                var commandResult = UomUtil.getHome().editUnitOfMeasureTypeVolume(getUserVisitPK(request), commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditUnitOfMeasureTypeVolumeResult)executionResult.getResult();
                 
                 if(result != null) {
-                    UnitOfMeasureTypeVolumeEdit edit = result.getEdit();
+                    var edit = result.getEdit();
                     
                     if(edit != null) {
                         actionForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
@@ -135,8 +135,8 @@ public class VolumeEditAction
                 forwardKey = ForwardConstants.FORM;
             }
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_KIND_NAME, unitOfMeasureKindName);
             request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_TYPE_NAME, unitOfMeasureTypeName);

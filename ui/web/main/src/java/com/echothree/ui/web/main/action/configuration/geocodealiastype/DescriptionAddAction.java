@@ -57,14 +57,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetGeoCodeAliasTypeForm commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypeForm();
+        var commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypeForm();
 
         commandForm.setGeoCodeTypeName(actionForm.getGeoCodeTypeName());
         commandForm.setGeoCodeAliasTypeName(actionForm.getGeoCodeAliasTypeName());
 
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeAliasType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetGeoCodeAliasTypeResult result = (GetGeoCodeAliasTypeResult)executionResult.getResult();
+        var commandResult = GeoUtil.getHome().getGeoCodeAliasType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetGeoCodeAliasTypeResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.GEO_CODE_ALIAS_TYPE, result.getGeoCodeAliasType());
     }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateGeoCodeAliasTypeDescriptionForm commandForm = GeoUtil.getHome().getCreateGeoCodeAliasTypeDescriptionForm();
+        var commandForm = GeoUtil.getHome().getCreateGeoCodeAliasTypeDescriptionForm();
 
         commandForm.setGeoCodeTypeName(actionForm.getGeoCodeTypeName());
         commandForm.setGeoCodeAliasTypeName(actionForm.getGeoCodeAliasTypeName());

@@ -64,16 +64,16 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEntityTypeDescriptionForm commandForm = CoreUtil.getHome().getGetEntityTypeDescriptionForm();
+        var commandForm = CoreUtil.getHome().getGetEntityTypeDescriptionForm();
         
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEntityTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityTypeDescriptionResult result = (GetEntityTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.ENTITY_TYPE_DESCRIPTION, result.getEntityTypeDescription());
         }
@@ -82,7 +82,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteEntityTypeDescriptionForm commandForm = CoreUtil.getHome().getDeleteEntityTypeDescriptionForm();
+        var commandForm = CoreUtil.getHome().getDeleteEntityTypeDescriptionForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());

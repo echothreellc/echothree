@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetClubItemsForm getClubItemsForm = ClubUtil.getHome().getGetClubItemsForm();
-            String clubName = request.getParameter(ParameterConstants.CLUB_NAME);
+            var getClubItemsForm = ClubUtil.getHome().getGetClubItemsForm();
+            var clubName = request.getParameter(ParameterConstants.CLUB_NAME);
             
             getClubItemsForm.setClubName(clubName);
 
-            CommandResult commandResult = ClubUtil.getHome().getClubItems(getUserVisitPK(request), getClubItemsForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetClubItemsResult getClubItemsResult = (GetClubItemsResult)executionResult.getResult();
+            var commandResult = ClubUtil.getHome().getClubItems(getUserVisitPK(request), getClubItemsForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getClubItemsResult = (GetClubItemsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CLUB, getClubItemsResult.getClub());
             request.setAttribute(AttributeConstants.CLUB_ITEMS, getClubItemsResult.getClubItems());

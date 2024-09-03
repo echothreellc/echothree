@@ -53,16 +53,16 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String serverName = request.getParameter(ParameterConstants.SERVER_NAME);
-        GetServerServicesForm commandForm = CoreUtil.getHome().getGetServerServicesForm();
+        var serverName = request.getParameter(ParameterConstants.SERVER_NAME);
+        var commandForm = CoreUtil.getHome().getGetServerServicesForm();
 
         commandForm.setServerName(serverName);
 
-        CommandResult commandResult = CoreUtil.getHome().getServerServices(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getServerServices(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetServerServicesResult result = (GetServerServicesResult) executionResult.getResult();
-            ServerTransfer serverTransfer = result.getServer();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetServerServicesResult) executionResult.getResult();
+            var serverTransfer = result.getServer();
 
             request.setAttribute(AttributeConstants.SERVER, serverTransfer);
             request.setAttribute(AttributeConstants.SERVER_SERVICES, result.getServerServices());

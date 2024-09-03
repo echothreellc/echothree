@@ -56,7 +56,7 @@ public class EditAction
     @Override
     protected PartyPaymentMethodSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyPaymentMethodSpec spec = PaymentUtil.getHome().getPartyPaymentMethodSpec();
+        var spec = PaymentUtil.getHome().getPartyPaymentMethodSpec();
 
         spec.setPartyPaymentMethodName(findParameter(request, ParameterConstants.PARTY_PAYMENT_METHOD_NAME, actionForm.getPartyPaymentMethodName()));
         
@@ -66,7 +66,7 @@ public class EditAction
     @Override
     protected PartyPaymentMethodEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyPaymentMethodEdit edit = PaymentUtil.getHome().getPartyPaymentMethodEdit();
+        var edit = PaymentUtil.getHome().getPartyPaymentMethodEdit();
 
         edit.setDescription(actionForm.getDescription());
         edit.setDeleteWhenUnused(actionForm.getDeleteWhenUnused().toString());
@@ -120,13 +120,13 @@ public class EditAction
     
     public void setupCustomerTransfer(String partyName, HttpServletRequest request)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }
@@ -134,10 +134,10 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditPartyPaymentMethodForm commandForm)
             throws Exception {
-        CommandResult commandResult = PaymentUtil.getHome().editPartyPaymentMethod(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditPartyPaymentMethodResult result = (EditPartyPaymentMethodResult)executionResult.getResult();
-        PartyPaymentMethodTransfer partyPaymentMethod = result.getPartyPaymentMethod();
+        var commandResult = PaymentUtil.getHome().editPartyPaymentMethod(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditPartyPaymentMethodResult)executionResult.getResult();
+        var partyPaymentMethod = result.getPartyPaymentMethod();
 
         if(partyPaymentMethod != null) {
             request.setAttribute(AttributeConstants.PARTY_PAYMENT_METHOD, partyPaymentMethod);

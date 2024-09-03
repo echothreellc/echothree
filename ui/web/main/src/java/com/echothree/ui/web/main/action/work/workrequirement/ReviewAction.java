@@ -57,7 +57,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetWorkRequirementForm commandForm = WorkRequirementUtil.getHome().getGetWorkRequirementForm();
+        var commandForm = WorkRequirementUtil.getHome().getGetWorkRequirementForm();
 
         commandForm.setWorkRequirementName(request.getParameter(ParameterConstants.WORK_REQUIREMENT_NAME));
 
@@ -67,12 +67,12 @@ public class ReviewAction
         options.add(WorkRequirementOptions.WorkRequirementIncludeWorkTimes);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = WorkRequirementUtil.getHome().getWorkRequirement(getUserVisitPK(request), commandForm);
+        var commandResult = WorkRequirementUtil.getHome().getWorkRequirement(getUserVisitPK(request), commandForm);
         WorkRequirementTransfer workRequirement = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkRequirementResult result = (GetWorkRequirementResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkRequirementResult)executionResult.getResult();
 
             workRequirement = result.getWorkRequirement();
         }

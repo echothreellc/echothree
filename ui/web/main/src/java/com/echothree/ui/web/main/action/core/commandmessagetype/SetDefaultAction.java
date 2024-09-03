@@ -48,7 +48,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultCommandMessageTypeForm commandForm = CoreUtil.getHome().getSetDefaultCommandMessageTypeForm();
+        var commandForm = CoreUtil.getHome().getSetDefaultCommandMessageTypeForm();
 
         commandForm.setCommandMessageTypeName(request.getParameter(ParameterConstants.COMMAND_MESSAGE_TYPE_NAME));
 

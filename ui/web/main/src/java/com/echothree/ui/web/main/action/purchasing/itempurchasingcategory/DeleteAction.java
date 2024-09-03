@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteItemPurchasingCategoryForm commandForm = VendorUtil.getHome().getDeleteItemPurchasingCategoryForm();
-            String itemPurchasingCategoryName = request.getParameter(ParameterConstants.ITEM_PURCHASING_CATEGORY_NAME);
+            var commandForm = VendorUtil.getHome().getDeleteItemPurchasingCategoryForm();
+            var itemPurchasingCategoryName = request.getParameter(ParameterConstants.ITEM_PURCHASING_CATEGORY_NAME);
             
             commandForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
             

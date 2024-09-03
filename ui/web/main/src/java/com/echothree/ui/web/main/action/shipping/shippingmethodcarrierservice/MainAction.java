@@ -55,18 +55,18 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String shippingMethodName = request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME);
-            String carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
-            String carrierServiceName = request.getParameter(ParameterConstants.CARRIER_SERVICE_NAME);
-            GetShippingMethodCarrierServicesForm commandForm = ShippingUtil.getHome().getGetShippingMethodCarrierServicesForm();
+            var shippingMethodName = request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME);
+            var carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
+            var carrierServiceName = request.getParameter(ParameterConstants.CARRIER_SERVICE_NAME);
+            var commandForm = ShippingUtil.getHome().getGetShippingMethodCarrierServicesForm();
             
             commandForm.setShippingMethodName(shippingMethodName);
             commandForm.setCarrierName(carrierName);
             commandForm.setCarrierServiceName(carrierServiceName);
-            
-            CommandResult commandResult = ShippingUtil.getHome().getShippingMethodCarrierServices(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetShippingMethodCarrierServicesResult result = (GetShippingMethodCarrierServicesResult)executionResult.getResult();
+
+            var commandResult = ShippingUtil.getHome().getShippingMethodCarrierServices(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetShippingMethodCarrierServicesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SHIPPING_METHOD, result.getShippingMethod());
             request.setAttribute(AttributeConstants.CARRIER_SERVICE, result.getCarrierService());

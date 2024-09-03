@@ -61,16 +61,16 @@ public class PartyCreditLimitEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
+        var customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
         
         try {
-            String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-            String currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
+            var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+            var currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
             
             if(forwardKey == null) {
-                PartyCreditLimitEditActionForm actionForm = (PartyCreditLimitEditActionForm)form;
-                EditPartyCreditLimitForm commandForm = TermUtil.getHome().getEditPartyCreditLimitForm();
-                PartyCreditLimitSpec spec = TermUtil.getHome().getPartyCreditLimitSpec();
+                var actionForm = (PartyCreditLimitEditActionForm)form;
+                var commandForm = TermUtil.getHome().getEditPartyCreditLimitForm();
+                var spec = TermUtil.getHome().getPartyCreditLimitSpec();
                 
                 if(partyName == null)
                     partyName = actionForm.getPartyName();
@@ -84,20 +84,20 @@ public class PartyCreditLimitEditAction
                 spec.setCurrencyIsoName(currencyIsoName);
                 
                 if(wasPost(request)) {
-                    PartyCreditLimitEdit edit = TermUtil.getHome().getPartyCreditLimitEdit();
+                    var edit = TermUtil.getHome().getPartyCreditLimitEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setPotentialCreditLimit(actionForm.getPotentialCreditLimit());
                     edit.setCreditLimit(actionForm.getCreditLimit());
-                    
-                    CommandResult commandResult = TermUtil.getHome().editPartyCreditLimit(getUserVisitPK(request), commandForm);
+
+                    var commandResult = TermUtil.getHome().editPartyCreditLimit(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditPartyCreditLimitResult result = (EditPartyCreditLimitResult)executionResult.getResult();
+                            var result = (EditPartyCreditLimitResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -110,13 +110,13 @@ public class PartyCreditLimitEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = TermUtil.getHome().editPartyCreditLimit(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditPartyCreditLimitResult result = (EditPartyCreditLimitResult)executionResult.getResult();
+
+                    var commandResult = TermUtil.getHome().editPartyCreditLimit(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditPartyCreditLimitResult)executionResult.getResult();
                     
                     if(result != null) {
-                        PartyCreditLimitEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setPartyName(partyName);
@@ -137,8 +137,8 @@ public class PartyCreditLimitEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CUSTOMER_NAME, customerName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

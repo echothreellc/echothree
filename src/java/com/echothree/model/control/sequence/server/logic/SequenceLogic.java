@@ -89,7 +89,7 @@ public class SequenceLogic
                     if(value == null) {
                         var maskChars = mask.toCharArray();
                         var maskLength = mask.length();
-                        StringBuilder valueBuilder = new StringBuilder(maskLength);
+                        var valueBuilder = new StringBuilder(maskLength);
 
                         for(var index = 0; index < maskLength; index++) {
                             var maskChar = maskChars[index];

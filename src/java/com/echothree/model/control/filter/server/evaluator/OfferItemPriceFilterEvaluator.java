@@ -146,7 +146,7 @@ public class OfferItemPriceFilterEvaluator
         
         if(useFilterStep) {
             var filterStepElementDetails = cachedFilter.getFilterStepElementDetailsByFilterStep(filterStep);
-            TreeSet<FilteredItemFixedPrice> evaluatedPrices = new TreeSet<>();
+            var evaluatedPrices = new TreeSet<FilteredItemFixedPrice>();
             
             for(var filterStepElementDetail : filterStepElementDetails) {
                 if(BaseFilterEvaluatorDebugFlags.OfferItemPriceFilterEvaluator)
@@ -175,8 +175,8 @@ public class OfferItemPriceFilterEvaluator
     protected FilteredItemFixedPrice evaluateFilterSteps(List<FilterStep> nextFilterSteps, FilteredItemFixedPrice filteredItemFixedPrice) {
         if(BaseFilterEvaluatorDebugFlags.OfferItemPriceFilterEvaluator)
             log.info(">>> OfferItemPriceFilterEvaluator.evaluateFilterSteps, nextFilterSteps.size() = " + nextFilterSteps.size());
-        
-        TreeSet<FilteredItemFixedPrice> evaluatedPrices = new TreeSet<>();
+
+        var evaluatedPrices = new TreeSet<FilteredItemFixedPrice>();
         for(var filterStep : nextFilterSteps) {
             var evaluatedPrice = evaluateFilterStep(filterStep, filteredItemFixedPrice);
             
@@ -210,8 +210,8 @@ public class OfferItemPriceFilterEvaluator
         var unitOfMeasureType = itemPrice.getUnitOfMeasureType();
         var currency = itemPrice.getCurrency();
         listUnitPrice = itemFixedPrice.getUnitPrice();
-        
-        FilteredItemFixedPrice filteredItemFixedPrice = new FilteredItemFixedPrice(item, unitOfMeasureType, currency, listUnitPrice);
+
+        var filteredItemFixedPrice = new FilteredItemFixedPrice(item, unitOfMeasureType, currency, listUnitPrice);
         
         if(filter != null) {
             var filterDetail = filter.getLastDetail();

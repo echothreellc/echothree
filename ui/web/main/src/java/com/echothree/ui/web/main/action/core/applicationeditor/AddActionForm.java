@@ -44,14 +44,14 @@ public class AddActionForm
     private void setupEditorChoices()
             throws NamingException {
         if(editorChoices == null) {
-            GetEditorChoicesForm commandForm = CoreUtil.getHome().getGetEditorChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetEditorChoicesForm();
 
             commandForm.setDefaultEditorChoice(editorChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getEditorChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEditorChoicesResult getEditorChoicesResult = (GetEditorChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getEditorChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getEditorChoicesResult = (GetEditorChoicesResult)executionResult.getResult();
             editorChoices = getEditorChoicesResult.getEditorChoices();
 
             if(editorChoice == null) {

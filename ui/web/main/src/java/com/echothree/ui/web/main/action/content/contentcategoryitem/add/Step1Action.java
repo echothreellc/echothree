@@ -62,15 +62,15 @@ public class Step1Action
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContentCategoryForm commandForm = ContentUtil.getHome().getGetContentCategoryForm();
+        var commandForm = ContentUtil.getHome().getGetContentCategoryForm();
 
         commandForm.setContentCollectionName(actionForm.getContentCollectionName());
         commandForm.setContentCatalogName(actionForm.getContentCatalogName());
         commandForm.setContentCategoryName(actionForm.getContentCategoryName());
 
-        CommandResult commandResult = ContentUtil.getHome().getContentCategory(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetContentCategoryResult result = (GetContentCategoryResult)executionResult.getResult();
+        var commandResult = ContentUtil.getHome().getContentCategory(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetContentCategoryResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CONTENT_CATEGORY, result.getContentCategory());
     }
@@ -83,7 +83,7 @@ public class Step1Action
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+        var commandForm = ItemUtil.getHome().getGetItemForm();
 
         commandForm.setItemName(actionForm.getItemName());
 

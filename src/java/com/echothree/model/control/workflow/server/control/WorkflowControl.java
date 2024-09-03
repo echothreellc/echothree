@@ -965,7 +965,7 @@ public class WorkflowControl
     
     public WorkflowStepChoicesBean getWorkflowStepChoices(String defaultWorkflowStepChoice, Language language,
             boolean allowNullChoice, Workflow workflow) {
-        WorkflowStepChoicesBean workflowStepChoicesBean = new WorkflowStepChoicesBean();
+        var workflowStepChoicesBean = new WorkflowStepChoicesBean();
         
         getWorkflowStepChoices(workflowStepChoicesBean, defaultWorkflowStepChoice, language, allowNullChoice, workflow);
         

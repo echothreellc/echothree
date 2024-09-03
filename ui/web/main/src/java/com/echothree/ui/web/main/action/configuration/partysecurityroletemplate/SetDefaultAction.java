@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultPartySecurityRoleTemplateForm commandForm = SecurityUtil.getHome().getSetDefaultPartySecurityRoleTemplateForm();
-            String partySecurityRoleTemplateName = request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME);
+            var commandForm = SecurityUtil.getHome().getSetDefaultPartySecurityRoleTemplateForm();
+            var partySecurityRoleTemplateName = request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME);
             
             commandForm.setPartySecurityRoleTemplateName(partySecurityRoleTemplateName);
             

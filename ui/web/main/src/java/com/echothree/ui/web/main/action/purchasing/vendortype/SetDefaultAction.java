@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultVendorTypeForm commandForm = VendorUtil.getHome().getSetDefaultVendorTypeForm();
-            String vendorTypeName = request.getParameter(ParameterConstants.VENDOR_TYPE_NAME);
+            var commandForm = VendorUtil.getHome().getSetDefaultVendorTypeForm();
+            var vendorTypeName = request.getParameter(ParameterConstants.VENDOR_TYPE_NAME);
             
             commandForm.setVendorTypeName(vendorTypeName);
             

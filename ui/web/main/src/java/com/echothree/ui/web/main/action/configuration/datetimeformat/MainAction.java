@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = PartyUtil.getHome().getDateTimeFormats(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetDateTimeFormatsResult result = (GetDateTimeFormatsResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getDateTimeFormats(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetDateTimeFormatsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.DATE_TIME_FORMATS, result.getDateTimeFormats());
             forwardKey = ForwardConstants.DISPLAY;

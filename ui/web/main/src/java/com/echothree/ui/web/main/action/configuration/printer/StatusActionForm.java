@@ -43,14 +43,14 @@ public class StatusActionForm
     public void setupPrinterStatusChoices()
             throws NamingException {
         if(printerStatusChoices == null) {
-            GetPrinterStatusChoicesForm form = PrinterUtil.getHome().getGetPrinterStatusChoicesForm();
+            var form = PrinterUtil.getHome().getGetPrinterStatusChoicesForm();
 
             form.setPrinterName(printerName);
             form.setDefaultPrinterStatusChoice(printerStatusChoice);
 
-            CommandResult commandResult = PrinterUtil.getHome().getPrinterStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterStatusChoicesResult getPrinterStatusChoicesResult = (GetPrinterStatusChoicesResult)executionResult.getResult();
+            var commandResult = PrinterUtil.getHome().getPrinterStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getPrinterStatusChoicesResult = (GetPrinterStatusChoicesResult)executionResult.getResult();
             printerStatusChoices = getPrinterStatusChoicesResult.getPrinterStatusChoices();
 
             if(printerStatusChoice == null)

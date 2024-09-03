@@ -54,10 +54,10 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetScalesForm commandForm = ScaleUtil.getHome().getGetScalesForm();
-            CommandResult commandResult = ScaleUtil.getHome().getScales(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetScalesResult result = (GetScalesResult)executionResult.getResult();
+            var commandForm = ScaleUtil.getHome().getGetScalesForm();
+            var commandResult = ScaleUtil.getHome().getScales(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetScalesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SCALES, result.getScales());
             forwardKey = ForwardConstants.DISPLAY;

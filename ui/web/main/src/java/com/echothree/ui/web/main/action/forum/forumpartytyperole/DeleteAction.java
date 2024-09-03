@@ -50,16 +50,16 @@ public class DeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
-        DeleteForumPartyTypeRoleForm commandForm = ForumUtil.getHome().getDeleteForumPartyTypeRoleForm();
+        var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+        var commandForm = ForumUtil.getHome().getDeleteForumPartyTypeRoleForm();
         
         commandForm.setForumName(forumName);
         commandForm.setPartyTypeName(request.getParameter(ParameterConstants.PARTY_TYPE_NAME));
         commandForm.setForumRoleTypeName(request.getParameter(ParameterConstants.FORUM_ROLE_TYPE_NAME));
         
         ForumUtil.getHome().deleteForumPartyTypeRole(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.FORUM_NAME, forumName);

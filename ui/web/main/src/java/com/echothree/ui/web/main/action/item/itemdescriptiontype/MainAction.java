@@ -54,7 +54,7 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetItemDescriptionTypesForm commandForm = ItemUtil.getHome().getGetItemDescriptionTypesForm();
+        var commandForm = ItemUtil.getHome().getGetItemDescriptionTypesForm();
 
         Set<String> options = new HashSet<>();
         options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
@@ -62,10 +62,10 @@ public class MainAction
         options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ItemUtil.getHome().getItemDescriptionTypes(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getItemDescriptionTypes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemDescriptionTypesResult result = (GetItemDescriptionTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemDescriptionTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ITEM_DESCRIPTION_TYPES, result.getItemDescriptionTypes());
             forwardKey = ForwardConstants.DISPLAY;

@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultSkillTypeForm commandForm = EmployeeUtil.getHome().getSetDefaultSkillTypeForm();
-            String skillTypeName = request.getParameter(ParameterConstants.SKILL_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getSetDefaultSkillTypeForm();
+            var skillTypeName = request.getParameter(ParameterConstants.SKILL_TYPE_NAME);
             
             commandForm.setSkillTypeName(skillTypeName);
             

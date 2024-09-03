@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            String sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
-            DeleteSequenceTypeForm commandForm = SequenceUtil.getHome().getDeleteSequenceTypeForm();
+            var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
+            var commandForm = SequenceUtil.getHome().getDeleteSequenceTypeForm();
             
             commandForm.setSequenceTypeName(sequenceTypeName);
             

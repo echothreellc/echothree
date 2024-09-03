@@ -57,17 +57,17 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetPartyTypesForm commandForm = PartyUtil.getHome().getGetPartyTypesForm();
+            var commandForm = PartyUtil.getHome().getGetPartyTypesForm();
             
             Set<String> options = new HashSet<>();
             options.add(PartyOptions.PartyTypeIncludeAuditPolicy);
             options.add(PartyOptions.PartyTypeIncludeLockoutPolicy);
             options.add(PartyOptions.PartyTypeIncludePasswordStringPolicy);
             commandForm.setOptions(options);
-            
-            CommandResult commandResult = PartyUtil.getHome().getPartyTypes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyTypesResult result = (GetPartyTypesResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().getPartyTypes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PARTY_TYPES, result.getPartyTypes());
             forwardKey = ForwardConstants.DISPLAY;

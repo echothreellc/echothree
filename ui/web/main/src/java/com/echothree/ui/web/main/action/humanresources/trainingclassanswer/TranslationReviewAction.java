@@ -53,20 +53,20 @@ public class TranslationReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetTrainingClassAnswerTranslationForm commandForm = TrainingUtil.getHome().getGetTrainingClassAnswerTranslationForm();
+        var commandForm = TrainingUtil.getHome().getGetTrainingClassAnswerTranslationForm();
 
         commandForm.setTrainingClassName(request.getParameter(ParameterConstants.TRAINING_CLASS_NAME));
         commandForm.setTrainingClassSectionName(request.getParameter(ParameterConstants.TRAINING_CLASS_SECTION_NAME));
         commandForm.setTrainingClassQuestionName(request.getParameter(ParameterConstants.TRAINING_CLASS_QUESTION_NAME));
         commandForm.setTrainingClassAnswerName(request.getParameter(ParameterConstants.TRAINING_CLASS_ANSWER_NAME));
         commandForm.setLanguageIsoName(request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME));
-        
-        CommandResult commandResult = TrainingUtil.getHome().getTrainingClassAnswerTranslation(getUserVisitPK(request), commandForm);
+
+        var commandResult = TrainingUtil.getHome().getTrainingClassAnswerTranslation(getUserVisitPK(request), commandForm);
         TrainingClassAnswerTranslationTransfer trainingClassAnswerTranslation = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTrainingClassAnswerTranslationResult result = (GetTrainingClassAnswerTranslationResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTrainingClassAnswerTranslationResult)executionResult.getResult();
             
             trainingClassAnswerTranslation = result.getTrainingClassAnswerTranslation();
         }

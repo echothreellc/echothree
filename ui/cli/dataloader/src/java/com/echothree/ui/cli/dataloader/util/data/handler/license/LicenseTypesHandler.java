@@ -46,7 +46,7 @@ public class LicenseTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("licenseType")) {
-            CreateLicenseTypeForm commandForm = LicenseFormFactory.getCreateLicenseTypeForm();
+            var commandForm = LicenseFormFactory.getCreateLicenseTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetItemAliasTypeForm commandForm = ItemUtil.getHome().getGetItemAliasTypeForm();
+        var commandForm = ItemUtil.getHome().getGetItemAliasTypeForm();
 
         commandForm.setItemAliasTypeName(request.getParameter(ParameterConstants.ITEM_ALIAS_TYPE_NAME));
-        
-        CommandResult commandResult = ItemUtil.getHome().getItemAliasType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getItemAliasType(getUserVisitPK(request), commandForm);
         ItemAliasTypeTransfer itemAliasType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemAliasTypeResult result = (GetItemAliasTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemAliasTypeResult)executionResult.getResult();
             
             itemAliasType = result.getItemAliasType();
         }

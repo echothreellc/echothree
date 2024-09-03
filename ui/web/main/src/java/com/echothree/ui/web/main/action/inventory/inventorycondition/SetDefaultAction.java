@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultInventoryConditionForm commandForm = InventoryUtil.getHome().getSetDefaultInventoryConditionForm();
-            String inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
+            var commandForm = InventoryUtil.getHome().getSetDefaultInventoryConditionForm();
+            var inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
             
             commandForm.setInventoryConditionName(inventoryConditionName);
             

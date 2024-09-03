@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetItemPurchasingCategoryForm commandForm = VendorUtil.getHome().getGetItemPurchasingCategoryForm();
-            String itemPurchasingCategoryName = request.getParameter(ParameterConstants.ITEM_PURCHASING_CATEGORY_NAME);
+            var commandForm = VendorUtil.getHome().getGetItemPurchasingCategoryForm();
+            var itemPurchasingCategoryName = request.getParameter(ParameterConstants.ITEM_PURCHASING_CATEGORY_NAME);
             
             commandForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
-            
-            CommandResult commandResult = VendorUtil.getHome().getItemPurchasingCategory(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemPurchasingCategoryResult result = (GetItemPurchasingCategoryResult)executionResult.getResult();
+
+            var commandResult = VendorUtil.getHome().getItemPurchasingCategory(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemPurchasingCategoryResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ITEM_PURCHASING_CATEGORY, result.getItemPurchasingCategory());
             forwardKey = ForwardConstants.DISPLAY;

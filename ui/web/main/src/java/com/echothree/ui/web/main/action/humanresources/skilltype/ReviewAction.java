@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetSkillTypeForm commandForm = EmployeeUtil.getHome().getGetSkillTypeForm();
-            String skillTypeName = request.getParameter(ParameterConstants.SKILL_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getGetSkillTypeForm();
+            var skillTypeName = request.getParameter(ParameterConstants.SKILL_TYPE_NAME);
             
             commandForm.setSkillTypeName(skillTypeName);
-            
-            CommandResult commandResult = EmployeeUtil.getHome().getSkillType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSkillTypeResult result = (GetSkillTypeResult)executionResult.getResult();
+
+            var commandResult = EmployeeUtil.getHome().getSkillType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSkillTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SKILL_TYPE, result.getSkillType());
             forwardKey = ForwardConstants.DISPLAY;

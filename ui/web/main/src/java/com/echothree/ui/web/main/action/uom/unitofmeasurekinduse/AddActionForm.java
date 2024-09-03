@@ -51,14 +51,14 @@ public class AddActionForm
     private void setupUnitOfMeasureKindChoices()
             throws NamingException {
         if(unitOfMeasureKindChoices == null) {
-            GetUnitOfMeasureKindChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureKindChoicesForm();
+            var form = UomUtil.getHome().getGetUnitOfMeasureKindChoicesForm();
 
             form.setDefaultUnitOfMeasureKindChoice(unitOfMeasureKindChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureKindChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureKindChoicesResult getUnitOfMeasureKindChoicesResult = (GetUnitOfMeasureKindChoicesResult)executionResult.getResult();
+            var commandResult = UomUtil.getHome().getUnitOfMeasureKindChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureKindChoicesResult = (GetUnitOfMeasureKindChoicesResult)executionResult.getResult();
             unitOfMeasureKindChoices = getUnitOfMeasureKindChoicesResult.getUnitOfMeasureKindChoices();
 
             if(unitOfMeasureKindChoice == null) {
@@ -70,14 +70,14 @@ public class AddActionForm
     private void setupUnitOfMeasureKindUseTypeChoices()
             throws NamingException {
         if(unitOfMeasureKindUseTypeChoices == null) {
-            GetUnitOfMeasureKindUseTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureKindUseTypeChoicesForm();
+            var form = UomUtil.getHome().getGetUnitOfMeasureKindUseTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureKindUseTypeChoice(unitOfMeasureKindUseTypeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureKindUseTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureKindUseTypeChoicesResult getUnitOfMeasureKindUseTypeChoicesResult = (GetUnitOfMeasureKindUseTypeChoicesResult)executionResult.getResult();
+            var commandResult = UomUtil.getHome().getUnitOfMeasureKindUseTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureKindUseTypeChoicesResult = (GetUnitOfMeasureKindUseTypeChoicesResult)executionResult.getResult();
             unitOfMeasureKindUseTypeChoices = getUnitOfMeasureKindUseTypeChoicesResult.getUnitOfMeasureKindUseTypeChoices();
 
             if(unitOfMeasureKindUseTypeChoice == null) {

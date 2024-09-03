@@ -41,15 +41,15 @@ public class StatusActionForm
     public void setupItemStatusChoices() {
         if(itemStatusChoices == null) {
             try {
-                GetItemStatusChoicesForm form = ItemUtil.getHome().getGetItemStatusChoicesForm();
+                var form = ItemUtil.getHome().getGetItemStatusChoicesForm();
                 
                 form.setItemName(itemName);
                 form.setDefaultItemStatusChoice(itemStatusChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ItemUtil.getHome().getItemStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemStatusChoicesResult result = (GetItemStatusChoicesResult)executionResult.getResult();
+
+                var commandResult = ItemUtil.getHome().getItemStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemStatusChoicesResult)executionResult.getResult();
                 itemStatusChoices = result.getItemStatusChoices();
                 
                 if(itemStatusChoice == null)

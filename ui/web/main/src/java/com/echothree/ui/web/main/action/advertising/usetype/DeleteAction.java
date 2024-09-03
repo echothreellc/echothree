@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteUseTypeForm commandForm = OfferUtil.getHome().getDeleteUseTypeForm();
-            String useTypeName = request.getParameter(ParameterConstants.USE_TYPE_NAME);
+            var commandForm = OfferUtil.getHome().getDeleteUseTypeForm();
+            var useTypeName = request.getParameter(ParameterConstants.USE_TYPE_NAME);
             
             commandForm.setUseTypeName(useTypeName);
             

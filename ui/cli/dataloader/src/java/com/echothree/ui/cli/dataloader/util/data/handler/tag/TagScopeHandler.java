@@ -52,9 +52,9 @@ public class TagScopeHandler
         if(localName.equals("tagScopeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -62,7 +62,7 @@ public class TagScopeHandler
             }
             
             try {
-                CreateTagScopeDescriptionForm commandForm = TagFormFactory.getCreateTagScopeDescriptionForm();
+                var commandForm = TagFormFactory.getCreateTagScopeDescriptionForm();
                 
                 commandForm.setTagScopeName(tagScopeName);
                 commandForm.setLanguageIsoName(languageIsoName);
@@ -75,9 +75,9 @@ public class TagScopeHandler
         } else if(localName.equals("tagScopeEntityType")) {
             String componentVendorName = null;
             String entityTypeName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("componentVendorName"))
                     componentVendorName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("entityTypeName"))
@@ -85,7 +85,7 @@ public class TagScopeHandler
             }
             
             try {
-                CreateTagScopeEntityTypeForm commandForm = TagFormFactory.getCreateTagScopeEntityTypeForm();
+                var commandForm = TagFormFactory.getCreateTagScopeEntityTypeForm();
                 
                 commandForm.setTagScopeName(tagScopeName);
                 commandForm.setComponentVendorName(componentVendorName);
@@ -97,15 +97,15 @@ public class TagScopeHandler
             }
         } else if(localName.equals("tag")) {
             String tagName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("tagName"))
                     tagName = attrs.getValue(i);
             }
             
             try {
-                CreateTagForm commandForm = TagFormFactory.getCreateTagForm();
+                var commandForm = TagFormFactory.getCreateTagForm();
                 
                 commandForm.setTagScopeName(tagScopeName);
                 commandForm.setTagName(tagName);

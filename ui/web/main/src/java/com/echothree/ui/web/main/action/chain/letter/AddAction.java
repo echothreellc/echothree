@@ -54,11 +54,11 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
         
         if(wasPost(request)) {
-            CreateLetterForm commandForm = LetterUtil.getHome().getCreateLetterForm();
+            var commandForm = LetterUtil.getHome().getCreateLetterForm();
             
             if(chainKindName == null) {
                 chainKindName = actionForm.getChainKindName();
@@ -76,8 +76,8 @@ public class AddAction
             commandForm.setIsDefault(actionForm.getIsDefault().toString());
             commandForm.setSortOrder(actionForm.getSortOrder());
             commandForm.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = LetterUtil.getHome().createLetter(getUserVisitPK(request), commandForm);
+
+            var commandResult = LetterUtil.getHome().createLetter(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -91,8 +91,8 @@ public class AddAction
             actionForm.setSortOrder("1");
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CHAIN_KIND_NAME, chainKindName);
             request.setAttribute(AttributeConstants.CHAIN_TYPE_NAME, chainTypeName);

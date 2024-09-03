@@ -55,7 +55,7 @@ public class DescriptionEditAction
     @Override
     protected TagScopeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        TagScopeDescriptionSpec spec = TagUtil.getHome().getTagScopeDescriptionSpec();
+        var spec = TagUtil.getHome().getTagScopeDescriptionSpec();
         
         spec.setTagScopeName(findParameter(request, ParameterConstants.TAG_SCOPE_NAME, actionForm.getTagScopeName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -66,7 +66,7 @@ public class DescriptionEditAction
     @Override
     protected TagScopeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        TagScopeDescriptionEdit edit = TagUtil.getHome().getTagScopeDescriptionEdit();
+        var edit = TagUtil.getHome().getTagScopeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 
@@ -89,11 +89,11 @@ public class DescriptionEditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditTagScopeDescriptionForm commandForm)
             throws Exception {
-        CommandResult commandResult = TagUtil.getHome().editTagScopeDescription(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditTagScopeDescriptionResult result = (EditTagScopeDescriptionResult)executionResult.getResult();
+        var commandResult = TagUtil.getHome().editTagScopeDescription(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditTagScopeDescriptionResult)executionResult.getResult();
 
-        TagScopeDescriptionTransfer tagScopeDescription = result.getTagScopeDescription();
+        var tagScopeDescription = result.getTagScopeDescription();
         if(tagScopeDescription != null) {
             request.setAttribute(AttributeConstants.TAG_SCOPE, tagScopeDescription.getTagScope());
         }
@@ -109,14 +109,14 @@ public class DescriptionEditAction
     @Override
     public void setupTransfer(DescriptionEditActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTagScopeForm commandForm = TagUtil.getHome().getGetTagScopeForm();
+        var commandForm = TagUtil.getHome().getGetTagScopeForm();
 
         commandForm.setTagScopeName(actionForm.getTagScopeName());
-        
-        CommandResult commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
+
+        var commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTagScopeResult result = (GetTagScopeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTagScopeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TAG_SCOPE, result.getTagScope());
         }

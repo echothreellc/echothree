@@ -107,7 +107,7 @@ public class SearchWarehousesCommand
                 if(!hasExecutionErrors()) {
                     var searchLogic = SearchLogic.getInstance();
                     var userVisit = getUserVisit();
-                    WarehouseSearchEvaluator warehouseSearchEvaluator = new WarehouseSearchEvaluator(userVisit, searchType,
+                    var warehouseSearchEvaluator = new WarehouseSearchEvaluator(userVisit, searchType,
                             searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind),
                             searchLogic.getDefaultSearchSortDirection(null));
                     var createdSince = form.getCreatedSince();

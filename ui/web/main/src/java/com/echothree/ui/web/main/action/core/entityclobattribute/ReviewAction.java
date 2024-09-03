@@ -56,7 +56,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetEntityClobAttributeForm commandForm = CoreUtil.getHome().getGetEntityClobAttributeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityClobAttributeForm();
 
         commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));
         commandForm.setEntityAttributeName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME));
@@ -66,14 +66,14 @@ public class ReviewAction
         options.add(CoreOptions.EntityClobAttributeIncludeClob);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = CoreUtil.getHome().getEntityClobAttribute(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getEntityClobAttribute(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityClobAttributeResult result = (GetEntityClobAttributeResult)executionResult.getResult();
-            EntityClobAttributeTransfer entityClobAttribute = result.getEntityClobAttribute();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityClobAttributeResult)executionResult.getResult();
+            var entityClobAttribute = result.getEntityClobAttribute();
 
             if(entityClobAttribute != null) {
-                String contextPath = request.getContextPath();
+                var contextPath = request.getContextPath();
                 
                 request.setAttribute(AttributeConstants.ENTITY_CLOB_ATTRIBUTE, entityClobAttribute);
                 request.setAttribute(AttributeConstants.RETURN_URL, (contextPath.length() == 0 ? "" : contextPath + "/") + request.getParameter(ParameterConstants.RETURN_URL));

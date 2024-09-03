@@ -55,15 +55,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
-            GetPostalAddressFormatDescriptionsForm commandForm = ContactUtil.getHome().getGetPostalAddressFormatDescriptionsForm();
+            var postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
+            var commandForm = ContactUtil.getHome().getGetPostalAddressFormatDescriptionsForm();
             
             commandForm.setPostalAddressFormatName(postalAddressFormatName);
-            
-            CommandResult commandResult = ContactUtil.getHome().getPostalAddressFormatDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPostalAddressFormatDescriptionsResult result = (GetPostalAddressFormatDescriptionsResult)executionResult.getResult();
-            PostalAddressFormatTransfer postalAddressFormat = result.getPostalAddressFormat();
+
+            var commandResult = ContactUtil.getHome().getPostalAddressFormatDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPostalAddressFormatDescriptionsResult)executionResult.getResult();
+            var postalAddressFormat = result.getPostalAddressFormat();
             
             request.setAttribute("postalAddressFormat", postalAddressFormat);
             request.setAttribute("postalAddressFormatDescriptions", result.getPostalAddressFormatDescriptions());

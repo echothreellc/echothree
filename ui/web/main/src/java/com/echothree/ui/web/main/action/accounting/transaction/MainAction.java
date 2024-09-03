@@ -56,21 +56,21 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        GetTransactionsForm commandForm = AccountingUtil.getHome().getGetTransactionsForm();
-        String transactionGroupName = request.getParameter(ParameterConstants.TRANSACTION_GROUP_NAME);
+        var commandForm = AccountingUtil.getHome().getGetTransactionsForm();
+        var transactionGroupName = request.getParameter(ParameterConstants.TRANSACTION_GROUP_NAME);
 
         commandForm.setTransactionGroupName(transactionGroupName);
         
         Set<String> commandFormOptions = new HashSet<>();
         commandFormOptions.add(PartyOptions.PartyIncludeDescription);
         commandForm.setOptions(commandFormOptions);
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactions(getUserVisitPK(request), commandForm);
+
+        var commandResult = AccountingUtil.getHome().getTransactions(getUserVisitPK(request), commandForm);
         GetTransactionsResult result = null;
         TransactionGroupTransfer transactionGroup = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
+            var executionResult = commandResult.getExecutionResult();
             
             result = (GetTransactionsResult)executionResult.getResult();
             transactionGroup = result.getTransactionGroup();

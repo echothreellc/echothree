@@ -50,7 +50,7 @@ public class SequenceEncoderTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("sequenceEncoderTypeDescription")) {
-            CreateSequenceEncoderTypeDescriptionForm commandForm = SequenceFormFactory.getCreateSequenceEncoderTypeDescriptionForm();
+            var commandForm = SequenceFormFactory.getCreateSequenceEncoderTypeDescriptionForm();
 
             commandForm.setSequenceEncoderTypeName(sequenceEncoderTypeName);
             commandForm.set(getAttrsMap(attrs));

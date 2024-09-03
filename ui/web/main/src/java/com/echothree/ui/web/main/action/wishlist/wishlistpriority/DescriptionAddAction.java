@@ -56,15 +56,15 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
-        String wishlistPriorityName = request.getParameter(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME);
+        var wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
+        var wishlistPriorityName = request.getParameter(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateWishlistPriorityDescriptionForm commandForm = WishlistUtil.getHome().getCreateWishlistPriorityDescriptionForm();
+                    var commandForm = WishlistUtil.getHome().getCreateWishlistPriorityDescriptionForm();
                     
                     if(wishlistTypeName == null)
                         wishlistTypeName = actionForm.getWishlistTypeName();
@@ -75,8 +75,8 @@ public class DescriptionAddAction
                     commandForm.setWishlistPriorityName(wishlistPriorityName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = WishlistUtil.getHome().createWishlistPriorityDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = WishlistUtil.getHome().createWishlistPriorityDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -93,8 +93,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WISHLIST_TYPE_NAME, wishlistTypeName);
             request.setAttribute(AttributeConstants.WISHLIST_TYPE_PRIORITY_NAME, wishlistPriorityName);

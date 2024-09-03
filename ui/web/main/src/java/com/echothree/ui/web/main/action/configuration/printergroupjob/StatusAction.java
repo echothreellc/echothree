@@ -56,12 +56,12 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
+        var printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
         
         try {
-            String printerGroupJobName = request.getParameter(ParameterConstants.PRINTER_GROUP_JOB_NAME);
-            StatusActionForm actionForm = (StatusActionForm)form;
-            SetPrinterGroupJobStatusForm commandForm = PrinterUtil.getHome().getSetPrinterGroupJobStatusForm();
+            var printerGroupJobName = request.getParameter(ParameterConstants.PRINTER_GROUP_JOB_NAME);
+            var actionForm = (StatusActionForm)form;
+            var commandForm = PrinterUtil.getHome().getSetPrinterGroupJobStatusForm();
             
             if(printerGroupName == null)
                 printerGroupName = actionForm.getPrinterGroupName();
@@ -71,8 +71,8 @@ public class StatusAction
             if(wasPost(request)) {
                 commandForm.setPrinterGroupJobName(printerGroupJobName);
                 commandForm.setPrinterGroupJobStatusChoice(actionForm.getPrinterGroupJobStatusChoice());
-                
-                CommandResult commandResult = PrinterUtil.getHome().setPrinterGroupJobStatus(getUserVisitPK(request), commandForm);
+
+                var commandResult = PrinterUtil.getHome().setPrinterGroupJobStatus(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);
@@ -89,8 +89,8 @@ public class StatusAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.PRINTER_GROUP_NAME, printerGroupName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

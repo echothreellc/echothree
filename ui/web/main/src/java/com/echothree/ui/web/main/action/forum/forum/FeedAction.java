@@ -81,8 +81,8 @@ public class FeedAction
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         StreamInfo streamInfo;
-        GetForumThreadsForm commandForm = ForumUtil.getHome().getGetForumThreadsForm();
-        String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+        var commandForm = ForumUtil.getHome().getGetForumThreadsForm();
+        var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
         
         commandForm.setForumName(forumName);
         commandForm.setIncludeFutureForumThreads(Boolean.TRUE.toString());
@@ -99,18 +99,18 @@ public class FeedAction
         commandFormLimits.put(ForumThreadConstants.ENTITY_TYPE_NAME, new Limit("20", null));
         commandFormLimits.put(ForumMessageConstants.ENTITY_TYPE_NAME, new Limit("1", null));
         commandForm.setLimits(commandFormLimits);
-        
-        CommandResult commandResult = ForumUtil.getHome().getForumThreads(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetForumThreadsResult result = (GetForumThreadsResult)executionResult.getResult();
-        ForumTransfer forum = result.getForum();
+
+        var commandResult = ForumUtil.getHome().getForumThreads(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetForumThreadsResult)executionResult.getResult();
+        var forum = result.getForum();
         
         if(forum != null) {
-            SyndFeed feed = getFeed(request, response, forum, result.getForumThreads());
+            var feed = getFeed(request, response, forum, result.getForumThreads());
             feed.setFeedType("rss_2.0");
 
-            SyndFeedOutput output = new SyndFeedOutput();
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(output.outputString(feed).getBytes(Charsets.UTF_8));
+            var output = new SyndFeedOutput();
+            var byteArrayInputStream = new ByteArrayInputStream(output.outputString(feed).getBytes(Charsets.UTF_8));
 
             streamInfo = new ByteArrayStreamInfo("application/rss+xml", byteArrayInputStream, null, null);
         } else {
@@ -122,7 +122,7 @@ public class FeedAction
     
     protected SyndContent attemptDescription(ForumMessageTransfer forumMessage, String forumMessagePartyType) {
         SyndContent description = null;
-        ForumMessagePartTransfer forumMessagePart = forumMessage.getForumMessageParts().getMap().get(forumMessagePartyType);
+        var forumMessagePart = forumMessage.getForumMessageParts().getMap().get(forumMessagePartyType);
         
         if(forumMessagePart != null) {
             description = new SyndContentImpl();
@@ -135,7 +135,7 @@ public class FeedAction
     }
     
     protected SyndContent attemptDescriptions(ForumMessageTransfer forumMessage) {
-        SyndContent description = attemptDescription(forumMessage, ForumConstants.ForumMessagePartType_FEED_SUMMARY);
+        var description = attemptDescription(forumMessage, ForumConstants.ForumMessagePartType_FEED_SUMMARY);
         
         if(description == null) {
             description = attemptDescription(forumMessage, ForumConstants.ForumMessagePartType_SUMMARY);
@@ -149,13 +149,13 @@ public class FeedAction
     }
     
     protected void attemptEntryAuthor(ForumMessageTransfer forumMessage, SyndEntry entry) {
-        ListWrapper<ForumMessageRoleTransfer> wrappedForumMessageRoles = forumMessage.getForumMessageRoles();
+        var wrappedForumMessageRoles = forumMessage.getForumMessageRoles();
         
         if(wrappedForumMessageRoles.getSize() > 0) {
             ForumMessageRoleTransfer author = null;
-            List<ForumMessageRoleTransfer> forumMessageRoles = wrappedForumMessageRoles.getList();
+            var forumMessageRoles = wrappedForumMessageRoles.getList();
             
-            for(ForumMessageRoleTransfer forumMessageRole: forumMessageRoles) {
+            for(var forumMessageRole: forumMessageRoles) {
                 if(forumMessageRole.getForumRoleType().getForumRoleTypeName().equals(ForumConstants.ForumRoleType_AUTHOR)) {
                     author = forumMessageRole;
                     break;
@@ -163,12 +163,12 @@ public class FeedAction
             }
             
             if(author != null) {
-                PartyTransfer party = author.getParty();
-                ProfileTransfer profile = party.getProfile();
-                StringBuilder authorBuilder = new StringBuilder();
+                var party = author.getParty();
+                var profile = party.getProfile();
+                var authorBuilder = new StringBuilder();
                 
                 if(profile != null) {
-                    String nickname = profile.getNickname();
+                    var nickname = profile.getNickname();
                     
                     if(nickname != null) {
                         authorBuilder.append(nickname);
@@ -176,11 +176,11 @@ public class FeedAction
                 }
                 
                 if(authorBuilder.length() == 0) {
-                    PersonTransfer person = party.getPerson();
+                    var person = party.getPerson();
                     
                     if(person != null) {
-                        String firstName = person.getFirstName();
-                        String lastName = person.getLastName();
+                        var firstName = person.getFirstName();
+                        var lastName = person.getLastName();
                         
                         if(firstName != null) {
                             authorBuilder.append(firstName);
@@ -206,7 +206,7 @@ public class FeedAction
     protected SyndFeed getFeed(HttpServletRequest request, HttpServletResponse response, ForumTransfer forum,
             List<ForumThreadTransfer> forumThreads)
             throws IOException, FeedException {
-        UrlUtils urlUtils = UrlUtils.getInstance();
+        var urlUtils = UrlUtils.getInstance();
         SyndFeed feed = new SyndFeedImpl();
         List<SyndEntry> entries = new ArrayList<>(forumThreads.size());
         Map<String, String> feedParameters = new HashMap<>(1);
@@ -218,13 +218,13 @@ public class FeedAction
         feed.setDescription("");
         
         forumThreads.stream().forEach((forumThread) -> {
-            ListWrapper<ForumMessageTransfer> forumMessages = forumThread.getForumMessages();
+            var forumMessages = forumThread.getForumMessages();
             if (forumMessages.getSize() > 0) {
                 SyndEntry entry = new SyndEntryImpl();
-                ForumMessageTransfer forumMessage = forumMessages.getList().get(0);
-                ForumMessagePartTransfer titleForumMessagePart = forumMessage.getForumMessageParts().getMap().get(ForumConstants.ForumMessagePartType_TITLE);
+                var forumMessage = forumMessages.getList().get(0);
+                var titleForumMessagePart = forumMessage.getForumMessageParts().getMap().get(ForumConstants.ForumMessagePartType_TITLE);
                 Map<String, String> entryParameters = new HashMap<>(1);
-                Long unformattedModifiedTime = forumMessage.getEntityInstance().getEntityTime().getUnformattedModifiedTime();
+                var unformattedModifiedTime = forumMessage.getEntityInstance().getEntityTime().getUnformattedModifiedTime();
                 
                 entry.setTitle(titleForumMessagePart.getString());
                 entryParameters.put(ParameterConstants.FORUM_THREAD_NAME, forumThread.getForumThreadName());

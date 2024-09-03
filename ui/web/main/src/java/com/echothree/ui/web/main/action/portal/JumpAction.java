@@ -51,15 +51,15 @@ public class JumpAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, JumpActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        IdentifyForm commandForm = SearchUtil.getHome().getIdentifyForm();
+        var commandForm = SearchUtil.getHome().getIdentifyForm();
         
         commandForm.setTarget(actionForm.getTarget());
-        
-        CommandResult commandResult = SearchUtil.getHome().identify(getUserVisitPK(request), commandForm);
+
+        var commandResult = SearchUtil.getHome().identify(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            IdentifyResult result = (IdentifyResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (IdentifyResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.ENTITY_INSTANCES, new ListWrapper<>(result.getEntityInstances()));
         }

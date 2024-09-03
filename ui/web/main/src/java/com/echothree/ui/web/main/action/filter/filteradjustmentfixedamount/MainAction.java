@@ -55,16 +55,16 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetFilterAdjustmentFixedAmountsForm getFilterAdjustmentFixedAmountsForm = FilterUtil.getHome().getGetFilterAdjustmentFixedAmountsForm();
-            String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-            String filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
+            var getFilterAdjustmentFixedAmountsForm = FilterUtil.getHome().getGetFilterAdjustmentFixedAmountsForm();
+            var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+            var filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
             
             getFilterAdjustmentFixedAmountsForm.setFilterKindName(filterKindName);
             getFilterAdjustmentFixedAmountsForm.setFilterAdjustmentName(filterAdjustmentName);
-            
-            CommandResult commandResult = FilterUtil.getHome().getFilterAdjustmentFixedAmounts(getUserVisitPK(request), getFilterAdjustmentFixedAmountsForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterAdjustmentFixedAmountsResult result = (GetFilterAdjustmentFixedAmountsResult)executionResult.getResult();
+
+            var commandResult = FilterUtil.getHome().getFilterAdjustmentFixedAmounts(getUserVisitPK(request), getFilterAdjustmentFixedAmountsForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetFilterAdjustmentFixedAmountsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FILTER_ADJUSTMENT, result.getFilterAdjustment());
             request.setAttribute(AttributeConstants.FILTER_ADJUSTMENT_FIXED_AMOUNTS, result.getFilterAdjustmentFixedAmounts());

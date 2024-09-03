@@ -51,14 +51,14 @@ public class PeriodKindHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("periodKindDescription")) {
-            CreatePeriodKindDescriptionForm commandForm = PeriodFormFactory.getCreatePeriodKindDescriptionForm();
+            var commandForm = PeriodFormFactory.getCreatePeriodKindDescriptionForm();
 
             commandForm.setPeriodKindName(periodKindName);
             commandForm.set(getAttrsMap(attrs));
 
             checkCommandResult(periodService.createPeriodKindDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("periodType")) {
-            CreatePeriodTypeForm commandForm = PeriodFormFactory.getCreatePeriodTypeForm();
+            var commandForm = PeriodFormFactory.getCreatePeriodTypeForm();
 
             commandForm.setPeriodKindName(periodKindName);
             commandForm.set(getAttrsMap(attrs));

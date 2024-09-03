@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetColorForm commandForm = CoreUtil.getHome().getGetColorForm();
+        var commandForm = CoreUtil.getHome().getGetColorForm();
         
         commandForm.setColorName(actionForm.getColorName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getColor(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetColorResult result = (GetColorResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getColor(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetColorResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.COLOR, result.getColor());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteColorForm commandForm = CoreUtil.getHome().getDeleteColorForm();
+        var commandForm = CoreUtil.getHome().getDeleteColorForm();
 
         commandForm.setColorName(actionForm.getColorName());
 

@@ -56,15 +56,15 @@ public class VolumeAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-        String unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                VolumeAddActionForm actionForm = (VolumeAddActionForm)form;
+                var actionForm = (VolumeAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateUnitOfMeasureTypeVolumeForm commandForm = UomUtil.getHome().getCreateUnitOfMeasureTypeVolumeForm();
+                    var commandForm = UomUtil.getHome().getCreateUnitOfMeasureTypeVolumeForm();
                     
                     if(unitOfMeasureKindName == null)
                         unitOfMeasureKindName = actionForm.getUnitOfMeasureKindName();
@@ -79,8 +79,8 @@ public class VolumeAddAction
                     commandForm.setWidthUnitOfMeasureTypeName(actionForm.getWidthUnitOfMeasureTypeChoice());
                     commandForm.setDepth(actionForm.getDepth());
                     commandForm.setDepthUnitOfMeasureTypeName(actionForm.getDepthUnitOfMeasureTypeChoice());
-                    
-                    CommandResult commandResult = UomUtil.getHome().createUnitOfMeasureTypeVolume(getUserVisitPK(request), commandForm);
+
+                    var commandResult = UomUtil.getHome().createUnitOfMeasureTypeVolume(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -97,8 +97,8 @@ public class VolumeAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_KIND_NAME, unitOfMeasureKindName);
             request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_TYPE_NAME, unitOfMeasureTypeName);

@@ -46,7 +46,7 @@ public class ItemAliasTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("itemAliasType")) {
-            CreateItemAliasTypeForm commandForm = ItemFormFactory.getCreateItemAliasTypeForm();
+            var commandForm = ItemFormFactory.getCreateItemAliasTypeForm();
             
             commandForm.set(getAttrsMap(attrs));
             

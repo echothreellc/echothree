@@ -49,18 +49,18 @@ public class EmployeesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException, NamingException {
         if(localName.equals("employee")) {
-            CreateEmployeeForm commandForm = PartyFormFactory.getCreateEmployeeForm();
+            var commandForm = PartyFormFactory.getCreateEmployeeForm();
             
             commandForm.set(getAttrsMap(attrs));
-            
-            CommandResult commandResult = partyService.createEmployee(initialDataParser.getUserVisit(), commandForm);
+
+            var commandResult = partyService.createEmployee(initialDataParser.getUserVisit(), commandForm);
             
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateEmployeeResult result = (CreateEmployeeResult)executionResult.getResult();
-                String partyName = result.getPartyName();
-                String employeeName = result.getEmployeeName();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateEmployeeResult)executionResult.getResult();
+                var partyName = result.getPartyName();
+                var employeeName = result.getEmployeeName();
+                var entityRef = result.getEntityRef();
                 
                 initialDataParser.pushHandler(new EmployeeHandler(initialDataParser, this, partyName, employeeName, entityRef));
             }

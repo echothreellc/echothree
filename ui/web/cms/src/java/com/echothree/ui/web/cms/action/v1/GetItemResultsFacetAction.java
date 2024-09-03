@@ -49,7 +49,7 @@ public class GetItemResultsFacetAction
     @Override
     protected CommandResult getCommandResult(HttpServletRequest request)
             throws Exception {
-        GetItemResultsFacetForm commandForm = SearchUtil.getHome().getGetItemResultsFacetForm();
+        var commandForm = SearchUtil.getHome().getGetItemResultsFacetForm();
 
         commandForm.setSearchTypeName(request.getParameter(ParameterConstants.SEARCH_TYPE_NAME));
         commandForm.setEntityAttributeName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME));

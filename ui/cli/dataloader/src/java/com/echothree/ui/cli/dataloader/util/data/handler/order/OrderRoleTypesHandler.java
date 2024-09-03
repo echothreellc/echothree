@@ -46,7 +46,7 @@ public class OrderRoleTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("orderRoleType")) {
-            CreateOrderRoleTypeForm commandForm = OrderFormFactory.getCreateOrderRoleTypeForm();
+            var commandForm = OrderFormFactory.getCreateOrderRoleTypeForm();
             
             commandForm.set(getAttrsMap(attrs));
             

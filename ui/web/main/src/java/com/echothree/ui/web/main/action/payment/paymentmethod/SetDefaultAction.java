@@ -47,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultPaymentMethodForm commandForm = PaymentUtil.getHome().getSetDefaultPaymentMethodForm();
+        var commandForm = PaymentUtil.getHome().getSetDefaultPaymentMethodForm();
 
         commandForm.setPaymentMethodName(request.getParameter(ParameterConstants.PAYMENT_METHOD_NAME));
 

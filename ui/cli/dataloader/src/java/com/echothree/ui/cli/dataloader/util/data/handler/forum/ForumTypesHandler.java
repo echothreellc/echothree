@@ -48,9 +48,9 @@ public class ForumTypesHandler
             String forumTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("forumTypeName"))
                     forumTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class ForumTypesHandler
             }
             
             try {
-                CreateForumTypeForm form = ForumFormFactory.getCreateForumTypeForm();
+                var form = ForumFormFactory.getCreateForumTypeForm();
                 
                 form.setForumTypeName(forumTypeName);
                 form.setIsDefault(isDefault);

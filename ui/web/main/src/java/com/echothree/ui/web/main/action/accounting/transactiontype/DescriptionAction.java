@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String transactionTypeName = request.getParameter(ParameterConstants.TRANSACTION_TYPE_NAME);
-        GetTransactionTypeDescriptionsForm commandForm = AccountingUtil.getHome().getGetTransactionTypeDescriptionsForm();
+        var transactionTypeName = request.getParameter(ParameterConstants.TRANSACTION_TYPE_NAME);
+        var commandForm = AccountingUtil.getHome().getGetTransactionTypeDescriptionsForm();
 
         commandForm.setTransactionTypeName(transactionTypeName);
 
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = AccountingUtil.getHome().getTransactionTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTransactionTypeDescriptionsResult result = (GetTransactionTypeDescriptionsResult) executionResult.getResult();
-            TransactionTypeTransfer transactionTypeTransfer = result.getTransactionType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionTypeDescriptionsResult) executionResult.getResult();
+            var transactionTypeTransfer = result.getTransactionType();
 
             request.setAttribute(AttributeConstants.TRANSACTION_TYPE, transactionTypeTransfer);
             request.setAttribute(AttributeConstants.TRANSACTION_TYPE_DESCRIPTIONS, result.getTransactionTypeDescriptions());

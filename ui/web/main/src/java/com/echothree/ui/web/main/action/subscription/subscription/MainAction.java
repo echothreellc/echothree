@@ -58,9 +58,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetSubscriptionsForm commandForm = SubscriptionUtil.getHome().getGetSubscriptionsForm();
-            String subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
-            String subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
+            var commandForm = SubscriptionUtil.getHome().getGetSubscriptionsForm();
+            var subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
+            var subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
             
             commandForm.setSubscriptionKindName(subscriptionKindName);
             commandForm.setSubscriptionTypeName(subscriptionTypeName);
@@ -69,9 +69,9 @@ public class MainAction
             options.add(PartyOptions.PartyIncludeDescription);
             commandForm.setOptions(options);
 
-            CommandResult commandResult = SubscriptionUtil.getHome().getSubscriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSubscriptionsResult result = (GetSubscriptionsResult)executionResult.getResult();
+            var commandResult = SubscriptionUtil.getHome().getSubscriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSubscriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SUBSCRIPTION_KIND, result.getSubscriptionKind());
             request.setAttribute(AttributeConstants.SUBSCRIPTION_TYPE, result.getSubscriptionType());

@@ -52,14 +52,14 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
-        String entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
-        String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-        AddActionForm actionForm = (AddActionForm)form;
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
+        var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+        var actionForm = (AddActionForm)form;
 
         if(wasPost(request)) {
-            CreateEntityBlobAttributeForm commandForm = CoreUtil.getHome().getCreateEntityBlobAttributeForm();
-            FormFile blobAttribute = actionForm.getBlobAttribute();
+            var commandForm = CoreUtil.getHome().getCreateEntityBlobAttributeForm();
+            var blobAttribute = actionForm.getBlobAttribute();
 
             if(entityRef == null)
                 entityRef = actionForm.getEntityRef();
@@ -74,7 +74,7 @@ public class AddAction
             commandForm.setMimeTypeName(blobAttribute.getContentType());
             commandForm.setBlobAttribute(new ByteArray(blobAttribute.getFileData()));
 
-            CommandResult commandResult = CoreUtil.getHome().createEntityBlobAttribute(getUserVisitPK(request), commandForm);
+            var commandResult = CoreUtil.getHome().createEntityBlobAttribute(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

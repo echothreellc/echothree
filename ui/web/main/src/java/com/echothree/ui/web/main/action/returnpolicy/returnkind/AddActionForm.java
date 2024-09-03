@@ -45,14 +45,14 @@ public class AddActionForm
     public void setupReturnSequenceTypeChoices() {
         if(returnSequenceTypeChoices == null) {
             try {
-                GetSequenceTypeChoicesForm form = SequenceUtil.getHome().getGetSequenceTypeChoicesForm();
+                var form = SequenceUtil.getHome().getGetSequenceTypeChoicesForm();
                 
                 form.setDefaultSequenceTypeChoice(returnSequenceTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceTypeChoicesResult result = (GetSequenceTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = SequenceUtil.getHome().getSequenceTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSequenceTypeChoicesResult)executionResult.getResult();
                 returnSequenceTypeChoices = result.getSequenceTypeChoices();
                 
                 if(returnSequenceTypeChoice == null)

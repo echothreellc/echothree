@@ -57,12 +57,12 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalWishlistTypeName = request.getParameter(ParameterConstants.ORIGINAL_WISHLIST_TYPE_NAME);
+        var originalWishlistTypeName = request.getParameter(ParameterConstants.ORIGINAL_WISHLIST_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditWishlistTypeForm commandForm = WishlistUtil.getHome().getEditWishlistTypeForm();
+                var actionForm = (EditActionForm)form;
+                var commandForm = WishlistUtil.getHome().getEditWishlistTypeForm();
                 var spec = WishlistUtil.getHome().getWishlistTypeUniversalSpec();
                 
                 if(originalWishlistTypeName == null)
@@ -72,7 +72,7 @@ public class EditAction
                 spec.setWishlistTypeName(originalWishlistTypeName);
                 
                 if(wasPost(request)) {
-                    WishlistTypeEdit edit = WishlistUtil.getHome().getWishlistTypeEdit();
+                    var edit = WishlistUtil.getHome().getWishlistTypeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -81,14 +81,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = WishlistUtil.getHome().editWishlistType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = WishlistUtil.getHome().editWishlistType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditWishlistTypeResult result = (EditWishlistTypeResult)executionResult.getResult();
+                            var result = (EditWishlistTypeResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -101,13 +101,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = WishlistUtil.getHome().editWishlistType(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditWishlistTypeResult result = (EditWishlistTypeResult)executionResult.getResult();
+
+                    var commandResult = WishlistUtil.getHome().editWishlistType(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditWishlistTypeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        WishlistTypeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalWishlistTypeName(edit.getWishlistTypeName());

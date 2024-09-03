@@ -56,15 +56,15 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetTransactionGroupForm commandForm = AccountingUtil.getHome().getGetTransactionGroupForm();
-            String transactionGroupName = request.getParameter(ParameterConstants.TRANSACTION_GROUP_NAME);
+            var commandForm = AccountingUtil.getHome().getGetTransactionGroupForm();
+            var transactionGroupName = request.getParameter(ParameterConstants.TRANSACTION_GROUP_NAME);
             
             commandForm.setTransactionGroupName(transactionGroupName);
-            
-            CommandResult commandResult = AccountingUtil.getHome().getTransactionGroup(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTransactionGroupResult result = (GetTransactionGroupResult)executionResult.getResult();
-            TransactionGroupTransfer transactionGroup = result.getTransactionGroup();
+
+            var commandResult = AccountingUtil.getHome().getTransactionGroup(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionGroupResult)executionResult.getResult();
+            var transactionGroup = result.getTransactionGroup();
             
             if(transactionGroup == null) {
                 forwardKey = ForwardConstants.ERROR_404;

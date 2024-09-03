@@ -61,14 +61,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String skillTypeName = request.getParameter(ParameterConstants.SKILL_TYPE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var skillTypeName = request.getParameter(ParameterConstants.SKILL_TYPE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditSkillTypeDescriptionForm commandForm = EmployeeUtil.getHome().getEditSkillTypeDescriptionForm();
-                SkillTypeDescriptionSpec spec = EmployeeUtil.getHome().getSkillTypeDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = EmployeeUtil.getHome().getEditSkillTypeDescriptionForm();
+                var spec = EmployeeUtil.getHome().getSkillTypeDescriptionSpec();
                 
                 if(skillTypeName == null)
                     skillTypeName = actionForm.getSkillTypeName();
@@ -80,19 +80,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    SkillTypeDescriptionEdit edit = EmployeeUtil.getHome().getSkillTypeDescriptionEdit();
+                    var edit = EmployeeUtil.getHome().getSkillTypeDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().editSkillTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = EmployeeUtil.getHome().editSkillTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditSkillTypeDescriptionResult result = (EditSkillTypeDescriptionResult)executionResult.getResult();
+                            var result = (EditSkillTypeDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +105,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().editSkillTypeDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditSkillTypeDescriptionResult result = (EditSkillTypeDescriptionResult)executionResult.getResult();
+
+                    var commandResult = EmployeeUtil.getHome().editSkillTypeDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditSkillTypeDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        SkillTypeDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setSkillTypeName(skillTypeName);
@@ -130,8 +130,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SKILL_TYPE_NAME, skillTypeName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

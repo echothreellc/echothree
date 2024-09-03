@@ -57,8 +57,8 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetForumGroupForm commandForm = ForumUtil.getHome().getGetForumGroupForm();
-        String forumGroupName = request.getParameter(ParameterConstants.FORUM_GROUP_NAME);
+        var commandForm = ForumUtil.getHome().getGetForumGroupForm();
+        var forumGroupName = request.getParameter(ParameterConstants.FORUM_GROUP_NAME);
         
         commandForm.setForumGroupName(forumGroupName);
         
@@ -71,10 +71,10 @@ public class ReviewAction
         options.add(CoreOptions.EntityInstanceIncludeNames);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ForumUtil.getHome().getForumGroup(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetForumGroupResult result = (GetForumGroupResult)executionResult.getResult();
-        ForumGroupTransfer forumGroup = result.getForumGroup();
+        var commandResult = ForumUtil.getHome().getForumGroup(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetForumGroupResult)executionResult.getResult();
+        var forumGroup = result.getForumGroup();
         
         if(forumGroup == null) {
             forwardKey = ForwardConstants.ERROR_404;

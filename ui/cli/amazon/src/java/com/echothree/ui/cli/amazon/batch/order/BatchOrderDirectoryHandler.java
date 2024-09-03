@@ -71,14 +71,14 @@ public class BatchOrderDirectoryHandler {
 
     private void recurseFile(File file, int depth)
             throws IOException, NamingException {
-        String indent = StringUtils.getInstance().repeatingStringFromChar(' ', depth);
+        var indent = StringUtils.getInstance().repeatingStringFromChar(' ', depth);
 
         if(file.isDirectory()) {
             String contents[] = file.list();
 
             log.info(indent + "Directory: " + file.getName());
 
-            for(int i = 0; i < contents.length; i++) {
+            for(var i = 0; i < contents.length; i++) {
                 recurseFile(new File(new StringBuilder(file.getAbsolutePath()).append('/').append(contents[i]).toString()), depth + 1);
             }
         } else {

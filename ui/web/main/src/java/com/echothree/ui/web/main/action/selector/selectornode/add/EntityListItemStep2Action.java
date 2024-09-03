@@ -54,14 +54,14 @@ public class EntityListItemStep2Action
         String forwardKey;
         
         try {
-            final String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-            final String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-            final String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
-            final String selectorNodeTypeName = request.getParameter(ParameterConstants.SELECTOR_NODE_TYPE_NAME);
-            
-            CommandResult commandResult = CoreUtil.getHome().getComponentVendors(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetComponentVendorsResult result = (GetComponentVendorsResult)executionResult.getResult();
+            final var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+            final var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+            final var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+            final var selectorNodeTypeName = request.getParameter(ParameterConstants.SELECTOR_NODE_TYPE_NAME);
+
+            var commandResult = CoreUtil.getHome().getComponentVendors(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetComponentVendorsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SELECTOR_KIND_NAME, selectorKindName);
             request.setAttribute(AttributeConstants.SELECTOR_TYPE_NAME, selectorTypeName);

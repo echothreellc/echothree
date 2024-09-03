@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultTerminationTypeForm commandForm = EmployeeUtil.getHome().getSetDefaultTerminationTypeForm();
-            String terminationTypeName = request.getParameter(ParameterConstants.TERMINATION_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getSetDefaultTerminationTypeForm();
+            var terminationTypeName = request.getParameter(ParameterConstants.TERMINATION_TYPE_NAME);
             
             commandForm.setTerminationTypeName(terminationTypeName);
             

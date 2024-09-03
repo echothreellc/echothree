@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteGlResourceTypeForm commandForm = AccountingUtil.getHome().getDeleteGlResourceTypeForm();
-            String glResourceTypeName = request.getParameter(ParameterConstants.GL_RESOURCE_TYPE_NAME);
+            var commandForm = AccountingUtil.getHome().getDeleteGlResourceTypeForm();
+            var glResourceTypeName = request.getParameter(ParameterConstants.GL_RESOURCE_TYPE_NAME);
             
             commandForm.setGlResourceTypeName(glResourceTypeName);
             

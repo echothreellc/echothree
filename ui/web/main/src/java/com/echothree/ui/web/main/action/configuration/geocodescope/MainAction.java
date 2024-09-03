@@ -51,10 +51,10 @@ public class MainAction
             throws Exception {
         String forwardKey = null;
 
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeScopes(getUserVisitPK(request), null);
+        var commandResult = GeoUtil.getHome().getGeoCodeScopes(getUserVisitPK(request), null);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeScopesResult result = (GetGeoCodeScopesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeScopesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.GEO_CODE_SCOPES, result.getGeoCodeScopes());
             forwardKey = ForwardConstants.DISPLAY;

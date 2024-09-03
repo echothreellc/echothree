@@ -58,13 +58,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalCommunicationEventPurposeName = request.getParameter(ParameterConstants.ORIGINAL_COMMUNICATION_EVENT_PURPOSE_NAME);
+        var originalCommunicationEventPurposeName = request.getParameter(ParameterConstants.ORIGINAL_COMMUNICATION_EVENT_PURPOSE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditCommunicationEventPurposeForm commandForm = CommunicationUtil.getHome().getEditCommunicationEventPurposeForm();
-                CommunicationEventPurposeSpec spec = CommunicationUtil.getHome().getCommunicationEventPurposeSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = CommunicationUtil.getHome().getEditCommunicationEventPurposeForm();
+                var spec = CommunicationUtil.getHome().getCommunicationEventPurposeSpec();
                 
                 if(originalCommunicationEventPurposeName == null)
                     originalCommunicationEventPurposeName = actionForm.getOriginalCommunicationEventPurposeName();
@@ -73,7 +73,7 @@ public class EditAction
                 spec.setCommunicationEventPurposeName(originalCommunicationEventPurposeName);
                 
                 if(wasPost(request)) {
-                    CommunicationEventPurposeEdit edit = CommunicationUtil.getHome().getCommunicationEventPurposeEdit();
+                    var edit = CommunicationUtil.getHome().getCommunicationEventPurposeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -82,14 +82,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CommunicationUtil.getHome().editCommunicationEventPurpose(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CommunicationUtil.getHome().editCommunicationEventPurpose(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditCommunicationEventPurposeResult result = (EditCommunicationEventPurposeResult)executionResult.getResult();
+                            var result = (EditCommunicationEventPurposeResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -102,13 +102,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CommunicationUtil.getHome().editCommunicationEventPurpose(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditCommunicationEventPurposeResult result = (EditCommunicationEventPurposeResult)executionResult.getResult();
+
+                    var commandResult = CommunicationUtil.getHome().editCommunicationEventPurpose(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditCommunicationEventPurposeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        CommunicationEventPurposeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalCommunicationEventPurposeName(edit.getCommunicationEventPurposeName());

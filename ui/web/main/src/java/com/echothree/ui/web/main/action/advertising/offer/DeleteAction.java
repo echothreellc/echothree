@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetOfferForm commandForm = OfferUtil.getHome().getGetOfferForm();
+        var commandForm = OfferUtil.getHome().getGetOfferForm();
 
         commandForm.setOfferName(actionForm.getOfferName());
 
-        CommandResult commandResult = OfferUtil.getHome().getOffer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetOfferResult result = (GetOfferResult)executionResult.getResult();
+        var commandResult = OfferUtil.getHome().getOffer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetOfferResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.OFFER, result.getOffer());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteOfferForm commandForm = OfferUtil.getHome().getDeleteOfferForm();
+        var commandForm = OfferUtil.getHome().getDeleteOfferForm();
 
         commandForm.setOfferName(actionForm.getOfferName());
 

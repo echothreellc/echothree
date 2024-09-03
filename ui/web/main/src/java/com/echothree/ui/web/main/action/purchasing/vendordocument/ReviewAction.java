@@ -53,18 +53,18 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetPartyDocumentForm commandForm = DocumentUtil.getHome().getGetPartyDocumentForm();
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String documentName = request.getParameter(ParameterConstants.DOCUMENT_NAME);
+        var commandForm = DocumentUtil.getHome().getGetPartyDocumentForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var documentName = request.getParameter(ParameterConstants.DOCUMENT_NAME);
 
         commandForm.setDocumentName(documentName);
 
-        CommandResult commandResult = DocumentUtil.getHome().getPartyDocument(getUserVisitPK(request), commandForm);
+        var commandResult = DocumentUtil.getHome().getPartyDocument(getUserVisitPK(request), commandForm);
         PartyDocumentTransfer partyDocument = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyDocumentResult result = (GetPartyDocumentResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyDocumentResult)executionResult.getResult();
             partyDocument = result.getPartyDocument();
         }
 

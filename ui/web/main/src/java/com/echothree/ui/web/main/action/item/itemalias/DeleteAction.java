@@ -63,13 +63,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemAliasForm commandForm = ItemUtil.getHome().getGetItemAliasForm();
+        var commandForm = ItemUtil.getHome().getGetItemAliasForm();
 
         commandForm.setAlias(actionForm.getAlias());
 
-        CommandResult commandResult = ItemUtil.getHome().getItemAlias(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemAliasResult result = (GetItemAliasResult)executionResult.getResult();
+        var commandResult = ItemUtil.getHome().getItemAlias(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemAliasResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM_ALIAS, result.getItemAlias());
     }
@@ -77,7 +77,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteItemAliasForm commandForm = ItemUtil.getHome().getDeleteItemAliasForm();
+        var commandForm = ItemUtil.getHome().getDeleteItemAliasForm();
 
         commandForm.setAlias(actionForm.getAlias());
 

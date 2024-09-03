@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected CustomerTypePaymentMethodSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        CustomerTypePaymentMethodSpec spec = CustomerUtil.getHome().getCustomerTypePaymentMethodSpec();
+        var spec = CustomerUtil.getHome().getCustomerTypePaymentMethodSpec();
         
         spec.setCustomerTypeName(findParameter(request, ParameterConstants.CUSTOMER_TYPE_NAME, actionForm.getCustomerTypeName()));
         spec.setPaymentMethodName(findParameter(request, ParameterConstants.PAYMENT_METHOD_NAME, actionForm.getPaymentMethodName()));
@@ -62,7 +62,7 @@ public class EditAction
     @Override
     protected CustomerTypePaymentMethodEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        CustomerTypePaymentMethodEdit edit = CustomerUtil.getHome().getCustomerTypePaymentMethodEdit();
+        var edit = CustomerUtil.getHome().getCustomerTypePaymentMethodEdit();
 
         edit.setDefaultSelectionPriority(actionForm.getDefaultSelectionPriority());
         edit.setIsDefault(actionForm.getIsDefault().toString());

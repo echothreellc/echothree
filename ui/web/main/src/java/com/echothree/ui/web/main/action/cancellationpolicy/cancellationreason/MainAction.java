@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetCancellationReasonsForm commandForm = CancellationPolicyUtil.getHome().getGetCancellationReasonsForm();
-            String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+            var commandForm = CancellationPolicyUtil.getHome().getGetCancellationReasonsForm();
+            var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
             
             commandForm.setCancellationKindName(cancellationKindName);
 
-            CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationReasons(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCancellationReasonsResult result = (GetCancellationReasonsResult)executionResult.getResult();
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationReasons(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCancellationReasonsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CANCELLATION_KIND, result.getCancellationKind());
             request.setAttribute(AttributeConstants.CANCELLATION_REASONS, result.getCancellationReasons());

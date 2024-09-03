@@ -49,9 +49,9 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        CommandResult commandResult = LetterUtil.getHome().getLetterSources(getUserVisitPK(request), null);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetLetterSourcesResult result = (GetLetterSourcesResult)executionResult.getResult();
+        var commandResult = LetterUtil.getHome().getLetterSources(getUserVisitPK(request), null);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetLetterSourcesResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.LETTER_SOURCES, result.getLetterSources());
         

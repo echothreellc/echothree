@@ -55,18 +55,18 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetFilterEntranceStepsForm getFilterEntranceStepsForm = FilterUtil.getHome().getGetFilterEntranceStepsForm();
-            String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-            String filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
-            String filterName = request.getParameter(ParameterConstants.FILTER_NAME);
+            var getFilterEntranceStepsForm = FilterUtil.getHome().getGetFilterEntranceStepsForm();
+            var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+            var filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
+            var filterName = request.getParameter(ParameterConstants.FILTER_NAME);
             
             getFilterEntranceStepsForm.setFilterKindName(filterKindName);
             getFilterEntranceStepsForm.setFilterTypeName(filterTypeName);
             getFilterEntranceStepsForm.setFilterName(filterName);
-            
-            CommandResult commandResult = FilterUtil.getHome().getFilterEntranceSteps(getUserVisitPK(request), getFilterEntranceStepsForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterEntranceStepsResult result = (GetFilterEntranceStepsResult)executionResult.getResult();
+
+            var commandResult = FilterUtil.getHome().getFilterEntranceSteps(getUserVisitPK(request), getFilterEntranceStepsForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetFilterEntranceStepsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FILTER_KIND, result.getFilterKind());
             request.setAttribute(AttributeConstants.FILTER_TYPE, result.getFilterType());

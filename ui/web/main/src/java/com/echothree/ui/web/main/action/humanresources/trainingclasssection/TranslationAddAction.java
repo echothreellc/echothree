@@ -57,15 +57,15 @@ public class TranslationAddAction
     @Override
     public void setupTransfer(TranslationAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTrainingClassSectionForm commandForm = TrainingUtil.getHome().getGetTrainingClassSectionForm();
+        var commandForm = TrainingUtil.getHome().getGetTrainingClassSectionForm();
 
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());
-        
-        CommandResult commandResult = TrainingUtil.getHome().getTrainingClassSection(getUserVisitPK(request), commandForm);
+
+        var commandResult = TrainingUtil.getHome().getTrainingClassSection(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTrainingClassSectionResult result = (GetTrainingClassSectionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTrainingClassSectionResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRAINING_CLASS_SECTION, result.getTrainingClassSection());
         }
@@ -74,7 +74,7 @@ public class TranslationAddAction
     @Override
     public CommandResult doAdd(TranslationAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateTrainingClassSectionTranslationForm commandForm = TrainingUtil.getHome().getCreateTrainingClassSectionTranslationForm();
+        var commandForm = TrainingUtil.getHome().getCreateTrainingClassSectionTranslationForm();
 
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());

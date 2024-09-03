@@ -57,7 +57,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetForumThreadForm commandForm = ForumUtil.getHome().getGetForumThreadForm();
+        var commandForm = ForumUtil.getHome().getGetForumThreadForm();
         
         commandForm.setForumThreadName(request.getParameter(ParameterConstants.FORUM_THREAD_NAME));
         commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));
@@ -73,12 +73,12 @@ public class ReviewAction
         options.add(CoreOptions.EntityInstanceIncludeNames);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ForumUtil.getHome().getForumThread(getUserVisitPK(request), commandForm);
+        var commandResult = ForumUtil.getHome().getForumThread(getUserVisitPK(request), commandForm);
         ForumThreadTransfer forumThread = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetForumThreadResult result = (GetForumThreadResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetForumThreadResult)executionResult.getResult();
             
             forumThread = result.getForumThread();
         }

@@ -52,13 +52,13 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-        String ratingTypeName = request.getParameter(ParameterConstants.RATING_TYPE_NAME);
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var ratingTypeName = request.getParameter(ParameterConstants.RATING_TYPE_NAME);
         
         try {
-            String ratingTypeListItemName = request.getParameter(ParameterConstants.RATING_TYPE_LIST_ITEM_NAME);
-            DeleteRatingTypeListItemForm commandForm = RatingUtil.getHome().getDeleteRatingTypeListItemForm();
+            var ratingTypeListItemName = request.getParameter(ParameterConstants.RATING_TYPE_LIST_ITEM_NAME);
+            var commandForm = RatingUtil.getHome().getDeleteRatingTypeListItemForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
@@ -71,8 +71,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(3);
             

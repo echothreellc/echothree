@@ -58,7 +58,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyAliasForm commandForm = PartyUtil.getHome().getCreatePartyAliasForm();
+        var commandForm = PartyUtil.getHome().getCreatePartyAliasForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setPartyAliasTypeName(actionForm.getPartyAliasTypeChoice());

@@ -52,11 +52,11 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String jobName = request.getParameter(ParameterConstants.JOB_NAME);
+        var jobName = request.getParameter(ParameterConstants.JOB_NAME);
         
         try {
-            StatusActionForm actionForm = (StatusActionForm)form;
-            SetJobStatusForm commandForm = JobUtil.getHome().getSetJobStatusForm();
+            var actionForm = (StatusActionForm)form;
+            var commandForm = JobUtil.getHome().getSetJobStatusForm();
             
             if(jobName == null)
                 jobName = actionForm.getJobName();
@@ -64,8 +64,8 @@ public class StatusAction
             if(wasPost(request)) {
                 commandForm.setJobName(jobName);
                 commandForm.setJobStatusChoice(actionForm.getJobStatusChoice());
-                
-                CommandResult commandResult = JobUtil.getHome().setJobStatus(getUserVisitPK(request), commandForm);
+
+                var commandResult = JobUtil.getHome().setJobStatus(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);

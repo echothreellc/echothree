@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultWishlistTypeForm commandForm = WishlistUtil.getHome().getSetDefaultWishlistTypeForm();
-            String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
+            var commandForm = WishlistUtil.getHome().getSetDefaultWishlistTypeForm();
+            var wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
             
             commandForm.setWishlistTypeName(wishlistTypeName);
             

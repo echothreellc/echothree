@@ -49,7 +49,7 @@ public class BillingAccountRoleTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("billingAccountRoleTypeDescription")) {
-            CreateBillingAccountRoleTypeDescriptionForm commandForm = PaymentFormFactory.getCreateBillingAccountRoleTypeDescriptionForm();
+            var commandForm = PaymentFormFactory.getCreateBillingAccountRoleTypeDescriptionForm();
             
             commandForm.setBillingAccountRoleTypeName(billingAccountRoleTypeName);
             commandForm.set(getAttrsMap(attrs));

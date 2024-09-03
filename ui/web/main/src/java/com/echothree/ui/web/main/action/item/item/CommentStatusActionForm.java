@@ -41,15 +41,15 @@ public class CommentStatusActionForm
     public void setupCommentStatusChoices() {
         if(commentStatusChoices == null) {
             try {
-                GetCommentStatusChoicesForm form = CommentUtil.getHome().getGetCommentStatusChoicesForm();
+                var form = CommentUtil.getHome().getGetCommentStatusChoicesForm();
                 
                 form.setCommentName(commentName);
                 form.setDefaultCommentStatusChoice(commentStatusChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CommentUtil.getHome().getCommentStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCommentStatusChoicesResult result = (GetCommentStatusChoicesResult)executionResult.getResult();
+
+                var commandResult = CommentUtil.getHome().getCommentStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCommentStatusChoicesResult)executionResult.getResult();
                 commentStatusChoices = result.getCommentStatusChoices();
                 
                 if(commentStatusChoice == null)

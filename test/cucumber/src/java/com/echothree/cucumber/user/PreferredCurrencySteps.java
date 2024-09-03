@@ -29,7 +29,7 @@ public class PreferredCurrencySteps implements En {
         When("^the user sets their preferred currency to \"([^\"]*)\"$",
                 (String currencyIsoName) -> {
                     UserService userService = UserUtil.getHome();
-                    SetUserVisitPreferredCurrencyForm userVisitPreferredCurrencyForm = userService.getSetUserVisitPreferredCurrencyForm();
+                    var userVisitPreferredCurrencyForm = userService.getSetUserVisitPreferredCurrencyForm();
                     var persona = CurrentPersona.persona;
 
                     userVisitPreferredCurrencyForm.setCurrencyIsoName(currencyIsoName);

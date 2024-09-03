@@ -32,15 +32,15 @@ public abstract class BaseAddAction
     
     public void setupEntityAttributeTransfer(HttpServletRequest request, String componentVendorName, String entityTypeName, String entityAttributeName)
             throws NamingException {
-        GetEntityAttributeForm commandForm = CoreUtil.getHome().getGetEntityAttributeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityAttributeForm();
         
         commandForm.setComponentVendorName(componentVendorName);
         commandForm.setEntityTypeName(entityTypeName);
         commandForm.setEntityAttributeName(entityAttributeName);
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityAttribute(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEntityAttributeResult result = (GetEntityAttributeResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getEntityAttribute(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEntityAttributeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE, result.getEntityAttribute());
     }

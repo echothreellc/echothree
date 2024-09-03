@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateItemCategoryForm commandForm = ItemUtil.getHome().getCreateItemCategoryForm();
+        var commandForm = ItemUtil.getHome().getCreateItemCategoryForm();
 
         commandForm.setItemCategoryName(actionForm.getItemCategoryName());
         commandForm.setParentItemCategoryName(actionForm.getParentItemCategoryChoice());

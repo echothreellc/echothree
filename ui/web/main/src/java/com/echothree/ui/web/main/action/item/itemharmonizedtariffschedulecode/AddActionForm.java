@@ -47,14 +47,14 @@ public class AddActionForm
     private void setupCountryChoices() {
         if(countryChoices == null) {
             try {
-                GetCountryChoicesForm commandForm = GeoUtil.getHome().getGetCountryChoicesForm();
+                var commandForm = GeoUtil.getHome().getGetCountryChoicesForm();
 
                 commandForm.setDefaultCountryChoice(countryChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = GeoUtil.getHome().getCountryChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCountryChoicesResult result = (GetCountryChoicesResult)executionResult.getResult();
+                var commandResult = GeoUtil.getHome().getCountryChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCountryChoicesResult)executionResult.getResult();
                 countryChoices = result.getCountryChoices();
 
                 if(countryChoice == null) {
@@ -69,14 +69,14 @@ public class AddActionForm
     private void setupHarmonizedTariffScheduleCodeUseTypeChoices() {
         if(harmonizedTariffScheduleCodeUseTypeChoices == null) {
             try {
-                GetHarmonizedTariffScheduleCodeUseTypeChoicesForm form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseTypeChoicesForm();
+                var form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseTypeChoicesForm();
                 
                 form.setDefaultHarmonizedTariffScheduleCodeUseTypeChoice(harmonizedTariffScheduleCodeUseTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetHarmonizedTariffScheduleCodeUseTypeChoicesResult result = (GetHarmonizedTariffScheduleCodeUseTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetHarmonizedTariffScheduleCodeUseTypeChoicesResult)executionResult.getResult();
                 harmonizedTariffScheduleCodeUseTypeChoices = result.getHarmonizedTariffScheduleCodeUseTypeChoices();
                 
                 if(harmonizedTariffScheduleCodeUseTypeChoice == null) {

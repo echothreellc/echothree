@@ -54,16 +54,16 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String parentSecurityRoleGroupName = request.getParameter(ParameterConstants.PARENT_SECURITY_ROLE_GROUP_NAME);
-        GetSecurityRoleGroupsForm commandForm = SecurityUtil.getHome().getGetSecurityRoleGroupsForm();
+        var parentSecurityRoleGroupName = request.getParameter(ParameterConstants.PARENT_SECURITY_ROLE_GROUP_NAME);
+        var commandForm = SecurityUtil.getHome().getGetSecurityRoleGroupsForm();
 
         commandForm.setParentSecurityRoleGroupName(parentSecurityRoleGroupName == null ? SecurityRoleGroups.ROOT.name() : parentSecurityRoleGroupName);
 
-        CommandResult commandResult = SecurityUtil.getHome().getSecurityRoleGroups(getUserVisitPK(request), commandForm);
+        var commandResult = SecurityUtil.getHome().getSecurityRoleGroups(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSecurityRoleGroupsResult result = (GetSecurityRoleGroupsResult)executionResult.getResult();
-            SecurityRoleGroupTransfer parentSecurityRoleGroup = result.getParentSecurityRoleGroup();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSecurityRoleGroupsResult)executionResult.getResult();
+            var parentSecurityRoleGroup = result.getParentSecurityRoleGroup();
             
             request.setAttribute(AttributeConstants.PARENT_SECURITY_ROLE_GROUP, parentSecurityRoleGroup);
             request.setAttribute(AttributeConstants.SECURITY_ROLE_GROUPS, result.getSecurityRoleGroups());

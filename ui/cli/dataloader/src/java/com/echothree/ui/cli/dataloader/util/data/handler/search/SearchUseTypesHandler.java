@@ -47,7 +47,7 @@ public class SearchUseTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("searchUseType")) {
-            CreateSearchUseTypeForm commandForm = SearchFormFactory.getCreateSearchUseTypeForm();
+            var commandForm = SearchFormFactory.getCreateSearchUseTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

@@ -49,15 +49,15 @@ public class CarriersHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("carrier")) {
-            CreateCarrierForm commandForm = CarrierFormFactory.getCreateCarrierForm();
+            var commandForm = CarrierFormFactory.getCreateCarrierForm();
 
             commandForm.set(getAttrsMap(attrs));
 
-            CommandResult commandResult = carrierService.createCarrier(initialDataParser.getUserVisit(), commandForm);
+            var commandResult = carrierService.createCarrier(initialDataParser.getUserVisit(), commandForm);
             
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateCarrierResult result = (CreateCarrierResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateCarrierResult)executionResult.getResult();
                 
                 initialDataParser.pushHandler(new CarrierHandler(initialDataParser, this, result.getPartyName(), result.getCarrierName(), result.getEntityRef()));
             }

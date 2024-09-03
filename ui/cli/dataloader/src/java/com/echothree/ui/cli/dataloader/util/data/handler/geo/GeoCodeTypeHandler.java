@@ -50,9 +50,9 @@ public class GeoCodeTypeHandler
         if(localName.equals("geoCodeTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +60,7 @@ public class GeoCodeTypeHandler
             }
             
             try {
-                CreateGeoCodeTypeDescriptionForm form = GeoFormFactory.getCreateGeoCodeTypeDescriptionForm();
+                var form = GeoFormFactory.getCreateGeoCodeTypeDescriptionForm();
                 
                 form.setGeoCodeTypeName(geoCodeTypeName);
                 form.setLanguageIsoName(languageIsoName);
@@ -76,9 +76,9 @@ public class GeoCodeTypeHandler
             String isRequired = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("geoCodeAliasTypeName"))
                     geoCodeAliasTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("validationPattern"))
@@ -92,7 +92,7 @@ public class GeoCodeTypeHandler
             }
             
             try {
-                CreateGeoCodeAliasTypeForm form = GeoFormFactory.getCreateGeoCodeAliasTypeForm();
+                var form = GeoFormFactory.getCreateGeoCodeAliasTypeForm();
                 
                 form.setGeoCodeTypeName(geoCodeTypeName);
                 form.setGeoCodeAliasTypeName(geoCodeAliasTypeName);

@@ -29,7 +29,7 @@ public class PreferredTimeZoneFormatSteps implements En {
         When("^the user sets their preferred time zone to \"([^\"]*)\"$",
                 (String javaTimeZoneName) -> {
                     UserService userService = UserUtil.getHome();
-                    SetUserVisitPreferredTimeZoneForm userVisitPreferredTimeZoneForm = userService.getSetUserVisitPreferredTimeZoneForm();
+                    var userVisitPreferredTimeZoneForm = userService.getSetUserVisitPreferredTimeZoneForm();
                     var persona = CurrentPersona.persona;
 
                     userVisitPreferredTimeZoneForm.setJavaTimeZoneName(javaTimeZoneName);

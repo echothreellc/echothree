@@ -51,16 +51,16 @@ public class AssociateHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("associatePartyContactMechanism")) {
-            CreateAssociatePartyContactMechanismForm commandForm = AssociateFormFactory.getCreateAssociatePartyContactMechanismForm();
+            var commandForm = AssociateFormFactory.getCreateAssociatePartyContactMechanismForm();
             String associatePartyContactMechanismName = null;
             String contactMechanismName = null;
             String contactMechanismAliasTypeName = null;
             String alias = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("associatePartyContactMechanismName"))
                     associatePartyContactMechanismName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("contactMechanismName"))

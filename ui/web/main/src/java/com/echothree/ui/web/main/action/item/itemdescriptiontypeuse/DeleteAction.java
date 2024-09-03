@@ -63,15 +63,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemDescriptionTypeUseForm commandForm = ItemUtil.getHome().getGetItemDescriptionTypeUseForm();
+        var commandForm = ItemUtil.getHome().getGetItemDescriptionTypeUseForm();
         
         commandForm.setItemDescriptionTypeName(actionForm.getItemDescriptionTypeName());
         commandForm.setItemDescriptionTypeUseTypeName(actionForm.getItemDescriptionTypeUseTypeName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getItemDescriptionTypeUse(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getItemDescriptionTypeUse(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemDescriptionTypeUseResult result = (GetItemDescriptionTypeUseResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemDescriptionTypeUseResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.ITEM_DESCRIPTION_TYPE_USE, result.getItemDescriptionTypeUse());
         }
@@ -80,7 +80,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteItemDescriptionTypeUseForm commandForm = ItemUtil.getHome().getDeleteItemDescriptionTypeUseForm();
+        var commandForm = ItemUtil.getHome().getDeleteItemDescriptionTypeUseForm();
 
         commandForm.setItemDescriptionTypeName(actionForm.getItemDescriptionTypeName());
         commandForm.setItemDescriptionTypeUseTypeName(actionForm.getItemDescriptionTypeUseTypeName());

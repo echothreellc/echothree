@@ -55,16 +55,16 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
-            String cancellationReasonName = request.getParameter(ParameterConstants.CANCELLATION_REASON_NAME);
-            GetCancellationReasonForm commandForm = CancellationPolicyUtil.getHome().getGetCancellationReasonForm();
+            var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+            var cancellationReasonName = request.getParameter(ParameterConstants.CANCELLATION_REASON_NAME);
+            var commandForm = CancellationPolicyUtil.getHome().getGetCancellationReasonForm();
             
             commandForm.setCancellationKindName(cancellationKindName);
             commandForm.setCancellationReasonName(cancellationReasonName);
-            
-            CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationReason(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCancellationReasonResult result = (GetCancellationReasonResult)executionResult.getResult();
+
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationReason(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCancellationReasonResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CANCELLATION_REASON, result.getCancellationReason());
             forwardKey = ForwardConstants.DISPLAY;

@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEditorForm commandForm = CoreUtil.getHome().getGetEditorForm();
+        var commandForm = CoreUtil.getHome().getGetEditorForm();
 
         commandForm.setEditorName(actionForm.getEditorName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEditor(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEditor(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEditorResult result = (GetEditorResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEditorResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.EDITOR, result.getEditor());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateEditorDescriptionForm commandForm = CoreUtil.getHome().getCreateEditorDescriptionForm();
+        var commandForm = CoreUtil.getHome().getCreateEditorDescriptionForm();
 
         commandForm.setEditorName( actionForm.getEditorName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

@@ -59,17 +59,17 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEntityIntegerRangeForm commandForm = CoreUtil.getHome().getGetEntityIntegerRangeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityIntegerRangeForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityAttributeName(actionForm.getEntityAttributeName());
         commandForm.setEntityIntegerRangeName(actionForm.getEntityIntegerRangeName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityIntegerRange(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEntityIntegerRange(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityIntegerRangeResult result = (GetEntityIntegerRangeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityIntegerRangeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ENTITY_INTEGER_RANGE, result.getEntityIntegerRange());
         }
@@ -78,7 +78,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateEntityIntegerRangeDescriptionForm commandForm = CoreUtil.getHome().getCreateEntityIntegerRangeDescriptionForm();
+        var commandForm = CoreUtil.getHome().getCreateEntityIntegerRangeDescriptionForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());

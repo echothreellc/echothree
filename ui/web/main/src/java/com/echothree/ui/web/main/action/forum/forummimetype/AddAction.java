@@ -55,21 +55,21 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
-        AddActionForm actionForm = (AddActionForm)form;
+        var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+        var actionForm = (AddActionForm)form;
         
         if(forumName == null)
             forumName = actionForm.getForumName();
         
         if(wasPost(request)) {
-            CreateForumMimeTypeForm commandForm = ForumUtil.getHome().getCreateForumMimeTypeForm();
+            var commandForm = ForumUtil.getHome().getCreateForumMimeTypeForm();
             
             commandForm.setForumName(forumName);
             commandForm.setMimeTypeName(actionForm.getMimeTypeChoice());
             commandForm.setIsDefault(actionForm.getIsDefault().toString());
             commandForm.setSortOrder(actionForm.getSortOrder());
-            
-            CommandResult commandResult = ForumUtil.getHome().createForumMimeType(getUserVisitPK(request), commandForm);
+
+            var commandResult = ForumUtil.getHome().createForumMimeType(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -82,8 +82,8 @@ public class AddAction
             actionForm.setSortOrder("1");
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.FORUM_NAME, forumName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

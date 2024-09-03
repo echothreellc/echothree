@@ -47,8 +47,8 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultTaxForm commandForm = TaxUtil.getHome().getSetDefaultTaxForm();
-        String taxName = request.getParameter(ParameterConstants.TAX_NAME);
+        var commandForm = TaxUtil.getHome().getSetDefaultTaxForm();
+        var taxName = request.getParameter(ParameterConstants.TAX_NAME);
         
         commandForm.setTaxName(taxName);
         

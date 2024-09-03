@@ -54,7 +54,7 @@ public class ChainEntityRoleTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("chainEntityRoleTypeDescription")) {
-            CreateChainEntityRoleTypeDescriptionForm commandForm = ChainFormFactory.getCreateChainEntityRoleTypeDescriptionForm();
+            var commandForm = ChainFormFactory.getCreateChainEntityRoleTypeDescriptionForm();
 
             commandForm.setChainKindName(chainKindName);
             commandForm.setChainTypeName(chainTypeName);

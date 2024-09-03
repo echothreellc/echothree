@@ -71,13 +71,13 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTransactionEntityRoleTypeDescriptionForm commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypeDescriptionForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypeDescriptionForm();
         
         setupSpec(actionForm, commandForm);
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionEntityRoleTypeDescription(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTransactionEntityRoleTypeDescriptionResult result = (GetTransactionEntityRoleTypeDescriptionResult)executionResult.getResult();
+
+        var commandResult = AccountingUtil.getHome().getTransactionEntityRoleTypeDescription(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTransactionEntityRoleTypeDescriptionResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.TRANSACTION_ENTITY_ROLE_TYPE_DESCRIPTION, result.getTransactionEntityRoleTypeDescription());
     }
@@ -85,7 +85,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteTransactionEntityRoleTypeDescriptionForm commandForm = AccountingUtil.getHome().getDeleteTransactionEntityRoleTypeDescriptionForm();
+        var commandForm = AccountingUtil.getHome().getDeleteTransactionEntityRoleTypeDescriptionForm();
 
         setupSpec(actionForm, commandForm);
 

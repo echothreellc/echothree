@@ -58,9 +58,9 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetPartyContactListForm commandForm = ContactListUtil.getHome().getGetPartyContactListForm();
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String contactListName = request.getParameter(ParameterConstants.CONTACT_LIST_NAME);
+        var commandForm = ContactListUtil.getHome().getGetPartyContactListForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var contactListName = request.getParameter(ParameterConstants.CONTACT_LIST_NAME);
 
         commandForm.setPartyName(partyName);
         commandForm.setContactListName(contactListName);
@@ -71,12 +71,12 @@ public class ReviewAction
         options.add(CommentOptions.CommentIncludeClob);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
 
-        CommandResult commandResult = ContactListUtil.getHome().getPartyContactList(getUserVisitPK(request), commandForm);
+        var commandResult = ContactListUtil.getHome().getPartyContactList(getUserVisitPK(request), commandForm);
         PartyContactListTransfer partyContactList = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyContactListResult result = (GetPartyContactListResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyContactListResult)executionResult.getResult();
             partyContactList = result.getPartyContactList();
         }
 

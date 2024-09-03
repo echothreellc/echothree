@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeletePrinterGroupForm commandForm = PrinterUtil.getHome().getDeletePrinterGroupForm();
-            String printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
+            var commandForm = PrinterUtil.getHome().getDeletePrinterGroupForm();
+            var printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
             
             commandForm.setPrinterGroupName(printerGroupName);
             

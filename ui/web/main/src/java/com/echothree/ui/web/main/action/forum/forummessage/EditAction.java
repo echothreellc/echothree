@@ -65,19 +65,19 @@ public class EditAction
     private String editBlogEntry(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, String forumName, String forumMessageName)
             throws Exception {
         String forwardKey = null;
-        EditBlogEntryForm commandForm = ForumUtil.getHome().getEditBlogEntryForm();
-        ForumMessageSpec spec = ForumUtil.getHome().getForumMessageSpec();
+        var commandForm = ForumUtil.getHome().getEditBlogEntryForm();
+        var spec = ForumUtil.getHome().getForumMessageSpec();
 
         commandForm.setSpec(spec);
         spec.setForumMessageName(forumMessageName);
 
         if(wasPost(request)) {
-            boolean wasCanceled = wasCanceled(request);
+            var wasCanceled = wasCanceled(request);
             
             if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
-                BlogEntryEdit edit = ForumUtil.getHome().getBlogEntryEdit();
+                var edit = ForumUtil.getHome().getBlogEntryEdit();
 
                 commandForm.setEditMode(EditMode.UPDATE);
                 commandForm.setEdit(edit);
@@ -94,14 +94,14 @@ public class EditAction
                 edit.setContentMimeTypeName(actionForm.getContentMimeTypeChoice());
                 edit.setContent(actionForm.getContent());
             }
-            
-            CommandResult commandResult = ForumUtil.getHome().editBlogEntry(getUserVisitPK(request), commandForm);
+
+            var commandResult = ForumUtil.getHome().editBlogEntry(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors() && !wasCanceled) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {
-                    EditBlogEntryResult result = (EditBlogEntryResult)executionResult.getResult();
+                    var result = (EditBlogEntryResult)executionResult.getResult();
 
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -115,12 +115,12 @@ public class EditAction
         } else {
             commandForm.setEditMode(EditMode.LOCK);
 
-            CommandResult commandResult = ForumUtil.getHome().editBlogEntry(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditBlogEntryResult result = (EditBlogEntryResult)executionResult.getResult();
+            var commandResult = ForumUtil.getHome().editBlogEntry(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditBlogEntryResult)executionResult.getResult();
 
             if(result != null) {
-                BlogEntryEdit edit = result.getEdit();
+                var edit = result.getEdit();
 
                 if(edit != null) {
                     actionForm.setForumName(forumName);
@@ -153,19 +153,19 @@ public class EditAction
     private String editBlogComment(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, String forumName, String forumMessageName)
             throws Exception {
         String forwardKey = null;
-        EditBlogCommentForm commandForm = ForumUtil.getHome().getEditBlogCommentForm();
-        ForumMessageSpec spec = ForumUtil.getHome().getForumMessageSpec();
+        var commandForm = ForumUtil.getHome().getEditBlogCommentForm();
+        var spec = ForumUtil.getHome().getForumMessageSpec();
 
         commandForm.setSpec(spec);
         spec.setForumMessageName(forumMessageName);
 
         if(wasPost(request)) {
-            boolean wasCanceled = wasCanceled(request);
+            var wasCanceled = wasCanceled(request);
             
             if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
-                BlogCommentEdit edit = ForumUtil.getHome().getBlogCommentEdit();
+                var edit = ForumUtil.getHome().getBlogCommentEdit();
 
                 commandForm.setEditMode(EditMode.UPDATE);
                 commandForm.setEdit(edit);
@@ -176,14 +176,14 @@ public class EditAction
                 edit.setContentMimeTypeName(actionForm.getContentMimeTypeChoice());
                 edit.setContent(actionForm.getContent());
             }
-            
-            CommandResult commandResult = ForumUtil.getHome().editBlogComment(getUserVisitPK(request), commandForm);
+
+            var commandResult = ForumUtil.getHome().editBlogComment(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors() && !wasCanceled) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {
-                    EditBlogCommentResult result = (EditBlogCommentResult)executionResult.getResult();
+                    var result = (EditBlogCommentResult)executionResult.getResult();
 
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -197,12 +197,12 @@ public class EditAction
         } else {
             commandForm.setEditMode(EditMode.LOCK);
 
-            CommandResult commandResult = ForumUtil.getHome().editBlogComment(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditBlogCommentResult result = (EditBlogCommentResult)executionResult.getResult();
+            var commandResult = ForumUtil.getHome().editBlogComment(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditBlogCommentResult)executionResult.getResult();
 
             if(result != null) {
-                BlogCommentEdit edit = result.getEdit();
+                var edit = result.getEdit();
 
                 if(edit != null) {
                     actionForm.setForumName(forumName);
@@ -230,8 +230,8 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
-        String forumMessageName = request.getParameter(ParameterConstants.FORUM_MESSAGE_NAME);
+        var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+        var forumMessageName = request.getParameter(ParameterConstants.FORUM_MESSAGE_NAME);
         ForumMessageTransfer forumMessage = null;
 
         if(forumName == null) {
@@ -243,18 +243,18 @@ public class EditAction
         }
 
         if(forumName != null && forumMessageName != null) {
-            GetForumMessageForm commandForm = ForumUtil.getHome().getGetForumMessageForm();
+            var commandForm = ForumUtil.getHome().getGetForumMessageForm();
 
             commandForm.setForumMessageName(forumMessageName);
 
-            CommandResult commandResult = ForumUtil.getHome().getForumMessage(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetForumMessageResult result = (GetForumMessageResult)executionResult.getResult();
+            var commandResult = ForumUtil.getHome().getForumMessage(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetForumMessageResult)executionResult.getResult();
 
             forumMessage = result.getForumMessage();
 
             if(forumMessage != null) {
-                String forumMessageTypeName = forumMessage.getForumMessageType().getForumMessageTypeName();
+                var forumMessageTypeName = forumMessage.getForumMessageType().getForumMessageTypeName();
 
                 if(forumMessageTypeName.equals(ForumConstants.ForumMessageType_BLOG_ENTRY)) {
                     forwardKey = editBlogEntry(mapping, actionForm, request, forumName, forumMessageName);
@@ -268,7 +268,7 @@ public class EditAction
             forwardKey = ForwardConstants.ERROR_404;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>();
 

@@ -55,16 +55,16 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetOfferItemForm commandForm = OfferUtil.getHome().getGetOfferItemForm();
-            String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
-            String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+            var commandForm = OfferUtil.getHome().getGetOfferItemForm();
+            var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+            var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
             
             commandForm.setOfferName(offerName);
             commandForm.setItemName(itemName);
-            
-            CommandResult commandResult = OfferUtil.getHome().getOfferItem(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetOfferItemResult result = (GetOfferItemResult)executionResult.getResult();
+
+            var commandResult = OfferUtil.getHome().getOfferItem(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetOfferItemResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.OFFER_ITEM, result.getOfferItem());
             forwardKey = ForwardConstants.DISPLAY;

@@ -54,10 +54,10 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateAssociateProgramForm commandForm = AssociateUtil.getHome().getCreateAssociateProgramForm();
+                    var commandForm = AssociateUtil.getHome().getCreateAssociateProgramForm();
                     
                     commandForm.setAssociateProgramName(actionForm.getAssociateProgramName());
                     commandForm.setAssociateSequenceName(actionForm.getAssociateSequenceChoice());
@@ -68,8 +68,8 @@ public class AddAction
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AssociateUtil.getHome().createAssociateProgram(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AssociateUtil.getHome().createAssociateProgram(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

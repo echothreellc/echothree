@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected ServiceSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ServiceSpec spec = CoreUtil.getHome().getServiceSpec();
+        var spec = CoreUtil.getHome().getServiceSpec();
         
         spec.setServiceName(findParameter(request, ParameterConstants.ORIGINAL_SERVICE_NAME, actionForm.getOriginalServiceName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected ServiceEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ServiceEdit edit = CoreUtil.getHome().getServiceEdit();
+        var edit = CoreUtil.getHome().getServiceEdit();
 
         edit.setServiceName(actionForm.getServiceName());
         edit.setPort(actionForm.getPort());

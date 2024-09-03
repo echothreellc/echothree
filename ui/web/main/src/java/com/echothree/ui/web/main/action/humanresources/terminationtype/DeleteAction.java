@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteTerminationTypeForm commandForm = EmployeeUtil.getHome().getDeleteTerminationTypeForm();
-            String terminationTypeName = request.getParameter(ParameterConstants.TERMINATION_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getDeleteTerminationTypeForm();
+            var terminationTypeName = request.getParameter(ParameterConstants.TERMINATION_TYPE_NAME);
             
             commandForm.setTerminationTypeName(terminationTypeName);
             

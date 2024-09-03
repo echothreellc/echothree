@@ -71,8 +71,8 @@ public class PartyDocumentsHandler
     public void characters(char ch[], int start, int length)
             throws SAXException {
         if(inPartyDocument) {
-            int oldLength = clob != null? clob.length: 0;
-            char []newClob = new char[oldLength + length];
+            var oldLength = clob != null? clob.length: 0;
+            var newClob = new char[oldLength + length];
 
             if(clob != null) {
                 System.arraycopy(clob, 0, newClob, 0, clob.length);
@@ -88,23 +88,23 @@ public class PartyDocumentsHandler
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
         if(localName.equals("partyDocument")) {
-            CreatePartyDocumentForm form = DocumentFormFactory.getCreatePartyDocumentForm();
+            var form = DocumentFormFactory.getCreatePartyDocumentForm();
 
             form.setPartyName(partyName);
             form.set(createPartyDocumentMap);
             form.setClob(clob == null? null: new String(clob));
 
-            String path = (String)createPartyDocumentMap.get("Path");
+            var path = (String)createPartyDocumentMap.get("Path");
             if(path != null) {
-                File file = new File(path);
-                long length = file.length();
+                var file = new File(path);
+                var length = file.length();
 
                 if(length < Integer.MAX_VALUE) {
                     try {
                         InputStream is = new FileInputStream(file);
-                        byte[] bytes = new byte[(int)length];
-                        int offset = 0;
-                        int numRead = 0;
+                        var bytes = new byte[(int)length];
+                        var offset = 0;
+                        var numRead = 0;
 
                         while(offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
                             offset += numRead;

@@ -55,16 +55,16 @@ public class TranslationAction
         String forwardKey;
         
         try {
-            String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
-            String cancellationPolicyName = request.getParameter(ParameterConstants.CANCELLATION_POLICY_NAME);
-            GetCancellationPolicyTranslationsForm commandForm = CancellationPolicyUtil.getHome().getGetCancellationPolicyTranslationsForm();
+            var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+            var cancellationPolicyName = request.getParameter(ParameterConstants.CANCELLATION_POLICY_NAME);
+            var commandForm = CancellationPolicyUtil.getHome().getGetCancellationPolicyTranslationsForm();
             
             commandForm.setCancellationKindName(cancellationKindName);
             commandForm.setCancellationPolicyName(cancellationPolicyName);
-            
-            CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyTranslations(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCancellationPolicyTranslationsResult result = (GetCancellationPolicyTranslationsResult)executionResult.getResult();
+
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyTranslations(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCancellationPolicyTranslationsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CANCELLATION_POLICY, result.getCancellationPolicy());
             request.setAttribute(AttributeConstants.CANCELLATION_POLICY_TRANSLATIONS, result.getCancellationPolicyTranslations());

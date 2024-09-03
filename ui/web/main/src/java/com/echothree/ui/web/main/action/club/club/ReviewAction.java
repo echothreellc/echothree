@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetClubForm commandForm = ClubUtil.getHome().getGetClubForm();
-            String clubName = request.getParameter(ParameterConstants.CLUB_NAME);
+            var commandForm = ClubUtil.getHome().getGetClubForm();
+            var clubName = request.getParameter(ParameterConstants.CLUB_NAME);
             
             commandForm.setClubName(clubName);
-            
-            CommandResult commandResult = ClubUtil.getHome().getClub(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetClubResult result = (GetClubResult)executionResult.getResult();
+
+            var commandResult = ClubUtil.getHome().getClub(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetClubResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CLUB, result.getClub());
             forwardKey = ForwardConstants.DISPLAY;

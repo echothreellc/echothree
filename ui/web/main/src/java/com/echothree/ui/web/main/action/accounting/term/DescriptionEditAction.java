@@ -61,14 +61,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String TermName = request.getParameter(ParameterConstants.TERM_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var TermName = request.getParameter(ParameterConstants.TERM_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditTermDescriptionForm commandForm = TermUtil.getHome().getEditTermDescriptionForm();
-                TermDescriptionSpec spec = TermUtil.getHome().getTermDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = TermUtil.getHome().getEditTermDescriptionForm();
+                var spec = TermUtil.getHome().getTermDescriptionSpec();
                 
                 if(TermName == null)
                     TermName = actionForm.getTermName();
@@ -80,19 +80,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    TermDescriptionEdit edit = TermUtil.getHome().getTermDescriptionEdit();
+                    var edit = TermUtil.getHome().getTermDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = TermUtil.getHome().editTermDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = TermUtil.getHome().editTermDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditTermDescriptionResult result = (EditTermDescriptionResult)executionResult.getResult();
+                            var result = (EditTermDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +105,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = TermUtil.getHome().editTermDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditTermDescriptionResult result = (EditTermDescriptionResult)executionResult.getResult();
+
+                    var commandResult = TermUtil.getHome().editTermDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditTermDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        TermDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setTermName(TermName);
@@ -130,8 +130,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.TERM_NAME, TermName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

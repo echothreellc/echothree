@@ -51,7 +51,7 @@ public class OrderTimeTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("orderTimeTypeDescription")) {
-            CreateOrderTimeTypeDescriptionForm commandForm = OrderFormFactory.getCreateOrderTimeTypeDescriptionForm();
+            var commandForm = OrderFormFactory.getCreateOrderTimeTypeDescriptionForm();
             
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.setOrderTimeTypeName(orderTimeTypeName);

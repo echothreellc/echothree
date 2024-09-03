@@ -66,7 +66,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyCarrierAccountForm commandForm = CarrierUtil.getHome().getDeletePartyCarrierAccountForm();
+        var commandForm = CarrierUtil.getHome().getDeletePartyCarrierAccountForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setCarrierName(actionForm.getCarrierName());

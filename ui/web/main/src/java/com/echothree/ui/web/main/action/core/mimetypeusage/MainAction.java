@@ -54,14 +54,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String mimeTypeName = request.getParameter(ParameterConstants.MIME_TYPE_NAME);
-            GetMimeTypeUsagesForm commandForm = CoreUtil.getHome().getGetMimeTypeUsagesForm();
+            var mimeTypeName = request.getParameter(ParameterConstants.MIME_TYPE_NAME);
+            var commandForm = CoreUtil.getHome().getGetMimeTypeUsagesForm();
             
             commandForm.setMimeTypeName(mimeTypeName);
-            
-            CommandResult commandResult = CoreUtil.getHome().getMimeTypeUsages(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeUsagesResult result = (GetMimeTypeUsagesResult)executionResult.getResult();
+
+            var commandResult = CoreUtil.getHome().getMimeTypeUsages(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeUsagesResult)executionResult.getResult();
             
             request.setAttribute("mimeType", result.getMimeType());
             request.setAttribute("mimeTypeUsages", result.getMimeTypeUsages());

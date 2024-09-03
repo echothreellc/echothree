@@ -50,10 +50,10 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetPaymentMethodsForm commandForm = PaymentUtil.getHome().getGetPaymentMethodsForm();
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentMethods(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPaymentMethodsResult result = (GetPaymentMethodsResult)executionResult.getResult();
+        var commandForm = PaymentUtil.getHome().getGetPaymentMethodsForm();
+        var commandResult = PaymentUtil.getHome().getPaymentMethods(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPaymentMethodsResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PAYMENT_METHODS, result.getPaymentMethods());
         

@@ -54,11 +54,11 @@ public class GenerateKeyAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GenerateKeyForm commandForm = CoreUtil.getHome().getGenerateKeyForm();
-        String entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
-        String key = request.getParameter(ParameterConstants.KEY);
-        String guid = request.getParameter(ParameterConstants.GUID);
-        String ulid = request.getParameter(ParameterConstants.ULID);
+        var commandForm = CoreUtil.getHome().getGenerateKeyForm();
+        var entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
+        var key = request.getParameter(ParameterConstants.KEY);
+        var guid = request.getParameter(ParameterConstants.GUID);
+        var ulid = request.getParameter(ParameterConstants.ULID);
 
         commandForm.setEntityRef(entityRef);
         commandForm.setKey(key);
@@ -66,18 +66,18 @@ public class GenerateKeyAction
         commandForm.setUlid(ulid);
         commandForm.setForceRegeneration(request.getParameter(ParameterConstants.FORCE_REGENERATION));
 
-        CommandResult commandResult = CoreUtil.getHome().generateKey(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().generateKey(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GenerateKeyResult result = (GenerateKeyResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GenerateKeyResult)executionResult.getResult();
             
             key = result.getKey();
 
             forwardKey = ForwardConstants.DISPLAY;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey == null ? ForwardConstants.ERROR_404 : forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey == null ? ForwardConstants.ERROR_404 : forwardKey));
 
         if(forwardKey != null) {
             Map<String, String> parameters = new HashMap<>(1);

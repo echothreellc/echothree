@@ -45,15 +45,15 @@ public class AddActionForm
     private void setupReturnReasonChoices() {
         if(returnReasonChoices == null) {
             try {
-                GetReturnReasonChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnReasonChoicesForm();
+                var form = ReturnPolicyUtil.getHome().getGetReturnReasonChoicesForm();
                 
                 form.setReturnKindName(returnKindName);
                 form.setDefaultReturnReasonChoice(returnReasonChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnReasonChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetReturnReasonChoicesResult getReturnReasonChoicesResult = (GetReturnReasonChoicesResult)executionResult.getResult();
+
+                var commandResult = ReturnPolicyUtil.getHome().getReturnReasonChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getReturnReasonChoicesResult = (GetReturnReasonChoicesResult)executionResult.getResult();
                 returnReasonChoices = getReturnReasonChoicesResult.getReturnReasonChoices();
                 
                 if(returnReasonChoice == null) {

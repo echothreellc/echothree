@@ -128,9 +128,9 @@ public abstract class DatabaseUtilities {
     public void checkDatabase()
             throws Exception {
         openDatabaseConnection(myDatabase);
-        
-        CurrentDatabase currentDatabase = CurrentDatabaseUtils.getInstance().getCurrentDatabase(myConnection);
-        DatabaseUpdateTasks neededUpdates = new DatabaseUpdateTasks();
+
+        var currentDatabase = CurrentDatabaseUtils.getInstance().getCurrentDatabase(myConnection);
+        var neededUpdates = new DatabaseUpdateTasks();
         
         checkTables(currentDatabase, neededUpdates);
         executeUpdates(neededUpdates);
@@ -144,7 +144,7 @@ public abstract class DatabaseUtilities {
      * @param tableName The table name that this SQL is for
      */
     String getCreateTableBeginning(String tableName) {
-        String dbTableName = tableName.toLowerCase(Locale.getDefault());
+        var dbTableName = tableName.toLowerCase(Locale.getDefault());
         
         if(verbose && dbTableName.length() > 30)
             log.warn("table \"" + dbTableName + "\" exceeds 30 characters");
@@ -198,18 +198,18 @@ public abstract class DatabaseUtilities {
         String result;
         
         if(theColumn.getType() == ColumnType.columnForeignKey) {
-            Table theTable = theColumn.getTable();
-            String columnPrefix = theTable.getColumnPrefix().toLowerCase(Locale.getDefault());
-            
-            String destinationTableName = theColumn.getDestinationTable();
-            Table destinationTable = theTable.getDatabase().getTable(destinationTableName);
-            String destinationColumnName = theColumn.getDestinationColumn();
+            var theTable = theColumn.getTable();
+            var columnPrefix = theTable.getColumnPrefix().toLowerCase(Locale.getDefault());
+
+            var destinationTableName = theColumn.getDestinationTable();
+            var destinationTable = theTable.getDatabase().getTable(destinationTableName);
+            var destinationColumnName = theColumn.getDestinationColumn();
             //Column destinationColumn = destinationTable.getColumn(destinationColumnName);
-            String destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
-            
-            boolean referencesSelf = theColumn.getTable() == destinationTable;
-            boolean differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
-            String fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
+            var destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
+
+            var referencesSelf = theColumn.getTable() == destinationTable;
+            var differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
+            var fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
             result = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
         } else
             result = getColumnName(theColumn.getTable().getColumnPrefixLowerCase(), theColumn.getName());
@@ -221,8 +221,8 @@ public abstract class DatabaseUtilities {
      * to lower case
      */
     String getColumnParameterName(Column theColumn) {
-        String columnName = theColumn.getName();
-        String parameterName = columnName.substring(0, 1).toLowerCase(Locale.getDefault());
+        var columnName = theColumn.getName();
+        var parameterName = columnName.substring(0, 1).toLowerCase(Locale.getDefault());
         
         if(theColumn.getType() == ColumnType.columnForeignKey)
             parameterName += columnName.substring(1, columnName.length() - 2) + "PK";
@@ -266,7 +266,7 @@ public abstract class DatabaseUtilities {
                 result = "byte []";
                 break;
             case ColumnType.columnForeignKey:
-                Table destinationTable = theColumn.getTable().getDatabase().getTable(theColumn.getDestinationTable());
+                var destinationTable = theColumn.getTable().getDatabase().getTable(theColumn.getDestinationTable());
                 result = destinationTable.getNameSingular() + "Bean";
                 break;
         }
@@ -360,19 +360,19 @@ public abstract class DatabaseUtilities {
      */
     String getForeignKeyDefinition(Table theTable, String columnPrefix, Column theColumn)
     throws Exception {
-        String destinationTableName = theColumn.getDestinationTable();
-        Table destinationTable = theTable.getDatabase().getTable(destinationTableName);
-        String destinationColumnName = theColumn.getDestinationColumn();
-        Column destinationColumn = destinationTable.getColumn(destinationColumnName);
-        
-        String destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
-        
-        boolean referencesSelf = theColumn.getTable() == destinationTable;
-        boolean differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
-        String fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
-        String fkColumnName = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
-        
-        String fkResult = getColumnDefinitionWithName(destinationTable, fkColumnPrefix, fkColumnName, destinationColumn,
+        var destinationTableName = theColumn.getDestinationTable();
+        var destinationTable = theTable.getDatabase().getTable(destinationTableName);
+        var destinationColumnName = theColumn.getDestinationColumn();
+        var destinationColumn = destinationTable.getColumn(destinationColumnName);
+
+        var destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
+
+        var referencesSelf = theColumn.getTable() == destinationTable;
+        var differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
+        var fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
+        var fkColumnName = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
+
+        var fkResult = getColumnDefinitionWithName(destinationTable, fkColumnPrefix, fkColumnName, destinationColumn,
                 theColumn);
         
         return fkResult;
@@ -425,7 +425,7 @@ public abstract class DatabaseUtilities {
      */
     String getColumnDefinition(Table theTable, String columnPrefix, Column theColumn)
         throws Exception {
-        String columnName = getColumnName(columnPrefix, theColumn.getName());
+        var columnName = getColumnName(columnPrefix, theColumn.getName());
         
         if(verbose && columnName.length() > 30)
             log.warn("column \"" + columnName + "\" exceeds 30 characters");
@@ -435,7 +435,7 @@ public abstract class DatabaseUtilities {
     
     String getColumnDefinition(Column theColumn)
         throws Exception {
-        Table theTable = theColumn.getTable();
+        var theTable = theColumn.getTable();
         
         return getColumnDefinition(theTable, theTable.getColumnPrefix(), theColumn);
     }
@@ -459,16 +459,16 @@ public abstract class DatabaseUtilities {
      */
     String getIndexForeignKeyColumnName(String columnPrefix, Column theColumn)
     throws Exception {
-        
-        String destinationTableName = theColumn.getDestinationTable();
-        Table destinationTable = theColumn.getTable().getDatabase().getTable(destinationTableName);
-        String destinationColumnName = theColumn.getDestinationColumn();
-        String destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
-        
-        boolean referencesSelf = theColumn.getTable() == destinationTable;
-        boolean differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
-        String fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
-        String fkColumnName = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
+
+        var destinationTableName = theColumn.getDestinationTable();
+        var destinationTable = theColumn.getTable().getDatabase().getTable(destinationTableName);
+        var destinationColumnName = theColumn.getDestinationColumn();
+        var destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
+
+        var referencesSelf = theColumn.getTable() == destinationTable;
+        var differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
+        var fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
+        var fkColumnName = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
         
         return fkColumnName;
     }
@@ -476,11 +476,11 @@ public abstract class DatabaseUtilities {
     /** Returns a comma separated list of column names that are used in the index
      */
     String getIndexColumnList(Index theIndex) throws Exception {
-        String columnPrefix = theIndex.getTable().getColumnPrefix().toLowerCase(Locale.getDefault());
-        String result = "";
-        boolean afterFirst = false;
+        var columnPrefix = theIndex.getTable().getColumnPrefix().toLowerCase(Locale.getDefault());
+        var result = "";
+        var afterFirst = false;
         
-        for(Column theColumn: theIndex.getIndexColumns()) {
+        for(var theColumn: theIndex.getIndexColumns()) {
             if(afterFirst)
                 result += ", ";
             else
@@ -525,15 +525,15 @@ public abstract class DatabaseUtilities {
      * @throws Exception Thrown when a database error occurs
      */
     void createMissingTable(Table theTable) throws Exception {
-        String tableName = theTable.getNamePlural();
-        String tableNameLC = tableName.toLowerCase(Locale.getDefault());
-        String columnPrefix = theTable.getColumnPrefix().toLowerCase(Locale.getDefault());
-        
-        StringBuilder createSQL = new StringBuilder(getCreateTableBeginning(tableNameLC));
+        var tableName = theTable.getNamePlural();
+        var tableNameLC = tableName.toLowerCase(Locale.getDefault());
+        var columnPrefix = theTable.getColumnPrefix().toLowerCase(Locale.getDefault());
+
+        var createSQL = new StringBuilder(getCreateTableBeginning(tableNameLC));
         
         List theColumns = theTable.getColumns();
-        int columnCount = theColumns.size();
-        for(int i = 0; i < columnCount; i++) {
+        var columnCount = theColumns.size();
+        for(var i = 0; i < columnCount; i++) {
             if(i != 0)
                 createSQL.append(", ");
             createSQL.append(getColumnDefinition(theTable, columnPrefix, (Column)theColumns.get(i)));
@@ -542,13 +542,13 @@ public abstract class DatabaseUtilities {
         createSQL.append(getCreateTableHiddenColumns(columnPrefix, tableNameLC));
         createSQL.append(getCreateTableEnding(columnPrefix, tableNameLC));
         createSQL.append(getCreateTableParameters(tableNameLC));
-        
-        String createSQLString = createSQL.toString();
+
+        var createSQLString = createSQL.toString();
         if(verbose) {
             System.out.println(createSQLString);
         }
     
-        try(Statement stmt = myConnection.createStatement()) {
+        try(var stmt = myConnection.createStatement()) {
             stmt.execute(createSQLString);
         }
     }
@@ -559,18 +559,18 @@ public abstract class DatabaseUtilities {
     
     boolean checkExistingTableColumns(CurrentTable ct, Table theTable, DatabaseUpdateTasks neededUpdates)
             throws Exception {
-        boolean recreatingTable = false;
-        Map<String, CurrentColumn> columns = ct.getColumns();
+        var recreatingTable = false;
+        var columns = ct.getColumns();
         Set<String> xmlColumns = new HashSet<>();
         List<CurrentColumn> extraColumns = new ArrayList<>();
         
-        for(Column theColumn: theTable.getColumns()) {
+        for(var theColumn: theTable.getColumns()) {
             xmlColumns.add(theColumn.getDbColumnName());
         }
 
         // Check for extra columns.
         columns.values().stream().forEach((cc) -> {
-            String columnName = cc.getColumnName();
+            var columnName = cc.getColumnName();
             if (!xmlColumns.contains(columnName) && !isHiddenColumn(theTable, columnName)) {
                 extraColumns.add(cc);
             }
@@ -587,10 +587,10 @@ public abstract class DatabaseUtilities {
             neededUpdates.addExtraColumns(extraColumns);
             
             // Check for missing columns.
-            for(Column theColumn: theTable.getColumns()) {
-                String columnName = theColumn.getDbColumnName();
+            for(var theColumn: theTable.getColumns()) {
+                var columnName = theColumn.getDbColumnName();
 
-                CurrentColumn cc = ct.getColumn(columnName);
+                var cc = ct.getColumn(columnName);
                 if(cc != null) {
                     // Check CurrentColumn against the Column
                     if(!checkColumnDefinition(cc, theColumn)) {
@@ -608,7 +608,7 @@ public abstract class DatabaseUtilities {
     Column getColumnByDbName(Table theTable, String dbColumnName) throws Exception {
         Column theColumn = null;
 
-        for(Column foundColumn: theTable.getColumns()) {
+        for(var foundColumn: theTable.getColumns()) {
             if(foundColumn.getDbColumnName().equals(dbColumnName)) {
                 theColumn = foundColumn;
                 break;
@@ -619,12 +619,12 @@ public abstract class DatabaseUtilities {
     }
     
     void recreateForeignKeyIfNecessary(CurrentTable ct, Table theTable, CurrentIndex ci, DatabaseUpdateTasks neededUpdates) throws Exception {
-        CurrentColumn firstColumn = ci.getColumns().iterator().next();
-        String firstColumnName = firstColumn.getColumnName();
-        Column theColumn = getColumnByDbName(theTable, firstColumnName);
+        var firstColumn = ci.getColumns().iterator().next();
+        var firstColumnName = firstColumn.getColumnName();
+        var theColumn = getColumnByDbName(theTable, firstColumnName);
 
         if(theColumn != null && theColumn.getType() == ColumnType.columnForeignKey) {
-            CurrentForeignKey cfk = ct.getForeignKeyByColumnName(firstColumnName);
+            var cfk = ct.getForeignKeyByColumnName(firstColumnName);
 
             neededUpdates.addExtraForeignKey(cfk);
             neededUpdates.addForeignKey(theColumn);
@@ -632,19 +632,19 @@ public abstract class DatabaseUtilities {
     }
     
     void checkExistingTableIndexes(CurrentTable ct, Table theTable, DatabaseUpdateTasks neededUpdates) throws Exception {
-        Map<String, CurrentIndex> indexes = ct.getIndexes();
+        var indexes = ct.getIndexes();
         Set<String> xmlIndexes = new HashSet<>();
         
         // Check for missing indexes.
-        for(Index theIndex: theTable.getIndexes()) {
-            String indexName = getIndexName(theIndex);
+        for(var theIndex: theTable.getIndexes()) {
+            var indexName = getIndexName(theIndex);
             
             xmlIndexes.add(indexName);
-            
-            CurrentIndex ci = ct.getIndex(indexName);
+
+            var ci = ct.getIndex(indexName);
             if(ci != null) {
-                boolean indexIncorrect = false;
-                int indexType = theIndex.getType();
+                var indexIncorrect = false;
+                var indexType = theIndex.getType();
                 
                 if(ci.isUnique() == (indexType == Index.indexMultiple)) {
                     indexIncorrect = true;
@@ -653,13 +653,13 @@ public abstract class DatabaseUtilities {
                 }
                 
                 if(!indexIncorrect) {
-                    Set<Column> indexColumns = theIndex.getIndexColumns();
-                    Set<CurrentColumn> currentColumns = ci.getColumns();
+                    var indexColumns = theIndex.getIndexColumns();
+                    var currentColumns = ci.getColumns();
 
                     if(currentColumns.size() == indexColumns.size()) {
-                        Iterator<CurrentColumn> currentColumnsIter = currentColumns.iterator();
+                        var currentColumnsIter = currentColumns.iterator();
 
-                        for(Column indexColumn: theIndex.getIndexColumns()) {
+                        for(var indexColumn: theIndex.getIndexColumns()) {
                             if(!indexColumn.getDbColumnName().equals(currentColumnsIter.next().getColumnName())) {
                                 indexIncorrect = true;
                                 break;
@@ -684,8 +684,8 @@ public abstract class DatabaseUtilities {
         }
         
         // Check for extra indexes.
-        for(CurrentIndex ci: indexes.values()) {
-            String indexName = ci.getIndexName();
+        for(var ci: indexes.values()) {
+            var indexName = ci.getIndexName();
             
             if(!xmlIndexes.contains(indexName)) {
                 // Drop existing index.
@@ -711,16 +711,16 @@ public abstract class DatabaseUtilities {
      * @throws Exception Thrown when a database error occurs
      */
     void checkTables(CurrentDatabase cd, DatabaseUpdateTasks neededUpdates) throws Exception {
-        Map<String, CurrentTable> tables = cd.getTables();
+        var tables = cd.getTables();
         Set<String> xmlTables = new HashSet<>();
         
         // Check for missing tables.
-        for(Table theTable: myDatabase.getTables()) {
-            String tableName = theTable.getNamePlural().toLowerCase(Locale.getDefault());
+        for(var theTable: myDatabase.getTables()) {
+            var tableName = theTable.getNamePlural().toLowerCase(Locale.getDefault());
             
             xmlTables.add(tableName);
-            
-            CurrentTable ct = tables.get(tableName);
+
+            var ct = tables.get(tableName);
             if(ct != null) {
                 checkExistingTable(ct, theTable, neededUpdates);
             } else {
@@ -736,7 +736,7 @@ public abstract class DatabaseUtilities {
     
     void executeTableUpdates(List<Table> tablesNeeded)
             throws Exception {
-        for(Table theTable: tablesNeeded) {
+        for(var theTable: tablesNeeded) {
             createMissingTable(theTable);
         }
     }
@@ -747,13 +747,13 @@ public abstract class DatabaseUtilities {
     }
     
     void createMissingColumn(Column theColumn) throws Exception {
-        String alterSQL = getAlterTableAddColumn(theColumn);
+        var alterSQL = getAlterTableAddColumn(theColumn);
 
         if(verbose) {
             System.out.println(alterSQL);
         }
-        
-        Statement stmt = myConnection.createStatement();
+
+        var stmt = myConnection.createStatement();
         stmt.execute(alterSQL);
         stmt.close();
     }
@@ -763,7 +763,7 @@ public abstract class DatabaseUtilities {
     }
     
     void executeColumnUpdates(List<Column> columnsNeeded) throws Exception {
-        for(Column theColumn: columnsNeeded) {
+        for(var theColumn: columnsNeeded) {
             createMissingColumn(theColumn);
         }
     }
@@ -786,27 +786,27 @@ public abstract class DatabaseUtilities {
     
     void createMissingIndex(Index theIndex)
             throws Exception {
-        String sqlForIndex = switch(theIndex.getType()) {
+        var sqlForIndex = switch(theIndex.getType()) {
             case Index.indexPrimaryKey -> getPrimaryKeyIndex(theIndex);
             case Index.indexUnique -> getUniqueIndex(theIndex);
             case Index.indexMultiple -> getMultipleIndex(theIndex);
             default -> null;
         };
 
-        String alterSQL = getAlterTableAddIndex(theIndex, sqlForIndex);
+        var alterSQL = getAlterTableAddIndex(theIndex, sqlForIndex);
         
         if(verbose) {
             System.out.println(alterSQL);
         }
-        
-        Statement stmt = myConnection.createStatement();
+
+        var stmt = myConnection.createStatement();
         stmt.execute(alterSQL);
         stmt.close();
     }
     
     void executeIndexUpdates(Set<Index> indexesNeeded)
             throws Exception {
-        for(Index theIndex: indexesNeeded) {
+        for(var theIndex: indexesNeeded) {
             createMissingIndex(theIndex);
         }
     }
@@ -821,115 +821,115 @@ public abstract class DatabaseUtilities {
     
     void createMissingForeignKey(Column theFK)
             throws Exception {
-        String destinationTableName = theFK.getDestinationTable();
-        Table destinationTable = theFK.getTable().getDatabase().getTable(destinationTableName);
-        String destinationColumnName = theFK.getDestinationColumn();
-        Column destinationColumn = destinationTable.getColumn(destinationColumnName);
-        
-        String columnPrefix = theFK.getTable().getColumnPrefix().toLowerCase(Locale.getDefault());
-        String destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
-        
-        String fkDestinationColumnName = destinationColumnPrefix + "_" + destinationColumn.getName().toLowerCase(Locale.getDefault());
-        
-        boolean referencesSelf = theFK.getTable() == destinationTable;
-        boolean differingColumnName = !referencesSelf && !theFK.getName().equals(destinationColumnName);
-        String fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
-        String fkSourceColumnName = fkColumnPrefix + theFK.getName().toLowerCase(Locale.getDefault());
-        
-        String sqlForFK = getForeignKeyDefinition(theFK, theFK.getTable(), fkSourceColumnName, destinationTable, fkDestinationColumnName);
-        String alterSQL = getAlterTableAddForeignKey(theFK, sqlForFK);
+        var destinationTableName = theFK.getDestinationTable();
+        var destinationTable = theFK.getTable().getDatabase().getTable(destinationTableName);
+        var destinationColumnName = theFK.getDestinationColumn();
+        var destinationColumn = destinationTable.getColumn(destinationColumnName);
+
+        var columnPrefix = theFK.getTable().getColumnPrefix().toLowerCase(Locale.getDefault());
+        var destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
+
+        var fkDestinationColumnName = destinationColumnPrefix + "_" + destinationColumn.getName().toLowerCase(Locale.getDefault());
+
+        var referencesSelf = theFK.getTable() == destinationTable;
+        var differingColumnName = !referencesSelf && !theFK.getName().equals(destinationColumnName);
+        var fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
+        var fkSourceColumnName = fkColumnPrefix + theFK.getName().toLowerCase(Locale.getDefault());
+
+        var sqlForFK = getForeignKeyDefinition(theFK, theFK.getTable(), fkSourceColumnName, destinationTable, fkDestinationColumnName);
+        var alterSQL = getAlterTableAddForeignKey(theFK, sqlForFK);
         
         if(verbose) {
             System.out.println(alterSQL);
         }
         
-        try(Statement stmt = myConnection.createStatement()) {
+        try(var stmt = myConnection.createStatement()) {
             stmt.execute(alterSQL);
         }
     }
     
     void executeForeignKeyUpdates(Set<Column> foreignKeysNeeded) throws Exception {
-        for(Column theFK: foreignKeysNeeded) {
+        for(var theFK: foreignKeysNeeded) {
             createMissingForeignKey(theFK);
         }
     }
     
     void dropExtraForeignKey(CurrentForeignKey cfk)
             throws Exception {
-        String alterSQL = getAlterTableDropForeignKey(cfk);
+        var alterSQL = getAlterTableDropForeignKey(cfk);
 
         if(verbose) {
             System.out.println(alterSQL);
         }
         
-        try(Statement stmt = myConnection.createStatement()) {
+        try(var stmt = myConnection.createStatement()) {
             stmt.execute(alterSQL);
         }
     }
     
     void dropExtraForeignKeys(Set<CurrentForeignKey> cfks)
             throws Exception {
-        for(CurrentForeignKey cfk: cfks) {
+        for(var cfk: cfks) {
             dropExtraForeignKey(cfk);
         }
     }
     
     void dropExtraIndex(CurrentIndex ci)
             throws Exception {
-        String alterSQL = getAlterTableDropIndex(ci);
+        var alterSQL = getAlterTableDropIndex(ci);
 
         if(verbose) {
             System.out.println(alterSQL);
         }
         
-        try(Statement stmt = myConnection.createStatement()) {
+        try(var stmt = myConnection.createStatement()) {
             stmt.execute(alterSQL);
         }
     }
     
     void dropExtraIndexes(Set<CurrentIndex> cis)
             throws Exception {
-        for(CurrentIndex ci: cis) {
+        for(var ci: cis) {
             dropExtraIndex(ci);
         }
     }
     
     void dropExtraColumn(CurrentColumn cc)
             throws Exception {
-        String alterSQL = getAlterTableDropColumn(cc);
+        var alterSQL = getAlterTableDropColumn(cc);
 
         if(verbose) {
             System.out.println(alterSQL);
         }
         
-        try(Statement stmt = myConnection.createStatement()) {
+        try(var stmt = myConnection.createStatement()) {
             stmt.execute(alterSQL);
         }
     }
     
     void dropExtraColumns(List<CurrentColumn> ccs)
             throws Exception {
-        for(CurrentColumn cc: ccs) {
+        for(var cc: ccs) {
             dropExtraColumn(cc);
         }
     }
     
     void dropExtraTable(CurrentTable ct)
             throws Exception {
-        String alterSQL = getDropTable(ct);
+        var alterSQL = getDropTable(ct);
 
         if(verbose) {
             System.out.println(alterSQL);
         }
         
-        try(Statement stmt = myConnection.createStatement()) {
+        try(var stmt = myConnection.createStatement()) {
             stmt.execute(alterSQL);
         }
     }
     
     void dropExtraTables(List<CurrentTable> cts)
             throws Exception {
-        for(CurrentTable ct: cts) {
+        for(var ct: cts) {
             dropExtraTable(ct);
         }
     }
@@ -941,20 +941,20 @@ public abstract class DatabaseUtilities {
     
     void modifyIncorrectColumn(Column incorrectColumn)
             throws Exception {
-        String alterSQL = getAlterColumn(incorrectColumn);
+        var alterSQL = getAlterColumn(incorrectColumn);
 
         if(verbose) {
             System.out.println(alterSQL);
         }
         
-        try(Statement stmt = myConnection.createStatement()) {
+        try(var stmt = myConnection.createStatement()) {
             stmt.execute(alterSQL);
         }
     }
     
     void modifyIncorrectColumns(List<Column> incorrectColumns)
             throws Exception {
-        for(Column incorrectColumn: incorrectColumns) {
+        for(var incorrectColumn: incorrectColumns) {
              modifyIncorrectColumn(incorrectColumn);
         }
     }

@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = AccountingUtil.getHome().getTransactionTypes(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTransactionTypesResult result = (GetTransactionTypesResult)executionResult.getResult();
+            var commandResult = AccountingUtil.getHome().getTransactionTypes(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRANSACTION_TYPES, result.getTransactionTypes());
             forwardKey = ForwardConstants.DISPLAY;

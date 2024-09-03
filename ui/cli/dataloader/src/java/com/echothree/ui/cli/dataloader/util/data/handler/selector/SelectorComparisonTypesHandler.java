@@ -48,9 +48,9 @@ public class SelectorComparisonTypesHandler
             String selectorComparisonTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("selectorComparisonTypeName"))
                     selectorComparisonTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class SelectorComparisonTypesHandler
             }
             
             try {
-                CreateSelectorComparisonTypeForm form = SelectorFormFactory.getCreateSelectorComparisonTypeForm();
+                var form = SelectorFormFactory.getCreateSelectorComparisonTypeForm();
                 
                 form.setSelectorComparisonTypeName(selectorComparisonTypeName);
                 form.setIsDefault(isDefault);

@@ -51,15 +51,15 @@ public class AddActionForm
     public void setupCommentSequenceChoices()
             throws NamingException {
         if(commentSequenceChoices == null) {
-            GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
+            var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
 
             form.setSequenceTypeName(SequenceTypes.COMMENT.name());
             form.setDefaultSequenceChoice(commentSequenceChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+            var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceChoicesResult)executionResult.getResult();
             commentSequenceChoices = result.getSequenceChoices();
 
             if(commentSequenceChoice == null)
@@ -70,14 +70,14 @@ public class AddActionForm
     public void setupMimeTypeUsageTypeChoices()
             throws NamingException {
         if(mimeTypeUsageTypeChoices == null) {
-            GetMimeTypeUsageTypeChoicesForm form = CoreUtil.getHome().getGetMimeTypeUsageTypeChoicesForm();
+            var form = CoreUtil.getHome().getGetMimeTypeUsageTypeChoicesForm();
 
             form.setDefaultMimeTypeUsageTypeChoice(mimeTypeUsageTypeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getMimeTypeUsageTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeUsageTypeChoicesResult result = (GetMimeTypeUsageTypeChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getMimeTypeUsageTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeUsageTypeChoicesResult)executionResult.getResult();
             mimeTypeUsageTypeChoices = result.getMimeTypeUsageTypeChoices();
 
             if(mimeTypeUsageTypeChoice == null)

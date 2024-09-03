@@ -49,14 +49,14 @@ public class AddActionForm
     
     private String getSequenceTypeName()
             throws NamingException {
-        GetReturnKindForm commandForm = ReturnPolicyUtil.getHome().getGetReturnKindForm();
+        var commandForm = ReturnPolicyUtil.getHome().getGetReturnKindForm();
         
         commandForm.setReturnKindName(returnKindName);
-        
-        CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnKind(userVisitPK, commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetReturnKindResult result = (GetReturnKindResult)executionResult.getResult();
-        ReturnKindTransfer returnKindTransfer = result.getReturnKind();
+
+        var commandResult = ReturnPolicyUtil.getHome().getReturnKind(userVisitPK, commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetReturnKindResult)executionResult.getResult();
+        var returnKindTransfer = result.getReturnKind();
         
         return returnKindTransfer.getReturnSequenceType().getSequenceTypeName();
     }
@@ -64,15 +64,15 @@ public class AddActionForm
     public void setupReturnSequenceChoices() {
         if(returnSequenceChoices == null) {
             try {
-                GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
+                var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
                 form.setSequenceTypeName(getSequenceTypeName());
                 form.setDefaultSequenceChoice(returnSequenceChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+
+                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSequenceChoicesResult)executionResult.getResult();
                 returnSequenceChoices = result.getSequenceChoices();
                 
                 if(returnSequenceChoice == null)

@@ -44,14 +44,14 @@ public class AddActionForm
     private void setupCarrierChoices() {
         if(carrierChoices == null) {
             try {
-                GetCarrierChoicesForm commandForm = CarrierUtil.getHome().getGetCarrierChoicesForm();
+                var commandForm = CarrierUtil.getHome().getGetCarrierChoicesForm();
 
                 commandForm.setDefaultCarrierChoice(carrierChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = CarrierUtil.getHome().getCarrierChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCarrierChoicesResult result = (GetCarrierChoicesResult)executionResult.getResult();
+                var commandResult = CarrierUtil.getHome().getCarrierChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCarrierChoicesResult)executionResult.getResult();
                 carrierChoices = result.getCarrierChoices();
 
                 if(carrierChoice == null) {

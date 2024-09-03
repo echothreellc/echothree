@@ -149,14 +149,14 @@ public class InitialDataParser
     
     public void loadPersonalTitles()
             throws NamingException, SAXException {
-        PersonalTitleChoicesBean personalTitleChoices = PersonalTitlesHelper.getInstance().getPersonalTitleChoices(getUserVisit(), Boolean.TRUE);
-        Iterator<String> valueIter = personalTitleChoices.getValues().iterator();
-        Iterator<String> labelIter = personalTitleChoices.getLabels().iterator();
+        var personalTitleChoices = PersonalTitlesHelper.getInstance().getPersonalTitleChoices(getUserVisit(), Boolean.TRUE);
+        var valueIter = personalTitleChoices.getValues().iterator();
+        var labelIter = personalTitleChoices.getLabels().iterator();
         
         personalTitles = new HashMap<>(personalTitleChoices.getLabels().size());
         while(valueIter.hasNext()) {
-            String value = valueIter.next();
-            String label = labelIter.next();
+            var value = valueIter.next();
+            var label = labelIter.next();
             
             addPersonalTitle(value, label);
         }
@@ -174,14 +174,14 @@ public class InitialDataParser
     
     public void loadNameSuffixes()
             throws NamingException, SAXException {
-        NameSuffixChoicesBean nameSuffixChoices = NameSuffixesHelper.getInstance().getNameSuffixChoices(getUserVisit(), Boolean.TRUE);
-        Iterator<String> valueIter = nameSuffixChoices.getValues().iterator();
-        Iterator<String> labelIter = nameSuffixChoices.getLabels().iterator();
+        var nameSuffixChoices = NameSuffixesHelper.getInstance().getNameSuffixChoices(getUserVisit(), Boolean.TRUE);
+        var valueIter = nameSuffixChoices.getValues().iterator();
+        var labelIter = nameSuffixChoices.getLabels().iterator();
         
         nameSuffixes = new HashMap<>(nameSuffixChoices.getLabels().size());
         while(valueIter.hasNext()) {
-            String value = valueIter.next();
-            String label = labelIter.next();
+            var value = valueIter.next();
+            var label = labelIter.next();
             
             addNameSuffix(value, label);
         }
@@ -283,7 +283,7 @@ public class InitialDataParser
     
     /** Prints the error message. */
     protected void printError(String type, SAXParseException ex) {
-        String systemId = ex.getSystemId();
+        var systemId = ex.getSystemId();
 
         System.err.print("[");
         System.err.print(type);
@@ -294,7 +294,7 @@ public class InitialDataParser
         }
 
         if (systemId != null) {
-            int index = systemId.lastIndexOf('/');
+            var index = systemId.lastIndexOf('/');
 
             if (index != -1) {
                 systemId = systemId.substring(index + 1);

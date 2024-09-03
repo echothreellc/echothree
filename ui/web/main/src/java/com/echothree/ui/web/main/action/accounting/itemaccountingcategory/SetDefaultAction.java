@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultItemAccountingCategoryForm commandForm = AccountingUtil.getHome().getSetDefaultItemAccountingCategoryForm();
-            String itemAccountingCategoryName = request.getParameter(ParameterConstants.ITEM_ACCOUNTING_CATEGORY_NAME);
+            var commandForm = AccountingUtil.getHome().getSetDefaultItemAccountingCategoryForm();
+            var itemAccountingCategoryName = request.getParameter(ParameterConstants.ITEM_ACCOUNTING_CATEGORY_NAME);
             
             commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
             

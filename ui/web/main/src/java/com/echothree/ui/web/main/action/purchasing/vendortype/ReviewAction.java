@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetVendorTypeForm commandForm = VendorUtil.getHome().getGetVendorTypeForm();
-            String vendorTypeName = request.getParameter(ParameterConstants.VENDOR_TYPE_NAME);
+            var commandForm = VendorUtil.getHome().getGetVendorTypeForm();
+            var vendorTypeName = request.getParameter(ParameterConstants.VENDOR_TYPE_NAME);
             
             commandForm.setVendorTypeName(vendorTypeName);
-            
-            CommandResult commandResult = VendorUtil.getHome().getVendorType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetVendorTypeResult result = (GetVendorTypeResult)executionResult.getResult();
+
+            var commandResult = VendorUtil.getHome().getVendorType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetVendorTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.VENDOR_TYPE, result.getVendorType());
             forwardKey = ForwardConstants.DISPLAY;

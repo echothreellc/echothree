@@ -42,15 +42,15 @@ public class EditActionForm
     public void setupSalesOrderSequenceChoices() {
         if(salesOrderSequenceChoices == null) {
             try {
-                GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
+                var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
                 form.setSequenceTypeName(SequenceTypes.SALES_ORDER.name());
                 form.setDefaultSequenceChoice(salesOrderSequenceChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+
+                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSequenceChoicesResult)executionResult.getResult();
                 salesOrderSequenceChoices = result.getSequenceChoices();
                 
                 if(salesOrderSequenceChoice == null)

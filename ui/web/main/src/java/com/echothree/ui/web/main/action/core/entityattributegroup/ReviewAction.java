@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetEntityAttributeGroupForm commandForm = CoreUtil.getHome().getGetEntityAttributeGroupForm();
+        var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupForm();
 
         commandForm.setEntityAttributeGroupName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME));
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityAttributeGroup(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEntityAttributeGroup(getUserVisitPK(request), commandForm);
         EntityAttributeGroupTransfer entityAttributeGroup = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeGroupResult result = (GetEntityAttributeGroupResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityAttributeGroupResult)executionResult.getResult();
             
             entityAttributeGroup = result.getEntityAttributeGroup();
         }

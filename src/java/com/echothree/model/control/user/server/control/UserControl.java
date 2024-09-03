@@ -155,7 +155,7 @@ public class UserControl
         String userKeyName;
         
         do {
-            StringBuilder userKeyNameBuilder = new StringBuilder(40);
+            var userKeyNameBuilder = new StringBuilder(40);
             var random = EncryptionUtils.getInstance().getRandom();
             
             for(var i = 0; i < 40; i++) {
@@ -556,7 +556,7 @@ public class UserControl
     public UserVisitGroupStatusChoicesBean getUserVisitGroupStatusChoices(String defaultUserVisitGroupStatusChoice, Language language, boolean allowNullChoice,
             UserVisitGroup userVisitGroup, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        UserVisitGroupStatusChoicesBean userVisitGroupStatusChoicesBean = new UserVisitGroupStatusChoicesBean();
+        var userVisitGroupStatusChoicesBean = new UserVisitGroupStatusChoicesBean();
         
         if(userVisitGroup == null) {
             workflowControl.getWorkflowEntranceChoices(userVisitGroupStatusChoicesBean, defaultUserVisitGroupStatusChoice, language, allowNullChoice,

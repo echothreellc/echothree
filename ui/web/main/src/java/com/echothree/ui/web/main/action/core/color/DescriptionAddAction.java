@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetColorForm commandForm = CoreUtil.getHome().getGetColorForm();
+        var commandForm = CoreUtil.getHome().getGetColorForm();
 
         commandForm.setColorName(actionForm.getColorName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getColor(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getColor(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetColorResult result = (GetColorResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetColorResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COLOR, result.getColor());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateColorDescriptionForm commandForm = CoreUtil.getHome().getCreateColorDescriptionForm();
+        var commandForm = CoreUtil.getHome().getCreateColorDescriptionForm();
 
         commandForm.setColorName( actionForm.getColorName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

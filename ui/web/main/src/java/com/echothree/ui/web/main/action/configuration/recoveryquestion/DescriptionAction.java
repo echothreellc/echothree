@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String recoveryQuestionName = request.getParameter(ParameterConstants.RECOVERY_QUESTION_NAME);
-            GetRecoveryQuestionDescriptionsForm commandForm = UserUtil.getHome().getGetRecoveryQuestionDescriptionsForm();
+            var recoveryQuestionName = request.getParameter(ParameterConstants.RECOVERY_QUESTION_NAME);
+            var commandForm = UserUtil.getHome().getGetRecoveryQuestionDescriptionsForm();
             
             commandForm.setRecoveryQuestionName(recoveryQuestionName);
-            
-            CommandResult commandResult = UserUtil.getHome().getRecoveryQuestionDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetRecoveryQuestionDescriptionsResult result = (GetRecoveryQuestionDescriptionsResult)executionResult.getResult();
-            RecoveryQuestionTransfer recoveryQuestionTransfer = result.getRecoveryQuestion();
+
+            var commandResult = UserUtil.getHome().getRecoveryQuestionDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetRecoveryQuestionDescriptionsResult)executionResult.getResult();
+            var recoveryQuestionTransfer = result.getRecoveryQuestion();
             
             request.setAttribute(AttributeConstants.RECOVERY_QUESTION, recoveryQuestionTransfer);
             request.setAttribute(AttributeConstants.RECOVERY_QUESTION_NAME, recoveryQuestionTransfer.getRecoveryQuestionName());

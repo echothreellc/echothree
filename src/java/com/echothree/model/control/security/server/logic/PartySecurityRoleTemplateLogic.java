@@ -140,7 +140,7 @@ public class PartySecurityRoleTemplateLogic {
     public PreparedPartySecurityRoleTemplateTrainingClass preparePartySecurityRoleTemplateTrainingClass(final ExecutionErrorAccumulator eea,
             final PartySecurityRoleTemplate partySecurityRoleTemplate, final TrainingClass trainingClass) {
         var securityControl = Session.getModelController(SecurityControl.class);
-        PreparedPartySecurityRoleTemplateTrainingClass preparedPartySecurityRoleTemplateTrainingClass = new PreparedPartySecurityRoleTemplateTrainingClass();
+        var preparedPartySecurityRoleTemplateTrainingClass = new PreparedPartySecurityRoleTemplateTrainingClass();
 
         preparedPartySecurityRoleTemplateTrainingClass.setPartySecurityRoleTemplate(partySecurityRoleTemplate);
         preparedPartySecurityRoleTemplateTrainingClass.setTrainingClass(trainingClass);

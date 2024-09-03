@@ -137,7 +137,7 @@ public class IndexControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.IndexType */
     public IndexType getIndexTypeByEntityInstance(EntityInstance entityInstance) {
-        IndexTypePK pk = new IndexTypePK(entityInstance.getEntityUniqueId());
+        var pk = new IndexTypePK(entityInstance.getEntityUniqueId());
         var indexType = IndexTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return indexType;
@@ -1042,7 +1042,7 @@ public class IndexControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Index */
     public Index getIndexByEntityInstance(EntityInstance entityInstance) {
-        IndexPK pk = new IndexPK(entityInstance.getEntityUniqueId());
+        var pk = new IndexPK(entityInstance.getEntityUniqueId());
         var index = IndexFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return index;

@@ -64,25 +64,25 @@ public class Database {
     
     public static void main(String args[])
             throws Exception {
-        CommandLine line = getCommandLine(args);
-        boolean doCharacterSetAndCollation = line.hasOption("c");
-        boolean doStructure = line.hasOption("s");
-        boolean doJava = line.hasOption("j");
-        boolean doEmpty = line.hasOption("e");
-        boolean doReporting = line.hasOption("r");
-        boolean doVerbose = line.hasOption("v");
-        boolean doGenerated = line.hasOption("g");
+        var line = getCommandLine(args);
+        var doCharacterSetAndCollation = line.hasOption("c");
+        var doStructure = line.hasOption("s");
+        var doJava = line.hasOption("j");
+        var doEmpty = line.hasOption("e");
+        var doReporting = line.hasOption("r");
+        var doVerbose = line.hasOption("v");
+        var doGenerated = line.hasOption("g");
 
         if(doCharacterSetAndCollation || doStructure || doJava || doEmpty || doReporting) {
-            Databases theDatabases = new Databases();
+            var theDatabases = new Databases();
 
-            DatabaseDefinitionParser databaseDefinitionParser = new DatabaseDefinitionParser(theDatabases);
+            var databaseDefinitionParser = new DatabaseDefinitionParser(theDatabases);
             databaseDefinitionParser.parse("/DatabaseDefinition.xml");
 
-            com.echothree.ui.cli.database.util.Database echothreeDatabase = theDatabases.getDatabase("echothree");
+            var echothreeDatabase = theDatabases.getDatabase("echothree");
 
             if(doCharacterSetAndCollation || doStructure || doEmpty) {
-                DatabaseUtilities myUtilities = DatabaseUtilitiesFactory.getInstance().getDatabaseUtilities(configuration, doVerbose, echothreeDatabase);
+                var myUtilities = DatabaseUtilitiesFactory.getInstance().getDatabaseUtilities(configuration, doVerbose, echothreeDatabase);
 
                 if(doEmpty) {
                     System.out.println("Emptying database...");
@@ -104,7 +104,7 @@ public class Database {
             }
             
             if(doReporting) {
-                DatabaseViewUtilities databaseViewUtilities = DatabaseUtilitiesFactory.getInstance().getDatabaseViewUtilities(configuration, doVerbose, echothreeDatabase);
+                var databaseViewUtilities = DatabaseUtilitiesFactory.getInstance().getDatabaseViewUtilities(configuration, doVerbose, echothreeDatabase);
                 
                 databaseViewUtilities.execute();
             }
@@ -123,7 +123,7 @@ public class Database {
 
             if(doJava) {
                 System.out.println("Exporting Java...");
-                DatabaseUtilitiesForJava myJavaUtilities = DatabaseUtilitiesFactory.getInstance().getJavaUtilities(doVerbose, echothreeDatabase);
+                var myJavaUtilities = DatabaseUtilitiesFactory.getInstance().getJavaUtilities(doVerbose, echothreeDatabase);
                 myJavaUtilities.exportJava(generatedDirectory + File.separatorChar + "java");
                 System.out.println("   ...done.");
             }

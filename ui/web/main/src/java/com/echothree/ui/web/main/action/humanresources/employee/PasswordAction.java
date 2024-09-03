@@ -63,13 +63,13 @@ public class PasswordAction
     
     public void setupEmployee(HttpServletRequest request, String employeeName)
             throws NamingException {
-        GetEmployeeForm commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
+        var commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
 
         commandForm.setEmployeeName(employeeName);
 
-        CommandResult commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEmployeeResult result = (GetEmployeeResult)executionResult.getResult();
+        var commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEmployeeResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.EMPLOYEE, result.getEmployee());
     }
@@ -78,9 +78,9 @@ public class PasswordAction
     public ActionForward executeAction(ActionMapping mapping, PasswordActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
-        String employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
-        PasswordActionForm actionForm = (PasswordActionForm)form;
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
+        var actionForm = (PasswordActionForm)form;
         
         if(returnUrl == null) {
             returnUrl = actionForm.getReturnUrl();
@@ -90,13 +90,13 @@ public class PasswordAction
         }
         
         if(wasPost(request)) {
-            SetPasswordForm commandForm = AuthenticationUtil.getHome().getSetPasswordForm();
+            var commandForm = AuthenticationUtil.getHome().getSetPasswordForm();
             
             commandForm.setEmployeeName(actionForm.getEmployeeName());
             commandForm.setNewPassword1(actionForm.getNewPassword1());
             commandForm.setNewPassword2(actionForm.getNewPassword2());
-            
-            CommandResult commandResult = AuthenticationUtil.getHome().setPassword(getUserVisitPK(request), commandForm);
+
+            var commandResult = AuthenticationUtil.getHome().setPassword(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -109,19 +109,19 @@ public class PasswordAction
         }
         
         if(forwardKey == null) {
-            GetPartyTypeForm commandForm = PartyUtil.getHome().getGetPartyTypeForm();
+            var commandForm = PartyUtil.getHome().getGetPartyTypeForm();
             
             commandForm.setPartyTypeName(PartyTypes.EMPLOYEE.name());
             
             Set<String> options = new HashSet<>();
             options.add(PartyOptions.PartyTypeIncludePasswordStringPolicy);
             commandForm.setOptions(options);
-            
-            CommandResult commandResult = PartyUtil.getHome().getPartyType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyTypeResult result = (GetPartyTypeResult)executionResult.getResult();
-            PartyTypeTransfer partyType = result.getPartyType();
-            PartyTypePasswordStringPolicyTransfer partyTypePasswordStringPolicy = partyType == null? null: partyType.getPartyTypePasswordStringPolicy();
+
+            var commandResult = PartyUtil.getHome().getPartyType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyTypeResult)executionResult.getResult();
+            var partyType = result.getPartyType();
+            var partyTypePasswordStringPolicy = partyType == null? null: partyType.getPartyTypePasswordStringPolicy();
             
             if(partyTypePasswordStringPolicy != null) {
                 request.setAttribute(AttributeConstants.PARTY_TYPE_PASSWORD_STRING_POLICY, partyTypePasswordStringPolicy);

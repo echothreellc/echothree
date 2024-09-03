@@ -45,14 +45,14 @@ public class AddActionForm
     private void setupShippingMethodChoices() {
         if(shippingMethodChoices == null) {
             try {
-                GetShippingMethodChoicesForm form = ShippingUtil.getHome().getGetShippingMethodChoicesForm();
+                var form = ShippingUtil.getHome().getGetShippingMethodChoicesForm();
                 
                 form.setDefaultShippingMethodChoice(shippingMethodChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ShippingUtil.getHome().getShippingMethodChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetShippingMethodChoicesResult getShippingMethodChoicesResult = (GetShippingMethodChoicesResult)executionResult.getResult();
+
+                var commandResult = ShippingUtil.getHome().getShippingMethodChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getShippingMethodChoicesResult = (GetShippingMethodChoicesResult)executionResult.getResult();
                 shippingMethodChoices = getShippingMethodChoicesResult.getShippingMethodChoices();
                 
                 if(shippingMethodChoice == null) {

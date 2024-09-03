@@ -48,7 +48,7 @@ public class RatingsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("rating")) {
-            CreateRatingForm form = RatingFormFactory.getCreateRatingForm();
+            var form = RatingFormFactory.getCreateRatingForm();
             
             form.setEntityRef(entityRef);
             form.set(getAttrsMap(attrs));

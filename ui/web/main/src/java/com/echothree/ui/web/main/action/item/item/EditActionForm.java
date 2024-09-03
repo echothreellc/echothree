@@ -79,14 +79,14 @@ public class EditActionForm
     private void setupItemCategoryChoices() {
         if(itemCategoryChoices == null) {
             try {
-                GetItemCategoryChoicesForm form = ItemUtil.getHome().getGetItemCategoryChoicesForm();
+                var form = ItemUtil.getHome().getGetItemCategoryChoicesForm();
                 
                 form.setDefaultItemCategoryChoice(itemCategoryChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemCategoryChoicesResult result = (GetItemCategoryChoicesResult)executionResult.getResult();
+
+                var commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemCategoryChoicesResult)executionResult.getResult();
                 itemCategoryChoices = result.getItemCategoryChoices();
                 
                 if(itemCategoryChoice == null) {
@@ -102,14 +102,14 @@ public class EditActionForm
     private void setupItemAccountingCategoryChoices() {
         if(itemAccountingCategoryChoices == null) {
             try {
-                GetItemAccountingCategoryChoicesForm form = AccountingUtil.getHome().getGetItemAccountingCategoryChoicesForm();
+                var form = AccountingUtil.getHome().getGetItemAccountingCategoryChoicesForm();
                 
                 form.setDefaultItemAccountingCategoryChoice(itemAccountingCategoryChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemAccountingCategoryChoicesResult result = (GetItemAccountingCategoryChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemAccountingCategoryChoicesResult)executionResult.getResult();
                 itemAccountingCategoryChoices = result.getItemAccountingCategoryChoices();
                 
                 if(itemAccountingCategoryChoice == null) {
@@ -125,14 +125,14 @@ public class EditActionForm
     private void setupItemPurchasingCategoryChoices() {
         if(itemPurchasingCategoryChoices == null) {
             try {
-                GetItemPurchasingCategoryChoicesForm form = VendorUtil.getHome().getGetItemPurchasingCategoryChoicesForm();
+                var form = VendorUtil.getHome().getGetItemPurchasingCategoryChoicesForm();
                 
                 form.setDefaultItemPurchasingCategoryChoice(itemPurchasingCategoryChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemPurchasingCategoryChoicesResult result = (GetItemPurchasingCategoryChoicesResult)executionResult.getResult();
+
+                var commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemPurchasingCategoryChoicesResult)executionResult.getResult();
                 itemPurchasingCategoryChoices = result.getItemPurchasingCategoryChoices();
                 
                 if(itemPurchasingCategoryChoice == null) {
@@ -148,15 +148,15 @@ public class EditActionForm
     public void setupCancellationPolicyChoices() {
         if(cancellationPolicyChoices == null) {
             try {
-                GetCancellationPolicyChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
+                var form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
                 
                 form.setCancellationKindName(CancellationKinds.CUSTOMER_CANCELLATION.name());
                 form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCancellationPolicyChoicesResult result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+
+                var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
                 cancellationPolicyChoices = result.getCancellationPolicyChoices();
                 
                 if(cancellationPolicyChoice == null)
@@ -171,15 +171,15 @@ public class EditActionForm
     public void setupReturnPolicyChoices() {
         if(returnPolicyChoices == null) {
             try {
-                GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
+                var form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
                 
                 form.setReturnKindName(ReturnKinds.CUSTOMER_RETURN.name());
                 form.setDefaultReturnPolicyChoice(returnPolicyChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetReturnPolicyChoicesResult result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+
+                var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
                 returnPolicyChoices = result.getReturnPolicyChoices();
                 
                 if(returnPolicyChoice == null)

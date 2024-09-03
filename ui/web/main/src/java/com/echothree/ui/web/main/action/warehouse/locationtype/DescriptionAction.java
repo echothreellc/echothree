@@ -54,16 +54,16 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-            String locationTypeName = request.getParameter(ParameterConstants.LOCATION_TYPE_NAME);
-            GetLocationTypeDescriptionsForm commandForm = WarehouseUtil.getHome().getGetLocationTypeDescriptionsForm();
+            var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+            var locationTypeName = request.getParameter(ParameterConstants.LOCATION_TYPE_NAME);
+            var commandForm = WarehouseUtil.getHome().getGetLocationTypeDescriptionsForm();
             
             commandForm.setWarehouseName(warehouseName);
             commandForm.setLocationTypeName(locationTypeName);
-            
-            CommandResult commandResult = WarehouseUtil.getHome().getLocationTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLocationTypeDescriptionsResult result = (GetLocationTypeDescriptionsResult)executionResult.getResult();
+
+            var commandResult = WarehouseUtil.getHome().getLocationTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLocationTypeDescriptionsResult)executionResult.getResult();
             
             request.setAttribute("warehouse", result.getWarehouse());
             request.setAttribute("locationType", result.getLocationType());

@@ -54,16 +54,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetEmploymentForm commandForm = EmployeeUtil.getHome().getGetEmploymentForm();
+        var commandForm = EmployeeUtil.getHome().getGetEmploymentForm();
 
         commandForm.setEmploymentName(request.getParameter(ParameterConstants.EMPLOYMENT_NAME));
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getEmployment(getUserVisitPK(request), commandForm);
+
+        var commandResult = EmployeeUtil.getHome().getEmployment(getUserVisitPK(request), commandForm);
         EmploymentTransfer employment = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmploymentResult result = (GetEmploymentResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmploymentResult)executionResult.getResult();
             
             employment = result.getEmployment();
         }

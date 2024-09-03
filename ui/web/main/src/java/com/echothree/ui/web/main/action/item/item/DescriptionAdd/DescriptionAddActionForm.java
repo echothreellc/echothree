@@ -51,15 +51,15 @@ public class DescriptionAddActionForm
     private void setupMimeTypeChoices() {
         if(mimeTypeChoices == null) {
             try {
-                GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+                var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
                 commandForm.setDefaultMimeTypeChoice(mimeTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
                 commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
 
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+                var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
                 mimeTypeChoices = result.getMimeTypeChoices();
 
                 if(mimeTypeChoice == null) {
@@ -74,14 +74,14 @@ public class DescriptionAddActionForm
     private void setupItemImageTypeChoices() {
         if(itemImageTypeChoices == null) {
             try {
-                GetItemImageTypeChoicesForm commandForm = ItemUtil.getHome().getGetItemImageTypeChoicesForm();
+                var commandForm = ItemUtil.getHome().getGetItemImageTypeChoicesForm();
 
                 commandForm.setDefaultItemImageTypeChoice(itemImageTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = ItemUtil.getHome().getItemImageTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemImageTypeChoicesResult result = (GetItemImageTypeChoicesResult)executionResult.getResult();
+                var commandResult = ItemUtil.getHome().getItemImageTypeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemImageTypeChoicesResult)executionResult.getResult();
                 itemImageTypeChoices = result.getItemImageTypeChoices();
 
                 if(itemImageTypeChoice == null) {

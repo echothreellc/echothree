@@ -55,16 +55,16 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetSubscriptionTypeChainsForm getSubscriptionTypeChainsForm = SubscriptionUtil.getHome().getGetSubscriptionTypeChainsForm();
-            String subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
-            String subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
+            var getSubscriptionTypeChainsForm = SubscriptionUtil.getHome().getGetSubscriptionTypeChainsForm();
+            var subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
+            var subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
             
             getSubscriptionTypeChainsForm.setSubscriptionKindName(subscriptionKindName);
             getSubscriptionTypeChainsForm.setSubscriptionTypeName(subscriptionTypeName);
-            
-            CommandResult commandResult = SubscriptionUtil.getHome().getSubscriptionTypeChains(getUserVisitPK(request), getSubscriptionTypeChainsForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSubscriptionTypeChainsResult result = (GetSubscriptionTypeChainsResult)executionResult.getResult();
+
+            var commandResult = SubscriptionUtil.getHome().getSubscriptionTypeChains(getUserVisitPK(request), getSubscriptionTypeChainsForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSubscriptionTypeChainsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SUBSCRIPTION_KIND, result.getSubscriptionKind());
             request.setAttribute(AttributeConstants.SUBSCRIPTION_TYPE, result.getSubscriptionType());

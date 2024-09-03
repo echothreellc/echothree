@@ -108,7 +108,7 @@ public class PartyCancellationPolicyLogic
     public PartyCancellationPolicyStatusChoicesBean getPartyCancellationPolicyStatusChoices(final String defaultOrderStatusChoice, final Language language, final boolean allowNullChoice,
             final PartyCancellationPolicy partyCancellationPolicy, final PartyPK partyPK) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        PartyCancellationPolicyStatusChoicesBean partyCancellationPolicyStatusChoicesBean = new PartyCancellationPolicyStatusChoicesBean();
+        var partyCancellationPolicyStatusChoicesBean = new PartyCancellationPolicyStatusChoicesBean();
 
         if(partyCancellationPolicy == null) {
             workflowControl.getWorkflowEntranceChoices(partyCancellationPolicyStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice,

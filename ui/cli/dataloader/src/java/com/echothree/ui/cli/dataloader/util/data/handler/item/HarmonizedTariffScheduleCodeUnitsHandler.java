@@ -48,7 +48,7 @@ public class HarmonizedTariffScheduleCodeUnitsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("harmonizedTariffScheduleCodeUnit")) {
-            CreateHarmonizedTariffScheduleCodeUnitForm commandForm = ItemFormFactory.getCreateHarmonizedTariffScheduleCodeUnitForm();
+            var commandForm = ItemFormFactory.getCreateHarmonizedTariffScheduleCodeUnitForm();
 
             commandForm.set(getAttrsMap(attrs));
 

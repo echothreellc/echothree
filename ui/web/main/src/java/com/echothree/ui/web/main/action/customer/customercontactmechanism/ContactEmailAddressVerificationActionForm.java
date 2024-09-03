@@ -41,15 +41,15 @@ public class ContactEmailAddressVerificationActionForm
     public void setupEmailAddressVerificationChoices()
             throws NamingException {
         if(emailAddressVerificationChoices == null) {
-            GetEmailAddressVerificationChoicesForm form = ContactUtil.getHome().getGetEmailAddressVerificationChoicesForm();
+            var form = ContactUtil.getHome().getGetEmailAddressVerificationChoicesForm();
 
             form.setContactMechanismName(contactMechanismName);
             form.setDefaultEmailAddressVerificationChoice(emailAddressVerificationChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getEmailAddressVerificationChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmailAddressVerificationChoicesResult result = (GetEmailAddressVerificationChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getEmailAddressVerificationChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmailAddressVerificationChoicesResult)executionResult.getResult();
             emailAddressVerificationChoices = result.getEmailAddressVerificationChoices();
 
             if(emailAddressVerificationChoice == null) {

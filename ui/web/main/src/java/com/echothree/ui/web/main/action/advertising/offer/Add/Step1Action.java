@@ -54,13 +54,13 @@ public class Step1Action
         String forwardKey;
         
         try {
-            GetDivisionsForm commandForm = PartyUtil.getHome().getGetDivisionsForm();
+            var commandForm = PartyUtil.getHome().getGetDivisionsForm();
             
             commandForm.setCompanyName(getCompanyName(request));
-            
-            CommandResult commandResult = PartyUtil.getHome().getDivisions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetDivisionsResult result = (GetDivisionsResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().getDivisions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetDivisionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMPANY, result.getCompany());
             request.setAttribute(AttributeConstants.DIVISIONS, result.getDivisions());

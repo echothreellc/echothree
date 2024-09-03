@@ -88,7 +88,7 @@ public class ForumMessageAttachmentAction
     protected ForumMessageAttachmentTransfer getForumMessageAttachment(HttpServletRequest request, ForumMessageAttachmentNames forumMessageAttachmentNames,
             Set<String> options)
             throws NamingException {
-        GetForumMessageAttachmentForm commandForm = ForumUtil.getHome().getGetForumMessageAttachmentForm();
+        var commandForm = ForumUtil.getHome().getGetForumMessageAttachmentForm();
         ForumMessageAttachmentTransfer forumMessageAttachment = null;
 
         commandForm.setForumMessageName(forumMessageAttachmentNames.forumMessageName);
@@ -97,10 +97,10 @@ public class ForumMessageAttachmentAction
         
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ForumUtil.getHome().getForumMessageAttachment(getUserVisitPK(request), commandForm);
+        var commandResult = ForumUtil.getHome().getForumMessageAttachment(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetForumMessageAttachmentResult result = (GetForumMessageAttachmentResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetForumMessageAttachmentResult)executionResult.getResult();
 
             forumMessageAttachment = result.getForumMessageAttachment();
         }
@@ -136,15 +136,15 @@ public class ForumMessageAttachmentAction
     @Override
     protected String getETag(HttpServletRequest request)
             throws NamingException {
-        ForumMessageAttachmentNames forumMessageAttachmentNames = new ForumMessageAttachmentNames(request);
+        var forumMessageAttachmentNames = new ForumMessageAttachmentNames(request);
         String eTag = null;
 
         if(forumMessageAttachmentNames.hasAllNames()) {
-            Unmanaged.UnmanagedInstance<CmsCacheBean> cmsCacheBeanInstance = unmanagedCmsCacheBean.newInstance();
-            CmsCacheBean cmsCacheBean = cmsCacheBeanInstance.produce().inject().postConstruct().get();
-            Cache<String, Object> cache = cmsCacheBean.getCache();
-            String fqn = getFqn(forumMessageAttachmentNames);
-            ForumMessageAttachmentTransfer forumMessageAttachment = getCachedForumMessageAttachment(cache, fqn);
+            var cmsCacheBeanInstance = unmanagedCmsCacheBean.newInstance();
+            var cmsCacheBean = cmsCacheBeanInstance.produce().inject().postConstruct().get();
+            var cache = cmsCacheBean.getCache();
+            var fqn = getFqn(forumMessageAttachmentNames);
+            var forumMessageAttachment = getCachedForumMessageAttachment(cache, fqn);
 
             if(forumMessageAttachment == null) {
                 Set<String> options = new HashSet<>();
@@ -171,14 +171,14 @@ public class ForumMessageAttachmentAction
     @Override
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         StreamInfo streamInfo = null;
-        ForumMessageAttachmentTransfer forumMessageAttachment = (ForumMessageAttachmentTransfer)request.getAttribute(attributeTransferObject);
+        var forumMessageAttachment = (ForumMessageAttachmentTransfer)request.getAttribute(attributeTransferObject);
 
         if(forumMessageAttachment != null) {
-            MimeTypeTransfer mimeType = forumMessageAttachment.getMimeType();
-            EntityAttributeTypeTransfer entityAttributeType = mimeType == null ? null : mimeType.getEntityAttributeType();
-            String entityAttributeTypeName = entityAttributeType == null ? null : entityAttributeType.getEntityAttributeTypeName();
-            EntityTimeTransfer entityTime = forumMessageAttachment.getForumMessage().getEntityInstance().getEntityTime();
-            Long modifiedTime = entityTime.getUnformattedModifiedTime();
+            var mimeType = forumMessageAttachment.getMimeType();
+            var entityAttributeType = mimeType == null ? null : mimeType.getEntityAttributeType();
+            var entityAttributeTypeName = entityAttributeType == null ? null : entityAttributeType.getEntityAttributeTypeName();
+            var entityTime = forumMessageAttachment.getForumMessage().getEntityInstance().getEntityTime();
+            var modifiedTime = entityTime.getUnformattedModifiedTime();
             byte bytes[] = null;
 
             if(EntityAttributeTypes.CLOB.name().equals(entityAttributeTypeName)) {

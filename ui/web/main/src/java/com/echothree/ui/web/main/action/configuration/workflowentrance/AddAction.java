@@ -62,14 +62,14 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetWorkflowForm commandForm = WorkflowUtil.getHome().getGetWorkflowForm();
+        var commandForm = WorkflowUtil.getHome().getGetWorkflowForm();
 
         commandForm.setWorkflowName(actionForm.getWorkflowName());
-        
-        CommandResult commandResult = WorkflowUtil.getHome().getWorkflow(getUserVisitPK(request), commandForm);
+
+        var commandResult = WorkflowUtil.getHome().getWorkflow(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowResult result = (GetWorkflowResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORKFLOW, result.getWorkflow());
         }
@@ -78,7 +78,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateWorkflowEntranceForm commandForm = WorkflowUtil.getHome().getCreateWorkflowEntranceForm();
+        var commandForm = WorkflowUtil.getHome().getCreateWorkflowEntranceForm();
 
         commandForm.setWorkflowName(actionForm.getWorkflowName());
         commandForm.setWorkflowEntranceName(actionForm.getWorkflowEntranceName());

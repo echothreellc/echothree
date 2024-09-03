@@ -53,19 +53,19 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetLetterForm commandForm = LetterUtil.getHome().getGetLetterForm();
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
-        String letterName = request.getParameter(ParameterConstants.LETTER_NAME);
+        var commandForm = LetterUtil.getHome().getGetLetterForm();
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
+        var letterName = request.getParameter(ParameterConstants.LETTER_NAME);
         
         commandForm.setChainKindName(chainKindName);
         commandForm.setChainTypeName(chainTypeName);
         commandForm.setLetterName(letterName);
-        
-        CommandResult commandResult = LetterUtil.getHome().getLetter(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetLetterResult result = (GetLetterResult)executionResult.getResult();
-        LetterTransfer letter = result.getLetter();
+
+        var commandResult = LetterUtil.getHome().getLetter(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetLetterResult)executionResult.getResult();
+        var letter = result.getLetter();
         
         if(letter == null) {
             forwardKey = ForwardConstants.ERROR_404;

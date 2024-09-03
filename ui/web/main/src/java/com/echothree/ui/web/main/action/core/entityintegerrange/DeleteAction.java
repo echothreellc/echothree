@@ -65,16 +65,16 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEntityIntegerRangeForm commandForm = CoreUtil.getHome().getGetEntityIntegerRangeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityIntegerRangeForm();
         
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityAttributeName(actionForm.getEntityAttributeName());
         commandForm.setEntityIntegerRangeName(actionForm.getEntityIntegerRangeName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityIntegerRange(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEntityIntegerRangeResult result = (GetEntityIntegerRangeResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getEntityIntegerRange(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEntityIntegerRangeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ENTITY_INTEGER_RANGE, result.getEntityIntegerRange());
     }
@@ -82,7 +82,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteEntityIntegerRangeForm commandForm = CoreUtil.getHome().getDeleteEntityIntegerRangeForm();
+        var commandForm = CoreUtil.getHome().getDeleteEntityIntegerRangeForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());

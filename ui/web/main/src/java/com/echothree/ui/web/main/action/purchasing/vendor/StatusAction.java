@@ -55,13 +55,13 @@ public class StatusAction
     
     public void setupVendor(HttpServletRequest request, String vendorName)
             throws NamingException {
-        GetVendorForm commandForm = VendorUtil.getHome().getGetVendorForm();
+        var commandForm = VendorUtil.getHome().getGetVendorForm();
 
         commandForm.setVendorName(vendorName);
 
-        CommandResult commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetVendorResult result = (GetVendorResult)executionResult.getResult();
+        var commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetVendorResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.VENDOR, result.getVendor());
     }
@@ -70,9 +70,9 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        StatusActionForm actionForm = (StatusActionForm)form;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
-        String vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
+        var actionForm = (StatusActionForm)form;
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
 
         if(returnUrl == null) {
             returnUrl = actionForm.getReturnUrl();
@@ -85,7 +85,7 @@ public class StatusAction
             CommandResult commandResult = null;
 
             if(!wasCanceled(request)) {
-                SetVendorStatusForm commandForm = PartyUtil.getHome().getSetVendorStatusForm();
+                var commandForm = PartyUtil.getHome().getSetVendorStatusForm();
 
                 commandForm.setVendorName(vendorName);
                 commandForm.setVendorStatusChoice(actionForm.getVendorStatusChoice());

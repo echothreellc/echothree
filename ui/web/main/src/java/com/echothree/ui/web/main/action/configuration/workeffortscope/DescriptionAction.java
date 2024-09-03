@@ -53,17 +53,17 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetWorkEffortScopeDescriptionsForm commandForm = WorkEffortUtil.getHome().getGetWorkEffortScopeDescriptionsForm();
+        var commandForm = WorkEffortUtil.getHome().getGetWorkEffortScopeDescriptionsForm();
 
         commandForm.setWorkEffortTypeName(request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME));
         commandForm.setWorkEffortScopeName(request.getParameter(ParameterConstants.WORK_EFFORT_SCOPE_NAME));
 
-        CommandResult commandResult = WorkEffortUtil.getHome().getWorkEffortScopeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeDescriptions(getUserVisitPK(request), commandForm);
         GetWorkEffortScopeDescriptionsResult result = null;
         WorkEffortScopeTransfer workEffortScope = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
+            var executionResult = commandResult.getExecutionResult();
             
             result = (GetWorkEffortScopeDescriptionsResult) executionResult.getResult();
             workEffortScope = result.getWorkEffortScope();

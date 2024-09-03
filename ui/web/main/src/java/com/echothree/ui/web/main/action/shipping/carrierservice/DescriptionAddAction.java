@@ -56,15 +56,15 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
-        String carrierServiceName = request.getParameter(ParameterConstants.CARRIER_SERVICE_NAME);
+        var carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
+        var carrierServiceName = request.getParameter(ParameterConstants.CARRIER_SERVICE_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateCarrierServiceDescriptionForm commandForm = CarrierUtil.getHome().getCreateCarrierServiceDescriptionForm();
+                    var commandForm = CarrierUtil.getHome().getCreateCarrierServiceDescriptionForm();
                     
                     if(carrierName == null)
                         carrierName = actionForm.getCarrierName();
@@ -75,8 +75,8 @@ public class DescriptionAddAction
                     commandForm.setCarrierServiceName(carrierServiceName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CarrierUtil.getHome().createCarrierServiceDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CarrierUtil.getHome().createCarrierServiceDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -93,8 +93,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CARRIER_NAME, carrierName);
             request.setAttribute(AttributeConstants.CARRIER_SERVICE_NAME, carrierServiceName);

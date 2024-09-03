@@ -181,7 +181,7 @@ public class CampaignControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Campaign */
     public Campaign getCampaignByEntityInstance(EntityInstance entityInstance) {
-        CampaignPK pk = new CampaignPK(entityInstance.getEntityUniqueId());
+        var pk = new CampaignPK(entityInstance.getEntityUniqueId());
         var campaign = CampaignFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return campaign;
@@ -327,7 +327,7 @@ public class CampaignControl
     public CampaignStatusChoicesBean getCampaignStatusChoices(String defaultCampaignStatusChoice, Language language,
             boolean allowNullChoice, Campaign campaign, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        CampaignStatusChoicesBean employeeStatusChoicesBean = new CampaignStatusChoicesBean();
+        var employeeStatusChoicesBean = new CampaignStatusChoicesBean();
         
         if(campaign == null) {
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignStatusChoice, language, allowNullChoice,
@@ -697,7 +697,7 @@ public class CampaignControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignSource */
     public CampaignSource getCampaignSourceByEntityInstance(EntityInstance entityInstance) {
-        CampaignSourcePK pk = new CampaignSourcePK(entityInstance.getEntityUniqueId());
+        var pk = new CampaignSourcePK(entityInstance.getEntityUniqueId());
         var campaignSource = CampaignSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return campaignSource;
@@ -843,7 +843,7 @@ public class CampaignControl
     public CampaignSourceStatusChoicesBean getCampaignSourceStatusChoices(String defaultCampaignSourceStatusChoice, Language language,
             boolean allowNullChoice, CampaignSource campaignSource, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        CampaignSourceStatusChoicesBean employeeStatusChoicesBean = new CampaignSourceStatusChoicesBean();
+        var employeeStatusChoicesBean = new CampaignSourceStatusChoicesBean();
         
         if(campaignSource == null) {
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignSourceStatusChoice, language, allowNullChoice,
@@ -1213,7 +1213,7 @@ public class CampaignControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignMedium */
     public CampaignMedium getCampaignMediumByEntityInstance(EntityInstance entityInstance) {
-        CampaignMediumPK pk = new CampaignMediumPK(entityInstance.getEntityUniqueId());
+        var pk = new CampaignMediumPK(entityInstance.getEntityUniqueId());
         var campaignMedium = CampaignMediumFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return campaignMedium;
@@ -1359,7 +1359,7 @@ public class CampaignControl
     public CampaignMediumStatusChoicesBean getCampaignMediumStatusChoices(String defaultCampaignMediumStatusChoice, Language language,
             boolean allowNullChoice, CampaignMedium campaignMedium, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        CampaignMediumStatusChoicesBean employeeStatusChoicesBean = new CampaignMediumStatusChoicesBean();
+        var employeeStatusChoicesBean = new CampaignMediumStatusChoicesBean();
         
         if(campaignMedium == null) {
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignMediumStatusChoice, language, allowNullChoice,
@@ -1729,7 +1729,7 @@ public class CampaignControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignTerm */
     public CampaignTerm getCampaignTermByEntityInstance(EntityInstance entityInstance) {
-        CampaignTermPK pk = new CampaignTermPK(entityInstance.getEntityUniqueId());
+        var pk = new CampaignTermPK(entityInstance.getEntityUniqueId());
         var campaignTerm = CampaignTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return campaignTerm;
@@ -1875,7 +1875,7 @@ public class CampaignControl
     public CampaignTermStatusChoicesBean getCampaignTermStatusChoices(String defaultCampaignTermStatusChoice, Language language,
             boolean allowNullChoice, CampaignTerm campaignTerm, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        CampaignTermStatusChoicesBean employeeStatusChoicesBean = new CampaignTermStatusChoicesBean();
+        var employeeStatusChoicesBean = new CampaignTermStatusChoicesBean();
         
         if(campaignTerm == null) {
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignTermStatusChoice, language, allowNullChoice,
@@ -2245,7 +2245,7 @@ public class CampaignControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignContent */
     public CampaignContent getCampaignContentByEntityInstance(EntityInstance entityInstance) {
-        CampaignContentPK pk = new CampaignContentPK(entityInstance.getEntityUniqueId());
+        var pk = new CampaignContentPK(entityInstance.getEntityUniqueId());
         var campaignContent = CampaignContentFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return campaignContent;
@@ -2391,7 +2391,7 @@ public class CampaignControl
     public CampaignContentStatusChoicesBean getCampaignContentStatusChoices(String defaultCampaignContentStatusChoice, Language language,
             boolean allowNullChoice, CampaignContent campaignContent, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        CampaignContentStatusChoicesBean employeeStatusChoicesBean = new CampaignContentStatusChoicesBean();
+        var employeeStatusChoicesBean = new CampaignContentStatusChoicesBean();
         
         if(campaignContent == null) {
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignContentStatusChoice, language, allowNullChoice,

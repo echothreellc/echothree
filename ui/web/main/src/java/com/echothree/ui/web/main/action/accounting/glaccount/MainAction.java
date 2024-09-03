@@ -53,15 +53,15 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetGlAccountsForm commandForm = AccountingUtil.getHome().getGetGlAccountsForm();
-        String glAccountCategoryName = request.getParameter(ParameterConstants.GL_ACCOUNT_CATEGORY_NAME);
+        var commandForm = AccountingUtil.getHome().getGetGlAccountsForm();
+        var glAccountCategoryName = request.getParameter(ParameterConstants.GL_ACCOUNT_CATEGORY_NAME);
         
         commandForm.setGlAccountCategoryName(glAccountCategoryName);
-        
-        CommandResult commandResult = AccountingUtil.getHome().getGlAccounts(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetGlAccountsResult result = (GetGlAccountsResult)executionResult.getResult();
-        GlAccountCategoryTransfer glAccountCategory = result.getGlAccountCategory();
+
+        var commandResult = AccountingUtil.getHome().getGlAccounts(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetGlAccountsResult)executionResult.getResult();
+        var glAccountCategory = result.getGlAccountCategory();
         
         if(glAccountCategoryName != null && glAccountCategory == null) {
             forwardKey = ForwardConstants.ERROR_404;

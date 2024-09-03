@@ -53,18 +53,18 @@ public class TranslationReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetHarmonizedTariffScheduleCodeTranslationForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeTranslationForm();
+        var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeTranslationForm();
 
         commandForm.setCountryName(request.getParameter(ParameterConstants.COUNTRY_NAME));
         commandForm.setHarmonizedTariffScheduleCodeName(request.getParameter(ParameterConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_NAME));
         commandForm.setLanguageIsoName(request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME));
-        
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeTranslation(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeTranslation(getUserVisitPK(request), commandForm);
         HarmonizedTariffScheduleCodeTranslationTransfer harmonizedTariffScheduleCodeTranslation = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeTranslationResult result = (GetHarmonizedTariffScheduleCodeTranslationResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodeTranslationResult)executionResult.getResult();
             
             harmonizedTariffScheduleCodeTranslation = result.getHarmonizedTariffScheduleCodeTranslation();
         }

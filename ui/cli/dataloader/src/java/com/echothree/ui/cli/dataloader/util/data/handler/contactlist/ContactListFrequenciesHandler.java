@@ -47,7 +47,7 @@ public class ContactListFrequenciesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("contactListFrequency")) {
-            CreateContactListFrequencyForm commandForm = ContactListFormFactory.getCreateContactListFrequencyForm();
+            var commandForm = ContactListFormFactory.getCreateContactListFrequencyForm();
 
             commandForm.set(getAttrsMap(attrs));
             

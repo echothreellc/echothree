@@ -47,8 +47,8 @@ public class DeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        DeleteTaxForm commandForm = TaxUtil.getHome().getDeleteTaxForm();
-        String taxName = request.getParameter(ParameterConstants.TAX_NAME);
+        var commandForm = TaxUtil.getHome().getDeleteTaxForm();
+        var taxName = request.getParameter(ParameterConstants.TAX_NAME);
         
         commandForm.setTaxName(taxName);
         

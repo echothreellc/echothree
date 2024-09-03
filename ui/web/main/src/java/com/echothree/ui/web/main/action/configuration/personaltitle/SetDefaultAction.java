@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultPersonalTitleForm commandForm = PartyUtil.getHome().getSetDefaultPersonalTitleForm();
-            String personalTitleId = request.getParameter(ParameterConstants.PERSONAL_TITLE_ID);
+            var commandForm = PartyUtil.getHome().getSetDefaultPersonalTitleForm();
+            var personalTitleId = request.getParameter(ParameterConstants.PERSONAL_TITLE_ID);
             
             commandForm.setPersonalTitleId(personalTitleId);
             

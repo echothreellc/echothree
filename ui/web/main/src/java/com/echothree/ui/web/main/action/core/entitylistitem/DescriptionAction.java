@@ -55,20 +55,20 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-            String entityListItemName = request.getParameter(ParameterConstants.ENTITY_LIST_ITEM_NAME);
-            GetEntityListItemDescriptionsForm commandForm = CoreUtil.getHome().getGetEntityListItemDescriptionsForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+            var entityListItemName = request.getParameter(ParameterConstants.ENTITY_LIST_ITEM_NAME);
+            var commandForm = CoreUtil.getHome().getGetEntityListItemDescriptionsForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeName(entityAttributeName);
             commandForm.setEntityListItemName(entityListItemName);
-            
-            CommandResult commandResult = CoreUtil.getHome().getEntityListItemDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityListItemDescriptionsResult result = (GetEntityListItemDescriptionsResult)executionResult.getResult();
+
+            var commandResult = CoreUtil.getHome().getEntityListItemDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityListItemDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ENTITY_LIST_ITEM, result.getEntityListItem());
             request.setAttribute(AttributeConstants.ENTITY_LIST_ITEM_DESCRIPTIONS, result.getEntityListItemDescriptions());

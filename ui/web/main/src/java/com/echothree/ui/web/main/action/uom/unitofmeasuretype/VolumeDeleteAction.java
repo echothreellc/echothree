@@ -50,16 +50,16 @@ public class VolumeDeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String returnKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-        DeleteUnitOfMeasureTypeVolumeForm commandForm = UomUtil.getHome().getDeleteUnitOfMeasureTypeVolumeForm();
-        String returnTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
+        var returnKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var commandForm = UomUtil.getHome().getDeleteUnitOfMeasureTypeVolumeForm();
+        var returnTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
         
         commandForm.setUnitOfMeasureKindName(returnKindName);
         commandForm.setUnitOfMeasureTypeName(returnTypeName);
         
         UomUtil.getHome().deleteUnitOfMeasureTypeVolume(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME, returnKindName);

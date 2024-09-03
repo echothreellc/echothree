@@ -57,7 +57,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetChainInstanceForm commandForm = ChainUtil.getHome().getGetChainInstanceForm();
+        var commandForm = ChainUtil.getHome().getGetChainInstanceForm();
         
         commandForm.setChainInstanceName(request.getParameter(ParameterConstants.CHAIN_INSTANCE_NAME));
         
@@ -67,10 +67,10 @@ public class ReviewAction
         options.add(CoreOptions.EntityInstanceIncludeNames);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ChainUtil.getHome().getChainInstance(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetChainInstanceResult result = (GetChainInstanceResult)executionResult.getResult();
-        ChainInstanceTransfer chainInstance = result.getChainInstance();
+        var commandResult = ChainUtil.getHome().getChainInstance(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetChainInstanceResult)executionResult.getResult();
+        var chainInstance = result.getChainInstance();
         
         if(chainInstance == null) {
             forwardKey = ForwardConstants.ERROR_404;

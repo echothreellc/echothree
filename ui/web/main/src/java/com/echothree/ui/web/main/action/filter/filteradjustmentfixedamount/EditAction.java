@@ -61,16 +61,16 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-        String filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
-        String unitOfMeasureName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_NAME);
-        String currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
+        var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+        var filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
+        var unitOfMeasureName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_NAME);
+        var currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditFilterAdjustmentFixedAmountForm commandForm = FilterUtil.getHome().getEditFilterAdjustmentFixedAmountForm();
-                FilterAdjustmentFixedAmountSpec spec = FilterUtil.getHome().getFilterAdjustmentFixedAmountSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = FilterUtil.getHome().getEditFilterAdjustmentFixedAmountForm();
+                var spec = FilterUtil.getHome().getFilterAdjustmentFixedAmountSpec();
                 
                 if(filterKindName == null)
                     filterKindName = actionForm.getFilterKindName();
@@ -88,20 +88,20 @@ public class EditAction
                 spec.setCurrencyIsoName(currencyIsoName);
                 
                 if(wasPost(request)) {
-                    FilterAdjustmentFixedAmountEdit edit = FilterUtil.getHome().getFilterAdjustmentFixedAmountEdit();
+                    var edit = FilterUtil.getHome().getFilterAdjustmentFixedAmountEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     
                     edit.setUnitAmount(actionForm.getUnitAmount());
-                    
-                    CommandResult commandResult = FilterUtil.getHome().editFilterAdjustmentFixedAmount(getUserVisitPK(request), commandForm);
+
+                    var commandResult = FilterUtil.getHome().editFilterAdjustmentFixedAmount(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditFilterAdjustmentFixedAmountResult result = (EditFilterAdjustmentFixedAmountResult)executionResult.getResult();
+                            var result = (EditFilterAdjustmentFixedAmountResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -114,13 +114,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = FilterUtil.getHome().editFilterAdjustmentFixedAmount(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditFilterAdjustmentFixedAmountResult result = (EditFilterAdjustmentFixedAmountResult)executionResult.getResult();
+
+                    var commandResult = FilterUtil.getHome().editFilterAdjustmentFixedAmount(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditFilterAdjustmentFixedAmountResult)executionResult.getResult();
                     
                     if(result != null) {
-                        FilterAdjustmentFixedAmountEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setFilterKindName(filterKindName);
@@ -141,8 +141,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.FILTER_KIND_NAME, filterKindName);
             request.setAttribute(AttributeConstants.FILTER_ADJUSTMENT_NAME, filterAdjustmentName);

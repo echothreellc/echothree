@@ -54,8 +54,8 @@ public class CustomerProfileAddAction
     public ActionForward executeAction(ActionMapping mapping, CustomerProfileAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
         
         if(partyName == null) {
             partyName = actionForm.getPartyName();
@@ -65,7 +65,7 @@ public class CustomerProfileAddAction
         }
         
         if(wasPost(request)) {
-            CreateProfileForm commandForm = PartyUtil.getHome().getCreateProfileForm();
+            var commandForm = PartyUtil.getHome().getCreateProfileForm();
             
             commandForm.setPartyName(actionForm.getPartyName());
             commandForm.setNickname(actionForm.getNickname());
@@ -82,8 +82,8 @@ public class CustomerProfileAddAction
             commandForm.setBio(actionForm.getBio());
             commandForm.setSignatureMimeTypeName(actionForm.getSignatureMimeTypeChoice());
             commandForm.setSignature(actionForm.getSignature());
-            
-            CommandResult commandResult = PartyUtil.getHome().createProfile(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().createProfile(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -96,8 +96,8 @@ public class CustomerProfileAddAction
             actionForm.setCustomerName(customerName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CUSTOMER_NAME, customerName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

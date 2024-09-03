@@ -46,7 +46,7 @@ public class GlResourceTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("glResourceType")) {
-            CreateGlResourceTypeForm commandForm = AccountingFormFactory.getCreateGlResourceTypeForm();
+            var commandForm = AccountingFormFactory.getCreateGlResourceTypeForm();
             
             commandForm.set(getAttrsMap(attrs));
             

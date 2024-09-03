@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetTimeZoneForm commandForm = PartyUtil.getHome().getGetTimeZoneForm();
-            String javaTimeZoneName = request.getParameter(ParameterConstants.JAVA_TIME_ZONE_NAME);
+            var commandForm = PartyUtil.getHome().getGetTimeZoneForm();
+            var javaTimeZoneName = request.getParameter(ParameterConstants.JAVA_TIME_ZONE_NAME);
             
             commandForm.setJavaTimeZoneName(javaTimeZoneName);
-            
-            CommandResult commandResult = PartyUtil.getHome().getTimeZone(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTimeZoneResult result = (GetTimeZoneResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().getTimeZone(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTimeZoneResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TIME_ZONE, result.getTimeZone());
             forwardKey = ForwardConstants.DISPLAY;

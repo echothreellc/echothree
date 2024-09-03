@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String contentWebAddressName = request.getParameter(ParameterConstants.CONTENT_WEB_ADDRESS_NAME);
-            GetContentWebAddressDescriptionsForm commandForm = ContentUtil.getHome().getGetContentWebAddressDescriptionsForm();
+            var contentWebAddressName = request.getParameter(ParameterConstants.CONTENT_WEB_ADDRESS_NAME);
+            var commandForm = ContentUtil.getHome().getGetContentWebAddressDescriptionsForm();
             
             commandForm.setContentWebAddressName(contentWebAddressName);
-            
-            CommandResult commandResult = ContentUtil.getHome().getContentWebAddressDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentWebAddressDescriptionsResult result = (GetContentWebAddressDescriptionsResult)executionResult.getResult();
-            ContentWebAddressTransfer contentWebAddressTransfer = result.getContentWebAddress();
+
+            var commandResult = ContentUtil.getHome().getContentWebAddressDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentWebAddressDescriptionsResult)executionResult.getResult();
+            var contentWebAddressTransfer = result.getContentWebAddress();
             
             request.setAttribute(AttributeConstants.CONTENT_WEB_ADDRESS, contentWebAddressTransfer);
             request.setAttribute(AttributeConstants.CONTENT_WEB_ADDRESS_NAME, contentWebAddressTransfer.getContentWebAddressName());

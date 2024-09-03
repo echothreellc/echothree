@@ -76,7 +76,7 @@ public class BillingAccountTransferCache
             
             if(includeRoles) {
                 var billingAccountRoleTransfers = billingControl.getBillingAccountRoleTransfersByBillingAccount(userVisit, billingAccount);
-                MapWrapper<BillingAccountRoleTransfer> billingAccountRoles = new MapWrapper<>(billingAccountRoleTransfers.size());
+                var billingAccountRoles = new MapWrapper<BillingAccountRoleTransfer>(billingAccountRoleTransfers.size());
 
                 billingAccountRoleTransfers.forEach((billingAccountRoleTransfer) -> {
                     billingAccountRoles.put(billingAccountRoleTransfer.getBillingAccountRoleType().getBillingAccountRoleTypeName(), billingAccountRoleTransfer);

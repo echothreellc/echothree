@@ -46,7 +46,7 @@ public class InvoiceTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("invoiceType")) {
-            CreateInvoiceTypeForm commandForm = InvoiceFormFactory.getCreateInvoiceTypeForm();
+            var commandForm = InvoiceFormFactory.getCreateInvoiceTypeForm();
             
             commandForm.set(getAttrsMap(attrs));
             

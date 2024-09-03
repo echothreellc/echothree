@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetProtocolForm commandForm = CoreUtil.getHome().getGetProtocolForm();
+        var commandForm = CoreUtil.getHome().getGetProtocolForm();
         
         commandForm.setProtocolName(actionForm.getProtocolName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getProtocol(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetProtocolResult result = (GetProtocolResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getProtocol(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetProtocolResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.PROTOCOL, result.getProtocol());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteProtocolForm commandForm = CoreUtil.getHome().getDeleteProtocolForm();
+        var commandForm = CoreUtil.getHome().getDeleteProtocolForm();
 
         commandForm.setProtocolName(actionForm.getProtocolName());
 

@@ -50,7 +50,7 @@ public class ProfileAddAction
         String forwardKey;
         
         if(wasPost(request)) {
-            CreateProfileForm commandForm = PartyUtil.getHome().getCreateProfileForm();
+            var commandForm = PartyUtil.getHome().getCreateProfileForm();
             
             commandForm.setNickname(actionForm.getNickname());
             commandForm.setIconName(actionForm.getIconChoice());
@@ -66,8 +66,8 @@ public class ProfileAddAction
             commandForm.setBio(actionForm.getBio());
             commandForm.setSignatureMimeTypeName(actionForm.getSignatureMimeTypeChoice());
             commandForm.setSignature(actionForm.getSignature());
-            
-            CommandResult commandResult = PartyUtil.getHome().createProfile(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().createProfile(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

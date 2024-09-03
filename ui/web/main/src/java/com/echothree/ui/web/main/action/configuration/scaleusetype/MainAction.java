@@ -51,12 +51,12 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetScaleUseTypesForm commandForm = ScaleUtil.getHome().getGetScaleUseTypesForm();
+        var commandForm = ScaleUtil.getHome().getGetScaleUseTypesForm();
 
-        CommandResult commandResult = ScaleUtil.getHome().getScaleUseTypes(getUserVisitPK(request), commandForm);
+        var commandResult = ScaleUtil.getHome().getScaleUseTypes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetScaleUseTypesResult result = (GetScaleUseTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetScaleUseTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SCALE_USE_TYPES, result.getScaleUseTypes());
             forwardKey = ForwardConstants.DISPLAY;

@@ -58,15 +58,15 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEntityAttributeForm commandForm = CoreUtil.getHome().getGetEntityAttributeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityAttributeForm();
         
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityAttributeName(actionForm.getEntityAttributeName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityAttribute(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEntityAttributeResult result = (GetEntityAttributeResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getEntityAttribute(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEntityAttributeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE, result.getEntityAttribute());
     }
@@ -80,7 +80,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateEntityLongRangeForm commandForm = CoreUtil.getHome().getCreateEntityLongRangeForm();
+        var commandForm = CoreUtil.getHome().getCreateEntityLongRangeForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());

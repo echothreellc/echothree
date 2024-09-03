@@ -45,14 +45,14 @@ public class AddActionForm
     private void setupEmployeeTypeChoices() {
         if(employeeTypeChoices == null) {
             try {
-                GetEmployeeTypeChoicesForm form = EmployeeUtil.getHome().getGetEmployeeTypeChoicesForm();
+                var form = EmployeeUtil.getHome().getGetEmployeeTypeChoicesForm();
                 
                 form.setDefaultEmployeeTypeChoice(employeeTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = EmployeeUtil.getHome().getEmployeeTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetEmployeeTypeChoicesResult result = (GetEmployeeTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = EmployeeUtil.getHome().getEmployeeTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetEmployeeTypeChoicesResult)executionResult.getResult();
                 employeeTypeChoices = result.getEmployeeTypeChoices();
                 
                 if(employeeTypeChoice == null) {
@@ -67,14 +67,14 @@ public class AddActionForm
     private void setupPartySecurityRoleTemplateChoices() {
         if(partySecurityRoleTemplateChoices == null) {
             try {
-                GetPartySecurityRoleTemplateChoicesForm form = SecurityUtil.getHome().getGetPartySecurityRoleTemplateChoicesForm();
+                var form = SecurityUtil.getHome().getGetPartySecurityRoleTemplateChoicesForm();
                 
                 form.setDefaultPartySecurityRoleTemplateChoice(partySecurityRoleTemplateChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPartySecurityRoleTemplateChoicesResult result = (GetPartySecurityRoleTemplateChoicesResult)executionResult.getResult();
+
+                var commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPartySecurityRoleTemplateChoicesResult)executionResult.getResult();
                 partySecurityRoleTemplateChoices = result.getPartySecurityRoleTemplateChoices();
                 
                 if(partySecurityRoleTemplateChoice == null)

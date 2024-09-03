@@ -147,7 +147,7 @@ public class CreateEmployeeCommand
                                         if(partySecurityRoleTemplate != null) {
                                             var coreControl = getCoreControl();
                                             var workflowControl = Session.getModelController(WorkflowControl.class);
-                                            Soundex soundex = new Soundex();
+                                            var soundex = new Soundex();
                                             BasePK createdBy = getPartyPK();
                                             var personalTitleId = form.getPersonalTitleId();
                                             var personalTitle = personalTitleId == null? null: partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);

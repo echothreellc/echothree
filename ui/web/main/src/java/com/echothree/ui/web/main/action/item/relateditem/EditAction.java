@@ -52,7 +52,7 @@ public class EditAction
     @Override
     protected RelatedItemSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        RelatedItemSpec spec = ItemUtil.getHome().getRelatedItemSpec();
+        var spec = ItemUtil.getHome().getRelatedItemSpec();
         
         spec.setRelatedItemTypeName(findParameter(request, ParameterConstants.RELATED_ITEM_TYPE_NAME, actionForm.getRelatedItemTypeName()));
         spec.setFromItemName(findParameter(request, ParameterConstants.FROM_ITEM_NAME, actionForm.getFromItemName()));
@@ -64,7 +64,7 @@ public class EditAction
     @Override
     protected RelatedItemEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        RelatedItemEdit edit = ItemUtil.getHome().getRelatedItemEdit();
+        var edit = ItemUtil.getHome().getRelatedItemEdit();
 
         edit.setSortOrder(actionForm.getSortOrder());
 
@@ -88,9 +88,9 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditRelatedItemForm commandForm)
             throws Exception {
-        CommandResult commandResult = ItemUtil.getHome().editRelatedItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditRelatedItemResult result = (EditRelatedItemResult)executionResult.getResult();
+        var commandResult = ItemUtil.getHome().editRelatedItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditRelatedItemResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.RELATED_ITEM, result.getRelatedItem());
         

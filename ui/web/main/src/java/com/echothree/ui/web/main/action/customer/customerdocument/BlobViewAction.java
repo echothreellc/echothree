@@ -53,8 +53,8 @@ public class BlobViewAction
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         StreamInfo streamInfo = null;
-        String documentName = request.getParameter(ParameterConstants.DOCUMENT_NAME);
-        GetPartyDocumentForm commandForm = DocumentUtil.getHome().getGetPartyDocumentForm();
+        var documentName = request.getParameter(ParameterConstants.DOCUMENT_NAME);
+        var commandForm = DocumentUtil.getHome().getGetPartyDocumentForm();
 
         commandForm.setDocumentName(documentName);
 
@@ -62,16 +62,16 @@ public class BlobViewAction
         options.add(DocumentOptions.DocumentIncludeBlob);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = DocumentUtil.getHome().getPartyDocument(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyDocumentResult result = (GetPartyDocumentResult)executionResult.getResult();
+        var commandResult = DocumentUtil.getHome().getPartyDocument(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyDocumentResult)executionResult.getResult();
 
-        PartyDocumentTransfer partyDocument = result.getPartyDocument();
+        var partyDocument = result.getPartyDocument();
 
         if(partyDocument != null) {
-            DocumentTransfer document = partyDocument.getDocument();
-            String mimeType = document.getMimeType().getMimeTypeName();
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(document.getBlob().byteArrayValue());
+            var document = partyDocument.getDocument();
+            var mimeType = document.getMimeType().getMimeTypeName();
+            var byteArrayInputStream = new ByteArrayInputStream(document.getBlob().byteArrayValue());
 
             streamInfo = new ByteArrayStreamInfo(mimeType, byteArrayInputStream, null, null);
         }

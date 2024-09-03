@@ -56,15 +56,15 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
-        String postalAddressLineSortOrder = request.getParameter(ParameterConstants.POSTAL_ADDRESS_LINE_SORT_ORDER);
+        var postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
+        var postalAddressLineSortOrder = request.getParameter(ParameterConstants.POSTAL_ADDRESS_LINE_SORT_ORDER);
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreatePostalAddressLineElementForm commandForm = ContactUtil.getHome().getCreatePostalAddressLineElementForm();
+                    var commandForm = ContactUtil.getHome().getCreatePostalAddressLineElementForm();
                     
                     if(postalAddressFormatName == null)
                         postalAddressFormatName = actionForm.getPostalAddressFormatName();
@@ -79,8 +79,8 @@ public class AddAction
                     commandForm.setAlwaysIncludePrefix(actionForm.getAlwaysIncludePrefix().toString());
                     commandForm.setSuffix(actionForm.getSuffix());
                     commandForm.setAlwaysIncludeSuffix(actionForm.getAlwaysIncludeSuffix().toString());
-                    
-                    CommandResult commandResult = ContactUtil.getHome().createPostalAddressLineElement(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ContactUtil.getHome().createPostalAddressLineElement(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -97,8 +97,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.POSTAL_ADDRESS_FORMAT_NAME, postalAddressFormatName);
             request.setAttribute(AttributeConstants.POSTAL_ADDRESS_LINE_SORT_ORDER, postalAddressLineSortOrder);

@@ -79,7 +79,7 @@ public class CreateItemWeightCommand
                             var weight = Long.valueOf(form.getWeight());
                             
                             if(weight > 0) {
-                                Conversion conversion = new Conversion(uomControl, weightUnitOfMeasureType, weight);
+                                var conversion = new Conversion(uomControl, weightUnitOfMeasureType, weight);
                                 
                                 conversion.convertToLowestUnitOfMeasureType();
                                 itemControl.createItemWeight(item, unitOfMeasureType, conversion.getQuantity(), getPartyPK());

@@ -52,8 +52,8 @@ public class ContactPostalAddressStatusAction
     public ActionForward executeAction(ActionMapping mapping, ContactPostalAddressStatusActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);
 
         if(partyName == null) {
             partyName = actionForm.getPartyName();
@@ -63,11 +63,11 @@ public class ContactPostalAddressStatusAction
         }
 
         if(wasPost(request)) {
-            SetPostalAddressStatusForm commandForm = ContactUtil.getHome().getSetPostalAddressStatusForm();
+            var commandForm = ContactUtil.getHome().getSetPostalAddressStatusForm();
             commandForm.setContactMechanismName(contactMechanismName);
             commandForm.setPostalAddressStatusChoice(actionForm.getPostalAddressStatusChoice());
 
-            CommandResult commandResult = ContactUtil.getHome().setPostalAddressStatus(getUserVisitPK(request), commandForm);
+            var commandResult = ContactUtil.getHome().setPostalAddressStatus(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -81,7 +81,7 @@ public class ContactPostalAddressStatusAction
             forwardKey = ForwardConstants.FORM;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupDepartment(request, partyName);
             setupPartyContactMechanismTransfer(request, partyName, contactMechanismName);

@@ -65,16 +65,16 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemPriceForm commandForm = ItemUtil.getHome().getGetItemPriceForm();
+        var commandForm = ItemUtil.getHome().getGetItemPriceForm();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setInventoryConditionName(actionForm.getInventoryConditionName());
         commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeName());
         commandForm.setCurrencyIsoName(actionForm.getCurrencyIsoName());
 
-        CommandResult commandResult = ItemUtil.getHome().getItemPrice(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemPriceResult result = (GetItemPriceResult)executionResult.getResult();
+        var commandResult = ItemUtil.getHome().getItemPrice(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemPriceResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM_PRICE, result.getItemPrice());
     }
@@ -82,7 +82,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteItemPriceForm commandForm = ItemUtil.getHome().getDeleteItemPriceForm();
+        var commandForm = ItemUtil.getHome().getDeleteItemPriceForm();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setInventoryConditionName(actionForm.getInventoryConditionName());

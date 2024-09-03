@@ -46,14 +46,14 @@ public class AddActionForm
     public void setupProtocolChoices()
             throws NamingException {
         if(protocolChoices == null) {
-            GetProtocolChoicesForm form = CoreUtil.getHome().getGetProtocolChoicesForm();
+            var form = CoreUtil.getHome().getGetProtocolChoicesForm();
 
             form.setDefaultProtocolChoice(protocolChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getProtocolChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetProtocolChoicesResult getProtocolChoicesResult = (GetProtocolChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getProtocolChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getProtocolChoicesResult = (GetProtocolChoicesResult)executionResult.getResult();
             protocolChoices = getProtocolChoicesResult.getProtocolChoices();
 
             if(protocolChoice == null) {

@@ -46,7 +46,7 @@ public class DocumentTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("documentType")) {
-            CreateDocumentTypeForm commandForm = DocumentFormFactory.getCreateDocumentTypeForm();
+            var commandForm = DocumentFormFactory.getCreateDocumentTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

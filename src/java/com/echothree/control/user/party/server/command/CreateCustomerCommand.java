@@ -240,7 +240,7 @@ public class CreateCustomerCommand
                                                     var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
                                                     var partyFreeOnBoardControl = Session.getModelController(PartyFreeOnBoardControl.class);
                                                     var workflowControl = Session.getModelController(WorkflowControl.class);
-                                                    Soundex soundex = new Soundex();
+                                                    var soundex = new Soundex();
                                                     var partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
                                                     BasePK createdBy = getPartyPK();
                                                     var personalTitleId = form.getPersonalTitleId();

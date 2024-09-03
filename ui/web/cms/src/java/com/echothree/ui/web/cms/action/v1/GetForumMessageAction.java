@@ -45,13 +45,13 @@ public class GetForumMessageAction
     @Override
     protected CommandResult getCommandResult(HttpServletRequest request)
             throws Exception {
-        GetForumMessageForm commandForm = ForumUtil.getHome().getGetForumMessageForm();
+        var commandForm = ForumUtil.getHome().getGetForumMessageForm();
 
         commandForm.setForumMessageName(request.getParameter(ParameterConstants.FORUM_MESSAGE_NAME));
 
         BaseTag.setOptions(request.getParameter(ParameterConstants.OPTIONS), null, commandForm);
 
-        CommandResult commandResult = ForumUtil.getHome().getForumMessage(getUserVisitPK(request), commandForm);
+        var commandResult = ForumUtil.getHome().getForumMessage(getUserVisitPK(request), commandForm);
         
         return commandResult;
     }

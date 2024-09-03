@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String communicationSourceName = request.getParameter(ParameterConstants.COMMUNICATION_SOURCE_NAME);
-            GetCommunicationSourceDescriptionsForm commandForm = CommunicationUtil.getHome().getGetCommunicationSourceDescriptionsForm();
+            var communicationSourceName = request.getParameter(ParameterConstants.COMMUNICATION_SOURCE_NAME);
+            var commandForm = CommunicationUtil.getHome().getGetCommunicationSourceDescriptionsForm();
             
             commandForm.setCommunicationSourceName(communicationSourceName);
-            
-            CommandResult commandResult = CommunicationUtil.getHome().getCommunicationSourceDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommunicationSourceDescriptionsResult result = (GetCommunicationSourceDescriptionsResult)executionResult.getResult();
-            CommunicationSourceTransfer communicationSourceTransfer = result.getCommunicationSource();
+
+            var commandResult = CommunicationUtil.getHome().getCommunicationSourceDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommunicationSourceDescriptionsResult)executionResult.getResult();
+            var communicationSourceTransfer = result.getCommunicationSource();
             
             request.setAttribute(AttributeConstants.COMMUNICATION_SOURCE, communicationSourceTransfer);
             request.setAttribute(AttributeConstants.COMMUNICATION_SOURCE_NAME, communicationSourceTransfer.getCommunicationSourceName());

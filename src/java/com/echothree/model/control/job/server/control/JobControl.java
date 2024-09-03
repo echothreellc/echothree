@@ -182,7 +182,7 @@ public class JobControl
     public JobStatusChoicesBean getJobStatusChoices(String defaultJobStatusChoice, Language language, boolean allowNullChoice,
             Job job, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        JobStatusChoicesBean jobStatusChoicesBean = new JobStatusChoicesBean();
+        var jobStatusChoicesBean = new JobStatusChoicesBean();
         
         if(job == null) {
             workflowControl.getWorkflowEntranceChoices(jobStatusChoicesBean, defaultJobStatusChoice, language, allowNullChoice,

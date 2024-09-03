@@ -45,14 +45,14 @@ public class AddActionForm
     private void setupParentItemCategoryChoices() {
         if(parentItemCategoryChoices == null) {
             try {
-                GetItemCategoryChoicesForm form = ItemUtil.getHome().getGetItemCategoryChoicesForm();
+                var form = ItemUtil.getHome().getGetItemCategoryChoicesForm();
 
                 form.setDefaultItemCategoryChoice(parentItemCategoryChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemCategoryChoicesResult getItemCategoryChoicesResult = (GetItemCategoryChoicesResult)executionResult.getResult();
+                var commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getItemCategoryChoicesResult = (GetItemCategoryChoicesResult)executionResult.getResult();
                 parentItemCategoryChoices = getItemCategoryChoicesResult.getItemCategoryChoices();
 
                 if(parentItemCategoryChoice == null) {

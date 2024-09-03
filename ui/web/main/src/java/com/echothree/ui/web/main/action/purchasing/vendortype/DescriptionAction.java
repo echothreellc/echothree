@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String vendorTypeName = request.getParameter(ParameterConstants.VENDOR_TYPE_NAME);
-            GetVendorTypeDescriptionsForm commandForm = VendorUtil.getHome().getGetVendorTypeDescriptionsForm();
+            var vendorTypeName = request.getParameter(ParameterConstants.VENDOR_TYPE_NAME);
+            var commandForm = VendorUtil.getHome().getGetVendorTypeDescriptionsForm();
             
             commandForm.setVendorTypeName(vendorTypeName);
-            
-            CommandResult commandResult = VendorUtil.getHome().getVendorTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetVendorTypeDescriptionsResult result = (GetVendorTypeDescriptionsResult)executionResult.getResult();
-            VendorTypeTransfer vendorTypeTransfer = result.getVendorType();
+
+            var commandResult = VendorUtil.getHome().getVendorTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetVendorTypeDescriptionsResult)executionResult.getResult();
+            var vendorTypeTransfer = result.getVendorType();
             
             request.setAttribute(AttributeConstants.VENDOR_TYPE, vendorTypeTransfer);
             request.setAttribute(AttributeConstants.VENDOR_TYPE_NAME, vendorTypeTransfer.getVendorTypeName());

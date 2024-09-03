@@ -55,18 +55,18 @@ public class WorkflowStepStep3Action
         String forwardKey;
         
         try {
-            final String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-            final String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-            final String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
-            final String selectorNodeTypeName = request.getParameter(ParameterConstants.SELECTOR_NODE_TYPE_NAME);
-            final String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
-            GetWorkflowStepsForm commandForm = WorkflowUtil.getHome().getGetWorkflowStepsForm();
+            final var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+            final var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+            final var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+            final var selectorNodeTypeName = request.getParameter(ParameterConstants.SELECTOR_NODE_TYPE_NAME);
+            final var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowStepsForm();
             
             commandForm.setWorkflowName(workflowName);
-            
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowSteps(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowStepsResult result = (GetWorkflowStepsResult)executionResult.getResult();
+
+            var commandResult = WorkflowUtil.getHome().getWorkflowSteps(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowStepsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SELECTOR_KIND_NAME, selectorKindName);
             request.setAttribute(AttributeConstants.SELECTOR_TYPE_NAME, selectorTypeName);

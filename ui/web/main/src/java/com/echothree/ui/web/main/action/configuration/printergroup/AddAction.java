@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePrinterGroupForm commandForm = PrinterUtil.getHome().getCreatePrinterGroupForm();
+        var commandForm = PrinterUtil.getHome().getCreatePrinterGroupForm();
 
         commandForm.setPrinterGroupName(actionForm.getPrinterGroupName());
         commandForm.setKeepPrintedJobsTime(actionForm.getKeepPrintedJobsTime());

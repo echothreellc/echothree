@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected HarmonizedTariffScheduleCodeUnitSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        HarmonizedTariffScheduleCodeUnitSpec spec = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitSpec();
+        var spec = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitSpec();
         
         spec.setHarmonizedTariffScheduleCodeUnitName(findParameter(request, ParameterConstants.ORIGINAL_HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT_NAME, actionForm.getOriginalHarmonizedTariffScheduleCodeUnitName()));
         
@@ -60,7 +60,7 @@ public class EditAction
     @Override
     protected HarmonizedTariffScheduleCodeUnitEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        HarmonizedTariffScheduleCodeUnitEdit edit = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitEdit();
+        var edit = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitEdit();
 
         edit.setHarmonizedTariffScheduleCodeUnitName(actionForm.getHarmonizedTariffScheduleCodeUnitName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

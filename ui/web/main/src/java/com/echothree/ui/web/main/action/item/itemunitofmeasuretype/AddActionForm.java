@@ -44,15 +44,15 @@ public class AddActionForm
     private void setupUnitOfMeasureTypeChoices() {
         if(unitOfMeasureTypeChoices == null) {
             try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
                 
                 form.setItemName(itemName);
                 form.setDefaultUnitOfMeasureTypeChoice(unitOfMeasureTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult result = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
                 unitOfMeasureTypeChoices = result.getUnitOfMeasureTypeChoices();
                 
                 if(unitOfMeasureTypeChoice == null) {

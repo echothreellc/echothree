@@ -52,7 +52,7 @@ public class DescriptionEditAction
     @Override
     protected GeoCodeAliasTypeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        GeoCodeAliasTypeDescriptionSpec spec = GeoUtil.getHome().getGeoCodeAliasTypeDescriptionSpec();
+        var spec = GeoUtil.getHome().getGeoCodeAliasTypeDescriptionSpec();
 
         spec.setGeoCodeTypeName(findParameter(request, ParameterConstants.GEO_CODE_TYPE_NAME, actionForm.getGeoCodeTypeName()));
         spec.setGeoCodeAliasTypeName(findParameter(request, ParameterConstants.GEO_CODE_ALIAS_TYPE_NAME, actionForm.getGeoCodeAliasTypeName()));
@@ -64,7 +64,7 @@ public class DescriptionEditAction
     @Override
     protected GeoCodeAliasTypeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        GeoCodeAliasTypeDescriptionEdit edit = GeoUtil.getHome().getGeoCodeAliasTypeDescriptionEdit();
+        var edit = GeoUtil.getHome().getGeoCodeAliasTypeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 
@@ -88,9 +88,9 @@ public class DescriptionEditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditGeoCodeAliasTypeDescriptionForm commandForm)
             throws Exception {
-        CommandResult commandResult = GeoUtil.getHome().editGeoCodeAliasTypeDescription(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditGeoCodeAliasTypeDescriptionResult result = (EditGeoCodeAliasTypeDescriptionResult)executionResult.getResult();
+        var commandResult = GeoUtil.getHome().editGeoCodeAliasTypeDescription(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditGeoCodeAliasTypeDescriptionResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.GEO_CODE_ALIAS_TYPE_DESCRIPTION, result.getGeoCodeAliasTypeDescription());
 

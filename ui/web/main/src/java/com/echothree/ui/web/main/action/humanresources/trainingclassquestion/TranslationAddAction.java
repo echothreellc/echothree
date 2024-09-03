@@ -58,16 +58,16 @@ public class TranslationAddAction
     @Override
     public void setupTransfer(TranslationAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTrainingClassQuestionForm commandForm = TrainingUtil.getHome().getGetTrainingClassQuestionForm();
+        var commandForm = TrainingUtil.getHome().getGetTrainingClassQuestionForm();
 
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());
         commandForm.setTrainingClassQuestionName(actionForm.getTrainingClassQuestionName());
-        
-        CommandResult commandResult = TrainingUtil.getHome().getTrainingClassQuestion(getUserVisitPK(request), commandForm);
+
+        var commandResult = TrainingUtil.getHome().getTrainingClassQuestion(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTrainingClassQuestionResult result = (GetTrainingClassQuestionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTrainingClassQuestionResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRAINING_CLASS_QUESTION, result.getTrainingClassQuestion());
         }
@@ -76,7 +76,7 @@ public class TranslationAddAction
     @Override
     public CommandResult doAdd(TranslationAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateTrainingClassQuestionTranslationForm commandForm = TrainingUtil.getHome().getCreateTrainingClassQuestionTranslationForm();
+        var commandForm = TrainingUtil.getHome().getCreateTrainingClassQuestionTranslationForm();
 
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());

@@ -65,16 +65,16 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetWorkflowEntranceSecurityRoleForm commandForm = WorkflowUtil.getHome().getGetWorkflowEntranceSecurityRoleForm();
+        var commandForm = WorkflowUtil.getHome().getGetWorkflowEntranceSecurityRoleForm();
         
         commandForm.setWorkflowName(actionForm.getWorkflowName());
         commandForm.setWorkflowEntranceName(actionForm.getWorkflowEntranceName());
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());
         commandForm.setSecurityRoleName(actionForm.getSecurityRoleName());
-        
-        CommandResult commandResult = WorkflowUtil.getHome().getWorkflowEntranceSecurityRole(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetWorkflowEntranceSecurityRoleResult result = (GetWorkflowEntranceSecurityRoleResult)executionResult.getResult();
+
+        var commandResult = WorkflowUtil.getHome().getWorkflowEntranceSecurityRole(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetWorkflowEntranceSecurityRoleResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.WORKFLOW_ENTRANCE_SECURITY_ROLE, result.getWorkflowEntranceSecurityRole());
     }
@@ -82,7 +82,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteWorkflowEntranceSecurityRoleForm commandForm = WorkflowUtil.getHome().getDeleteWorkflowEntranceSecurityRoleForm();
+        var commandForm = WorkflowUtil.getHome().getDeleteWorkflowEntranceSecurityRoleForm();
 
         commandForm.setWorkflowName(actionForm.getWorkflowName());
         commandForm.setWorkflowEntranceName(actionForm.getWorkflowEntranceName());

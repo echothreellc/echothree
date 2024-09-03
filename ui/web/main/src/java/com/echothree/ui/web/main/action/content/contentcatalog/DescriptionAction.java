@@ -57,18 +57,18 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-            String contentCatalogName = request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME);
-            GetContentCatalogDescriptionsForm commandForm = ContentUtil.getHome().getGetContentCatalogDescriptionsForm();
+            var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+            var contentCatalogName = request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME);
+            var commandForm = ContentUtil.getHome().getGetContentCatalogDescriptionsForm();
             
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentCatalogName(contentCatalogName);
-            
-            CommandResult commandResult = ContentUtil.getHome().getContentCatalogDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentCatalogDescriptionsResult result = (GetContentCatalogDescriptionsResult)executionResult.getResult();
-            ContentCollectionTransfer contentCollectionTransfer = result.getContentCollection();
-            ContentCatalogTransfer contentCatalogTransfer = result.getContentCatalog();
+
+            var commandResult = ContentUtil.getHome().getContentCatalogDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentCatalogDescriptionsResult)executionResult.getResult();
+            var contentCollectionTransfer = result.getContentCollection();
+            var contentCatalogTransfer = result.getContentCatalog();
             
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION, contentCollectionTransfer);
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionTransfer.getContentCollectionName());

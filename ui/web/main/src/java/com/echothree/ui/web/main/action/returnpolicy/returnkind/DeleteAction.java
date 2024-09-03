@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteReturnKindForm commandForm = ReturnPolicyUtil.getHome().getDeleteReturnKindForm();
-            String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getDeleteReturnKindForm();
+            var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
             
             commandForm.setReturnKindName(returnKindName);
             

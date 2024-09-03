@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-            GetReturnKindDescriptionsForm commandForm = ReturnPolicyUtil.getHome().getGetReturnKindDescriptionsForm();
+            var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getGetReturnKindDescriptionsForm();
             
             commandForm.setReturnKindName(returnKindName);
-            
-            CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnKindDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetReturnKindDescriptionsResult result = (GetReturnKindDescriptionsResult)executionResult.getResult();
-            ReturnKindTransfer returnKindTransfer = result.getReturnKind();
+
+            var commandResult = ReturnPolicyUtil.getHome().getReturnKindDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnKindDescriptionsResult)executionResult.getResult();
+            var returnKindTransfer = result.getReturnKind();
             
             request.setAttribute(AttributeConstants.RETURN_KIND, returnKindTransfer);
             request.setAttribute(AttributeConstants.RETURN_KIND_NAME, returnKindTransfer.getReturnKindName());

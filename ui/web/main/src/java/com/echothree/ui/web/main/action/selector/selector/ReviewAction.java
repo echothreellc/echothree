@@ -55,18 +55,18 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetSelectorForm commandForm = SelectorUtil.getHome().getGetSelectorForm();
-            String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-            String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-            String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+            var commandForm = SelectorUtil.getHome().getGetSelectorForm();
+            var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+            var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+            var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
             
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setSelectorTypeName(selectorTypeName);
             commandForm.setSelectorName(selectorName);
-            
-            CommandResult commandResult = SelectorUtil.getHome().getSelector(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSelectorResult result = (GetSelectorResult)executionResult.getResult();
+
+            var commandResult = SelectorUtil.getHome().getSelector(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSelectorResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SELECTOR, result.getSelector());
             forwardKey = ForwardConstants.DISPLAY;

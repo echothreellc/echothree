@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetLeaveTypeForm commandForm = EmployeeUtil.getHome().getGetLeaveTypeForm();
+        var commandForm = EmployeeUtil.getHome().getGetLeaveTypeForm();
 
         commandForm.setLeaveTypeName(request.getParameter(ParameterConstants.LEAVE_TYPE_NAME));
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getLeaveType(getUserVisitPK(request), commandForm);
+
+        var commandResult = EmployeeUtil.getHome().getLeaveType(getUserVisitPK(request), commandForm);
         LeaveTypeTransfer leaveType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLeaveTypeResult result = (GetLeaveTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveTypeResult)executionResult.getResult();
             
             leaveType = result.getLeaveType();
         }

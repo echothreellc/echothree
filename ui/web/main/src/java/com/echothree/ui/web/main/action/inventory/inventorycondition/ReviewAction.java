@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetInventoryConditionForm commandForm = InventoryUtil.getHome().getGetInventoryConditionForm();
-            String inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
+            var commandForm = InventoryUtil.getHome().getGetInventoryConditionForm();
+            var inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
             
             commandForm.setInventoryConditionName(inventoryConditionName);
-            
-            CommandResult commandResult = InventoryUtil.getHome().getInventoryCondition(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetInventoryConditionResult result = (GetInventoryConditionResult)executionResult.getResult();
+
+            var commandResult = InventoryUtil.getHome().getInventoryCondition(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetInventoryConditionResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.INVENTORY_CONDITION, result.getInventoryCondition());
             

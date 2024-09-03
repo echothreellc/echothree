@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteGlAccountForm commandForm = AccountingUtil.getHome().getDeleteGlAccountForm();
-            String glAccountName = request.getParameter(ParameterConstants.GL_ACCOUNT_NAME);
+            var commandForm = AccountingUtil.getHome().getDeleteGlAccountForm();
+            var glAccountName = request.getParameter(ParameterConstants.GL_ACCOUNT_NAME);
             
             commandForm.setGlAccountName(glAccountName);
             

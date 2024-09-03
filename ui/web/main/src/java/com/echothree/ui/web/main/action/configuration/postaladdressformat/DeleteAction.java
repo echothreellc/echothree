@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            String postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
-            DeletePostalAddressFormatForm commandForm = ContactUtil.getHome().getDeletePostalAddressFormatForm();
+            var postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
+            var commandForm = ContactUtil.getHome().getDeletePostalAddressFormatForm();
             
             commandForm.setPostalAddressFormatName(postalAddressFormatName);
             

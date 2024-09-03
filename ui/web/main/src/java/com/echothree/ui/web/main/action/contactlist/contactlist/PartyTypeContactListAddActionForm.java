@@ -43,14 +43,14 @@ public class PartyTypeContactListAddActionForm
     private void setupPartyTypeChoices()
             throws NamingException {
         if(partyTypeChoices == null) {
-            GetPartyTypeChoicesForm form = PartyUtil.getHome().getGetPartyTypeChoicesForm();
+            var form = PartyUtil.getHome().getGetPartyTypeChoicesForm();
 
             form.setDefaultPartyTypeChoice(partyTypeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyTypeChoicesResult getPartyTypeChoicesResult = (GetPartyTypeChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getPartyTypeChoicesResult = (GetPartyTypeChoicesResult)executionResult.getResult();
             partyTypeChoices = getPartyTypeChoicesResult.getPartyTypeChoices();
 
             if(partyTypeChoice == null) {

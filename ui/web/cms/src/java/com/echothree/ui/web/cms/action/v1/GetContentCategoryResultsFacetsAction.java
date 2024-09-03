@@ -49,7 +49,7 @@ public class GetContentCategoryResultsFacetsAction
     @Override
     protected CommandResult getCommandResult(HttpServletRequest request)
             throws Exception {
-        GetContentCategoryResultsFacetsForm commandForm = SearchUtil.getHome().getGetContentCategoryResultsFacetsForm();
+        var commandForm = SearchUtil.getHome().getGetContentCategoryResultsFacetsForm();
 
         commandForm.setSearchTypeName(request.getParameter(ParameterConstants.SEARCH_TYPE_NAME));
 

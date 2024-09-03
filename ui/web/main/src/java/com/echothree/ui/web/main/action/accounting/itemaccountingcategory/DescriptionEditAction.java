@@ -61,14 +61,14 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String itemAccountingCategoryName = request.getParameter(ParameterConstants.ITEM_ACCOUNTING_CATEGORY_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var itemAccountingCategoryName = request.getParameter(ParameterConstants.ITEM_ACCOUNTING_CATEGORY_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditItemAccountingCategoryDescriptionForm commandForm = AccountingUtil.getHome().getEditItemAccountingCategoryDescriptionForm();
-                ItemAccountingCategoryDescriptionSpec spec = AccountingUtil.getHome().getItemAccountingCategoryDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = AccountingUtil.getHome().getEditItemAccountingCategoryDescriptionForm();
+                var spec = AccountingUtil.getHome().getItemAccountingCategoryDescriptionSpec();
                 
                 if(itemAccountingCategoryName == null)
                     itemAccountingCategoryName = actionForm.getItemAccountingCategoryName();
@@ -80,19 +80,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    ItemAccountingCategoryDescriptionEdit edit = AccountingUtil.getHome().getItemAccountingCategoryDescriptionEdit();
+                    var edit = AccountingUtil.getHome().getItemAccountingCategoryDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().editItemAccountingCategoryDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AccountingUtil.getHome().editItemAccountingCategoryDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditItemAccountingCategoryDescriptionResult result = (EditItemAccountingCategoryDescriptionResult)executionResult.getResult();
+                            var result = (EditItemAccountingCategoryDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -105,13 +105,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().editItemAccountingCategoryDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditItemAccountingCategoryDescriptionResult result = (EditItemAccountingCategoryDescriptionResult)executionResult.getResult();
+
+                    var commandResult = AccountingUtil.getHome().editItemAccountingCategoryDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditItemAccountingCategoryDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        ItemAccountingCategoryDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setItemAccountingCategoryName(itemAccountingCategoryName);
@@ -130,8 +130,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.ITEM_ACCOUNTING_CATEGORY_NAME, itemAccountingCategoryName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

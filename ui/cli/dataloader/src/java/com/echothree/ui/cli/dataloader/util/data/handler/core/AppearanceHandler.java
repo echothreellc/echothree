@@ -52,21 +52,21 @@ public class AppearanceHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("appearanceDescription")) {
-            CreateAppearanceDescriptionForm commandForm = CoreFormFactory.getCreateAppearanceDescriptionForm();
+            var commandForm = CoreFormFactory.getCreateAppearanceDescriptionForm();
             
             commandForm.setAppearanceName(appearanceName);
             commandForm.set(getAttrsMap(attrs));
             
             coreService.createAppearanceDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("appearanceTextDecoration")) {
-            CreateAppearanceTextDecorationForm commandForm = CoreFormFactory.getCreateAppearanceTextDecorationForm();
+            var commandForm = CoreFormFactory.getCreateAppearanceTextDecorationForm();
             
             commandForm.setAppearanceName(appearanceName);
             commandForm.set(getAttrsMap(attrs));
             
             coreService.createAppearanceTextDecoration(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("appearanceTextTransformation")) {
-            CreateAppearanceTextTransformationForm commandForm = CoreFormFactory.getCreateAppearanceTextTransformationForm();
+            var commandForm = CoreFormFactory.getCreateAppearanceTextTransformationForm();
             
             commandForm.setAppearanceName(appearanceName);
             commandForm.set(getAttrsMap(attrs));

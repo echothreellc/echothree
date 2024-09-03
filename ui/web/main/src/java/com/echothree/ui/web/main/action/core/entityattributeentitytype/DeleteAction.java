@@ -66,17 +66,17 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEntityAttributeEntityTypeForm commandForm = CoreUtil.getHome().getGetEntityAttributeEntityTypeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityAttributeEntityTypeForm();
         
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityAttributeName(actionForm.getEntityAttributeName());
         commandForm.setAllowedComponentVendorName(actionForm.getAllowedComponentVendorName());
         commandForm.setAllowedEntityTypeName(actionForm.getAllowedEntityTypeName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityAttributeEntityType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEntityAttributeEntityTypeResult result = (GetEntityAttributeEntityTypeResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getEntityAttributeEntityType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEntityAttributeEntityTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE_ENTITY_TYPE, result.getEntityAttributeEntityType());
     }
@@ -84,7 +84,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteEntityAttributeEntityTypeForm commandForm = CoreUtil.getHome().getDeleteEntityAttributeEntityTypeForm();
+        var commandForm = CoreUtil.getHome().getDeleteEntityAttributeEntityTypeForm();
 
         commandForm.setEntityAttributeName(actionForm.getEntityAttributeName());
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());

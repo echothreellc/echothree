@@ -56,15 +56,15 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-        String filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
+        var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+        var filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm addActionForm = (AddActionForm)form;
+                var addActionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateFilterAdjustmentPercentForm commandForm = FilterUtil.getHome().getCreateFilterAdjustmentPercentForm();
+                    var commandForm = FilterUtil.getHome().getCreateFilterAdjustmentPercentForm();
                     
                     if(filterKindName == null)
                         filterKindName = addActionForm.getFilterKindName();
@@ -76,8 +76,8 @@ public class AddAction
                     commandForm.setUnitOfMeasureName(addActionForm.getUnitOfMeasureChoice());
                     commandForm.setCurrencyIsoName(addActionForm.getCurrencyChoice());
                     commandForm.setPercent(addActionForm.getPercent());
-                    
-                    CommandResult commandResult = FilterUtil.getHome().createFilterAdjustmentPercent(getUserVisitPK(request), commandForm);
+
+                    var commandResult = FilterUtil.getHome().createFilterAdjustmentPercent(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -94,8 +94,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.FILTER_KIND_NAME, filterKindName);
             request.setAttribute(AttributeConstants.FILTER_ADJUSTMENT_NAME, filterAdjustmentName);

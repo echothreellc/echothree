@@ -53,15 +53,15 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetBaseEncryptionKeyForm commandForm = CoreUtil.getHome().getGetBaseEncryptionKeyForm();
-        String baseEncryptionKeyName = request.getParameter(ParameterConstants.BASE_ENCRYPTION_KEY_NAME);
+        var commandForm = CoreUtil.getHome().getGetBaseEncryptionKeyForm();
+        var baseEncryptionKeyName = request.getParameter(ParameterConstants.BASE_ENCRYPTION_KEY_NAME);
         
         commandForm.setBaseEncryptionKeyName(baseEncryptionKeyName);
-        
-        CommandResult commandResult = CoreUtil.getHome().getBaseEncryptionKey(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetBaseEncryptionKeyResult result = (GetBaseEncryptionKeyResult)executionResult.getResult();
-        BaseEncryptionKeyTransfer baseEncryptionKey = result.getBaseEncryptionKey();
+
+        var commandResult = CoreUtil.getHome().getBaseEncryptionKey(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetBaseEncryptionKeyResult)executionResult.getResult();
+        var baseEncryptionKey = result.getBaseEncryptionKey();
         
         if(baseEncryptionKey == null) {
             forwardKey = ForwardConstants.ERROR_404;

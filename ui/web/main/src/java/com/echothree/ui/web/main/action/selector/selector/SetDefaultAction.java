@@ -51,12 +51,12 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        final String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-        final String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+        final var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+        final var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
         
         try {
-            String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
-            SetDefaultSelectorForm commandForm = SelectorUtil.getHome().getSetDefaultSelectorForm();
+            var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+            var commandForm = SelectorUtil.getHome().getSetDefaultSelectorForm();
             
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setSelectorTypeName(selectorTypeName);
@@ -68,8 +68,8 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             customActionForward.setParameters(Map.of(
                     ParameterConstants.SELECTOR_KIND_NAME, selectorKindName,

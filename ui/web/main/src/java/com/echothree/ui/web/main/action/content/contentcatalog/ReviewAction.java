@@ -57,7 +57,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetContentCatalogForm commandForm = ContentUtil.getHome().getGetContentCatalogForm();
+        var commandForm = ContentUtil.getHome().getGetContentCatalogForm();
 
         commandForm.setContentCollectionName(request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME));
         commandForm.setContentCatalogName(request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME));
@@ -71,12 +71,12 @@ public class ReviewAction
         options.add(ContentOptions.ContentCatalogIncludeTagScopes);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ContentUtil.getHome().getContentCatalog(getUserVisitPK(request), commandForm);
+        var commandResult = ContentUtil.getHome().getContentCatalog(getUserVisitPK(request), commandForm);
         ContentCatalogTransfer contentCatalog = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentCatalogResult result = (GetContentCatalogResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentCatalogResult)executionResult.getResult();
 
             contentCatalog = result.getContentCatalog();
         }

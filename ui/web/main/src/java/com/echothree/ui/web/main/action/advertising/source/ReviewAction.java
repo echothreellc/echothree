@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetSourceForm commandForm = OfferUtil.getHome().getGetSourceForm();
-            String sourceName = request.getParameter(ParameterConstants.SOURCE_NAME);
+            var commandForm = OfferUtil.getHome().getGetSourceForm();
+            var sourceName = request.getParameter(ParameterConstants.SOURCE_NAME);
             
             commandForm.setSourceName(sourceName);
-            
-            CommandResult commandResult = OfferUtil.getHome().getSource(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSourceResult result = (GetSourceResult)executionResult.getResult();
+
+            var commandResult = OfferUtil.getHome().getSource(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSourceResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SOURCE, result.getSource());
             forwardKey = ForwardConstants.DISPLAY;

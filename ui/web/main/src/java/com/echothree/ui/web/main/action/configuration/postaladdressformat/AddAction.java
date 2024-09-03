@@ -54,17 +54,17 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreatePostalAddressFormatForm commandForm = ContactUtil.getHome().getCreatePostalAddressFormatForm();
+                    var commandForm = ContactUtil.getHome().getCreatePostalAddressFormatForm();
                     
                     commandForm.setPostalAddressFormatName(actionForm.getPostalAddressFormatName());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ContactUtil.getHome().createPostalAddressFormat(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ContactUtil.getHome().createPostalAddressFormat(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

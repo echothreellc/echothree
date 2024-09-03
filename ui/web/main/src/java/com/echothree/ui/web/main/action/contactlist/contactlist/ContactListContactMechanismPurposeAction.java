@@ -53,16 +53,16 @@ public class ContactListContactMechanismPurposeAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String contactListName = request.getParameter(ParameterConstants.CONTACT_LIST_NAME);
-        GetContactListContactMechanismPurposesForm commandForm = ContactListUtil.getHome().getGetContactListContactMechanismPurposesForm();
+        var contactListName = request.getParameter(ParameterConstants.CONTACT_LIST_NAME);
+        var commandForm = ContactListUtil.getHome().getGetContactListContactMechanismPurposesForm();
 
         commandForm.setContactListName(contactListName);
 
-        CommandResult commandResult = ContactListUtil.getHome().getContactListContactMechanismPurposes(getUserVisitPK(request), commandForm);
+        var commandResult = ContactListUtil.getHome().getContactListContactMechanismPurposes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListContactMechanismPurposesResult result = (GetContactListContactMechanismPurposesResult) executionResult.getResult();
-            ContactListTransfer contactListTransfer = result.getContactList();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListContactMechanismPurposesResult) executionResult.getResult();
+            var contactListTransfer = result.getContactList();
 
             request.setAttribute(AttributeConstants.CONTACT_LIST, contactListTransfer);
             request.setAttribute(AttributeConstants.CONTACT_LIST_CONTACT_MECHANISM_PURPOSES, result.getContactListContactMechanismPurposes());

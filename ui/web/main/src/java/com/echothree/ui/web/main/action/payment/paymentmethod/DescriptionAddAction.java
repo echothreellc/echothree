@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPaymentMethodForm commandForm = PaymentUtil.getHome().getGetPaymentMethodForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentMethodForm();
 
         commandForm.setPaymentMethodName(actionForm.getPaymentMethodName());
-        
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentMethod(getUserVisitPK(request), commandForm);
+
+        var commandResult = PaymentUtil.getHome().getPaymentMethod(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPaymentMethodResult result = (GetPaymentMethodResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPaymentMethodResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PAYMENT_METHOD, result.getPaymentMethod());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePaymentMethodDescriptionForm commandForm = PaymentUtil.getHome().getCreatePaymentMethodDescriptionForm();
+        var commandForm = PaymentUtil.getHome().getCreatePaymentMethodDescriptionForm();
 
         commandForm.setPaymentMethodName( actionForm.getPaymentMethodName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

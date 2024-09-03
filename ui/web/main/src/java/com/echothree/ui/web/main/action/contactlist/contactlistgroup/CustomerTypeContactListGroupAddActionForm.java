@@ -43,14 +43,14 @@ public class CustomerTypeContactListGroupAddActionForm
     private void setupCustomerTypeChoices()
             throws NamingException {
         if(customerTypeChoices == null) {
-            GetCustomerTypeChoicesForm form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
+            var form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
 
             form.setDefaultCustomerTypeChoice(customerTypeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypeChoicesResult getCustomerTypeChoicesResult = (GetCustomerTypeChoicesResult)executionResult.getResult();
+            var commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getCustomerTypeChoicesResult = (GetCustomerTypeChoicesResult)executionResult.getResult();
             customerTypeChoices = getCustomerTypeChoicesResult.getCustomerTypeChoices();
 
             if(customerTypeChoice == null) {

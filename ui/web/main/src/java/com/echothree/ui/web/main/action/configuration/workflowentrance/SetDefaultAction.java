@@ -50,15 +50,15 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
-        SetDefaultWorkflowEntranceForm commandForm = WorkflowUtil.getHome().getSetDefaultWorkflowEntranceForm();
+        var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+        var commandForm = WorkflowUtil.getHome().getSetDefaultWorkflowEntranceForm();
 
         commandForm.setWorkflowName(workflowName);
         commandForm.setWorkflowEntranceName(request.getParameter(ParameterConstants.WORKFLOW_ENTRANCE_NAME));
 
         WorkflowUtil.getHome().setDefaultWorkflowEntrance(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
 
         parameters.put(ParameterConstants.WORKFLOW_NAME, workflowName);

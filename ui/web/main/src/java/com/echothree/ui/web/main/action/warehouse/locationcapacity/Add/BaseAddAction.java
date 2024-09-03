@@ -35,28 +35,28 @@ public abstract class BaseAddAction<A
     
     protected void setupLocation(HttpServletRequest request, String warehouseName, String locationName)
             throws NamingException {
-        GetLocationForm commandForm = WarehouseUtil.getHome().getGetLocationForm();
+        var commandForm = WarehouseUtil.getHome().getGetLocationForm();
         
         commandForm.setWarehouseName(warehouseName);
         commandForm.setLocationName(locationName);
-        
-        CommandResult commandResult = WarehouseUtil.getHome().getLocation(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetLocationResult result = (GetLocationResult)executionResult.getResult();
+
+        var commandResult = WarehouseUtil.getHome().getLocation(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetLocationResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.LOCATION, result.getLocation());
     }
     
     protected void setupUnitOfMeasureType(HttpServletRequest request, String unitOfMeasureKindName, String unitOfMeasureTypeName)
             throws NamingException {
-            GetUnitOfMeasureTypeForm commandForm = UomUtil.getHome().getGetUnitOfMeasureTypeForm();
+        var commandForm = UomUtil.getHome().getGetUnitOfMeasureTypeForm();
             
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
-            
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureTypeResult result = (GetUnitOfMeasureTypeResult)executionResult.getResult();
+
+        var commandResult = UomUtil.getHome().getUnitOfMeasureType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetUnitOfMeasureTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_TYPE, result.getUnitOfMeasureType());
     }

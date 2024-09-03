@@ -55,8 +55,8 @@ public class CommentEditAction
     @Override
     protected CommentSpec getSpec(HttpServletRequest request, CommentEditActionForm actionForm)
             throws NamingException {
-        CommentSpec spec = CommentUtil.getHome().getCommentSpec();
-        String commentName = request.getParameter(ParameterConstants.COMMENT_NAME);
+        var spec = CommentUtil.getHome().getCommentSpec();
+        var commentName = request.getParameter(ParameterConstants.COMMENT_NAME);
 
         if(commentName == null) {
             commentName = actionForm.getCommentName();
@@ -70,7 +70,7 @@ public class CommentEditAction
     @Override
     protected CommentEdit getEdit(HttpServletRequest request, CommentEditActionForm actionForm)
             throws NamingException {
-        CommentEdit edit = CommentUtil.getHome().getCommentEdit();
+        var edit = CommentUtil.getHome().getCommentEdit();
 
         edit.setLanguageIsoName(actionForm.getLanguageChoice());
         edit.setDescription(actionForm.getDescription());
@@ -99,9 +99,9 @@ public class CommentEditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditCommentForm commandForm)
             throws Exception {
-        CommandResult commandResult = CommentUtil.getHome().editComment(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditCommentResult result = (EditCommentResult)executionResult.getResult();
+        var commandResult = CommentUtil.getHome().editComment(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditCommentResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.COMMENT, result.getComment());
         
@@ -116,13 +116,13 @@ public class CommentEditAction
     @Override
     public void setupTransfer(CommentEditActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
         
         commandForm.setPartyName(actionForm.getPartyName());
-        
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
+
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }

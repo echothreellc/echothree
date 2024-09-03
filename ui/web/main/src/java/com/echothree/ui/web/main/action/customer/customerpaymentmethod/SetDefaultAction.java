@@ -50,13 +50,13 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultPartyPaymentMethodForm commandForm = PaymentUtil.getHome().getSetDefaultPartyPaymentMethodForm();
+        var commandForm = PaymentUtil.getHome().getSetDefaultPartyPaymentMethodForm();
 
         commandForm.setPartyPaymentMethodName(request.getParameter(ParameterConstants.PARTY_PAYMENT_METHOD_NAME));
 
         PaymentUtil.getHome().setDefaultPartyPaymentMethod(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
 
         parameters.put(ParameterConstants.PARTY_NAME, request.getParameter(ParameterConstants.PARTY_NAME));

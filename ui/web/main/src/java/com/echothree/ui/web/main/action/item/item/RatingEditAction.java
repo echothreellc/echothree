@@ -55,8 +55,8 @@ public class RatingEditAction
     @Override
     protected RatingSpec getSpec(HttpServletRequest request, RatingEditActionForm actionForm)
             throws NamingException {
-        RatingSpec spec = RatingUtil.getHome().getRatingSpec();
-        String ratingName = request.getParameter(ParameterConstants.RATING_NAME);
+        var spec = RatingUtil.getHome().getRatingSpec();
+        var ratingName = request.getParameter(ParameterConstants.RATING_NAME);
 
         if(ratingName == null) {
             ratingName = actionForm.getRatingName();
@@ -70,7 +70,7 @@ public class RatingEditAction
     @Override
     protected RatingEdit getEdit(HttpServletRequest request, RatingEditActionForm actionForm)
             throws NamingException {
-        RatingEdit edit = RatingUtil.getHome().getRatingEdit();
+        var edit = RatingUtil.getHome().getRatingEdit();
 
         edit.setRatingTypeListItemName(actionForm.getRatingTypeListItemChoice());
 
@@ -93,9 +93,9 @@ public class RatingEditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditRatingForm commandForm)
             throws Exception {
-        CommandResult commandResult = RatingUtil.getHome().editRating(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditRatingResult result = (EditRatingResult)executionResult.getResult();
+        var commandResult = RatingUtil.getHome().editRating(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditRatingResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.RATING, result.getRating());
         
@@ -110,13 +110,13 @@ public class RatingEditAction
     @Override
     public void setupTransfer(RatingEditActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+        var commandForm = ItemUtil.getHome().getGetItemForm();
         
         commandForm.setItemName(actionForm.getItemName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemResult result = (GetItemResult)executionResult.getResult();
+
+        var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ITEM, result.getItem());
     }

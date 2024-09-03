@@ -45,7 +45,7 @@ public class InvalidateAbandonedUserVisitsJob
     @Override
     public void execute()
             throws NamingException {
-        InvalidateAbandonedUserVisitsForm commandForm = AuthenticationUtil.getHome().getInvalidateAbandonedUserVisitsForm();
+        var commandForm = AuthenticationUtil.getHome().getInvalidateAbandonedUserVisitsForm();
         
         commandForm.setAbandonedTime(Long.toString(ABANDONED_TIME));
         

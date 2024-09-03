@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteScaleForm commandForm = ScaleUtil.getHome().getDeleteScaleForm();
-            String scaleName = request.getParameter(ParameterConstants.SCALE_NAME);
+            var commandForm = ScaleUtil.getHome().getDeleteScaleForm();
+            var scaleName = request.getParameter(ParameterConstants.SCALE_NAME);
             
             commandForm.setScaleName(scaleName);
             

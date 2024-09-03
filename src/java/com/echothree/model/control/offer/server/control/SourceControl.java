@@ -89,7 +89,7 @@ public class SourceControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Source */
     public Source getSourceByEntityInstance(EntityInstance entityInstance) {
-        SourcePK pk = new SourcePK(entityInstance.getEntityUniqueId());
+        var pk = new SourcePK(entityInstance.getEntityUniqueId());
         var source = SourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return source;

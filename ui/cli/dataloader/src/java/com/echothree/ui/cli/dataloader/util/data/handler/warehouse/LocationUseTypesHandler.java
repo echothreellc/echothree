@@ -49,9 +49,9 @@ public class LocationUseTypesHandler
             String allowMultiple = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("locationUseTypeName"))
                     locationUseTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("allowMultiple"))
@@ -63,7 +63,7 @@ public class LocationUseTypesHandler
             }
             
             try {
-                CreateLocationUseTypeForm form = WarehouseFormFactory.getCreateLocationUseTypeForm();
+                var form = WarehouseFormFactory.getCreateLocationUseTypeForm();
                 
                 form.setLocationUseTypeName(locationUseTypeName);
                 form.setAllowMultiple(allowMultiple);

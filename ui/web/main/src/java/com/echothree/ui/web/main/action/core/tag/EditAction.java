@@ -53,7 +53,7 @@ public class EditAction
     @Override
     protected TagSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        TagSpec spec = TagUtil.getHome().getTagSpec();
+        var spec = TagUtil.getHome().getTagSpec();
         
         spec.setTagScopeName(findParameter(request, ParameterConstants.TAG_SCOPE_NAME, actionForm.getTagScopeName()));
         spec.setTagName(findParameter(request, ParameterConstants.ORIGINAL_TAG_NAME, actionForm.getOriginalTagName()));
@@ -64,7 +64,7 @@ public class EditAction
     @Override
     protected TagEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        TagEdit edit = TagUtil.getHome().getTagEdit();
+        var edit = TagUtil.getHome().getTagEdit();
 
         edit.setTagName(actionForm.getTagName());
 
@@ -87,11 +87,11 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditTagForm commandForm)
             throws Exception {
-        CommandResult commandResult = TagUtil.getHome().editTag(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditTagResult result = (EditTagResult)executionResult.getResult();
+        var commandResult = TagUtil.getHome().editTag(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditTagResult)executionResult.getResult();
 
-        TagTransfer tag = result.getTag();
+        var tag = result.getTag();
         if(tag != null) {
             request.setAttribute(AttributeConstants.TAG, tag.getTagScope());
         }

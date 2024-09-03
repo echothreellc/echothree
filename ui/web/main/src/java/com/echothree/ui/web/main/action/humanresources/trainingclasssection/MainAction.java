@@ -52,14 +52,14 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetTrainingClassSectionsForm commandForm = TrainingUtil.getHome().getGetTrainingClassSectionsForm();
+        var commandForm = TrainingUtil.getHome().getGetTrainingClassSectionsForm();
 
         commandForm.setTrainingClassName(request.getParameter(ParameterConstants.TRAINING_CLASS_NAME));
 
-        CommandResult commandResult = TrainingUtil.getHome().getTrainingClassSections(getUserVisitPK(request), commandForm);
+        var commandResult = TrainingUtil.getHome().getTrainingClassSections(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTrainingClassSectionsResult result = (GetTrainingClassSectionsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTrainingClassSectionsResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.TRAINING_CLASS, result.getTrainingClass());
             request.setAttribute(AttributeConstants.TRAINING_CLASS_SECTIONS, result.getTrainingClassSections());

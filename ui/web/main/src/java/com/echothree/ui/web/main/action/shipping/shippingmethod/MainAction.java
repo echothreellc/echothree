@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = ShippingUtil.getHome().getShippingMethods(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetShippingMethodsResult result = (GetShippingMethodsResult)executionResult.getResult();
+            var commandResult = ShippingUtil.getHome().getShippingMethods(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetShippingMethodsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SHIPPING_METHODS, result.getShippingMethods());
             forwardKey = ForwardConstants.DISPLAY;

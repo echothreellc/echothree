@@ -47,9 +47,9 @@ public class ContentCollectionsHandler
         if(localName.equals("contentCollection")) {
             String contentCollectionName = null;
             String doUpdate = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("contentCollectionName"))
                     contentCollectionName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("doUpdate"))
@@ -57,7 +57,7 @@ public class ContentCollectionsHandler
             }
             
             try {
-                CreateContentCollectionForm createContentCollectionForm = ContentFormFactory.getCreateContentCollectionForm();
+                var createContentCollectionForm = ContentFormFactory.getCreateContentCollectionForm();
                 
                 createContentCollectionForm.setContentCollectionName(contentCollectionName);
                 

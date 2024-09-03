@@ -54,8 +54,8 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetUnitOfMeasureTypesForm commandForm = UomUtil.getHome().getGetUnitOfMeasureTypesForm();
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var commandForm = UomUtil.getHome().getGetUnitOfMeasureTypesForm();
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
         
         commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
         
@@ -63,10 +63,10 @@ public class MainAction
         options.add(UomOptions.UnitOfMeasureTypeIncludeVolume);
         options.add(UomOptions.UnitOfMeasureTypeIncludeWeight);
         commandForm.setOptions(options);
-        
-        CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypes(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetUnitOfMeasureTypesResult result = (GetUnitOfMeasureTypesResult)executionResult.getResult();
+
+        var commandResult = UomUtil.getHome().getUnitOfMeasureTypes(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetUnitOfMeasureTypesResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_KIND, result.getUnitOfMeasureKind());
         request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_TYPES, result.getUnitOfMeasureTypes());

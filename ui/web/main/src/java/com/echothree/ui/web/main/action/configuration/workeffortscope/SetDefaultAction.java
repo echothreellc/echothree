@@ -52,11 +52,11 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
+        var workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
         
         try {
-            SetDefaultWorkEffortScopeForm commandForm = WorkEffortUtil.getHome().getSetDefaultWorkEffortScopeForm();
-            String workEffortScopeName = request.getParameter(ParameterConstants.WORK_EFFORT_SCOPE_NAME);
+            var commandForm = WorkEffortUtil.getHome().getSetDefaultWorkEffortScopeForm();
+            var workEffortScopeName = request.getParameter(ParameterConstants.WORK_EFFORT_SCOPE_NAME);
             
             commandForm.setWorkEffortTypeName(workEffortTypeName);
             commandForm.setWorkEffortScopeName(workEffortScopeName);
@@ -67,8 +67,8 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

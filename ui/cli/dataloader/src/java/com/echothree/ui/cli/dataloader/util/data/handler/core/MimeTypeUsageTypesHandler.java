@@ -48,9 +48,9 @@ public class MimeTypeUsageTypesHandler
             String mimeTypeUsageTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("mimeTypeUsageTypeName"))
                     mimeTypeUsageTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class MimeTypeUsageTypesHandler
             }
             
             try {
-                CreateMimeTypeUsageTypeForm commandForm = CoreFormFactory.getCreateMimeTypeUsageTypeForm();
+                var commandForm = CoreFormFactory.getCreateMimeTypeUsageTypeForm();
                 
                 commandForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
                 commandForm.setIsDefault(isDefault);

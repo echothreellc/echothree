@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultResponsibilityTypeForm commandForm = EmployeeUtil.getHome().getSetDefaultResponsibilityTypeForm();
-            String responsibilityTypeName = request.getParameter(ParameterConstants.RESPONSIBILITY_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getSetDefaultResponsibilityTypeForm();
+            var responsibilityTypeName = request.getParameter(ParameterConstants.RESPONSIBILITY_TYPE_NAME);
             
             commandForm.setResponsibilityTypeName(responsibilityTypeName);
             

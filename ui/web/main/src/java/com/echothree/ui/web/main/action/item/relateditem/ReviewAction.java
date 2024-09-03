@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetRelatedItemForm commandForm = ItemUtil.getHome().getGetRelatedItemForm();
+        var commandForm = ItemUtil.getHome().getGetRelatedItemForm();
 
         commandForm.setRelatedItemTypeName(request.getParameter(ParameterConstants.RELATED_ITEM_TYPE_NAME));
         commandForm.setFromItemName(request.getParameter(ParameterConstants.FROM_ITEM_NAME));
         commandForm.setToItemName(request.getParameter(ParameterConstants.TO_ITEM_NAME));
 
-        CommandResult commandResult = ItemUtil.getHome().getRelatedItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetRelatedItemResult result = (GetRelatedItemResult)executionResult.getResult();
-        RelatedItemTransfer relatedItem = result == null? null: result.getRelatedItem();
+        var commandResult = ItemUtil.getHome().getRelatedItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetRelatedItemResult)executionResult.getResult();
+        var relatedItem = result == null? null: result.getRelatedItem();
 
         if(relatedItem == null) {
             forwardKey = ForwardConstants.ERROR_404;

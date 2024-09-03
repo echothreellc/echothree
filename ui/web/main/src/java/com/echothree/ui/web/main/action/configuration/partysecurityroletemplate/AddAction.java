@@ -54,17 +54,17 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreatePartySecurityRoleTemplateForm commandForm = SecurityUtil.getHome().getCreatePartySecurityRoleTemplateForm();
+                    var commandForm = SecurityUtil.getHome().getCreatePartySecurityRoleTemplateForm();
                     
                     commandForm.setPartySecurityRoleTemplateName(actionForm.getPartySecurityRoleTemplateName());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = SecurityUtil.getHome().createPartySecurityRoleTemplate(getUserVisitPK(request), commandForm);
+
+                    var commandResult = SecurityUtil.getHome().createPartySecurityRoleTemplate(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

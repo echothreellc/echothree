@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = FilterUtil.getHome().getFilterKinds(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterKindsResult getFilterKindsResult = (GetFilterKindsResult)executionResult.getResult();
+            var commandResult = FilterUtil.getHome().getFilterKinds(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var getFilterKindsResult = (GetFilterKindsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FILTER_KINDS, getFilterKindsResult.getFilterKinds());
             forwardKey = ForwardConstants.DISPLAY;

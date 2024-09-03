@@ -59,10 +59,10 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, DescriptionEditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String taxName = request.getParameter(ParameterConstants.TAX_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-        EditTaxDescriptionForm commandForm = TaxUtil.getHome().getEditTaxDescriptionForm();
-        TaxDescriptionSpec spec = TaxUtil.getHome().getTaxDescriptionSpec();
+        var taxName = request.getParameter(ParameterConstants.TAX_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var commandForm = TaxUtil.getHome().getEditTaxDescriptionForm();
+        var spec = TaxUtil.getHome().getTaxDescriptionSpec();
         
         if(taxName == null)
             taxName = actionForm.getTaxName();
@@ -74,19 +74,19 @@ public class DescriptionEditAction
         spec.setLanguageIsoName(languageIsoName);
         
         if(wasPost(request)) {
-            TaxDescriptionEdit edit = TaxUtil.getHome().getTaxDescriptionEdit();
+            var edit = TaxUtil.getHome().getTaxDescriptionEdit();
             
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
             edit.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = TaxUtil.getHome().editTaxDescription(getUserVisitPK(request), commandForm);
+
+            var commandResult = TaxUtil.getHome().editTaxDescription(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditTaxDescriptionResult result = (EditTaxDescriptionResult)executionResult.getResult();
+                    var result = (EditTaxDescriptionResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -99,13 +99,13 @@ public class DescriptionEditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = TaxUtil.getHome().editTaxDescription(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditTaxDescriptionResult result = (EditTaxDescriptionResult)executionResult.getResult();
+
+            var commandResult = TaxUtil.getHome().editTaxDescription(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditTaxDescriptionResult)executionResult.getResult();
             
             if(result != null) {
-                TaxDescriptionEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setTaxName(taxName);
@@ -120,8 +120,8 @@ public class DescriptionEditAction
             
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.TAX_NAME, taxName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);

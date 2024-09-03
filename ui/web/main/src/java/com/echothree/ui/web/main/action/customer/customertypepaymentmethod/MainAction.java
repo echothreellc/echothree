@@ -56,15 +56,15 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
-            GetCustomerTypePaymentMethodsForm commandForm = CustomerUtil.getHome().getGetCustomerTypePaymentMethodsForm();
+            var customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
+            var commandForm = CustomerUtil.getHome().getGetCustomerTypePaymentMethodsForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
-            
-            CommandResult commandResult = CustomerUtil.getHome().getCustomerTypePaymentMethods(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypePaymentMethodsResult result = (GetCustomerTypePaymentMethodsResult)executionResult.getResult();
-            CustomerTypeTransfer customerTypeTransfer = result.getCustomerType();
+
+            var commandResult = CustomerUtil.getHome().getCustomerTypePaymentMethods(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypePaymentMethodsResult)executionResult.getResult();
+            var customerTypeTransfer = result.getCustomerType();
             
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE, customerTypeTransfer);
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_PAYMENT_METHODS, result.getCustomerTypePaymentMethods());

@@ -54,14 +54,14 @@ public class AddActionForm
     public void setupCompanyChoices() {
         if(companyChoices == null) {
             try {
-                GetCompanyChoicesForm form = PartyUtil.getHome().getGetCompanyChoicesForm();
+                var form = PartyUtil.getHome().getGetCompanyChoicesForm();
 
                 form.setDefaultCompanyChoice(companyChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCompanyChoicesResult result = (GetCompanyChoicesResult)executionResult.getResult();
+                var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCompanyChoicesResult)executionResult.getResult();
                 companyChoices = result.getCompanyChoices();
 
                 if(companyChoice == null) {
@@ -77,14 +77,14 @@ public class AddActionForm
     public void setupTerminationTypeChoices() {
         if(terminationTypeChoices == null) {
             try {
-                GetTerminationTypeChoicesForm form = EmployeeUtil.getHome().getGetTerminationTypeChoicesForm();
+                var form = EmployeeUtil.getHome().getGetTerminationTypeChoicesForm();
 
                 form.setDefaultTerminationTypeChoice(terminationTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = EmployeeUtil.getHome().getTerminationTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetTerminationTypeChoicesResult result = (GetTerminationTypeChoicesResult)executionResult.getResult();
+                var commandResult = EmployeeUtil.getHome().getTerminationTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetTerminationTypeChoicesResult)executionResult.getResult();
                 terminationTypeChoices = result.getTerminationTypeChoices();
 
                 if(terminationTypeChoice == null) {
@@ -100,14 +100,14 @@ public class AddActionForm
     public void setupTerminationReasonChoices() {
         if(terminationReasonChoices == null) {
             try {
-                GetTerminationReasonChoicesForm form = EmployeeUtil.getHome().getGetTerminationReasonChoicesForm();
+                var form = EmployeeUtil.getHome().getGetTerminationReasonChoicesForm();
 
                 form.setDefaultTerminationReasonChoice(terminationReasonChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = EmployeeUtil.getHome().getTerminationReasonChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetTerminationReasonChoicesResult result = (GetTerminationReasonChoicesResult)executionResult.getResult();
+                var commandResult = EmployeeUtil.getHome().getTerminationReasonChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetTerminationReasonChoicesResult)executionResult.getResult();
                 terminationReasonChoices = result.getTerminationReasonChoices();
 
                 if(terminationReasonChoice == null) {

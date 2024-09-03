@@ -52,9 +52,9 @@ public class PicklistTypeHandler
         if(localName.equals("picklistTypeDescription")) {
             String attrLanguageIsoName = null;
             String attrDescription = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     attrLanguageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -62,7 +62,7 @@ public class PicklistTypeHandler
             }
             
             try {
-                CreatePicklistTypeDescriptionForm createPicklistTypeDescriptionForm = PicklistFormFactory.getCreatePicklistTypeDescriptionForm();
+                var createPicklistTypeDescriptionForm = PicklistFormFactory.getCreatePicklistTypeDescriptionForm();
                 
                 createPicklistTypeDescriptionForm.setPicklistTypeName(picklistTypeName);
                 createPicklistTypeDescriptionForm.setLanguageIsoName(attrLanguageIsoName);
@@ -73,7 +73,7 @@ public class PicklistTypeHandler
                 throw new SAXException(e);
             }
         } else if(localName.equals("picklistTimeType")) {
-            CreatePicklistTimeTypeForm commandForm = PicklistFormFactory.getCreatePicklistTimeTypeForm();
+            var commandForm = PicklistFormFactory.getCreatePicklistTimeTypeForm();
 
             commandForm.setPicklistTypeName(picklistTypeName);
             commandForm.set(getAttrsMap(attrs));
@@ -85,9 +85,9 @@ public class PicklistTypeHandler
             String picklistAliasTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("picklistAliasTypeName"))
                     picklistAliasTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -97,7 +97,7 @@ public class PicklistTypeHandler
             }
             
             try {
-                CreatePicklistAliasTypeForm createPicklistAliasTypeForm = PicklistFormFactory.getCreatePicklistAliasTypeForm();
+                var createPicklistAliasTypeForm = PicklistFormFactory.getCreatePicklistAliasTypeForm();
                 
                 createPicklistAliasTypeForm.setPicklistTypeName(picklistTypeName);
                 createPicklistAliasTypeForm.setPicklistAliasTypeName(picklistAliasTypeName);

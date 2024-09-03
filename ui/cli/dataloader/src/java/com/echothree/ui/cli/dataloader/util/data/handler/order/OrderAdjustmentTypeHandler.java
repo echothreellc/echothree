@@ -51,7 +51,7 @@ public class OrderAdjustmentTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("orderAdjustmentTypeDescription")) {
-            CreateOrderAdjustmentTypeDescriptionForm commandForm = OrderFormFactory.getCreateOrderAdjustmentTypeDescriptionForm();
+            var commandForm = OrderFormFactory.getCreateOrderAdjustmentTypeDescriptionForm();
             
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.setOrderAdjustmentTypeName(orderAdjustmentTypeName);

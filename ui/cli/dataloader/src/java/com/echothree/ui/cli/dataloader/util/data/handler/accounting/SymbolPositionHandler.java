@@ -50,7 +50,7 @@ public class SymbolPositionHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("symbolPositionDescription")) {
-            CreateSymbolPositionDescriptionForm commandForm = AccountingFormFactory.getCreateSymbolPositionDescriptionForm();
+            var commandForm = AccountingFormFactory.getCreateSymbolPositionDescriptionForm();
             
             commandForm.setSymbolPositionName(symbolPositionName);
             commandForm.set(getAttrsMap(attrs));

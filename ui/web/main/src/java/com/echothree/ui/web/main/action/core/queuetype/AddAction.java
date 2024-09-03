@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateQueueTypeForm commandForm = QueueUtil.getHome().getCreateQueueTypeForm();
+        var commandForm = QueueUtil.getHome().getCreateQueueTypeForm();
 
         commandForm.setQueueTypeName(actionForm.getQueueTypeName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());

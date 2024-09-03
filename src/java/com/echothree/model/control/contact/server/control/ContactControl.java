@@ -1029,7 +1029,7 @@ public class ContactControl
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactMechanism */
     public ContactMechanism getContactMechanismByEntityInstance(EntityInstance entityInstance) {
-        ContactMechanismPK pk = new ContactMechanismPK(entityInstance.getEntityUniqueId());
+        var pk = new ContactMechanismPK(entityInstance.getEntityUniqueId());
         var contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
         
         return contactMechanism;
@@ -1108,7 +1108,7 @@ public class ContactControl
     public EmailAddressStatusChoicesBean getEmailAddressStatusChoices(String defaultEmailAddressStatusChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        EmailAddressStatusChoicesBean emailAddressStatusChoicesBean = new EmailAddressStatusChoicesBean();
+        var emailAddressStatusChoicesBean = new EmailAddressStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmailAddressStatusConstants.Workflow_EMAIL_ADDRESS_STATUS,
                 entityInstance);
@@ -1136,7 +1136,7 @@ public class ContactControl
     public EmailAddressVerificationChoicesBean getEmailAddressVerificationChoices(String defaultEmailAddressVerificationChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        EmailAddressVerificationChoicesBean emailAddressVerificationChoicesBean = new EmailAddressVerificationChoicesBean();
+        var emailAddressVerificationChoicesBean = new EmailAddressVerificationChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION,
                 entityInstance);
@@ -1164,7 +1164,7 @@ public class ContactControl
     public PostalAddressStatusChoicesBean getPostalAddressStatusChoices(String defaultPostalAddressStatusChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        PostalAddressStatusChoicesBean postalAddressStatusChoicesBean = new PostalAddressStatusChoicesBean();
+        var postalAddressStatusChoicesBean = new PostalAddressStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS,
                 entityInstance);
@@ -1192,7 +1192,7 @@ public class ContactControl
     public TelephoneStatusChoicesBean getTelephoneStatusChoices(String defaultTelephoneStatusChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        TelephoneStatusChoicesBean telephoneStatusChoicesBean = new TelephoneStatusChoicesBean();
+        var telephoneStatusChoicesBean = new TelephoneStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(TelephoneStatusConstants.Workflow_TELEPHONE_STATUS,
                 entityInstance);
@@ -1220,7 +1220,7 @@ public class ContactControl
     public WebAddressStatusChoicesBean getWebAddressStatusChoices(String defaultWebAddressStatusChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        WebAddressStatusChoicesBean webAddressStatusChoicesBean = new WebAddressStatusChoicesBean();
+        var webAddressStatusChoicesBean = new WebAddressStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS,
                 entityInstance);

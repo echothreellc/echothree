@@ -50,9 +50,9 @@ public class InventoryConditionUseTypeHandler
         if(localName.equals("inventoryConditionUseTypeDescription")) {
             String attrLanguageIsoName = null;
             String attrDescription = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     attrLanguageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +60,7 @@ public class InventoryConditionUseTypeHandler
             }
             
             try {
-                CreateInventoryConditionUseTypeDescriptionForm commandForm = InventoryFormFactory.getCreateInventoryConditionUseTypeDescriptionForm();
+                var commandForm = InventoryFormFactory.getCreateInventoryConditionUseTypeDescriptionForm();
                 
                 commandForm.setInventoryConditionUseTypeName(inventoryConditionUseTypeName);
                 commandForm.setLanguageIsoName(attrLanguageIsoName);

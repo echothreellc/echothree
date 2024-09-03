@@ -45,13 +45,13 @@ public class AddActionForm
     private void setupEntityAttributeTypeChoices()
             throws NamingException {
         if(entityAttributeTypeChoices == null) {
-            GetEntityAttributeTypeChoicesForm commandForm = CoreUtil.getHome().getGetEntityAttributeTypeChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeTypeChoicesForm();
 
             commandForm.setDefaultEntityAttributeTypeChoice(entityAttributeTypeChoice);
 
-            CommandResult commandResult = CoreUtil.getHome().getEntityAttributeTypeChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeTypeChoicesResult getEntityAttributeTypeChoicesResult = (GetEntityAttributeTypeChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getEntityAttributeTypeChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getEntityAttributeTypeChoicesResult = (GetEntityAttributeTypeChoicesResult)executionResult.getResult();
             entityAttributeTypeChoices = getEntityAttributeTypeChoicesResult.getEntityAttributeTypeChoices();
 
             if(entityAttributeTypeChoice == null)

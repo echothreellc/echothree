@@ -55,16 +55,16 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
-            String workflowStepName = request.getParameter(ParameterConstants.WORKFLOW_STEP_NAME);
-            GetWorkflowStepDescriptionsForm commandForm = WorkflowUtil.getHome().getGetWorkflowStepDescriptionsForm();
+            var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+            var workflowStepName = request.getParameter(ParameterConstants.WORKFLOW_STEP_NAME);
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowStepDescriptionsForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);
-            
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowStepDescriptionsResult result = (GetWorkflowStepDescriptionsResult)executionResult.getResult();
+
+            var commandResult = WorkflowUtil.getHome().getWorkflowStepDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowStepDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORKFLOW_STEP, result.getWorkflowStep());
             request.setAttribute(AttributeConstants.WORKFLOW_STEP_DESCRIPTIONS, result.getWorkflowStepDescriptions());

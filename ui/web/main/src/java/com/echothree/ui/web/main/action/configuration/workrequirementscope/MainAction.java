@@ -57,20 +57,20 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetWorkRequirementScopesForm commandForm = WorkRequirementUtil.getHome().getGetWorkRequirementScopesForm();
-            String workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
-            String workRequirementTypeName = request.getParameter(ParameterConstants.WORK_REQUIREMENT_TYPE_NAME);
-            String workEffortScopeName = request.getParameter(ParameterConstants.WORK_EFFORT_SCOPE_NAME);
+            var commandForm = WorkRequirementUtil.getHome().getGetWorkRequirementScopesForm();
+            var workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
+            var workRequirementTypeName = request.getParameter(ParameterConstants.WORK_REQUIREMENT_TYPE_NAME);
+            var workEffortScopeName = request.getParameter(ParameterConstants.WORK_EFFORT_SCOPE_NAME);
             
             commandForm.setWorkEffortTypeName(workEffortTypeName);
             commandForm.setWorkRequirementTypeName(workRequirementTypeName);
             commandForm.setWorkEffortScopeName(workEffortScopeName);
-            
-            CommandResult commandResult = WorkRequirementUtil.getHome().getWorkRequirementScopes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkRequirementScopesResult result = (GetWorkRequirementScopesResult)executionResult.getResult();
-            WorkRequirementTypeTransfer workRequirementType = result.getWorkRequirementType();
-            WorkEffortScopeTransfer workEffortScope = result.getWorkEffortScope();
+
+            var commandResult = WorkRequirementUtil.getHome().getWorkRequirementScopes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkRequirementScopesResult)executionResult.getResult();
+            var workRequirementType = result.getWorkRequirementType();
+            var workEffortScope = result.getWorkEffortScope();
             
             if(workRequirementType != null) {
                 request.setAttribute(AttributeConstants.WORK_REQUIREMENT_TYPE, workRequirementType);

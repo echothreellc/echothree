@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContactListFrequencyForm commandForm = ContactListUtil.getHome().getGetContactListFrequencyForm();
+        var commandForm = ContactListUtil.getHome().getGetContactListFrequencyForm();
 
         commandForm.setContactListFrequencyName(actionForm.getContactListFrequencyName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getContactListFrequency(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getContactListFrequency(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListFrequencyResult result = (GetContactListFrequencyResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListFrequencyResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CONTACT_LIST_FREQUENCY, result.getContactListFrequency());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateContactListFrequencyDescriptionForm commandForm = ContactListUtil.getHome().getCreateContactListFrequencyDescriptionForm();
+        var commandForm = ContactListUtil.getHome().getCreateContactListFrequencyDescriptionForm();
 
         commandForm.setContactListFrequencyName( actionForm.getContactListFrequencyName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

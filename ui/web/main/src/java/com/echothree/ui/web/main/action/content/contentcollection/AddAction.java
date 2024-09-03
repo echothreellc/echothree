@@ -51,13 +51,13 @@ public class AddAction
         String forwardKey = null;
         
         if(wasPost(request)) {
-            CreateContentCollectionForm commandForm = ContentUtil.getHome().getCreateContentCollectionForm();
+            var commandForm = ContentUtil.getHome().getCreateContentCollectionForm();
             
             commandForm.setContentCollectionName(actionForm.getContentCollectionName());
             commandForm.setDefaultSourceName(actionForm.getDefaultSourceChoice());
             commandForm.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = ContentUtil.getHome().createContentCollection(getUserVisitPK(request), commandForm);
+
+            var commandResult = ContentUtil.getHome().createContentCollection(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

@@ -48,9 +48,9 @@ public class LeaveReasonsHandler
             String leaveReasonName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("leaveReasonName"))
                     leaveReasonName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class LeaveReasonsHandler
             }
             
             try {
-                CreateLeaveReasonForm form = EmployeeFormFactory.getCreateLeaveReasonForm();
+                var form = EmployeeFormFactory.getCreateLeaveReasonForm();
                 
                 form.setLeaveReasonName(leaveReasonName);
                 form.setIsDefault(isDefault);

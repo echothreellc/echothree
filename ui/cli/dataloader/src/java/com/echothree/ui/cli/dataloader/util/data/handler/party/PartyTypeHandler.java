@@ -61,49 +61,49 @@ public class PartyTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("partyTypeDescription")) {
-            CreatePartyTypeDescriptionForm commandForm = PartyFormFactory.getCreatePartyTypeDescriptionForm();
+            var commandForm = PartyFormFactory.getCreatePartyTypeDescriptionForm();
             
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             partyService.createPartyTypeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("partyTypePasswordStringPolicy")) {
-            CreatePartyTypePasswordStringPolicyForm commandForm = PartyFormFactory.getCreatePartyTypePasswordStringPolicyForm();
+            var commandForm = PartyFormFactory.getCreatePartyTypePasswordStringPolicyForm();
             
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             partyService.createPartyTypePasswordStringPolicy(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("partyTypeLockoutPolicy")) {
-            CreatePartyTypeLockoutPolicyForm commandForm = PartyFormFactory.getCreatePartyTypeLockoutPolicyForm();
+            var commandForm = PartyFormFactory.getCreatePartyTypeLockoutPolicyForm();
             
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             partyService.createPartyTypeLockoutPolicy(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("partyTypeAuditPolicy")) {
-            CreatePartyTypeAuditPolicyForm commandForm = PartyFormFactory.getCreatePartyTypeAuditPolicyForm();
+            var commandForm = PartyFormFactory.getCreatePartyTypeAuditPolicyForm();
             
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             partyService.createPartyTypeAuditPolicy(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("partyTypeContactListGroup")) {
-            CreatePartyTypeContactListGroupForm commandForm = ContactListFormFactory.getCreatePartyTypeContactListGroupForm();
+            var commandForm = ContactListFormFactory.getCreatePartyTypeContactListGroupForm();
             
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             contactListService.createPartyTypeContactListGroup(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("partyTypeContactList")) {
-            CreatePartyTypeContactListForm commandForm = ContactListFormFactory.getCreatePartyTypeContactListForm();
+            var commandForm = ContactListFormFactory.getCreatePartyTypeContactListForm();
 
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
 
             contactListService.createPartyTypeContactList(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("partyAliasType")) {
-            CreatePartyAliasTypeForm commandForm = PartyFormFactory.getCreatePartyAliasTypeForm();
+            var commandForm = PartyFormFactory.getCreatePartyAliasTypeForm();
 
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));

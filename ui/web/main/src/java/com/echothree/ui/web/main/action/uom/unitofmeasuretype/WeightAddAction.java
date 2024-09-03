@@ -56,15 +56,15 @@ public class WeightAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-        String unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                WeightAddActionForm actionForm = (WeightAddActionForm)form;
+                var actionForm = (WeightAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateUnitOfMeasureTypeWeightForm commandForm = UomUtil.getHome().getCreateUnitOfMeasureTypeWeightForm();
+                    var commandForm = UomUtil.getHome().getCreateUnitOfMeasureTypeWeightForm();
                     
                     if(unitOfMeasureKindName == null)
                         unitOfMeasureKindName = actionForm.getUnitOfMeasureKindName();
@@ -73,8 +73,8 @@ public class WeightAddAction
                     commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeName());
                     commandForm.setWeight(actionForm.getWeight());
                     commandForm.setWeightUnitOfMeasureTypeName(actionForm.getWeightUnitOfMeasureTypeChoice());
-                    
-                    CommandResult commandResult = UomUtil.getHome().createUnitOfMeasureTypeWeight(getUserVisitPK(request), commandForm);
+
+                    var commandResult = UomUtil.getHome().createUnitOfMeasureTypeWeight(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -91,8 +91,8 @@ public class WeightAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_KIND_NAME, unitOfMeasureKindName);
             request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_TYPE_NAME, unitOfMeasureTypeName);

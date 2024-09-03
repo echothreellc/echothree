@@ -52,12 +52,12 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-        String contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
+        var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+        var contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
         
         try {
-            String contentPageName = request.getParameter(ParameterConstants.CONTENT_PAGE_NAME);
-            SetDefaultContentPageForm setDefaultContentPageForm = ContentUtil.getHome().getSetDefaultContentPageForm();
+            var contentPageName = request.getParameter(ParameterConstants.CONTENT_PAGE_NAME);
+            var setDefaultContentPageForm = ContentUtil.getHome().getSetDefaultContentPageForm();
             
             setDefaultContentPageForm.setContentCollectionName(contentCollectionName);
             setDefaultContentPageForm.setContentSectionName(contentSectionName);
@@ -69,10 +69,10 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
-            String parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
+            var parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
             Map<String, String> parameters = new HashMap<>(3);
             
             parameters.put(ParameterConstants.CONTENT_COLLECTION_NAME, contentCollectionName);

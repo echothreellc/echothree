@@ -63,15 +63,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetQueueTypeDescriptionForm commandForm = QueueUtil.getHome().getGetQueueTypeDescriptionForm();
+        var commandForm = QueueUtil.getHome().getGetQueueTypeDescriptionForm();
         
         commandForm.setQueueTypeName(actionForm.getQueueTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = QueueUtil.getHome().getQueueTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = QueueUtil.getHome().getQueueTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetQueueTypeDescriptionResult result = (GetQueueTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetQueueTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.QUEUE_TYPE_DESCRIPTION, result.getQueueTypeDescription());
         }
@@ -80,7 +80,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteQueueTypeDescriptionForm commandForm = QueueUtil.getHome().getDeleteQueueTypeDescriptionForm();
+        var commandForm = QueueUtil.getHome().getDeleteQueueTypeDescriptionForm();
 
         commandForm.setQueueTypeName(actionForm.getQueueTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

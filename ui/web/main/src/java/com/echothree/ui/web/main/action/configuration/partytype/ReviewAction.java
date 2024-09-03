@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetPartyTypeForm commandForm = PartyUtil.getHome().getGetPartyTypeForm();
-            String partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
+            var commandForm = PartyUtil.getHome().getGetPartyTypeForm();
+            var partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
             
             commandForm.setPartyTypeName(partyTypeName);
-            
-            CommandResult commandResult = PartyUtil.getHome().getPartyType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyTypeResult result = (GetPartyTypeResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().getPartyType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PARTY_TYPE, result.getPartyType());
             forwardKey = ForwardConstants.DISPLAY;

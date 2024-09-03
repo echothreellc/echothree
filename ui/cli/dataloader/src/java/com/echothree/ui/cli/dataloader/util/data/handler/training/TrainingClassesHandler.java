@@ -47,7 +47,7 @@ public class TrainingClassesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("trainingClass")) {
-            CreateTrainingClassForm commandForm = TrainingFormFactory.getCreateTrainingClassForm();
+            var commandForm = TrainingFormFactory.getCreateTrainingClassForm();
 
             commandForm.set(getAttrsMap(attrs));
 

@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetItemImageTypeForm commandForm = ItemUtil.getHome().getGetItemImageTypeForm();
+        var commandForm = ItemUtil.getHome().getGetItemImageTypeForm();
 
         commandForm.setItemImageTypeName(request.getParameter(ParameterConstants.ITEM_IMAGE_TYPE_NAME));
-        
-        CommandResult commandResult = ItemUtil.getHome().getItemImageType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getItemImageType(getUserVisitPK(request), commandForm);
         ItemImageTypeTransfer itemImageType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemImageTypeResult result = (GetItemImageTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemImageTypeResult)executionResult.getResult();
             
             itemImageType = result.getItemImageType();
         }

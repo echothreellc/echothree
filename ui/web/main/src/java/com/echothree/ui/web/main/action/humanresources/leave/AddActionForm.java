@@ -67,14 +67,14 @@ public class AddActionForm
     public void setupCompanyChoices() {
         if(companyChoices == null) {
             try {
-                GetCompanyChoicesForm form = PartyUtil.getHome().getGetCompanyChoicesForm();
+                var form = PartyUtil.getHome().getGetCompanyChoicesForm();
 
                 form.setDefaultCompanyChoice(companyChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCompanyChoicesResult result = (GetCompanyChoicesResult)executionResult.getResult();
+                var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCompanyChoicesResult)executionResult.getResult();
                 companyChoices = result.getCompanyChoices();
 
                 if(companyChoice == null) {
@@ -90,14 +90,14 @@ public class AddActionForm
     public void setupLeaveTypeChoices() {
         if(leaveTypeChoices == null) {
             try {
-                GetLeaveTypeChoicesForm form = EmployeeUtil.getHome().getGetLeaveTypeChoicesForm();
+                var form = EmployeeUtil.getHome().getGetLeaveTypeChoicesForm();
 
                 form.setDefaultLeaveTypeChoice(leaveTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = EmployeeUtil.getHome().getLeaveTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetLeaveTypeChoicesResult result = (GetLeaveTypeChoicesResult)executionResult.getResult();
+                var commandResult = EmployeeUtil.getHome().getLeaveTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetLeaveTypeChoicesResult)executionResult.getResult();
                 leaveTypeChoices = result.getLeaveTypeChoices();
 
                 if(leaveTypeChoice == null) {
@@ -113,14 +113,14 @@ public class AddActionForm
     public void setupLeaveReasonChoices() {
         if(leaveReasonChoices == null) {
             try {
-                GetLeaveReasonChoicesForm form = EmployeeUtil.getHome().getGetLeaveReasonChoicesForm();
+                var form = EmployeeUtil.getHome().getGetLeaveReasonChoicesForm();
 
                 form.setDefaultLeaveReasonChoice(leaveReasonChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = EmployeeUtil.getHome().getLeaveReasonChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetLeaveReasonChoicesResult result = (GetLeaveReasonChoicesResult)executionResult.getResult();
+                var commandResult = EmployeeUtil.getHome().getLeaveReasonChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetLeaveReasonChoicesResult)executionResult.getResult();
                 leaveReasonChoices = result.getLeaveReasonChoices();
 
                 if(leaveReasonChoice == null) {
@@ -136,15 +136,15 @@ public class AddActionForm
     private void setupTotalTimeUnitOfMeasureTypeChoices() {
         if(totalTimeUnitOfMeasureTypeChoices == null) {
             try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
                 
                 form.setDefaultUnitOfMeasureTypeChoice(totalTimeUnitOfMeasureTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
                 totalTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
                 
                 if(totalTimeUnitOfMeasureTypeChoice == null) {
@@ -160,14 +160,14 @@ public class AddActionForm
     public void setupLeaveStatusChoices() {
         if(leaveStatusChoices == null) {
             try {
-                GetLeaveStatusChoicesForm form = EmployeeUtil.getHome().getGetLeaveStatusChoicesForm();
+                var form = EmployeeUtil.getHome().getGetLeaveStatusChoicesForm();
 
                 form.setDefaultLeaveStatusChoice(leaveStatusChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = EmployeeUtil.getHome().getLeaveStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetLeaveStatusChoicesResult result = (GetLeaveStatusChoicesResult)executionResult.getResult();
+                var commandResult = EmployeeUtil.getHome().getLeaveStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetLeaveStatusChoicesResult)executionResult.getResult();
                 leaveStatusChoices = result.getLeaveStatusChoices();
 
                 if(leaveStatusChoice == null) {

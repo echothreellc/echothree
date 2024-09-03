@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetServiceForm commandForm = CoreUtil.getHome().getGetServiceForm();
+        var commandForm = CoreUtil.getHome().getGetServiceForm();
 
         commandForm.setServiceName(actionForm.getServiceName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getService(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getService(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetServiceResult result = (GetServiceResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetServiceResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SERVICE, result.getService());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateServiceDescriptionForm commandForm = CoreUtil.getHome().getCreateServiceDescriptionForm();
+        var commandForm = CoreUtil.getHome().getCreateServiceDescriptionForm();
 
         commandForm.setServiceName( actionForm.getServiceName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

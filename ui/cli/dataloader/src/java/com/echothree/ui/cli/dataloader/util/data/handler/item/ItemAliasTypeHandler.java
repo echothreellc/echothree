@@ -50,9 +50,9 @@ public class ItemAliasTypeHandler
         if(localName.equals("itemAliasTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +60,7 @@ public class ItemAliasTypeHandler
             }
             
             try {
-                CreateItemAliasTypeDescriptionForm createItemAliasTypeDescriptionForm = ItemFormFactory.getCreateItemAliasTypeDescriptionForm();
+                var createItemAliasTypeDescriptionForm = ItemFormFactory.getCreateItemAliasTypeDescriptionForm();
                 
                 createItemAliasTypeDescriptionForm.setItemAliasTypeName(itemAliasTypeName);
                 createItemAliasTypeDescriptionForm.setLanguageIsoName(languageIsoName);

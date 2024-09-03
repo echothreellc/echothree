@@ -48,7 +48,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultProtocolForm commandForm = CoreUtil.getHome().getSetDefaultProtocolForm();
+        var commandForm = CoreUtil.getHome().getSetDefaultProtocolForm();
 
         commandForm.setProtocolName(request.getParameter(ParameterConstants.PROTOCOL_NAME));
 

@@ -59,20 +59,20 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetLeaveForm commandForm = EmployeeUtil.getHome().getGetLeaveForm();
+        var commandForm = EmployeeUtil.getHome().getGetLeaveForm();
 
         commandForm.setLeaveName(request.getParameter(ParameterConstants.LEAVE_NAME));
         
         Set<String> options = new HashSet<>();
         options.add(PartyOptions.PartyIncludeDescription);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getLeave(getUserVisitPK(request), commandForm);
+
+        var commandResult = EmployeeUtil.getHome().getLeave(getUserVisitPK(request), commandForm);
         LeaveTransfer leave = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLeaveResult result = (GetLeaveResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveResult)executionResult.getResult();
             
             leave = result.getLeave();
         }

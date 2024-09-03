@@ -53,17 +53,17 @@ public class TranslationAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetCommandMessageTranslationsForm commandForm = CoreUtil.getHome().getGetCommandMessageTranslationsForm();
+        var commandForm = CoreUtil.getHome().getGetCommandMessageTranslationsForm();
 
         commandForm.setCommandMessageTypeName(request.getParameter(ParameterConstants.COMMAND_MESSAGE_TYPE_NAME));
         commandForm.setCommandMessageKey(request.getParameter(ParameterConstants.COMMAND_MESSAGE_KEY));
 
-        CommandResult commandResult = CoreUtil.getHome().getCommandMessageTranslations(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getCommandMessageTranslations(getUserVisitPK(request), commandForm);
         GetCommandMessageTranslationsResult result = null;
         CommandMessageTransfer trainingClassSection = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
+            var executionResult = commandResult.getExecutionResult();
             
             result = (GetCommandMessageTranslationsResult) executionResult.getResult();
             trainingClassSection = result.getCommandMessage();

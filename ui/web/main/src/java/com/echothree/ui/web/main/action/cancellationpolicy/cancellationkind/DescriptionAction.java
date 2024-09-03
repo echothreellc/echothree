@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
-            GetCancellationKindDescriptionsForm commandForm = CancellationPolicyUtil.getHome().getGetCancellationKindDescriptionsForm();
+            var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+            var commandForm = CancellationPolicyUtil.getHome().getGetCancellationKindDescriptionsForm();
             
             commandForm.setCancellationKindName(cancellationKindName);
-            
-            CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationKindDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCancellationKindDescriptionsResult result = (GetCancellationKindDescriptionsResult)executionResult.getResult();
-            CancellationKindTransfer cancellationKindTransfer = result.getCancellationKind();
+
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationKindDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCancellationKindDescriptionsResult)executionResult.getResult();
+            var cancellationKindTransfer = result.getCancellationKind();
             
             request.setAttribute(AttributeConstants.CANCELLATION_KIND, cancellationKindTransfer);
             request.setAttribute(AttributeConstants.CANCELLATION_KIND_NAME, cancellationKindTransfer.getCancellationKindName());

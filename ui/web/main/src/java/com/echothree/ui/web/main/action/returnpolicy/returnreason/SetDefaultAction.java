@@ -52,11 +52,11 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+        var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
         
         try {
-            SetDefaultReturnReasonForm commandForm = ReturnPolicyUtil.getHome().getSetDefaultReturnReasonForm();
-            String returnReasonName = request.getParameter(ParameterConstants.RETURN_REASON_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getSetDefaultReturnReasonForm();
+            var returnReasonName = request.getParameter(ParameterConstants.RETURN_REASON_NAME);
             
             commandForm.setReturnKindName(returnKindName);
             commandForm.setReturnReasonName(returnReasonName);
@@ -67,8 +67,8 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

@@ -53,7 +53,7 @@ public class AddAction
         String forwardKey;
         
         if(wasPost(request)) {
-            CreateCompanyForm commandForm = PartyUtil.getHome().getCreateCompanyForm();
+            var commandForm = PartyUtil.getHome().getCreateCompanyForm();
             
             commandForm.setCompanyName(actionForm.getCompanyName());
             commandForm.setName(actionForm.getName());
@@ -63,8 +63,8 @@ public class AddAction
             commandForm.setPreferredDateTimeFormatName(actionForm.getDateTimeFormatChoice());
             commandForm.setIsDefault(actionForm.getIsDefault().toString());
             commandForm.setSortOrder(actionForm.getSortOrder());
-            
-            CommandResult commandResult = PartyUtil.getHome().createCompany(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().createCompany(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

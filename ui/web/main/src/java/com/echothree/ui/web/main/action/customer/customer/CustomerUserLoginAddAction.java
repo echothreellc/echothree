@@ -57,13 +57,13 @@ public class CustomerUserLoginAddAction
     @Override
     public void setupTransfer(CustomerUserLoginAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
         
         commandForm.setPartyName(actionForm.getPartyName());
-        
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
+
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }
@@ -71,7 +71,7 @@ public class CustomerUserLoginAddAction
     @Override
     public CommandResult doAdd(CustomerUserLoginAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateUserLoginForm commandForm = UserUtil.getHome().getCreateUserLoginForm();
+        var commandForm = UserUtil.getHome().getCreateUserLoginForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setUsername(actionForm.getUsername());

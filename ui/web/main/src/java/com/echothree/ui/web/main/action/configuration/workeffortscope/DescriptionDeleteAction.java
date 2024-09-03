@@ -64,16 +64,16 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetWorkEffortScopeDescriptionForm commandForm = WorkEffortUtil.getHome().getGetWorkEffortScopeDescriptionForm();
+        var commandForm = WorkEffortUtil.getHome().getGetWorkEffortScopeDescriptionForm();
         
         commandForm.setWorkEffortTypeName(actionForm.getWorkEffortTypeName());
         commandForm.setWorkEffortScopeName(actionForm.getWorkEffortScopeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = WorkEffortUtil.getHome().getWorkEffortScopeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkEffortScopeDescriptionResult result = (GetWorkEffortScopeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkEffortScopeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.WORK_EFFORT_SCOPE_DESCRIPTION, result.getWorkEffortScopeDescription());
         }
@@ -82,7 +82,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteWorkEffortScopeDescriptionForm commandForm = WorkEffortUtil.getHome().getDeleteWorkEffortScopeDescriptionForm();
+        var commandForm = WorkEffortUtil.getHome().getDeleteWorkEffortScopeDescriptionForm();
 
         commandForm.setWorkEffortTypeName(actionForm.getWorkEffortTypeName());
         commandForm.setWorkEffortScopeName(actionForm.getWorkEffortScopeName());

@@ -40,15 +40,15 @@ public class StatusActionForm
     public void setupEventGroupStatusChoices()
             throws NamingException {
         if(eventGroupStatusChoices == null) {
-            GetEventGroupStatusChoicesForm form = CoreUtil.getHome().getGetEventGroupStatusChoicesForm();
+            var form = CoreUtil.getHome().getGetEventGroupStatusChoicesForm();
 
             form.setEventGroupName(eventGroupName);
             form.setDefaultEventGroupStatusChoice(eventGroupStatusChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getEventGroupStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEventGroupStatusChoicesResult result = (GetEventGroupStatusChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getEventGroupStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEventGroupStatusChoicesResult)executionResult.getResult();
             eventGroupStatusChoices = result.getEventGroupStatusChoices();
 
             if(eventGroupStatusChoice == null) {

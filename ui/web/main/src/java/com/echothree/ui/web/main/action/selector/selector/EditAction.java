@@ -61,15 +61,15 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-        String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-        String originalSelectorName = request.getParameter(ParameterConstants.ORIGINAL_SELECTOR_NAME);
+        var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+        var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+        var originalSelectorName = request.getParameter(ParameterConstants.ORIGINAL_SELECTOR_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditSelectorForm commandForm = SelectorUtil.getHome().getEditSelectorForm();
-                SelectorSpec spec = SelectorUtil.getHome().getSelectorSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = SelectorUtil.getHome().getEditSelectorForm();
+                var spec = SelectorUtil.getHome().getSelectorSpec();
                 
                 if(selectorKindName == null)
                     selectorKindName = actionForm.getSelectorKindName();
@@ -84,7 +84,7 @@ public class EditAction
                 spec.setSelectorName(originalSelectorName);
                 
                 if(wasPost(request)) {
-                    SelectorEdit edit = SelectorUtil.getHome().getSelectorEdit();
+                    var edit = SelectorUtil.getHome().getSelectorEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -93,14 +93,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = SelectorUtil.getHome().editSelector(getUserVisitPK(request), commandForm);
+
+                    var commandResult = SelectorUtil.getHome().editSelector(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditSelectorResult result = (EditSelectorResult)executionResult.getResult();
+                            var result = (EditSelectorResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -113,13 +113,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = SelectorUtil.getHome().editSelector(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditSelectorResult result = (EditSelectorResult)executionResult.getResult();
+
+                    var commandResult = SelectorUtil.getHome().editSelector(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditSelectorResult)executionResult.getResult();
                     
                     if(result != null) {
-                        SelectorEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setSelectorKindName(selectorKindName);
@@ -142,8 +142,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SELECTOR_KIND_NAME, selectorKindName);
             request.setAttribute(AttributeConstants.SELECTOR_TYPE_NAME, selectorTypeName);

@@ -55,17 +55,17 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-        String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-        String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
-        String selectorNodeName = request.getParameter(ParameterConstants.SELECTOR_NODE_NAME);
+        var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+        var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+        var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+        var selectorNodeName = request.getParameter(ParameterConstants.SELECTOR_NODE_NAME);
         
         try {
             if(forwardKey == null) {
                 if(wasPost(request)) {
-                    DescriptionAddActionForm descriptionAddActionForm = (DescriptionAddActionForm)form;
-                    
-                    CreateSelectorNodeDescriptionForm commandForm = SelectorUtil.getHome().getCreateSelectorNodeDescriptionForm();
+                    var descriptionAddActionForm = (DescriptionAddActionForm)form;
+
+                    var commandForm = SelectorUtil.getHome().getCreateSelectorNodeDescriptionForm();
                     
                     if(selectorKindName == null)
                         selectorKindName = descriptionAddActionForm.getSelectorKindName();
@@ -82,8 +82,8 @@ public class DescriptionAddAction
                     commandForm.setSelectorNodeName(selectorNodeName);
                     commandForm.setLanguageIsoName(descriptionAddActionForm.getLanguageChoice());
                     commandForm.setDescription(descriptionAddActionForm.getDescription());
-                    
-                    CommandResult commandResult = SelectorUtil.getHome().createSelectorNodeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = SelectorUtil.getHome().createSelectorNodeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -97,8 +97,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM) || forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(4);
             parameters.put(ParameterConstants.SELECTOR_KIND_NAME, selectorKindName);

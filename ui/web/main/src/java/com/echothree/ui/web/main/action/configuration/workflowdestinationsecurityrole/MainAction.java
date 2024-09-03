@@ -53,17 +53,17 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetWorkflowDestinationSecurityRolesForm commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationSecurityRolesForm();
+        var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationSecurityRolesForm();
         
         commandForm.setWorkflowName(request.getParameter(ParameterConstants.WORKFLOW_NAME));
         commandForm.setWorkflowStepName(request.getParameter(ParameterConstants.WORKFLOW_STEP_NAME));
         commandForm.setWorkflowDestinationName(request.getParameter(ParameterConstants.WORKFLOW_DESTINATION_NAME));
         commandForm.setPartyTypeName(request.getParameter(ParameterConstants.PARTY_TYPE_NAME));
-        
-        CommandResult commandResult = WorkflowUtil.getHome().getWorkflowDestinationSecurityRoles(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetWorkflowDestinationSecurityRolesResult result = (GetWorkflowDestinationSecurityRolesResult)executionResult.getResult();
-        WorkflowDestinationPartyTypeTransfer workflowDestinationPartyType = result.getWorkflowDestinationPartyType();
+
+        var commandResult = WorkflowUtil.getHome().getWorkflowDestinationSecurityRoles(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetWorkflowDestinationSecurityRolesResult)executionResult.getResult();
+        var workflowDestinationPartyType = result.getWorkflowDestinationPartyType();
         
         if(workflowDestinationPartyType == null) {
             forwardKey = ForwardConstants.ERROR_404;

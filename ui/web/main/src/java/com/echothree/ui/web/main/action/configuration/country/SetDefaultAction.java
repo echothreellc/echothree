@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultGeoCodeForm commandForm = GeoUtil.getHome().getSetDefaultGeoCodeForm();
-            String countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
+            var commandForm = GeoUtil.getHome().getSetDefaultGeoCodeForm();
+            var countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
             
             commandForm.setGeoCodeName(countryName);
             

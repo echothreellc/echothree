@@ -57,20 +57,20 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetPartyTypeForm commandForm = PartyUtil.getHome().getGetPartyTypeForm();
-        String partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
+        var commandForm = PartyUtil.getHome().getGetPartyTypeForm();
+        var partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
         
         commandForm.setPartyTypeName(partyTypeName);
         
         Set<String> options = new HashSet<>();
         options.add(PartyOptions.PartyTypeIncludePasswordStringPolicy);
         commandForm.setOptions(options);
-        
-        CommandResult commandResult = PartyUtil.getHome().getPartyType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyTypeResult result = (GetPartyTypeResult)executionResult.getResult();
-        PartyTypeTransfer partyType = result.getPartyType();
-        PartyTypePasswordStringPolicyTransfer partyTypePasswordStringPolicy = partyType == null? null: partyType.getPartyTypePasswordStringPolicy();
+
+        var commandResult = PartyUtil.getHome().getPartyType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyTypeResult)executionResult.getResult();
+        var partyType = result.getPartyType();
+        var partyTypePasswordStringPolicy = partyType == null? null: partyType.getPartyTypePasswordStringPolicy();
         
         if(partyTypePasswordStringPolicy == null) {
             forwardKey = ForwardConstants.ERROR_404;

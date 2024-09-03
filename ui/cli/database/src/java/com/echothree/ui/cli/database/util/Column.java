@@ -109,10 +109,10 @@ public class Column {
                 }
             }
             default -> {
-                String[] types = Splitter.on(':').splitToList(type).toArray(new String[0]);
+                var types = Splitter.on(':').splitToList(type).toArray(new String[0]);
 
-                for(int i = 0; i < types.length; i++) {
-                    ColumnType currentColumnType = table.getDatabase().getColumnType(types[i]);
+                for(var i = 0; i < types.length; i++) {
+                    var currentColumnType = table.getDatabase().getColumnType(types[i]);
 
                     if(currentColumnType == null) {
                         throw new Exception("Illegal column type \"" + type + "\"");
@@ -264,7 +264,7 @@ public class Column {
                     break;
                 case ColumnType.columnForeignKey: {
                     try {
-                        Table fkTable = getTable().getDatabase().getTable(destinationTable);
+                        var fkTable = getTable().getDatabase().getTable(destinationTable);
                         javaType = fkTable.getPKClass();
                     } catch (Exception e) {
                         javaType = "<error>";
@@ -318,7 +318,7 @@ public class Column {
         if(fkEntityClass == null) {
             if(type == ColumnType.columnForeignKey) {
                 try {
-                    Table fkTable = getTable().getDatabase().getTable(destinationTable);
+                    var fkTable = getTable().getDatabase().getTable(destinationTable);
                     fkEntityClass = fkTable.getEntityClass();
                 } catch(Exception e) {
                     fkEntityClass = "<error>";
@@ -332,7 +332,7 @@ public class Column {
         if(fkFactoryClass == null) {
             if(type == ColumnType.columnForeignKey) {
                 try {
-                    Table fkTable = getTable().getDatabase().getTable(destinationTable);
+                    var fkTable = getTable().getDatabase().getTable(destinationTable);
                     fkFactoryClass = fkTable.getFactoryClass();
                 } catch(Exception e) {
                     fkFactoryClass = "<error>";
@@ -346,7 +346,7 @@ public class Column {
         if(fkPKClass == null) {
             if(type == ColumnType.columnForeignKey) {
                 try {
-                    Table fkTable = getTable().getDatabase().getTable(destinationTable);
+                    var fkTable = getTable().getDatabase().getTable(destinationTable);
                     fkPKClass = fkTable.getPKClass();
                 } catch(Exception e) {
                     fkPKClass = "<error>";
@@ -361,10 +361,10 @@ public class Column {
         String result;
         
         if(type == ColumnType.columnForeignKey) {
-            Table fkTable = getTable().getDatabase().getTable(destinationTable);
+            var fkTable = getTable().getDatabase().getTable(destinationTable);
 
-            boolean referencesSelf = fkTable.getNamePlural().equals(table.getNamePlural());
-            boolean columnNameNotPk = !fkTable.getEID().getName().equals(name);
+            var referencesSelf = fkTable.getNamePlural().equals(table.getNamePlural());
+            var columnNameNotPk = !fkTable.getEID().getName().equals(name);
 
             result = columnPrefixLowerCase + "_" + (referencesSelf || columnNameNotPk? "": fkTable.getColumnPrefixLowerCase() + "_") + name.toLowerCase(Locale.getDefault());
         } else {
@@ -407,9 +407,9 @@ public class Column {
         if(sequenceSource == null)
             return null;
         else {
-            int thePeriod = sequenceSource.indexOf('.');
-            String stringTable = new String(sequenceSource.getBytes(Charsets.UTF_8), 0, thePeriod, Charsets.UTF_8);
-            String stringColumn = new String(sequenceSource.getBytes(Charsets.UTF_8), thePeriod + 1, sequenceSource.length() - thePeriod - 1, Charsets.UTF_8);
+            var thePeriod = sequenceSource.indexOf('.');
+            var stringTable = new String(sequenceSource.getBytes(Charsets.UTF_8), 0, thePeriod, Charsets.UTF_8);
+            var stringColumn = new String(sequenceSource.getBytes(Charsets.UTF_8), thePeriod + 1, sequenceSource.length() - thePeriod - 1, Charsets.UTF_8);
             return table.getDatabase().getTable(stringTable).getColumn(stringColumn);
         }
     }

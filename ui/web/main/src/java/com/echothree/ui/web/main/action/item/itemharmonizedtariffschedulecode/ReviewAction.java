@@ -57,7 +57,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetItemHarmonizedTariffScheduleCodeForm commandForm = ItemUtil.getHome().getGetItemHarmonizedTariffScheduleCodeForm();
+        var commandForm = ItemUtil.getHome().getGetItemHarmonizedTariffScheduleCodeForm();
 
         commandForm.setItemName(request.getParameter(ParameterConstants.ITEM_NAME));
         commandForm.setCountryName(request.getParameter(ParameterConstants.COUNTRY_NAME));
@@ -72,11 +72,11 @@ public class ReviewAction
         options.add(CoreOptions.EntityInstanceIncludeNames);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ItemUtil.getHome().getItemHarmonizedTariffScheduleCode(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getItemHarmonizedTariffScheduleCode(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemHarmonizedTariffScheduleCodeResult result = (GetItemHarmonizedTariffScheduleCodeResult)executionResult.getResult();
-            ItemHarmonizedTariffScheduleCodeTransfer itemHarmonizedTariffScheduleCode = result.getItemHarmonizedTariffScheduleCode();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemHarmonizedTariffScheduleCodeResult)executionResult.getResult();
+            var itemHarmonizedTariffScheduleCode = result.getItemHarmonizedTariffScheduleCode();
 
             if(itemHarmonizedTariffScheduleCode != null) {
                 request.setAttribute(AttributeConstants.ITEM_HARMONIZED_TARIFF_SCHEDULE_CODE, itemHarmonizedTariffScheduleCode);

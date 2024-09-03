@@ -57,15 +57,15 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetApplicationEditorUseForm commandForm = CoreUtil.getHome().getGetApplicationEditorUseForm();
+        var commandForm = CoreUtil.getHome().getGetApplicationEditorUseForm();
 
         commandForm.setApplicationName(actionForm.getApplicationName());
         commandForm.setApplicationEditorUseName(actionForm.getApplicationEditorUseName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getApplicationEditorUse(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getApplicationEditorUse(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetApplicationEditorUseResult result = (GetApplicationEditorUseResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetApplicationEditorUseResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.APPLICATION_EDITOR_USE, result.getApplicationEditorUse());
         }
@@ -74,7 +74,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateApplicationEditorUseDescriptionForm commandForm = CoreUtil.getHome().getCreateApplicationEditorUseDescriptionForm();
+        var commandForm = CoreUtil.getHome().getCreateApplicationEditorUseDescriptionForm();
 
         commandForm.setApplicationName(actionForm.getApplicationName());
         commandForm.setApplicationEditorUseName(actionForm.getApplicationEditorUseName());

@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String clubName = request.getParameter(ParameterConstants.CLUB_NAME);
-            GetClubDescriptionsForm commandForm = ClubUtil.getHome().getGetClubDescriptionsForm();
+            var clubName = request.getParameter(ParameterConstants.CLUB_NAME);
+            var commandForm = ClubUtil.getHome().getGetClubDescriptionsForm();
             
             commandForm.setClubName(clubName);
-            
-            CommandResult commandResult = ClubUtil.getHome().getClubDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetClubDescriptionsResult result = (GetClubDescriptionsResult)executionResult.getResult();
-            ClubTransfer clubTransfer = result.getClub();
+
+            var commandResult = ClubUtil.getHome().getClubDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetClubDescriptionsResult)executionResult.getResult();
+            var clubTransfer = result.getClub();
             
             request.setAttribute(AttributeConstants.CLUB, clubTransfer);
             request.setAttribute(AttributeConstants.CLUB_NAME, clubTransfer.getClubName());

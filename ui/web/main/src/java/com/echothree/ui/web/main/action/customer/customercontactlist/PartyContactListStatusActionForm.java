@@ -41,16 +41,16 @@ public class PartyContactListStatusActionForm
     public void setupPartyContactListStatusChoices()
             throws NamingException {
         if(partyContactListStatusChoices == null) {
-            GetPartyContactListStatusChoicesForm form = ContactListUtil.getHome().getGetPartyContactListStatusChoicesForm();
+            var form = ContactListUtil.getHome().getGetPartyContactListStatusChoicesForm();
 
             form.setPartyName(partyName);
             form.setContactListName(contactListName);
             form.setDefaultPartyContactListStatusChoice(partyContactListStatusChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ContactListUtil.getHome().getPartyContactListStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyContactListStatusChoicesResult result = (GetPartyContactListStatusChoicesResult)executionResult.getResult();
+            var commandResult = ContactListUtil.getHome().getPartyContactListStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyContactListStatusChoicesResult)executionResult.getResult();
             partyContactListStatusChoices = result.getPartyContactListStatusChoices();
 
             if(partyContactListStatusChoice == null) {

@@ -50,16 +50,16 @@ public class DescriptionDeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String taxName = request.getParameter(ParameterConstants.TAX_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-        DeleteTaxDescriptionForm commandForm = TaxUtil.getHome().getDeleteTaxDescriptionForm();
+        var taxName = request.getParameter(ParameterConstants.TAX_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var commandForm = TaxUtil.getHome().getDeleteTaxDescriptionForm();
         
         commandForm.setTaxName(taxName);
         commandForm.setLanguageIsoName(languageIsoName);
         
         TaxUtil.getHome().deleteTaxDescription(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.TAX_NAME, taxName);

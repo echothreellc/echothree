@@ -53,9 +53,9 @@ public class ReturnReasonHandler
         if(localName.equals("returnReasonDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -63,7 +63,7 @@ public class ReturnReasonHandler
             }
             
             try {
-                CreateReturnReasonDescriptionForm commandForm = ReturnPolicyFormFactory.getCreateReturnReasonDescriptionForm();
+                var commandForm = ReturnPolicyFormFactory.getCreateReturnReasonDescriptionForm();
                 
                 commandForm.setReturnKindName(returnKindName);
                 commandForm.setReturnReasonName(returnReasonName);
@@ -78,9 +78,9 @@ public class ReturnReasonHandler
             String returnPolicyName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("returnPolicyName"))
                     returnPolicyName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -90,7 +90,7 @@ public class ReturnReasonHandler
             }
             
             try {
-                CreateReturnPolicyReasonForm commandForm = ReturnPolicyFormFactory.getCreateReturnPolicyReasonForm();
+                var commandForm = ReturnPolicyFormFactory.getCreateReturnPolicyReasonForm();
                 
                 commandForm.setReturnKindName(returnKindName);
                 commandForm.setReturnPolicyName(returnPolicyName);

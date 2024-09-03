@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = AccountingUtil.getHome().getGlAccountClasses(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGlAccountClassesResult result = (GetGlAccountClassesResult)executionResult.getResult();
+            var commandResult = AccountingUtil.getHome().getGlAccountClasses(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGlAccountClassesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.GL_ACCOUNT_CLASSES, result.getGlAccountClasses());
             forwardKey = ForwardConstants.DISPLAY;

@@ -53,15 +53,15 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetTaxForm commandForm = TaxUtil.getHome().getGetTaxForm();
-        String taxName = request.getParameter(ParameterConstants.TAX_NAME);
+        var commandForm = TaxUtil.getHome().getGetTaxForm();
+        var taxName = request.getParameter(ParameterConstants.TAX_NAME);
         
         commandForm.setTaxName(taxName);
-        
-        CommandResult commandResult = TaxUtil.getHome().getTax(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTaxResult result = (GetTaxResult)executionResult.getResult();
-        TaxTransfer tax = result.getTax();
+
+        var commandResult = TaxUtil.getHome().getTax(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTaxResult)executionResult.getResult();
+        var tax = result.getTax();
         
         if(tax == null) {
             forwardKey = ForwardConstants.ERROR_404;

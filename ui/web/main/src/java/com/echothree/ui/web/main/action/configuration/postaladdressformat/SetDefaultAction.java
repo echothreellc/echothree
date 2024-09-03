@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            String postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
-            SetDefaultPostalAddressFormatForm commandForm = ContactUtil.getHome().getSetDefaultPostalAddressFormatForm();
+            var postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
+            var commandForm = ContactUtil.getHome().getSetDefaultPostalAddressFormatForm();
             
             commandForm.setPostalAddressFormatName(postalAddressFormatName);
             

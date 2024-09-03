@@ -50,8 +50,8 @@ public class UsesHandler
             String isDefault = null;
             String sortOrder = null;
 
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("useName"))
                     useName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("useTypeName"))
@@ -63,7 +63,7 @@ public class UsesHandler
             }
             
             try {
-                CreateUseForm form = OfferFormFactory.getCreateUseForm();
+                var form = OfferFormFactory.getCreateUseForm();
                 
                 form.setUseName(useName);
                 form.setUseTypeName(useTypeName);

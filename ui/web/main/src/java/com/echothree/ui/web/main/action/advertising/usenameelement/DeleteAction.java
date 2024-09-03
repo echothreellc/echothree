@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteUseNameElementForm commandForm = OfferUtil.getHome().getDeleteUseNameElementForm();
-            String useNameElementName = request.getParameter(ParameterConstants.USE_NAME_ELEMENT_NAME);
+            var commandForm = OfferUtil.getHome().getDeleteUseNameElementForm();
+            var useNameElementName = request.getParameter(ParameterConstants.USE_NAME_ELEMENT_NAME);
             
             commandForm.setUseNameElementName(useNameElementName);
             

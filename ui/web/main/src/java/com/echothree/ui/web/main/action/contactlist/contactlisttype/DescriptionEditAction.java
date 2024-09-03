@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected ContactListTypeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ContactListTypeDescriptionSpec spec = ContactListUtil.getHome().getContactListTypeDescriptionSpec();
+        var spec = ContactListUtil.getHome().getContactListTypeDescriptionSpec();
         
         spec.setContactListTypeName(findParameter(request, ParameterConstants.CONTACT_LIST_TYPE_NAME, actionForm.getContactListTypeName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected ContactListTypeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ContactListTypeDescriptionEdit edit = ContactListUtil.getHome().getContactListTypeDescriptionEdit();
+        var edit = ContactListUtil.getHome().getContactListTypeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

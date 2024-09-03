@@ -54,15 +54,15 @@ public class Step1Action
 
     public void setupTransfer(HttpServletRequest request)
             throws NamingException {
-        GetSecurityRoleForm commandForm = SecurityUtil.getHome().getGetSecurityRoleForm();
+        var commandForm = SecurityUtil.getHome().getGetSecurityRoleForm();
 
         commandForm.setSecurityRoleGroupName(request.getParameter(ParameterConstants.SECURITY_ROLE_GROUP_NAME));
         commandForm.setSecurityRoleName(request.getParameter(ParameterConstants.SECURITY_ROLE_NAME));
-        
-        CommandResult commandResult = SecurityUtil.getHome().getSecurityRole(getUserVisitPK(request), commandForm);
+
+        var commandResult = SecurityUtil.getHome().getSecurityRole(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSecurityRoleResult result = (GetSecurityRoleResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSecurityRoleResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SECURITY_ROLE, result.getSecurityRole());
         }
@@ -71,10 +71,10 @@ public class Step1Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetPartyTypesForm commandForm = PartyUtil.getHome().getGetPartyTypesForm();
-        CommandResult commandResult = PartyUtil.getHome().getPartyTypes(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyTypesResult result = (GetPartyTypesResult)executionResult.getResult();
+        var commandForm = PartyUtil.getHome().getGetPartyTypesForm();
+        var commandResult = PartyUtil.getHome().getPartyTypes(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyTypesResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_TYPES, result.getPartyTypes());
 

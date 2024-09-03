@@ -58,14 +58,14 @@ public class CommentAddAction
     
     public String getPaymentMethodEntityRef(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPaymentMethodForm commandForm = PaymentUtil.getHome().getGetPaymentMethodForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentMethodForm();
         
         commandForm.setPaymentMethodName(actionForm.getPaymentMethodName());
-        
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentMethod(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPaymentMethodResult result = (GetPaymentMethodResult)executionResult.getResult();
-        PaymentMethodTransfer paymentMethod = result.getPaymentMethod();
+
+        var commandResult = PaymentUtil.getHome().getPaymentMethod(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPaymentMethodResult)executionResult.getResult();
+        var paymentMethod = result.getPaymentMethod();
         
         request.setAttribute(AttributeConstants.PAYMENT_METHOD, paymentMethod);
         
@@ -83,7 +83,7 @@ public class CommentAddAction
     @Override
     public CommandResult doAdd(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCommentForm commandForm = CommentUtil.getHome().getCreateCommentForm();
+        var commandForm = CommentUtil.getHome().getCreateCommentForm();
 
         commandForm.setEntityRef(getPaymentMethodEntityRef(actionForm, request));
         commandForm.setCommentTypeName(CommentConstants.CommentType_PAYMENT_METHOD);

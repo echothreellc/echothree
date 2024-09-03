@@ -41,15 +41,15 @@ public class ContactEmailAddressStatusActionForm
     public void setupEmailAddressStatusChoices()
             throws NamingException {
         if(emailAddressStatusChoices == null) {
-            GetEmailAddressStatusChoicesForm form = ContactUtil.getHome().getGetEmailAddressStatusChoicesForm();
+            var form = ContactUtil.getHome().getGetEmailAddressStatusChoicesForm();
 
             form.setContactMechanismName(contactMechanismName);
             form.setDefaultEmailAddressStatusChoice(emailAddressStatusChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getEmailAddressStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmailAddressStatusChoicesResult result = (GetEmailAddressStatusChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getEmailAddressStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmailAddressStatusChoicesResult)executionResult.getResult();
             emailAddressStatusChoices = result.getEmailAddressStatusChoices();
 
             if(emailAddressStatusChoice == null) {

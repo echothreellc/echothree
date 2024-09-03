@@ -56,16 +56,16 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-        String filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
-        String filterName = request.getParameter(ParameterConstants.FILTER_NAME);
+        var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+        var filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
+        var filterName = request.getParameter(ParameterConstants.FILTER_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateFilterEntranceStepForm commandForm = FilterUtil.getHome().getCreateFilterEntranceStepForm();
+                    var commandForm = FilterUtil.getHome().getCreateFilterEntranceStepForm();
                     
                     if(filterKindName == null)
                         filterKindName = actionForm.getFilterKindName();
@@ -78,8 +78,8 @@ public class AddAction
                     commandForm.setFilterTypeName(filterTypeName);
                     commandForm.setFilterName(filterName);
                     commandForm.setFilterStepName(actionForm.getFilterStepChoice());
-                    
-                    CommandResult commandResult = FilterUtil.getHome().createFilterEntranceStep(getUserVisitPK(request), commandForm);
+
+                    var commandResult = FilterUtil.getHome().createFilterEntranceStep(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -97,8 +97,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.FILTER_KIND_NAME, filterKindName);
             request.setAttribute(AttributeConstants.FILTER_TYPE_NAME, filterTypeName);

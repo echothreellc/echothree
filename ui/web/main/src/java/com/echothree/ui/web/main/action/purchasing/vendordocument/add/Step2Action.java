@@ -51,14 +51,14 @@ public class Step2Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetDocumentTypeUsagesForm commandForm = DocumentUtil.getHome().getGetDocumentTypeUsagesForm();
-        String documentTypeUsageTypeName = request.getParameter(ParameterConstants.DOCUMENT_TYPE_USAGE_TYPE_NAME);
+        var commandForm = DocumentUtil.getHome().getGetDocumentTypeUsagesForm();
+        var documentTypeUsageTypeName = request.getParameter(ParameterConstants.DOCUMENT_TYPE_USAGE_TYPE_NAME);
 
         commandForm.setDocumentTypeUsageTypeName(documentTypeUsageTypeName);
 
-        CommandResult commandResult = DocumentUtil.getHome().getDocumentTypeUsages(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetDocumentTypeUsagesResult result = (GetDocumentTypeUsagesResult)executionResult.getResult();
+        var commandResult = DocumentUtil.getHome().getDocumentTypeUsages(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetDocumentTypeUsagesResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.DOCUMENT_TYPE_USAGES, result.getDocumentTypeUsages());
 

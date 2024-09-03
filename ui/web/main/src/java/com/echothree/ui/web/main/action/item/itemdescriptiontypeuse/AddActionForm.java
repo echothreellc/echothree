@@ -40,14 +40,14 @@ public class AddActionForm
     public void setupItemDescriptionTypeUseTypeChoices() {
         if(itemDescriptionTypeUseTypeChoices == null) {
             try {
-                GetItemDescriptionTypeUseTypeChoicesForm form = ItemUtil.getHome().getGetItemDescriptionTypeUseTypeChoicesForm();
+                var form = ItemUtil.getHome().getGetItemDescriptionTypeUseTypeChoicesForm();
 
                 form.setDefaultItemDescriptionTypeUseTypeChoice(itemDescriptionTypeUseTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = ItemUtil.getHome().getItemDescriptionTypeUseTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemDescriptionTypeUseTypeChoicesResult getItemDescriptionTypeUseTypeChoicesResult = (GetItemDescriptionTypeUseTypeChoicesResult)executionResult.getResult();
+                var commandResult = ItemUtil.getHome().getItemDescriptionTypeUseTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getItemDescriptionTypeUseTypeChoicesResult = (GetItemDescriptionTypeUseTypeChoicesResult)executionResult.getResult();
                 itemDescriptionTypeUseTypeChoices = getItemDescriptionTypeUseTypeChoicesResult.getItemDescriptionTypeUseTypeChoices();
 
                 if(itemDescriptionTypeUseTypeChoice == null) {

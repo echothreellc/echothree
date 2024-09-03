@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateTagScopeForm commandForm = TagUtil.getHome().getCreateTagScopeForm();
+        var commandForm = TagUtil.getHome().getCreateTagScopeForm();
 
         commandForm.setTagScopeName(actionForm.getTagScopeName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());

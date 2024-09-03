@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetMimeTypeForm commandForm = CoreUtil.getHome().getGetMimeTypeForm();
+        var commandForm = CoreUtil.getHome().getGetMimeTypeForm();
 
         commandForm.setMimeTypeName(request.getParameter(ParameterConstants.MIME_TYPE_NAME));
-        
-        CommandResult commandResult = CoreUtil.getHome().getMimeType(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getMimeType(getUserVisitPK(request), commandForm);
         MimeTypeTransfer mimeType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeResult result = (GetMimeTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeResult)executionResult.getResult();
             
             mimeType = result.getMimeType();
         }

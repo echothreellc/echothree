@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected ProtocolDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ProtocolDescriptionSpec spec = CoreUtil.getHome().getProtocolDescriptionSpec();
+        var spec = CoreUtil.getHome().getProtocolDescriptionSpec();
         
         spec.setProtocolName(findParameter(request, ParameterConstants.PROTOCOL_NAME, actionForm.getProtocolName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected ProtocolDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ProtocolDescriptionEdit edit = CoreUtil.getHome().getProtocolDescriptionEdit();
+        var edit = CoreUtil.getHome().getProtocolDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

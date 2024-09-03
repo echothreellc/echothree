@@ -52,12 +52,12 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String partySecurityRoleTemplateName = request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME);
+        var partySecurityRoleTemplateName = request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME);
         
         try {
-            DeletePartySecurityRoleTemplateRoleForm commandForm = SecurityUtil.getHome().getDeletePartySecurityRoleTemplateRoleForm();
-            String securityRoleGroupName = request.getParameter(ParameterConstants.SECURITY_ROLE_GROUP_NAME);
-            String securityRoleName = request.getParameter(ParameterConstants.SECURITY_ROLE_NAME);
+            var commandForm = SecurityUtil.getHome().getDeletePartySecurityRoleTemplateRoleForm();
+            var securityRoleGroupName = request.getParameter(ParameterConstants.SECURITY_ROLE_GROUP_NAME);
+            var securityRoleName = request.getParameter(ParameterConstants.SECURITY_ROLE_NAME);
             
             commandForm.setPartySecurityRoleTemplateName(partySecurityRoleTemplateName);
             commandForm.setSecurityRoleGroupName(securityRoleGroupName);
@@ -69,8 +69,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

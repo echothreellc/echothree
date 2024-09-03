@@ -58,14 +58,14 @@ public class CommentAddAction
     
     public String getShippingMethodEntityRef(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetShippingMethodForm commandForm = ShippingUtil.getHome().getGetShippingMethodForm();
+        var commandForm = ShippingUtil.getHome().getGetShippingMethodForm();
         
         commandForm.setShippingMethodName(actionForm.getShippingMethodName());
-        
-        CommandResult commandResult = ShippingUtil.getHome().getShippingMethod(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetShippingMethodResult result = (GetShippingMethodResult)executionResult.getResult();
-        ShippingMethodTransfer shippingMethod = result.getShippingMethod();
+
+        var commandResult = ShippingUtil.getHome().getShippingMethod(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetShippingMethodResult)executionResult.getResult();
+        var shippingMethod = result.getShippingMethod();
         
         request.setAttribute(AttributeConstants.SHIPPING_METHOD, shippingMethod);
         
@@ -83,7 +83,7 @@ public class CommentAddAction
     @Override
     public CommandResult doAdd(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCommentForm commandForm = CommentUtil.getHome().getCreateCommentForm();
+        var commandForm = CommentUtil.getHome().getCreateCommentForm();
 
         commandForm.setEntityRef(getShippingMethodEntityRef(actionForm, request));
         commandForm.setCommentTypeName(CommentConstants.CommentType_SHIPPING_METHOD);

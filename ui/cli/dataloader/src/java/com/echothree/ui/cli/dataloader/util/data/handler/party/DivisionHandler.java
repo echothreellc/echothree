@@ -62,19 +62,19 @@ public class DivisionHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("department")) {
-            CreateDepartmentForm form = PartyFormFactory.getCreateDepartmentForm();
+            var form = PartyFormFactory.getCreateDepartmentForm();
             
             form.setCompanyName(companyName);
             form.setDivisionName(divisionName);
             form.set(getAttrsMap(attrs));
-            
-            CommandResult commandResult = partyService.createDepartment(initialDataParser.getUserVisit(), form);
+
+            var commandResult = partyService.createDepartment(initialDataParser.getUserVisit(), form);
             
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateDepartmentResult result = (CreateDepartmentResult)executionResult.getResult();
-                String partyName = result.getPartyName();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateDepartmentResult)executionResult.getResult();
+                var partyName = result.getPartyName();
+                var entityRef = result.getEntityRef();
                 
                 initialDataParser.pushHandler(new DepartmentHandler(initialDataParser, this, partyName, entityRef));
             }

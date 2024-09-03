@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTransactionTypeForm commandForm = AccountingUtil.getHome().getGetTransactionTypeForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionTypeForm();
 
         commandForm.setTransactionTypeName(actionForm.getTransactionTypeName());
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionType(getUserVisitPK(request), commandForm);
+
+        var commandResult = AccountingUtil.getHome().getTransactionType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTransactionTypeResult result = (GetTransactionTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRANSACTION_TYPE, result.getTransactionType());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateTransactionTypeDescriptionForm commandForm = AccountingUtil.getHome().getCreateTransactionTypeDescriptionForm();
+        var commandForm = AccountingUtil.getHome().getCreateTransactionTypeDescriptionForm();
 
         commandForm.setTransactionTypeName( actionForm.getTransactionTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

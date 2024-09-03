@@ -46,14 +46,14 @@ public class AddActionForm
     private void setupDefaultSourceChoices()
             throws NamingException {
         if(defaultSourceChoices == null) {
-            GetSourceChoicesForm getSourceChoicesForm = OfferUtil.getHome().getGetSourceChoicesForm();
+            var getSourceChoicesForm = OfferUtil.getHome().getGetSourceChoicesForm();
 
             getSourceChoicesForm.setDefaultSourceChoice(getDefaultSourceChoice());
             getSourceChoicesForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, getSourceChoicesForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSourceChoicesResult getSourceChoicesResult = (GetSourceChoicesResult)executionResult.getResult();
+            var commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, getSourceChoicesForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getSourceChoicesResult = (GetSourceChoicesResult)executionResult.getResult();
             defaultSourceChoices = getSourceChoicesResult.getSourceChoices();
 
             if(getDefaultSourceChoice() == null)

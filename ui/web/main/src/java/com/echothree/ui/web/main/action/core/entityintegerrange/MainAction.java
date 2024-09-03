@@ -55,7 +55,7 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetEntityIntegerRangesForm commandForm = CoreUtil.getHome().getGetEntityIntegerRangesForm();
+        var commandForm = CoreUtil.getHome().getGetEntityIntegerRangesForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
@@ -66,12 +66,12 @@ public class MainAction
         options.add(CoreOptions.AppearanceIncludeTextDecorations);
         options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityIntegerRanges(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEntityIntegerRanges(getUserVisitPK(request), commandForm);
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityIntegerRangesResult result = (GetEntityIntegerRangesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityIntegerRangesResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE, result.getEntityAttribute());
             request.setAttribute(AttributeConstants.ENTITY_INTEGER_RANGES, result.getEntityIntegerRanges());

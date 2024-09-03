@@ -64,7 +64,7 @@ public class EditAction
     @Override
     protected WorkflowDestinationEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        WorkflowDestinationEdit edit = WorkflowUtil.getHome().getWorkflowDestinationEdit();
+        var edit = WorkflowUtil.getHome().getWorkflowDestinationEdit();
 
         edit.setWorkflowDestinationName(actionForm.getWorkflowDestinationName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

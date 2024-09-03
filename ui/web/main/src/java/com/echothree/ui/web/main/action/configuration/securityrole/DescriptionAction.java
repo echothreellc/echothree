@@ -53,17 +53,17 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetSecurityRoleDescriptionsForm commandForm = SecurityUtil.getHome().getGetSecurityRoleDescriptionsForm();
+        var commandForm = SecurityUtil.getHome().getGetSecurityRoleDescriptionsForm();
 
         commandForm.setSecurityRoleGroupName(request.getParameter(ParameterConstants.SECURITY_ROLE_GROUP_NAME));
         commandForm.setSecurityRoleName(request.getParameter(ParameterConstants.SECURITY_ROLE_NAME));
 
-        CommandResult commandResult = SecurityUtil.getHome().getSecurityRoleDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = SecurityUtil.getHome().getSecurityRoleDescriptions(getUserVisitPK(request), commandForm);
         GetSecurityRoleDescriptionsResult result = null;
         SecurityRoleTransfer securityRole = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
+            var executionResult = commandResult.getExecutionResult();
             
             result = (GetSecurityRoleDescriptionsResult) executionResult.getResult();
             securityRole = result.getSecurityRole();

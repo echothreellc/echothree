@@ -48,9 +48,9 @@ public class SelectorBooleanTypesHandler
             String selectorBooleanTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("selectorBooleanTypeName"))
                     selectorBooleanTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class SelectorBooleanTypesHandler
             }
             
             try {
-                CreateSelectorBooleanTypeForm form = SelectorFormFactory.getCreateSelectorBooleanTypeForm();
+                var form = SelectorFormFactory.getCreateSelectorBooleanTypeForm();
                 
                 form.setSelectorBooleanTypeName(selectorBooleanTypeName);
                 form.setIsDefault(isDefault);

@@ -43,7 +43,7 @@ public class Mod10SequenceChecksum
             sum += (bytes [i] * (i + 1));
         }
 
-        char[] modCharacter = { SequenceGeneratorLogic.NUMERIC_VALUES.charAt(sum % SequenceGeneratorLogic.NUMERIC_MAX_INDEX) };
+        var modCharacter = new char[]{SequenceGeneratorLogic.NUMERIC_VALUES.charAt(sum % SequenceGeneratorLogic.NUMERIC_MAX_INDEX)};
         return new String(modCharacter);
     }
 

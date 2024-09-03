@@ -47,7 +47,7 @@ public class ItemAliasChecksumTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("itemAliasChecksumType")) {
-            CreateItemAliasChecksumTypeForm commandForm = ItemFormFactory.getCreateItemAliasChecksumTypeForm();
+            var commandForm = ItemFormFactory.getCreateItemAliasChecksumTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

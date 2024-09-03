@@ -47,7 +47,7 @@ public class FontWeightsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("fontWeight")) {
-            CreateFontWeightForm commandForm = CoreFormFactory.getCreateFontWeightForm();
+            var commandForm = CoreFormFactory.getCreateFontWeightForm();
             
             commandForm.set(getAttrsMap(attrs));
             

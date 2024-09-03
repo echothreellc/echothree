@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String itemPurchasingCategoryName = request.getParameter(ParameterConstants.ITEM_PURCHASING_CATEGORY_NAME);
-            GetItemPurchasingCategoryDescriptionsForm commandForm = VendorUtil.getHome().getGetItemPurchasingCategoryDescriptionsForm();
+            var itemPurchasingCategoryName = request.getParameter(ParameterConstants.ITEM_PURCHASING_CATEGORY_NAME);
+            var commandForm = VendorUtil.getHome().getGetItemPurchasingCategoryDescriptionsForm();
             
             commandForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
-            
-            CommandResult commandResult = VendorUtil.getHome().getItemPurchasingCategoryDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemPurchasingCategoryDescriptionsResult result = (GetItemPurchasingCategoryDescriptionsResult)executionResult.getResult();
-            ItemPurchasingCategoryTransfer itemPurchasingCategoryTransfer = result.getItemPurchasingCategory();
+
+            var commandResult = VendorUtil.getHome().getItemPurchasingCategoryDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemPurchasingCategoryDescriptionsResult)executionResult.getResult();
+            var itemPurchasingCategoryTransfer = result.getItemPurchasingCategory();
             
             request.setAttribute(AttributeConstants.ITEM_PURCHASING_CATEGORY, itemPurchasingCategoryTransfer);
             request.setAttribute(AttributeConstants.ITEM_PURCHASING_CATEGORY_NAME, itemPurchasingCategoryTransfer.getItemPurchasingCategoryName());

@@ -49,7 +49,7 @@ public class AllocationPriorityHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("allocationPriorityDescription")) {
-            CreateAllocationPriorityDescriptionForm form = InventoryFormFactory.getCreateAllocationPriorityDescriptionForm();
+            var form = InventoryFormFactory.getCreateAllocationPriorityDescriptionForm();
 
             form.setAllocationPriorityName(allocationPriorityName);
             form.set(getAttrsMap(attrs));

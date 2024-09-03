@@ -62,14 +62,14 @@ public class ChainHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("chainDescription")) {
-            CreateChainDescriptionForm commandForm = ChainFormFactory.getCreateChainDescriptionForm();
+            var commandForm = ChainFormFactory.getCreateChainDescriptionForm();
 
             setupChainSpec(commandForm);
             commandForm.set(getAttrsMap(attrs));
 
             chainService.createChainDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("chainActionSet")) {
-            CreateChainActionSetForm commandForm = ChainFormFactory.getCreateChainActionSetForm();
+            var commandForm = ChainFormFactory.getCreateChainActionSetForm();
 
             setupChainSpec(commandForm);
             commandForm.set(getAttrsMap(attrs));

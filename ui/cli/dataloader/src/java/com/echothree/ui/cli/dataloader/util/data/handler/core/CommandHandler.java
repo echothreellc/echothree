@@ -51,7 +51,7 @@ public class CommandHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("commandDescription")) {
-            CreateCommandDescriptionForm commandForm = CoreFormFactory.getCreateCommandDescriptionForm();
+            var commandForm = CoreFormFactory.getCreateCommandDescriptionForm();
 
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setCommandName(commandName);

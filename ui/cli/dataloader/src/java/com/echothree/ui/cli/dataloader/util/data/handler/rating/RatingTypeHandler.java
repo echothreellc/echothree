@@ -55,9 +55,9 @@ public class RatingTypeHandler
         if(localName.equals("ratingTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -65,7 +65,7 @@ public class RatingTypeHandler
             }
             
             try {
-                CreateRatingTypeDescriptionForm createRatingTypeDescriptionForm = RatingFormFactory.getCreateRatingTypeDescriptionForm();
+                var createRatingTypeDescriptionForm = RatingFormFactory.getCreateRatingTypeDescriptionForm();
                 
                 createRatingTypeDescriptionForm.setComponentVendorName(componentVendorName);
                 createRatingTypeDescriptionForm.setEntityTypeName(entityTypeName);
@@ -81,9 +81,9 @@ public class RatingTypeHandler
             String ratingTypeListItemName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("ratingTypeListItemName"))
                     ratingTypeListItemName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -93,7 +93,7 @@ public class RatingTypeHandler
             }
             
             try {
-                CreateRatingTypeListItemForm createRatingTypeListItemForm = RatingFormFactory.getCreateRatingTypeListItemForm();
+                var createRatingTypeListItemForm = RatingFormFactory.getCreateRatingTypeListItemForm();
                 
                 createRatingTypeListItemForm.setComponentVendorName(componentVendorName);
                 createRatingTypeListItemForm.setEntityTypeName(entityTypeName);

@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultScaleForm commandForm = ScaleUtil.getHome().getSetDefaultScaleForm();
-            String scaleName = request.getParameter(ParameterConstants.SCALE_NAME);
+            var commandForm = ScaleUtil.getHome().getSetDefaultScaleForm();
+            var scaleName = request.getParameter(ParameterConstants.SCALE_NAME);
             
             commandForm.setScaleName(scaleName);
             

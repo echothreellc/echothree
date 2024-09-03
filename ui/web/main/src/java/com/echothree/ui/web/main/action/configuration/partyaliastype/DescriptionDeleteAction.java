@@ -64,16 +64,16 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartyAliasTypeDescriptionForm commandForm = PartyUtil.getHome().getGetPartyAliasTypeDescriptionForm();
+        var commandForm = PartyUtil.getHome().getGetPartyAliasTypeDescriptionForm();
         
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());
         commandForm.setPartyAliasTypeName(actionForm.getPartyAliasTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = PartyUtil.getHome().getPartyAliasTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = PartyUtil.getHome().getPartyAliasTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyAliasTypeDescriptionResult result = (GetPartyAliasTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyAliasTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.PARTY_ALIAS_TYPE_DESCRIPTION, result.getPartyAliasTypeDescription());
         }
@@ -82,7 +82,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyAliasTypeDescriptionForm commandForm = PartyUtil.getHome().getDeletePartyAliasTypeDescriptionForm();
+        var commandForm = PartyUtil.getHome().getDeletePartyAliasTypeDescriptionForm();
 
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());
         commandForm.setPartyAliasTypeName(actionForm.getPartyAliasTypeName());

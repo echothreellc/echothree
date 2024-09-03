@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = WishlistUtil.getHome().getWishlistTypes(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWishlistTypesResult result = (GetWishlistTypesResult)executionResult.getResult();
+            var commandResult = WishlistUtil.getHome().getWishlistTypes(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWishlistTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WISHLIST_TYPES, result.getWishlistTypes());
             forwardKey = ForwardConstants.DISPLAY;

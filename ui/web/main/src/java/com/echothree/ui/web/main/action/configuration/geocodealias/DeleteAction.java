@@ -63,15 +63,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetGeoCodeAliasForm commandForm = GeoUtil.getHome().getGetGeoCodeAliasForm();
+        var commandForm = GeoUtil.getHome().getGetGeoCodeAliasForm();
         
         commandForm.setGeoCodeName(actionForm.getGeoCodeName());
         commandForm.setGeoCodeAliasTypeName(actionForm.getGeoCodeAliasTypeName());
-        
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeAlias(getUserVisitPK(request), commandForm);
+
+        var commandResult = GeoUtil.getHome().getGeoCodeAlias(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeAliasResult result = (GetGeoCodeAliasResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeAliasResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.GEO_CODE_ALIAS, result.getGeoCodeAlias());
         }
@@ -80,7 +80,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteGeoCodeAliasForm commandForm = GeoUtil.getHome().getDeleteGeoCodeAliasForm();
+        var commandForm = GeoUtil.getHome().getDeleteGeoCodeAliasForm();
 
         commandForm.setGeoCodeName(actionForm.getGeoCodeName());
         commandForm.setGeoCodeAliasTypeName(actionForm.getGeoCodeAliasTypeName());

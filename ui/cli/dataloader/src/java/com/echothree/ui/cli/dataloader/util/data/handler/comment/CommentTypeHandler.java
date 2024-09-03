@@ -56,9 +56,9 @@ public class CommentTypeHandler
         if(localName.equals("commentTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -66,7 +66,7 @@ public class CommentTypeHandler
             }
             
             try {
-                CreateCommentTypeDescriptionForm commandForm = CommentFormFactory.getCreateCommentTypeDescriptionForm();
+                var commandForm = CommentFormFactory.getCreateCommentTypeDescriptionForm();
                 
                 commandForm.setComponentVendorName(componentVendorName);
                 commandForm.setEntityTypeName(entityTypeName);
@@ -82,9 +82,9 @@ public class CommentTypeHandler
             String commentUsageTypeName = null;
             String selectedByDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("commentUsageTypeName"))
                     commentUsageTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("selectedByDefault"))
@@ -94,7 +94,7 @@ public class CommentTypeHandler
             }
             
             try {
-                CreateCommentUsageTypeForm commandForm = CommentFormFactory.getCreateCommentUsageTypeForm();
+                var commandForm = CommentFormFactory.getCreateCommentUsageTypeForm();
                 
                 commandForm.setComponentVendorName(componentVendorName);
                 commandForm.setEntityTypeName(entityTypeName);

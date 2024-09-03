@@ -57,9 +57,9 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetCompanyForm commandForm = PartyUtil.getHome().getGetCompanyForm();
-        String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = PartyUtil.getHome().getGetCompanyForm();
+        var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         
         commandForm.setCompanyName(companyName);
         commandForm.setPartyName(partyName);
@@ -67,11 +67,11 @@ public class MainAction
         Set<String> options = new HashSet<>();
         options.add(PartyOptions.PartyIncludePartyCarriers);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
-        
-        CommandResult commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCompanyResult result = (GetCompanyResult)executionResult.getResult();
-        CompanyTransfer company = result.getCompany();
+
+        var commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCompanyResult)executionResult.getResult();
+        var company = result.getCompany();
         
         if(company == null) {
             forwardKey = ForwardConstants.ERROR_404;

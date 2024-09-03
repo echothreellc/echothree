@@ -71,13 +71,13 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTransactionGlAccountCategoryDescriptionForm commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoryDescriptionForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoryDescriptionForm();
         
         setupSpec(actionForm, commandForm);
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionGlAccountCategoryDescription(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTransactionGlAccountCategoryDescriptionResult result = (GetTransactionGlAccountCategoryDescriptionResult)executionResult.getResult();
+
+        var commandResult = AccountingUtil.getHome().getTransactionGlAccountCategoryDescription(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTransactionGlAccountCategoryDescriptionResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.TRANSACTION_GL_ACCOUNT_CATEGORY_DESCRIPTION, result.getTransactionGlAccountCategoryDescription());
     }
@@ -85,7 +85,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteTransactionGlAccountCategoryDescriptionForm commandForm = AccountingUtil.getHome().getDeleteTransactionGlAccountCategoryDescriptionForm();
+        var commandForm = AccountingUtil.getHome().getDeleteTransactionGlAccountCategoryDescriptionForm();
 
         setupSpec(actionForm, commandForm);
 

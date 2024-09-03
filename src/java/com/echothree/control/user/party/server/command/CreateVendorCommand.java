@@ -183,7 +183,7 @@ public class CreateVendorCommand
                                                         var termControl = Session.getModelController(TermControl.class);
                                                         var workflowControl = Session.getModelController(WorkflowControl.class);
                                                         var vendorTypeDetail = vendorType.getLastDetail();
-                                                        Soundex soundex = new Soundex();
+                                                        var soundex = new Soundex();
                                                         var partyType = partyControl.getPartyTypeByName(PartyTypes.VENDOR.name());
                                                         BasePK createdBy = getPartyPK();
                                                         var personalTitleId = form.getPersonalTitleId();

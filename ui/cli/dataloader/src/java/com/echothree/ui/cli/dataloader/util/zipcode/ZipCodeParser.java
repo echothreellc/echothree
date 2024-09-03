@@ -67,18 +67,18 @@ public class ZipCodeParser {
     }
     
     public void setupCountryGeoCodeName() {
-        GetCountryForm getCountryForm = GeoFormFactory.getGetCountryForm();
+        var getCountryForm = GeoFormFactory.getGetCountryForm();
         
         getCountryForm.setIso2Letter("US");
-        
-        CommandResult commandResult = getGeoService().getCountry(getUserVisit(), getCountryForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCountryResult getCountryResult = (GetCountryResult)executionResult.getResult();
+
+        var commandResult = getGeoService().getCountry(getUserVisit(), getCountryForm);
+        var executionResult = commandResult.getExecutionResult();
+        var getCountryResult = (GetCountryResult)executionResult.getResult();
         setCountryGeoCodeName(getCountryResult.getCountry().getGeoCodeName());
     }
     
     public boolean setup() {
-        boolean result = true;
+        var result = true;
         
         try {
             setAuthenticationService(AuthenticationUtil.getHome());

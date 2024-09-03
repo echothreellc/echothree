@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetMimeTypeForm commandForm = CoreUtil.getHome().getGetMimeTypeForm();
+        var commandForm = CoreUtil.getHome().getGetMimeTypeForm();
 
         commandForm.setMimeTypeName(actionForm.getMimeTypeName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getMimeType(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getMimeType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeResult result = (GetMimeTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.MIME_TYPE, result.getMimeType());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateMimeTypeDescriptionForm commandForm = CoreUtil.getHome().getCreateMimeTypeDescriptionForm();
+        var commandForm = CoreUtil.getHome().getCreateMimeTypeDescriptionForm();
 
         commandForm.setMimeTypeName( actionForm.getMimeTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

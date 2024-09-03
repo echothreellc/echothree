@@ -54,17 +54,17 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateTerminationTypeForm commandForm = EmployeeUtil.getHome().getCreateTerminationTypeForm();
+                    var commandForm = EmployeeUtil.getHome().getCreateTerminationTypeForm();
                     
                     commandForm.setTerminationTypeName(actionForm.getTerminationTypeName());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().createTerminationType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = EmployeeUtil.getHome().createTerminationType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

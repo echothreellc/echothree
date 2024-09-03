@@ -57,19 +57,19 @@ public class PurchaseInvoiceHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("purchaseInvoiceLine")) {
-            CreatePurchaseInvoiceLineForm form = PurchaseFormFactory.getCreatePurchaseInvoiceLineForm();
+            var form = PurchaseFormFactory.getCreatePurchaseInvoiceLineForm();
             
             form.setInvoiceName(invoiceName);
             form.set(getAttrsMap(attrs));
-            
-            CommandResult commandResult = purchaseService.createPurchaseInvoiceLine(initialDataParser.getUserVisit(), form);
+
+            var commandResult = purchaseService.createPurchaseInvoiceLine(initialDataParser.getUserVisit(), form);
             
             if(commandResult.hasErrors()) {
                 System.err.println(commandResult);
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreatePurchaseInvoiceLineResult result = (CreatePurchaseInvoiceLineResult)executionResult.getResult();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreatePurchaseInvoiceLineResult)executionResult.getResult();
+                var entityRef = result.getEntityRef();
                 
                 initialDataParser.pushHandler(new PurchaseInvoiceLineHandler(initialDataParser, this, entityRef));
             }

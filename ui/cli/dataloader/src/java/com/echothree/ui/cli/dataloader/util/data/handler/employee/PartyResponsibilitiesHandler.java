@@ -51,15 +51,15 @@ public class PartyResponsibilitiesHandler
             throws SAXException {
         if(localName.equals("partyResponsibility")) {
             String responsibilityTypeName = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("responsibilityTypeName"))
                     responsibilityTypeName = attrs.getValue(i);
             }
             
             try {
-                CreatePartyResponsibilityForm commandForm = EmployeeFormFactory.getCreatePartyResponsibilityForm();
+                var commandForm = EmployeeFormFactory.getCreatePartyResponsibilityForm();
                 
                 commandForm.setPartyName(partyName);
                 commandForm.setResponsibilityTypeName(responsibilityTypeName);

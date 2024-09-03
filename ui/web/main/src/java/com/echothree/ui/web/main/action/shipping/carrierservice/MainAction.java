@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetCarrierServicesForm commandForm = CarrierUtil.getHome().getGetCarrierServicesForm();
-            String carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
+            var commandForm = CarrierUtil.getHome().getGetCarrierServicesForm();
+            var carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
             
             commandForm.setCarrierName(carrierName);
 
-            CommandResult commandResult = CarrierUtil.getHome().getCarrierServices(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCarrierServicesResult result = (GetCarrierServicesResult)executionResult.getResult();
+            var commandResult = CarrierUtil.getHome().getCarrierServices(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCarrierServicesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CARRIER, result.getCarrier());
             request.setAttribute(AttributeConstants.CARRIER_SERVICES, result.getCarrierServices());

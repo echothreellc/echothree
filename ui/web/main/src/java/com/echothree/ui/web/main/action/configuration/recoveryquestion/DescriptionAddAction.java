@@ -56,14 +56,14 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String recoveryQuestionName = request.getParameter(ParameterConstants.RECOVERY_QUESTION_NAME);
+        var recoveryQuestionName = request.getParameter(ParameterConstants.RECOVERY_QUESTION_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateRecoveryQuestionDescriptionForm commandForm = UserUtil.getHome().getCreateRecoveryQuestionDescriptionForm();
+                    var commandForm = UserUtil.getHome().getCreateRecoveryQuestionDescriptionForm();
                     
                     if(recoveryQuestionName == null)
                         recoveryQuestionName = actionForm.getRecoveryQuestionName();
@@ -71,8 +71,8 @@ public class DescriptionAddAction
                     commandForm.setRecoveryQuestionName(recoveryQuestionName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = UserUtil.getHome().createRecoveryQuestionDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = UserUtil.getHome().createRecoveryQuestionDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -88,8 +88,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.RECOVERY_QUESTION_NAME, recoveryQuestionName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

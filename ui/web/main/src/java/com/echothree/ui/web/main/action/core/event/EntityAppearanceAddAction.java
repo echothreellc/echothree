@@ -54,10 +54,10 @@ public class EntityAppearanceAddAction
     public ActionForward executeAction(ActionMapping mapping, EntityAppearanceAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
+        var entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
 
         if(wasPost(request)) {
-            CreateEntityAppearanceForm commandForm = CoreUtil.getHome().getCreateEntityAppearanceForm();
+            var commandForm = CoreUtil.getHome().getCreateEntityAppearanceForm();
 
             if(entityRef == null)
                 entityRef = actionForm.getEntityRef();
@@ -65,7 +65,7 @@ public class EntityAppearanceAddAction
             commandForm.setEntityRef(entityRef);
             commandForm.setAppearanceName(actionForm.getAppearanceChoice());
 
-            CommandResult commandResult = CoreUtil.getHome().createEntityAppearance(getUserVisitPK(request), commandForm);
+            var commandResult = CoreUtil.getHome().createEntityAppearance(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -77,8 +77,8 @@ public class EntityAppearanceAddAction
             actionForm.setEntityRef(entityRef);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.ENTITY_REF, entityRef);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetSalesOrderBatchForm commandForm = SalesUtil.getHome().getGetSalesOrderBatchForm();
-            String batchName = request.getParameter(ParameterConstants.BATCH_NAME);
+            var commandForm = SalesUtil.getHome().getGetSalesOrderBatchForm();
+            var batchName = request.getParameter(ParameterConstants.BATCH_NAME);
             
             commandForm.setBatchName(batchName);
-            
-            CommandResult commandResult = SalesUtil.getHome().getSalesOrderBatch(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSalesOrderBatchResult result = (GetSalesOrderBatchResult)executionResult.getResult();
+
+            var commandResult = SalesUtil.getHome().getSalesOrderBatch(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSalesOrderBatchResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SALES_ORDER_BATCH, result.getSalesOrderBatch());
             forwardKey = ForwardConstants.DISPLAY;

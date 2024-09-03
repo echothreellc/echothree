@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String glAccountClassName = request.getParameter(ParameterConstants.GL_ACCOUNT_CLASS_NAME);
-            GetGlAccountClassDescriptionsForm commandForm = AccountingUtil.getHome().getGetGlAccountClassDescriptionsForm();
+            var glAccountClassName = request.getParameter(ParameterConstants.GL_ACCOUNT_CLASS_NAME);
+            var commandForm = AccountingUtil.getHome().getGetGlAccountClassDescriptionsForm();
             
             commandForm.setGlAccountClassName(glAccountClassName);
-            
-            CommandResult commandResult = AccountingUtil.getHome().getGlAccountClassDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGlAccountClassDescriptionsResult result = (GetGlAccountClassDescriptionsResult)executionResult.getResult();
-            GlAccountClassTransfer glAccountClassTransfer = result.getGlAccountClass();
+
+            var commandResult = AccountingUtil.getHome().getGlAccountClassDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGlAccountClassDescriptionsResult)executionResult.getResult();
+            var glAccountClassTransfer = result.getGlAccountClass();
             
             request.setAttribute(AttributeConstants.GL_ACCOUNT_CLASS, glAccountClassTransfer);
             request.setAttribute(AttributeConstants.GL_ACCOUNT_CLASS_NAME, glAccountClassTransfer.getGlAccountClassName());

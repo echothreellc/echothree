@@ -56,14 +56,14 @@ public class AddActionForm
     private void setupScaleTypeChoices() {
         if(scaleTypeChoices == null) {
             try {
-                GetScaleTypeChoicesForm commandForm = ScaleUtil.getHome().getGetScaleTypeChoicesForm();
+                var commandForm = ScaleUtil.getHome().getGetScaleTypeChoicesForm();
 
                 commandForm.setDefaultScaleTypeChoice(scaleTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = ScaleUtil.getHome().getScaleTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetScaleTypeChoicesResult getScaleTypeChoicesResult = (GetScaleTypeChoicesResult)executionResult.getResult();
+                var commandResult = ScaleUtil.getHome().getScaleTypeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getScaleTypeChoicesResult = (GetScaleTypeChoicesResult)executionResult.getResult();
                 scaleTypeChoices = getScaleTypeChoicesResult.getScaleTypeChoices();
 
                 if(scaleTypeChoice == null) {
@@ -78,14 +78,14 @@ public class AddActionForm
     private void setupServerChoices() {
         if(serverChoices == null) {
             try {
-                GetServerChoicesForm commandForm = CoreUtil.getHome().getGetServerChoicesForm();
+                var commandForm = CoreUtil.getHome().getGetServerChoicesForm();
 
                 commandForm.setDefaultServerChoice(serverChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = CoreUtil.getHome().getServerChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetServerChoicesResult getServerChoicesResult = (GetServerChoicesResult)executionResult.getResult();
+                var commandResult = CoreUtil.getHome().getServerChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getServerChoicesResult = (GetServerChoicesResult)executionResult.getResult();
                 serverChoices = getServerChoicesResult.getServerChoices();
 
                 if(serverChoice == null) {
@@ -100,14 +100,14 @@ public class AddActionForm
     private void setupServiceChoices() {
         if(serviceChoices == null) {
             try {
-                GetServiceChoicesForm commandForm = CoreUtil.getHome().getGetServiceChoicesForm();
+                var commandForm = CoreUtil.getHome().getGetServiceChoicesForm();
 
                 commandForm.setDefaultServiceChoice(serviceChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = CoreUtil.getHome().getServiceChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetServiceChoicesResult getServiceChoicesResult = (GetServiceChoicesResult)executionResult.getResult();
+                var commandResult = CoreUtil.getHome().getServiceChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getServiceChoicesResult = (GetServiceChoicesResult)executionResult.getResult();
                 serviceChoices = getServiceChoicesResult.getServiceChoices();
 
                 if(serviceChoice == null) {

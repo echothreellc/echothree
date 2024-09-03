@@ -46,7 +46,7 @@ public class TransactionTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("transactionType")) {
-            CreateTransactionTypeForm commandForm = AccountingFormFactory.getCreateTransactionTypeForm();
+            var commandForm = AccountingFormFactory.getCreateTransactionTypeForm();
             
             commandForm.set(getAttrsMap(attrs));
             

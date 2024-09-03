@@ -52,7 +52,7 @@ public class ClobViewAction
         Set<String> options = new HashSet<>();
         options.add(DocumentOptions.DocumentIncludeClob);
 
-        PartyDocumentTransfer partyDocument = setupPartyDocumentTransfer(request, options);
+        var partyDocument = setupPartyDocumentTransfer(request, options);
 
         if(partyDocument != null) {
             forwardKey = ForwardConstants.DISPLAY;

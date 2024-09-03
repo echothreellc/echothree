@@ -65,16 +65,16 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEntityLongRangeForm commandForm = CoreUtil.getHome().getGetEntityLongRangeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityLongRangeForm();
         
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityAttributeName(actionForm.getEntityAttributeName());
         commandForm.setEntityLongRangeName(actionForm.getEntityLongRangeName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityLongRange(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEntityLongRangeResult result = (GetEntityLongRangeResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getEntityLongRange(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEntityLongRangeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ENTITY_LONG_RANGE, result.getEntityLongRange());
     }
@@ -82,7 +82,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteEntityLongRangeForm commandForm = CoreUtil.getHome().getDeleteEntityLongRangeForm();
+        var commandForm = CoreUtil.getHome().getDeleteEntityLongRangeForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());

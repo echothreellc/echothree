@@ -52,12 +52,12 @@ public class TranslationDeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-        String returnPolicyName = request.getParameter(ParameterConstants.RETURN_POLICY_NAME);
+        var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+        var returnPolicyName = request.getParameter(ParameterConstants.RETURN_POLICY_NAME);
         
         try {
-            String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-            DeleteReturnPolicyTranslationForm commandForm = ReturnPolicyUtil.getHome().getDeleteReturnPolicyTranslationForm();
+            var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getDeleteReturnPolicyTranslationForm();
             
             commandForm.setReturnKindName(returnKindName);
             commandForm.setReturnPolicyName(returnPolicyName);
@@ -69,8 +69,8 @@ public class TranslationDeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(2);
             

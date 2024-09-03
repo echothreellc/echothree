@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetCurrencyForm commandForm = AccountingUtil.getHome().getGetCurrencyForm();
-            String currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
+            var commandForm = AccountingUtil.getHome().getGetCurrencyForm();
+            var currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
             
             commandForm.setCurrencyIsoName(currencyIsoName);
-            
-            CommandResult commandResult = AccountingUtil.getHome().getCurrency(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCurrencyResult result = (GetCurrencyResult)executionResult.getResult();
+
+            var commandResult = AccountingUtil.getHome().getCurrency(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCurrencyResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CURRENCY, result.getCurrency());
             forwardKey = ForwardConstants.DISPLAY;

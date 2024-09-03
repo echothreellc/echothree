@@ -61,15 +61,15 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditLocationDescriptionForm commandForm = WarehouseUtil.getHome().getEditLocationDescriptionForm();
-                LocationDescriptionSpec spec = WarehouseUtil.getHome().getLocationDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = WarehouseUtil.getHome().getEditLocationDescriptionForm();
+                var spec = WarehouseUtil.getHome().getLocationDescriptionSpec();
                 
                 if(warehouseName == null)
                     warehouseName = actionForm.getWarehouseName();
@@ -84,19 +84,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    LocationDescriptionEdit edit = WarehouseUtil.getHome().getLocationDescriptionEdit();
+                    var edit = WarehouseUtil.getHome().getLocationDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = WarehouseUtil.getHome().editLocationDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = WarehouseUtil.getHome().editLocationDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditLocationDescriptionResult result = (EditLocationDescriptionResult)executionResult.getResult();
+                            var result = (EditLocationDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -109,13 +109,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = WarehouseUtil.getHome().editLocationDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditLocationDescriptionResult result = (EditLocationDescriptionResult)executionResult.getResult();
+
+                    var commandResult = WarehouseUtil.getHome().editLocationDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditLocationDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        LocationDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setWarehouseName(warehouseName);
@@ -135,8 +135,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WAREHOUSE_NAME, warehouseName);
             request.setAttribute(AttributeConstants.LOCATION_NAME, locationName);

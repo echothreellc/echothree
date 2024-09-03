@@ -53,12 +53,12 @@ public class StatusAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        StatusActionForm actionForm = (StatusActionForm)form;
+        var actionForm = (StatusActionForm)form;
         String forwardKey;
-        String transactionGroupName = request.getParameter(ParameterConstants.TRANSACTION_GROUP_NAME);
+        var transactionGroupName = request.getParameter(ParameterConstants.TRANSACTION_GROUP_NAME);
         
         try {
-            SetTransactionGroupStatusForm commandForm = AccountingUtil.getHome().getSetTransactionGroupStatusForm();
+            var commandForm = AccountingUtil.getHome().getSetTransactionGroupStatusForm();
             
             if(transactionGroupName == null)
                 transactionGroupName = actionForm.getTransactionGroupName();
@@ -66,8 +66,8 @@ public class StatusAction
             if(wasPost(request)) {
                 commandForm.setTransactionGroupName(transactionGroupName);
                 commandForm.setTransactionGroupStatusChoice(actionForm.getTransactionGroupStatusChoice());
-                
-                CommandResult commandResult = AccountingUtil.getHome().setTransactionGroupStatus(getUserVisitPK(request), commandForm);
+
+                var commandResult = AccountingUtil.getHome().setTransactionGroupStatus(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);
@@ -83,8 +83,8 @@ public class StatusAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.TRANSACTION_GROUP_NAME, transactionGroupName);
         }

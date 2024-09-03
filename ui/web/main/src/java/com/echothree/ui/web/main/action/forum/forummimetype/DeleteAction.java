@@ -50,15 +50,15 @@ public class DeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
-        DeleteForumMimeTypeForm commandForm = ForumUtil.getHome().getDeleteForumMimeTypeForm();
+        var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+        var commandForm = ForumUtil.getHome().getDeleteForumMimeTypeForm();
         
         commandForm.setForumName(forumName);
         commandForm.setMimeTypeName(request.getParameter(ParameterConstants.MIME_TYPE_NAME));
         
         ForumUtil.getHome().deleteForumMimeType(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.FORUM_NAME, forumName);

@@ -46,14 +46,14 @@ public class EditActionForm
     private void setupPrinterGroupChoices()
             throws NamingException {
         if(printerGroupChoices == null) {
-            GetPrinterGroupChoicesForm form = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
+            var form = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
 
             form.setDefaultPrinterGroupChoice(printerGroupChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterGroupChoicesResult getPrinterGroupChoicesResult = (GetPrinterGroupChoicesResult)executionResult.getResult();
+            var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getPrinterGroupChoicesResult = (GetPrinterGroupChoicesResult)executionResult.getResult();
             printerGroupChoices = getPrinterGroupChoicesResult.getPrinterGroupChoices();
 
             if(printerGroupChoice == null)

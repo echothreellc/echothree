@@ -54,17 +54,17 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateInventoryConditionForm commandForm = InventoryUtil.getHome().getCreateInventoryConditionForm();
+                    var commandForm = InventoryUtil.getHome().getCreateInventoryConditionForm();
                     
                     commandForm.setInventoryConditionName(actionForm.getInventoryConditionName());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = InventoryUtil.getHome().createInventoryCondition(getUserVisitPK(request), commandForm);
+
+                    var commandResult = InventoryUtil.getHome().createInventoryCondition(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

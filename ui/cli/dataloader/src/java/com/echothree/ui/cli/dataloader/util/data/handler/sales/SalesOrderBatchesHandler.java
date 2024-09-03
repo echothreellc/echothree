@@ -49,16 +49,16 @@ public class SalesOrderBatchesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("salesOrderBatch")) {
-            CreateSalesOrderBatchForm commandForm = SalesFormFactory.getCreateSalesOrderBatchForm();
+            var commandForm = SalesFormFactory.getCreateSalesOrderBatchForm();
 
             commandForm.set(getAttrsMap(attrs));
 
-            CommandResult commandResult = salesService.createSalesOrderBatch(initialDataParser.getUserVisit(), commandForm);
+            var commandResult = salesService.createSalesOrderBatch(initialDataParser.getUserVisit(), commandForm);
 
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateSalesOrderBatchResult result = (CreateSalesOrderBatchResult)executionResult.getResult();
-                String batchName = result.getBatchName();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateSalesOrderBatchResult)executionResult.getResult();
+                var batchName = result.getBatchName();
 
                 // TODO
             }

@@ -115,9 +115,9 @@ public class DatabaseDefinitionParser
     void startElementInNowhere(String localName, Attributes attrs) throws SAXException {
         if(localName.equals("database")) {
             String attrName = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("name"))
                     attrName = attrs.getValue(i);
                 else
@@ -128,7 +128,7 @@ public class DatabaseDefinitionParser
                 currentDatabase = myDatabases.addDatabase(attrName);
                 currentState = cStateInDatabase;
             } else {
-                String whatsMissing = "";
+                var whatsMissing = "";
                 if(attrName == null)
                     whatsMissing += "name ";
                 throw new SAXException("missing " + whatsMissing + "attribute(s) on database");
@@ -147,9 +147,9 @@ public class DatabaseDefinitionParser
     void startElementInFiles(String localName, Attributes attrs) throws SAXException {
         if(localName.equals("file")) {
             String attrName = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("name"))
                     attrName = attrs.getValue(i);
             }
@@ -157,7 +157,7 @@ public class DatabaseDefinitionParser
             if(attrName != null) {
                 myFiles.add(attrName);
             } else {
-                String whatsMissing = "";
+                var whatsMissing = "";
                 if(attrName == null)
                     whatsMissing += "name  ";
                 throw new SAXException("missing " + whatsMissing + "attribute(s) on file");
@@ -168,9 +168,9 @@ public class DatabaseDefinitionParser
     void startElementInComponents(String localName, Attributes attrs) throws SAXException {
         if(localName.equals("component")) {
             String attrName = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("name"))
                     attrName = attrs.getValue(i);
             }
@@ -183,7 +183,7 @@ public class DatabaseDefinitionParser
                     throw new SAXException(e);
                 }
             } else {
-                String whatsMissing = "";
+                var whatsMissing = "";
                 if(attrName == null)
                     whatsMissing += "name  ";
                 throw new SAXException("missing " + whatsMissing + "attribute(s) on component");
@@ -206,9 +206,9 @@ public class DatabaseDefinitionParser
             String attrDestinationTable = null;
             String attrDestinationColumn = null;
             String attrOnParentDelete = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("type"))
                     attrType = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("realType"))
@@ -233,7 +233,7 @@ public class DatabaseDefinitionParser
                     throw new SAXException(e);
                 }
             } else {
-                String whatsMissing = "";
+                var whatsMissing = "";
                 if(attrType == null)
                     whatsMissing += "type  ";
                 if(attrRealType == null)
@@ -250,9 +250,9 @@ public class DatabaseDefinitionParser
             String attrColumnPrefix = null;
             String attrChunkSize = null;
             String attrDescription = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("namePlural"))
                     attrNamePlural = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("nameSingular"))
@@ -274,7 +274,7 @@ public class DatabaseDefinitionParser
                     throw new SAXException(e);
                 }
             } else {
-                String whatsMissing = "";
+                var whatsMissing = "";
                 if(attrNamePlural == null)
                     whatsMissing += "namePlural ";
                 if(attrNameSingular == null)
@@ -301,14 +301,14 @@ public class DatabaseDefinitionParser
             String attrMaxLength = null;
             String attrDefaultValue = null;
             String attrSequenceSource = null;
-            boolean attrNullAllowed = false;
+            var attrNullAllowed = false;
             String attrDescription = null;
             String attrDestinationTable = null;
             String attrDestinationColumn = null;
             String attrOnParentDelete = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("name"))
                     attrName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("type"))
@@ -339,7 +339,7 @@ public class DatabaseDefinitionParser
                     throw new SAXException(e);
                 }
             } else {
-                String whatsMissing = "";
+                var whatsMissing = "";
                 if(attrName == null)
                     whatsMissing += "name  ";
                 if(attrType == null)
@@ -353,9 +353,9 @@ public class DatabaseDefinitionParser
         if(localName.equals("index")) {
             String attrType = null;
             String attrName = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("type"))
                     attrType = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("name"))
@@ -370,7 +370,7 @@ public class DatabaseDefinitionParser
                 }
                 currentState = cStateInIndex;
             } else {
-                String whatsMissing = "";
+                var whatsMissing = "";
                 if(attrType == null)
                     whatsMissing += "type ";
                 throw new SAXException("missing " + whatsMissing + "attribute(s) on index");
@@ -381,9 +381,9 @@ public class DatabaseDefinitionParser
     void startElementInIndex(String localName, Attributes attrs) throws SAXException {
         if(localName.equals("indexColumn")) {
             String attrName = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("name"))
                     attrName = attrs.getValue(i);
             }
@@ -395,7 +395,7 @@ public class DatabaseDefinitionParser
                     throw new SAXException(e);
                 }
             } else {
-                String whatsMissing = "";
+                var whatsMissing = "";
                 if(attrName == null)
                     whatsMissing += "name  ";
                 throw new SAXException("missing " + whatsMissing + "attribute(s) on table");
@@ -495,7 +495,7 @@ public class DatabaseDefinitionParser
                     leadingColumns.add(index.getIndexColumns().iterator().next());
                 });
 
-                for(Column column : currentTable.getForeignKeys()) {
+                for(var column : currentTable.getForeignKeys()) {
                     if(!leadingColumns.contains(column)) {
                         throw new SAXException("foreign key column " + column.getName() + " in table " + currentTable.getNamePlural() +
                                 " isn't first column in any indexes");
@@ -523,11 +523,11 @@ public class DatabaseDefinitionParser
     void endElementInIndex(String localName)
             throws SAXException {
         if(localName.equals("index")) {
-            int indexColumns = currentIndex.getIndexColumns().size();
-            boolean isPrimaryKey = currentIndex.getType() == Index.indexPrimaryKey;
+            var indexColumns = currentIndex.getIndexColumns().size();
+            var isPrimaryKey = currentIndex.getType() == Index.indexPrimaryKey;
             
             if(indexColumns == 0 && !isPrimaryKey) {
-                String indexName = currentIndex.getName();
+                var indexName = currentIndex.getName();
                 
                 throw new SAXException("index " + (indexName == null? "(no name available)": indexName) + " in table " + currentTable.getNamePlural() + " has no columns");
             }
@@ -678,7 +678,7 @@ public class DatabaseDefinitionParser
 
         parseResource(parser, arg);
 
-        for(String i : myFiles) {
+        for(var i : myFiles) {
             parseResource(parser, i);
         }
     }

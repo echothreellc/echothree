@@ -63,15 +63,15 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTrainingClassSectionForm commandForm = TrainingUtil.getHome().getGetTrainingClassSectionForm();
+        var commandForm = TrainingUtil.getHome().getGetTrainingClassSectionForm();
 
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());
-        
-        CommandResult commandResult = TrainingUtil.getHome().getTrainingClassSection(getUserVisitPK(request), commandForm);
+
+        var commandResult = TrainingUtil.getHome().getTrainingClassSection(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTrainingClassSectionResult result = (GetTrainingClassSectionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTrainingClassSectionResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRAINING_CLASS_SECTION, result.getTrainingClassSection());
         }
@@ -80,7 +80,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateTrainingClassPageForm commandForm = TrainingUtil.getHome().getCreateTrainingClassPageForm();
+        var commandForm = TrainingUtil.getHome().getCreateTrainingClassPageForm();
 
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());

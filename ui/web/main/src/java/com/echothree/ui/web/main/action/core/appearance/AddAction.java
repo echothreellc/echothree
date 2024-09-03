@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateAppearanceForm commandForm = CoreUtil.getHome().getCreateAppearanceForm();
+        var commandForm = CoreUtil.getHome().getCreateAppearanceForm();
 
         commandForm.setAppearanceName(actionForm.getAppearanceName());
         commandForm.setTextColorName(actionForm.getTextColorChoice());

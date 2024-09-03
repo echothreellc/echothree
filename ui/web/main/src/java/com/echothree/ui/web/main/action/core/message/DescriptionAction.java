@@ -55,20 +55,20 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String messageTypeName = request.getParameter(ParameterConstants.MESSAGE_TYPE_NAME);
-            String messageName = request.getParameter(ParameterConstants.MESSAGE_NAME);
-            GetMessageDescriptionsForm commandForm = MessageUtil.getHome().getGetMessageDescriptionsForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var messageTypeName = request.getParameter(ParameterConstants.MESSAGE_TYPE_NAME);
+            var messageName = request.getParameter(ParameterConstants.MESSAGE_NAME);
+            var commandForm = MessageUtil.getHome().getGetMessageDescriptionsForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setMessageTypeName(messageTypeName);
             commandForm.setMessageName(messageName);
-            
-            CommandResult commandResult = MessageUtil.getHome().getMessageDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMessageDescriptionsResult result = (GetMessageDescriptionsResult)executionResult.getResult();
+
+            var commandResult = MessageUtil.getHome().getMessageDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMessageDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.MESSAGE, result.getMessage());
             request.setAttribute(AttributeConstants.MESSAGE_DESCRIPTIONS, result.getMessageDescriptions());

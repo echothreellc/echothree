@@ -69,7 +69,7 @@ public class ContentLogic
         if(referrer != null) {
             try {
                 var contentControl = Session.getModelController(ContentControl.class);
-                URL url = new URL(referrer);
+                var url = new URL(referrer);
                 var contentWebAddressName = url.getHost();
 
                 if(!contentControl.validContentWebAddressName(contentWebAddressName)) {

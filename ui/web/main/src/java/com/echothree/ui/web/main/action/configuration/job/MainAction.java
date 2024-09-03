@@ -49,9 +49,9 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        CommandResult commandResult = JobUtil.getHome().getJobs(getUserVisitPK(request), null);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetJobsResult result = (GetJobsResult)executionResult.getResult();
+        var commandResult = JobUtil.getHome().getJobs(getUserVisitPK(request), null);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetJobsResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.JOBS, result.getJobs());
         

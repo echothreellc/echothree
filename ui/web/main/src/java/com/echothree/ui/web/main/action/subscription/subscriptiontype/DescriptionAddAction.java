@@ -56,15 +56,15 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
-        String subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
+        var subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
+        var subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm descriptionAddActionForm = (DescriptionAddActionForm)form;
+                var descriptionAddActionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateSubscriptionTypeDescriptionForm commandForm = SubscriptionUtil.getHome().getCreateSubscriptionTypeDescriptionForm();
+                    var commandForm = SubscriptionUtil.getHome().getCreateSubscriptionTypeDescriptionForm();
                     
                     if(subscriptionKindName == null)
                         subscriptionKindName = descriptionAddActionForm.getSubscriptionKindName();
@@ -75,8 +75,8 @@ public class DescriptionAddAction
                     commandForm.setSubscriptionTypeName(subscriptionTypeName);
                     commandForm.setLanguageIsoName(descriptionAddActionForm.getLanguageChoice());
                     commandForm.setDescription(descriptionAddActionForm.getDescription());
-                    
-                    CommandResult commandResult = SubscriptionUtil.getHome().createSubscriptionTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = SubscriptionUtil.getHome().createSubscriptionTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -93,8 +93,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SUBSCRIPTION_KIND_NAME, subscriptionKindName);
             request.setAttribute(AttributeConstants.SUBSCRIPTION_TYPE_NAME, subscriptionTypeName);

@@ -57,22 +57,22 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-            String contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
-            String contentPageName = request.getParameter(ParameterConstants.CONTENT_PAGE_NAME);
-            GetContentPageDescriptionsForm getContentPageDescriptionsForm = ContentUtil.getHome().getGetContentPageDescriptionsForm();
+            var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+            var contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
+            var contentPageName = request.getParameter(ParameterConstants.CONTENT_PAGE_NAME);
+            var getContentPageDescriptionsForm = ContentUtil.getHome().getGetContentPageDescriptionsForm();
             
             getContentPageDescriptionsForm.setContentCollectionName(contentCollectionName);
             getContentPageDescriptionsForm.setContentSectionName(contentSectionName);
             getContentPageDescriptionsForm.setContentPageName(contentPageName);
-            
-            CommandResult commandResult = ContentUtil.getHome().getContentPageDescriptions(getUserVisitPK(request), getContentPageDescriptionsForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentPageDescriptionsResult getContentPageDescriptionsResult = (GetContentPageDescriptionsResult)executionResult.getResult();
-            ContentCollectionTransfer contentCollectionTransfer = getContentPageDescriptionsResult.getContentCollection();
-            ContentSectionTransfer contentSectionTransfer = getContentPageDescriptionsResult.getContentSection();
-            ContentPageTransfer contentPageTransfer = getContentPageDescriptionsResult.getContentPage();
-            ContentSectionTransfer parentContentSectionTransfer = contentSectionTransfer.getParentContentSection();
+
+            var commandResult = ContentUtil.getHome().getContentPageDescriptions(getUserVisitPK(request), getContentPageDescriptionsForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getContentPageDescriptionsResult = (GetContentPageDescriptionsResult)executionResult.getResult();
+            var contentCollectionTransfer = getContentPageDescriptionsResult.getContentCollection();
+            var contentSectionTransfer = getContentPageDescriptionsResult.getContentSection();
+            var contentPageTransfer = getContentPageDescriptionsResult.getContentPage();
+            var parentContentSectionTransfer = contentSectionTransfer.getParentContentSection();
             
             request.setAttribute("contentCollection", contentCollectionTransfer);
             request.setAttribute("contentCollectionName", contentCollectionTransfer.getContentCollectionName());

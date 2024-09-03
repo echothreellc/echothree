@@ -52,9 +52,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureKinds(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureKindsResult getUnitOfMeasureKindsResult = (GetUnitOfMeasureKindsResult)executionResult.getResult();
+            var commandResult = UomUtil.getHome().getUnitOfMeasureKinds(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureKindsResult = (GetUnitOfMeasureKindsResult)executionResult.getResult();
             
             request.setAttribute("unitOfMeasureKinds", getUnitOfMeasureKindsResult.getUnitOfMeasureKinds());
             forwardKey = ForwardConstants.DISPLAY;

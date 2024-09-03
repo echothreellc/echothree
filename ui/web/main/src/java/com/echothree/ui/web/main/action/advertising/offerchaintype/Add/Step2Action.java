@@ -50,14 +50,14 @@ public class Step2Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        GetChainTypesForm commandForm = ChainUtil.getHome().getGetChainTypesForm();
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var commandForm = ChainUtil.getHome().getGetChainTypesForm();
         
         commandForm.setChainKindName(chainKindName);
-        
-        CommandResult commandResult = ChainUtil.getHome().getChainTypes(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetChainTypesResult result = (GetChainTypesResult)executionResult.getResult();
+
+        var commandResult = ChainUtil.getHome().getChainTypes(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetChainTypesResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CHAIN_KIND, result.getChainKind());
         request.setAttribute(AttributeConstants.CHAIN_TYPES, result.getChainTypes());

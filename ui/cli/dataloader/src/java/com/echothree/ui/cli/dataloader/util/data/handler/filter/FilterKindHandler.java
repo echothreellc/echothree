@@ -52,7 +52,7 @@ public class FilterKindHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("filterKindDescription")) {
-            CreateFilterKindDescriptionForm commandForm = FilterFormFactory.getCreateFilterKindDescriptionForm();
+            var commandForm = FilterFormFactory.getCreateFilterKindDescriptionForm();
 
             commandForm.setFilterKindName(filterKindName);
             commandForm.set(getAttrsMap(attrs));
@@ -60,7 +60,7 @@ public class FilterKindHandler
             filterService.createFilterKindDescription(initialDataParser.getUserVisit(), commandForm);
         } else {
             if(localName.equals("filterType")) {
-                CreateFilterTypeForm commandForm = FilterFormFactory.getCreateFilterTypeForm();
+                var commandForm = FilterFormFactory.getCreateFilterTypeForm();
 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.set(getAttrsMap(attrs));
@@ -70,7 +70,7 @@ public class FilterKindHandler
                 initialDataParser.pushHandler(new FilterTypeHandler(initialDataParser, this, filterKindName, commandForm.getFilterTypeName()));
             } else {
                 if(localName.equals("filterAdjustment")) {
-                    CreateFilterAdjustmentForm commandForm = FilterFormFactory.getCreateFilterAdjustmentForm();
+                    var commandForm = FilterFormFactory.getCreateFilterAdjustmentForm();
 
                     commandForm.setFilterKindName(filterKindName);
                     commandForm.set(getAttrsMap(attrs));

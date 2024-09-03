@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String responsibilityTypeName = request.getParameter(ParameterConstants.RESPONSIBILITY_TYPE_NAME);
-            GetResponsibilityTypeDescriptionsForm commandForm = EmployeeUtil.getHome().getGetResponsibilityTypeDescriptionsForm();
+            var responsibilityTypeName = request.getParameter(ParameterConstants.RESPONSIBILITY_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getGetResponsibilityTypeDescriptionsForm();
             
             commandForm.setResponsibilityTypeName(responsibilityTypeName);
-            
-            CommandResult commandResult = EmployeeUtil.getHome().getResponsibilityTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetResponsibilityTypeDescriptionsResult result = (GetResponsibilityTypeDescriptionsResult)executionResult.getResult();
-            ResponsibilityTypeTransfer responsibilityTypeTransfer = result.getResponsibilityType();
+
+            var commandResult = EmployeeUtil.getHome().getResponsibilityTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetResponsibilityTypeDescriptionsResult)executionResult.getResult();
+            var responsibilityTypeTransfer = result.getResponsibilityType();
             
             request.setAttribute(AttributeConstants.RESPONSIBILITY_TYPE, responsibilityTypeTransfer);
             request.setAttribute(AttributeConstants.RESPONSIBILITY_TYPE_NAME, responsibilityTypeTransfer.getResponsibilityTypeName());

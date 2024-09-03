@@ -45,15 +45,15 @@ public class AddActionForm
     private void setupCancellationReasonChoices() {
         if(cancellationReasonChoices == null) {
             try {
-                GetCancellationReasonChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationReasonChoicesForm();
+                var form = CancellationPolicyUtil.getHome().getGetCancellationReasonChoicesForm();
                 
                 form.setCancellationKindName(cancellationKindName);
                 form.setDefaultCancellationReasonChoice(cancellationReasonChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationReasonChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCancellationReasonChoicesResult getCancellationReasonChoicesResult = (GetCancellationReasonChoicesResult)executionResult.getResult();
+
+                var commandResult = CancellationPolicyUtil.getHome().getCancellationReasonChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getCancellationReasonChoicesResult = (GetCancellationReasonChoicesResult)executionResult.getResult();
                 cancellationReasonChoices = getCancellationReasonChoicesResult.getCancellationReasonChoices();
                 
                 if(cancellationReasonChoice == null) {

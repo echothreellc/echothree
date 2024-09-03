@@ -63,15 +63,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerTypePaymentMethodForm commandForm = CustomerUtil.getHome().getGetCustomerTypePaymentMethodForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerTypePaymentMethodForm();
 
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());
         commandForm.setPaymentMethodName(actionForm.getPaymentMethodName());
-        
-        CommandResult commandResult = CustomerUtil.getHome().getCustomerTypePaymentMethod(getUserVisitPK(request), commandForm);
+
+        var commandResult = CustomerUtil.getHome().getCustomerTypePaymentMethod(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypePaymentMethodResult result = (GetCustomerTypePaymentMethodResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypePaymentMethodResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_PAYMENT_METHOD, result.getCustomerTypePaymentMethod());
         }
@@ -80,7 +80,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteCustomerTypePaymentMethodForm commandForm = CustomerUtil.getHome().getDeleteCustomerTypePaymentMethodForm();
+        var commandForm = CustomerUtil.getHome().getDeleteCustomerTypePaymentMethodForm();
 
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());
         commandForm.setPaymentMethodName(actionForm.getPaymentMethodName());

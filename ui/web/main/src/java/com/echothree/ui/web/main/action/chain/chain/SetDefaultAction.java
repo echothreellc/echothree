@@ -50,9 +50,9 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
-        SetDefaultChainForm commandForm = ChainUtil.getHome().getSetDefaultChainForm();
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
+        var commandForm = ChainUtil.getHome().getSetDefaultChainForm();
 
         commandForm.setChainKindName(chainKindName);
         commandForm.setChainTypeName(chainTypeName);
@@ -60,7 +60,7 @@ public class SetDefaultAction
 
         ChainUtil.getHome().setDefaultChain(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(2);
         
         parameters.put(ParameterConstants.CHAIN_KIND_NAME, chainKindName);

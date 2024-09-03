@@ -38,13 +38,13 @@ public abstract class BaseCompanyCarrierAccountAction<A
 
     public static void setupCompany(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetCompanyForm commandForm = PartyUtil.getHome().getGetCompanyForm();
+        var commandForm = PartyUtil.getHome().getGetCompanyForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCompanyResult result = (GetCompanyResult)executionResult.getResult();
+        var commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCompanyResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.COMPANY, result.getCompany());
     }
@@ -56,14 +56,14 @@ public abstract class BaseCompanyCarrierAccountAction<A
 
     public static PartyCarrierAccountTransfer getPartyCarrierAccountTransfer(HttpServletRequest request, String partyName, String carrierName)
             throws NamingException {
-        GetPartyCarrierAccountForm commandForm = CarrierUtil.getHome().getGetPartyCarrierAccountForm();
+        var commandForm = CarrierUtil.getHome().getGetPartyCarrierAccountForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setCarrierName(carrierName);
 
-        CommandResult commandResult = CarrierUtil.getHome().getPartyCarrierAccount(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyCarrierAccountResult result = (GetPartyCarrierAccountResult)executionResult.getResult();
+        var commandResult = CarrierUtil.getHome().getPartyCarrierAccount(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyCarrierAccountResult)executionResult.getResult();
 
         return result.getPartyCarrierAccount();
     }

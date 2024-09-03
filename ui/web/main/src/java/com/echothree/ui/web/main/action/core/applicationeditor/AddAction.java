@@ -62,14 +62,14 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetApplicationForm commandForm = CoreUtil.getHome().getGetApplicationForm();
+        var commandForm = CoreUtil.getHome().getGetApplicationForm();
 
         commandForm.setApplicationName(actionForm.getApplicationName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getApplication(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getApplication(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetApplicationResult result = (GetApplicationResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetApplicationResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.APPLICATION, result.getApplication());
         }
@@ -78,7 +78,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateApplicationEditorForm commandForm = CoreUtil.getHome().getCreateApplicationEditorForm();
+        var commandForm = CoreUtil.getHome().getCreateApplicationEditorForm();
 
         commandForm.setApplicationName(actionForm.getApplicationName());
         commandForm.setEditorName(actionForm.getEditorChoice());

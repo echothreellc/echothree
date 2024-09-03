@@ -63,14 +63,14 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTagForm commandForm = TagUtil.getHome().getGetTagForm();
+        var commandForm = TagUtil.getHome().getGetTagForm();
         
         commandForm.setTagScopeName(actionForm.getTagScopeName());
         commandForm.setTagName(actionForm.getTagName());
-        
-        CommandResult commandResult = TagUtil.getHome().getTag(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTagResult result = (GetTagResult)executionResult.getResult();
+
+        var commandResult = TagUtil.getHome().getTag(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTagResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.TAG, result.getTag());
     }
@@ -78,7 +78,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteTagForm commandForm = TagUtil.getHome().getDeleteTagForm();
+        var commandForm = TagUtil.getHome().getDeleteTagForm();
 
         commandForm.setTagScopeName(actionForm.getTagScopeName());
         commandForm.setTagName(actionForm.getTagName());

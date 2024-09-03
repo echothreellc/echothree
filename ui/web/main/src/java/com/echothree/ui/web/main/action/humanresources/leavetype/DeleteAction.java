@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetLeaveTypeForm commandForm = EmployeeUtil.getHome().getGetLeaveTypeForm();
+        var commandForm = EmployeeUtil.getHome().getGetLeaveTypeForm();
         
         commandForm.setLeaveTypeName(actionForm.getLeaveTypeName());
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getLeaveType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetLeaveTypeResult result = (GetLeaveTypeResult)executionResult.getResult();
+
+        var commandResult = EmployeeUtil.getHome().getLeaveType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetLeaveTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.LEAVE_TYPE, result.getLeaveType());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteLeaveTypeForm commandForm = EmployeeUtil.getHome().getDeleteLeaveTypeForm();
+        var commandForm = EmployeeUtil.getHome().getDeleteLeaveTypeForm();
 
         commandForm.setLeaveTypeName(actionForm.getLeaveTypeName());
 

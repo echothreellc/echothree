@@ -125,7 +125,7 @@ public class PartyTrainingClassLogic
 
     public PreparedPartyTrainingClass preparePartyTrainingClass(final ExecutionErrorAccumulator eea, final Party party, final TrainingClass trainingClass,
             final Long completedTime, final Long validUntilTime) {
-        PreparedPartyTrainingClass preparedPartyTrainingClass = new PreparedPartyTrainingClass();
+        var preparedPartyTrainingClass = new PreparedPartyTrainingClass();
 
         preparedPartyTrainingClass.setParty(party);
         preparedPartyTrainingClass.setTrainingClass(trainingClass);

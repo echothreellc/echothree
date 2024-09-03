@@ -47,7 +47,7 @@ public class SearchCheckSpellingActionTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("searchCheckSpellingActionType")) {
-            CreateSearchCheckSpellingActionTypeForm commandForm = SearchFormFactory.getCreateSearchCheckSpellingActionTypeForm();
+            var commandForm = SearchFormFactory.getCreateSearchCheckSpellingActionTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

@@ -52,9 +52,9 @@ public class PartyContactMechanismRelationshipAddAction
     public ActionForward executeAction(ActionMapping mapping, PartyContactMechanismRelationshipAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        CreatePartyContactMechanismRelationshipForm commandForm = ContactUtil.getHome().getCreatePartyContactMechanismRelationshipForm();
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String fromContactMechanismName = request.getParameter(ParameterConstants.FROM_CONTACT_MECHANISM_NAME);
+        var commandForm = ContactUtil.getHome().getCreatePartyContactMechanismRelationshipForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var fromContactMechanismName = request.getParameter(ParameterConstants.FROM_CONTACT_MECHANISM_NAME);
         
         if(partyName == null) {
             partyName = actionForm.getPartyName();
@@ -67,8 +67,8 @@ public class PartyContactMechanismRelationshipAddAction
             commandForm.setPartyName(partyName);
             commandForm.setFromContactMechanismName(fromContactMechanismName);
             commandForm.setToContactMechanismName(actionForm.getToContactMechanismChoice());
-            
-            CommandResult commandResult = ContactUtil.getHome().createPartyContactMechanismRelationship(getUserVisitPK(request), commandForm);
+
+            var commandResult = ContactUtil.getHome().createPartyContactMechanismRelationship(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -81,8 +81,8 @@ public class PartyContactMechanismRelationshipAddAction
             actionForm.setFromContactMechanismName(fromContactMechanismName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupVendor(request, partyName);
             setupPartyContactMechanismTransfer(request, partyName, fromContactMechanismName);

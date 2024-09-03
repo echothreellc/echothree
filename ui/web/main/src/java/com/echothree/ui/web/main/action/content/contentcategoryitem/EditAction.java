@@ -52,7 +52,7 @@ public class EditAction
     @Override
     protected ContentCategoryItemSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ContentCategoryItemSpec spec = ContentUtil.getHome().getContentCategoryItemSpec();
+        var spec = ContentUtil.getHome().getContentCategoryItemSpec();
         
         spec.setContentCollectionName(findParameter(request, ParameterConstants.CONTENT_COLLECTION_NAME, actionForm.getContentCollectionName()));
         spec.setContentCatalogName(findParameter(request, ParameterConstants.CONTENT_CATALOG_NAME, actionForm.getContentCatalogName()));
@@ -68,7 +68,7 @@ public class EditAction
     @Override
     protected ContentCategoryItemEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ContentCategoryItemEdit edit = ContentUtil.getHome().getContentCategoryItemEdit();
+        var edit = ContentUtil.getHome().getContentCategoryItemEdit();
 
         edit.setIsDefault(actionForm.getIsDefault().toString());
         edit.setSortOrder(actionForm.getSortOrder());
@@ -98,9 +98,9 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditContentCategoryItemForm commandForm)
             throws Exception {
-        CommandResult commandResult = ContentUtil.getHome().editContentCategoryItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditContentCategoryItemResult result = (EditContentCategoryItemResult)executionResult.getResult();
+        var commandResult = ContentUtil.getHome().editContentCategoryItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditContentCategoryItemResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CONTENT_CATEGORY_ITEM, result.getContentCategoryItem());
         

@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String useNameElementName = request.getParameter(ParameterConstants.USE_NAME_ELEMENT_NAME);
-            GetUseNameElementDescriptionsForm commandForm = OfferUtil.getHome().getGetUseNameElementDescriptionsForm();
+            var useNameElementName = request.getParameter(ParameterConstants.USE_NAME_ELEMENT_NAME);
+            var commandForm = OfferUtil.getHome().getGetUseNameElementDescriptionsForm();
             
             commandForm.setUseNameElementName(useNameElementName);
-            
-            CommandResult commandResult = OfferUtil.getHome().getUseNameElementDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUseNameElementDescriptionsResult result = (GetUseNameElementDescriptionsResult)executionResult.getResult();
-            UseNameElementTransfer useNameElementTransfer = result.getUseNameElement();
+
+            var commandResult = OfferUtil.getHome().getUseNameElementDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetUseNameElementDescriptionsResult)executionResult.getResult();
+            var useNameElementTransfer = result.getUseNameElement();
             
             request.setAttribute(AttributeConstants.USE_NAME_ELEMENT, useNameElementTransfer);
             request.setAttribute(AttributeConstants.USE_NAME_ELEMENT_NAME, useNameElementTransfer.getUseNameElementName());

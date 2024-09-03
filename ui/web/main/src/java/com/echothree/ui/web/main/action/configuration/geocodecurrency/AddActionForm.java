@@ -44,14 +44,14 @@ public class AddActionForm
     private void setupCurrencyChoices() {
         if(currencyChoices == null) {
             try {
-                GetCurrencyChoicesForm commandForm = AccountingUtil.getHome().getGetCurrencyChoicesForm();
+                var commandForm = AccountingUtil.getHome().getGetCurrencyChoicesForm();
                 
                 commandForm.setDefaultCurrencyChoice(currencyChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCurrencyChoicesResult getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
                 currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
                 
                 if(currencyChoice == null)

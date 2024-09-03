@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String glAccountCategoryName = request.getParameter(ParameterConstants.GL_ACCOUNT_CATEGORY_NAME);
-            GetGlAccountCategoryDescriptionsForm commandForm = AccountingUtil.getHome().getGetGlAccountCategoryDescriptionsForm();
+            var glAccountCategoryName = request.getParameter(ParameterConstants.GL_ACCOUNT_CATEGORY_NAME);
+            var commandForm = AccountingUtil.getHome().getGetGlAccountCategoryDescriptionsForm();
             
             commandForm.setGlAccountCategoryName(glAccountCategoryName);
-            
-            CommandResult commandResult = AccountingUtil.getHome().getGlAccountCategoryDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGlAccountCategoryDescriptionsResult result = (GetGlAccountCategoryDescriptionsResult)executionResult.getResult();
-            GlAccountCategoryTransfer glAccountCategoryTransfer = result.getGlAccountCategory();
+
+            var commandResult = AccountingUtil.getHome().getGlAccountCategoryDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGlAccountCategoryDescriptionsResult)executionResult.getResult();
+            var glAccountCategoryTransfer = result.getGlAccountCategory();
             
             request.setAttribute(AttributeConstants.GL_ACCOUNT_CATEGORY, glAccountCategoryTransfer);
             request.setAttribute(AttributeConstants.GL_ACCOUNT_CATEGORY_NAME, glAccountCategoryTransfer.getGlAccountCategoryName());

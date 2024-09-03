@@ -813,7 +813,7 @@ public class VendorControl
     public VendorStatusChoicesBean getVendorStatusChoices(String defaultVendorStatusChoice, Language language,
             boolean allowNullChoice, Party vendorParty, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        VendorStatusChoicesBean vendorStatusChoicesBean = new VendorStatusChoicesBean();
+        var vendorStatusChoicesBean = new VendorStatusChoicesBean();
 
         if(vendorParty == null) {
             workflowControl.getWorkflowEntranceChoices(vendorStatusChoicesBean, defaultVendorStatusChoice, language, allowNullChoice,
@@ -1157,7 +1157,7 @@ public class VendorControl
     public VendorItemStatusChoicesBean getVendorItemStatusChoices(String defaultVendorItemStatusChoice, Language language,
             boolean allowNullChoice, VendorItem vendorItem, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        VendorItemStatusChoicesBean vendorItemStatusChoicesBean = new VendorItemStatusChoicesBean();
+        var vendorItemStatusChoicesBean = new VendorItemStatusChoicesBean();
 
         if(vendorItem == null) {
             workflowControl.getWorkflowEntranceChoices(vendorItemStatusChoicesBean, defaultVendorItemStatusChoice, language, allowNullChoice,

@@ -48,7 +48,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultQueueTypeForm commandForm = QueueUtil.getHome().getSetDefaultQueueTypeForm();
+        var commandForm = QueueUtil.getHome().getSetDefaultQueueTypeForm();
 
         commandForm.setQueueTypeName(request.getParameter(ParameterConstants.QUEUE_TYPE_NAME));
 

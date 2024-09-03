@@ -59,15 +59,15 @@ public class CommentAddAction
     
     public String getPartyContactListEntityRef(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartyContactListForm commandForm = ContactListUtil.getHome().getGetPartyContactListForm();
+        var commandForm = ContactListUtil.getHome().getGetPartyContactListForm();
         
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setContactListName(actionForm.getContactListName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getPartyContactList(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyContactListResult result = (GetPartyContactListResult)executionResult.getResult();
-        PartyContactListTransfer partyContactList = result.getPartyContactList();
+
+        var commandResult = ContactListUtil.getHome().getPartyContactList(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyContactListResult)executionResult.getResult();
+        var partyContactList = result.getPartyContactList();
         
         request.setAttribute(AttributeConstants.PARTY_CONTACT_LIST, partyContactList);
         
@@ -87,7 +87,7 @@ public class CommentAddAction
     @Override
     public CommandResult doAdd(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCommentForm commandForm = CommentUtil.getHome().getCreateCommentForm();
+        var commandForm = CommentUtil.getHome().getCreateCommentForm();
 
         commandForm.setEntityRef(getPartyContactListEntityRef(actionForm, request));
         commandForm.setCommentTypeName(CommentConstants.CommentType_PARTY_CONTACT_LIST);

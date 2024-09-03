@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
-            GetPrintersForm commandForm = PrinterUtil.getHome().getGetPrintersForm();
+            var printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
+            var commandForm = PrinterUtil.getHome().getGetPrintersForm();
             
             commandForm.setPrinterGroupName(printerGroupName);
-            
-            CommandResult commandResult = PrinterUtil.getHome().getPrinters(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrintersResult result = (GetPrintersResult)executionResult.getResult();
+
+            var commandResult = PrinterUtil.getHome().getPrinters(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPrintersResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PRINTER_GROUP, result.getPrinterGroup());
             request.setAttribute(AttributeConstants.PRINTERS, result.getPrinters());

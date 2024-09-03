@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetMimeTypeForm commandForm = CoreUtil.getHome().getGetMimeTypeForm();
+        var commandForm = CoreUtil.getHome().getGetMimeTypeForm();
         
         commandForm.setMimeTypeName(actionForm.getMimeTypeName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getMimeType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetMimeTypeResult result = (GetMimeTypeResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getMimeType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetMimeTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.MIME_TYPE, result.getMimeType());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteMimeTypeForm commandForm = CoreUtil.getHome().getDeleteMimeTypeForm();
+        var commandForm = CoreUtil.getHome().getDeleteMimeTypeForm();
 
         commandForm.setMimeTypeName(actionForm.getMimeTypeName());
 

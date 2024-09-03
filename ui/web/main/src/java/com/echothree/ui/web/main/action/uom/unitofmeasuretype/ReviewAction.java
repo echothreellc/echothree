@@ -55,16 +55,16 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetUnitOfMeasureTypeForm commandForm = UomUtil.getHome().getGetUnitOfMeasureTypeForm();
-            String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-            String unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
+            var commandForm = UomUtil.getHome().getGetUnitOfMeasureTypeForm();
+            var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+            var unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
             
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
-            
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureTypeResult result = (GetUnitOfMeasureTypeResult)executionResult.getResult();
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetUnitOfMeasureTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_TYPE, result.getUnitOfMeasureType());
             forwardKey = ForwardConstants.DISPLAY;

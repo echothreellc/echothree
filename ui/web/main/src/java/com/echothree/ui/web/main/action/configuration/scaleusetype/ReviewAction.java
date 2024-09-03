@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetScaleUseTypeForm commandForm = ScaleUtil.getHome().getGetScaleUseTypeForm();
+        var commandForm = ScaleUtil.getHome().getGetScaleUseTypeForm();
 
         commandForm.setScaleUseTypeName(request.getParameter(ParameterConstants.SCALE_USE_TYPE_NAME));
-        
-        CommandResult commandResult = ScaleUtil.getHome().getScaleUseType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ScaleUtil.getHome().getScaleUseType(getUserVisitPK(request), commandForm);
         ScaleUseTypeTransfer scaleUseType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetScaleUseTypeResult result = (GetScaleUseTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetScaleUseTypeResult)executionResult.getResult();
             
             scaleUseType = result.getScaleUseType();
         }

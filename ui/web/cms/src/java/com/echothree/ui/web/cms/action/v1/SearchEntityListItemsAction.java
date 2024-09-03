@@ -44,7 +44,7 @@ public class SearchEntityListItemsAction
     @Override
     protected CommandResult getCommandResult(HttpServletRequest request)
             throws Exception {
-        SearchEntityListItemsForm commandForm = SearchUtil.getHome().getSearchEntityListItemsForm();
+        var commandForm = SearchUtil.getHome().getSearchEntityListItemsForm();
 
         commandForm.setSearchDefaultOperatorName(request.getParameter(ParameterConstants.SEARCH_DEFAULT_ORDERATOR_NAME));
         commandForm.setSearchSortDirectionName(request.getParameter(ParameterConstants.SEARCH_SORT_DIRECTION_NAME));

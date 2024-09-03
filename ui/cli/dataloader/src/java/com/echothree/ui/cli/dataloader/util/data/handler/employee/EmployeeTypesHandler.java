@@ -46,7 +46,7 @@ public class EmployeeTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("employeeType")) {
-            CreateEmployeeTypeForm commandForm = EmployeeFormFactory.getCreateEmployeeTypeForm();
+            var commandForm = EmployeeFormFactory.getCreateEmployeeTypeForm();
             
             commandForm.set(getAttrsMap(attrs));
             

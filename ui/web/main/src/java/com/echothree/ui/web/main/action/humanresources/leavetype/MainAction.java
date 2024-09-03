@@ -51,12 +51,12 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetLeaveTypesForm commandForm = EmployeeUtil.getHome().getGetLeaveTypesForm();
+        var commandForm = EmployeeUtil.getHome().getGetLeaveTypesForm();
 
-        CommandResult commandResult = EmployeeUtil.getHome().getLeaveTypes(getUserVisitPK(request), commandForm);
+        var commandResult = EmployeeUtil.getHome().getLeaveTypes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLeaveTypesResult result = (GetLeaveTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.LEAVE_TYPES, result.getLeaveTypes());
             forwardKey = ForwardConstants.DISPLAY;

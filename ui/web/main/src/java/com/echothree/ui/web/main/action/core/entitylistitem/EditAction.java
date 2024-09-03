@@ -61,16 +61,16 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-        String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditEntityListItemForm commandForm = CoreUtil.getHome().getEditEntityListItemForm();
+                var actionForm = (EditActionForm)form;
+                var commandForm = CoreUtil.getHome().getEditEntityListItemForm();
                 var spec = CoreUtil.getHome().getEntityListItemUniversalSpec();
-                String originalEntityListItemName = request.getParameter(ParameterConstants.ORIGINAL_ENTITY_LIST_ITEM_NAME);
+                var originalEntityListItemName = request.getParameter(ParameterConstants.ORIGINAL_ENTITY_LIST_ITEM_NAME);
                 
                 if(componentVendorName == null)
                     componentVendorName = actionForm.getComponentVendorName();
@@ -88,7 +88,7 @@ public class EditAction
                 spec.setEntityListItemName(originalEntityListItemName);
                 
                 if(wasPost(request)) {
-                    EntityListItemEdit edit = CoreUtil.getHome().getEntityListItemEdit();
+                    var edit = CoreUtil.getHome().getEntityListItemEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -97,14 +97,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CoreUtil.getHome().editEntityListItem(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CoreUtil.getHome().editEntityListItem(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditEntityListItemResult result = (EditEntityListItemResult)executionResult.getResult();
+                            var result = (EditEntityListItemResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -117,13 +117,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CoreUtil.getHome().editEntityListItem(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditEntityListItemResult result = (EditEntityListItemResult)executionResult.getResult();
+
+                    var commandResult = CoreUtil.getHome().editEntityListItem(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditEntityListItemResult)executionResult.getResult();
                     
                     if(result != null) {
-                        EntityListItemEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setComponentVendorName(componentVendorName);
@@ -147,8 +147,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorName);
             request.setAttribute(AttributeConstants.ENTITY_TYPE_NAME, entityTypeName);

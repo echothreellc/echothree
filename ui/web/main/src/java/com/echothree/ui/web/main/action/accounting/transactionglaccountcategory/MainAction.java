@@ -52,15 +52,15 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String transactionTypeName = request.getParameter(ParameterConstants.TRANSACTION_TYPE_NAME);
-        GetTransactionGlAccountCategoriesForm commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoriesForm();
+        var transactionTypeName = request.getParameter(ParameterConstants.TRANSACTION_TYPE_NAME);
+        var commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoriesForm();
 
         commandForm.setTransactionTypeName(transactionTypeName);
 
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionGlAccountCategories(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTransactionGlAccountCategoriesResult result = (GetTransactionGlAccountCategoriesResult)executionResult.getResult();
-        TransactionTypeTransfer transactionTypeTransfer = result.getTransactionType();
+        var commandResult = AccountingUtil.getHome().getTransactionGlAccountCategories(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTransactionGlAccountCategoriesResult)executionResult.getResult();
+        var transactionTypeTransfer = result.getTransactionType();
 
         request.setAttribute(AttributeConstants.TRANSACTION_TYPE, transactionTypeTransfer);
         request.setAttribute(AttributeConstants.TRANSACTION_GL_ACCOUNT_CATEGORIES, result.getTransactionGlAccountCategories());

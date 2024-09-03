@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = IndexUtil.getHome().getIndexes(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetIndexesResult result = (GetIndexesResult)executionResult.getResult();
+            var commandResult = IndexUtil.getHome().getIndexes(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetIndexesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.INDEXES, result.getIndexes());
             forwardKey = ForwardConstants.DISPLAY;

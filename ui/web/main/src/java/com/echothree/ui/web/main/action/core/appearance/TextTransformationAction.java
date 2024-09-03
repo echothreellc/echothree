@@ -53,16 +53,16 @@ public class TextTransformationAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String appearanceName = request.getParameter(ParameterConstants.APPEARANCE_NAME);
-        GetAppearanceTextTransformationsForm commandForm = CoreUtil.getHome().getGetAppearanceTextTransformationsForm();
+        var appearanceName = request.getParameter(ParameterConstants.APPEARANCE_NAME);
+        var commandForm = CoreUtil.getHome().getGetAppearanceTextTransformationsForm();
 
         commandForm.setAppearanceName(appearanceName);
 
-        CommandResult commandResult = CoreUtil.getHome().getAppearanceTextTransformations(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getAppearanceTextTransformations(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAppearanceTextTransformationsResult result = (GetAppearanceTextTransformationsResult) executionResult.getResult();
-            AppearanceTransfer appearanceTransfer = result.getAppearance();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAppearanceTextTransformationsResult) executionResult.getResult();
+            var appearanceTransfer = result.getAppearance();
 
             request.setAttribute(AttributeConstants.APPEARANCE, appearanceTransfer);
             request.setAttribute(AttributeConstants.APPEARANCE_TEXT_TRANSFORMATIONS, result.getAppearanceTextTransformations());

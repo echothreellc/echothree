@@ -58,21 +58,21 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String ratingTypeName = request.getParameter(ParameterConstants.RATING_TYPE_NAME);
-            GetRatingTypeListItemsForm commandForm = RatingUtil.getHome().getGetRatingTypeListItemsForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var ratingTypeName = request.getParameter(ParameterConstants.RATING_TYPE_NAME);
+            var commandForm = RatingUtil.getHome().getGetRatingTypeListItemsForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setRatingTypeName(ratingTypeName);
-            
-            CommandResult commandResult = RatingUtil.getHome().getRatingTypeListItems(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetRatingTypeListItemsResult result = (GetRatingTypeListItemsResult)executionResult.getResult();
-            ComponentVendorTransfer componentVendorTransfer = result.getComponentVendor();
-            EntityTypeTransfer entityTypeTransfer = result.getEntityType();
-            RatingTypeTransfer ratingTypeTransfer = result.getRatingType();
+
+            var commandResult = RatingUtil.getHome().getRatingTypeListItems(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetRatingTypeListItemsResult)executionResult.getResult();
+            var componentVendorTransfer = result.getComponentVendor();
+            var entityTypeTransfer = result.getEntityType();
+            var ratingTypeTransfer = result.getRatingType();
             
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR, componentVendorTransfer);
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorTransfer.getComponentVendorName());

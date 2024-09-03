@@ -44,14 +44,14 @@ public class AddActionForm
     private void setupTimeZoneChoices() {
         if(timeZoneChoices == null) {
             try {
-                GetTimeZoneChoicesForm commandForm = PartyUtil.getHome().getGetTimeZoneChoicesForm();
+                var commandForm = PartyUtil.getHome().getGetTimeZoneChoicesForm();
                 
                 commandForm.setDefaultTimeZoneChoice(timeZoneChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getTimeZoneChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetTimeZoneChoicesResult getTimeZoneChoicesResult = (GetTimeZoneChoicesResult)executionResult.getResult();
+
+                var commandResult = PartyUtil.getHome().getTimeZoneChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getTimeZoneChoicesResult = (GetTimeZoneChoicesResult)executionResult.getResult();
                 timeZoneChoices = getTimeZoneChoicesResult.getTimeZoneChoices();
                 
                 if(timeZoneChoice == null)

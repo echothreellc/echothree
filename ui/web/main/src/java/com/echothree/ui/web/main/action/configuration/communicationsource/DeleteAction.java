@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteCommunicationSourceForm commandForm = CommunicationUtil.getHome().getDeleteCommunicationSourceForm();
-            String communicationSourceName = request.getParameter(ParameterConstants.COMMUNICATION_SOURCE_NAME);
+            var commandForm = CommunicationUtil.getHome().getDeleteCommunicationSourceForm();
+            var communicationSourceName = request.getParameter(ParameterConstants.COMMUNICATION_SOURCE_NAME);
             
             commandForm.setCommunicationSourceName(communicationSourceName);
             

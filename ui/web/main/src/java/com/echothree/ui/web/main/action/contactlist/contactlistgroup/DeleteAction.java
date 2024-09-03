@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContactListGroupForm commandForm = ContactListUtil.getHome().getGetContactListGroupForm();
+        var commandForm = ContactListUtil.getHome().getGetContactListGroupForm();
         
         commandForm.setContactListGroupName(actionForm.getContactListGroupName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getContactListGroup(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetContactListGroupResult result = (GetContactListGroupResult)executionResult.getResult();
+
+        var commandResult = ContactListUtil.getHome().getContactListGroup(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetContactListGroupResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CONTACT_LIST_GROUP, result.getContactListGroup());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteContactListGroupForm commandForm = ContactListUtil.getHome().getDeleteContactListGroupForm();
+        var commandForm = ContactListUtil.getHome().getDeleteContactListGroupForm();
 
         commandForm.setContactListGroupName(actionForm.getContactListGroupName());
 

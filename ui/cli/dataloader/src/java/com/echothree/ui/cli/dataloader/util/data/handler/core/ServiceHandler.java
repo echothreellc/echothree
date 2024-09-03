@@ -50,7 +50,7 @@ public class ServiceHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("serviceDescription")) {
-            CreateServiceDescriptionForm commandForm = CoreFormFactory.getCreateServiceDescriptionForm();
+            var commandForm = CoreFormFactory.getCreateServiceDescriptionForm();
 
             commandForm.setServiceName(serviceName);
             commandForm.set(getAttrsMap(attrs));

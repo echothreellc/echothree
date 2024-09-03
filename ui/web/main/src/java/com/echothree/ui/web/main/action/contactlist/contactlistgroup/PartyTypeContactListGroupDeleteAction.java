@@ -63,15 +63,15 @@ public class PartyTypeContactListGroupDeleteAction
     @Override
     public void setupTransfer(PartyTypeContactListGroupDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartyTypeContactListGroupForm commandForm = ContactListUtil.getHome().getGetPartyTypeContactListGroupForm();
+        var commandForm = ContactListUtil.getHome().getGetPartyTypeContactListGroupForm();
         
         commandForm.setContactListGroupName(actionForm.getContactListGroupName());
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getPartyTypeContactListGroup(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getPartyTypeContactListGroup(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyTypeContactListGroupResult result = (GetPartyTypeContactListGroupResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyTypeContactListGroupResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.PARTY_TYPE_CONTACT_LIST_GROUP, result.getPartyTypeContactListGroup());
         }
@@ -80,7 +80,7 @@ public class PartyTypeContactListGroupDeleteAction
     @Override
     public CommandResult doDelete(PartyTypeContactListGroupDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyTypeContactListGroupForm commandForm = ContactListUtil.getHome().getDeletePartyTypeContactListGroupForm();
+        var commandForm = ContactListUtil.getHome().getDeletePartyTypeContactListGroupForm();
 
         commandForm.setContactListGroupName(actionForm.getContactListGroupName());
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());

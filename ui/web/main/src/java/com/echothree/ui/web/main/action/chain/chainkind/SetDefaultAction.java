@@ -47,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultChainKindForm commandForm = ChainUtil.getHome().getSetDefaultChainKindForm();
+        var commandForm = ChainUtil.getHome().getSetDefaultChainKindForm();
 
         commandForm.setChainKindName(request.getParameter(ParameterConstants.CHAIN_KIND_NAME));
 

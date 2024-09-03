@@ -61,8 +61,8 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetEmploymentsForm commandForm = EmployeeUtil.getHome().getGetEmploymentsForm();
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = EmployeeUtil.getHome().getGetEmploymentsForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
 
         commandForm.setPartyName(partyName);
 
@@ -70,13 +70,13 @@ public class MainAction
         options.add(PartyOptions.PartyIncludeDescription);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = EmployeeUtil.getHome().getEmployments(getUserVisitPK(request), commandForm);
+        var commandResult = EmployeeUtil.getHome().getEmployments(getUserVisitPK(request), commandForm);
         PartyTransfer party = null;
         List<EmploymentTransfer> employments = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmploymentsResult result = (GetEmploymentsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmploymentsResult)executionResult.getResult();
 
             party = result.getParty();
             employments = result.getEmployments();

@@ -41,14 +41,14 @@ public class AddActionForm
     public void setupHarmonizedTariffScheduleCodeUseTypeChoices() {
         if(harmonizedTariffScheduleCodeUseTypeChoices == null) {
             try {
-                GetHarmonizedTariffScheduleCodeUseTypeChoicesForm form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseTypeChoicesForm();
+                var form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseTypeChoicesForm();
 
                 form.setDefaultHarmonizedTariffScheduleCodeUseTypeChoice(harmonizedTariffScheduleCodeUseTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetHarmonizedTariffScheduleCodeUseTypeChoicesResult getHarmonizedTariffScheduleCodeUseTypeChoicesResult = (GetHarmonizedTariffScheduleCodeUseTypeChoicesResult)executionResult.getResult();
+                var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getHarmonizedTariffScheduleCodeUseTypeChoicesResult = (GetHarmonizedTariffScheduleCodeUseTypeChoicesResult)executionResult.getResult();
                 harmonizedTariffScheduleCodeUseTypeChoices = getHarmonizedTariffScheduleCodeUseTypeChoicesResult.getHarmonizedTariffScheduleCodeUseTypeChoices();
 
                 if(harmonizedTariffScheduleCodeUseTypeChoice == null) {

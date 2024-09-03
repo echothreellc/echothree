@@ -174,7 +174,7 @@ public class ItemDescriptionLogic
     }
 
     public ImageReader getImageReader(MimeType mimeType, ItemBlobDescription itemBlobDescription) {
-        MemoryCacheImageInputStream memoryCacheImageInputStream = new MemoryCacheImageInputStream(itemBlobDescription.getBlobDescription().getByteArrayInputStream());
+        var memoryCacheImageInputStream = new MemoryCacheImageInputStream(itemBlobDescription.getBlobDescription().getByteArrayInputStream());
         var imageReaders = ImageIO.getImageReadersByMIMEType(mimeType.getLastDetail().getMimeTypeName());
         var imageReader = imageReaders.hasNext() ? imageReaders.next() : null;
 
@@ -250,7 +250,7 @@ public class ItemDescriptionLogic
                 }
             }
 
-            BufferedImage tmp = new BufferedImage(w, h, type);
+            var tmp = new BufferedImage(w, h, type);
             var g2 = tmp.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, hint);
             g2.drawImage(ret, 0, 0, w, h, null);
@@ -353,7 +353,7 @@ public class ItemDescriptionLogic
                                     var imageWriter = imageWriters.hasNext() ? imageWriters.next() : null;
 
                                     if(imageWriter != null) {
-                                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                        var byteArrayOutputStream = new ByteArrayOutputStream();
 
                                         try {
                                             var scaledQuality = (float)quality / 100.0f;
@@ -373,7 +373,7 @@ public class ItemDescriptionLogic
                                             }
 
                                             ImageOutputStream imageOutputStream = new MemoryCacheImageOutputStream(byteArrayOutputStream);
-                                            IIOImage img = new IIOImage(scaledBufferedImage, null, null);
+                                            var img = new IIOImage(scaledBufferedImage, null, null);
 
                                             imageWriter.setOutput(imageOutputStream);
                                             imageWriter.write(null, img, iwp);

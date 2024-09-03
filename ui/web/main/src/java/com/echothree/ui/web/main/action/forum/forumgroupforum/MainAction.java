@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetForumGroupForumsForm commandForm = ForumUtil.getHome().getGetForumGroupForumsForm();
-            String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+            var commandForm = ForumUtil.getHome().getGetForumGroupForumsForm();
+            var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
             
             commandForm.setForumName(forumName);
 
-            CommandResult commandResult = ForumUtil.getHome().getForumGroupForums(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetForumGroupForumsResult result = (GetForumGroupForumsResult)executionResult.getResult();
+            var commandResult = ForumUtil.getHome().getForumGroupForums(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetForumGroupForumsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FORUM, result.getForum());
             request.setAttribute(AttributeConstants.FORUM_GROUP_FORUMS, result.getForumGroupForums());

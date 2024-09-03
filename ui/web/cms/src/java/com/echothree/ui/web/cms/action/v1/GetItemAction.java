@@ -45,13 +45,13 @@ public class GetItemAction
     @Override
     protected CommandResult getCommandResult(HttpServletRequest request)
             throws Exception {
-        GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+        var commandForm = ItemUtil.getHome().getGetItemForm();
 
         commandForm.setItemName(request.getParameter(ParameterConstants.ITEM_NAME));
 
         BaseTag.setOptions(request.getParameter(ParameterConstants.OPTIONS), null, commandForm);
 
-        CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
         
         return commandResult;
     }

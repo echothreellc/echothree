@@ -58,7 +58,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetShippingMethodForm commandForm = ShippingUtil.getHome().getGetShippingMethodForm();
+        var commandForm = ShippingUtil.getHome().getGetShippingMethodForm();
 
         commandForm.setShippingMethodName(request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME));
 
@@ -72,12 +72,12 @@ public class ReviewAction
         options.add(ShippingOptions.ShippingMethodIncludeEntityAttributeGroups);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ShippingUtil.getHome().getShippingMethod(getUserVisitPK(request), commandForm);
+        var commandResult = ShippingUtil.getHome().getShippingMethod(getUserVisitPK(request), commandForm);
         ShippingMethodTransfer shippingMethod = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetShippingMethodResult result = (GetShippingMethodResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetShippingMethodResult)executionResult.getResult();
 
             shippingMethod = result.getShippingMethod();
         }

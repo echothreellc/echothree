@@ -51,16 +51,16 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetLocationCapacitiesForm commandForm = WarehouseUtil.getHome().getGetLocationCapacitiesForm();
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
+        var commandForm = WarehouseUtil.getHome().getGetLocationCapacitiesForm();
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
         
         commandForm.setWarehouseName(warehouseName);
         commandForm.setLocationName(locationName);
-        
-        CommandResult commandResult = WarehouseUtil.getHome().getLocationCapacities(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetLocationCapacitiesResult result = (GetLocationCapacitiesResult)executionResult.getResult();
+
+        var commandResult = WarehouseUtil.getHome().getLocationCapacities(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetLocationCapacitiesResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.LOCATION, result.getLocation());
         request.setAttribute(AttributeConstants.LOCATION_CAPACITIES, result.getLocationCapacities());

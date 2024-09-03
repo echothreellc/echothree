@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-            GetContentCollectionDescriptionsForm commandForm = ContentUtil.getHome().getGetContentCollectionDescriptionsForm();
+            var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+            var commandForm = ContentUtil.getHome().getGetContentCollectionDescriptionsForm();
             
             commandForm.setContentCollectionName(contentCollectionName);
-            
-            CommandResult commandResult = ContentUtil.getHome().getContentCollectionDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentCollectionDescriptionsResult result = (GetContentCollectionDescriptionsResult)executionResult.getResult();
-            ContentCollectionTransfer contentCollectionTransfer = result.getContentCollection();
+
+            var commandResult = ContentUtil.getHome().getContentCollectionDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentCollectionDescriptionsResult)executionResult.getResult();
+            var contentCollectionTransfer = result.getContentCollection();
             
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION, contentCollectionTransfer);
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionTransfer.getContentCollectionName());

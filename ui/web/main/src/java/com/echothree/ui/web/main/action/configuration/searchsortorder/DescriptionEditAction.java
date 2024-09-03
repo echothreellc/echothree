@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected SearchSortOrderDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        SearchSortOrderDescriptionSpec spec = SearchUtil.getHome().getSearchSortOrderDescriptionSpec();
+        var spec = SearchUtil.getHome().getSearchSortOrderDescriptionSpec();
         
         spec.setSearchKindName(findParameter(request, ParameterConstants.SEARCH_KIND_NAME, actionForm.getSearchKindName()));
         spec.setSearchSortOrderName(findParameter(request, ParameterConstants.SEARCH_SORT_ORDER_NAME, actionForm.getSearchSortOrderName()));
@@ -63,7 +63,7 @@ public class DescriptionEditAction
     @Override
     protected SearchSortOrderDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        SearchSortOrderDescriptionEdit edit = SearchUtil.getHome().getSearchSortOrderDescriptionEdit();
+        var edit = SearchUtil.getHome().getSearchSortOrderDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

@@ -61,14 +61,14 @@ public class StatusAction
    @Override
     public void setupTransfer(StatusActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartyTrainingClassForm commandForm = TrainingUtil.getHome().getGetPartyTrainingClassForm();
+       var commandForm = TrainingUtil.getHome().getGetPartyTrainingClassForm();
         
         commandForm.setPartyTrainingClassName(actionForm.getPartyTrainingClassName());
-        
-        CommandResult commandResult = TrainingUtil.getHome().getPartyTrainingClass(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyTrainingClassResult result = (GetPartyTrainingClassResult)executionResult.getResult();
-        PartyTrainingClassTransfer partyTrainingClass = result.getPartyTrainingClass();
+
+       var commandResult = TrainingUtil.getHome().getPartyTrainingClass(getUserVisitPK(request), commandForm);
+       var executionResult = commandResult.getExecutionResult();
+       var result = (GetPartyTrainingClassResult)executionResult.getResult();
+       var partyTrainingClass = result.getPartyTrainingClass();
         
         request.setAttribute(AttributeConstants.PARTY_TRAINING_CLASS, partyTrainingClass);
         request.setAttribute(AttributeConstants.EMPLOYEE, EmployeeUtils.getInstance().getEmployee(getUserVisitPK(request),
@@ -78,7 +78,7 @@ public class StatusAction
     @Override
     public CommandResult doStatus(StatusActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        SetPartyTrainingClassStatusForm commandForm = TrainingUtil.getHome().getSetPartyTrainingClassStatusForm();
+        var commandForm = TrainingUtil.getHome().getSetPartyTrainingClassStatusForm();
 
         commandForm.setPartyTrainingClassName(actionForm.getPartyTrainingClassName());
         commandForm.setPartyTrainingClassStatusChoice(actionForm.getPartyTrainingClassStatusChoice());

@@ -29,7 +29,7 @@ public class PreferredLanguageSteps implements En {
         When("^the user sets their preferred language to \"([^\"]*)\"$",
                 (String languageIsoName) -> {
                     UserService userService = UserUtil.getHome();
-                    SetUserVisitPreferredLanguageForm userVisitPreferredLanguageForm = userService.getSetUserVisitPreferredLanguageForm();
+                    var userVisitPreferredLanguageForm = userService.getSetUserVisitPreferredLanguageForm();
                     var persona = CurrentPersona.persona;
 
                     userVisitPreferredLanguageForm.setLanguageIsoName(languageIsoName);

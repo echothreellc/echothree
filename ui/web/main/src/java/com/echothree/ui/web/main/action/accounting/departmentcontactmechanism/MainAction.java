@@ -58,11 +58,11 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetDepartmentForm commandForm = PartyUtil.getHome().getGetDepartmentForm();
-        String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
-        String divisionName = request.getParameter(ParameterConstants.DIVISION_NAME);
-        String departmentName = request.getParameter(ParameterConstants.DEPARTMENT_NAME);
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = PartyUtil.getHome().getGetDepartmentForm();
+        var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
+        var divisionName = request.getParameter(ParameterConstants.DIVISION_NAME);
+        var departmentName = request.getParameter(ParameterConstants.DEPARTMENT_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         
         commandForm.setCompanyName(companyName);
         commandForm.setDivisionName(divisionName);
@@ -74,11 +74,11 @@ public class MainAction
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismPurposes);
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismRelationshipsByFromPartyContactMechanism);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
-        
-        CommandResult commandResult = PartyUtil.getHome().getDepartment(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetDepartmentResult result = (GetDepartmentResult)executionResult.getResult();
-        DepartmentTransfer department = result.getDepartment();
+
+        var commandResult = PartyUtil.getHome().getDepartment(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetDepartmentResult)executionResult.getResult();
+        var department = result.getDepartment();
         
         if(department == null) {
             forwardKey = ForwardConstants.ERROR_404;

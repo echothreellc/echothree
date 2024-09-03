@@ -63,15 +63,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartySecurityRoleTemplateTrainingClassForm commandForm = SecurityUtil.getHome().getGetPartySecurityRoleTemplateTrainingClassForm();
+        var commandForm = SecurityUtil.getHome().getGetPartySecurityRoleTemplateTrainingClassForm();
         
         commandForm.setPartySecurityRoleTemplateName(actionForm.getPartySecurityRoleTemplateName());
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
-        
-        CommandResult commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateTrainingClass(getUserVisitPK(request), commandForm);
+
+        var commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateTrainingClass(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartySecurityRoleTemplateTrainingClassResult result = (GetPartySecurityRoleTemplateTrainingClassResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartySecurityRoleTemplateTrainingClassResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.PARTY_SECURITY_ROLE_TEMPLATE_TRAINING_CLASS, result.getPartySecurityRoleTemplateTrainingClass());
         }
@@ -80,7 +80,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartySecurityRoleTemplateTrainingClassForm commandForm = SecurityUtil.getHome().getDeletePartySecurityRoleTemplateTrainingClassForm();
+        var commandForm = SecurityUtil.getHome().getDeletePartySecurityRoleTemplateTrainingClassForm();
 
         commandForm.setPartySecurityRoleTemplateName(actionForm.getPartySecurityRoleTemplateName());
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());

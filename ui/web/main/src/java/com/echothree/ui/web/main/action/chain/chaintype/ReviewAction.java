@@ -53,17 +53,17 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetChainTypeForm commandForm = ChainUtil.getHome().getGetChainTypeForm();
+        var commandForm = ChainUtil.getHome().getGetChainTypeForm();
 
         commandForm.setChainKindName(request.getParameter(ParameterConstants.CHAIN_KIND_NAME));
         commandForm.setChainTypeName(request.getParameter(ParameterConstants.CHAIN_TYPE_NAME));
-        
-        CommandResult commandResult = ChainUtil.getHome().getChainType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ChainUtil.getHome().getChainType(getUserVisitPK(request), commandForm);
         ChainTypeTransfer chainType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetChainTypeResult result = (GetChainTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetChainTypeResult)executionResult.getResult();
             
             chainType = result.getChainType();
         }

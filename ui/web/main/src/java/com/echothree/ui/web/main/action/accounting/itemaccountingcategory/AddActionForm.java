@@ -45,14 +45,14 @@ public class AddActionForm
     private void setupParentItemAccountingCategoryChoices() {
         if(parentItemAccountingCategoryChoices == null) {
             try {
-                GetItemAccountingCategoryChoicesForm form = AccountingUtil.getHome().getGetItemAccountingCategoryChoicesForm();
+                var form = AccountingUtil.getHome().getGetItemAccountingCategoryChoicesForm();
                 
                 form.setDefaultItemAccountingCategoryChoice(parentItemAccountingCategoryChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemAccountingCategoryChoicesResult getItemAccountingCategoryChoicesResult = (GetItemAccountingCategoryChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getItemAccountingCategoryChoicesResult = (GetItemAccountingCategoryChoicesResult)executionResult.getResult();
                 parentItemAccountingCategoryChoices = getItemAccountingCategoryChoicesResult.getItemAccountingCategoryChoices();
                 
                 if(parentItemAccountingCategoryChoice == null)

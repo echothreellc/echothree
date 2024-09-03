@@ -180,7 +180,7 @@ public class CreatePartyPaymentMethodCommand
                     if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
                         var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
                         var contactControl = Session.getModelController(ContactControl.class);
-                        Soundex soundex = new Soundex();
+                        var soundex = new Soundex();
                         var personalTitleId = form.getPersonalTitleId();
                         var personalTitle = personalTitleId == null ? null : partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
                         var firstName = form.getFirstName();

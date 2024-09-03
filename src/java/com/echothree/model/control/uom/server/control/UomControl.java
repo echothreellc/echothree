@@ -359,8 +359,8 @@ public class UomControl
     public UnitOfMeasureChoicesBean getUnitOfMeasureChoicesByUnitOfMeasureKindUseType(String defaultUnitOfMeasureChoice,
             Language language, UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
         var unitOfMeasureKinds = getUnitOfMeasureKindsByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
-        ArrayList<String> labels = new ArrayList<>();
-        ArrayList<String> values = new ArrayList<>();
+        var labels = new ArrayList<String>();
+        var values = new ArrayList<String>();
         String defaultValue = null;
         var uomkIter = unitOfMeasureKinds.iterator();
         

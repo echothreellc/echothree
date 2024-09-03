@@ -59,15 +59,15 @@ public class AddActionForm
     private void setupForumThreadIconChoices()
             throws NamingException {
         if(forumThreadIconChoices == null) {
-            GetIconChoicesForm commandForm = IconUtil.getHome().getGetIconChoicesForm();
+            var commandForm = IconUtil.getHome().getGetIconChoicesForm();
 
             commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM_THREAD);
             commandForm.setDefaultIconChoice(forumThreadIconChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetIconChoicesResult result = (GetIconChoicesResult)executionResult.getResult();
+            var commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetIconChoicesResult)executionResult.getResult();
             forumThreadIconChoices = result.getIconChoices();
 
             if(forumThreadIconChoice == null) {
@@ -79,15 +79,15 @@ public class AddActionForm
     private void setupForumMessageIconChoices()
             throws NamingException {
         if(forumMessageIconChoices == null) {
-            GetIconChoicesForm commandForm = IconUtil.getHome().getGetIconChoicesForm();
+            var commandForm = IconUtil.getHome().getGetIconChoicesForm();
 
             commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM_MESSAGE);
             commandForm.setDefaultIconChoice(forumMessageIconChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetIconChoicesResult result = (GetIconChoicesResult)executionResult.getResult();
+            var commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetIconChoicesResult)executionResult.getResult();
             forumMessageIconChoices = result.getIconChoices();
 
             if(forumMessageIconChoice == null) {
@@ -99,15 +99,15 @@ public class AddActionForm
     private void setupFeedSummaryMimeTypeChoices()
             throws NamingException {
         if(feedSummaryMimeTypeChoices == null) {
-            GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
             commandForm.setDefaultMimeTypeChoice(feedSummaryMimeTypeChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
             commandForm.setForumName(getForumName());
 
-            CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeChoicesResult)executionResult.getResult();
             feedSummaryMimeTypeChoices = result.getMimeTypeChoices();
 
             if(feedSummaryMimeTypeChoice == null) {
@@ -119,15 +119,15 @@ public class AddActionForm
     private void setupSummaryMimeTypeChoices()
             throws NamingException {
         if(summaryMimeTypeChoices == null) {
-            GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
             commandForm.setDefaultMimeTypeChoice(summaryMimeTypeChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
             commandForm.setForumName(getForumName());
 
-            CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeChoicesResult)executionResult.getResult();
             summaryMimeTypeChoices = result.getMimeTypeChoices();
 
             if(summaryMimeTypeChoice == null) {
@@ -139,15 +139,15 @@ public class AddActionForm
     private void setupContentMimeTypeChoices()
             throws NamingException {
         if(contentMimeTypeChoices == null) {
-            GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
             commandForm.setDefaultMimeTypeChoice(contentMimeTypeChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
             commandForm.setForumName(getForumName());
 
-            CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeChoicesResult)executionResult.getResult();
             contentMimeTypeChoices = result.getMimeTypeChoices();
 
             if(contentMimeTypeChoice == null) {

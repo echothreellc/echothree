@@ -120,22 +120,22 @@ public abstract class MainBaseDownloadAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
         throws Exception {
         String forwardKey = null;
-        StreamInfo info = getStreamInfo(mapping, form, request, response);
+        var info = getStreamInfo(mapping, form, request, response);
 
         if(info == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
-            String contentType = info.getContentType();
-            InputStream stream = info.getInputStream();
+            var contentType = info.getContentType();
+            var stream = info.getInputStream();
 
             try {
-                String contentDisposition = info.getContentDisposition();
+                var contentDisposition = info.getContentDisposition();
                 
                 response.setContentType(contentType);
                 
                 if(contentDisposition != null) {
-                    String filename = info.getFilename();
-                    StringBuilder value = new StringBuilder(contentDisposition.length() + (filename == null ? 0 : 2 + filename.length()));
+                    var filename = info.getFilename();
+                    var value = new StringBuilder(contentDisposition.length() + (filename == null ? 0 : 2 + filename.length()));
                     
                     value.append(contentDisposition);
                     if(filename != null) {
@@ -168,9 +168,9 @@ public abstract class MainBaseDownloadAction
      */
     public int copy(InputStream input, OutputStream output)
         throws IOException {
-        byte[] buffer = new byte[getBufferSize()];
-        int count = 0;
-        int n = 0;
+        var buffer = new byte[getBufferSize()];
+        var count = 0;
+        var n = 0;
 
         while (-1 != (n = input.read(buffer))) {
             output.write(buffer, 0, n);

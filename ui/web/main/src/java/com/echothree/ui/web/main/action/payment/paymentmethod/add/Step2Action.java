@@ -57,13 +57,13 @@ public class Step2Action
     
     private PaymentMethodTypeTransfer getPaymentMethodTypeTransfer(UserVisitPK userVisitPK, String paymentMethodTypeName)
             throws NamingException {
-        GetPaymentMethodTypeForm commandForm = PaymentUtil.getHome().getGetPaymentMethodTypeForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentMethodTypeForm();
         
         commandForm.setPaymentMethodTypeName(paymentMethodTypeName);
-        
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentMethodType(userVisitPK, commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPaymentMethodTypeResult result = (GetPaymentMethodTypeResult)executionResult.getResult();
+
+        var commandResult = PaymentUtil.getHome().getPaymentMethodType(userVisitPK, commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPaymentMethodTypeResult)executionResult.getResult();
         
         return result.getPaymentMethodType();
     }
@@ -73,9 +73,9 @@ public class Step2Action
             throws Exception {
         String forwardKey;
         PaymentMethodTypeTransfer paymentMethodType;
-        UserVisitPK userVisitPK = getUserVisitPK(request);
-        Step2ActionForm actionForm = (Step2ActionForm)form;
-        String paymentMethodTypeName = request.getParameter(ParameterConstants.PAYMENT_METHOD_TYPE_NAME);
+        var userVisitPK = getUserVisitPK(request);
+        var actionForm = (Step2ActionForm)form;
+        var paymentMethodTypeName = request.getParameter(ParameterConstants.PAYMENT_METHOD_TYPE_NAME);
 
         if(paymentMethodTypeName == null)
             paymentMethodTypeName = actionForm.getPaymentMethodTypeName();
@@ -83,7 +83,7 @@ public class Step2Action
         paymentMethodType = getPaymentMethodTypeTransfer(userVisitPK, paymentMethodTypeName);
 
         if(wasPost(request)) {
-            CreatePaymentMethodForm commandForm = PaymentUtil.getHome().getCreatePaymentMethodForm();
+            var commandForm = PaymentUtil.getHome().getCreatePaymentMethodForm();
 
             commandForm.setPaymentMethodName(actionForm.getPaymentMethodName());
             commandForm.setPaymentMethodTypeName(actionForm.getPaymentMethodTypeName());
@@ -111,7 +111,7 @@ public class Step2Action
             commandForm.setRequireIssuer(actionForm.getRequireIssuer().toString());
             commandForm.setHoldDays(actionForm.getHoldDays());
 
-            CommandResult commandResult = PaymentUtil.getHome().createPaymentMethod(userVisitPK, commandForm);
+            var commandResult = PaymentUtil.getHome().createPaymentMethod(userVisitPK, commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -124,8 +124,8 @@ public class Step2Action
             actionForm.setPaymentMethodTypeName(paymentMethodTypeName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.PAYMENT_METHOD_TYPE, paymentMethodType);
         }

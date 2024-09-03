@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetQueueTypeForm commandForm = QueueUtil.getHome().getGetQueueTypeForm();
+        var commandForm = QueueUtil.getHome().getGetQueueTypeForm();
 
         commandForm.setQueueTypeName(request.getParameter(ParameterConstants.QUEUE_TYPE_NAME));
-        
-        CommandResult commandResult = QueueUtil.getHome().getQueueType(getUserVisitPK(request), commandForm);
+
+        var commandResult = QueueUtil.getHome().getQueueType(getUserVisitPK(request), commandForm);
         QueueTypeTransfer queueType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetQueueTypeResult result = (GetQueueTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetQueueTypeResult)executionResult.getResult();
             
             queueType = result.getQueueType();
         }

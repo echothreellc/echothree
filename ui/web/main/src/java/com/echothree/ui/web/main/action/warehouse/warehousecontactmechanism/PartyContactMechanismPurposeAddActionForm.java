@@ -41,15 +41,15 @@ public class PartyContactMechanismPurposeAddActionForm
     public void setupContactMechanismPurposeChoices()
             throws NamingException {
         if(contactMechanismPurposeChoices == null) {
-            GetContactMechanismPurposeChoicesForm form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
+            var form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
 
             form.setContactMechanismName(contactMechanismName);
             form.setDefaultContactMechanismPurposeChoice(contactMechanismPurposeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactMechanismPurposeChoicesResult getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
             contactMechanismPurposeChoices = getContactMechanismPurposeChoicesResult.getContactMechanismPurposeChoices();
 
             if(contactMechanismPurposeChoice == null) {

@@ -54,17 +54,17 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateCommunicationEventPurposeForm commandForm = CommunicationUtil.getHome().getCreateCommunicationEventPurposeForm();
+                    var commandForm = CommunicationUtil.getHome().getCreateCommunicationEventPurposeForm();
                     
                     commandForm.setCommunicationEventPurposeName(actionForm.getCommunicationEventPurposeName());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CommunicationUtil.getHome().createCommunicationEventPurpose(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CommunicationUtil.getHome().createCommunicationEventPurpose(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

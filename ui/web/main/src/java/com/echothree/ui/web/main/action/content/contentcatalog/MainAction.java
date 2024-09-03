@@ -56,15 +56,15 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetContentCatalogsForm commandForm = ContentUtil.getHome().getGetContentCatalogsForm();
-            String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+            var commandForm = ContentUtil.getHome().getGetContentCatalogsForm();
+            var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
             
             commandForm.setContentCollectionName(contentCollectionName);
-            
-            CommandResult commandResult = ContentUtil.getHome().getContentCatalogs(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentCatalogsResult result = (GetContentCatalogsResult)executionResult.getResult();
-            ContentCollectionTransfer contentCollectionTransfer = result.getContentCollection();
+
+            var commandResult = ContentUtil.getHome().getContentCatalogs(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentCatalogsResult)executionResult.getResult();
+            var contentCollectionTransfer = result.getContentCollection();
             
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION, contentCollectionTransfer);
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionTransfer.getContentCollectionName());

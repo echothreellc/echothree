@@ -51,9 +51,9 @@ public class ForumTypeHandler
         if(localName.equals("forumTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -61,7 +61,7 @@ public class ForumTypeHandler
             }
             
             try {
-                CreateForumTypeDescriptionForm form = ForumFormFactory.getCreateForumTypeDescriptionForm();
+                var form = ForumFormFactory.getCreateForumTypeDescriptionForm();
                 
                 form.setForumTypeName(forumTypeName);
                 form.setLanguageIsoName(languageIsoName);
@@ -75,9 +75,9 @@ public class ForumTypeHandler
             String forumMessageTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("forumMessageTypeName"))
                     forumMessageTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -87,7 +87,7 @@ public class ForumTypeHandler
             }
             
             try {
-                CreateForumTypeMessageTypeForm form = ForumFormFactory.getCreateForumTypeMessageTypeForm();
+                var form = ForumFormFactory.getCreateForumTypeMessageTypeForm();
                 
                 form.setForumTypeName(forumTypeName);
                 form.setForumMessageTypeName(forumMessageTypeName);

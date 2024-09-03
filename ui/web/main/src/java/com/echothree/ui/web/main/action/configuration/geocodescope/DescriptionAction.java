@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String geoCodeScopeName = request.getParameter(ParameterConstants.GEO_CODE_SCOPE_NAME);
-        GetGeoCodeScopeDescriptionsForm commandForm = GeoUtil.getHome().getGetGeoCodeScopeDescriptionsForm();
+        var geoCodeScopeName = request.getParameter(ParameterConstants.GEO_CODE_SCOPE_NAME);
+        var commandForm = GeoUtil.getHome().getGetGeoCodeScopeDescriptionsForm();
 
         commandForm.setGeoCodeScopeName(geoCodeScopeName);
 
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeScopeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = GeoUtil.getHome().getGeoCodeScopeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeScopeDescriptionsResult result = (GetGeoCodeScopeDescriptionsResult) executionResult.getResult();
-            GeoCodeScopeTransfer geoCodeScopeTransfer = result.getGeoCodeScope();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeScopeDescriptionsResult) executionResult.getResult();
+            var geoCodeScopeTransfer = result.getGeoCodeScope();
 
             request.setAttribute(AttributeConstants.GEO_CODE_SCOPE, geoCodeScopeTransfer);
             request.setAttribute(AttributeConstants.GEO_CODE_SCOPE_DESCRIPTIONS, result.getGeoCodeScopeDescriptions());

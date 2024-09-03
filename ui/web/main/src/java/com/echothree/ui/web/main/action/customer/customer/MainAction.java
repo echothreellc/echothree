@@ -61,16 +61,16 @@ public class MainAction
     
     private String getPartyName(HttpServletRequest request)
             throws NamingException {
-        GetCustomerResultsForm commandForm = SearchUtil.getHome().getGetCustomerResultsForm();
+        var commandForm = SearchUtil.getHome().getGetCustomerResultsForm();
         String partyName = null;
         
         commandForm.setSearchTypeName(SearchTypes.ORDER_ENTRY.name());
-        
-        CommandResult commandResult = SearchUtil.getHome().getCustomerResults(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResultsResult result = (GetCustomerResultsResult)executionResult.getResult();
+
+        var commandResult = SearchUtil.getHome().getCustomerResults(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResultsResult)executionResult.getResult();
         Collection customerResults = result.getCustomerResults();
-        Iterator iter = customerResults.iterator();
+        var iter = customerResults.iterator();
         if(iter.hasNext())
             partyName = ((CustomerResultTransfer)iter.next()).getPartyName();
         
@@ -82,13 +82,13 @@ public class MainAction
             throws Exception {
         String forwardKey;
         String partyName = null;
-        String firstName = actionForm.getFirstName();
-        String middleName = actionForm.getMiddleName();
-        String lastName = actionForm.getLastName();
-        String name = actionForm.getName();
+        var firstName = actionForm.getFirstName();
+        var middleName = actionForm.getMiddleName();
+        var lastName = actionForm.getLastName();
+        var name = actionForm.getName();
 
         if(wasPost(request)) {
-            SearchCustomersForm commandForm = SearchUtil.getHome().getSearchCustomersForm();
+            var commandForm = SearchUtil.getHome().getSearchCustomersForm();
 
             commandForm.setSearchTypeName(SearchTypes.ORDER_ENTRY.name());
             commandForm.setCustomerTypeName(actionForm.getCustomerTypeChoice());
@@ -110,14 +110,14 @@ public class MainAction
             commandForm.setCreatedSince(actionForm.getCreatedSince());
             commandForm.setModifiedSince(actionForm.getModifiedSince());
 
-            CommandResult commandResult = SearchUtil.getHome().searchCustomers(getUserVisitPK(request), commandForm);
+            var commandResult = SearchUtil.getHome().searchCustomers(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
                 forwardKey = ForwardConstants.FORM;
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                SearchCustomersResult result = (SearchCustomersResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (SearchCustomersResult)executionResult.getResult();
                 var count = result.getCount();
 
                 if(count == 0 || count > 1) {
@@ -139,8 +139,8 @@ public class MainAction
             actionForm.setTelephoneExtension(request.getParameter(ParameterConstants.TELEPHONE_EXTENSION));
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.REVIEW)) {
             Map<String, String> parameters = new HashMap<>(1);
             

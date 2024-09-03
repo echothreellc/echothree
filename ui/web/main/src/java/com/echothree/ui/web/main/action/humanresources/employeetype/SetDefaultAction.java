@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultEmployeeTypeForm commandForm = EmployeeUtil.getHome().getSetDefaultEmployeeTypeForm();
-            String employeeTypeName = request.getParameter(ParameterConstants.EMPLOYEE_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getSetDefaultEmployeeTypeForm();
+            var employeeTypeName = request.getParameter(ParameterConstants.EMPLOYEE_TYPE_NAME);
             
             commandForm.setEmployeeTypeName(employeeTypeName);
             

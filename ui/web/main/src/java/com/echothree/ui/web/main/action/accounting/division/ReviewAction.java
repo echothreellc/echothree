@@ -59,7 +59,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetDivisionForm commandForm = PartyUtil.getHome().getGetDivisionForm();
+        var commandForm = PartyUtil.getHome().getGetDivisionForm();
 
         commandForm.setCompanyName(request.getParameter(ParameterConstants.COMPANY_NAME));
         commandForm.setDivisionName(request.getParameter(ParameterConstants.DIVISION_NAME));
@@ -77,10 +77,10 @@ public class ReviewAction
         options.add(CoreOptions.EntityInstanceIncludeNames);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
 
-        CommandResult commandResult = PartyUtil.getHome().getDivision(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetDivisionResult result = (GetDivisionResult)executionResult.getResult();
-        DivisionTransfer division = result.getDivision();
+        var commandResult = PartyUtil.getHome().getDivision(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetDivisionResult)executionResult.getResult();
+        var division = result.getDivision();
 
         if(division == null) {
             forwardKey = ForwardConstants.ERROR_404;

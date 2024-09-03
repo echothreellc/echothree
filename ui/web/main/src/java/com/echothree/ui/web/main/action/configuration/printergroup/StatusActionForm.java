@@ -42,14 +42,14 @@ public class StatusActionForm
     public void setupPrinterGroupStatusChoices()
             throws NamingException {
         if(printerGroupStatusChoices == null) {
-            GetPrinterGroupStatusChoicesForm form = PrinterUtil.getHome().getGetPrinterGroupStatusChoicesForm();
+            var form = PrinterUtil.getHome().getGetPrinterGroupStatusChoicesForm();
 
             form.setPrinterGroupName(printerGroupName);
             form.setDefaultPrinterGroupStatusChoice(printerGroupStatusChoice);
 
-            CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterGroupStatusChoicesResult getPrinterGroupStatusChoicesResult = (GetPrinterGroupStatusChoicesResult)executionResult.getResult();
+            var commandResult = PrinterUtil.getHome().getPrinterGroupStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getPrinterGroupStatusChoicesResult = (GetPrinterGroupStatusChoicesResult)executionResult.getResult();
             printerGroupStatusChoices = getPrinterGroupStatusChoicesResult.getPrinterGroupStatusChoices();
 
             if(printerGroupStatusChoice == null)

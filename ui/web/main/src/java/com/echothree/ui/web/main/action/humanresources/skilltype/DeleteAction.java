@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteSkillTypeForm commandForm = EmployeeUtil.getHome().getDeleteSkillTypeForm();
-            String skillTypeName = request.getParameter(ParameterConstants.SKILL_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getDeleteSkillTypeForm();
+            var skillTypeName = request.getParameter(ParameterConstants.SKILL_TYPE_NAME);
             
             commandForm.setSkillTypeName(skillTypeName);
             

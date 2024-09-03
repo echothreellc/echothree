@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String employeeTypeName = request.getParameter(ParameterConstants.EMPLOYEE_TYPE_NAME);
-            GetEmployeeTypeDescriptionsForm commandForm = EmployeeUtil.getHome().getGetEmployeeTypeDescriptionsForm();
+            var employeeTypeName = request.getParameter(ParameterConstants.EMPLOYEE_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getGetEmployeeTypeDescriptionsForm();
             
             commandForm.setEmployeeTypeName(employeeTypeName);
-            
-            CommandResult commandResult = EmployeeUtil.getHome().getEmployeeTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmployeeTypeDescriptionsResult result = (GetEmployeeTypeDescriptionsResult)executionResult.getResult();
-            EmployeeTypeTransfer employeeTypeTransfer = result.getEmployeeType();
+
+            var commandResult = EmployeeUtil.getHome().getEmployeeTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmployeeTypeDescriptionsResult)executionResult.getResult();
+            var employeeTypeTransfer = result.getEmployeeType();
             
             request.setAttribute(AttributeConstants.EMPLOYEE_TYPE, employeeTypeTransfer);
             request.setAttribute(AttributeConstants.EMPLOYEE_TYPE_NAME, employeeTypeTransfer.getEmployeeTypeName());

@@ -49,7 +49,7 @@ public class ItemInventoryTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("itemInventoryTypeDescription")) {
-            CreateItemInventoryTypeDescriptionForm commandForm = ItemFormFactory.getCreateItemInventoryTypeDescriptionForm();
+            var commandForm = ItemFormFactory.getCreateItemInventoryTypeDescriptionForm();
             
             commandForm.setItemInventoryTypeName(itemInventoryTypeName);
             commandForm.set(getAttrsMap(attrs));

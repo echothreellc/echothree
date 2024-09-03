@@ -56,15 +56,15 @@ public class TranslationAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
-        String cancellationPolicyName = request.getParameter(ParameterConstants.CANCELLATION_POLICY_NAME);
+        var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+        var cancellationPolicyName = request.getParameter(ParameterConstants.CANCELLATION_POLICY_NAME);
         
         try {
             if(forwardKey == null) {
-                TranslationAddActionForm actionForm = (TranslationAddActionForm)form;
+                var actionForm = (TranslationAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateCancellationPolicyTranslationForm commandForm = CancellationPolicyUtil.getHome().getCreateCancellationPolicyTranslationForm();
+                    var commandForm = CancellationPolicyUtil.getHome().getCreateCancellationPolicyTranslationForm();
                     
                     if(cancellationKindName == null)
                         cancellationKindName = actionForm.getCancellationKindName();
@@ -77,8 +77,8 @@ public class TranslationAddAction
                     commandForm.setDescription(actionForm.getDescription());
                     commandForm.setPolicyMimeTypeName(actionForm.getPolicyMimeTypeChoice());
                     commandForm.setPolicy(actionForm.getPolicy());
-                    
-                    CommandResult commandResult = CancellationPolicyUtil.getHome().createCancellationPolicyTranslation(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CancellationPolicyUtil.getHome().createCancellationPolicyTranslation(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -95,8 +95,8 @@ public class TranslationAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CANCELLATION_KIND_NAME, cancellationKindName);
             request.setAttribute(AttributeConstants.CANCELLATION_POLICY_NAME, cancellationPolicyName);

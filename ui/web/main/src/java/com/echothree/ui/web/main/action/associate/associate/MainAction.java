@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
-            GetAssociatesForm commandForm = AssociateUtil.getHome().getGetAssociatesForm();
+            var associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
+            var commandForm = AssociateUtil.getHome().getGetAssociatesForm();
             
             commandForm.setAssociateProgramName(associateProgramName);
-            
-            CommandResult commandResult = AssociateUtil.getHome().getAssociates(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAssociatesResult result = (GetAssociatesResult)executionResult.getResult();
+
+            var commandResult = AssociateUtil.getHome().getAssociates(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAssociatesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ASSOCIATES, result.getAssociates());
             forwardKey = ForwardConstants.DISPLAY;

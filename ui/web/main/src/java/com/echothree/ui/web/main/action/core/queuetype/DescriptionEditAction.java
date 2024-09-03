@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected QueueTypeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        QueueTypeDescriptionSpec spec = QueueUtil.getHome().getQueueTypeDescriptionSpec();
+        var spec = QueueUtil.getHome().getQueueTypeDescriptionSpec();
         
         spec.setQueueTypeName(findParameter(request, ParameterConstants.QUEUE_TYPE_NAME, actionForm.getQueueTypeName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected QueueTypeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        QueueTypeDescriptionEdit edit = QueueUtil.getHome().getQueueTypeDescriptionEdit();
+        var edit = QueueUtil.getHome().getQueueTypeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

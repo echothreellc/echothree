@@ -53,7 +53,7 @@ public class UnitOfMeasureTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("unitOfMeasureTypeDescription")) {
-            CreateUnitOfMeasureTypeDescriptionForm form = UomFormFactory.getCreateUnitOfMeasureTypeDescriptionForm();
+            var form = UomFormFactory.getCreateUnitOfMeasureTypeDescriptionForm();
 
             form.setUnitOfMeasureKindName(unitOfMeasureKindName);
             form.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
@@ -61,7 +61,7 @@ public class UnitOfMeasureTypeHandler
 
             checkCommandResult(uomService.createUnitOfMeasureTypeDescription(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("unitOfMeasureTypeVolume")) {
-            CreateUnitOfMeasureTypeVolumeForm form = UomFormFactory.getCreateUnitOfMeasureTypeVolumeForm();
+            var form = UomFormFactory.getCreateUnitOfMeasureTypeVolumeForm();
 
             form.setUnitOfMeasureKindName(unitOfMeasureKindName);
             form.setUnitOfMeasureTypeName(unitOfMeasureTypeName);

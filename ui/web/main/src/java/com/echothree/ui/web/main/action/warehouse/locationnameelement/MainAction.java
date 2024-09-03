@@ -55,16 +55,16 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetLocationNameElementsForm commandForm = WarehouseUtil.getHome().getGetLocationNameElementsForm();
-            String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-            String locationTypeName = request.getParameter(ParameterConstants.LOCATION_TYPE_NAME);
+            var commandForm = WarehouseUtil.getHome().getGetLocationNameElementsForm();
+            var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+            var locationTypeName = request.getParameter(ParameterConstants.LOCATION_TYPE_NAME);
             
             commandForm.setWarehouseName(warehouseName);
             commandForm.setLocationTypeName(locationTypeName);
 
-            CommandResult commandResult = WarehouseUtil.getHome().getLocationNameElements(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLocationNameElementsResult result = (GetLocationNameElementsResult)executionResult.getResult();
+            var commandResult = WarehouseUtil.getHome().getLocationNameElements(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLocationNameElementsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WAREHOUSE, result.getWarehouse());
             request.setAttribute(AttributeConstants.LOCATION_TYPE, result.getLocationType());

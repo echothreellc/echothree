@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeletePersonalTitleForm commandForm = PartyUtil.getHome().getDeletePersonalTitleForm();
-            String personalTitleId = request.getParameter(ParameterConstants.PERSONAL_TITLE_ID);
+            var commandForm = PartyUtil.getHome().getDeletePersonalTitleForm();
+            var personalTitleId = request.getParameter(ParameterConstants.PERSONAL_TITLE_ID);
             
             commandForm.setPersonalTitleId(personalTitleId);
             

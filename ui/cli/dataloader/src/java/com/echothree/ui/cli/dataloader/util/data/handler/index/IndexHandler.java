@@ -50,7 +50,7 @@ public class IndexHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("indexDescription")) {
-            CreateIndexDescriptionForm commandForm = IndexFormFactory.getCreateIndexDescriptionForm();
+            var commandForm = IndexFormFactory.getCreateIndexDescriptionForm();
 
             commandForm.setIndexName(indexName);
             commandForm.set(getAttrsMap(attrs));

@@ -55,16 +55,16 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-            String returnTypeName = request.getParameter(ParameterConstants.RETURN_TYPE_NAME);
-            GetReturnTypeForm commandForm = ReturnPolicyUtil.getHome().getGetReturnTypeForm();
+            var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+            var returnTypeName = request.getParameter(ParameterConstants.RETURN_TYPE_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getGetReturnTypeForm();
             
             commandForm.setReturnKindName(returnKindName);
             commandForm.setReturnTypeName(returnTypeName);
-            
-            CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetReturnTypeResult result = (GetReturnTypeResult)executionResult.getResult();
+
+            var commandResult = ReturnPolicyUtil.getHome().getReturnType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RETURN_TYPE, result.getReturnType());
             forwardKey = ForwardConstants.DISPLAY;

@@ -62,14 +62,14 @@ public class LetterHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("letterDescription")) {
-            CreateLetterDescriptionForm commandForm = LetterFormFactory.getCreateLetterDescriptionForm();
+            var commandForm = LetterFormFactory.getCreateLetterDescriptionForm();
             
             setupLetterSpec(commandForm);
             commandForm.set(getAttrsMap(attrs));
             
             letterService.createLetterDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("letterContactMechanismPurpose")) {
-            CreateLetterContactMechanismPurposeForm commandForm = LetterFormFactory.getCreateLetterContactMechanismPurposeForm();
+            var commandForm = LetterFormFactory.getCreateLetterContactMechanismPurposeForm();
             
             setupLetterSpec(commandForm);
             commandForm.set(getAttrsMap(attrs));

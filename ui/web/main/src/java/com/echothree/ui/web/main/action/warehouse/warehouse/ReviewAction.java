@@ -64,7 +64,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetWarehouseForm commandForm = WarehouseUtil.getHome().getGetWarehouseForm();
+        var commandForm = WarehouseUtil.getHome().getGetWarehouseForm();
 
         commandForm.setWarehouseName(request.getParameter(ParameterConstants.WAREHOUSE_NAME));
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
@@ -92,10 +92,10 @@ public class ReviewAction
         limits.put(LocationConstants.ENTITY_TYPE_NAME, new Limit("10"));
         commandForm.setLimits(limits);
 
-        CommandResult commandResult = WarehouseUtil.getHome().getWarehouse(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetWarehouseResult result = (GetWarehouseResult)executionResult.getResult();
-        WarehouseTransfer warehouse = result.getWarehouse();
+        var commandResult = WarehouseUtil.getHome().getWarehouse(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetWarehouseResult)executionResult.getResult();
+        var warehouse = result.getWarehouse();
 
         if(warehouse != null) {
             request.setAttribute(AttributeConstants.WAREHOUSE, warehouse);

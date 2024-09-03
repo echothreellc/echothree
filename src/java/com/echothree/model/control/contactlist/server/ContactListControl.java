@@ -2227,7 +2227,7 @@ public class ContactListControl
     public PartyContactListStatusChoicesBean getPartyContactListStatusChoices(String defaultPartyContactListStatusChoice, Language language,
             boolean allowNullChoice, PartyContactList partyContactList, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        PartyContactListStatusChoicesBean partyContactListStatusChoicesBean = new PartyContactListStatusChoicesBean();
+        var partyContactListStatusChoicesBean = new PartyContactListStatusChoicesBean();
 
         if(partyContactList == null) {
             workflowControl.getWorkflowEntranceChoices(partyContactListStatusChoicesBean, defaultPartyContactListStatusChoice, language, allowNullChoice,

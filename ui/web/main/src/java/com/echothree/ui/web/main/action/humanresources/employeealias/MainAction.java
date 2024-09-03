@@ -57,9 +57,9 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetEmployeeForm commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
-        String employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
+        var employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         
         commandForm.setEmployeeName(employeeName);
         commandForm.setPartyName(partyName);
@@ -67,11 +67,11 @@ public class MainAction
         Set<String> options = new HashSet<>();
         options.add(PartyOptions.PartyIncludePartyAliases);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEmployeeResult result = (GetEmployeeResult)executionResult.getResult();
-        EmployeeTransfer employee = result.getEmployee();
+
+        var commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEmployeeResult)executionResult.getResult();
+        var employee = result.getEmployee();
         
         if(employee == null) {
             forwardKey = ForwardConstants.ERROR_404;

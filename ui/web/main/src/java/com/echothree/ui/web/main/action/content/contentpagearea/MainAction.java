@@ -57,20 +57,20 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetContentPageAreasForm getContentPageAreasForm = ContentUtil.getHome().getGetContentPageAreasForm();
-            GetContentPageLayoutAreasForm getContentPageLayoutAreasForm = ContentUtil.getHome().getGetContentPageLayoutAreasForm();
-            String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-            String contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
-            String contentPageName = request.getParameter(ParameterConstants.CONTENT_PAGE_NAME);
-            String parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
+            var getContentPageAreasForm = ContentUtil.getHome().getGetContentPageAreasForm();
+            var getContentPageLayoutAreasForm = ContentUtil.getHome().getGetContentPageLayoutAreasForm();
+            var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+            var contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
+            var contentPageName = request.getParameter(ParameterConstants.CONTENT_PAGE_NAME);
+            var parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
             
             getContentPageAreasForm.setContentCollectionName(contentCollectionName);
             getContentPageAreasForm.setContentSectionName(contentSectionName);
             getContentPageAreasForm.setContentPageName(contentPageName);
-            
-            CommandResult commandResult = ContentUtil.getHome().getContentPageAreas(getUserVisitPK(request), getContentPageAreasForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentPageAreasResult getContentPageAreasResult = (GetContentPageAreasResult)executionResult.getResult();
+
+            var commandResult = ContentUtil.getHome().getContentPageAreas(getUserVisitPK(request), getContentPageAreasForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getContentPageAreasResult = (GetContentPageAreasResult)executionResult.getResult();
             
             getContentPageLayoutAreasForm.setContentCollectionName(contentCollectionName);
             getContentPageLayoutAreasForm.setContentSectionName(contentSectionName);
@@ -78,7 +78,7 @@ public class MainAction
             
             commandResult = ContentUtil.getHome().getContentPageLayoutAreas(getUserVisitPK(request), getContentPageLayoutAreasForm);
             executionResult = commandResult.getExecutionResult();
-            GetContentPageLayoutAreasResult getContentPageLayoutAreasResult = (GetContentPageLayoutAreasResult)executionResult.getResult();
+            var getContentPageLayoutAreasResult = (GetContentPageLayoutAreasResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionName);
             request.setAttribute(AttributeConstants.CONTENT_SECTION_NAME, contentSectionName);

@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteInventoryConditionForm commandForm = InventoryUtil.getHome().getDeleteInventoryConditionForm();
-            String inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
+            var commandForm = InventoryUtil.getHome().getDeleteInventoryConditionForm();
+            var inventoryConditionName = request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME);
             
             commandForm.setInventoryConditionName(inventoryConditionName);
             

@@ -43,14 +43,14 @@ public class StatusActionForm
     public void setupPrinterGroupJobStatusChoices() {
         if(printerGroupJobStatusChoices == null) {
             try {
-                GetPrinterGroupJobStatusChoicesForm form = PrinterUtil.getHome().getGetPrinterGroupJobStatusChoicesForm();
+                var form = PrinterUtil.getHome().getGetPrinterGroupJobStatusChoicesForm();
                 
                 form.setPrinterGroupJobName(printerGroupJobName);
                 form.setDefaultPrinterGroupJobStatusChoice(printerGroupJobStatusChoice);
-                
-                CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupJobStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPrinterGroupJobStatusChoicesResult getPrinterGroupJobStatusChoicesResult = (GetPrinterGroupJobStatusChoicesResult)executionResult.getResult();
+
+                var commandResult = PrinterUtil.getHome().getPrinterGroupJobStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getPrinterGroupJobStatusChoicesResult = (GetPrinterGroupJobStatusChoicesResult)executionResult.getResult();
                 printerGroupJobStatusChoices = getPrinterGroupJobStatusChoicesResult.getPrinterGroupJobStatusChoices();
                 
                 if(printerGroupJobStatusChoice == null)

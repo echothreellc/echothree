@@ -45,7 +45,7 @@ public class RemoveInactiveUserKeysJob
     @Override
     public void execute()
             throws NamingException {
-        RemoveInactiveUserKeysForm commandForm = AuthenticationUtil.getHome().getRemoveInactiveUserKeysForm();
+        var commandForm = AuthenticationUtil.getHome().getRemoveInactiveUserKeysForm();
         
         commandForm.setInactiveTime(Long.toString(INACTIVE_TIME));
         

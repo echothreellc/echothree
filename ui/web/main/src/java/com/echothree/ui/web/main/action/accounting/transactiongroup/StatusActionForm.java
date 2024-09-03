@@ -40,15 +40,15 @@ public class StatusActionForm
     public void setupTransactionGroupStatusChoices() {
         if(transactionGroupStatusChoices == null) {
             try {
-                GetTransactionGroupStatusChoicesForm form = AccountingUtil.getHome().getGetTransactionGroupStatusChoicesForm();
+                var form = AccountingUtil.getHome().getGetTransactionGroupStatusChoicesForm();
                 
                 form.setTransactionGroupName(transactionGroupName);
                 form.setDefaultTransactionGroupStatusChoice(transactionGroupStatusChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getTransactionGroupStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetTransactionGroupStatusChoicesResult result = (GetTransactionGroupStatusChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getTransactionGroupStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetTransactionGroupStatusChoicesResult)executionResult.getResult();
                 transactionGroupStatusChoices = result.getTransactionGroupStatusChoices();
                 
                 if(transactionGroupStatusChoice == null) {

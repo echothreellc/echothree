@@ -54,17 +54,17 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateRecoveryQuestionForm commandForm = UserUtil.getHome().getCreateRecoveryQuestionForm();
+                    var commandForm = UserUtil.getHome().getCreateRecoveryQuestionForm();
                     
                     commandForm.setRecoveryQuestionName(actionForm.getRecoveryQuestionName());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = UserUtil.getHome().createRecoveryQuestion(getUserVisitPK(request), commandForm);
+
+                    var commandResult = UserUtil.getHome().createRecoveryQuestion(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

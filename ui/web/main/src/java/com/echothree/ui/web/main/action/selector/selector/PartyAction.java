@@ -55,18 +55,18 @@ public class PartyAction
         String forwardKey;
         
         try {
-            GetSelectorPartiesForm commandForm = SelectorUtil.getHome().getGetSelectorPartiesForm();
-            String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-            String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-            String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+            var commandForm = SelectorUtil.getHome().getGetSelectorPartiesForm();
+            var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+            var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+            var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
             
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setSelectorTypeName(selectorTypeName);
             commandForm.setSelectorName(selectorName);
-            
-            CommandResult commandResult = SelectorUtil.getHome().getSelectorParties(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSelectorPartiesResult result = (GetSelectorPartiesResult)executionResult.getResult();
+
+            var commandResult = SelectorUtil.getHome().getSelectorParties(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSelectorPartiesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SELECTOR_KIND, result.getSelectorKind());
             request.setAttribute(AttributeConstants.SELECTOR_TYPE, result.getSelectorType());

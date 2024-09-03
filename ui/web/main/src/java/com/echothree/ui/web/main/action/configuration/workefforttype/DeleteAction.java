@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteWorkEffortTypeForm commandForm = WorkEffortUtil.getHome().getDeleteWorkEffortTypeForm();
-            String workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
+            var commandForm = WorkEffortUtil.getHome().getDeleteWorkEffortTypeForm();
+            var workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
             
             commandForm.setWorkEffortTypeName(workEffortTypeName);
             

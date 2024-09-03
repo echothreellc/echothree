@@ -52,7 +52,7 @@ public class EditAction
     @Override
     protected GeoCodeAliasTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        GeoCodeAliasTypeSpec spec = GeoUtil.getHome().getGeoCodeAliasTypeSpec();
+        var spec = GeoUtil.getHome().getGeoCodeAliasTypeSpec();
 
         spec.setGeoCodeTypeName(findParameter(request, ParameterConstants.GEO_CODE_TYPE_NAME, actionForm.getGeoCodeTypeName()));
         spec.setGeoCodeAliasTypeName(findParameter(request, ParameterConstants.ORIGINAL_GEO_CODE_ALIAS_TYPE_NAME, actionForm.getOriginalGeoCodeAliasTypeName()));
@@ -63,7 +63,7 @@ public class EditAction
     @Override
     protected GeoCodeAliasTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        GeoCodeAliasTypeEdit edit = GeoUtil.getHome().getGeoCodeAliasTypeEdit();
+        var edit = GeoUtil.getHome().getGeoCodeAliasTypeEdit();
 
         edit.setGeoCodeAliasTypeName(actionForm.getGeoCodeAliasTypeName());
         edit.setValidationPattern(actionForm.getValidationPattern());
@@ -96,9 +96,9 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditGeoCodeAliasTypeForm commandForm)
             throws Exception {
-        CommandResult commandResult = GeoUtil.getHome().editGeoCodeAliasType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditGeoCodeAliasTypeResult result = (EditGeoCodeAliasTypeResult)executionResult.getResult();
+        var commandResult = GeoUtil.getHome().editGeoCodeAliasType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditGeoCodeAliasTypeResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.GEO_CODE_ALIAS_TYPE, result.getGeoCodeAliasType());
         

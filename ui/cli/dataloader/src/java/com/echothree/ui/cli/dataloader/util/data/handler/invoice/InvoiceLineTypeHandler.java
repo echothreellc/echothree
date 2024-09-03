@@ -52,7 +52,7 @@ public class InvoiceLineTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("invoiceLineTypeDescription")) {
-            CreateInvoiceLineTypeDescriptionForm commandForm = InvoiceFormFactory.getCreateInvoiceLineTypeDescriptionForm();
+            var commandForm = InvoiceFormFactory.getCreateInvoiceLineTypeDescriptionForm();
             
             commandForm.setInvoiceTypeName(invoiceTypeName);
             commandForm.setInvoiceLineTypeName(invoiceLineTypeName);

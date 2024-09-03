@@ -53,15 +53,15 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetChainKindDescriptionsForm commandForm = ChainUtil.getHome().getGetChainKindDescriptionsForm();
+        var commandForm = ChainUtil.getHome().getGetChainKindDescriptionsForm();
 
         commandForm.setChainKindName(request.getParameter(ParameterConstants.CHAIN_KIND_NAME));
 
-        CommandResult commandResult = ChainUtil.getHome().getChainKindDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ChainUtil.getHome().getChainKindDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetChainKindDescriptionsResult result = (GetChainKindDescriptionsResult) executionResult.getResult();
-            ChainKindTransfer chainKindTransfer = result.getChainKind();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetChainKindDescriptionsResult) executionResult.getResult();
+            var chainKindTransfer = result.getChainKind();
 
             request.setAttribute(AttributeConstants.CHAIN_KIND, chainKindTransfer);
             request.setAttribute(AttributeConstants.CHAIN_KIND_DESCRIPTIONS, result.getChainKindDescriptions());

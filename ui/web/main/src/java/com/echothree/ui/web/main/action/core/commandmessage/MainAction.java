@@ -52,14 +52,14 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetCommandMessagesForm commandForm = CoreUtil.getHome().getGetCommandMessagesForm();
+        var commandForm = CoreUtil.getHome().getGetCommandMessagesForm();
 
         commandForm.setCommandMessageTypeName(request.getParameter(ParameterConstants.COMMAND_MESSAGE_TYPE_NAME));
 
-        CommandResult commandResult = CoreUtil.getHome().getCommandMessages(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getCommandMessages(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommandMessagesResult result = (GetCommandMessagesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommandMessagesResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.COMMAND_MESSAGE_TYPE, result.getCommandMessageType());
             request.setAttribute(AttributeConstants.COMMAND_MESSAGES, result.getCommandMessages());

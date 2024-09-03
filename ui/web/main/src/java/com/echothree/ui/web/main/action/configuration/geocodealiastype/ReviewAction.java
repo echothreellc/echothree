@@ -53,17 +53,17 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetGeoCodeAliasTypeForm commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypeForm();
+        var commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypeForm();
 
         commandForm.setGeoCodeTypeName(request.getParameter(ParameterConstants.GEO_CODE_TYPE_NAME));
         commandForm.setGeoCodeAliasTypeName(request.getParameter(ParameterConstants.GEO_CODE_ALIAS_TYPE_NAME));
 
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeAliasType(getUserVisitPK(request), commandForm);
+        var commandResult = GeoUtil.getHome().getGeoCodeAliasType(getUserVisitPK(request), commandForm);
         GeoCodeAliasTypeTransfer geoCodeAliasType = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeAliasTypeResult result = (GetGeoCodeAliasTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeAliasTypeResult)executionResult.getResult();
 
             geoCodeAliasType = result.getGeoCodeAliasType();
         }

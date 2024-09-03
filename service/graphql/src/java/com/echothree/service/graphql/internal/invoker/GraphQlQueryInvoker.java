@@ -39,12 +39,12 @@ public class GraphQlQueryInvoker {
 
         executeGraphQlForm.setRemoteInet4Address(remoteInet4Address);
 
-        Future<CommandResult> futureCommandResult = GraphQlUtil.getHome().executeGraphQl(userVisitPK, executeGraphQlForm);
+        var futureCommandResult = GraphQlUtil.getHome().executeGraphQl(userVisitPK, executeGraphQlForm);
 
-        CommandResult commandResult = futureCommandResult.get();
+        var commandResult = futureCommandResult.get();
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            ExecuteGraphQlResult result = (ExecuteGraphQlResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (ExecuteGraphQlResult)executionResult.getResult();
 
             graphQlExecutionResult = result.getExecutionResult();
         }
@@ -54,7 +54,7 @@ public class GraphQlQueryInvoker {
 
     public String query(UserVisitPK userVisitPK, GraphQlInvocationInput singleInvocationInput, String remoteInet4Address)
             throws NamingException, ExecutionException, InterruptedException {
-        ExecuteGraphQlForm executeGraphQlForm = singleInvocationInput.getExecuteGraphQlForm();
+        var executeGraphQlForm = singleInvocationInput.getExecuteGraphQlForm();
 
         return execute(userVisitPK, executeGraphQlForm, remoteInet4Address);
     }

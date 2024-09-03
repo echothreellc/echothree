@@ -39,14 +39,14 @@ public class EditActionForm
     private void setupParentSecurityRoleGroupChoices() {
         if(parentSecurityRoleGroupChoices == null) {
             try {
-                GetSecurityRoleGroupChoicesForm form = SecurityUtil.getHome().getGetSecurityRoleGroupChoicesForm();
+                var form = SecurityUtil.getHome().getGetSecurityRoleGroupChoicesForm();
                 
                 form.setDefaultSecurityRoleGroupChoice(parentSecurityRoleGroupChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SecurityUtil.getHome().getSecurityRoleGroupChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSecurityRoleGroupChoicesResult getSecurityRoleGroupChoicesResult = (GetSecurityRoleGroupChoicesResult)executionResult.getResult();
+
+                var commandResult = SecurityUtil.getHome().getSecurityRoleGroupChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getSecurityRoleGroupChoicesResult = (GetSecurityRoleGroupChoicesResult)executionResult.getResult();
                 parentSecurityRoleGroupChoices = getSecurityRoleGroupChoicesResult.getSecurityRoleGroupChoices();
                 
                 if(parentSecurityRoleGroupChoice == null) {

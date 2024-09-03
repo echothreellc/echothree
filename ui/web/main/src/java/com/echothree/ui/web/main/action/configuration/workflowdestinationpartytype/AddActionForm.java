@@ -42,14 +42,14 @@ public class AddActionForm
     private void setupPartyTypeChoices() {
         if(partyTypeChoices == null) {
             try {
-                GetPartyTypeChoicesForm commandForm = PartyUtil.getHome().getGetPartyTypeChoicesForm();
+                var commandForm = PartyUtil.getHome().getGetPartyTypeChoicesForm();
                 
                 commandForm.setDefaultPartyTypeChoice(partyTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPartyTypeChoicesResult result = (GetPartyTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPartyTypeChoicesResult)executionResult.getResult();
                 partyTypeChoices = result.getPartyTypeChoices();
                 
                 if(partyTypeChoice == null) {

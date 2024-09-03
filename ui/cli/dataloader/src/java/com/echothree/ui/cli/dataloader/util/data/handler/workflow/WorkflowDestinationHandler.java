@@ -57,7 +57,7 @@ public class WorkflowDestinationHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("workflowDestinationDescription")) {
-            CreateWorkflowDestinationDescriptionForm commandForm = WorkflowFormFactory.getCreateWorkflowDestinationDescriptionForm();
+            var commandForm = WorkflowFormFactory.getCreateWorkflowDestinationDescriptionForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);
@@ -66,7 +66,7 @@ public class WorkflowDestinationHandler
             
             workflowService.createWorkflowDestinationDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("workflowDestinationSelector")) {
-            CreateWorkflowDestinationSelectorForm commandForm = WorkflowFormFactory.getCreateWorkflowDestinationSelectorForm();
+            var commandForm = WorkflowFormFactory.getCreateWorkflowDestinationSelectorForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);
@@ -75,7 +75,7 @@ public class WorkflowDestinationHandler
             
             workflowService.createWorkflowDestinationSelector(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("workflowDestinationPartyType")) {
-            CreateWorkflowDestinationPartyTypeForm commandForm = WorkflowFormFactory.getCreateWorkflowDestinationPartyTypeForm();
+            var commandForm = WorkflowFormFactory.getCreateWorkflowDestinationPartyTypeForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);
@@ -87,7 +87,7 @@ public class WorkflowDestinationHandler
             initialDataParser.pushHandler(new WorkflowDestinationPartyTypeHandler(initialDataParser, this, workflowName,
                     workflowStepName, workflowDestinationName, commandForm.getPartyTypeName()));
         } else if(localName.equals("workflowDestinationStep")) {
-            CreateWorkflowDestinationStepForm commandForm = WorkflowFormFactory.getCreateWorkflowDestinationStepForm();
+            var commandForm = WorkflowFormFactory.getCreateWorkflowDestinationStepForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);

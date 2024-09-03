@@ -63,15 +63,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetColorDescriptionForm commandForm = CoreUtil.getHome().getGetColorDescriptionForm();
+        var commandForm = CoreUtil.getHome().getGetColorDescriptionForm();
         
         commandForm.setColorName(actionForm.getColorName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getColorDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getColorDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetColorDescriptionResult result = (GetColorDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetColorDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.COLOR_DESCRIPTION, result.getColorDescription());
         }
@@ -80,7 +80,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteColorDescriptionForm commandForm = CoreUtil.getHome().getDeleteColorDescriptionForm();
+        var commandForm = CoreUtil.getHome().getDeleteColorDescriptionForm();
 
         commandForm.setColorName(actionForm.getColorName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

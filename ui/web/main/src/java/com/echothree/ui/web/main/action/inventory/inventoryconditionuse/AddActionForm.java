@@ -43,14 +43,14 @@ public class AddActionForm
     private void setupInventoryConditionChoices() {
         if(inventoryConditionChoices == null) {
             try {
-                GetInventoryConditionChoicesForm form = InventoryUtil.getHome().getGetInventoryConditionChoicesForm();
+                var form = InventoryUtil.getHome().getGetInventoryConditionChoicesForm();
                 
                 form.setDefaultInventoryConditionChoice(inventoryConditionChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetInventoryConditionChoicesResult getInventoryConditionChoicesResult = (GetInventoryConditionChoicesResult)executionResult.getResult();
+
+                var commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getInventoryConditionChoicesResult = (GetInventoryConditionChoicesResult)executionResult.getResult();
                 inventoryConditionChoices = getInventoryConditionChoicesResult.getInventoryConditionChoices();
                 
                 if(inventoryConditionChoice == null)

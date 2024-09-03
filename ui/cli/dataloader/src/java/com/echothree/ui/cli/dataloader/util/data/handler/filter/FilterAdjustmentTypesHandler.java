@@ -48,9 +48,9 @@ public class FilterAdjustmentTypesHandler
             String filterAdjustmentTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("filterAdjustmentTypeName"))
                     filterAdjustmentTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class FilterAdjustmentTypesHandler
             }
             
             try {
-                CreateFilterAdjustmentTypeForm commandForm = FilterFormFactory.getCreateFilterAdjustmentTypeForm();
+                var commandForm = FilterFormFactory.getCreateFilterAdjustmentTypeForm();
                 
                 commandForm.setFilterAdjustmentTypeName(filterAdjustmentTypeName);
                 commandForm.setIsDefault(isDefault);

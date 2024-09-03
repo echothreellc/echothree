@@ -53,8 +53,8 @@ public class CommentEditAction
     @Override
     protected CommentSpec getSpec(HttpServletRequest request, CommentEditActionForm actionForm)
             throws NamingException {
-        CommentSpec spec = CommentUtil.getHome().getCommentSpec();
-        String commentName = request.getParameter(ParameterConstants.COMMENT_NAME);
+        var spec = CommentUtil.getHome().getCommentSpec();
+        var commentName = request.getParameter(ParameterConstants.COMMENT_NAME);
 
         if(commentName == null) {
             commentName = actionForm.getCommentName();
@@ -68,7 +68,7 @@ public class CommentEditAction
     @Override
     protected CommentEdit getEdit(HttpServletRequest request, CommentEditActionForm actionForm)
             throws NamingException {
-        CommentEdit edit = CommentUtil.getHome().getCommentEdit();
+        var edit = CommentUtil.getHome().getCommentEdit();
 
         edit.setLanguageIsoName(actionForm.getLanguageChoice());
         edit.setDescription(actionForm.getDescription());
@@ -98,10 +98,10 @@ public class CommentEditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditCommentForm commandForm)
             throws Exception {
-        CommandResult commandResult = CommentUtil.getHome().editComment(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditCommentResult result = (EditCommentResult)executionResult.getResult();
-        CommentTransfer comment = result.getComment();
+        var commandResult = CommentUtil.getHome().editComment(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditCommentResult)executionResult.getResult();
+        var comment = result.getComment();
 
         if(comment != null) {
             request.setAttribute(AttributeConstants.COMMENT, result.getComment());

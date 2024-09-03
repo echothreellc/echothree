@@ -53,18 +53,18 @@ public class ProfileEditAction
     public ActionForward executeAction(ActionMapping mapping, ProfileEditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        
-        EditProfileForm commandForm = PartyUtil.getHome().getEditProfileForm();
+
+        var commandForm = PartyUtil.getHome().getEditProfileForm();
         
         commandForm.setSpec(PartyUtil.getHome().getPartySpec());
         
         if(wasPost(request)) {
-            boolean wasCanceled = wasCanceled(request);
+            var wasCanceled = wasCanceled(request);
             
             if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
-                ProfileEdit edit = PartyUtil.getHome().getProfileEdit();
+                var edit = PartyUtil.getHome().getProfileEdit();
 
                 commandForm.setEditMode(EditMode.UPDATE);
                 commandForm.setEdit(edit);
@@ -84,14 +84,14 @@ public class ProfileEditAction
                 edit.setSignatureMimeTypeName(actionForm.getSignatureMimeTypeChoice());
                 edit.setSignature(actionForm.getSignature());
             }
-            
-            CommandResult commandResult = PartyUtil.getHome().editProfile(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().editProfile(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors() && !wasCanceled) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditProfileResult result = (EditProfileResult)executionResult.getResult();
+                    var result = (EditProfileResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -104,13 +104,13 @@ public class ProfileEditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = PartyUtil.getHome().editProfile(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditProfileResult result = (EditProfileResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().editProfile(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditProfileResult)executionResult.getResult();
             
             if(result != null) {
-                ProfileEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setNickname(edit.getNickname());

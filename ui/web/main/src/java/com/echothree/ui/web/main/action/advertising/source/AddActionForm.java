@@ -49,14 +49,14 @@ public class AddActionForm
     public void setupOfferChoices() {
         if(offerChoices == null) {
             try {
-                GetOfferChoicesForm form = OfferUtil.getHome().getGetOfferChoicesForm();
+                var form = OfferUtil.getHome().getGetOfferChoicesForm();
 
                 form.setDefaultOfferChoice(offerChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = OfferUtil.getHome().getOfferChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetOfferChoicesResult result = (GetOfferChoicesResult)executionResult.getResult();
+                var commandResult = OfferUtil.getHome().getOfferChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetOfferChoicesResult)executionResult.getResult();
                 offerChoices = result.getOfferChoices();
 
                 if(offerChoice == null)
@@ -71,14 +71,14 @@ public class AddActionForm
     public void setupUseChoices() {
         if(useChoices == null) {
             try {
-                GetUseChoicesForm form = OfferUtil.getHome().getGetUseChoicesForm();
+                var form = OfferUtil.getHome().getGetUseChoicesForm();
 
                 form.setDefaultUseChoice(useChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = OfferUtil.getHome().getUseChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUseChoicesResult result = (GetUseChoicesResult)executionResult.getResult();
+                var commandResult = OfferUtil.getHome().getUseChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetUseChoicesResult)executionResult.getResult();
                 useChoices = result.getUseChoices();
 
                 if(useChoice == null)

@@ -64,16 +64,16 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSearchTypeDescriptionForm commandForm = SearchUtil.getHome().getGetSearchTypeDescriptionForm();
+        var commandForm = SearchUtil.getHome().getGetSearchTypeDescriptionForm();
         
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchTypeName(actionForm.getSearchTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = SearchUtil.getHome().getSearchTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = SearchUtil.getHome().getSearchTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSearchTypeDescriptionResult result = (GetSearchTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.SEARCH_TYPE_DESCRIPTION, result.getSearchTypeDescription());
         }
@@ -82,7 +82,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteSearchTypeDescriptionForm commandForm = SearchUtil.getHome().getDeleteSearchTypeDescriptionForm();
+        var commandForm = SearchUtil.getHome().getDeleteSearchTypeDescriptionForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchTypeName(actionForm.getSearchTypeName());

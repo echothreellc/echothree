@@ -58,21 +58,21 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String messageTypeName = request.getParameter(ParameterConstants.MESSAGE_TYPE_NAME);
-            GetMessagesForm commandForm = MessageUtil.getHome().getGetMessagesForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var messageTypeName = request.getParameter(ParameterConstants.MESSAGE_TYPE_NAME);
+            var commandForm = MessageUtil.getHome().getGetMessagesForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setMessageTypeName(messageTypeName);
-            
-            CommandResult commandResult = MessageUtil.getHome().getMessages(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMessagesResult result = (GetMessagesResult)executionResult.getResult();
-            ComponentVendorTransfer componentVendorTransfer = result.getComponentVendor();
-            EntityTypeTransfer entityTypeTransfer = result.getEntityType();
-            MessageTypeTransfer messageTypeTransfer = result.getMessageType();
+
+            var commandResult = MessageUtil.getHome().getMessages(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMessagesResult)executionResult.getResult();
+            var componentVendorTransfer = result.getComponentVendor();
+            var entityTypeTransfer = result.getEntityType();
+            var messageTypeTransfer = result.getMessageType();
             
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR, componentVendorTransfer);
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorTransfer.getComponentVendorName());

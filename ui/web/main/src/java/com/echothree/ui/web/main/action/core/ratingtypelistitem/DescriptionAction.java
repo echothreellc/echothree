@@ -55,20 +55,20 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String ratingTypeName = request.getParameter(ParameterConstants.RATING_TYPE_NAME);
-            String ratingTypeListItemName = request.getParameter(ParameterConstants.RATING_TYPE_LIST_ITEM_NAME);
-            GetRatingTypeListItemDescriptionsForm commandForm = RatingUtil.getHome().getGetRatingTypeListItemDescriptionsForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var ratingTypeName = request.getParameter(ParameterConstants.RATING_TYPE_NAME);
+            var ratingTypeListItemName = request.getParameter(ParameterConstants.RATING_TYPE_LIST_ITEM_NAME);
+            var commandForm = RatingUtil.getHome().getGetRatingTypeListItemDescriptionsForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setRatingTypeName(ratingTypeName);
             commandForm.setRatingTypeListItemName(ratingTypeListItemName);
-            
-            CommandResult commandResult = RatingUtil.getHome().getRatingTypeListItemDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetRatingTypeListItemDescriptionsResult result = (GetRatingTypeListItemDescriptionsResult)executionResult.getResult();
+
+            var commandResult = RatingUtil.getHome().getRatingTypeListItemDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetRatingTypeListItemDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RATING_TYPE_LIST_ITEM, result.getRatingTypeListItem());
             request.setAttribute(AttributeConstants.RATING_TYPE_LIST_ITEM_DESCRIPTIONS, result.getRatingTypeListItemDescriptions());

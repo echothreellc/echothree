@@ -68,7 +68,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyEntityTypeForm commandForm = CoreUtil.getHome().getDeletePartyEntityTypeForm();
+        var commandForm = CoreUtil.getHome().getDeletePartyEntityTypeForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());

@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String colorName = request.getParameter(ParameterConstants.COLOR_NAME);
-        GetColorDescriptionsForm commandForm = CoreUtil.getHome().getGetColorDescriptionsForm();
+        var colorName = request.getParameter(ParameterConstants.COLOR_NAME);
+        var commandForm = CoreUtil.getHome().getGetColorDescriptionsForm();
 
         commandForm.setColorName(colorName);
 
-        CommandResult commandResult = CoreUtil.getHome().getColorDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getColorDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetColorDescriptionsResult result = (GetColorDescriptionsResult) executionResult.getResult();
-            ColorTransfer colorTransfer = result.getColor();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetColorDescriptionsResult) executionResult.getResult();
+            var colorTransfer = result.getColor();
 
             request.setAttribute(AttributeConstants.COLOR, colorTransfer);
             request.setAttribute(AttributeConstants.COLOR_DESCRIPTIONS, result.getColorDescriptions());

@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String queueTypeName = request.getParameter(ParameterConstants.QUEUE_TYPE_NAME);
-        GetQueueTypeDescriptionsForm commandForm = QueueUtil.getHome().getGetQueueTypeDescriptionsForm();
+        var queueTypeName = request.getParameter(ParameterConstants.QUEUE_TYPE_NAME);
+        var commandForm = QueueUtil.getHome().getGetQueueTypeDescriptionsForm();
 
         commandForm.setQueueTypeName(queueTypeName);
 
-        CommandResult commandResult = QueueUtil.getHome().getQueueTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = QueueUtil.getHome().getQueueTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetQueueTypeDescriptionsResult result = (GetQueueTypeDescriptionsResult) executionResult.getResult();
-            QueueTypeTransfer queueTypeTransfer = result.getQueueType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetQueueTypeDescriptionsResult) executionResult.getResult();
+            var queueTypeTransfer = result.getQueueType();
 
             request.setAttribute(AttributeConstants.QUEUE_TYPE, queueTypeTransfer);
             request.setAttribute(AttributeConstants.QUEUE_TYPE_DESCRIPTIONS, result.getQueueTypeDescriptions());

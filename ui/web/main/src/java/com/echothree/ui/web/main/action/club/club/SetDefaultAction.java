@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultClubForm commandForm = ClubUtil.getHome().getSetDefaultClubForm();
-            String clubName = request.getParameter(ParameterConstants.CLUB_NAME);
+            var commandForm = ClubUtil.getHome().getSetDefaultClubForm();
+            var clubName = request.getParameter(ParameterConstants.CLUB_NAME);
             
             commandForm.setClubName(clubName);
             

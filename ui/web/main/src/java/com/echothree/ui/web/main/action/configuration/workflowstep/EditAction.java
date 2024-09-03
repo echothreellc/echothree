@@ -63,7 +63,7 @@ public class EditAction
     @Override
     protected WorkflowStepEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        WorkflowStepEdit edit = WorkflowUtil.getHome().getWorkflowStepEdit();
+        var edit = WorkflowUtil.getHome().getWorkflowStepEdit();
 
         edit.setWorkflowStepName(actionForm.getWorkflowStepName());
         edit.setWorkflowStepTypeName(actionForm.getWorkflowStepTypeChoice());
@@ -94,9 +94,9 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditWorkflowStepForm commandForm)
             throws Exception {
-        CommandResult commandResult = WorkflowUtil.getHome().editWorkflowStep(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditWorkflowStepResult result = (EditWorkflowStepResult)executionResult.getResult();
+        var commandResult = WorkflowUtil.getHome().editWorkflowStep(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditWorkflowStepResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.WORKFLOW_STEP, result.getWorkflowStep());
         

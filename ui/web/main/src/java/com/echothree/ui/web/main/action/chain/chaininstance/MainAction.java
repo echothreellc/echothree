@@ -54,7 +54,7 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetChainInstancesForm commandForm = ChainUtil.getHome().getGetChainInstancesForm();
+        var commandForm = ChainUtil.getHome().getGetChainInstancesForm();
         
         commandForm.setChainKindName(request.getParameter(ParameterConstants.CHAIN_KIND_NAME));
         commandForm.setChainTypeName(request.getParameter(ParameterConstants.CHAIN_TYPE_NAME));
@@ -64,9 +64,9 @@ public class MainAction
         options.add(ChainOptions.ChainInstanceIncludeChainInstanceStatus);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ChainUtil.getHome().getChainInstances(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetChainInstancesResult result = (GetChainInstancesResult)executionResult.getResult();
+        var commandResult = ChainUtil.getHome().getChainInstances(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetChainInstancesResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CHAIN, result.getChain());
         request.setAttribute(AttributeConstants.CHAIN_INSTANCES, result.getChainInstances());

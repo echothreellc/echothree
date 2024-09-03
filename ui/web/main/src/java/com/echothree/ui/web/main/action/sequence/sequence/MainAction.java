@@ -54,14 +54,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetSequencesForm getSequencesForm = SequenceUtil.getHome().getGetSequencesForm();
-            String sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
+            var getSequencesForm = SequenceUtil.getHome().getGetSequencesForm();
+            var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
             
             getSequencesForm.setSequenceTypeName(sequenceTypeName);
-            
-            CommandResult commandResult = SequenceUtil.getHome().getSequences(getUserVisitPK(request), getSequencesForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSequencesResult getSequencesResult = (GetSequencesResult)executionResult.getResult();
+
+            var commandResult = SequenceUtil.getHome().getSequences(getUserVisitPK(request), getSequencesForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getSequencesResult = (GetSequencesResult)executionResult.getResult();
             
             request.setAttribute("sequenceType", getSequencesResult.getSequenceType());
             request.setAttribute("sequences", getSequencesResult.getSequences());

@@ -40,14 +40,14 @@ public class AddActionForm
     public void setupSkillTypeChoices() {
         if(skillTypeChoices == null) {
             try {
-                GetSkillTypeChoicesForm form = EmployeeUtil.getHome().getGetSkillTypeChoicesForm();
+                var form = EmployeeUtil.getHome().getGetSkillTypeChoicesForm();
                 
                 form.setDefaultSkillTypeChoice(skillTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = EmployeeUtil.getHome().getSkillTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSkillTypeChoicesResult result = (GetSkillTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = EmployeeUtil.getHome().getSkillTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSkillTypeChoicesResult)executionResult.getResult();
                 skillTypeChoices = result.getSkillTypeChoices();
                 
                 if(skillTypeChoice == null)

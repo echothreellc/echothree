@@ -48,7 +48,7 @@ public class UnlockAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        UnlockEntityForm commandForm = CoreUtil.getHome().getUnlockEntityForm();
+        var commandForm = CoreUtil.getHome().getUnlockEntityForm();
 
         commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));
 

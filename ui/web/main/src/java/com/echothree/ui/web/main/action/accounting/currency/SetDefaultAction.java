@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultCurrencyForm commandForm = AccountingUtil.getHome().getSetDefaultCurrencyForm();
-            String currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
+            var commandForm = AccountingUtil.getHome().getSetDefaultCurrencyForm();
+            var currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
             
             commandForm.setCurrencyIsoName(currencyIsoName);
             

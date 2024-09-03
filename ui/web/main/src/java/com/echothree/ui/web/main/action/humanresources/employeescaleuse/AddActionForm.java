@@ -45,14 +45,14 @@ public class AddActionForm
     private void setupScaleUseTypeChoices() {
         if(scaleUseTypeChoices == null) {
             try {
-                GetScaleUseTypeChoicesForm commandForm = ScaleUtil.getHome().getGetScaleUseTypeChoicesForm();
+                var commandForm = ScaleUtil.getHome().getGetScaleUseTypeChoicesForm();
 
                 commandForm.setDefaultScaleUseTypeChoice(scaleUseTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = ScaleUtil.getHome().getScaleUseTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetScaleUseTypeChoicesResult result = (GetScaleUseTypeChoicesResult)executionResult.getResult();
+                var commandResult = ScaleUtil.getHome().getScaleUseTypeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetScaleUseTypeChoicesResult)executionResult.getResult();
                 scaleUseTypeChoices = result.getScaleUseTypeChoices();
 
                 if(scaleUseTypeChoice == null) {
@@ -67,14 +67,14 @@ public class AddActionForm
     private void setupScaleChoices() {
         if(scaleChoices == null) {
             try {
-                GetScaleChoicesForm commandForm = ScaleUtil.getHome().getGetScaleChoicesForm();
+                var commandForm = ScaleUtil.getHome().getGetScaleChoicesForm();
 
                 commandForm.setDefaultScaleChoice(scaleChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = ScaleUtil.getHome().getScaleChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetScaleChoicesResult result = (GetScaleChoicesResult)executionResult.getResult();
+                var commandResult = ScaleUtil.getHome().getScaleChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetScaleChoicesResult)executionResult.getResult();
                 scaleChoices = result.getScaleChoices();
 
                 if(scaleChoice == null) {

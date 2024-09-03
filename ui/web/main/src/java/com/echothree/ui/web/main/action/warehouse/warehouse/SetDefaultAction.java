@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultWarehouseForm commandForm = WarehouseUtil.getHome().getSetDefaultWarehouseForm();
-            String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+            var commandForm = WarehouseUtil.getHome().getSetDefaultWarehouseForm();
+            var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
             
             commandForm.setWarehouseName(warehouseName);
             

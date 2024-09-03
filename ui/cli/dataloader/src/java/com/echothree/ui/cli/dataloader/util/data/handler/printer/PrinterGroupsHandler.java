@@ -47,7 +47,7 @@ public class PrinterGroupsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("printerGroup")) {
-            CreatePrinterGroupForm commandForm = PrinterFormFactory.getCreatePrinterGroupForm();
+            var commandForm = PrinterFormFactory.getCreatePrinterGroupForm();
 
             commandForm.set(getAttrsMap(attrs));
 

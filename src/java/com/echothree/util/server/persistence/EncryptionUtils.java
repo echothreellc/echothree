@@ -103,7 +103,7 @@ public class EncryptionUtils {
         var cache = ThreadCaches.currentCaches().getSecurityCache();
         var iv = generateInitializationVector();
 
-        BaseKey baseKey = new BaseKey(secretKey, iv);
+        var baseKey = new BaseKey(secretKey, iv);
         cache.put(fqnBaseKeys + "/" + cacheBaseKeyName, baseKey);
 
         return baseKey;
@@ -263,7 +263,7 @@ public class EncryptionUtils {
             throw new PersistenceEncryptionException(cacheCount == 0 ? "Base Encryption Keys Missing" : "Base Encryption Keys Incomplete");
         }
 
-        BaseKeys baseKeys = new BaseKeys(baseKey1, baseKey2);
+        var baseKeys = new BaseKeys(baseKey1, baseKey2);
 
         return baseKeys;
     }
@@ -325,7 +325,7 @@ public class EncryptionUtils {
 
         // Setup cipher
         try {
-            IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+            var ivParameterSpec = new IvParameterSpec(iv);
 
             cipher.init(cipherMode, secretKey, ivParameterSpec);
         } catch (InvalidKeyException ike) {

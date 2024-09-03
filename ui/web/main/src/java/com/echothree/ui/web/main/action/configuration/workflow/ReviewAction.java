@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetWorkflowForm commandForm = WorkflowUtil.getHome().getGetWorkflowForm();
+        var commandForm = WorkflowUtil.getHome().getGetWorkflowForm();
 
         commandForm.setWorkflowName(request.getParameter(ParameterConstants.WORKFLOW_NAME));
 
-        CommandResult commandResult = WorkflowUtil.getHome().getWorkflow(getUserVisitPK(request), commandForm);
+        var commandResult = WorkflowUtil.getHome().getWorkflow(getUserVisitPK(request), commandForm);
         WorkflowTransfer workflow = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowResult result = (GetWorkflowResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowResult)executionResult.getResult();
 
             workflow = result.getWorkflow();
         }

@@ -66,17 +66,17 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContentCategoryDescriptionForm commandForm = ContentUtil.getHome().getGetContentCategoryDescriptionForm();
+        var commandForm = ContentUtil.getHome().getGetContentCategoryDescriptionForm();
 
         commandForm.setContentCollectionName(actionForm.getContentCollectionName());
         commandForm.setContentCatalogName(actionForm.getContentCatalogName());
         commandForm.setContentCategoryName(actionForm.getContentCategoryName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
 
-        CommandResult commandResult = ContentUtil.getHome().getContentCategoryDescription(getUserVisitPK(request), commandForm);
+        var commandResult = ContentUtil.getHome().getContentCategoryDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentCategoryDescriptionResult result = (GetContentCategoryDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentCategoryDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CONTENT_CATEGORY_DESCRIPTION, result.getContentCategoryDescription());
         }
@@ -85,7 +85,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteContentCategoryDescriptionForm commandForm = ContentUtil.getHome().getDeleteContentCategoryDescriptionForm();
+        var commandForm = ContentUtil.getHome().getDeleteContentCategoryDescriptionForm();
 
         commandForm.setContentCollectionName(actionForm.getContentCollectionName());
         commandForm.setContentCatalogName(actionForm.getContentCatalogName());

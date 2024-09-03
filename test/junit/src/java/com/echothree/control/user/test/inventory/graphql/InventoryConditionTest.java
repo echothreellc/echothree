@@ -221,7 +221,7 @@ public class InventoryConditionTest
         var inventoryConditionEdges = getList(queryBody, "data.inventoryConditions.edges");
         
         var foundInventoryCondition = false;
-        for(Map<String, Object> inventoryConditionEdge : inventoryConditionEdges) {
+        for(var inventoryConditionEdge : inventoryConditionEdges) {
             var inventoryConditionNode = getMap(inventoryConditionEdge, "node");
 
             if(id.equals(getString(inventoryConditionNode, "id"))) {

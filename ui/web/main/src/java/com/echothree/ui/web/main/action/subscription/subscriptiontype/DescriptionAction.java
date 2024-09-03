@@ -55,17 +55,17 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
-            String subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
-            GetSubscriptionTypeDescriptionsForm commandForm = SubscriptionUtil.getHome().getGetSubscriptionTypeDescriptionsForm();
+            var subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
+            var subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
+            var commandForm = SubscriptionUtil.getHome().getGetSubscriptionTypeDescriptionsForm();
             
             commandForm.setSubscriptionKindName(subscriptionKindName);
             commandForm.setSubscriptionTypeName(subscriptionTypeName);
-            
-            CommandResult commandResult = SubscriptionUtil.getHome().getSubscriptionTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSubscriptionTypeDescriptionsResult result = (GetSubscriptionTypeDescriptionsResult)executionResult.getResult();
-            SubscriptionTypeTransfer subscriptionType = result.getSubscriptionType();
+
+            var commandResult = SubscriptionUtil.getHome().getSubscriptionTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSubscriptionTypeDescriptionsResult)executionResult.getResult();
+            var subscriptionType = result.getSubscriptionType();
             
             request.setAttribute("subscriptionKind", subscriptionType.getSubscriptionKind());
             request.setAttribute("subscriptionType", subscriptionType);

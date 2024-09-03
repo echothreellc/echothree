@@ -60,28 +60,28 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetContentCategoriesForm commandForm = ContentUtil.getHome().getGetContentCategoriesForm();
-        String results = request.getParameter(ParameterConstants.RESULTS);
+        var commandForm = ContentUtil.getHome().getGetContentCategoriesForm();
+        var results = request.getParameter(ParameterConstants.RESULTS);
 
         commandForm.setContentCollectionName(request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME));
         commandForm.setContentCatalogName(request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME));
         commandForm.setParentContentCategoryName(request.getParameter(ParameterConstants.PARENT_CONTENT_CATEGORY_NAME));
 
         if(results == null) {
-            String offsetParameter = request.getParameter(new ParamEncoder("contentCategory").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
-            Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
+            var offsetParameter = request.getParameter(new ParamEncoder("contentCategory").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
+            var offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
             Map<String, Limit> limits = new HashMap<>();
             limits.put(ContentCategoryConstants.ENTITY_TYPE_NAME, new Limit("20", offset == null ? null : offset.toString()));
             commandForm.setLimits(limits);
         }
 
-        CommandResult commandResult = ContentUtil.getHome().getContentCategories(getUserVisitPK(request), commandForm);
+        var commandResult = ContentUtil.getHome().getContentCategories(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentCategoriesResult result = (GetContentCategoriesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentCategoriesResult)executionResult.getResult();
 
-            Long contentCategoryCount = result.getContentCategoryCount();
+            var contentCategoryCount = result.getContentCategoryCount();
             if(contentCategoryCount != null) {
                 request.setAttribute(AttributeConstants.CONTENT_CATEGORY_COUNT, toIntExact(contentCategoryCount));
             }

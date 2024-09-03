@@ -54,16 +54,16 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreatePersonalTitleForm commandForm = PartyUtil.getHome().getCreatePersonalTitleForm();
+                    var commandForm = PartyUtil.getHome().getCreatePersonalTitleForm();
                     
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = PartyUtil.getHome().createPersonalTitle(getUserVisitPK(request), commandForm);
+
+                    var commandResult = PartyUtil.getHome().createPersonalTitle(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

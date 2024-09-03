@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateTransactionTypeForm commandForm = AccountingUtil.getHome().getCreateTransactionTypeForm();
+        var commandForm = AccountingUtil.getHome().getCreateTransactionTypeForm();
 
         commandForm.setTransactionTypeName(actionForm.getTransactionTypeName());
         commandForm.setSortOrder(actionForm.getSortOrder());

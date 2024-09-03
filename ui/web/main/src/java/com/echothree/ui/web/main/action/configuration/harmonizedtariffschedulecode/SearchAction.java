@@ -62,16 +62,16 @@ public class SearchAction
     
     private String getHarmonizedTariffScheduleCodeName(HttpServletRequest request)
             throws NamingException {
-        GetHarmonizedTariffScheduleCodeResultsForm commandForm = SearchUtil.getHome().getGetHarmonizedTariffScheduleCodeResultsForm();
+        var commandForm = SearchUtil.getHome().getGetHarmonizedTariffScheduleCodeResultsForm();
         String harmonizedTariffScheduleCodeName = null;
         
         commandForm.setSearchTypeName(SearchTypes.EMPLOYEE.name());
-        
-        CommandResult commandResult = SearchUtil.getHome().getHarmonizedTariffScheduleCodeResults(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetHarmonizedTariffScheduleCodeResultsResult result = (GetHarmonizedTariffScheduleCodeResultsResult)executionResult.getResult();
-        List<HarmonizedTariffScheduleCodeResultTransfer> harmonizedTariffScheduleCodeResults = result.getHarmonizedTariffScheduleCodeResults();
-        Iterator<HarmonizedTariffScheduleCodeResultTransfer> iter = harmonizedTariffScheduleCodeResults.iterator();
+
+        var commandResult = SearchUtil.getHome().getHarmonizedTariffScheduleCodeResults(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetHarmonizedTariffScheduleCodeResultsResult)executionResult.getResult();
+        var harmonizedTariffScheduleCodeResults = result.getHarmonizedTariffScheduleCodeResults();
+        var iter = harmonizedTariffScheduleCodeResults.iterator();
         if(iter.hasNext()) {
             harmonizedTariffScheduleCodeName = iter.next().getHarmonizedTariffScheduleCodeName();
         }
@@ -83,24 +83,24 @@ public class SearchAction
     public ActionForward executeAction(ActionMapping mapping, SearchActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String countryName = actionForm.getCountryName();
+        var countryName = actionForm.getCountryName();
         String harmonizedTariffScheduleCodeName = null;
 
         if(wasPost(request)) {
-            SearchHarmonizedTariffScheduleCodesForm commandForm = SearchUtil.getHome().getSearchHarmonizedTariffScheduleCodesForm();
-            String q = StringUtils.getInstance().trimToNull(actionForm.getQ());
+            var commandForm = SearchUtil.getHome().getSearchHarmonizedTariffScheduleCodesForm();
+            var q = StringUtils.getInstance().trimToNull(actionForm.getQ());
 
             commandForm.setSearchTypeName(SearchTypes.EMPLOYEE.name());
             commandForm.setQ("countryGeoCodeName:" + countryName + (q == null ? "" : " AND " + q));
 
-            CommandResult commandResult = SearchUtil.getHome().searchHarmonizedTariffScheduleCodes(getUserVisitPK(request), commandForm);
+            var commandResult = SearchUtil.getHome().searchHarmonizedTariffScheduleCodes(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
                 forwardKey = ForwardConstants.DISPLAY;
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                SearchHarmonizedTariffScheduleCodesResult result = (SearchHarmonizedTariffScheduleCodesResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (SearchHarmonizedTariffScheduleCodesResult)executionResult.getResult();
                 var count = result.getCount();
 
                 if(count == 0 || count > 1) {
@@ -113,8 +113,8 @@ public class SearchAction
         } else {
             forwardKey = ForwardConstants.DISPLAY;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY) || forwardKey.equals(ForwardConstants.RESULT)) {
             Map<String, String> parameters = new HashMap<>(1);
             

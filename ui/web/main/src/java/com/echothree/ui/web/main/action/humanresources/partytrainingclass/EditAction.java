@@ -54,7 +54,7 @@ public class EditAction
     @Override
     protected PartyTrainingClassSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyTrainingClassSpec spec = TrainingUtil.getHome().getPartyTrainingClassSpec();
+        var spec = TrainingUtil.getHome().getPartyTrainingClassSpec();
         
         actionForm.setPartyName(findParameter(request, ParameterConstants.PARTY_NAME, actionForm.getPartyName()));
         spec.setPartyTrainingClassName(findParameter(request, ParameterConstants.PARTY_TRAINING_CLASS_NAME, actionForm.getPartyTrainingClassName()));
@@ -65,7 +65,7 @@ public class EditAction
     @Override
     protected PartyTrainingClassEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyTrainingClassEdit edit = TrainingUtil.getHome().getPartyTrainingClassEdit();
+        var edit = TrainingUtil.getHome().getPartyTrainingClassEdit();
 
         edit.setCompletedTime(actionForm.getCompletedTime());
         edit.setValidUntilTime(actionForm.getValidUntilTime());
@@ -100,7 +100,7 @@ public class EditAction
     @Override
     protected void setupTransferForForm(HttpServletRequest request, EditActionForm actionForm, EditPartyTrainingClassResult result)
             throws NamingException {
-        PartyTrainingClassTransfer partyTrainingClass = result.getPartyTrainingClass();
+        var partyTrainingClass = result.getPartyTrainingClass();
         
         request.setAttribute(AttributeConstants.PARTY_TRAINING_CLASS, partyTrainingClass);
         request.setAttribute(AttributeConstants.EMPLOYEE, EmployeeUtils.getInstance().getEmployee(getUserVisitPK(request), partyTrainingClass.getParty().getPartyName(),

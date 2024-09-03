@@ -51,14 +51,14 @@ public class TransactionTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("transactionTypeDescription")) {
-            CreateTransactionTypeDescriptionForm commandForm = AccountingFormFactory.getCreateTransactionTypeDescriptionForm();
+            var commandForm = AccountingFormFactory.getCreateTransactionTypeDescriptionForm();
             
             commandForm.setTransactionTypeName(transactionTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             accountingService.createTransactionTypeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("transactionGlAccountCategory")) {
-            CreateTransactionGlAccountCategoryForm commandForm = AccountingFormFactory.getCreateTransactionGlAccountCategoryForm();
+            var commandForm = AccountingFormFactory.getCreateTransactionGlAccountCategoryForm();
             
             commandForm.setTransactionTypeName(transactionTypeName);
             commandForm.set(getAttrsMap(attrs));
@@ -68,7 +68,7 @@ public class TransactionTypeHandler
             initialDataParser.pushHandler(new TransactionGlAccountCategoryHandler(initialDataParser, this, transactionTypeName,
                     commandForm.getTransactionGlAccountCategoryName()));
         } else if(localName.equals("transactionEntityRoleType")) {
-            CreateTransactionEntityRoleTypeForm commandForm = AccountingFormFactory.getCreateTransactionEntityRoleTypeForm();
+            var commandForm = AccountingFormFactory.getCreateTransactionEntityRoleTypeForm();
             
             commandForm.setTransactionTypeName(transactionTypeName);
             commandForm.set(getAttrsMap(attrs));

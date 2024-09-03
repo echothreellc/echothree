@@ -47,7 +47,7 @@ public class ChainActionTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("chainActionType")) {
-            CreateChainActionTypeForm commandForm = ChainFormFactory.getCreateChainActionTypeForm();
+            var commandForm = ChainFormFactory.getCreateChainActionTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

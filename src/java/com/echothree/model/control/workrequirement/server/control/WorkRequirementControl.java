@@ -921,7 +921,7 @@ public class WorkRequirementControl
     public WorkRequirementStatusChoicesBean getWorkRequirementStatusChoices(String defaultWorkRequirementStatusChoice, Language language,
             boolean allowNullChoice, WorkRequirement workRequirement, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        WorkRequirementStatusChoicesBean workRequirementStatusChoicesBean = new WorkRequirementStatusChoicesBean();
+        var workRequirementStatusChoicesBean = new WorkRequirementStatusChoicesBean();
 
         if(workRequirement == null) {
             workflowControl.getWorkflowEntranceChoices(workRequirementStatusChoicesBean, defaultWorkRequirementStatusChoice, language, allowNullChoice,
@@ -1109,7 +1109,7 @@ public class WorkRequirementControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.WorkAssignment */
     public WorkAssignment getWorkAssignmentByEntityInstance(EntityInstance entityInstance) {
-        WorkAssignmentPK pk = new WorkAssignmentPK(entityInstance.getEntityUniqueId());
+        var pk = new WorkAssignmentPK(entityInstance.getEntityUniqueId());
         var workAssignment = WorkAssignmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return workAssignment;
@@ -1227,7 +1227,7 @@ public class WorkRequirementControl
     public WorkAssignmentStatusChoicesBean getWorkAssignmentStatusChoices(String defaultWorkAssignmentStatusChoice, Language language,
             boolean allowNullChoice, WorkAssignment workAssignment, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        WorkAssignmentStatusChoicesBean workAssignmentStatusChoicesBean = new WorkAssignmentStatusChoicesBean();
+        var workAssignmentStatusChoicesBean = new WorkAssignmentStatusChoicesBean();
 
         if(workAssignment == null) {
             workflowControl.getWorkflowEntranceChoices(workAssignmentStatusChoicesBean, defaultWorkAssignmentStatusChoice, language, allowNullChoice,
@@ -1362,7 +1362,7 @@ public class WorkRequirementControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.WorkTime */
     public WorkTime getWorkTimeByEntityInstance(EntityInstance entityInstance) {
-        WorkTimePK pk = new WorkTimePK(entityInstance.getEntityUniqueId());
+        var pk = new WorkTimePK(entityInstance.getEntityUniqueId());
         var workTime = WorkTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return workTime;
@@ -1478,7 +1478,7 @@ public class WorkRequirementControl
     public WorkTimeStatusChoicesBean getWorkTimeStatusChoices(String defaultWorkTimeStatusChoice, Language language,
             boolean allowNullChoice, WorkTime workTime, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        WorkTimeStatusChoicesBean workTimeStatusChoicesBean = new WorkTimeStatusChoicesBean();
+        var workTimeStatusChoicesBean = new WorkTimeStatusChoicesBean();
 
         if(workTime == null) {
             workflowControl.getWorkflowEntranceChoices(workTimeStatusChoicesBean, defaultWorkTimeStatusChoice, language, allowNullChoice,

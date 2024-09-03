@@ -61,8 +61,8 @@ public class IndexFieldHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("indexFieldDescription")) {
-            IndexFieldDescriptionSpec spec = IndexSpecFactory.getIndexFieldDescriptionSpec();
-            EditIndexFieldDescriptionForm editForm = IndexFormFactory.getEditIndexFieldDescriptionForm();
+            var spec = IndexSpecFactory.getIndexFieldDescriptionSpec();
+            var editForm = IndexFormFactory.getEditIndexFieldDescriptionForm();
 
             spec.setIndexTypeName(indexTypeName);
             spec.setIndexFieldName(indexFieldName);
@@ -70,12 +70,12 @@ public class IndexFieldHandler
 
             editForm.setSpec(spec);
             editForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = indexService.editIndexFieldDescription(initialDataParser.getUserVisit(), editForm);
+
+            var commandResult = indexService.editIndexFieldDescription(initialDataParser.getUserVisit(), editForm);
             
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownIndexFieldDescription.name())) {
-                    CreateIndexFieldDescriptionForm createForm = IndexFormFactory.getCreateIndexFieldDescriptionForm();
+                    var createForm = IndexFormFactory.getCreateIndexFieldDescriptionForm();
 
                     createForm.setIndexTypeName(indexTypeName);
                     createForm.setIndexFieldName(indexFieldName);
@@ -90,13 +90,13 @@ public class IndexFieldHandler
                     getLogger().error(commandResult.toString());
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditIndexFieldDescriptionResult result = (EditIndexFieldDescriptionResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditIndexFieldDescriptionResult)executionResult.getResult();
 
                 if(result != null) {
-                    IndexFieldDescriptionEdit edit = (IndexFieldDescriptionEdit)result.getEdit();
-                    String description = attrs.getValue("description");
-                    boolean changed = false;
+                    var edit = (IndexFieldDescriptionEdit)result.getEdit();
+                    var description = attrs.getValue("description");
+                    var changed = false;
                     
                     if(!edit.getDescription().equals(description)) {
                         edit.setDescription(description);

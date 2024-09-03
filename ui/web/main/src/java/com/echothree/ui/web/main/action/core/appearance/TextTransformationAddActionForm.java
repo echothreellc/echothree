@@ -40,14 +40,14 @@ public class TextTransformationAddActionForm
     private void setupTextTransformationChoices()
             throws NamingException {
         if(textTransformationChoices == null) {
-            GetTextTransformationChoicesForm commandForm = CoreUtil.getHome().getGetTextTransformationChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetTextTransformationChoicesForm();
 
             commandForm.setDefaultTextTransformationChoice(textTransformationChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getTextTransformationChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTextTransformationChoicesResult getTextTransformationChoicesResult = (GetTextTransformationChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getTextTransformationChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getTextTransformationChoicesResult = (GetTextTransformationChoicesResult)executionResult.getResult();
             textTransformationChoices = getTextTransformationChoicesResult.getTextTransformationChoices();
 
             if(textTransformationChoice == null) {

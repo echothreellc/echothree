@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCommandMessageTypeForm commandForm = CoreUtil.getHome().getGetCommandMessageTypeForm();
+        var commandForm = CoreUtil.getHome().getGetCommandMessageTypeForm();
         
         commandForm.setCommandMessageTypeName(actionForm.getCommandMessageTypeName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getCommandMessageType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCommandMessageTypeResult result = (GetCommandMessageTypeResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getCommandMessageType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCommandMessageTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.COMMAND_MESSAGE_TYPE, result.getCommandMessageType());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteCommandMessageTypeForm commandForm = CoreUtil.getHome().getDeleteCommandMessageTypeForm();
+        var commandForm = CoreUtil.getHome().getDeleteCommandMessageTypeForm();
 
         commandForm.setCommandMessageTypeName(actionForm.getCommandMessageTypeName());
 

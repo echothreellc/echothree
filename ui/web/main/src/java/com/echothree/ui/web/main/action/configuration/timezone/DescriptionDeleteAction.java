@@ -52,11 +52,11 @@ public class DescriptionDeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String javaTimeZoneName = request.getParameter(ParameterConstants.JAVA_TIME_ZONE_NAME);
+        var javaTimeZoneName = request.getParameter(ParameterConstants.JAVA_TIME_ZONE_NAME);
         
         try {
-            String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-            DeleteTimeZoneDescriptionForm commandForm = PartyUtil.getHome().getDeleteTimeZoneDescriptionForm();
+            var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+            var commandForm = PartyUtil.getHome().getDeleteTimeZoneDescriptionForm();
             
             commandForm.setJavaTimeZoneName(javaTimeZoneName);
             commandForm.setLanguageIsoName(languageIsoName);
@@ -67,8 +67,8 @@ public class DescriptionDeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

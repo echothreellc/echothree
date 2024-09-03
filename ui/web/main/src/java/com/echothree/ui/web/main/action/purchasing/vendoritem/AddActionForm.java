@@ -52,15 +52,15 @@ public class AddActionForm
     public void setupCancellationPolicyChoices() {
         if(cancellationPolicyChoices == null) {
             try {
-                GetCancellationPolicyChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
+                var form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
                 
                 form.setCancellationKindName(CancellationKinds.VENDOR_CANCELLATION.name());
                 form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCancellationPolicyChoicesResult result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+
+                var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
                 cancellationPolicyChoices = result.getCancellationPolicyChoices();
                 
                 if(cancellationPolicyChoice == null) {
@@ -76,15 +76,15 @@ public class AddActionForm
     public void setupReturnPolicyChoices() {
         if(returnPolicyChoices == null) {
             try {
-                GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
+                var form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
                 
                 form.setReturnKindName(ReturnKinds.VENDOR_RETURN.name());
                 form.setDefaultReturnPolicyChoice(returnPolicyChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetReturnPolicyChoicesResult result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+
+                var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
                 returnPolicyChoices = result.getReturnPolicyChoices();
                 
                 if(returnPolicyChoice == null) {

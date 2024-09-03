@@ -48,9 +48,9 @@ public class BirthdayFormatsHandler
             String birthdayFormatName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("birthdayFormatName"))
                     birthdayFormatName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class BirthdayFormatsHandler
             }
             
             try {
-                CreateBirthdayFormatForm commandForm = PartyFormFactory.getCreateBirthdayFormatForm();
+                var commandForm = PartyFormFactory.getCreateBirthdayFormatForm();
                 
                 commandForm.setBirthdayFormatName(birthdayFormatName);
                 commandForm.setIsDefault(isDefault);

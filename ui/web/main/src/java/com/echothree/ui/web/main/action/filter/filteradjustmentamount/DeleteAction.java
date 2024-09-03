@@ -52,13 +52,13 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-        String filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
+        var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+        var filterAdjustmentName = request.getParameter(ParameterConstants.FILTER_ADJUSTMENT_NAME);
         
         try {
-            String unitOfMeasureName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_NAME);
-            String currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
-            DeleteFilterAdjustmentAmountForm deleteFilterAdjustmentAmountForm = FilterUtil.getHome().getDeleteFilterAdjustmentAmountForm();
+            var unitOfMeasureName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_NAME);
+            var currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
+            var deleteFilterAdjustmentAmountForm = FilterUtil.getHome().getDeleteFilterAdjustmentAmountForm();
             
             deleteFilterAdjustmentAmountForm.setFilterKindName(filterKindName);
             deleteFilterAdjustmentAmountForm.setFilterAdjustmentName(filterAdjustmentName);
@@ -71,8 +71,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(2);
             

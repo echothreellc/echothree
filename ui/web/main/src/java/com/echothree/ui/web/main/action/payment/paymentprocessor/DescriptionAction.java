@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String paymentProcessorName = request.getParameter(ParameterConstants.PAYMENT_PROCESSOR_NAME);
-        GetPaymentProcessorDescriptionsForm commandForm = PaymentUtil.getHome().getGetPaymentProcessorDescriptionsForm();
+        var paymentProcessorName = request.getParameter(ParameterConstants.PAYMENT_PROCESSOR_NAME);
+        var commandForm = PaymentUtil.getHome().getGetPaymentProcessorDescriptionsForm();
 
         commandForm.setPaymentProcessorName(paymentProcessorName);
 
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentProcessorDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = PaymentUtil.getHome().getPaymentProcessorDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPaymentProcessorDescriptionsResult result = (GetPaymentProcessorDescriptionsResult) executionResult.getResult();
-            PaymentProcessorTransfer paymentProcessorTransfer = result.getPaymentProcessor();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPaymentProcessorDescriptionsResult) executionResult.getResult();
+            var paymentProcessorTransfer = result.getPaymentProcessor();
 
             request.setAttribute(AttributeConstants.PAYMENT_PROCESSOR, paymentProcessorTransfer);
             request.setAttribute(AttributeConstants.PAYMENT_PROCESSOR_DESCRIPTIONS, result.getPaymentProcessorDescriptions());

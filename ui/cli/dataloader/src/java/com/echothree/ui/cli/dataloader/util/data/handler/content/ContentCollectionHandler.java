@@ -54,9 +54,9 @@ public class ContentCollectionHandler
             String languageIsoName = null;
             String description = null;
             String doUpdate = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -66,7 +66,7 @@ public class ContentCollectionHandler
             }
             
             try {
-                CreateContentCollectionDescriptionForm commandForm = ContentFormFactory.getCreateContentCollectionDescriptionForm();
+                var commandForm = ContentFormFactory.getCreateContentCollectionDescriptionForm();
                 
                 commandForm.setContentCollectionName(contentCollectionName);
                 commandForm.setLanguageIsoName(languageIsoName);
@@ -82,9 +82,9 @@ public class ContentCollectionHandler
             String isDefault = null;
             String sortOrder = null;
             String doUpdate = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("contentSectionName"))
                     contentSectionName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("parentContentSectionName"))
@@ -98,7 +98,7 @@ public class ContentCollectionHandler
             }
             
             try {
-                CreateContentSectionForm commandForm = ContentFormFactory.getCreateContentSectionForm();
+                var commandForm = ContentFormFactory.getCreateContentSectionForm();
                 
                 commandForm.setContentCollectionName(contentCollectionName);
                 commandForm.setContentSectionName(contentSectionName);
@@ -120,9 +120,9 @@ public class ContentCollectionHandler
             String isDefault = null;
             String sortOrder = null;
             String doUpdate = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("contentCatalogName"))
                     contentCatalogName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("defaultOfferName"))
@@ -140,7 +140,7 @@ public class ContentCollectionHandler
             }
             
             try {
-                CreateContentCatalogForm commandForm = ContentFormFactory.getCreateContentCatalogForm();
+                var commandForm = ContentFormFactory.getCreateContentCatalogForm();
                 
                 commandForm.setContentCollectionName(contentCollectionName);
                 commandForm.setContentCatalogName(contentCatalogName);
@@ -159,9 +159,9 @@ public class ContentCollectionHandler
         } else if(localName.equals("contentForum")) {
             String forumName = null;
             String isDefault = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("forumName"))
                     forumName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -169,7 +169,7 @@ public class ContentCollectionHandler
             }
             
             try {
-                CreateContentForumForm commandForm = ContentFormFactory.getCreateContentForumForm();
+                var commandForm = ContentFormFactory.getCreateContentForumForm();
                 
                 commandForm.setContentCollectionName(contentCollectionName);
                 commandForm.setForumName(forumName);

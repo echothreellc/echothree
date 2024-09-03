@@ -52,7 +52,7 @@ public class PartyAliasTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("partyAliasTypeDescription")) {
-            CreatePartyAliasTypeDescriptionForm commandForm = PartyFormFactory.getCreatePartyAliasTypeDescriptionForm();
+            var commandForm = PartyFormFactory.getCreatePartyAliasTypeDescriptionForm();
             
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.setPartyAliasTypeName(partyAliasTypeName);

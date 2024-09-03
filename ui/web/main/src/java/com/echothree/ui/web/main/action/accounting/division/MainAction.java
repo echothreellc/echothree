@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
-            GetDivisionsForm commandForm = PartyUtil.getHome().getGetDivisionsForm();
+            var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
+            var commandForm = PartyUtil.getHome().getGetDivisionsForm();
             
             commandForm.setCompanyName(companyName);
-            
-            CommandResult commandResult = PartyUtil.getHome().getDivisions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetDivisionsResult result = (GetDivisionsResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().getDivisions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetDivisionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMPANY, result.getCompany());
             request.setAttribute(AttributeConstants.DIVISIONS, result.getDivisions());

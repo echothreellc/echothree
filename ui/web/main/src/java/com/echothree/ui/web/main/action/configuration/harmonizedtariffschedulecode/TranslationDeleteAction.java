@@ -64,16 +64,16 @@ public class TranslationDeleteAction
     @Override
     public void setupTransfer(TranslationDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetHarmonizedTariffScheduleCodeTranslationForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeTranslationForm();
+        var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeTranslationForm();
         
         commandForm.setCountryName(actionForm.getCountryName());
         commandForm.setHarmonizedTariffScheduleCodeName(actionForm.getHarmonizedTariffScheduleCodeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeTranslation(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeTranslation(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeTranslationResult result = (GetHarmonizedTariffScheduleCodeTranslationResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodeTranslationResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_TRANSLATION, result.getHarmonizedTariffScheduleCodeTranslation());
         }
@@ -82,7 +82,7 @@ public class TranslationDeleteAction
     @Override
     public CommandResult doDelete(TranslationDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteHarmonizedTariffScheduleCodeTranslationForm commandForm = ItemUtil.getHome().getDeleteHarmonizedTariffScheduleCodeTranslationForm();
+        var commandForm = ItemUtil.getHome().getDeleteHarmonizedTariffScheduleCodeTranslationForm();
 
         commandForm.setCountryName(actionForm.getCountryName());
         commandForm.setHarmonizedTariffScheduleCodeName(actionForm.getHarmonizedTariffScheduleCodeName());

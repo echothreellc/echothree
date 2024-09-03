@@ -56,15 +56,15 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
-        String workRequirementTypeName = request.getParameter(ParameterConstants.WORK_REQUIREMENT_TYPE_NAME);
+        var workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
+        var workRequirementTypeName = request.getParameter(ParameterConstants.WORK_REQUIREMENT_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateWorkRequirementTypeDescriptionForm commandForm = WorkRequirementUtil.getHome().getCreateWorkRequirementTypeDescriptionForm();
+                    var commandForm = WorkRequirementUtil.getHome().getCreateWorkRequirementTypeDescriptionForm();
                     
                     if(workEffortTypeName == null)
                         workEffortTypeName = actionForm.getWorkEffortTypeName();
@@ -75,8 +75,8 @@ public class DescriptionAddAction
                     commandForm.setWorkRequirementTypeName(workRequirementTypeName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = WorkRequirementUtil.getHome().createWorkRequirementTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = WorkRequirementUtil.getHome().createWorkRequirementTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -93,8 +93,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WORK_EFFORT_TYPE_NAME, workEffortTypeName);
             request.setAttribute(AttributeConstants.WORK_REQUIREMENT_TYPE_NAME, workRequirementTypeName);

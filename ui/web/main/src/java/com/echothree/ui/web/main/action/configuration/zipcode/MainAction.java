@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetZipCodesForm commandForm = GeoUtil.getHome().getGetZipCodesForm();
-            String countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
+            var commandForm = GeoUtil.getHome().getGetZipCodesForm();
+            var countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
             
             commandForm.setCountryName(countryName);
-            
-            CommandResult commandResult = GeoUtil.getHome().getZipCodes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetZipCodesResult result = (GetZipCodesResult)executionResult.getResult();
+
+            var commandResult = GeoUtil.getHome().getZipCodes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetZipCodesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COUNTRY, result.getCountry());
             request.setAttribute(AttributeConstants.ZIP_CODES, result.getPostalCodes());

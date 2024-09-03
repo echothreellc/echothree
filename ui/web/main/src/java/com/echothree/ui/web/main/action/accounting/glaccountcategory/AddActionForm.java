@@ -45,14 +45,14 @@ public class AddActionForm
     private void setupParentGlAccountCategoryChoices() {
         if(parentGlAccountCategoryChoices == null) {
             try {
-                GetGlAccountCategoryChoicesForm form = AccountingUtil.getHome().getGetGlAccountCategoryChoicesForm();
+                var form = AccountingUtil.getHome().getGetGlAccountCategoryChoicesForm();
                 
                 form.setDefaultGlAccountCategoryChoice(parentGlAccountCategoryChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getGlAccountCategoryChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGlAccountCategoryChoicesResult getGlAccountCategoryChoicesResult = (GetGlAccountCategoryChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getGlAccountCategoryChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getGlAccountCategoryChoicesResult = (GetGlAccountCategoryChoicesResult)executionResult.getResult();
                 parentGlAccountCategoryChoices = getGlAccountCategoryChoicesResult.getGlAccountCategoryChoices();
                 
                 if(parentGlAccountCategoryChoice == null)

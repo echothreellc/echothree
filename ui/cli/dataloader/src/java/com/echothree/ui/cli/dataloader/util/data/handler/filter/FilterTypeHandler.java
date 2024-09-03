@@ -53,9 +53,9 @@ public class FilterTypeHandler
         if(localName.equals("filterTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -63,7 +63,7 @@ public class FilterTypeHandler
             }
             
             try {
-                CreateFilterTypeDescriptionForm commandForm = FilterFormFactory.getCreateFilterTypeDescriptionForm();
+                var commandForm = FilterFormFactory.getCreateFilterTypeDescriptionForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterTypeName(filterTypeName);
@@ -80,9 +80,9 @@ public class FilterTypeHandler
             String filterItemSelectorName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("filterName"))
                     filterName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("initialFilterAdjustmentName"))
@@ -96,7 +96,7 @@ public class FilterTypeHandler
             }
             
             try {
-                CreateFilterForm commandForm = FilterFormFactory.getCreateFilterForm();
+                var commandForm = FilterFormFactory.getCreateFilterForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterTypeName(filterTypeName);

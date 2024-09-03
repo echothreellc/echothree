@@ -59,16 +59,16 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetWorkflowDestinationPartyTypeForm commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationPartyTypeForm();
+        var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationPartyTypeForm();
         
         commandForm.setWorkflowName(actionForm.getWorkflowName());
         commandForm.setWorkflowStepName(actionForm.getWorkflowStepName());
         commandForm.setWorkflowDestinationName(actionForm.getWorkflowDestinationName());
         commandForm.setPartyTypeName(actionForm.getPartyTypeName());
 
-        CommandResult commandResult = WorkflowUtil.getHome().getWorkflowDestinationPartyType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetWorkflowDestinationPartyTypeResult result = (GetWorkflowDestinationPartyTypeResult)executionResult.getResult();
+        var commandResult = WorkflowUtil.getHome().getWorkflowDestinationPartyType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetWorkflowDestinationPartyTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.WORKFLOW_DESTINATION_PARTY_TYPE, result.getWorkflowDestinationPartyType());
     }
@@ -76,7 +76,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateWorkflowDestinationSecurityRoleForm commandForm = WorkflowUtil.getHome().getCreateWorkflowDestinationSecurityRoleForm();
+        var commandForm = WorkflowUtil.getHome().getCreateWorkflowDestinationSecurityRoleForm();
 
         commandForm.setWorkflowName(actionForm.getWorkflowName());
         commandForm.setWorkflowStepName(actionForm.getWorkflowStepName());

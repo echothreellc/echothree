@@ -49,16 +49,16 @@ public class CustomerContactListUtil {
 
     public void setupCustomer(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(MainBaseAction.getUserVisitPK(request), commandForm);
+        var commandResult = CustomerUtil.getHome().getCustomer(MainBaseAction.getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
-            CustomerTransfer customer = result.getCustomer();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerResult)executionResult.getResult();
+            var customer = result.getCustomer();
 
             if(customer != null) {
                 request.setAttribute(AttributeConstants.CUSTOMER, customer);
@@ -73,27 +73,27 @@ public class CustomerContactListUtil {
 
     public void setupContactListTransfer(HttpServletRequest request, String contactListName)
             throws NamingException {
-        GetContactListForm commandForm = ContactListUtil.getHome().getGetContactListForm();
+        var commandForm = ContactListUtil.getHome().getGetContactListForm();
 
         commandForm.setContactListName(contactListName);
 
-        CommandResult commandResult = ContactListUtil.getHome().getContactList(MainBaseAction.getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetContactListResult result = (GetContactListResult)executionResult.getResult();
+        var commandResult = ContactListUtil.getHome().getContactList(MainBaseAction.getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetContactListResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CONTACT_LIST, result.getContactList());
     }
 
     public void setupPartyContactListTransfer(HttpServletRequest request, String partyName, String contactListName)
             throws NamingException {
-        GetPartyContactListForm commandForm = ContactListUtil.getHome().getGetPartyContactListForm();
+        var commandForm = ContactListUtil.getHome().getGetPartyContactListForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setContactListName(contactListName);
 
-        CommandResult commandResult = ContactListUtil.getHome().getPartyContactList(MainBaseAction.getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyContactListResult result = (GetPartyContactListResult)executionResult.getResult();
+        var commandResult = ContactListUtil.getHome().getPartyContactList(MainBaseAction.getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyContactListResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_CONTACT_LIST, result.getPartyContactList());
     }

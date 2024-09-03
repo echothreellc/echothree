@@ -63,16 +63,16 @@ public class FormUtils {
 
     private List<String> getInterfaces(String commonBase, String packageName, String interfaceSuffix) {
         List<String> interfaces = new ArrayList<>();
-        String editBase = new StringBuilder(commonBase).append("/").append(packageName).toString();
-        File editDirectory = new File(editBase);
+        var editBase = new StringBuilder(commonBase).append("/").append(packageName).toString();
+        var editDirectory = new File(editBase);
         
         if(editDirectory.exists()) {
-            File[] editFiles = editDirectory.listFiles();
-            String fileSuffix = new StringBuilder(interfaceSuffix).append(".java").toString();
+            var editFiles = editDirectory.listFiles();
+            var fileSuffix = new StringBuilder(interfaceSuffix).append(".java").toString();
 
-            for(int k = 0; k < editFiles.length; k++) {
-                File editFile = editFiles[k];
-                String editFileName = editFile.getName();
+            for(var k = 0; k < editFiles.length; k++) {
+                var editFile = editFiles[k];
+                var editFileName = editFile.getName();
 
                 if(editFile.isFile() && editFileName.endsWith(fileSuffix)) {
                     interfaces.add(editFileName.substring(0, editFileName.length() - 5));
@@ -85,34 +85,34 @@ public class FormUtils {
 
     private List<ComponentInformation> getComponents(String sourceDirectory) {
         List<ComponentInformation> components = new ArrayList<>();
-        String componentBase = new StringBuilder(sourceDirectory).append("/java/com/echothree/control/user").toString();
-        File componentsDirectory = new File(componentBase);
+        var componentBase = new StringBuilder(sourceDirectory).append("/java/com/echothree/control/user").toString();
+        var componentsDirectory = new File(componentBase);
 
         if(componentsDirectory.exists()) {
-            File[] componentDirectories = componentsDirectory.listFiles();
+            var componentDirectories = componentsDirectory.listFiles();
 
-            for(int i = 0; i < componentDirectories.length; i++) {
-                File componentDirectory = componentDirectories[i];
+            for(var i = 0; i < componentDirectories.length; i++) {
+                var componentDirectory = componentDirectories[i];
 
                 if(componentDirectory.isDirectory()) {
-                    String packageName = componentDirectory.getName();
-                    String beanBase = new StringBuilder(componentBase).append('/').append(packageName).append("/server").toString();
-                    File beanDirectory = new File(beanBase);
+                    var packageName = componentDirectory.getName();
+                    var beanBase = new StringBuilder(componentBase).append('/').append(packageName).append("/server").toString();
+                    var beanDirectory = new File(beanBase);
 
                     if(beanDirectory.exists()) {
-                        File[] beanFiles = beanDirectory.listFiles();
+                        var beanFiles = beanDirectory.listFiles();
 
-                        for(int j = 0; j < beanFiles.length; j++) {
-                            File beanFile = beanFiles[j];
-                            String beanFileName = beanFile.getName();
+                        for(var j = 0; j < beanFiles.length; j++) {
+                            var beanFile = beanFiles[j];
+                            var beanFileName = beanFile.getName();
 
                             if(beanFile.isFile() && beanFileName.endsWith("Bean.java")) {
-                                String commonBase = new StringBuilder(componentBase).append('/').append(componentDirectory.getName()).append("/common").toString();
-                                String name = beanFileName.substring(0, beanFileName.length() - 9);
-                                List<String> editInterfaces = getInterfaces(commonBase, "edit", "Edit");
-                                List<String> formInterfaces = getInterfaces(commonBase, "form", "Form");
-                                List<String> specInterfaces = getInterfaces(commonBase, "spec", "Spec");
-                                List<String> resultInterfaces = getInterfaces(commonBase, "result", "Result");
+                                var commonBase = new StringBuilder(componentBase).append('/').append(componentDirectory.getName()).append("/common").toString();
+                                var name = beanFileName.substring(0, beanFileName.length() - 9);
+                                var editInterfaces = getInterfaces(commonBase, "edit", "Edit");
+                                var formInterfaces = getInterfaces(commonBase, "form", "Form");
+                                var specInterfaces = getInterfaces(commonBase, "spec", "Spec");
+                                var resultInterfaces = getInterfaces(commonBase, "result", "Result");
 
                                 components.add(new ComponentInformation(name, packageName, editInterfaces, formInterfaces, specInterfaces, resultInterfaces));
                             }
@@ -128,8 +128,8 @@ public class FormUtils {
     }
 
     public String createDirectoryForClassPackage(String classPackage, String generatedDirectory) {
-        String directory = generatedDirectory;
-        int currentIndex = 0;
+        var directory = generatedDirectory;
+        var currentIndex = 0;
         int nextDot;
         do {
             nextDot = classPackage.indexOf('.', currentIndex);
@@ -140,7 +140,7 @@ public class FormUtils {
             currentIndex = nextDot + 1;
         } while (nextDot != -1);
 
-        File theDirectory = new File(directory);
+        var theDirectory = new File(directory);
         if(theDirectory.exists() == false) {
             theDirectory.mkdirs();
         }
@@ -183,15 +183,15 @@ public class FormUtils {
 
     private void exportForms(String generatedDirectory, ComponentInformation componentInformation)
             throws Exception {
-        String interfacePackage = "com.echothree.control.user." + componentInformation.packageName + ".common";
-        String interfaceDirectory = createDirectoryForClassPackage(interfacePackage, generatedDirectory);
+        var interfacePackage = "com.echothree.control.user." + componentInformation.packageName + ".common";
+        var interfaceDirectory = createDirectoryForClassPackage(interfacePackage, generatedDirectory);
 
-        String className = componentInformation.name + "Forms";
-        String classFileName = className + ".java";
+        var className = componentInformation.name + "Forms";
+        var classFileName = className + ".java";
 
-        File f = new File(interfaceDirectory + "/" + classFileName);
-        try (BufferedWriter bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
-            PrintWriter pw = new PrintWriter(bw);
+        var f = new File(interfaceDirectory + "/" + classFileName);
+        try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+            var pw = new PrintWriter(bw);
             
             writeCopyright(pw);
             writeVersion(pw, classFileName);
@@ -226,15 +226,15 @@ public class FormUtils {
 
     private void exportFormsImpl(String generatedDirectory, ComponentInformation componentInformation)
             throws Exception {
-        String interfacePackage = "com.echothree.control.user." + componentInformation.packageName + ".server";
-        String interfaceDirectory = createDirectoryForClassPackage(interfacePackage, generatedDirectory);
+        var interfacePackage = "com.echothree.control.user." + componentInformation.packageName + ".server";
+        var interfaceDirectory = createDirectoryForClassPackage(interfacePackage, generatedDirectory);
 
-        String className = componentInformation.name + "FormsImpl";
-        String classFileName = className + ".java";
+        var className = componentInformation.name + "FormsImpl";
+        var classFileName = className + ".java";
 
-        File f = new File(interfaceDirectory + "/" + classFileName);
-        try (BufferedWriter bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
-            PrintWriter pw = new PrintWriter(bw);
+        var f = new File(interfaceDirectory + "/" + classFileName);
+        try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+            var pw = new PrintWriter(bw);
             
             writeCopyright(pw);
             writeVersion(pw, classFileName);
@@ -297,15 +297,15 @@ public class FormUtils {
 
     private void exportEditFactory(String generatedDirectory, ComponentInformation componentInformation)
             throws Exception {
-        String classPackage = "com.echothree.control.user." + componentInformation.packageName + ".common.edit";
-        String classDirectory = createDirectoryForClassPackage(classPackage, generatedDirectory);
+        var classPackage = "com.echothree.control.user." + componentInformation.packageName + ".common.edit";
+        var classDirectory = createDirectoryForClassPackage(classPackage, generatedDirectory);
 
-        String className = componentInformation.name + "EditFactory";
-        String classFileName = className + ".java";
+        var className = componentInformation.name + "EditFactory";
+        var classFileName = className + ".java";
 
-        File f = new File(classDirectory + "/" + classFileName);
-        try (BufferedWriter bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
-            PrintWriter pw = new PrintWriter(bw);
+        var f = new File(classDirectory + "/" + classFileName);
+        try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+            var pw = new PrintWriter(bw);
             
             writeCopyright(pw);
             writeVersion(pw, classFileName);
@@ -335,15 +335,15 @@ public class FormUtils {
 
     private void exportFormFactory(String generatedDirectory, ComponentInformation componentInformation)
             throws Exception {
-        String classPackage = "com.echothree.control.user." + componentInformation.packageName + ".common.form";
-        String classDirectory = createDirectoryForClassPackage(classPackage, generatedDirectory);
+        var classPackage = "com.echothree.control.user." + componentInformation.packageName + ".common.form";
+        var classDirectory = createDirectoryForClassPackage(classPackage, generatedDirectory);
 
-        String className = componentInformation.name + "FormFactory";
-        String classFileName = className + ".java";
+        var className = componentInformation.name + "FormFactory";
+        var classFileName = className + ".java";
 
-        File f = new File(classDirectory + "/" + classFileName);
-        try (BufferedWriter bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
-            PrintWriter pw = new PrintWriter(bw);
+        var f = new File(classDirectory + "/" + classFileName);
+        try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+            var pw = new PrintWriter(bw);
             
             writeCopyright(pw);
             writeVersion(pw, classFileName);
@@ -373,15 +373,15 @@ public class FormUtils {
 
     private void exportSpecFactory(String generatedDirectory, ComponentInformation componentInformation)
             throws Exception {
-        String classPackage = "com.echothree.control.user." + componentInformation.packageName + ".common.spec";
-        String classDirectory = createDirectoryForClassPackage(classPackage, generatedDirectory);
+        var classPackage = "com.echothree.control.user." + componentInformation.packageName + ".common.spec";
+        var classDirectory = createDirectoryForClassPackage(classPackage, generatedDirectory);
 
-        String className = componentInformation.name + "SpecFactory";
-        String classFileName = className + ".java";
+        var className = componentInformation.name + "SpecFactory";
+        var classFileName = className + ".java";
 
-        File f = new File(classDirectory + "/" + classFileName);
-        try (BufferedWriter bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
-            PrintWriter pw = new PrintWriter(bw);
+        var f = new File(classDirectory + "/" + classFileName);
+        try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+            var pw = new PrintWriter(bw);
             
             writeCopyright(pw);
             writeVersion(pw, classFileName);
@@ -411,15 +411,15 @@ public class FormUtils {
 
     private void exportResultFactory(String generatedDirectory, ComponentInformation componentInformation)
             throws Exception {
-        String classPackage = "com.echothree.control.user." + componentInformation.packageName + ".common.result";
-        String classDirectory = createDirectoryForClassPackage(classPackage, generatedDirectory);
+        var classPackage = "com.echothree.control.user." + componentInformation.packageName + ".common.result";
+        var classDirectory = createDirectoryForClassPackage(classPackage, generatedDirectory);
 
-        String className = componentInformation.name + "ResultFactory";
-        String classFileName = className + ".java";
+        var className = componentInformation.name + "ResultFactory";
+        var classFileName = className + ".java";
 
-        File f = new File(classDirectory + "/" + classFileName);
-        try (BufferedWriter bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
-            PrintWriter pw = new PrintWriter(bw);
+        var f = new File(classDirectory + "/" + classFileName);
+        try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+            var pw = new PrintWriter(bw);
             
             writeCopyright(pw);
             writeVersion(pw, classFileName);
@@ -473,9 +473,9 @@ public class FormUtils {
 
     public void generateClasses(String generatedDirectory, String sourceDirectory)
             throws Exception {
-        List<ComponentInformation> components = getComponents(sourceDirectory);
+        var components = getComponents(sourceDirectory);
         
-        for(ComponentInformation component: components) {
+        for(var component: components) {
             exportJava(generatedDirectory, component);
         }
     }

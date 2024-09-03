@@ -86,14 +86,14 @@ public class AddActionForm
     private void setupCustomerTypeChoices()
             throws NamingException {
         if(customerTypeChoices == null) {
-            GetCustomerTypeChoicesForm form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
+            var form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
 
             form.setDefaultCustomerTypeChoice(customerTypeChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypeChoicesResult result = (GetCustomerTypeChoicesResult)executionResult.getResult();
+            var commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypeChoicesResult)executionResult.getResult();
             customerTypeChoices = result.getCustomerTypeChoices();
 
             if(customerTypeChoice == null) {
@@ -105,15 +105,15 @@ public class AddActionForm
     public void setupCancellationPolicyChoices()
             throws NamingException {
         if(cancellationPolicyChoices == null) {
-            GetCancellationPolicyChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
+            var form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
 
             form.setCancellationKindName(CancellationKinds.CUSTOMER_CANCELLATION.name());
             form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCancellationPolicyChoicesResult result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
             cancellationPolicyChoices = result.getCancellationPolicyChoices();
 
             if(cancellationPolicyChoice == null)
@@ -124,15 +124,15 @@ public class AddActionForm
     public void setupReturnPolicyChoices()
             throws NamingException {
         if(returnPolicyChoices == null) {
-            GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
+            var form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
 
             form.setReturnKindName(ReturnKinds.CUSTOMER_RETURN.name());
             form.setDefaultReturnPolicyChoice(returnPolicyChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetReturnPolicyChoicesResult result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+            var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
             returnPolicyChoices = result.getReturnPolicyChoices();
 
             if(returnPolicyChoice == null)
@@ -143,15 +143,15 @@ public class AddActionForm
     public void setupArGlAccountChoices()
             throws NamingException {
         if(arGlAccountChoices == null) {
-            GetGlAccountChoicesForm form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
+            var form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
 
             form.setGlAccountCategoryName(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE);
             form.setDefaultGlAccountChoice(arGlAccountChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGlAccountChoicesResult getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
+            var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
             arGlAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
 
             if(arGlAccountChoice == null) {
@@ -163,14 +163,14 @@ public class AddActionForm
     public void setupInitialSourceChoices()
             throws NamingException {
         if(initialSourceChoices == null) {
-            GetSourceChoicesForm form = OfferUtil.getHome().getGetSourceChoicesForm();
+            var form = OfferUtil.getHome().getGetSourceChoicesForm();
 
             form.setDefaultSourceChoice(initialSourceChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSourceChoicesResult result = (GetSourceChoicesResult)executionResult.getResult();
+            var commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSourceChoicesResult)executionResult.getResult();
             initialSourceChoices = result.getSourceChoices();
 
             if(initialSourceChoice == null) {
@@ -182,14 +182,14 @@ public class AddActionForm
     public void setupCustomerStatusChoices()
             throws NamingException {
         if(customerStatusChoices == null) {
-            GetCustomerStatusChoicesForm form = CustomerUtil.getHome().getGetCustomerStatusChoicesForm();
+            var form = CustomerUtil.getHome().getGetCustomerStatusChoicesForm();
 
             form.setDefaultCustomerStatusChoice(customerStatusChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = CustomerUtil.getHome().getCustomerStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerStatusChoicesResult result = (GetCustomerStatusChoicesResult)executionResult.getResult();
+            var commandResult = CustomerUtil.getHome().getCustomerStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerStatusChoicesResult)executionResult.getResult();
             customerStatusChoices = result.getCustomerStatusChoices();
 
             if(customerStatusChoice == null) {
@@ -201,14 +201,14 @@ public class AddActionForm
     public void setupCustomerCreditStatusChoices()
             throws NamingException {
         if(customerCreditStatusChoices == null) {
-            GetCustomerCreditStatusChoicesForm form = CustomerUtil.getHome().getGetCustomerCreditStatusChoicesForm();
+            var form = CustomerUtil.getHome().getGetCustomerCreditStatusChoicesForm();
 
             form.setDefaultCustomerCreditStatusChoice(customerCreditStatusChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = CustomerUtil.getHome().getCustomerCreditStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerCreditStatusChoicesResult result = (GetCustomerCreditStatusChoicesResult)executionResult.getResult();
+            var commandResult = CustomerUtil.getHome().getCustomerCreditStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerCreditStatusChoicesResult)executionResult.getResult();
             customerCreditStatusChoices = result.getCustomerCreditStatusChoices();
 
             if(customerCreditStatusChoice == null) {

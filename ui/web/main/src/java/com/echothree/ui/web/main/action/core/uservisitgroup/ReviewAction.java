@@ -53,15 +53,15 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetUserVisitGroupForm commandForm = UserUtil.getHome().getGetUserVisitGroupForm();
-        String userVisitGroupName = request.getParameter(ParameterConstants.USER_VISIT_GROUP_NAME);
+        var commandForm = UserUtil.getHome().getGetUserVisitGroupForm();
+        var userVisitGroupName = request.getParameter(ParameterConstants.USER_VISIT_GROUP_NAME);
 
         commandForm.setUserVisitGroupName(userVisitGroupName);
 
-        CommandResult commandResult = UserUtil.getHome().getUserVisitGroup(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetUserVisitGroupResult result = (GetUserVisitGroupResult)executionResult.getResult();
-        UserVisitGroupTransfer userVisitGroup = result.getUserVisitGroup();
+        var commandResult = UserUtil.getHome().getUserVisitGroup(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetUserVisitGroupResult)executionResult.getResult();
+        var userVisitGroup = result.getUserVisitGroup();
 
         if(userVisitGroup == null) {
             forwardKey = ForwardConstants.ERROR_404;

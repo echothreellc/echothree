@@ -57,15 +57,15 @@ public class TranslationAddAction
     @Override
     public void setupTransfer(TranslationAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetHarmonizedTariffScheduleCodeForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeForm();
+        var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeForm();
 
         commandForm.setCountryName(actionForm.getCountryName());
         commandForm.setHarmonizedTariffScheduleCodeName(actionForm.getHarmonizedTariffScheduleCodeName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCode(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCode(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeResult result = (GetHarmonizedTariffScheduleCodeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE, result.getHarmonizedTariffScheduleCode());
         }
@@ -74,7 +74,7 @@ public class TranslationAddAction
     @Override
     public CommandResult doAdd(TranslationAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateHarmonizedTariffScheduleCodeTranslationForm commandForm = ItemUtil.getHome().getCreateHarmonizedTariffScheduleCodeTranslationForm();
+        var commandForm = ItemUtil.getHome().getCreateHarmonizedTariffScheduleCodeTranslationForm();
 
         commandForm.setCountryName(actionForm.getCountryName());
         commandForm.setHarmonizedTariffScheduleCodeName(actionForm.getHarmonizedTariffScheduleCodeName());

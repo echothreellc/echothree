@@ -52,11 +52,11 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        final String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+        final var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
         
         try {
-            String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-            DeleteWorkflowSelectorKindForm commandForm = WorkflowUtil.getHome().getDeleteWorkflowSelectorKindForm();
+            var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+            var commandForm = WorkflowUtil.getHome().getDeleteWorkflowSelectorKindForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.setSelectorKindName(selectorKindName);
@@ -67,8 +67,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             customActionForward.setParameters(ImmutableMap.<String, String>builder()
                     .put(ParameterConstants.WORKFLOW_NAME, workflowName)

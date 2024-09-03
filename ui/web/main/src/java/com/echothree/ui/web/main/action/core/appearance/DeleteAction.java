@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetAppearanceForm commandForm = CoreUtil.getHome().getGetAppearanceForm();
+        var commandForm = CoreUtil.getHome().getGetAppearanceForm();
         
         commandForm.setAppearanceName(actionForm.getAppearanceName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getAppearance(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetAppearanceResult result = (GetAppearanceResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getAppearance(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetAppearanceResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.APPEARANCE, result.getAppearance());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteAppearanceForm commandForm = CoreUtil.getHome().getDeleteAppearanceForm();
+        var commandForm = CoreUtil.getHome().getDeleteAppearanceForm();
 
         commandForm.setAppearanceName(actionForm.getAppearanceName());
 

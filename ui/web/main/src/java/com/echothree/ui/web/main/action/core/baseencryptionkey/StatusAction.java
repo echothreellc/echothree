@@ -52,8 +52,8 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, StatusActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String baseEncryptionKeyName = request.getParameter(ParameterConstants.BASE_ENCRYPTION_KEY_NAME);
-        SetBaseEncryptionKeyStatusForm commandForm = CoreUtil.getHome().getSetBaseEncryptionKeyStatusForm();
+        var baseEncryptionKeyName = request.getParameter(ParameterConstants.BASE_ENCRYPTION_KEY_NAME);
+        var commandForm = CoreUtil.getHome().getSetBaseEncryptionKeyStatusForm();
 
         if(baseEncryptionKeyName == null) {
             baseEncryptionKeyName = actionForm.getBaseEncryptionKeyName();
@@ -63,7 +63,7 @@ public class StatusAction
             commandForm.setBaseEncryptionKeyName(baseEncryptionKeyName);
             commandForm.setBaseEncryptionKeyStatusChoice(actionForm.getBaseEncryptionKeyStatusChoice());
 
-            CommandResult commandResult = CoreUtil.getHome().setBaseEncryptionKeyStatus(getUserVisitPK(request), commandForm);
+            var commandResult = CoreUtil.getHome().setBaseEncryptionKeyStatus(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -76,7 +76,7 @@ public class StatusAction
             forwardKey = ForwardConstants.FORM;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.BASE_ENCRYPTION_KEY_NAME, baseEncryptionKeyName);
         }

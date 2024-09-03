@@ -54,10 +54,10 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateCustomerTypeForm commandForm = CustomerUtil.getHome().getCreateCustomerTypeForm();
+                    var commandForm = CustomerUtil.getHome().getCreateCustomerTypeForm();
                     
                     commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());
                     commandForm.setCustomerSequenceName(actionForm.getCustomerSequenceChoice());
@@ -81,8 +81,8 @@ public class AddAction
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CustomerUtil.getHome().createCustomerType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CustomerUtil.getHome().createCustomerType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

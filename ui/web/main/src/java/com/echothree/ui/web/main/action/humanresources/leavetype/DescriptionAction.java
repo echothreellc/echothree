@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String leaveTypeName = request.getParameter(ParameterConstants.LEAVE_TYPE_NAME);
-        GetLeaveTypeDescriptionsForm commandForm = EmployeeUtil.getHome().getGetLeaveTypeDescriptionsForm();
+        var leaveTypeName = request.getParameter(ParameterConstants.LEAVE_TYPE_NAME);
+        var commandForm = EmployeeUtil.getHome().getGetLeaveTypeDescriptionsForm();
 
         commandForm.setLeaveTypeName(leaveTypeName);
 
-        CommandResult commandResult = EmployeeUtil.getHome().getLeaveTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = EmployeeUtil.getHome().getLeaveTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLeaveTypeDescriptionsResult result = (GetLeaveTypeDescriptionsResult) executionResult.getResult();
-            LeaveTypeTransfer leaveTypeTransfer = result.getLeaveType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveTypeDescriptionsResult) executionResult.getResult();
+            var leaveTypeTransfer = result.getLeaveType();
 
             request.setAttribute(AttributeConstants.LEAVE_TYPE, leaveTypeTransfer);
             request.setAttribute(AttributeConstants.LEAVE_TYPE_DESCRIPTIONS, result.getLeaveTypeDescriptions());

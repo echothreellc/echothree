@@ -50,16 +50,16 @@ public class PartyContactMechanismRelationshipDeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        DeletePartyContactMechanismRelationshipForm commandForm = ContactUtil.getHome().getDeletePartyContactMechanismRelationshipForm();
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = ContactUtil.getHome().getDeletePartyContactMechanismRelationshipForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         
         commandForm.setPartyName(partyName);
         commandForm.setFromContactMechanismName(request.getParameter(ParameterConstants.FROM_CONTACT_MECHANISM_NAME));
         commandForm.setToContactMechanismName(request.getParameter(ParameterConstants.TO_CONTACT_MECHANISM_NAME));
         
         ContactUtil.getHome().deletePartyContactMechanismRelationship(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.REVIEW));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.REVIEW));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.PARTY_NAME, partyName);

@@ -51,12 +51,12 @@ public class ShipmentTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("shipmentTypeDescription")) {
-            CreateShipmentTypeDescriptionForm commandForm = ShipmentFormFactory.getCreateShipmentTypeDescriptionForm();
+            var commandForm = ShipmentFormFactory.getCreateShipmentTypeDescriptionForm();
             String attrLanguageIsoName = null;
             String attrDescription = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     attrLanguageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -69,7 +69,7 @@ public class ShipmentTypeHandler
             
             checkCommandResult(shipmentService.createShipmentTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("shipmentTimeType")) {
-            CreateShipmentTimeTypeForm commandForm = ShipmentFormFactory.getCreateShipmentTimeTypeForm();
+            var commandForm = ShipmentFormFactory.getCreateShipmentTimeTypeForm();
 
             commandForm.setShipmentTypeName(shipmentTypeName);
             commandForm.set(getAttrsMap(attrs));
@@ -78,13 +78,13 @@ public class ShipmentTypeHandler
 
             initialDataParser.pushHandler(new ShipmentTimeTypeHandler(initialDataParser, this, shipmentTypeName, commandForm.getShipmentTimeTypeName()));
         } else if(localName.equals("shipmentAliasType")) {
-            CreateShipmentAliasTypeForm commandForm = ShipmentFormFactory.getCreateShipmentAliasTypeForm();
+            var commandForm = ShipmentFormFactory.getCreateShipmentAliasTypeForm();
             String shipmentAliasTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("shipmentAliasTypeName"))
                     shipmentAliasTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -102,13 +102,13 @@ public class ShipmentTypeHandler
             
             initialDataParser.pushHandler(new ShipmentAliasTypeHandler(initialDataParser, this, shipmentTypeName, shipmentAliasTypeName));
         } else if(localName.equals("shipmentTypeShippingMethod")) {
-            CreateShipmentTypeShippingMethodForm commandForm = ShipmentFormFactory.getCreateShipmentTypeShippingMethodForm();
+            var commandForm = ShipmentFormFactory.getCreateShipmentTypeShippingMethodForm();
             String shippingMethodName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("shippingMethodName"))
                     shippingMethodName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))

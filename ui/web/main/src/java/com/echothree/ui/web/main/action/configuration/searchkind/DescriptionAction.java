@@ -53,15 +53,15 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetSearchKindDescriptionsForm commandForm = SearchUtil.getHome().getGetSearchKindDescriptionsForm();
+        var commandForm = SearchUtil.getHome().getGetSearchKindDescriptionsForm();
 
         commandForm.setSearchKindName(request.getParameter(ParameterConstants.SEARCH_KIND_NAME));
 
-        CommandResult commandResult = SearchUtil.getHome().getSearchKindDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = SearchUtil.getHome().getSearchKindDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSearchKindDescriptionsResult result = (GetSearchKindDescriptionsResult) executionResult.getResult();
-            SearchKindTransfer searchKindTransfer = result.getSearchKind();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchKindDescriptionsResult) executionResult.getResult();
+            var searchKindTransfer = result.getSearchKind();
 
             request.setAttribute(AttributeConstants.SEARCH_KIND, searchKindTransfer);
             request.setAttribute(AttributeConstants.SEARCH_KIND_DESCRIPTIONS, result.getSearchKindDescriptions());

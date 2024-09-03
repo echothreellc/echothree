@@ -50,7 +50,7 @@ public class SearchDefaultOperatorHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("searchDefaultOperatorDescription")) {
-            CreateSearchDefaultOperatorDescriptionForm commandForm = SearchFormFactory.getCreateSearchDefaultOperatorDescriptionForm();
+            var commandForm = SearchFormFactory.getCreateSearchDefaultOperatorDescriptionForm();
 
             commandForm.setSearchDefaultOperatorName(searchDefaultOperatorName);
             commandForm.set(getAttrsMap(attrs));

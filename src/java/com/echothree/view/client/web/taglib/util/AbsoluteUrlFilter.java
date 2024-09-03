@@ -46,7 +46,7 @@ public class AbsoluteUrlFilter
     }
 
     private void buildBase(ServletRequest servletRequest) {
-        StringBuilder url = new StringBuilder();
+        var url = new StringBuilder();
         var scheme = servletRequest.getScheme();
         var serverName = servletRequest.getServerName();
         var localPort = servletRequest.getLocalPort();

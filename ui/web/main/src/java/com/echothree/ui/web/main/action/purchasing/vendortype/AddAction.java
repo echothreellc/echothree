@@ -53,7 +53,7 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
                     var commandForm = VendorUtil.getHome().getCreateVendorTypeForm();
@@ -74,8 +74,8 @@ public class AddAction
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = VendorUtil.getHome().createVendorType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = VendorUtil.getHome().createVendorType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

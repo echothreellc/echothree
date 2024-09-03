@@ -54,18 +54,18 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateGlAccountCategoryForm commandForm = AccountingUtil.getHome().getCreateGlAccountCategoryForm();
+                    var commandForm = AccountingUtil.getHome().getCreateGlAccountCategoryForm();
                     
                     commandForm.setGlAccountCategoryName(actionForm.getGlAccountCategoryName());
                     commandForm.setParentGlAccountCategoryName(actionForm.getParentGlAccountCategoryChoice());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().createGlAccountCategory(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AccountingUtil.getHome().createGlAccountCategory(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

@@ -47,9 +47,9 @@ public class ContentWebAddressesHandler
         if(localName.equals("contentWebAddress")) {
             String contentWebAddressName = null;
             String contentCollectionName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("contentWebAddressName"))
                     contentWebAddressName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("contentCollectionName"))
@@ -57,7 +57,7 @@ public class ContentWebAddressesHandler
             }
             
             try {
-                CreateContentWebAddressForm createContentWebAddressForm = ContentFormFactory.getCreateContentWebAddressForm();
+                var createContentWebAddressForm = ContentFormFactory.getCreateContentWebAddressForm();
                 
                 createContentWebAddressForm.setContentWebAddressName(contentWebAddressName);
                 createContentWebAddressForm.setContentCollectionName(contentCollectionName);

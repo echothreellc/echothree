@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = SubscriptionUtil.getHome().getSubscriptionKinds(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSubscriptionKindsResult getSubscriptionKindsResult = (GetSubscriptionKindsResult)executionResult.getResult();
+            var commandResult = SubscriptionUtil.getHome().getSubscriptionKinds(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var getSubscriptionKindsResult = (GetSubscriptionKindsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SUBSCRIPTION_KINDS, getSubscriptionKindsResult.getSubscriptionKinds());
             forwardKey = ForwardConstants.DISPLAY;

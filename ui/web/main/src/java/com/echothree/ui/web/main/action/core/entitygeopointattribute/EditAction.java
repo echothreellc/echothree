@@ -57,16 +57,16 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
         
         try {
-            String entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
-            String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+            var entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
+            var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
             
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditEntityGeoPointAttributeForm commandForm = CoreUtil.getHome().getEditEntityGeoPointAttributeForm();
-                EntityGeoPointAttributeSpec spec = CoreUtil.getHome().getEntityGeoPointAttributeSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = CoreUtil.getHome().getEditEntityGeoPointAttributeForm();
+                var spec = CoreUtil.getHome().getEntityGeoPointAttributeSpec();
                 
                 if(entityRef == null)
                     entityRef = actionForm.getEntityRef();
@@ -80,7 +80,7 @@ public class EditAction
                 spec.setEntityAttributeName(entityAttributeName);
                 
                 if(wasPost(request)) {
-                    EntityGeoPointAttributeEdit edit = CoreUtil.getHome().getEntityGeoPointAttributeEdit();
+                    var edit = CoreUtil.getHome().getEntityGeoPointAttributeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -91,14 +91,14 @@ public class EditAction
                     edit.setElevationUnitOfMeasureTypeName(actionForm.getElevationUnitOfMeasureTypeChoice());
                     edit.setAltitude(actionForm.getAltitude());
                     edit.setAltitudeUnitOfMeasureTypeName(actionForm.getAltitudeUnitOfMeasureTypeChoice());
-                    
-                    CommandResult commandResult = CoreUtil.getHome().editEntityGeoPointAttribute(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CoreUtil.getHome().editEntityGeoPointAttribute(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditEntityGeoPointAttributeResult result = (EditEntityGeoPointAttributeResult)executionResult.getResult();
+                            var result = (EditEntityGeoPointAttributeResult)executionResult.getResult();
                             
                             if(result != null) {
                                 request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
@@ -111,13 +111,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CoreUtil.getHome().editEntityGeoPointAttribute(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditEntityGeoPointAttributeResult result = (EditEntityGeoPointAttributeResult)executionResult.getResult();
+
+                    var commandResult = CoreUtil.getHome().editEntityGeoPointAttribute(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditEntityGeoPointAttributeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        EntityGeoPointAttributeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setEntityRef(entityRef);

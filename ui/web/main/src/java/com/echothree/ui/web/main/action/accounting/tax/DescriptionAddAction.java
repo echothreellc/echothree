@@ -54,10 +54,10 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, DescriptionAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String taxName = request.getParameter(ParameterConstants.TAX_NAME);
+        var taxName = request.getParameter(ParameterConstants.TAX_NAME);
         
         if(wasPost(request)) {
-            CreateTaxDescriptionForm commandForm = TaxUtil.getHome().getCreateTaxDescriptionForm();
+            var commandForm = TaxUtil.getHome().getCreateTaxDescriptionForm();
             
             if(taxName == null)
                 taxName = actionForm.getTaxName();
@@ -65,8 +65,8 @@ public class DescriptionAddAction
             commandForm.setTaxName(taxName);
             commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
             commandForm.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = TaxUtil.getHome().createTaxDescription(getUserVisitPK(request), commandForm);
+
+            var commandResult = TaxUtil.getHome().createTaxDescription(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -78,8 +78,8 @@ public class DescriptionAddAction
             actionForm.setTaxName(taxName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.TAX_NAME, taxName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

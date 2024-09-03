@@ -58,9 +58,9 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetVendorForm commandForm = VendorUtil.getHome().getGetVendorForm();
-        String vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = VendorUtil.getHome().getGetVendorForm();
+        var vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         
         commandForm.setVendorName(vendorName);
         commandForm.setPartyName(partyName);
@@ -70,11 +70,11 @@ public class MainAction
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismPurposes);
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismRelationshipsByFromPartyContactMechanism);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
-        
-        CommandResult commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetVendorResult result = (GetVendorResult)executionResult.getResult();
-        VendorTransfer vendor = result.getVendor();
+
+        var commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetVendorResult)executionResult.getResult();
+        var vendor = result.getVendor();
         
         if(vendor == null) {
             forwardKey = ForwardConstants.ERROR_404;

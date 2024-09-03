@@ -70,20 +70,20 @@ public class DeleteAction
     
     public void setupForumTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetForumForm commandForm = ForumUtil.getHome().getGetForumForm();
+        var commandForm = ForumUtil.getHome().getGetForumForm();
         
         commandForm.setForumName(actionForm.getForumName());
-        
-        CommandResult commandResult = ForumUtil.getHome().getForum(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetForumResult result = (GetForumResult)executionResult.getResult();
+
+        var commandResult = ForumUtil.getHome().getForum(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetForumResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.FORUM, result.getForum());
     }
     
     public void setupForumThreadTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetForumThreadForm commandForm = ForumUtil.getHome().getGetForumThreadForm();
+        var commandForm = ForumUtil.getHome().getGetForumThreadForm();
         Set<String> commandOptions = new HashSet<>();
         Map<String, Limit> limits = new HashMap<>();
         
@@ -97,9 +97,9 @@ public class DeleteAction
         limits.put(ForumMessageConstants.ENTITY_TYPE_NAME, new Limit("1", null));
         commandForm.setLimits(limits);
 
-        CommandResult commandResult = ForumUtil.getHome().getForumThread(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetForumThreadResult result = (GetForumThreadResult)executionResult.getResult();
+        var commandResult = ForumUtil.getHome().getForumThread(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetForumThreadResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.FORUM_THREAD, result.getForumThread());
     }
@@ -114,7 +114,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteForumThreadForm commandForm = ForumUtil.getHome().getDeleteForumThreadForm();
+        var commandForm = ForumUtil.getHome().getDeleteForumThreadForm();
 
         commandForm.setForumThreadName(actionForm.getForumThreadName());
 

@@ -54,10 +54,10 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, DescriptionAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
+        var letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
         
         if(wasPost(request)) {
-            CreateLetterSourceDescriptionForm commandForm = LetterUtil.getHome().getCreateLetterSourceDescriptionForm();
+            var commandForm = LetterUtil.getHome().getCreateLetterSourceDescriptionForm();
             
             if(letterSourceName == null) {
                 letterSourceName = actionForm.getLetterSourceName();
@@ -66,8 +66,8 @@ public class DescriptionAddAction
             commandForm.setLetterSourceName(letterSourceName);
             commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
             commandForm.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = LetterUtil.getHome().createLetterSourceDescription(getUserVisitPK(request), commandForm);
+
+            var commandResult = LetterUtil.getHome().createLetterSourceDescription(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -79,8 +79,8 @@ public class DescriptionAddAction
             actionForm.setLetterSourceName(letterSourceName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.LETTER_SOURCE_NAME, letterSourceName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

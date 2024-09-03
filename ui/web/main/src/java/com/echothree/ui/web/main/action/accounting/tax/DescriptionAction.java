@@ -52,15 +52,15 @@ public class DescriptionAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String taxName = request.getParameter(ParameterConstants.TAX_NAME);
-        GetTaxDescriptionsForm commandForm = TaxUtil.getHome().getGetTaxDescriptionsForm();
+        var taxName = request.getParameter(ParameterConstants.TAX_NAME);
+        var commandForm = TaxUtil.getHome().getGetTaxDescriptionsForm();
         
         commandForm.setTaxName(taxName);
-        
-        CommandResult commandResult = TaxUtil.getHome().getTaxDescriptions(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTaxDescriptionsResult result = (GetTaxDescriptionsResult)executionResult.getResult();
-        TaxTransfer taxTransfer = result.getTax();
+
+        var commandResult = TaxUtil.getHome().getTaxDescriptions(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTaxDescriptionsResult)executionResult.getResult();
+        var taxTransfer = result.getTax();
         
         request.setAttribute(AttributeConstants.TAX, taxTransfer);
         request.setAttribute(AttributeConstants.TAX_NAME, taxTransfer.getTaxName());

@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String communicationEventPurposeName = request.getParameter(ParameterConstants.COMMUNICATION_EVENT_PURPOSE_NAME);
-            GetCommunicationEventPurposeDescriptionsForm commandForm = CommunicationUtil.getHome().getGetCommunicationEventPurposeDescriptionsForm();
+            var communicationEventPurposeName = request.getParameter(ParameterConstants.COMMUNICATION_EVENT_PURPOSE_NAME);
+            var commandForm = CommunicationUtil.getHome().getGetCommunicationEventPurposeDescriptionsForm();
             
             commandForm.setCommunicationEventPurposeName(communicationEventPurposeName);
-            
-            CommandResult commandResult = CommunicationUtil.getHome().getCommunicationEventPurposeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommunicationEventPurposeDescriptionsResult result = (GetCommunicationEventPurposeDescriptionsResult)executionResult.getResult();
-            CommunicationEventPurposeTransfer communicationEventPurposeTransfer = result.getCommunicationEventPurpose();
+
+            var commandResult = CommunicationUtil.getHome().getCommunicationEventPurposeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommunicationEventPurposeDescriptionsResult)executionResult.getResult();
+            var communicationEventPurposeTransfer = result.getCommunicationEventPurpose();
             
             request.setAttribute(AttributeConstants.COMMUNICATION_EVENT_PURPOSE, communicationEventPurposeTransfer);
             request.setAttribute(AttributeConstants.COMMUNICATION_EVENT_PURPOSE_NAME, communicationEventPurposeTransfer.getCommunicationEventPurposeName());

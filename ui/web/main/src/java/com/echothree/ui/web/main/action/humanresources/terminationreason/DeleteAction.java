@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteTerminationReasonForm commandForm = EmployeeUtil.getHome().getDeleteTerminationReasonForm();
-            String terminationReasonName = request.getParameter(ParameterConstants.TERMINATION_REASON_NAME);
+            var commandForm = EmployeeUtil.getHome().getDeleteTerminationReasonForm();
+            var terminationReasonName = request.getParameter(ParameterConstants.TERMINATION_REASON_NAME);
             
             commandForm.setTerminationReasonName(terminationReasonName);
             

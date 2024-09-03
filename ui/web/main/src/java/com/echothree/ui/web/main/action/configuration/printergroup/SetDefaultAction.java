@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultPrinterGroupForm commandForm = PrinterUtil.getHome().getSetDefaultPrinterGroupForm();
-            String printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
+            var commandForm = PrinterUtil.getHome().getSetDefaultPrinterGroupForm();
+            var printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
             
             commandForm.setPrinterGroupName(printerGroupName);
             

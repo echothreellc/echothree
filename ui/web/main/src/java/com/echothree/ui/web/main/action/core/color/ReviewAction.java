@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetColorForm commandForm = CoreUtil.getHome().getGetColorForm();
+        var commandForm = CoreUtil.getHome().getGetColorForm();
 
         commandForm.setColorName(request.getParameter(ParameterConstants.COLOR_NAME));
-        
-        CommandResult commandResult = CoreUtil.getHome().getColor(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getColor(getUserVisitPK(request), commandForm);
         ColorTransfer color = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetColorResult result = (GetColorResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetColorResult)executionResult.getResult();
             
             color = result.getColor();
         }

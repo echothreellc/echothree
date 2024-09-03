@@ -49,9 +49,9 @@ public class TimeZonesHandler
             String unixTimeZoneName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("javaTimeZoneName"))
                     javaTimeZoneName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("unixTimeZoneName"))
@@ -63,7 +63,7 @@ public class TimeZonesHandler
             }
             
             try {
-                CreateTimeZoneForm createTimeZoneForm = PartyFormFactory.getCreateTimeZoneForm();
+                var createTimeZoneForm = PartyFormFactory.getCreateTimeZoneForm();
                 
                 createTimeZoneForm.setJavaTimeZoneName(javaTimeZoneName);
                 createTimeZoneForm.setUnixTimeZoneName(unixTimeZoneName);

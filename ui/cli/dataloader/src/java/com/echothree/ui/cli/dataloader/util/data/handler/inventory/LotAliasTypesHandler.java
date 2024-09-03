@@ -43,7 +43,7 @@ public class LotAliasTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("lotAliasType")) {
-            CreateLotAliasTypeForm commandForm = InventoryFormFactory.getCreateLotAliasTypeForm();
+            var commandForm = InventoryFormFactory.getCreateLotAliasTypeForm();
             
             commandForm.set(getAttrsMap(attrs));
             

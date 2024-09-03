@@ -50,9 +50,9 @@ public class LeaveTypeHandler
         if(localName.equals("leaveTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +60,7 @@ public class LeaveTypeHandler
             }
             
             try {
-                CreateLeaveTypeDescriptionForm form = EmployeeFormFactory.getCreateLeaveTypeDescriptionForm();
+                var form = EmployeeFormFactory.getCreateLeaveTypeDescriptionForm();
                 
                 form.setLeaveTypeName(leaveTypeName);
                 form.setLanguageIsoName(languageIsoName);

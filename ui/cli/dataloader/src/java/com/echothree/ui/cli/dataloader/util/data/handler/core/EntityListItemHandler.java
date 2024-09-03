@@ -57,7 +57,7 @@ public class EntityListItemHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("entityListItemDescription")) {
-            CreateEntityListItemDescriptionForm commandForm = CoreFormFactory.getCreateEntityListItemDescriptionForm();
+            var commandForm = CoreFormFactory.getCreateEntityListItemDescriptionForm();
 
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);

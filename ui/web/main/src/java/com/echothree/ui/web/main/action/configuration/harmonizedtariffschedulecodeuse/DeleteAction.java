@@ -64,15 +64,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetHarmonizedTariffScheduleCodeUseForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseForm();
+        var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseForm();
         
         commandForm.setCountryName(actionForm.getCountryName());
         commandForm.setHarmonizedTariffScheduleCodeName(actionForm.getHarmonizedTariffScheduleCodeName());
         commandForm.setHarmonizedTariffScheduleCodeUseTypeName(actionForm.getHarmonizedTariffScheduleCodeUseTypeName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUse(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetHarmonizedTariffScheduleCodeUseResult result = (GetHarmonizedTariffScheduleCodeUseResult)executionResult.getResult();
+
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUse(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetHarmonizedTariffScheduleCodeUseResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_USE, result.getHarmonizedTariffScheduleCodeUse());
     }
@@ -80,7 +80,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteHarmonizedTariffScheduleCodeUseForm commandForm = ItemUtil.getHome().getDeleteHarmonizedTariffScheduleCodeUseForm();
+        var commandForm = ItemUtil.getHome().getDeleteHarmonizedTariffScheduleCodeUseForm();
 
         commandForm.setCountryName(actionForm.getCountryName());
         commandForm.setHarmonizedTariffScheduleCodeName(actionForm.getHarmonizedTariffScheduleCodeName());

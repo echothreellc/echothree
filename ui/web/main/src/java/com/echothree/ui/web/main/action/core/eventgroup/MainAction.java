@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = CoreUtil.getHome().getEventGroups(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEventGroupsResult result = (GetEventGroupsResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getEventGroups(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEventGroupsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.EVENT_GROUPS, result.getEventGroups());
             forwardKey = ForwardConstants.DISPLAY;

@@ -56,15 +56,15 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetContentForumsForm commandForm = ContentUtil.getHome().getGetContentForumsForm();
-            String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+            var commandForm = ContentUtil.getHome().getGetContentForumsForm();
+            var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
             
             commandForm.setContentCollectionName(contentCollectionName);
-            
-            CommandResult commandResult = ContentUtil.getHome().getContentForums(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentForumsResult result = (GetContentForumsResult)executionResult.getResult();
-            ContentCollectionTransfer contentCollectionTransfer = result.getContentCollection();
+
+            var commandResult = ContentUtil.getHome().getContentForums(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentForumsResult)executionResult.getResult();
+            var contentCollectionTransfer = result.getContentCollection();
             
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION, contentCollectionTransfer);
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionTransfer.getContentCollectionName());

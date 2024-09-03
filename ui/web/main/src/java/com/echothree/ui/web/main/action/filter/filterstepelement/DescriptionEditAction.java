@@ -61,18 +61,18 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-        String filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
-        String filterName = request.getParameter(ParameterConstants.FILTER_NAME);
-        String filterStepName = request.getParameter(ParameterConstants.FILTER_STEP_NAME);
-        String filterStepElementName = request.getParameter(ParameterConstants.FILTER_STEP_ELEMENT_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+        var filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
+        var filterName = request.getParameter(ParameterConstants.FILTER_NAME);
+        var filterStepName = request.getParameter(ParameterConstants.FILTER_STEP_NAME);
+        var filterStepElementName = request.getParameter(ParameterConstants.FILTER_STEP_ELEMENT_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditFilterStepElementDescriptionForm commandForm = FilterUtil.getHome().getEditFilterStepElementDescriptionForm();
-                FilterStepElementDescriptionSpec spec = FilterUtil.getHome().getFilterStepElementDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = FilterUtil.getHome().getEditFilterStepElementDescriptionForm();
+                var spec = FilterUtil.getHome().getFilterStepElementDescriptionSpec();
                 
                 if(filterKindName == null)
                     filterKindName = actionForm.getFilterKindName();
@@ -96,19 +96,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    FilterStepElementDescriptionEdit edit = FilterUtil.getHome().getFilterStepElementDescriptionEdit();
+                    var edit = FilterUtil.getHome().getFilterStepElementDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = FilterUtil.getHome().editFilterStepElementDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = FilterUtil.getHome().editFilterStepElementDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditFilterStepElementDescriptionResult result = (EditFilterStepElementDescriptionResult)executionResult.getResult();
+                            var result = (EditFilterStepElementDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -121,13 +121,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = FilterUtil.getHome().editFilterStepElementDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditFilterStepElementDescriptionResult result = (EditFilterStepElementDescriptionResult)executionResult.getResult();
+
+                    var commandResult = FilterUtil.getHome().editFilterStepElementDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditFilterStepElementDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        FilterStepElementDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setFilterKindName(filterKindName);
@@ -150,8 +150,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.FILTER_KIND_NAME, filterKindName);
             request.setAttribute(AttributeConstants.FILTER_TYPE_NAME, filterTypeName);

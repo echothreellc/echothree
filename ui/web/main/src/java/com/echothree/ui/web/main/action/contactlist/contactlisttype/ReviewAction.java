@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetContactListTypeForm commandForm = ContactListUtil.getHome().getGetContactListTypeForm();
+        var commandForm = ContactListUtil.getHome().getGetContactListTypeForm();
 
         commandForm.setContactListTypeName(request.getParameter(ParameterConstants.CONTACT_LIST_TYPE_NAME));
-        
-        CommandResult commandResult = ContactListUtil.getHome().getContactListType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getContactListType(getUserVisitPK(request), commandForm);
         ContactListTypeTransfer contactListType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListTypeResult result = (GetContactListTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListTypeResult)executionResult.getResult();
             
             contactListType = result.getContactListType();
         }

@@ -54,10 +54,10 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetPrinterGroupsForm commandForm = PrinterUtil.getHome().getGetPrinterGroupsForm();
-            CommandResult commandResult = PrinterUtil.getHome().getPrinterGroups(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterGroupsResult result = (GetPrinterGroupsResult)executionResult.getResult();
+            var commandForm = PrinterUtil.getHome().getGetPrinterGroupsForm();
+            var commandResult = PrinterUtil.getHome().getPrinterGroups(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPrinterGroupsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PRINTER_GROUPS, result.getPrinterGroups());
             forwardKey = ForwardConstants.DISPLAY;

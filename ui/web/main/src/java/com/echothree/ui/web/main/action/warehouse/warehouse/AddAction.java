@@ -51,7 +51,7 @@ public class AddAction
         String forwardKey = null;
         
         if(wasPost(request)) {
-            CreateWarehouseForm commandForm = WarehouseUtil.getHome().getCreateWarehouseForm();
+            var commandForm = WarehouseUtil.getHome().getCreateWarehouseForm();
             
             commandForm.setWarehouseName(actionForm.getWarehouseName());
             commandForm.setWarehouseTypeName(actionForm.getWarehouseTypeChoice());
@@ -66,8 +66,8 @@ public class AddAction
             commandForm.setPicklistPrinterGroupName(actionForm.getPicklistPrinterGroupChoice());
             commandForm.setPackingListPrinterGroupName(actionForm.getPackingListPrinterGroupChoice());
             commandForm.setShippingManifestPrinterGroupName(actionForm.getShippingManifestPrinterGroupChoice());
-            
-            CommandResult commandResult = WarehouseUtil.getHome().createWarehouse(getUserVisitPK(request), commandForm);
+
+            var commandResult = WarehouseUtil.getHome().createWarehouse(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

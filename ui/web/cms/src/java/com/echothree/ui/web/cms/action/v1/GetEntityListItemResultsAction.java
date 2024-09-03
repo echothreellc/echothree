@@ -49,7 +49,7 @@ public class GetEntityListItemResultsAction
     @Override
     protected CommandResult getCommandResult(HttpServletRequest request)
             throws Exception {
-        GetEntityListItemResultsForm commandForm = SearchUtil.getHome().getGetEntityListItemResultsForm();
+        var commandForm = SearchUtil.getHome().getGetEntityListItemResultsForm();
 
         commandForm.setSearchTypeName(request.getParameter(ParameterConstants.SEARCH_TYPE_NAME));
 

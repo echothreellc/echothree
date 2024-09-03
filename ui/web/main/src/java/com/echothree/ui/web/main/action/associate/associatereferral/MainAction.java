@@ -55,16 +55,16 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
-            String associateName = request.getParameter(ParameterConstants.ASSOCIATE_NAME);
-            GetAssociateReferralsForm commandForm = AssociateUtil.getHome().getGetAssociateReferralsForm();
+            var associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
+            var associateName = request.getParameter(ParameterConstants.ASSOCIATE_NAME);
+            var commandForm = AssociateUtil.getHome().getGetAssociateReferralsForm();
             
             commandForm.setAssociateProgramName(associateProgramName);
             commandForm.setAssociateName(associateName);
-            
-            CommandResult commandResult = AssociateUtil.getHome().getAssociateReferrals(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAssociateReferralsResult result = (GetAssociateReferralsResult)executionResult.getResult();
+
+            var commandResult = AssociateUtil.getHome().getAssociateReferrals(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAssociateReferralsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ASSOCIATE, result.getAssociate());
             request.setAttribute(AttributeConstants.ASSOCIATE_REFERRALS, result.getAssociateReferrals());

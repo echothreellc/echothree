@@ -46,11 +46,11 @@ public class PartyTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("partyType")) {
-            CreatePartyTypeForm commandForm = PartyFormFactory.getCreatePartyTypeForm();
+            var commandForm = PartyFormFactory.getCreatePartyTypeForm();
             
             commandForm.set(getAttrsMap(attrs));
-            
-            String commandAction = (String)commandForm.get("CommandAction");
+
+            var commandAction = (String)commandForm.get("CommandAction");
             if(commandAction == null || commandAction.equals("create")) {
                 partyService.createPartyType(initialDataParser.getUserVisit(), commandForm);
             }

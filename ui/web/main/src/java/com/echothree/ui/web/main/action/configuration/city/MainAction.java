@@ -55,16 +55,16 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetCitiesForm commandForm = GeoUtil.getHome().getGetCitiesForm();
-            String countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
-            String stateName = request.getParameter(ParameterConstants.STATE_NAME);
+            var commandForm = GeoUtil.getHome().getGetCitiesForm();
+            var countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
+            var stateName = request.getParameter(ParameterConstants.STATE_NAME);
             
             commandForm.setCountryName(countryName);
             commandForm.setStateName(stateName);
-            
-            CommandResult commandResult = GeoUtil.getHome().getCities(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCitiesResult result = (GetCitiesResult)executionResult.getResult();
+
+            var commandResult = GeoUtil.getHome().getCities(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCitiesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.STATE, result.getState());
             request.setAttribute(AttributeConstants.CITIES, result.getCities());

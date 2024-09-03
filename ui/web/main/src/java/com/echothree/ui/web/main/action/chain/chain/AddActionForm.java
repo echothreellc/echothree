@@ -48,15 +48,15 @@ public class AddActionForm
     private void setupChainInstanceSequenceChoices() {
         if(chainInstanceSequenceChoices == null) {
             try {
-                GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
+                var commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
                 commandForm.setSequenceTypeName(SequenceTypes.CHAIN_INSTANCE.name());
                 commandForm.setDefaultSequenceChoice(chainInstanceSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+
+                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSequenceChoicesResult)executionResult.getResult();
                 chainInstanceSequenceChoices = result.getSequenceChoices();
                 
                 if(chainInstanceSequenceChoice == null) {

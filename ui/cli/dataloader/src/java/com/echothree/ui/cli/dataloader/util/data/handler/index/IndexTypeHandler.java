@@ -64,20 +64,20 @@ public class IndexTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("indexTypeDescription")) {
-            IndexTypeDescriptionSpec spec = IndexSpecFactory.getIndexTypeDescriptionSpec();
-            EditIndexTypeDescriptionForm editForm = IndexFormFactory.getEditIndexTypeDescriptionForm();
+            var spec = IndexSpecFactory.getIndexTypeDescriptionSpec();
+            var editForm = IndexFormFactory.getEditIndexTypeDescriptionForm();
 
             spec.setIndexTypeName(indexTypeName);
             spec.set(getAttrsMap(attrs));
 
             editForm.setSpec(spec);
             editForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = indexService.editIndexTypeDescription(initialDataParser.getUserVisit(), editForm);
+
+            var commandResult = indexService.editIndexTypeDescription(initialDataParser.getUserVisit(), editForm);
             
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownIndexTypeDescription.name())) {
-                    CreateIndexTypeDescriptionForm createForm = IndexFormFactory.getCreateIndexTypeDescriptionForm();
+                    var createForm = IndexFormFactory.getCreateIndexTypeDescriptionForm();
 
                     createForm.setIndexTypeName(indexTypeName);
                     createForm.set(getAttrsMap(attrs));
@@ -91,13 +91,13 @@ public class IndexTypeHandler
                     getLogger().error(commandResult.toString());
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditIndexTypeDescriptionResult result = (EditIndexTypeDescriptionResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditIndexTypeDescriptionResult)executionResult.getResult();
 
                 if(result != null) {
-                    IndexTypeDescriptionEdit edit = (IndexTypeDescriptionEdit)result.getEdit();
-                    String description = attrs.getValue("description");
-                    boolean changed = false;
+                    var edit = (IndexTypeDescriptionEdit)result.getEdit();
+                    var description = attrs.getValue("description");
+                    var changed = false;
                     
                     if(!edit.getDescription().equals(description)) {
                         edit.setDescription(description);
@@ -126,20 +126,20 @@ public class IndexTypeHandler
                 }
             }
         } else if(localName.equals("indexField")) {
-            IndexFieldSpec spec = IndexSpecFactory.getIndexFieldSpec();
-            EditIndexFieldForm editForm = IndexFormFactory.getEditIndexFieldForm();
+            var spec = IndexSpecFactory.getIndexFieldSpec();
+            var editForm = IndexFormFactory.getEditIndexFieldForm();
 
             spec.setIndexTypeName(indexTypeName);
             spec.set(getAttrsMap(attrs));
 
             editForm.setSpec(spec);
             editForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = indexService.editIndexField(initialDataParser.getUserVisit(), editForm);
+
+            var commandResult = indexService.editIndexField(initialDataParser.getUserVisit(), editForm);
 
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownIndexFieldName.name())) {
-                    CreateIndexFieldForm createForm = IndexFormFactory.getCreateIndexFieldForm();
+                    var createForm = IndexFormFactory.getCreateIndexFieldForm();
 
                     createForm.setIndexTypeName(indexTypeName);
                     createForm.set(getAttrsMap(attrs));
@@ -153,14 +153,14 @@ public class IndexTypeHandler
                     getLogger().error(commandResult.toString());
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditIndexFieldResult result = (EditIndexFieldResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditIndexFieldResult)executionResult.getResult();
 
                 if(result != null) {
-                    IndexFieldEdit edit = (IndexFieldEdit)result.getEdit();
-                    String isDefault = attrs.getValue("isDefault");
-                    String sortOrder = attrs.getValue("sortOrder");
-                    boolean changed = false;
+                    var edit = (IndexFieldEdit)result.getEdit();
+                    var isDefault = attrs.getValue("isDefault");
+                    var sortOrder = attrs.getValue("sortOrder");
+                    var changed = false;
                     
                     if(!edit.getIsDefault().equals(isDefault)) {
                         edit.setIsDefault(isDefault);

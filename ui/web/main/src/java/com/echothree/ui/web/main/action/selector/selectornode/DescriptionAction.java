@@ -54,20 +54,20 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-            String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-            String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
-            String selectorNodeName = request.getParameter(ParameterConstants.SELECTOR_NODE_NAME);
-            GetSelectorNodeDescriptionsForm commandForm = SelectorUtil.getHome().getGetSelectorNodeDescriptionsForm();
+            var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+            var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+            var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+            var selectorNodeName = request.getParameter(ParameterConstants.SELECTOR_NODE_NAME);
+            var commandForm = SelectorUtil.getHome().getGetSelectorNodeDescriptionsForm();
             
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setSelectorTypeName(selectorTypeName);
             commandForm.setSelectorName(selectorName);
             commandForm.setSelectorNodeName(selectorNodeName);
-            
-            CommandResult commandResult = SelectorUtil.getHome().getSelectorNodeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSelectorNodeDescriptionsResult result = (GetSelectorNodeDescriptionsResult)executionResult.getResult();
+
+            var commandResult = SelectorUtil.getHome().getSelectorNodeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSelectorNodeDescriptionsResult)executionResult.getResult();
             
             request.setAttribute("selectorKind", result.getSelectorKind());
             request.setAttribute("selectorType", result.getSelectorType());

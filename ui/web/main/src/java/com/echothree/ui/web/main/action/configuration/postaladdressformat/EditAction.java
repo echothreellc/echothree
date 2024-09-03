@@ -58,13 +58,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalPostalAddressFormatName = request.getParameter(ParameterConstants.ORIGINAL_POSTAL_ADDRESS_FORMAT_NAME);
+        var originalPostalAddressFormatName = request.getParameter(ParameterConstants.ORIGINAL_POSTAL_ADDRESS_FORMAT_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditPostalAddressFormatForm commandForm = ContactUtil.getHome().getEditPostalAddressFormatForm();
-                PostalAddressFormatSpec spec = ContactUtil.getHome().getPostalAddressFormatSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = ContactUtil.getHome().getEditPostalAddressFormatForm();
+                var spec = ContactUtil.getHome().getPostalAddressFormatSpec();
                 
                 if(originalPostalAddressFormatName == null)
                     originalPostalAddressFormatName = actionForm.getOriginalPostalAddressFormatName();
@@ -73,7 +73,7 @@ public class EditAction
                 spec.setPostalAddressFormatName(originalPostalAddressFormatName);
                 
                 if(wasPost(request)) {
-                    PostalAddressFormatEdit edit = ContactUtil.getHome().getPostalAddressFormatEdit();
+                    var edit = ContactUtil.getHome().getPostalAddressFormatEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -82,14 +82,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ContactUtil.getHome().editPostalAddressFormat(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ContactUtil.getHome().editPostalAddressFormat(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditPostalAddressFormatResult result = (EditPostalAddressFormatResult)executionResult.getResult();
+                            var result = (EditPostalAddressFormatResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -102,13 +102,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = ContactUtil.getHome().editPostalAddressFormat(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditPostalAddressFormatResult result = (EditPostalAddressFormatResult)executionResult.getResult();
+
+                    var commandResult = ContactUtil.getHome().editPostalAddressFormat(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditPostalAddressFormatResult)executionResult.getResult();
                     
                     if(result != null) {
-                        PostalAddressFormatEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalPostalAddressFormatName(edit.getPostalAddressFormatName());

@@ -68,24 +68,24 @@ public class CompanyHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("division")) {
-            CreateDivisionForm form = PartyFormFactory.getCreateDivisionForm();
+            var form = PartyFormFactory.getCreateDivisionForm();
             
             form.setCompanyName(companyName);
             form.set(getAttrsMap(attrs));
-            
-            CommandResult commandResult = partyService.createDivision(initialDataParser.getUserVisit(), form);
+
+            var commandResult = partyService.createDivision(initialDataParser.getUserVisit(), form);
             
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateDivisionResult result = (CreateDivisionResult)executionResult.getResult();
-                String partyName = result.getPartyName();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateDivisionResult)executionResult.getResult();
+                var partyName = result.getPartyName();
+                var entityRef = result.getEntityRef();
                 
                 initialDataParser.pushHandler(new DivisionHandler(initialDataParser, this, partyName, companyName,
                         form.getDivisionName(), entityRef));
             }
         } else if(localName.equals("letterSource")) {
-            CreateLetterSourceForm commandForm = LetterFormFactory.getCreateLetterSourceForm();
+            var commandForm = LetterFormFactory.getCreateLetterSourceForm();
             
             commandForm.setCompanyName(companyName);
             commandForm.set(getAttrsMap(attrs));

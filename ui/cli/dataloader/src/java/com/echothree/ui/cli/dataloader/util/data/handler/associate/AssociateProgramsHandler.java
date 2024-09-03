@@ -45,7 +45,7 @@ public class AssociateProgramsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("associateProgram")) {
-            CreateAssociateProgramForm commandForm = AssociateFormFactory.getCreateAssociateProgramForm();
+            var commandForm = AssociateFormFactory.getCreateAssociateProgramForm();
             
             String associateProgramName = null;
             String associateSequenceName = null;
@@ -55,9 +55,9 @@ public class AssociateProgramsHandler
             String itemDirectSalePercent = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("associateProgramName"))
                     associateProgramName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("associateSequenceName"))

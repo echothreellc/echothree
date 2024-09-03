@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String harmonizedTariffScheduleCodeUseTypeName = request.getParameter(ParameterConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_NAME);
-        GetHarmonizedTariffScheduleCodeUseTypeDescriptionsForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseTypeDescriptionsForm();
+        var harmonizedTariffScheduleCodeUseTypeName = request.getParameter(ParameterConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_NAME);
+        var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseTypeDescriptionsForm();
 
         commandForm.setHarmonizedTariffScheduleCodeUseTypeName(harmonizedTariffScheduleCodeUseTypeName);
 
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeUseTypeDescriptionsResult result = (GetHarmonizedTariffScheduleCodeUseTypeDescriptionsResult) executionResult.getResult();
-            HarmonizedTariffScheduleCodeUseTypeTransfer harmonizedTariffScheduleCodeUseTypeTransfer = result.getHarmonizedTariffScheduleCodeUseType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodeUseTypeDescriptionsResult) executionResult.getResult();
+            var harmonizedTariffScheduleCodeUseTypeTransfer = result.getHarmonizedTariffScheduleCodeUseType();
 
             request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE, harmonizedTariffScheduleCodeUseTypeTransfer);
             request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_DESCRIPTIONS, result.getHarmonizedTariffScheduleCodeUseTypeDescriptions());

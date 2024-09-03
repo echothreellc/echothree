@@ -41,15 +41,15 @@ public class AddActionForm
     public void setupGeoCodeAliasTypeChoices() {
         if(geoCodeAliasTypeChoices == null) {
             try {
-                GetGeoCodeAliasTypeChoicesForm form = GeoUtil.getHome().getGetGeoCodeAliasTypeChoicesForm();
+                var form = GeoUtil.getHome().getGetGeoCodeAliasTypeChoicesForm();
 
                 form.setGeoCodeName(geoCodeName);
                 form.setDefaultGeoCodeAliasTypeChoice(geoCodeAliasTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = GeoUtil.getHome().getGeoCodeAliasTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGeoCodeAliasTypeChoicesResult getGeoCodeAliasTypeChoicesResult = (GetGeoCodeAliasTypeChoicesResult)executionResult.getResult();
+                var commandResult = GeoUtil.getHome().getGeoCodeAliasTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getGeoCodeAliasTypeChoicesResult = (GetGeoCodeAliasTypeChoicesResult)executionResult.getResult();
                 geoCodeAliasTypeChoices = getGeoCodeAliasTypeChoicesResult.getGeoCodeAliasTypeChoices();
 
                 if(geoCodeAliasTypeChoice == null) {

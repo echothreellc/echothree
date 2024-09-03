@@ -228,7 +228,7 @@ public class EditPartyPaymentMethodCommand
             var contactControl = Session.getModelController(ContactControl.class);
             var partyControl = Session.getModelController(PartyControl.class);
             var party = getPartyFromPartyPaymentMethod(partyPaymentMethod);
-            Soundex soundex = new Soundex();
+            var soundex = new Soundex();
             var personalTitleId = edit.getPersonalTitleId();
             var personalTitle = personalTitleId == null ? null : partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
             var firstName = edit.getFirstName();

@@ -53,17 +53,17 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetWorkEffortScopeForm commandForm = WorkEffortUtil.getHome().getGetWorkEffortScopeForm();
+        var commandForm = WorkEffortUtil.getHome().getGetWorkEffortScopeForm();
 
         commandForm.setWorkEffortTypeName(request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME));
         commandForm.setWorkEffortScopeName(request.getParameter(ParameterConstants.WORK_EFFORT_SCOPE_NAME));
-        
-        CommandResult commandResult = WorkEffortUtil.getHome().getWorkEffortScope(getUserVisitPK(request), commandForm);
+
+        var commandResult = WorkEffortUtil.getHome().getWorkEffortScope(getUserVisitPK(request), commandForm);
         WorkEffortScopeTransfer workEffortScope = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkEffortScopeResult result = (GetWorkEffortScopeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkEffortScopeResult)executionResult.getResult();
             
             workEffortScope = result.getWorkEffortScope();
         }

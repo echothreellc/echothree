@@ -54,18 +54,18 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String responsibilityTypeName = request.getParameter(ParameterConstants.RESPONSIBILITY_TYPE_NAME);
-        GetPartyResponsibilitiesForm commandForm = EmployeeUtil.getHome().getGetPartyResponsibilitiesForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var responsibilityTypeName = request.getParameter(ParameterConstants.RESPONSIBILITY_TYPE_NAME);
+        var commandForm = EmployeeUtil.getHome().getGetPartyResponsibilitiesForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setResponsibilityTypeName(responsibilityTypeName);
 
-        CommandResult commandResult = EmployeeUtil.getHome().getPartyResponsibilities(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyResponsibilitiesResult result = (GetPartyResponsibilitiesResult)executionResult.getResult();
-        PartyTransfer party = result.getParty();
-        ResponsibilityTypeTransfer responsibilityType = result.getResponsibilityType();
+        var commandResult = EmployeeUtil.getHome().getPartyResponsibilities(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyResponsibilitiesResult)executionResult.getResult();
+        var party = result.getParty();
+        var responsibilityType = result.getResponsibilityType();
 
         request.setAttribute(AttributeConstants.PARTY, party);
         request.setAttribute(AttributeConstants.RESPONSIBILITY_TYPE, responsibilityType);

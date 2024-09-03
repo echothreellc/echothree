@@ -45,16 +45,16 @@ public class PaymentProcessorsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException, NamingException {
         if(localName.equals("paymentProcessor")) {
-            CreatePaymentProcessorForm commandForm = PaymentFormFactory.getCreatePaymentProcessorForm();
+            var commandForm = PaymentFormFactory.getCreatePaymentProcessorForm();
             
             commandForm.set(getAttrsMap(attrs));
-            
-            CommandResult commandResult = paymentService.createPaymentProcessor(initialDataParser.getUserVisit(), commandForm);
+
+            var commandResult = paymentService.createPaymentProcessor(initialDataParser.getUserVisit(), commandForm);
 
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreatePaymentProcessorResult result = (CreatePaymentProcessorResult)executionResult.getResult();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreatePaymentProcessorResult)executionResult.getResult();
+                var entityRef = result.getEntityRef();
 
                 initialDataParser.pushHandler(new PaymentProcessorHandler(initialDataParser, this, commandForm.getPaymentProcessorName(), entityRef));
             }

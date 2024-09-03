@@ -46,15 +46,15 @@ public class EntityAttributeTypesHandler
     throws SAXException {
         if(localName.equals("entityAttributeType")) {
             String entityAttributeTypeName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("entityAttributeTypeName"))
                     entityAttributeTypeName = attrs.getValue(i);
             }
             
             try {
-                CreateEntityAttributeTypeForm createEntityAttributeTypeForm = CoreFormFactory.getCreateEntityAttributeTypeForm();
+                var createEntityAttributeTypeForm = CoreFormFactory.getCreateEntityAttributeTypeForm();
                 
                 createEntityAttributeTypeForm.setEntityAttributeTypeName(entityAttributeTypeName);
                 

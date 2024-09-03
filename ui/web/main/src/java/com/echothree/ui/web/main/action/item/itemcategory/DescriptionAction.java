@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String itemCategoryName = request.getParameter(ParameterConstants.ITEM_CATEGORY_NAME);
-        GetItemCategoryDescriptionsForm commandForm = ItemUtil.getHome().getGetItemCategoryDescriptionsForm();
+        var itemCategoryName = request.getParameter(ParameterConstants.ITEM_CATEGORY_NAME);
+        var commandForm = ItemUtil.getHome().getGetItemCategoryDescriptionsForm();
 
         commandForm.setItemCategoryName(itemCategoryName);
 
-        CommandResult commandResult = ItemUtil.getHome().getItemCategoryDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getItemCategoryDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemCategoryDescriptionsResult result = (GetItemCategoryDescriptionsResult) executionResult.getResult();
-            ItemCategoryTransfer itemCategoryTransfer = result.getItemCategory();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemCategoryDescriptionsResult) executionResult.getResult();
+            var itemCategoryTransfer = result.getItemCategory();
 
             request.setAttribute(AttributeConstants.ITEM_CATEGORY, itemCategoryTransfer);
             request.setAttribute(AttributeConstants.ITEM_CATEGORY_DESCRIPTIONS, result.getItemCategoryDescriptions());

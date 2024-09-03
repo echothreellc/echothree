@@ -56,15 +56,15 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-        String parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
+        var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+        var parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateContentSectionForm commandForm = ContentUtil.getHome().getCreateContentSectionForm();
+                    var commandForm = ContentUtil.getHome().getCreateContentSectionForm();
                     
                     if(contentCollectionName == null)
                         contentCollectionName = actionForm.getContentCollectionName();
@@ -77,8 +77,8 @@ public class AddAction
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ContentUtil.getHome().createContentSection(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ContentUtil.getHome().createContentSection(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -96,8 +96,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionName);
             request.setAttribute(AttributeConstants.PARENT_CONTENT_SECTION_NAME, parentContentSectionName);

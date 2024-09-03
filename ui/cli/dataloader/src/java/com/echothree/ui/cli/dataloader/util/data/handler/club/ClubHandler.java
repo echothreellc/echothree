@@ -52,9 +52,9 @@ public class ClubHandler
         if(localName.equals("clubDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -62,7 +62,7 @@ public class ClubHandler
             }
             
             try {
-                CreateClubDescriptionForm commandForm = ClubFormFactory.getCreateClubDescriptionForm();
+                var commandForm = ClubFormFactory.getCreateClubDescriptionForm();
                 
                 commandForm.setClubName(clubName);
                 commandForm.setLanguageIsoName(languageIsoName);
@@ -77,9 +77,9 @@ public class ClubHandler
             String itemName = null;
             String unitOfMeasureTypeName = null;
             String subscriptionTime = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("clubItemTypeName"))
                     clubItemTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("itemName"))
@@ -91,7 +91,7 @@ public class ClubHandler
             }
             
             try {
-                CreateClubItemForm commandForm = ClubFormFactory.getCreateClubItemForm();
+                var commandForm = ClubFormFactory.getCreateClubItemForm();
                 
                 commandForm.setClubName(clubName);
                 commandForm.setClubItemTypeName(clubItemTypeName);

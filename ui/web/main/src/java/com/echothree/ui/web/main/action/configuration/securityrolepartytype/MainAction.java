@@ -52,15 +52,15 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetSecurityRolePartyTypesForm commandForm = SecurityUtil.getHome().getGetSecurityRolePartyTypesForm();
+        var commandForm = SecurityUtil.getHome().getGetSecurityRolePartyTypesForm();
 
         commandForm.setSecurityRoleGroupName(request.getParameter(ParameterConstants.SECURITY_ROLE_GROUP_NAME));
         commandForm.setSecurityRoleName(request.getParameter(ParameterConstants.SECURITY_ROLE_NAME));
 
-        CommandResult commandResult = SecurityUtil.getHome().getSecurityRolePartyTypes(getUserVisitPK(request), commandForm);
+        var commandResult = SecurityUtil.getHome().getSecurityRolePartyTypes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSecurityRolePartyTypesResult result = (GetSecurityRolePartyTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSecurityRolePartyTypesResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.SECURITY_ROLE, result.getSecurityRole());
             request.setAttribute(AttributeConstants.SECURITY_ROLE_PARTY_TYPES, result.getSecurityRolePartyTypes());

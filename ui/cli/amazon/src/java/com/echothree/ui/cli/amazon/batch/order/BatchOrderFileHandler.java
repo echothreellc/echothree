@@ -61,7 +61,7 @@ public class BatchOrderFileHandler {
 
     public void execute()
             throws IOException, NamingException {
-        AmazonOrders amazonOrders = new AmazonOrders();
+        var amazonOrders = new AmazonOrders();
         
         new BuildOrders(filename, amazonOrders, depth).execute();
         new DumpOrders(amazonOrders).execute();

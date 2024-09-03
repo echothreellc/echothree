@@ -38,13 +38,13 @@ public abstract class BaseVendorCarrierAction<A
 
     public static void setupVendor(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetVendorForm commandForm = VendorUtil.getHome().getGetVendorForm();
+        var commandForm = VendorUtil.getHome().getGetVendorForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetVendorResult result = (GetVendorResult)executionResult.getResult();
+        var commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetVendorResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.VENDOR, result.getVendor());
     }
@@ -56,14 +56,14 @@ public abstract class BaseVendorCarrierAction<A
 
     public static PartyCarrierTransfer getPartyCarrierTransfer(HttpServletRequest request, String partyName, String carrierName)
             throws NamingException {
-        GetPartyCarrierForm commandForm = CarrierUtil.getHome().getGetPartyCarrierForm();
+        var commandForm = CarrierUtil.getHome().getGetPartyCarrierForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setCarrierName(carrierName);
 
-        CommandResult commandResult = CarrierUtil.getHome().getPartyCarrier(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyCarrierResult result = (GetPartyCarrierResult)executionResult.getResult();
+        var commandResult = CarrierUtil.getHome().getPartyCarrier(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyCarrierResult)executionResult.getResult();
 
         return result.getPartyCarrier();
     }

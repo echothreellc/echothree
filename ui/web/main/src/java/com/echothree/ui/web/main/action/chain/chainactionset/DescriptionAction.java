@@ -53,18 +53,18 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetChainActionSetDescriptionsForm commandForm = ChainUtil.getHome().getGetChainActionSetDescriptionsForm();
+        var commandForm = ChainUtil.getHome().getGetChainActionSetDescriptionsForm();
 
         commandForm.setChainKindName(request.getParameter(ParameterConstants.CHAIN_KIND_NAME));
         commandForm.setChainTypeName(request.getParameter(ParameterConstants.CHAIN_TYPE_NAME));
         commandForm.setChainName(request.getParameter(ParameterConstants.CHAIN_NAME));
         commandForm.setChainActionSetName(request.getParameter(ParameterConstants.CHAIN_ACTION_SET_NAME));
 
-        CommandResult commandResult = ChainUtil.getHome().getChainActionSetDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ChainUtil.getHome().getChainActionSetDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetChainActionSetDescriptionsResult result = (GetChainActionSetDescriptionsResult) executionResult.getResult();
-            ChainActionSetTransfer chainActionSetTransfer = result.getChainActionSet();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetChainActionSetDescriptionsResult) executionResult.getResult();
+            var chainActionSetTransfer = result.getChainActionSet();
 
             request.setAttribute(AttributeConstants.CHAIN_ACTION_SET, chainActionSetTransfer);
             request.setAttribute(AttributeConstants.CHAIN_ACTION_SET_DESCRIPTIONS, result.getChainActionSetDescriptions());

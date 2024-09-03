@@ -53,19 +53,19 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetEntityIntegerRangeForm commandForm = CoreUtil.getHome().getGetEntityIntegerRangeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityIntegerRangeForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
         commandForm.setEntityAttributeName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME));
         commandForm.setEntityIntegerRangeName(request.getParameter(ParameterConstants.ENTITY_INTEGER_RANGE_NAME));
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityIntegerRange(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEntityIntegerRange(getUserVisitPK(request), commandForm);
         EntityIntegerRangeTransfer entityIntegerRange = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityIntegerRangeResult result = (GetEntityIntegerRangeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityIntegerRangeResult)executionResult.getResult();
             
             entityIntegerRange = result.getEntityIntegerRange();
         }

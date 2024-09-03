@@ -67,7 +67,7 @@ public class InvoiceTransferCache
 
     private InvoiceTransfer setInvoiceTimes(Invoice invoice, InvoiceTransfer invoiceTransfer) {
         var invoiceTimeTransfers = invoiceControl.getInvoiceTimeTransfersByInvoice(userVisit, invoice);
-        MapWrapper<InvoiceTimeTransfer> invoiceTimes = new MapWrapper<>(invoiceTimeTransfers.size());
+        var invoiceTimes = new MapWrapper<InvoiceTimeTransfer>(invoiceTimeTransfers.size());
 
         invoiceTimeTransfers.forEach((invoiceTimeTransfer) -> {
             invoiceTimes.put(invoiceTimeTransfer.getInvoiceTimeType().getInvoiceTimeTypeName(), invoiceTimeTransfer);
@@ -80,7 +80,7 @@ public class InvoiceTransferCache
 
     private InvoiceTransfer setInvoiceRoles(Invoice invoice, InvoiceTransfer invoiceTransfer) {
         var invoiceRoleTransfers = invoiceControl.getInvoiceRoleTransfersByInvoice(userVisit, invoice);
-        MapWrapper<InvoiceRoleTransfer> invoiceRoles = new MapWrapper<>(invoiceRoleTransfers.size());
+        var invoiceRoles = new MapWrapper<InvoiceRoleTransfer>(invoiceRoleTransfers.size());
 
         invoiceRoleTransfers.forEach((invoiceRoleTransfer) -> {
             invoiceRoles.put(invoiceRoleTransfer.getInvoiceRoleType().getInvoiceRoleTypeUseTypeName(), invoiceRoleTransfer);

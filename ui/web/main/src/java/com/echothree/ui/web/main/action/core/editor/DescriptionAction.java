@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String editorName = request.getParameter(ParameterConstants.EDITOR_NAME);
-        GetEditorDescriptionsForm commandForm = CoreUtil.getHome().getGetEditorDescriptionsForm();
+        var editorName = request.getParameter(ParameterConstants.EDITOR_NAME);
+        var commandForm = CoreUtil.getHome().getGetEditorDescriptionsForm();
 
         commandForm.setEditorName(editorName);
 
-        CommandResult commandResult = CoreUtil.getHome().getEditorDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getEditorDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEditorDescriptionsResult result = (GetEditorDescriptionsResult) executionResult.getResult();
-            EditorTransfer editorTransfer = result.getEditor();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEditorDescriptionsResult) executionResult.getResult();
+            var editorTransfer = result.getEditor();
 
             request.setAttribute(AttributeConstants.EDITOR, editorTransfer);
             request.setAttribute(AttributeConstants.EDITOR_DESCRIPTIONS, result.getEditorDescriptions());

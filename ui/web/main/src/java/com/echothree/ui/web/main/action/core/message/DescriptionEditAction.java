@@ -61,17 +61,17 @@ public class DescriptionEditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-        String messageTypeName = request.getParameter(ParameterConstants.MESSAGE_TYPE_NAME);
-        String messageName = request.getParameter(ParameterConstants.MESSAGE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var messageTypeName = request.getParameter(ParameterConstants.MESSAGE_TYPE_NAME);
+        var messageName = request.getParameter(ParameterConstants.MESSAGE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditMessageDescriptionForm commandForm = MessageUtil.getHome().getEditMessageDescriptionForm();
-                MessageDescriptionSpec spec = MessageUtil.getHome().getMessageDescriptionSpec();
+                var actionForm = (DescriptionEditActionForm)form;
+                var commandForm = MessageUtil.getHome().getEditMessageDescriptionForm();
+                var spec = MessageUtil.getHome().getMessageDescriptionSpec();
                 
                 if(componentVendorName == null)
                     componentVendorName = actionForm.getComponentVendorName();
@@ -92,19 +92,19 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    MessageDescriptionEdit edit = MessageUtil.getHome().getMessageDescriptionEdit();
+                    var edit = MessageUtil.getHome().getMessageDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = MessageUtil.getHome().editMessageDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = MessageUtil.getHome().editMessageDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditMessageDescriptionResult result = (EditMessageDescriptionResult)executionResult.getResult();
+                            var result = (EditMessageDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -117,13 +117,13 @@ public class DescriptionEditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = MessageUtil.getHome().editMessageDescription(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditMessageDescriptionResult result = (EditMessageDescriptionResult)executionResult.getResult();
+
+                    var commandResult = MessageUtil.getHome().editMessageDescription(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditMessageDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        MessageDescriptionEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setComponentVendorName(componentVendorName);
@@ -145,8 +145,8 @@ public class DescriptionEditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorName);
             request.setAttribute(AttributeConstants.ENTITY_TYPE_NAME, entityTypeName);

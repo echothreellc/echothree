@@ -50,10 +50,10 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
+        var partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
 
         if(wasPost(request)) {
-            CreatePartyTypeAuditPolicyForm commandForm = PartyUtil.getHome().getCreatePartyTypeAuditPolicyForm();
+            var commandForm = PartyUtil.getHome().getCreatePartyTypeAuditPolicyForm();
 
             if(partyTypeName == null) {
                 partyTypeName = actionForm.getPartyTypeName();
@@ -64,7 +64,7 @@ public class AddAction
             commandForm.setRetainUserVisitsTime(actionForm.getRetainUserVisitsTime());
             commandForm.setRetainUserVisitsTimeUnitOfMeasureTypeName(actionForm.getRetainUserVisitsTimeUnitOfMeasureTypeChoice());
 
-            CommandResult commandResult = PartyUtil.getHome().createPartyTypeAuditPolicy(getUserVisitPK(request), commandForm);
+            var commandResult = PartyUtil.getHome().createPartyTypeAuditPolicy(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

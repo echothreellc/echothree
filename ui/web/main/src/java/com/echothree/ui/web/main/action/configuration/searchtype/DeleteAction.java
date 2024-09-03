@@ -63,14 +63,14 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSearchTypeForm commandForm = SearchUtil.getHome().getGetSearchTypeForm();
+        var commandForm = SearchUtil.getHome().getGetSearchTypeForm();
         
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchTypeName(actionForm.getSearchTypeName());
-        
-        CommandResult commandResult = SearchUtil.getHome().getSearchType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetSearchTypeResult result = (GetSearchTypeResult)executionResult.getResult();
+
+        var commandResult = SearchUtil.getHome().getSearchType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetSearchTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.SEARCH_TYPE, result.getSearchType());
     }
@@ -78,7 +78,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteSearchTypeForm commandForm = SearchUtil.getHome().getDeleteSearchTypeForm();
+        var commandForm = SearchUtil.getHome().getDeleteSearchTypeForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchTypeName(actionForm.getSearchTypeName());

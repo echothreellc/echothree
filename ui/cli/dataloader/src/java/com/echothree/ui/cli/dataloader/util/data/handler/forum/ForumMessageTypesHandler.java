@@ -48,9 +48,9 @@ public class ForumMessageTypesHandler
             String forumMessageTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("forumMessageTypeName"))
                     forumMessageTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class ForumMessageTypesHandler
             }
             
             try {
-                CreateForumMessageTypeForm form = ForumFormFactory.getCreateForumMessageTypeForm();
+                var form = ForumFormFactory.getCreateForumMessageTypeForm();
                 
                 form.setForumMessageTypeName(forumMessageTypeName);
                 form.setIsDefault(isDefault);

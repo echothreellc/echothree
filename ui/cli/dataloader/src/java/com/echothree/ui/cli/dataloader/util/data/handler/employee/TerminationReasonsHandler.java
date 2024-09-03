@@ -48,9 +48,9 @@ public class TerminationReasonsHandler
             String terminationReasonName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("terminationReasonName"))
                     terminationReasonName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class TerminationReasonsHandler
             }
             
             try {
-                CreateTerminationReasonForm form = EmployeeFormFactory.getCreateTerminationReasonForm();
+                var form = EmployeeFormFactory.getCreateTerminationReasonForm();
                 
                 form.setTerminationReasonName(terminationReasonName);
                 form.setIsDefault(isDefault);

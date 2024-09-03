@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String paymentMethodName = request.getParameter(ParameterConstants.PAYMENT_METHOD_NAME);
-        GetPaymentMethodDescriptionsForm commandForm = PaymentUtil.getHome().getGetPaymentMethodDescriptionsForm();
+        var paymentMethodName = request.getParameter(ParameterConstants.PAYMENT_METHOD_NAME);
+        var commandForm = PaymentUtil.getHome().getGetPaymentMethodDescriptionsForm();
 
         commandForm.setPaymentMethodName(paymentMethodName);
 
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentMethodDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = PaymentUtil.getHome().getPaymentMethodDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPaymentMethodDescriptionsResult result = (GetPaymentMethodDescriptionsResult) executionResult.getResult();
-            PaymentMethodTransfer paymentMethodTransfer = result.getPaymentMethod();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPaymentMethodDescriptionsResult) executionResult.getResult();
+            var paymentMethodTransfer = result.getPaymentMethod();
 
             request.setAttribute(AttributeConstants.PAYMENT_METHOD, paymentMethodTransfer);
             request.setAttribute(AttributeConstants.PAYMENT_METHOD_DESCRIPTIONS, result.getPaymentMethodDescriptions());

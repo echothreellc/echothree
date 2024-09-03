@@ -37,13 +37,13 @@ public abstract class BaseEmployeeEntityTypeAction<A extends ActionForm>
 
     public static void setupEmployee(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetEmployeeForm commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
+        var commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEmployeeResult result = (GetEmployeeResult)executionResult.getResult();
+        var commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEmployeeResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.EMPLOYEE, result.getEmployee());
     }
@@ -56,15 +56,15 @@ public abstract class BaseEmployeeEntityTypeAction<A extends ActionForm>
     public static PartyEntityTypeTransfer getPartyEntityTypeTransfer(HttpServletRequest request, String partyName, String componentVendorName,
             String entityTypeName)
             throws NamingException {
-        GetPartyEntityTypeForm commandForm = CoreUtil.getHome().getGetPartyEntityTypeForm();
+        var commandForm = CoreUtil.getHome().getGetPartyEntityTypeForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setComponentVendorName(componentVendorName);
         commandForm.setEntityTypeName(entityTypeName);
 
-        CommandResult commandResult = CoreUtil.getHome().getPartyEntityType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyEntityTypeResult result = (GetPartyEntityTypeResult)executionResult.getResult();
+        var commandResult = CoreUtil.getHome().getPartyEntityType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyEntityTypeResult)executionResult.getResult();
 
         return result.getPartyEntityType();
     }

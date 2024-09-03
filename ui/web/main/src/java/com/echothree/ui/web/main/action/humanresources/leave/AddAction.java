@@ -61,7 +61,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateLeaveForm commandForm = EmployeeUtil.getHome().getCreateLeaveForm();
+        var commandForm = EmployeeUtil.getHome().getCreateLeaveForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setCompanyName(actionForm.getCompanyChoice());

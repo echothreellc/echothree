@@ -48,7 +48,7 @@ public class MimeTypesHandler
             throws SAXException {
         if(localName.equals("mimeType")) {
             try {
-                CreateMimeTypeForm commandForm = CoreFormFactory.getCreateMimeTypeForm();
+                var commandForm = CoreFormFactory.getCreateMimeTypeForm();
                 
                 commandForm.set(getAttrsMap(attrs));
                 

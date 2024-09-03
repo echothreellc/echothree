@@ -62,14 +62,14 @@ public class ContactListContactMechanismPurposeAddAction
     @Override
     public void setupTransfer(ContactListContactMechanismPurposeAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContactListForm commandForm = ContactListUtil.getHome().getGetContactListForm();
+        var commandForm = ContactListUtil.getHome().getGetContactListForm();
 
         commandForm.setContactListName(actionForm.getContactListName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getContactList(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getContactList(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListResult result = (GetContactListResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CONTACT_LIST, result.getContactList());
         }
@@ -78,7 +78,7 @@ public class ContactListContactMechanismPurposeAddAction
     @Override
     public CommandResult doAdd(ContactListContactMechanismPurposeAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateContactListContactMechanismPurposeForm commandForm = ContactListUtil.getHome().getCreateContactListContactMechanismPurposeForm();
+        var commandForm = ContactListUtil.getHome().getCreateContactListContactMechanismPurposeForm();
 
         commandForm.setContactListName( actionForm.getContactListName());
         commandForm.setContactMechanismPurposeName(actionForm.getContactMechanismPurposeChoice());

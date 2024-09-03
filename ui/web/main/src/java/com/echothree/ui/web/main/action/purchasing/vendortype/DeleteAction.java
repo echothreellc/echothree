@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteVendorTypeForm commandForm = VendorUtil.getHome().getDeleteVendorTypeForm();
-            String vendorTypeName = request.getParameter(ParameterConstants.VENDOR_TYPE_NAME);
+            var commandForm = VendorUtil.getHome().getDeleteVendorTypeForm();
+            var vendorTypeName = request.getParameter(ParameterConstants.VENDOR_TYPE_NAME);
             
             commandForm.setVendorTypeName(vendorTypeName);
             

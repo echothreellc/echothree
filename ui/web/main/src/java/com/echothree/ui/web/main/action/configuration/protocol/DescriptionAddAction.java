@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetProtocolForm commandForm = CoreUtil.getHome().getGetProtocolForm();
+        var commandForm = CoreUtil.getHome().getGetProtocolForm();
 
         commandForm.setProtocolName(actionForm.getProtocolName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getProtocol(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getProtocol(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetProtocolResult result = (GetProtocolResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetProtocolResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PROTOCOL, result.getProtocol());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateProtocolDescriptionForm commandForm = CoreUtil.getHome().getCreateProtocolDescriptionForm();
+        var commandForm = CoreUtil.getHome().getCreateProtocolDescriptionForm();
 
         commandForm.setProtocolName( actionForm.getProtocolName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

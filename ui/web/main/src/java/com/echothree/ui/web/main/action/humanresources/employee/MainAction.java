@@ -61,16 +61,16 @@ public class MainAction
     
     private String getPartyName(HttpServletRequest request)
             throws NamingException {
-        GetEmployeeResultsForm commandForm = SearchUtil.getHome().getGetEmployeeResultsForm();
+        var commandForm = SearchUtil.getHome().getGetEmployeeResultsForm();
         String partyName = null;
         
         commandForm.setSearchTypeName(SearchTypes.HUMAN_RESOURCES.name());
-        
-        CommandResult commandResult = SearchUtil.getHome().getEmployeeResults(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEmployeeResultsResult result = (GetEmployeeResultsResult)executionResult.getResult();
+
+        var commandResult = SearchUtil.getHome().getEmployeeResults(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEmployeeResultsResult)executionResult.getResult();
         Collection employeeResults = result.getEmployeeResults();
-        Iterator iter = employeeResults.iterator();
+        var iter = employeeResults.iterator();
         if(iter.hasNext()) {
             partyName = ((EmployeeResultTransfer)iter.next()).getPartyName();
         }
@@ -83,12 +83,12 @@ public class MainAction
             throws Exception {
         String forwardKey;
         String partyName = null;
-        String firstName = actionForm.getFirstName();
-        String middleName = actionForm.getMiddleName();
-        String lastName = actionForm.getLastName();
+        var firstName = actionForm.getFirstName();
+        var middleName = actionForm.getMiddleName();
+        var lastName = actionForm.getLastName();
 
         if(wasPost(request)) {
-            SearchEmployeesForm commandForm = SearchUtil.getHome().getSearchEmployeesForm();
+            var commandForm = SearchUtil.getHome().getSearchEmployeesForm();
 
             commandForm.setSearchTypeName(SearchTypes.HUMAN_RESOURCES.name());
             commandForm.setFirstName(firstName);
@@ -104,14 +104,14 @@ public class MainAction
             commandForm.setCreatedSince(actionForm.getCreatedSince());
             commandForm.setModifiedSince(actionForm.getModifiedSince());
 
-            CommandResult commandResult = SearchUtil.getHome().searchEmployees(getUserVisitPK(request), commandForm);
+            var commandResult = SearchUtil.getHome().searchEmployees(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
                 forwardKey = ForwardConstants.FORM;
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                SearchEmployeesResult result = (SearchEmployeesResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (SearchEmployeesResult)executionResult.getResult();
                 var count = result.getCount();
 
                 if(count == 0 || count > 1) {
@@ -127,8 +127,8 @@ public class MainAction
             actionForm.setLastName(request.getParameter(ParameterConstants.LAST_NAME));
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.REVIEW)) {
             Map<String, String> parameters = new HashMap<>(1);
             

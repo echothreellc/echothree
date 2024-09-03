@@ -66,17 +66,17 @@ public class CustomerUserLoginDeleteAction
     @Override
     public void setupTransfer(CustomerUserLoginDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
         
         Set<String> options = new HashSet<>();
         options.add(PartyOptions.PartyIncludeUserLogin);
         commandForm.setOptions(options);
         
         commandForm.setPartyName(actionForm.getPartyName());
-        
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
+
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }
@@ -84,7 +84,7 @@ public class CustomerUserLoginDeleteAction
     @Override
     public CommandResult doDelete(CustomerUserLoginDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteUserLoginForm commandForm = UserUtil.getHome().getDeleteUserLoginForm();
+        var commandForm = UserUtil.getHome().getDeleteUserLoginForm();
         
         commandForm.setPartyName(actionForm.getPartyName());
 

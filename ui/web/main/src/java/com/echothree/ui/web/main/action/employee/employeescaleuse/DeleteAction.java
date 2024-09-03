@@ -66,7 +66,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyScaleUseForm commandForm = ScaleUtil.getHome().getDeletePartyScaleUseForm();
+        var commandForm = ScaleUtil.getHome().getDeletePartyScaleUseForm();
 
         commandForm.setScaleUseTypeName(actionForm.getScaleUseTypeName());
 

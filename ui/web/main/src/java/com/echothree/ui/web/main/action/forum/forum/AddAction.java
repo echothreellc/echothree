@@ -54,10 +54,10 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateForumForm commandForm = ForumUtil.getHome().getCreateForumForm();
+                    var commandForm = ForumUtil.getHome().getCreateForumForm();
                     
                     commandForm.setForumName(actionForm.getForumName());
                     commandForm.setForumTypeName(actionForm.getForumTypeChoice());
@@ -66,8 +66,8 @@ public class AddAction
                     commandForm.setForumMessageSequenceName(actionForm.getForumMessageSequenceChoice());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ForumUtil.getHome().createForum(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ForumUtil.getHome().createForum(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

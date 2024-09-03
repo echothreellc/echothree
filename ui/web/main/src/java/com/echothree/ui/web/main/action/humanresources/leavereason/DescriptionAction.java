@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String leaveReasonName = request.getParameter(ParameterConstants.LEAVE_REASON_NAME);
-        GetLeaveReasonDescriptionsForm commandForm = EmployeeUtil.getHome().getGetLeaveReasonDescriptionsForm();
+        var leaveReasonName = request.getParameter(ParameterConstants.LEAVE_REASON_NAME);
+        var commandForm = EmployeeUtil.getHome().getGetLeaveReasonDescriptionsForm();
 
         commandForm.setLeaveReasonName(leaveReasonName);
 
-        CommandResult commandResult = EmployeeUtil.getHome().getLeaveReasonDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = EmployeeUtil.getHome().getLeaveReasonDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLeaveReasonDescriptionsResult result = (GetLeaveReasonDescriptionsResult) executionResult.getResult();
-            LeaveReasonTransfer leaveReasonTransfer = result.getLeaveReason();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveReasonDescriptionsResult) executionResult.getResult();
+            var leaveReasonTransfer = result.getLeaveReason();
 
             request.setAttribute(AttributeConstants.LEAVE_REASON, leaveReasonTransfer);
             request.setAttribute(AttributeConstants.LEAVE_REASON_DESCRIPTIONS, result.getLeaveReasonDescriptions());

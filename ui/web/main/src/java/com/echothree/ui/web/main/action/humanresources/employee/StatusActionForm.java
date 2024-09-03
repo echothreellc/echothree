@@ -41,15 +41,15 @@ public class StatusActionForm
     public void setupEmployeeStatusChoices()
             throws NamingException {
         if(employeeStatusChoices == null) {
-            GetEmployeeStatusChoicesForm form = PartyUtil.getHome().getGetEmployeeStatusChoicesForm();
+            var form = PartyUtil.getHome().getGetEmployeeStatusChoicesForm();
 
             form.setEmployeeName(employeeName);
             form.setDefaultEmployeeStatusChoice(employeeStatusChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getEmployeeStatusChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmployeeStatusChoicesResult result = (GetEmployeeStatusChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getEmployeeStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmployeeStatusChoicesResult)executionResult.getResult();
             employeeStatusChoices = result.getEmployeeStatusChoices();
 
             if(employeeStatusChoice == null)

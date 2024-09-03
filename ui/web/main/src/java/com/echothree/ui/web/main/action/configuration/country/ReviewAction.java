@@ -58,18 +58,18 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetCountryForm commandForm = GeoUtil.getHome().getGetCountryForm();
-            String countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
+            var commandForm = GeoUtil.getHome().getGetCountryForm();
+            var countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
             
             commandForm.setGeoCodeName(countryName);
             
             Set<String> options = new HashSet<>();
             options.add(GeoOptions.CountryIncludeAliases);
             commandForm.setOptions(options);
-            
-            CommandResult commandResult = GeoUtil.getHome().getCountry(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCountryResult result = (GetCountryResult)executionResult.getResult();
+
+            var commandResult = GeoUtil.getHome().getCountry(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCountryResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COUNTRY, result.getCountry());
             forwardKey = ForwardConstants.DISPLAY;

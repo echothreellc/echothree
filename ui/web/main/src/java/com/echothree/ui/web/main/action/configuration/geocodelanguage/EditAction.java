@@ -61,14 +61,14 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
+        var geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditGeoCodeLanguageForm commandForm = GeoUtil.getHome().getEditGeoCodeLanguageForm();
-                GeoCodeLanguageSpec spec = GeoUtil.getHome().getGeoCodeLanguageSpec();
-                String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+                var actionForm = (EditActionForm)form;
+                var commandForm = GeoUtil.getHome().getEditGeoCodeLanguageForm();
+                var spec = GeoUtil.getHome().getGeoCodeLanguageSpec();
+                var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
                 
                 if(geoCodeName == null)
                     geoCodeName = actionForm.getGeoCodeName();
@@ -80,21 +80,21 @@ public class EditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    GeoCodeLanguageEdit edit = GeoUtil.getHome().getGeoCodeLanguageEdit();
+                    var edit = GeoUtil.getHome().getGeoCodeLanguageEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
-                    
-                    CommandResult commandResult = GeoUtil.getHome().editGeoCodeLanguage(getUserVisitPK(request), commandForm);
+
+                    var commandResult = GeoUtil.getHome().editGeoCodeLanguage(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditGeoCodeLanguageResult result = (EditGeoCodeLanguageResult)executionResult.getResult();
+                            var result = (EditGeoCodeLanguageResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -107,13 +107,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = GeoUtil.getHome().editGeoCodeLanguage(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditGeoCodeLanguageResult result = (EditGeoCodeLanguageResult)executionResult.getResult();
+
+                    var commandResult = GeoUtil.getHome().editGeoCodeLanguage(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditGeoCodeLanguageResult)executionResult.getResult();
                     
                     if(result != null) {
-                        GeoCodeLanguageEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setGeoCodeName(geoCodeName);
@@ -133,8 +133,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.GEO_CODE_NAME, geoCodeName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

@@ -42,16 +42,16 @@ public class AddActionForm
     public void setupChainChoices() {
         if(chainChoices == null) {
             try {
-                GetChainChoicesForm form = ChainUtil.getHome().getGetChainChoicesForm();
+                var form = ChainUtil.getHome().getGetChainChoicesForm();
                 
                 form.setChainKindName(chainKindName);
                 form.setChainTypeName(chainTypeName);
                 form.setDefaultChainChoice(chainChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetChainChoicesResult result = (GetChainChoicesResult)executionResult.getResult();
+
+                var commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetChainChoicesResult)executionResult.getResult();
                 chainChoices = result.getChainChoices();
                 
                 if(chainChoice == null) {

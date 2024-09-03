@@ -52,11 +52,11 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
+        var customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
         
         try {
-            String shippingMethodName = request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME);
-            SetDefaultCustomerTypeShippingMethodForm commandForm = CustomerUtil.getHome().getSetDefaultCustomerTypeShippingMethodForm();
+            var shippingMethodName = request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME);
+            var commandForm = CustomerUtil.getHome().getSetDefaultCustomerTypeShippingMethodForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.setShippingMethodName(shippingMethodName);
@@ -67,8 +67,8 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

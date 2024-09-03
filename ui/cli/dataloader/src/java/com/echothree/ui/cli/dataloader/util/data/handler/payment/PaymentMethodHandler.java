@@ -52,7 +52,7 @@ public class PaymentMethodHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("paymentMethodDescription")) {
-            CreatePaymentMethodDescriptionForm commandForm = PaymentFormFactory.getCreatePaymentMethodDescriptionForm();
+            var commandForm = PaymentFormFactory.getCreatePaymentMethodDescriptionForm();
             
             commandForm.setPaymentMethodName(paymentMethodName);
             commandForm.set(getAttrsMap(attrs));

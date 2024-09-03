@@ -60,14 +60,14 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, EditActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-        String unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
         
         if(forwardKey == null) {
-            EditLocationCapacityForm commandForm = WarehouseUtil.getHome().getEditLocationCapacityForm();
-            LocationCapacitySpec spec = WarehouseUtil.getHome().getLocationCapacitySpec();
+            var commandForm = WarehouseUtil.getHome().getEditLocationCapacityForm();
+            var spec = WarehouseUtil.getHome().getLocationCapacitySpec();
             
             if(warehouseName == null)
                 warehouseName = form.getWarehouseName();
@@ -85,20 +85,20 @@ public class EditAction
             spec.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
             
             if(wasPost(request)) {
-                LocationCapacityEdit edit = WarehouseUtil.getHome().getLocationCapacityEdit();
+                var edit = WarehouseUtil.getHome().getLocationCapacityEdit();
                 
                 commandForm.setEditMode(EditMode.UPDATE);
                 commandForm.setEdit(edit);
                 
                 edit.setCapacity(form.getCapacity());
-                
-                CommandResult commandResult = WarehouseUtil.getHome().editLocationCapacity(getUserVisitPK(request), commandForm);
+
+                var commandResult = WarehouseUtil.getHome().editLocationCapacity(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
+                    var executionResult = commandResult.getExecutionResult();
                     
                     if(executionResult != null) {
-                        EditLocationCapacityResult result = (EditLocationCapacityResult)executionResult.getResult();
+                        var result = (EditLocationCapacityResult)executionResult.getResult();
                         
                         request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                     }
@@ -111,13 +111,13 @@ public class EditAction
                 }
             } else {
                 commandForm.setEditMode(EditMode.LOCK);
-                
-                CommandResult commandResult = WarehouseUtil.getHome().editLocationCapacity(getUserVisitPK(request), commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditLocationCapacityResult result = (EditLocationCapacityResult)executionResult.getResult();
+
+                var commandResult = WarehouseUtil.getHome().editLocationCapacity(getUserVisitPK(request), commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditLocationCapacityResult)executionResult.getResult();
                 
                 if(result != null) {
-                    LocationCapacityEdit edit = result.getEdit();
+                    var edit = result.getEdit();
                     
                     if(edit != null) {
                         form.setWarehouseName(warehouseName);
@@ -135,8 +135,8 @@ public class EditAction
                 forwardKey = ForwardConstants.FORM;
             }
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WAREHOUSE_NAME, warehouseName);
             request.setAttribute(AttributeConstants.LOCATION_NAME, locationName);

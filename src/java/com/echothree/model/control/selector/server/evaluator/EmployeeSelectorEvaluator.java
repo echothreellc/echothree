@@ -189,7 +189,7 @@ public class EmployeeSelectorEvaluator
                 var employeeSelectors = selectorControl.getSelectorsBySelectorKind(selectorKind);
                 
                 for(var employeeSelector : employeeSelectors) {
-                    CachedSelectorWithTime cachedSelectorWithTime = new CachedSelectorWithTime(employeeSelector);
+                    var cachedSelectorWithTime = new CachedSelectorWithTime(employeeSelector);
                     
                     if(BaseSelectorEvaluatorDebugFlags.EmployeeSelectorEvaluator) {
                         log.info("--- employeeSelector = " + employeeSelector);

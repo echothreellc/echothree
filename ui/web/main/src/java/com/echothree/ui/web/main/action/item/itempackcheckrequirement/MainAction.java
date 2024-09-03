@@ -51,14 +51,14 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetItemPackCheckRequirementsForm commandForm = ItemUtil.getHome().getGetItemPackCheckRequirementsForm();
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        var commandForm = ItemUtil.getHome().getGetItemPackCheckRequirementsForm();
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
         
         commandForm.setItemName(itemName);
-        
-        CommandResult commandResult = ItemUtil.getHome().getItemPackCheckRequirements(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemPackCheckRequirementsResult result = (GetItemPackCheckRequirementsResult)executionResult.getResult();
+
+        var commandResult = ItemUtil.getHome().getItemPackCheckRequirements(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemPackCheckRequirementsResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ITEM, result.getItem());
         request.setAttribute(AttributeConstants.ITEM_PACK_CHECK_REQUIREMENTS, result.getItemPackCheckRequirements());

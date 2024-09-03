@@ -57,7 +57,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetPartyAliasTypeForm commandForm = PartyUtil.getHome().getGetPartyAliasTypeForm();
+        var commandForm = PartyUtil.getHome().getGetPartyAliasTypeForm();
 
         commandForm.setPartyTypeName(request.getParameter(ParameterConstants.PARTY_TYPE_NAME));
         commandForm.setPartyAliasTypeName(request.getParameter(ParameterConstants.PARTY_ALIAS_TYPE_NAME));
@@ -74,12 +74,12 @@ public class ReviewAction
         options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = PartyUtil.getHome().getPartyAliasType(getUserVisitPK(request), commandForm);
+        var commandResult = PartyUtil.getHome().getPartyAliasType(getUserVisitPK(request), commandForm);
         PartyAliasTypeTransfer partyAliasType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyAliasTypeResult result = (GetPartyAliasTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyAliasTypeResult)executionResult.getResult();
             
             partyAliasType = result.getPartyAliasType();
         }

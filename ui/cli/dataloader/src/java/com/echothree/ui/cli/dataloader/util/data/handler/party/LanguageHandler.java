@@ -49,7 +49,7 @@ public class LanguageHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("languageDescription")) {
-            CreateLanguageDescriptionForm commandForm = PartyFormFactory.getCreateLanguageDescriptionForm();
+            var commandForm = PartyFormFactory.getCreateLanguageDescriptionForm();
 
             commandForm.setLanguageIsoName(languageIsoName);
             commandForm.set(getAttrsMap(attrs));

@@ -42,15 +42,15 @@ public class AddActionForm
     private void setupSecurityRoleChoices() {
         if(securityRoleChoices == null) {
             try {
-                GetSecurityRoleChoicesForm commandForm = SecurityUtil.getHome().getGetSecurityRoleChoicesForm();
+                var commandForm = SecurityUtil.getHome().getGetSecurityRoleChoicesForm();
                 
                 commandForm.setWorkflowName(workflowName);
                 commandForm.setDefaultSecurityRoleChoice(securityRoleChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = SecurityUtil.getHome().getSecurityRoleChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSecurityRoleChoicesResult result = (GetSecurityRoleChoicesResult)executionResult.getResult();
+
+                var commandResult = SecurityUtil.getHome().getSecurityRoleChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSecurityRoleChoicesResult)executionResult.getResult();
                 securityRoleChoices = result.getSecurityRoleChoices();
                 
                 if(securityRoleChoice == null) {

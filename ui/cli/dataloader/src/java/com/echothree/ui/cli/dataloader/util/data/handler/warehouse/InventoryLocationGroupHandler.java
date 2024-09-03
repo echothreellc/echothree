@@ -55,9 +55,9 @@ public class InventoryLocationGroupHandler
         if(localName.equals("inventoryLocationGroupDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -65,7 +65,7 @@ public class InventoryLocationGroupHandler
             }
             
             try {
-                CreateInventoryLocationGroupDescriptionForm form = InventoryFormFactory.getCreateInventoryLocationGroupDescriptionForm();
+                var form = InventoryFormFactory.getCreateInventoryLocationGroupDescriptionForm();
                 
                 form.setWarehouseName(warehouseName);
                 form.setInventoryLocationGroupName(inventoryLocationGroupName);
@@ -83,9 +83,9 @@ public class InventoryLocationGroupHandler
             String width = null;
             String depthUnitOfMeasureTypeName = null;
             String depth = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("heightUnitOfMeasureTypeName"))
                     heightUnitOfMeasureTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("height"))
@@ -101,7 +101,7 @@ public class InventoryLocationGroupHandler
             }
             
             try {
-                CreateInventoryLocationGroupVolumeForm form = InventoryFormFactory.getCreateInventoryLocationGroupVolumeForm();
+                var form = InventoryFormFactory.getCreateInventoryLocationGroupVolumeForm();
                 
                 form.setWarehouseName(warehouseName);
                 form.setInventoryLocationGroupName(inventoryLocationGroupName);
@@ -120,9 +120,9 @@ public class InventoryLocationGroupHandler
             String unitOfMeasureKindName = null;
             String unitOfMeasureTypeName = null;
             String capacity  = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("unitOfMeasureKindName"))
                     unitOfMeasureKindName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
@@ -132,7 +132,7 @@ public class InventoryLocationGroupHandler
             }
             
             try {
-                CreateInventoryLocationGroupCapacityForm form = InventoryFormFactory.getCreateInventoryLocationGroupCapacityForm();
+                var form = InventoryFormFactory.getCreateInventoryLocationGroupCapacityForm();
                 
                 form.setWarehouseName(warehouseName);
                 form.setInventoryLocationGroupName(inventoryLocationGroupName);

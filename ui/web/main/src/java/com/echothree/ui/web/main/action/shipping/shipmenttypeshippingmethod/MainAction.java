@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetShipmentTypeShippingMethodsForm commandForm = ShipmentUtil.getHome().getGetShipmentTypeShippingMethodsForm();
-            String shipmentTypeName = request.getParameter(ParameterConstants.SHIPMENT_TYPE_NAME);
+            var commandForm = ShipmentUtil.getHome().getGetShipmentTypeShippingMethodsForm();
+            var shipmentTypeName = request.getParameter(ParameterConstants.SHIPMENT_TYPE_NAME);
             
             commandForm.setShipmentTypeName(shipmentTypeName);
 
-            CommandResult commandResult = ShipmentUtil.getHome().getShipmentTypeShippingMethods(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetShipmentTypeShippingMethodsResult result = (GetShipmentTypeShippingMethodsResult)executionResult.getResult();
+            var commandResult = ShipmentUtil.getHome().getShipmentTypeShippingMethods(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetShipmentTypeShippingMethodsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SHIPMENT_TYPE, result.getShipmentType());
             request.setAttribute(AttributeConstants.SHIPMENT_TYPE_SHIPPING_METHODS, result.getShipmentTypeShippingMethods());

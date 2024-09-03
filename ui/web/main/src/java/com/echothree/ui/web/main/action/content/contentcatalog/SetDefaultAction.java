@@ -52,11 +52,11 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+        var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
         
         try {
-            String contentCatalogName = request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME);
-            SetDefaultContentCatalogForm commandForm = ContentUtil.getHome().getSetDefaultContentCatalogForm();
+            var contentCatalogName = request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME);
+            var commandForm = ContentUtil.getHome().getSetDefaultContentCatalogForm();
             
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentCatalogName(contentCatalogName);
@@ -67,8 +67,8 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

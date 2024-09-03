@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateGeoCodeTypeForm commandForm = GeoUtil.getHome().getCreateGeoCodeTypeForm();
+        var commandForm = GeoUtil.getHome().getCreateGeoCodeTypeForm();
 
         commandForm.setGeoCodeTypeName(actionForm.getGeoCodeTypeName());
         commandForm.setParentGeoCodeTypeName(actionForm.getParentGeoCodeTypeChoice());

@@ -84,8 +84,8 @@ public class EnglishSortableDescriptionProducer
     
     private String sortableString(String string) {
         var words = tokenizeString(string);
-        StringBuilder result = new StringBuilder();
-        Formatter formatter = new Formatter(result);
+        var result = new StringBuilder();
+        var formatter = new Formatter(result);
         var wordSize = words.size();
         var firstNonArticle = 0;
         

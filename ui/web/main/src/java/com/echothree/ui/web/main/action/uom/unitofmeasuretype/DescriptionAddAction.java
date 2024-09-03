@@ -55,15 +55,15 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-        String unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
                 if(wasPost(request)) {
-                    DescriptionAddActionForm descriptionAddActionForm = (DescriptionAddActionForm)form;
-                    
-                    CreateUnitOfMeasureTypeDescriptionForm commandForm = UomUtil.getHome().getCreateUnitOfMeasureTypeDescriptionForm();
+                    var descriptionAddActionForm = (DescriptionAddActionForm)form;
+
+                    var commandForm = UomUtil.getHome().getCreateUnitOfMeasureTypeDescriptionForm();
                     
                     if(unitOfMeasureKindName == null)
                         unitOfMeasureKindName = descriptionAddActionForm.getUnitOfMeasureKindName();
@@ -76,8 +76,8 @@ public class DescriptionAddAction
                     commandForm.setSingularDescription(descriptionAddActionForm.getSingularDescription());
                     commandForm.setPluralDescription(descriptionAddActionForm.getPluralDescription());
                     commandForm.setSymbol(descriptionAddActionForm.getSymbol());
-                    
-                    CommandResult commandResult = UomUtil.getHome().createUnitOfMeasureTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = UomUtil.getHome().createUnitOfMeasureTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -91,8 +91,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM) || forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(2);
             parameters.put(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME, unitOfMeasureKindName);

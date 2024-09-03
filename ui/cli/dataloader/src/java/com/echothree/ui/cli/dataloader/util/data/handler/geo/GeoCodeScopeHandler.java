@@ -49,9 +49,9 @@ public class GeoCodeScopeHandler
         if(localName.equals("geoCodeScopeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -59,7 +59,7 @@ public class GeoCodeScopeHandler
             }
             
             try {
-                CreateGeoCodeScopeDescriptionForm createGeoCodeScopeDescriptionForm = GeoFormFactory.getCreateGeoCodeScopeDescriptionForm();
+                var createGeoCodeScopeDescriptionForm = GeoFormFactory.getCreateGeoCodeScopeDescriptionForm();
                 
                 createGeoCodeScopeDescriptionForm.setGeoCodeScopeName(geoCodeScopeName);
                 createGeoCodeScopeDescriptionForm.setLanguageIsoName(languageIsoName);

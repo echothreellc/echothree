@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            String sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
-            SetDefaultSequenceTypeForm commandForm = SequenceUtil.getHome().getSetDefaultSequenceTypeForm();
+            var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
+            var commandForm = SequenceUtil.getHome().getSetDefaultSequenceTypeForm();
             
             commandForm.setSequenceTypeName(sequenceTypeName);
             

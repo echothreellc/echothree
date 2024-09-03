@@ -40,14 +40,14 @@ public class AddActionForm
     public void setupTrainingClassChoices() {
         if(trainingClassChoices == null) {
             try {
-                GetTrainingClassChoicesForm form = TrainingUtil.getHome().getGetTrainingClassChoicesForm();
+                var form = TrainingUtil.getHome().getGetTrainingClassChoicesForm();
 
                 form.setDefaultTrainingClassChoice(trainingClassChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = TrainingUtil.getHome().getTrainingClassChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetTrainingClassChoicesResult result = (GetTrainingClassChoicesResult)executionResult.getResult();
+                var commandResult = TrainingUtil.getHome().getTrainingClassChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetTrainingClassChoicesResult)executionResult.getResult();
                 trainingClassChoices = result.getTrainingClassChoices();
 
                 if(trainingClassChoice == null) {

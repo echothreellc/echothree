@@ -52,7 +52,7 @@ public class ShipmentTimeTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("shipmentTimeTypeDescription")) {
-            CreateShipmentTimeTypeDescriptionForm commandForm = ShipmentFormFactory.getCreateShipmentTimeTypeDescriptionForm();
+            var commandForm = ShipmentFormFactory.getCreateShipmentTimeTypeDescriptionForm();
             
             commandForm.setShipmentTypeName(shipmentTypeName);
             commandForm.setShipmentTimeTypeName(shipmentTimeTypeName);

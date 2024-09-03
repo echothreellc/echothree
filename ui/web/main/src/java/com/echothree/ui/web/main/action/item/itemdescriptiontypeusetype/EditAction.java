@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected ItemDescriptionTypeUseTypeUniversalSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemDescriptionTypeUseTypeUniversalSpec spec = ItemUtil.getHome().getItemDescriptionTypeUseTypeUniversalSpec();
+        var spec = ItemUtil.getHome().getItemDescriptionTypeUseTypeUniversalSpec();
         
         spec.setItemDescriptionTypeUseTypeName(findParameter(request, ParameterConstants.ORIGINAL_ITEM_DESCRIPTION_TYPE_USE_TYPE_NAME, actionForm.getOriginalItemDescriptionTypeUseTypeName()));
         
@@ -61,7 +61,7 @@ public class EditAction
     @Override
     protected ItemDescriptionTypeUseTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemDescriptionTypeUseTypeEdit edit = ItemUtil.getHome().getItemDescriptionTypeUseTypeEdit();
+        var edit = ItemUtil.getHome().getItemDescriptionTypeUseTypeEdit();
 
         edit.setItemDescriptionTypeUseTypeName(actionForm.getItemDescriptionTypeUseTypeName());
         edit.setIsDefault(actionForm.getIsDefault().toString());

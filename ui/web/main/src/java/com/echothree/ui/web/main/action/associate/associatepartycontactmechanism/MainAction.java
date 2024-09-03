@@ -55,16 +55,16 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
-            String associateName = request.getParameter(ParameterConstants.ASSOCIATE_NAME);
-            GetAssociatePartyContactMechanismsForm commandForm = AssociateUtil.getHome().getGetAssociatePartyContactMechanismsForm();
+            var associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
+            var associateName = request.getParameter(ParameterConstants.ASSOCIATE_NAME);
+            var commandForm = AssociateUtil.getHome().getGetAssociatePartyContactMechanismsForm();
             
             commandForm.setAssociateProgramName(associateProgramName);
             commandForm.setAssociateName(associateName);
-            
-            CommandResult commandResult = AssociateUtil.getHome().getAssociatePartyContactMechanisms(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAssociatePartyContactMechanismsResult result = (GetAssociatePartyContactMechanismsResult)executionResult.getResult();
+
+            var commandResult = AssociateUtil.getHome().getAssociatePartyContactMechanisms(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAssociatePartyContactMechanismsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ASSOCIATE, result.getAssociate());
             request.setAttribute(AttributeConstants.ASSOCIATE_PARTY_CONTACT_MECHANISMS, result.getAssociatePartyContactMechanisms());

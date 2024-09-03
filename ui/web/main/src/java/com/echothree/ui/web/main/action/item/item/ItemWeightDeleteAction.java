@@ -52,11 +52,11 @@ public class ItemWeightDeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
         
         try {
-            String unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
-            DeleteItemWeightForm commandForm = ItemUtil.getHome().getDeleteItemWeightForm();
+            var unitOfMeasureTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME);
+            var commandForm = ItemUtil.getHome().getDeleteItemWeightForm();
             
             commandForm.setItemName(itemName);
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
@@ -67,8 +67,8 @@ public class ItemWeightDeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

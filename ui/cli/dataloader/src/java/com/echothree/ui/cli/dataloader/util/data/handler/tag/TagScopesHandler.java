@@ -48,9 +48,9 @@ public class TagScopesHandler
             String tagScopeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("tagScopeName"))
                     tagScopeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class TagScopesHandler
             }
             
             try {
-                CreateTagScopeForm commandForm = TagFormFactory.getCreateTagScopeForm();
+                var commandForm = TagFormFactory.getCreateTagScopeForm();
                 
                 commandForm.setTagScopeName(tagScopeName);
                 commandForm.setIsDefault(isDefault);

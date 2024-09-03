@@ -56,14 +56,14 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateUnitOfMeasureTypeForm commandForm = UomUtil.getHome().getCreateUnitOfMeasureTypeForm();
+                    var commandForm = UomUtil.getHome().getCreateUnitOfMeasureTypeForm();
                     
                     if(unitOfMeasureKindName == null)
                         unitOfMeasureKindName = actionForm.getUnitOfMeasureKindName();
@@ -76,8 +76,8 @@ public class AddAction
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setSingularDescription(actionForm.getSingularDescription());
                     commandForm.setPluralDescription(actionForm.getPluralDescription());
-                    
-                    CommandResult commandResult = UomUtil.getHome().createUnitOfMeasureType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = UomUtil.getHome().createUnitOfMeasureType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -94,8 +94,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_KIND_NAME, unitOfMeasureKindName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

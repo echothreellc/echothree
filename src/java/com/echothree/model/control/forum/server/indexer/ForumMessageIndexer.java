@@ -95,7 +95,7 @@ public class ForumMessageIndexer
         });
         
         if(forumForumThreads.size() > 0) {
-            StringBuilder forumNames = new StringBuilder();
+            var forumNames = new StringBuilder();
 
             forumForumThreads.forEach((forumForumThread) -> {
                 if(forumNames.length() > 0) {

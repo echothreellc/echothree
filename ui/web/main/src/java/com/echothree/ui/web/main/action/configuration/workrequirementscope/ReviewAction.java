@@ -55,18 +55,18 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetWorkRequirementScopeForm commandForm = WorkRequirementUtil.getHome().getGetWorkRequirementScopeForm();
-            String workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
-            String workRequirementTypeName = request.getParameter(ParameterConstants.WORK_REQUIREMENT_TYPE_NAME);
-            String workEffortScopeName = request.getParameter(ParameterConstants.WORK_EFFORT_SCOPE_NAME);
+            var commandForm = WorkRequirementUtil.getHome().getGetWorkRequirementScopeForm();
+            var workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
+            var workRequirementTypeName = request.getParameter(ParameterConstants.WORK_REQUIREMENT_TYPE_NAME);
+            var workEffortScopeName = request.getParameter(ParameterConstants.WORK_EFFORT_SCOPE_NAME);
             
             commandForm.setWorkEffortTypeName(workEffortTypeName);
             commandForm.setWorkRequirementTypeName(workRequirementTypeName);
             commandForm.setWorkEffortScopeName(workEffortScopeName);
-            
-            CommandResult commandResult = WorkRequirementUtil.getHome().getWorkRequirementScope(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkRequirementScopeResult result = (GetWorkRequirementScopeResult)executionResult.getResult();
+
+            var commandResult = WorkRequirementUtil.getHome().getWorkRequirementScope(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkRequirementScopeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORK_REQUIREMENT_SCOPE, result.getWorkRequirementScope());
             forwardKey = ForwardConstants.DISPLAY;

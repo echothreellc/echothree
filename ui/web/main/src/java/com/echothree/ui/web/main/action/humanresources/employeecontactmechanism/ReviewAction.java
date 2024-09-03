@@ -59,9 +59,9 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetContactMechanismForm commandForm = ContactUtil.getHome().getGetContactMechanismForm();
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);
+        var commandForm = ContactUtil.getHome().getGetContactMechanismForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);
 
         commandForm.setPartyName(partyName);
         commandForm.setContactMechanismName(contactMechanismName);
@@ -77,12 +77,12 @@ public class ReviewAction
         options.add(CoreOptions.EntityInstanceIncludeNames);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
 
-        CommandResult commandResult = ContactUtil.getHome().getContactMechanism(getUserVisitPK(request), commandForm);
+        var commandResult = ContactUtil.getHome().getContactMechanism(getUserVisitPK(request), commandForm);
         PartyContactMechanismTransfer partyContactMechanism = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactMechanismResult result = (GetContactMechanismResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactMechanismResult)executionResult.getResult();
             partyContactMechanism = result.getPartyContactMechanism();
         }
 

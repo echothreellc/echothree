@@ -52,11 +52,11 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
+        var carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
         
         try {
-            SetDefaultCarrierOptionForm commandForm = CarrierUtil.getHome().getSetDefaultCarrierOptionForm();
-            String carrierOptionName = request.getParameter(ParameterConstants.CARRIER_OPTION_NAME);
+            var commandForm = CarrierUtil.getHome().getSetDefaultCarrierOptionForm();
+            var carrierOptionName = request.getParameter(ParameterConstants.CARRIER_OPTION_NAME);
             
             commandForm.setCarrierName(carrierName);
             commandForm.setCarrierOptionName(carrierOptionName);
@@ -67,8 +67,8 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

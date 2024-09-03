@@ -57,7 +57,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetContentWebAddressForm commandForm = ContentUtil.getHome().getGetContentWebAddressForm();
+        var commandForm = ContentUtil.getHome().getGetContentWebAddressForm();
 
         commandForm.setContentWebAddressName(request.getParameter(ParameterConstants.CONTENT_WEB_ADDRESS_NAME));
 
@@ -70,12 +70,12 @@ public class ReviewAction
         options.add(ContentOptions.ContentWebAddressIncludeTagScopes);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ContentUtil.getHome().getContentWebAddress(getUserVisitPK(request), commandForm);
+        var commandResult = ContentUtil.getHome().getContentWebAddress(getUserVisitPK(request), commandForm);
         ContentWebAddressTransfer contentWebAddress = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentWebAddressResult result = (GetContentWebAddressResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentWebAddressResult)executionResult.getResult();
 
             contentWebAddress = result.getContentWebAddress();
         }

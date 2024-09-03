@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPrinterGroupUseTypeForm commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypeForm();
+        var commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypeForm();
 
         commandForm.setPrinterGroupUseTypeName(actionForm.getPrinterGroupUseTypeName());
-        
-        CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupUseType(getUserVisitPK(request), commandForm);
+
+        var commandResult = PrinterUtil.getHome().getPrinterGroupUseType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterGroupUseTypeResult result = (GetPrinterGroupUseTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPrinterGroupUseTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PRINTER_GROUP_USE_TYPE, result.getPrinterGroupUseType());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePrinterGroupUseTypeDescriptionForm commandForm = PrinterUtil.getHome().getCreatePrinterGroupUseTypeDescriptionForm();
+        var commandForm = PrinterUtil.getHome().getCreatePrinterGroupUseTypeDescriptionForm();
 
         commandForm.setPrinterGroupUseTypeName( actionForm.getPrinterGroupUseTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

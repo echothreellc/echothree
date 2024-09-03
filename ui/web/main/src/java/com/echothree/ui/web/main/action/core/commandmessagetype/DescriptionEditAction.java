@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected CommandMessageTypeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        CommandMessageTypeDescriptionSpec spec = CoreUtil.getHome().getCommandMessageTypeDescriptionSpec();
+        var spec = CoreUtil.getHome().getCommandMessageTypeDescriptionSpec();
         
         spec.setCommandMessageTypeName(findParameter(request, ParameterConstants.COMMAND_MESSAGE_TYPE_NAME, actionForm.getCommandMessageTypeName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected CommandMessageTypeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        CommandMessageTypeDescriptionEdit edit = CoreUtil.getHome().getCommandMessageTypeDescriptionEdit();
+        var edit = CoreUtil.getHome().getCommandMessageTypeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

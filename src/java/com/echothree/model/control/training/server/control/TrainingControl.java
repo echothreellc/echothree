@@ -195,7 +195,7 @@ public class TrainingControl
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.TrainingClass */
     public TrainingClass getTrainingClassByEntityInstance(EntityInstance entityInstance) {
-        TrainingClassPK pk = new TrainingClassPK(entityInstance.getEntityUniqueId());
+        var pk = new TrainingClassPK(entityInstance.getEntityUniqueId());
         var trainingClass = TrainingClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return trainingClass;
@@ -1900,7 +1900,7 @@ public class TrainingControl
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartyTrainingClass */
     public PartyTrainingClass getPartyTrainingClassByEntityInstance(EntityInstance entityInstance) {
-        PartyTrainingClassPK pk = new PartyTrainingClassPK(entityInstance.getEntityUniqueId());
+        var pk = new PartyTrainingClassPK(entityInstance.getEntityUniqueId());
         var partyTrainingClass = PartyTrainingClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return partyTrainingClass;
@@ -2121,7 +2121,7 @@ public class TrainingControl
     public PartyTrainingClassStatusChoicesBean getPartyTrainingClassStatusChoices(String defaultPartyTrainingClassStatusChoice, Language language,
             boolean allowNullChoice, PartyTrainingClass partyTrainingClass, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        PartyTrainingClassStatusChoicesBean partyTrainingClassStatusChoicesBean = new PartyTrainingClassStatusChoicesBean();
+        var partyTrainingClassStatusChoicesBean = new PartyTrainingClassStatusChoicesBean();
 
         if(partyTrainingClass == null) {
             workflowControl.getWorkflowEntranceChoices(partyTrainingClassStatusChoicesBean, defaultPartyTrainingClassStatusChoice, language, allowNullChoice,

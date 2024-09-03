@@ -51,10 +51,10 @@ public class MainAction
             throws Exception {
         String forwardKey = null;
 
-        CommandResult commandResult = CoreUtil.getHome().getEntityAttributeGroups(getUserVisitPK(request), null);
+        var commandResult = CoreUtil.getHome().getEntityAttributeGroups(getUserVisitPK(request), null);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeGroupsResult result = (GetEntityAttributeGroupsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityAttributeGroupsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE_GROUPS, result.getEntityAttributeGroups());
             forwardKey = ForwardConstants.DISPLAY;

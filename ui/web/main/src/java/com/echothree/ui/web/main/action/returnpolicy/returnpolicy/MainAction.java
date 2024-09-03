@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetReturnPoliciesForm commandForm = ReturnPolicyUtil.getHome().getGetReturnPoliciesForm();
-            String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getGetReturnPoliciesForm();
+            var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
             
             commandForm.setReturnKindName(returnKindName);
 
-            CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnPolicies(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetReturnPoliciesResult result = (GetReturnPoliciesResult)executionResult.getResult();
+            var commandResult = ReturnPolicyUtil.getHome().getReturnPolicies(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnPoliciesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RETURN_KIND, result.getReturnKind());
             request.setAttribute(AttributeConstants.RETURN_POLICIES, result.getReturnPolicies());

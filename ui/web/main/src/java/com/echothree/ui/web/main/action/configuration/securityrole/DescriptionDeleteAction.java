@@ -64,16 +64,16 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSecurityRoleDescriptionForm commandForm = SecurityUtil.getHome().getGetSecurityRoleDescriptionForm();
+        var commandForm = SecurityUtil.getHome().getGetSecurityRoleDescriptionForm();
         
         commandForm.setSecurityRoleGroupName(actionForm.getSecurityRoleGroupName());
         commandForm.setSecurityRoleName(actionForm.getSecurityRoleName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = SecurityUtil.getHome().getSecurityRoleDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = SecurityUtil.getHome().getSecurityRoleDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSecurityRoleDescriptionResult result = (GetSecurityRoleDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSecurityRoleDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.SECURITY_ROLE_DESCRIPTION, result.getSecurityRoleDescription());
         }
@@ -82,7 +82,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteSecurityRoleDescriptionForm commandForm = SecurityUtil.getHome().getDeleteSecurityRoleDescriptionForm();
+        var commandForm = SecurityUtil.getHome().getDeleteSecurityRoleDescriptionForm();
 
         commandForm.setSecurityRoleGroupName(actionForm.getSecurityRoleGroupName());
         commandForm.setSecurityRoleName(actionForm.getSecurityRoleName());

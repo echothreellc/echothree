@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetQueueTypeForm commandForm = QueueUtil.getHome().getGetQueueTypeForm();
+        var commandForm = QueueUtil.getHome().getGetQueueTypeForm();
 
         commandForm.setQueueTypeName(actionForm.getQueueTypeName());
-        
-        CommandResult commandResult = QueueUtil.getHome().getQueueType(getUserVisitPK(request), commandForm);
+
+        var commandResult = QueueUtil.getHome().getQueueType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetQueueTypeResult result = (GetQueueTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetQueueTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.QUEUE_TYPE, result.getQueueType());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateQueueTypeDescriptionForm commandForm = QueueUtil.getHome().getCreateQueueTypeDescriptionForm();
+        var commandForm = QueueUtil.getHome().getCreateQueueTypeDescriptionForm();
 
         commandForm.setQueueTypeName( actionForm.getQueueTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

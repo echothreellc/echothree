@@ -45,13 +45,13 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
         
         try {
-            String entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
-            String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-            String entityListItemName = request.getParameter(ParameterConstants.ENTITY_LIST_ITEM_NAME);
-            DeleteEntityMultipleListItemAttributeForm commandForm = CoreUtil.getHome().getDeleteEntityMultipleListItemAttributeForm();
+            var entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
+            var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+            var entityListItemName = request.getParameter(ParameterConstants.ENTITY_LIST_ITEM_NAME);
+            var commandForm = CoreUtil.getHome().getDeleteEntityMultipleListItemAttributeForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.setEntityAttributeName(entityAttributeName);

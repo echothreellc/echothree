@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSearchKindForm commandForm = SearchUtil.getHome().getGetSearchKindForm();
+        var commandForm = SearchUtil.getHome().getGetSearchKindForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
-        
-        CommandResult commandResult = SearchUtil.getHome().getSearchKind(getUserVisitPK(request), commandForm);
+
+        var commandResult = SearchUtil.getHome().getSearchKind(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSearchKindResult result = (GetSearchKindResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchKindResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SEARCH_KIND, result.getSearchKind());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateSearchKindDescriptionForm commandForm = SearchUtil.getHome().getCreateSearchKindDescriptionForm();
+        var commandForm = SearchUtil.getHome().getCreateSearchKindDescriptionForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

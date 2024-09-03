@@ -56,14 +56,14 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCommandMessageTypeForm commandForm = CoreUtil.getHome().getGetCommandMessageTypeForm();
+        var commandForm = CoreUtil.getHome().getGetCommandMessageTypeForm();
 
         commandForm.setCommandMessageTypeName(actionForm.getCommandMessageTypeName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getCommandMessageType(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getCommandMessageType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommandMessageTypeResult result = (GetCommandMessageTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommandMessageTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMMAND_MESSAGE_TYPE, result.getCommandMessageType());
         }
@@ -72,7 +72,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCommandMessageForm commandForm = CoreUtil.getHome().getCreateCommandMessageForm();
+        var commandForm = CoreUtil.getHome().getCreateCommandMessageForm();
 
         commandForm.setCommandMessageTypeName(actionForm.getCommandMessageTypeName());
         commandForm.setCommandMessageKey(actionForm.getCommandMessageKey());

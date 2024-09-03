@@ -56,14 +56,14 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+        var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateOfferDescriptionForm commandForm = OfferUtil.getHome().getCreateOfferDescriptionForm();
+                    var commandForm = OfferUtil.getHome().getCreateOfferDescriptionForm();
                     
                     if(offerName == null)
                         offerName = actionForm.getOfferName();
@@ -71,8 +71,8 @@ public class DescriptionAddAction
                     commandForm.setOfferName(offerName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = OfferUtil.getHome().createOfferDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = OfferUtil.getHome().createOfferDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -88,8 +88,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.OFFER_NAME, offerName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

@@ -53,17 +53,17 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetSearchTypeForm commandForm = SearchUtil.getHome().getGetSearchTypeForm();
+        var commandForm = SearchUtil.getHome().getGetSearchTypeForm();
 
         commandForm.setSearchKindName(request.getParameter(ParameterConstants.SEARCH_KIND_NAME));
         commandForm.setSearchTypeName(request.getParameter(ParameterConstants.SEARCH_TYPE_NAME));
-        
-        CommandResult commandResult = SearchUtil.getHome().getSearchType(getUserVisitPK(request), commandForm);
+
+        var commandResult = SearchUtil.getHome().getSearchType(getUserVisitPK(request), commandForm);
         SearchTypeTransfer searchType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSearchTypeResult result = (GetSearchTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchTypeResult)executionResult.getResult();
             
             searchType = result.getSearchType();
         }

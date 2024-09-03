@@ -56,14 +56,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
-            GetPrinterGroupJobsForm commandForm = PrinterUtil.getHome().getGetPrinterGroupJobsForm();
+            var printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
+            var commandForm = PrinterUtil.getHome().getGetPrinterGroupJobsForm();
             
             commandForm.setPrinterGroupName(printerGroupName);
-            
-            CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupJobs(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterGroupJobsResult result = (GetPrinterGroupJobsResult)executionResult.getResult();
+
+            var commandResult = PrinterUtil.getHome().getPrinterGroupJobs(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPrinterGroupJobsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PRINTER_GROUP, result.getPrinterGroup());
             request.setAttribute(AttributeConstants.PRINTER_GROUP_JOBS, result.getPrinterGroupJobs());

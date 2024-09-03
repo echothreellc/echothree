@@ -43,13 +43,13 @@ public class AddActionForm
     private void setupContentCollectionChoices()
             throws NamingException {
         if(contentCollectionChoices == null) {
-            GetContentCollectionChoicesForm getContentCollectionChoicesForm = ContentUtil.getHome().getGetContentCollectionChoicesForm();
+            var getContentCollectionChoicesForm = ContentUtil.getHome().getGetContentCollectionChoicesForm();
 
             getContentCollectionChoicesForm.setDefaultContentCollectionChoice(contentCollectionChoice);
 
-            CommandResult commandResult = ContentUtil.getHome().getContentCollectionChoices(userVisitPK, getContentCollectionChoicesForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentCollectionChoicesResult getContentCollectionChoicesResult = (GetContentCollectionChoicesResult)executionResult.getResult();
+            var commandResult = ContentUtil.getHome().getContentCollectionChoices(userVisitPK, getContentCollectionChoicesForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getContentCollectionChoicesResult = (GetContentCollectionChoicesResult)executionResult.getResult();
             contentCollectionChoices = getContentCollectionChoicesResult.getContentCollectionChoices();
 
             if(contentCollectionChoice == null)

@@ -59,13 +59,13 @@ public class Step3Action
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
-        String divisionName = request.getParameter(ParameterConstants.DIVISION_NAME);
-        String departmentName = request.getParameter(ParameterConstants.DEPARTMENT_NAME);
+        var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
+        var divisionName = request.getParameter(ParameterConstants.DIVISION_NAME);
+        var departmentName = request.getParameter(ParameterConstants.DEPARTMENT_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(companyName == null) {
                     companyName = actionForm.getCompanyName();
@@ -80,7 +80,7 @@ public class Step3Action
                 }
                 
                 if(wasPost(request)) {
-                    CreateOfferForm commandForm = OfferUtil.getHome().getCreateOfferForm();
+                    var commandForm = OfferUtil.getHome().getCreateOfferForm();
                     
                     commandForm.setOfferName(actionForm.getOfferName());
                     commandForm.setSalesOrderSequenceName(actionForm.getSalesOrderSequenceChoice());
@@ -92,8 +92,8 @@ public class Step3Action
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = OfferUtil.getHome().createOffer(getUserVisitPK(request), commandForm);
+
+                    var commandResult = OfferUtil.getHome().createOffer(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -112,18 +112,18 @@ public class Step3Action
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
-            GetDepartmentForm commandForm = PartyUtil.getHome().getGetDepartmentForm();
+            var commandForm = PartyUtil.getHome().getGetDepartmentForm();
             
             commandForm.setCompanyName(companyName);
             commandForm.setDivisionName(divisionName);
             commandForm.setDepartmentName(departmentName);
-            
-            CommandResult commandResult = PartyUtil.getHome().getDepartment(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetDepartmentResult result = (GetDepartmentResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().getDepartment(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetDepartmentResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.DEPARTMENT, result.getDepartment());
         }

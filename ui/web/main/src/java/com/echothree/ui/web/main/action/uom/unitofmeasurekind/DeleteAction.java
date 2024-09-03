@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteUnitOfMeasureKindForm commandForm = UomUtil.getHome().getDeleteUnitOfMeasureKindForm();
-            String returnKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+            var commandForm = UomUtil.getHome().getDeleteUnitOfMeasureKindForm();
+            var returnKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
             
             commandForm.setUnitOfMeasureKindName(returnKindName);
             

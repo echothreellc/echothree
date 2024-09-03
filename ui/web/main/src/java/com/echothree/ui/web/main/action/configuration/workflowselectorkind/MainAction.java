@@ -56,15 +56,15 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
-            GetWorkflowSelectorKindsForm commandForm = WorkflowUtil.getHome().getGetWorkflowSelectorKindsForm();
+            var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowSelectorKindsForm();
             
             commandForm.setWorkflowName(workflowName);
-            
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowSelectorKinds(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowSelectorKindsResult result = (GetWorkflowSelectorKindsResult)executionResult.getResult();
-            WorkflowTransfer workflowTransfer = result.getWorkflow();
+
+            var commandResult = WorkflowUtil.getHome().getWorkflowSelectorKinds(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowSelectorKindsResult)executionResult.getResult();
+            var workflowTransfer = result.getWorkflow();
             
             request.setAttribute(AttributeConstants.WORKFLOW, workflowTransfer);
             request.setAttribute(AttributeConstants.WORKFLOW_SELECTOR_KINDS, result.getWorkflowSelectorKinds());

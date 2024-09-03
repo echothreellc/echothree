@@ -56,21 +56,21 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetSelectorNodeForm commandForm = SelectorUtil.getHome().getGetSelectorNodeForm();
-            String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-            String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-            String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
-            String selectorNodeName = request.getParameter(ParameterConstants.SELECTOR_NODE_NAME);
+            var commandForm = SelectorUtil.getHome().getGetSelectorNodeForm();
+            var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+            var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+            var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+            var selectorNodeName = request.getParameter(ParameterConstants.SELECTOR_NODE_NAME);
             
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setSelectorTypeName(selectorTypeName);
             commandForm.setSelectorName(selectorName);
             commandForm.setSelectorNodeName(selectorNodeName);
-            
-            CommandResult commandResult = SelectorUtil.getHome().getSelectorNode(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSelectorNodeResult result = (GetSelectorNodeResult)executionResult.getResult();
-            SelectorNodeTransfer selectorNode = result.getSelectorNode();
+
+            var commandResult = SelectorUtil.getHome().getSelectorNode(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSelectorNodeResult)executionResult.getResult();
+            var selectorNode = result.getSelectorNode();
             
             if(selectorNode == null) {
                 forwardKey = ForwardConstants.ERROR_404;

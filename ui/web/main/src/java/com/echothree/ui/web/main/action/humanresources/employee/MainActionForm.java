@@ -55,15 +55,15 @@ public class MainActionForm
     private void setupEmployeeStatusChoices()
             throws NamingException {
         if(employeeStatusChoices == null) {
-            GetWorkflowStepChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
+            var form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
 
             form.setWorkflowName(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS);
             form.setDefaultWorkflowStepChoice(employeeStatusChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowStepChoicesResult result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
             employeeStatusChoices = result.getWorkflowStepChoices();
 
             if(employeeStatusChoice == null) {
@@ -75,15 +75,15 @@ public class MainActionForm
     private void setupEmployeeAvailabilityChoices()
             throws NamingException {
         if(employeeAvailabilityChoices == null) {
-            GetWorkflowStepChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
+            var form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
 
             form.setWorkflowName(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY);
             form.setDefaultWorkflowStepChoice(employeeAvailabilityChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowStepChoicesResult result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
             employeeAvailabilityChoices = result.getWorkflowStepChoices();
         }
     }

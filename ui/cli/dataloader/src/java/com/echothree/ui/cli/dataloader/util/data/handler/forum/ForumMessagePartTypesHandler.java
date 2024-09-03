@@ -48,9 +48,9 @@ public class ForumMessagePartTypesHandler
             String forumMessagePartTypeName = null;
             String sortOrder = null;
             String mimeTypeUsageTypeName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("forumMessagePartTypeName"))
                     forumMessagePartTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("sortOrder"))
@@ -60,7 +60,7 @@ public class ForumMessagePartTypesHandler
             }
             
             try {
-                CreateForumMessagePartTypeForm form = ForumFormFactory.getCreateForumMessagePartTypeForm();
+                var form = ForumFormFactory.getCreateForumMessagePartTypeForm();
                 
                 form.setForumMessagePartTypeName(forumMessagePartTypeName);
                 form.setSortOrder(sortOrder);

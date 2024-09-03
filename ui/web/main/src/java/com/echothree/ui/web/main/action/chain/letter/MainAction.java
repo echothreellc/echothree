@@ -51,16 +51,16 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetLettersForm getLettersForm = LetterUtil.getHome().getGetLettersForm();
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
+        var getLettersForm = LetterUtil.getHome().getGetLettersForm();
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
         
         getLettersForm.setChainKindName(chainKindName);
         getLettersForm.setChainTypeName(chainTypeName);
-        
-        CommandResult commandResult = LetterUtil.getHome().getLetters(getUserVisitPK(request), getLettersForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetLettersResult result = (GetLettersResult)executionResult.getResult();
+
+        var commandResult = LetterUtil.getHome().getLetters(getUserVisitPK(request), getLettersForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetLettersResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CHAIN_TYPE, result.getChainType());
         request.setAttribute(AttributeConstants.LETTERS, result.getLetters());

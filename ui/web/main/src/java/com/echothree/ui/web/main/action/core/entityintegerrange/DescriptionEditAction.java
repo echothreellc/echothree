@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected EntityIntegerRangeDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        EntityIntegerRangeDescriptionSpec spec = CoreUtil.getHome().getEntityIntegerRangeDescriptionSpec();
+        var spec = CoreUtil.getHome().getEntityIntegerRangeDescriptionSpec();
         
         spec.setComponentVendorName(findParameter(request, ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName()));
         spec.setEntityTypeName(findParameter(request, ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName()));
@@ -65,7 +65,7 @@ public class DescriptionEditAction
     @Override
     protected EntityIntegerRangeDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        EntityIntegerRangeDescriptionEdit edit = CoreUtil.getHome().getEntityIntegerRangeDescriptionEdit();
+        var edit = CoreUtil.getHome().getEntityIntegerRangeDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

@@ -49,7 +49,7 @@ public class InvoiceRoleTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("invoiceRoleTypeDescription")) {
-            CreateInvoiceRoleTypeDescriptionForm commandForm = InvoiceFormFactory.getCreateInvoiceRoleTypeDescriptionForm();
+            var commandForm = InvoiceFormFactory.getCreateInvoiceRoleTypeDescriptionForm();
             
             commandForm.setInvoiceRoleTypeName(invoiceRoleTypeName);
             commandForm.set(getAttrsMap(attrs));

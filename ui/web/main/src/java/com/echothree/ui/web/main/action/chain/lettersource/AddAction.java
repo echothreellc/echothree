@@ -51,7 +51,7 @@ public class AddAction
         String forwardKey = null;
         
         if(wasPost(request)) {
-            CreateLetterSourceForm commandForm = LetterUtil.getHome().getCreateLetterSourceForm();
+            var commandForm = LetterUtil.getHome().getCreateLetterSourceForm();
             
             commandForm.setPartyName(actionForm.getPartyName());
             commandForm.setLetterSourceName(actionForm.getLetterSourceName());
@@ -61,8 +61,8 @@ public class AddAction
             commandForm.setIsDefault(actionForm.getIsDefault().toString());
             commandForm.setSortOrder(actionForm.getSortOrder());
             commandForm.setDescription(actionForm.getDescription());
-            
-            CommandResult commandResult = LetterUtil.getHome().createLetterSource(getUserVisitPK(request), commandForm);
+
+            var commandResult = LetterUtil.getHome().createLetterSource(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

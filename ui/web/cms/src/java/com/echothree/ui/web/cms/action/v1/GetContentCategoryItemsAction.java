@@ -49,7 +49,7 @@ public class GetContentCategoryItemsAction
     @Override
     protected CommandResult getCommandResult(HttpServletRequest request)
             throws Exception {
-        GetContentCategoryItemsForm commandForm = ContentUtil.getHome().getGetContentCategoryItemsForm();
+        var commandForm = ContentUtil.getHome().getGetContentCategoryItemsForm();
         Map<String, Limit> limits = new HashMap<>();
 
         commandForm.setContentWebAddressName(request.getParameter(ParameterConstants.CONTENT_WEB_ADDRESS_NAME));
@@ -68,7 +68,7 @@ public class GetContentCategoryItemsAction
                 ));
         commandForm.setLimits(limits);
 
-        CommandResult commandResult = ContentUtil.getHome().getContentCategoryItems(getUserVisitPK(request), commandForm);
+        var commandResult = ContentUtil.getHome().getContentCategoryItems(getUserVisitPK(request), commandForm);
         
         return commandResult;
     }

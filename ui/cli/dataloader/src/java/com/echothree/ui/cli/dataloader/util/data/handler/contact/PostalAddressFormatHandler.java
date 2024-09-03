@@ -51,9 +51,9 @@ public class PostalAddressFormatHandler
         if(localName.equals("postalAddressFormatDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -61,7 +61,7 @@ public class PostalAddressFormatHandler
             }
             
             try {
-                CreatePostalAddressFormatDescriptionForm form = ContactFormFactory.getCreatePostalAddressFormatDescriptionForm();
+                var form = ContactFormFactory.getCreatePostalAddressFormatDescriptionForm();
                 
                 form.setPostalAddressFormatName(postalAddressFormatName);
                 form.setLanguageIsoName(languageIsoName);
@@ -78,9 +78,9 @@ public class PostalAddressFormatHandler
             String suffix = null;
             String alwaysIncludeSuffix = null;
             String collapseIfEmpty = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("postalAddressLineSortOrder"))
                     postalAddressLineSortOrder = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("prefix"))
@@ -96,7 +96,7 @@ public class PostalAddressFormatHandler
             }
             
             try {
-                CreatePostalAddressLineForm form = ContactFormFactory.getCreatePostalAddressLineForm();
+                var form = ContactFormFactory.getCreatePostalAddressLineForm();
                 
                 form.setPostalAddressFormatName(postalAddressFormatName);
                 form.setPostalAddressLineSortOrder(postalAddressLineSortOrder);

@@ -53,15 +53,15 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetHarmonizedTariffScheduleCodeUsesForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUsesForm();
+        var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUsesForm();
 
         commandForm.setCountryName(request.getParameter(ParameterConstants.COUNTRY_NAME));
         commandForm.setHarmonizedTariffScheduleCodeName(request.getParameter(ParameterConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_NAME));
 
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUses(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetHarmonizedTariffScheduleCodeUsesResult result = (GetHarmonizedTariffScheduleCodeUsesResult)executionResult.getResult();
-        HarmonizedTariffScheduleCodeTransfer harmonizedTariffScheduleCode = result.getHarmonizedTariffScheduleCode();
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUses(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetHarmonizedTariffScheduleCodeUsesResult)executionResult.getResult();
+        var harmonizedTariffScheduleCode = result.getHarmonizedTariffScheduleCode();
 
         if(harmonizedTariffScheduleCode == null) {
             forwardKey = ForwardConstants.ERROR_404;

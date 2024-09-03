@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String forumGroupName = request.getParameter(ParameterConstants.FORUM_GROUP_NAME);
-            GetForumGroupDescriptionsForm commandForm = ForumUtil.getHome().getGetForumGroupDescriptionsForm();
+            var forumGroupName = request.getParameter(ParameterConstants.FORUM_GROUP_NAME);
+            var commandForm = ForumUtil.getHome().getGetForumGroupDescriptionsForm();
             
             commandForm.setForumGroupName(forumGroupName);
-            
-            CommandResult commandResult = ForumUtil.getHome().getForumGroupDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetForumGroupDescriptionsResult result = (GetForumGroupDescriptionsResult)executionResult.getResult();
-            ForumGroupTransfer forumGroupTransfer = result.getForumGroup();
+
+            var commandResult = ForumUtil.getHome().getForumGroupDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetForumGroupDescriptionsResult)executionResult.getResult();
+            var forumGroupTransfer = result.getForumGroup();
             
             request.setAttribute(AttributeConstants.FORUM_GROUP, forumGroupTransfer);
             request.setAttribute(AttributeConstants.FORUM_GROUP_NAME, forumGroupTransfer.getForumGroupName());

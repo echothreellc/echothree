@@ -63,15 +63,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetMimeTypeDescriptionForm commandForm = CoreUtil.getHome().getGetMimeTypeDescriptionForm();
+        var commandForm = CoreUtil.getHome().getGetMimeTypeDescriptionForm();
         
         commandForm.setMimeTypeName(actionForm.getMimeTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getMimeTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getMimeTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeDescriptionResult result = (GetMimeTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.MIME_TYPE_DESCRIPTION, result.getMimeTypeDescription());
         }
@@ -80,7 +80,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteMimeTypeDescriptionForm commandForm = CoreUtil.getHome().getDeleteMimeTypeDescriptionForm();
+        var commandForm = CoreUtil.getHome().getDeleteMimeTypeDescriptionForm();
 
         commandForm.setMimeTypeName(actionForm.getMimeTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

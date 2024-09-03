@@ -53,8 +53,8 @@ public class ContactEmailAddressAddAction
     public ActionForward executeAction(ActionMapping mapping, ContactEmailAddressAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        CreateContactEmailAddressForm commandForm = ContactUtil.getHome().getCreateContactEmailAddressForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = ContactUtil.getHome().getCreateContactEmailAddressForm();
 
         if(partyName == null) {
             partyName = actionForm.getPartyName();
@@ -66,7 +66,7 @@ public class ContactEmailAddressAddAction
             commandForm.setEmailAddress(actionForm.getEmailAddress());
             commandForm.setDescription(actionForm.getDescription());
 
-            CommandResult commandResult = ContactUtil.getHome().createContactEmailAddress(getUserVisitPK(request), commandForm);
+            var commandResult = ContactUtil.getHome().createContactEmailAddress(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -78,8 +78,8 @@ public class ContactEmailAddressAddAction
             actionForm.setPartyName(partyName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupEmployee(request, partyName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

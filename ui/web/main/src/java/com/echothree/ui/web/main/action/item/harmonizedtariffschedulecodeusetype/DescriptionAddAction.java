@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetHarmonizedTariffScheduleCodeUseTypeForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseTypeForm();
+        var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseTypeForm();
 
         commandForm.setHarmonizedTariffScheduleCodeUseTypeName(actionForm.getHarmonizedTariffScheduleCodeUseTypeName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeUseTypeResult result = (GetHarmonizedTariffScheduleCodeUseTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodeUseTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE, result.getHarmonizedTariffScheduleCodeUseType());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateHarmonizedTariffScheduleCodeUseTypeDescriptionForm commandForm = ItemUtil.getHome().getCreateHarmonizedTariffScheduleCodeUseTypeDescriptionForm();
+        var commandForm = ItemUtil.getHome().getCreateHarmonizedTariffScheduleCodeUseTypeDescriptionForm();
 
         commandForm.setHarmonizedTariffScheduleCodeUseTypeName( actionForm.getHarmonizedTariffScheduleCodeUseTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

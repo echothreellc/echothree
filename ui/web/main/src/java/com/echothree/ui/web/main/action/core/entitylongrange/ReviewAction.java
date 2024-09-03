@@ -53,19 +53,19 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetEntityLongRangeForm commandForm = CoreUtil.getHome().getGetEntityLongRangeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityLongRangeForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
         commandForm.setEntityAttributeName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME));
         commandForm.setEntityLongRangeName(request.getParameter(ParameterConstants.ENTITY_LONG_RANGE_NAME));
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityLongRange(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEntityLongRange(getUserVisitPK(request), commandForm);
         EntityLongRangeTransfer entityLongRange = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityLongRangeResult result = (GetEntityLongRangeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityLongRangeResult)executionResult.getResult();
             
             entityLongRange = result.getEntityLongRange();
         }

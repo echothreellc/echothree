@@ -50,16 +50,16 @@ public class DescriptionDeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-        DeleteLetterSourceDescriptionForm commandForm = LetterUtil.getHome().getDeleteLetterSourceDescriptionForm();
+        var letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var commandForm = LetterUtil.getHome().getDeleteLetterSourceDescriptionForm();
         
         commandForm.setLetterSourceName(letterSourceName);
         commandForm.setLanguageIsoName(languageIsoName);
         
         LetterUtil.getHome().deleteLetterSourceDescription(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.LETTER_SOURCE_NAME, letterSourceName);

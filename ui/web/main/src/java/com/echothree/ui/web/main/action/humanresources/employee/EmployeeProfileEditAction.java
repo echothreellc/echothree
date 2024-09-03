@@ -59,10 +59,10 @@ public class EmployeeProfileEditAction
     public ActionForward executeAction(ActionMapping mapping, EmployeeProfileEditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
-        EditProfileForm commandForm = PartyUtil.getHome().getEditProfileForm();
-        PartySpec spec = PartyUtil.getHome().getPartySpec();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
+        var commandForm = PartyUtil.getHome().getEditProfileForm();
+        var spec = PartyUtil.getHome().getPartySpec();
         
         if(partyName == null) {
             partyName = actionForm.getPartyName();
@@ -75,12 +75,12 @@ public class EmployeeProfileEditAction
         spec.setPartyName(partyName);
         
         if(wasPost(request)) {
-            boolean wasCanceled = wasCanceled(request);
+            var wasCanceled = wasCanceled(request);
 
             if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
-                ProfileEdit edit = PartyUtil.getHome().getProfileEdit();
+                var edit = PartyUtil.getHome().getProfileEdit();
 
                 commandForm.setEditMode(EditMode.UPDATE);
                 commandForm.setEdit(edit);
@@ -100,14 +100,14 @@ public class EmployeeProfileEditAction
                 edit.setSignatureMimeTypeName(actionForm.getSignatureMimeTypeChoice());
                 edit.setSignature(actionForm.getSignature());
             }
-            
-            CommandResult commandResult = PartyUtil.getHome().editProfile(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().editProfile(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors() && !wasCanceled) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditProfileResult result = (EditProfileResult)executionResult.getResult();
+                    var result = (EditProfileResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -120,13 +120,13 @@ public class EmployeeProfileEditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = PartyUtil.getHome().editProfile(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditProfileResult result = (EditProfileResult)executionResult.getResult();
+
+            var commandResult = PartyUtil.getHome().editProfile(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditProfileResult)executionResult.getResult();
             
             if(result != null) {
-                ProfileEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setPartyName(partyName);
@@ -154,8 +154,8 @@ public class EmployeeProfileEditAction
             
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.EMPLOYEE_NAME, employeeName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

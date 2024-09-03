@@ -43,15 +43,15 @@ public class StatusActionForm
     public void setupInventoryLocationGroupStatusChoices() {
         if(inventoryLocationGroupStatusChoices == null) {
             try {
-                GetInventoryLocationGroupStatusChoicesForm form = InventoryUtil.getHome().getGetInventoryLocationGroupStatusChoicesForm();
+                var form = InventoryUtil.getHome().getGetInventoryLocationGroupStatusChoicesForm();
                 
                 form.setWarehouseName(warehouseName);
                 form.setInventoryLocationGroupName(inventoryLocationGroupName);
                 form.setDefaultInventoryLocationGroupStatusChoice(inventoryLocationGroupStatusChoice);
-                
-                CommandResult commandResult = InventoryUtil.getHome().getInventoryLocationGroupStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetInventoryLocationGroupStatusChoicesResult getInventoryLocationGroupStatusChoicesResult = (GetInventoryLocationGroupStatusChoicesResult)executionResult.getResult();
+
+                var commandResult = InventoryUtil.getHome().getInventoryLocationGroupStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getInventoryLocationGroupStatusChoicesResult = (GetInventoryLocationGroupStatusChoicesResult)executionResult.getResult();
                 inventoryLocationGroupStatusChoices = getInventoryLocationGroupStatusChoicesResult.getInventoryLocationGroupStatusChoices();
                 
                 if(inventoryLocationGroupStatusChoice == null)

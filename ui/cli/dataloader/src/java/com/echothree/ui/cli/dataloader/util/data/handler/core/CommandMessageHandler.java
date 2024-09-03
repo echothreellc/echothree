@@ -52,7 +52,7 @@ public class CommandMessageHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("commandMessageTranslation")) {
-            CreateCommandMessageTranslationForm commandForm = CoreFormFactory.getCreateCommandMessageTranslationForm();
+            var commandForm = CoreFormFactory.getCreateCommandMessageTranslationForm();
             
             commandForm.setCommandMessageTypeName(commandMessageTypeName);
             commandForm.setCommandMessageKey(commandMessageKey);

@@ -46,7 +46,7 @@ public class ForceReindexAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        ForceReindexForm commandForm = IndexUtil.getHome().getForceReindexForm();
+        var commandForm = IndexUtil.getHome().getForceReindexForm();
 
         IndexUtil.getHome().forceReindex(getUserVisitPK(request), commandForm);
 

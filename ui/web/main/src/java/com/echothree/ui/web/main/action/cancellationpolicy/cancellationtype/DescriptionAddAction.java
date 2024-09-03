@@ -56,15 +56,15 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
-        String cancellationTypeName = request.getParameter(ParameterConstants.CANCELLATION_TYPE_NAME);
+        var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+        var cancellationTypeName = request.getParameter(ParameterConstants.CANCELLATION_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateCancellationTypeDescriptionForm commandForm = CancellationPolicyUtil.getHome().getCreateCancellationTypeDescriptionForm();
+                    var commandForm = CancellationPolicyUtil.getHome().getCreateCancellationTypeDescriptionForm();
                     
                     if(cancellationKindName == null)
                         cancellationKindName = actionForm.getCancellationKindName();
@@ -75,8 +75,8 @@ public class DescriptionAddAction
                     commandForm.setCancellationTypeName(cancellationTypeName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CancellationPolicyUtil.getHome().createCancellationTypeDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CancellationPolicyUtil.getHome().createCancellationTypeDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -93,8 +93,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CANCELLATION_KIND_NAME, cancellationKindName);
             request.setAttribute(AttributeConstants.CANCELLATION_TYPE_NAME, cancellationTypeName);

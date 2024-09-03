@@ -53,17 +53,17 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetApplicationEditorUseForm commandForm = CoreUtil.getHome().getGetApplicationEditorUseForm();
+        var commandForm = CoreUtil.getHome().getGetApplicationEditorUseForm();
 
         commandForm.setApplicationName(request.getParameter(ParameterConstants.APPLICATION_NAME));
         commandForm.setApplicationEditorUseName(request.getParameter(ParameterConstants.APPLICATION_EDITOR_USE_NAME));
-        
-        CommandResult commandResult = CoreUtil.getHome().getApplicationEditorUse(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getApplicationEditorUse(getUserVisitPK(request), commandForm);
         ApplicationEditorUseTransfer applicationEditorUse = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetApplicationEditorUseResult result = (GetApplicationEditorUseResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetApplicationEditorUseResult)executionResult.getResult();
             
             applicationEditorUse = result.getApplicationEditorUse();
         }

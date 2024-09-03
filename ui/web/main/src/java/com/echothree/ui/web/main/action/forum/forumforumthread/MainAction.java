@@ -51,14 +51,14 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetForumForumThreadsForm commandForm = ForumUtil.getHome().getGetForumForumThreadsForm();
-        String forumThreadName = request.getParameter(ParameterConstants.FORUM_THREAD_NAME);
+        var commandForm = ForumUtil.getHome().getGetForumForumThreadsForm();
+        var forumThreadName = request.getParameter(ParameterConstants.FORUM_THREAD_NAME);
         
         commandForm.setForumThreadName(forumThreadName);
-        
-        CommandResult commandResult = ForumUtil.getHome().getForumForumThreads(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetForumForumThreadsResult result = (GetForumForumThreadsResult)executionResult.getResult();
+
+        var commandResult = ForumUtil.getHome().getForumForumThreads(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetForumForumThreadsResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.FORUM_THREAD, result.getForumThread());
         request.setAttribute(AttributeConstants.FORUM_FORUM_THREADS, result.getForumForumThreads());

@@ -56,12 +56,12 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
         
         try {
-            StatusActionForm actionForm = (StatusActionForm)form;
-            SetInventoryLocationGroupStatusForm commandForm = InventoryUtil.getHome().getSetInventoryLocationGroupStatusForm();
+            var actionForm = (StatusActionForm)form;
+            var commandForm = InventoryUtil.getHome().getSetInventoryLocationGroupStatusForm();
             
             if(warehouseName == null)
                 warehouseName = actionForm.getWarehouseName();
@@ -72,8 +72,8 @@ public class StatusAction
                 commandForm.setWarehouseName(warehouseName);
                 commandForm.setInventoryLocationGroupName(inventoryLocationGroupName);
                 commandForm.setInventoryLocationGroupStatusChoice(actionForm.getInventoryLocationGroupStatusChoice());
-                
-                CommandResult commandResult = InventoryUtil.getHome().setInventoryLocationGroupStatus(getUserVisitPK(request), commandForm);
+
+                var commandResult = InventoryUtil.getHome().setInventoryLocationGroupStatus(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);
@@ -90,8 +90,8 @@ public class StatusAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WAREHOUSE_NAME, warehouseName);
             request.setAttribute(AttributeConstants.INVENTORY_LOCATION_GROUP_NAME, inventoryLocationGroupName);

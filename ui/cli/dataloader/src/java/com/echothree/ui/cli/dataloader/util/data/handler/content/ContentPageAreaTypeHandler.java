@@ -50,9 +50,9 @@ public class ContentPageAreaTypeHandler
         if(localName.equals("contentPageAreaTypeDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +60,7 @@ public class ContentPageAreaTypeHandler
             }
             
             try {
-                CreateContentPageAreaTypeDescriptionForm createContentPageAreaTypeDescriptionForm = ContentFormFactory.getCreateContentPageAreaTypeDescriptionForm();
+                var createContentPageAreaTypeDescriptionForm = ContentFormFactory.getCreateContentPageAreaTypeDescriptionForm();
                 
                 createContentPageAreaTypeDescriptionForm.setContentPageAreaTypeName(contentPageAreaTypeName);
                 createContentPageAreaTypeDescriptionForm.setLanguageIsoName(languageIsoName);

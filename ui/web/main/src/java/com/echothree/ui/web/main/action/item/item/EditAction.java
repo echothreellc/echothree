@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected ItemSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemSpec spec = ItemUtil.getHome().getItemSpec();
+        var spec = ItemUtil.getHome().getItemSpec();
 
         spec.setItemName(findParameter(request, ParameterConstants.ORIGINAL_ITEM_NAME, actionForm.getOriginalItemName()));
 
@@ -61,7 +61,7 @@ public class EditAction
     @Override
     protected ItemEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemEdit edit = ItemUtil.getHome().getItemEdit();
+        var edit = ItemUtil.getHome().getItemEdit();
 
         edit.setItemName(actionForm.getItemName());
         edit.setItemCategoryName(actionForm.getItemCategoryChoice());

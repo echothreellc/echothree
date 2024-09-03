@@ -61,7 +61,7 @@ public class ChainTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("chainTypeDescription")) {
-            CreateChainTypeDescriptionForm commandForm = ChainFormFactory.getCreateChainTypeDescriptionForm();
+            var commandForm = ChainFormFactory.getCreateChainTypeDescriptionForm();
 
             commandForm.setChainKindName(chainKindName);
             commandForm.setChainTypeName(chainTypeName);
@@ -69,7 +69,7 @@ public class ChainTypeHandler
 
             chainService.createChainTypeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("chainEntityRoleType")) {
-            CreateChainEntityRoleTypeForm commandForm = ChainFormFactory.getCreateChainEntityRoleTypeForm();
+            var commandForm = ChainFormFactory.getCreateChainEntityRoleTypeForm();
 
             commandForm.setChainKindName(chainKindName);
             commandForm.setChainTypeName(chainTypeName);
@@ -79,7 +79,7 @@ public class ChainTypeHandler
 
             initialDataParser.pushHandler(new ChainEntityRoleTypeHandler(initialDataParser, this, chainKindName, chainTypeName, commandForm.getChainEntityRoleTypeName()));
         } else if(localName.equals("chain")) {
-            CreateChainForm commandForm = ChainFormFactory.getCreateChainForm();
+            var commandForm = ChainFormFactory.getCreateChainForm();
 
             commandForm.setChainKindName(chainKindName);
             commandForm.setChainTypeName(chainTypeName);
@@ -89,7 +89,7 @@ public class ChainTypeHandler
 
             initialDataParser.pushHandler(new ChainHandler(initialDataParser, this, chainKindName, chainTypeName, commandForm.getChainName()));
         } else if(localName.equals("letter")) {
-            CreateLetterForm commandForm = LetterFormFactory.getCreateLetterForm();
+            var commandForm = LetterFormFactory.getCreateLetterForm();
 
             commandForm.setChainKindName(chainKindName);
             commandForm.setChainTypeName(chainTypeName);

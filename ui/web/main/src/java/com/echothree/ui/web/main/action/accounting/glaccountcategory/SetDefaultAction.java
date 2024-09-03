@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultGlAccountCategoryForm commandForm = AccountingUtil.getHome().getSetDefaultGlAccountCategoryForm();
-            String glAccountCategoryName = request.getParameter(ParameterConstants.GL_ACCOUNT_CATEGORY_NAME);
+            var commandForm = AccountingUtil.getHome().getSetDefaultGlAccountCategoryForm();
+            var glAccountCategoryName = request.getParameter(ParameterConstants.GL_ACCOUNT_CATEGORY_NAME);
             
             commandForm.setGlAccountCategoryName(glAccountCategoryName);
             

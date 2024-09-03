@@ -47,7 +47,7 @@ public class QueueTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("queueType")) {
-            CreateQueueTypeForm commandForm = QueueFormFactory.getCreateQueueTypeForm();
+            var commandForm = QueueFormFactory.getCreateQueueTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

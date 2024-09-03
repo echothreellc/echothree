@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
-            GetWorkEffortTypeDescriptionsForm commandForm = WorkEffortUtil.getHome().getGetWorkEffortTypeDescriptionsForm();
+            var workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
+            var commandForm = WorkEffortUtil.getHome().getGetWorkEffortTypeDescriptionsForm();
             
             commandForm.setWorkEffortTypeName(workEffortTypeName);
-            
-            CommandResult commandResult = WorkEffortUtil.getHome().getWorkEffortTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkEffortTypeDescriptionsResult result = (GetWorkEffortTypeDescriptionsResult)executionResult.getResult();
-            WorkEffortTypeTransfer workEffortTypeTransfer = result.getWorkEffortType();
+
+            var commandResult = WorkEffortUtil.getHome().getWorkEffortTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkEffortTypeDescriptionsResult)executionResult.getResult();
+            var workEffortTypeTransfer = result.getWorkEffortType();
             
             request.setAttribute(AttributeConstants.WORK_EFFORT_TYPE, workEffortTypeTransfer);
             request.setAttribute(AttributeConstants.WORK_EFFORT_TYPE_NAME, workEffortTypeTransfer.getWorkEffortTypeName());

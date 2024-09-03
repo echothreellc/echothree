@@ -57,15 +57,15 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSearchSortOrderForm commandForm = SearchUtil.getHome().getGetSearchSortOrderForm();
+        var commandForm = SearchUtil.getHome().getGetSearchSortOrderForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchSortOrderName(actionForm.getSearchSortOrderName());
-        
-        CommandResult commandResult = SearchUtil.getHome().getSearchSortOrder(getUserVisitPK(request), commandForm);
+
+        var commandResult = SearchUtil.getHome().getSearchSortOrder(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSearchSortOrderResult result = (GetSearchSortOrderResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchSortOrderResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SEARCH_SORT_ORDER, result.getSearchSortOrder());
         }
@@ -74,7 +74,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateSearchSortOrderDescriptionForm commandForm = SearchUtil.getHome().getCreateSearchSortOrderDescriptionForm();
+        var commandForm = SearchUtil.getHome().getCreateSearchSortOrderDescriptionForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchSortOrderName(actionForm.getSearchSortOrderName());

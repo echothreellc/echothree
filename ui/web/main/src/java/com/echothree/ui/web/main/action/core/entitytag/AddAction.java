@@ -61,13 +61,13 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTagScopeForm commandForm = TagUtil.getHome().getGetTagScopeForm();
+        var commandForm = TagUtil.getHome().getGetTagScopeForm();
 
         commandForm.setTagScopeName(actionForm.getTagScopeName());
 
-        CommandResult commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTagScopeResult result = (GetTagScopeResult)executionResult.getResult();
+        var commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTagScopeResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.TAG_SCOPE, result.getTagScope());
     }
@@ -75,7 +75,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateEntityTagForm commandForm = TagUtil.getHome().getCreateEntityTagForm();
+        var commandForm = TagUtil.getHome().getCreateEntityTagForm();
 
         commandForm.setTagScopeName(actionForm.getTagScopeName());
         commandForm.setEntityRef(actionForm.getEntityRef());

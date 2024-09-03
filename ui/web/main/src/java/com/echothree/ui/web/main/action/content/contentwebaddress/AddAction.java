@@ -54,16 +54,16 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateContentWebAddressForm commandForm = ContentUtil.getHome().getCreateContentWebAddressForm();
+                    var commandForm = ContentUtil.getHome().getCreateContentWebAddressForm();
                     
                     commandForm.setContentWebAddressName(actionForm.getContentWebAddressName());
                     commandForm.setContentCollectionName(actionForm.getContentCollectionChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ContentUtil.getHome().createContentWebAddress(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ContentUtil.getHome().createContentWebAddress(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

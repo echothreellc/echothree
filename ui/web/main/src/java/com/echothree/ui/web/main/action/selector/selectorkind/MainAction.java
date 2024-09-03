@@ -52,9 +52,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = SelectorUtil.getHome().getSelectorKinds(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSelectorKindsResult getSelectorKindsResult = (GetSelectorKindsResult)executionResult.getResult();
+            var commandResult = SelectorUtil.getHome().getSelectorKinds(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var getSelectorKindsResult = (GetSelectorKindsResult)executionResult.getResult();
             
             request.setAttribute("selectorKinds", getSelectorKindsResult.getSelectorKinds());
             forwardKey = ForwardConstants.DISPLAY;

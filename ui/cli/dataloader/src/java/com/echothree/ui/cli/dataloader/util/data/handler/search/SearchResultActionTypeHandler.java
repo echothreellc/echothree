@@ -50,7 +50,7 @@ public class SearchResultActionTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("searchResultActionTypeDescription")) {
-            CreateSearchResultActionTypeDescriptionForm commandForm = SearchFormFactory.getCreateSearchResultActionTypeDescriptionForm();
+            var commandForm = SearchFormFactory.getCreateSearchResultActionTypeDescriptionForm();
 
             commandForm.setSearchResultActionTypeName(searchResultActionTypeName);
             commandForm.set(getAttrsMap(attrs));

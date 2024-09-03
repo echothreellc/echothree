@@ -51,15 +51,15 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
         
         try {
-            String entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
-            String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-            AddActionForm actionForm = (AddActionForm)form;
+            var entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
+            var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+            var actionForm = (AddActionForm)form;
             
             if(wasPost(request)) {
-                CreateEntityClobAttributeForm commandForm = CoreUtil.getHome().getCreateEntityClobAttributeForm();
+                var commandForm = CoreUtil.getHome().getCreateEntityClobAttributeForm();
                 
                 if(entityRef == null)
                     entityRef = actionForm.getEntityRef();
@@ -73,8 +73,8 @@ public class AddAction
                 commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                 commandForm.setMimeTypeName(actionForm.getMimeTypeChoice());
                 commandForm.setClobAttribute(actionForm.getClobAttribute());
-                
-                CommandResult commandResult = CoreUtil.getHome().createEntityClobAttribute(getUserVisitPK(request), commandForm);
+
+                var commandResult = CoreUtil.getHome().createEntityClobAttribute(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);

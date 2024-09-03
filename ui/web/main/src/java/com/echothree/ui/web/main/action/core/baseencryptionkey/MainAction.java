@@ -49,9 +49,9 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        CommandResult commandResult = CoreUtil.getHome().getBaseEncryptionKeys(getUserVisitPK(request), null);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetBaseEncryptionKeysResult result = (GetBaseEncryptionKeysResult)executionResult.getResult();
+        var commandResult = CoreUtil.getHome().getBaseEncryptionKeys(getUserVisitPK(request), null);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetBaseEncryptionKeysResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.BASE_ENCRYPTION_KEYS, result.getBaseEncryptionKeys());
         

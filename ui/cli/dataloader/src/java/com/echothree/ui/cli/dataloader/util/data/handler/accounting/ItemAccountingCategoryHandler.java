@@ -50,7 +50,7 @@ public class ItemAccountingCategoryHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("itemAccountingCategoryDescription")) {
-            CreateItemAccountingCategoryDescriptionForm commandForm = AccountingFormFactory.getCreateItemAccountingCategoryDescriptionForm();
+            var commandForm = AccountingFormFactory.getCreateItemAccountingCategoryDescriptionForm();
             
             commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
             commandForm.set(getAttrsMap(attrs));

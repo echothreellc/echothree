@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetTrainingClassForm commandForm = TrainingUtil.getHome().getGetTrainingClassForm();
+        var commandForm = TrainingUtil.getHome().getGetTrainingClassForm();
 
         commandForm.setTrainingClassName(request.getParameter(ParameterConstants.TRAINING_CLASS_NAME));
-        
-        CommandResult commandResult = TrainingUtil.getHome().getTrainingClass(getUserVisitPK(request), commandForm);
+
+        var commandResult = TrainingUtil.getHome().getTrainingClass(getUserVisitPK(request), commandForm);
         TrainingClassTransfer trainingClass = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTrainingClassResult result = (GetTrainingClassResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTrainingClassResult)executionResult.getResult();
             
             trainingClass = result.getTrainingClass();
         }

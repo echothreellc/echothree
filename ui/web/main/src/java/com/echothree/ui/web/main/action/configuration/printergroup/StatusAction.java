@@ -52,11 +52,11 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
+        var printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
         
         try {
-            StatusActionForm actionForm = (StatusActionForm)form;
-            SetPrinterGroupStatusForm commandForm = PrinterUtil.getHome().getSetPrinterGroupStatusForm();
+            var actionForm = (StatusActionForm)form;
+            var commandForm = PrinterUtil.getHome().getSetPrinterGroupStatusForm();
             
             if(printerGroupName == null)
                 printerGroupName = actionForm.getPrinterGroupName();
@@ -64,8 +64,8 @@ public class StatusAction
             if(wasPost(request)) {
                 commandForm.setPrinterGroupName(printerGroupName);
                 commandForm.setPrinterGroupStatusChoice(actionForm.getPrinterGroupStatusChoice());
-                
-                CommandResult commandResult = PrinterUtil.getHome().setPrinterGroupStatus(getUserVisitPK(request), commandForm);
+
+                var commandResult = PrinterUtil.getHome().setPrinterGroupStatus(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);

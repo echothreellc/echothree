@@ -52,7 +52,7 @@ public class TransactionGlAccountCategoryHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("transactionGlAccountCategoryDescription")) {
-            CreateTransactionGlAccountCategoryDescriptionForm commandForm = AccountingFormFactory.getCreateTransactionGlAccountCategoryDescriptionForm();
+            var commandForm = AccountingFormFactory.getCreateTransactionGlAccountCategoryDescriptionForm();
             
             commandForm.setTransactionTypeName(transactionTypeName);
             commandForm.setTransactionGlAccountCategoryName(transactionGlAccountCategoryName);

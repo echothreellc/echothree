@@ -54,16 +54,16 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-            String inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
-            GetInventoryLocationGroupDescriptionsForm commandForm = InventoryUtil.getHome().getGetInventoryLocationGroupDescriptionsForm();
+            var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+            var inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
+            var commandForm = InventoryUtil.getHome().getGetInventoryLocationGroupDescriptionsForm();
             
             commandForm.setWarehouseName(warehouseName);
             commandForm.setInventoryLocationGroupName(inventoryLocationGroupName);
-            
-            CommandResult commandResult = InventoryUtil.getHome().getInventoryLocationGroupDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetInventoryLocationGroupDescriptionsResult result = (GetInventoryLocationGroupDescriptionsResult)executionResult.getResult();
+
+            var commandResult = InventoryUtil.getHome().getInventoryLocationGroupDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetInventoryLocationGroupDescriptionsResult)executionResult.getResult();
             
             request.setAttribute("warehouse", result.getWarehouse());
             request.setAttribute("inventoryLocationGroup", result.getInventoryLocationGroup());

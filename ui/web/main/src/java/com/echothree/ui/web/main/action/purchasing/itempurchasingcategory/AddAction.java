@@ -54,18 +54,18 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateItemPurchasingCategoryForm commandForm = VendorUtil.getHome().getCreateItemPurchasingCategoryForm();
+                    var commandForm = VendorUtil.getHome().getCreateItemPurchasingCategoryForm();
                     
                     commandForm.setItemPurchasingCategoryName(actionForm.getItemPurchasingCategoryName());
                     commandForm.setParentItemPurchasingCategoryName(actionForm.getParentItemPurchasingCategoryChoice());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = VendorUtil.getHome().createItemPurchasingCategory(getUserVisitPK(request), commandForm);
+
+                    var commandResult = VendorUtil.getHome().createItemPurchasingCategory(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

@@ -32,13 +32,13 @@ public abstract class BaseAddAction
     
     public void setupTagScopeTransfer(HttpServletRequest request, String tagScopeName)
             throws NamingException {
-        GetTagScopeForm commandForm = TagUtil.getHome().getGetTagScopeForm();
+        var commandForm = TagUtil.getHome().getGetTagScopeForm();
         
         commandForm.setTagScopeName(tagScopeName);
-        
-        CommandResult commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTagScopeResult result = (GetTagScopeResult)executionResult.getResult();
+
+        var commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTagScopeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.TAG_SCOPE, result.getTagScope());
     }

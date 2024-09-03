@@ -58,16 +58,16 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
-            GetWishlistTypeForm commandForm = WishlistUtil.getHome().getGetWishlistTypeForm();
+            var wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
+            var commandForm = WishlistUtil.getHome().getGetWishlistTypeForm();
             
             commandForm.setWishlistTypeName(wishlistTypeName);
-            
-            CommandResult commandResult = WishlistUtil.getHome().getWishlistType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWishlistTypeResult result = (GetWishlistTypeResult)executionResult.getResult();
-            WishlistTypeTransfer wishlistTypeTransfer = result.getWishlistType();
-            List<WishlistPriorityTransfer> wishlistPriorities = result.getWishlistPriorities();
+
+            var commandResult = WishlistUtil.getHome().getWishlistType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWishlistTypeResult)executionResult.getResult();
+            var wishlistTypeTransfer = result.getWishlistType();
+            var wishlistPriorities = result.getWishlistPriorities();
             
             request.setAttribute(AttributeConstants.WISHLIST_TYPE, wishlistTypeTransfer);
             request.setAttribute(AttributeConstants.WISHLIST_TYPE_PRIORITIES, wishlistPriorities.isEmpty()? null: wishlistPriorities);

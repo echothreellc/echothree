@@ -57,14 +57,14 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, AddActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
         
         if(itemName == null) {
             itemName = form.getItemName();
         }
         
         if(wasPost(request)) {
-            CreateItemVolumeForm commandForm = ItemUtil.getHome().getCreateItemVolumeForm();
+            var commandForm = ItemUtil.getHome().getCreateItemVolumeForm();
             
             commandForm.setItemName(itemName);
             commandForm.setUnitOfMeasureTypeName(form.getUnitOfMeasureTypeChoice());
@@ -74,8 +74,8 @@ public class AddAction
             commandForm.setWidthUnitOfMeasureTypeName(form.getWidthUnitOfMeasureTypeChoice());
             commandForm.setDepth(form.getDepth());
             commandForm.setDepthUnitOfMeasureTypeName(form.getDepthUnitOfMeasureTypeChoice());
-            
-            CommandResult commandResult = ItemUtil.getHome().createItemVolume(getUserVisitPK(request), commandForm);
+
+            var commandResult = ItemUtil.getHome().createItemVolume(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -87,17 +87,17 @@ public class AddAction
             form.setItemName(itemName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             if(itemName != null) {
-                GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+                var commandForm = ItemUtil.getHome().getGetItemForm();
                 
                 commandForm.setItemName(itemName);
-                
-                CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetItemResult result = (GetItemResult)executionResult.getResult();
+
+                var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetItemResult)executionResult.getResult();
                 
                 request.setAttribute(AttributeConstants.ITEM, result.getItem());
             }

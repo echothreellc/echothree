@@ -48,7 +48,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultEntityAttributeGroupForm commandForm = CoreUtil.getHome().getSetDefaultEntityAttributeGroupForm();
+        var commandForm = CoreUtil.getHome().getSetDefaultEntityAttributeGroupForm();
 
         commandForm.setEntityAttributeGroupName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME));
 

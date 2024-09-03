@@ -48,7 +48,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultRelatedItemTypeForm commandForm = ItemUtil.getHome().getSetDefaultRelatedItemTypeForm();
+        var commandForm = ItemUtil.getHome().getSetDefaultRelatedItemTypeForm();
 
         commandForm.setRelatedItemTypeName(request.getParameter(ParameterConstants.RELATED_ITEM_TYPE_NAME));
 

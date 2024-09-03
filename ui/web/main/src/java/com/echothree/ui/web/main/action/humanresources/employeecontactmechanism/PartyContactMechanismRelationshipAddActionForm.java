@@ -41,15 +41,15 @@ public class PartyContactMechanismRelationshipAddActionForm
     public void setupToContactMechanismChoices() {
         if(toContactMechanismChoices == null) {
             try {
-                GetContactMechanismChoicesForm form = ContactUtil.getHome().getGetContactMechanismChoicesForm();
+                var form = ContactUtil.getHome().getGetContactMechanismChoicesForm();
                 
                 form.setPartyName(partyName);
                 form.setDefaultContactMechanismChoice(toContactMechanismChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactMechanismChoicesResult getToContactMechanismChoicesResult = (GetContactMechanismChoicesResult)executionResult.getResult();
+
+                var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getToContactMechanismChoicesResult = (GetContactMechanismChoicesResult)executionResult.getResult();
                 toContactMechanismChoices = getToContactMechanismChoicesResult.getContactMechanismChoices();
                 
                 if(toContactMechanismChoice == null) {

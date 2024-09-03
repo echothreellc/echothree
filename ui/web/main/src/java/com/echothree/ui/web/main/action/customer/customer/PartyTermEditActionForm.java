@@ -44,14 +44,14 @@ public class PartyTermEditActionForm
     public void setupTermChoices()
             throws NamingException {
         if(termChoices == null) {
-            GetTermChoicesForm form = TermUtil.getHome().getGetTermChoicesForm();
+            var form = TermUtil.getHome().getGetTermChoicesForm();
 
             form.setDefaultTermChoice(termChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = TermUtil.getHome().getTermChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTermChoicesResult getTermChoicesResult = (GetTermChoicesResult)executionResult.getResult();
+            var commandResult = TermUtil.getHome().getTermChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getTermChoicesResult = (GetTermChoicesResult)executionResult.getResult();
             termChoices = getTermChoicesResult.getTermChoices();
 
             if(termChoice == null)

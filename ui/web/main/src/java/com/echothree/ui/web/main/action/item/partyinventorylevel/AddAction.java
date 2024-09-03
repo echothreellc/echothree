@@ -57,13 +57,13 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+        var commandForm = ItemUtil.getHome().getGetItemForm();
 
         commandForm.setItemName(actionForm.getItemName());
 
-        CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemResult result = (GetItemResult)executionResult.getResult();
+        var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM, result.getItem());
     }
@@ -71,7 +71,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyInventoryLevelForm commandForm = InventoryUtil.getHome().getCreatePartyInventoryLevelForm();
+        var commandForm = InventoryUtil.getHome().getCreatePartyInventoryLevelForm();
 
         commandForm.setCompanyName(actionForm.getCompanyChoice());
         commandForm.setWarehouseName(actionForm.getWarehouseChoice());

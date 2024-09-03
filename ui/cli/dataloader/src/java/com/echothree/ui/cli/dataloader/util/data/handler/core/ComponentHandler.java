@@ -54,9 +54,9 @@ public class ComponentHandler
             String minorRevision = null;
             String componentStageName = null;
             String buildNumber = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("majorRevision"))
                     majorRevision = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("minorRevision"))
@@ -68,7 +68,7 @@ public class ComponentHandler
             }
             
             try {
-                CreateComponentVersionForm createComponentVersionForm = CoreFormFactory.getCreateComponentVersionForm();
+                var createComponentVersionForm = CoreFormFactory.getCreateComponentVersionForm();
                 
                 createComponentVersionForm.setComponentVendorName(componentVendorName);
                 createComponentVersionForm.setComponentName(componentName);

@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTransactionTypeForm commandForm = AccountingUtil.getHome().getGetTransactionTypeForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionTypeForm();
         
         commandForm.setTransactionTypeName(actionForm.getTransactionTypeName());
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTransactionTypeResult result = (GetTransactionTypeResult)executionResult.getResult();
+
+        var commandResult = AccountingUtil.getHome().getTransactionType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTransactionTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.TRANSACTION_TYPE, result.getTransactionType());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteTransactionTypeForm commandForm = AccountingUtil.getHome().getDeleteTransactionTypeForm();
+        var commandForm = AccountingUtil.getHome().getDeleteTransactionTypeForm();
 
         commandForm.setTransactionTypeName(actionForm.getTransactionTypeName());
 

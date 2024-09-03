@@ -144,7 +144,7 @@ public class OfferItemSelectorEvaluator
                     createOfferItemPrice(offer, offerItem, itemPriceType, itemPrice);
                 }
             } else {
-                HashSet<OfferItemPrice> offerItemPrices = new HashSet<>(offerItemControl.getOfferItemPricesByOfferItem(offerItem));
+                var offerItemPrices = new HashSet<OfferItemPrice>(offerItemControl.getOfferItemPricesByOfferItem(offerItem));
                 for(var itemPrice : itemPrices) {
                     var inventoryCondition = itemPrice.getInventoryCondition();
                     var unitOfMeasureType = itemPrice.getUnitOfMeasureType();
@@ -292,7 +292,7 @@ public class OfferItemSelectorEvaluator
                 
                 for(var offerItemSelector : offerItemSelectors) {
                     var offers = offerControl.getOffersByOfferItemSelector(offerItemSelector);
-                    CachedSelectorWithTime cachedSelectorWithTime = new CachedSelectorWithTime(offerItemSelector);
+                    var cachedSelectorWithTime = new CachedSelectorWithTime(offerItemSelector);
                     
                     if(BaseSelectorEvaluatorDebugFlags.OfferItemSelectorEvaluator) {
                         log.info("--- offerItemSelector = " + offerItemSelector);

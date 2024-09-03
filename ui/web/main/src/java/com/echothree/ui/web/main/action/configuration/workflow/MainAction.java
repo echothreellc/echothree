@@ -54,11 +54,11 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetWorkflowsForm commandForm = WorkflowUtil.getHome().getGetWorkflowsForm();
-            
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflows(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowsResult result = (GetWorkflowsResult)executionResult.getResult();
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowsForm();
+
+            var commandResult = WorkflowUtil.getHome().getWorkflows(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORKFLOWS, result.getWorkflows());
             forwardKey = ForwardConstants.DISPLAY;

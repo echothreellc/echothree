@@ -38,13 +38,13 @@ public abstract class BaseCompanyPrinterGroupUseAction<A
 
     public static void setupCompany(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetCompanyForm commandForm = PartyUtil.getHome().getGetCompanyForm();
+        var commandForm = PartyUtil.getHome().getGetCompanyForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCompanyResult result = (GetCompanyResult)executionResult.getResult();
+        var commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCompanyResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.COMPANY, result.getCompany());
     }
@@ -56,14 +56,14 @@ public abstract class BaseCompanyPrinterGroupUseAction<A
 
     public static PartyPrinterGroupUseTransfer getPartyPrinterGroupUseTransfer(HttpServletRequest request, String partyName, String printerGroupUseTypeName)
             throws NamingException {
-        GetPartyPrinterGroupUseForm commandForm = PrinterUtil.getHome().getGetPartyPrinterGroupUseForm();
+        var commandForm = PrinterUtil.getHome().getGetPartyPrinterGroupUseForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setPrinterGroupUseTypeName(printerGroupUseTypeName);
 
-        CommandResult commandResult = PrinterUtil.getHome().getPartyPrinterGroupUse(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyPrinterGroupUseResult result = (GetPartyPrinterGroupUseResult)executionResult.getResult();
+        var commandResult = PrinterUtil.getHome().getPartyPrinterGroupUse(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyPrinterGroupUseResult)executionResult.getResult();
 
         return result.getPartyPrinterGroupUse();
     }

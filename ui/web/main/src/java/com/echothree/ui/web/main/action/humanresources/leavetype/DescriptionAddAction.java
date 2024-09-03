@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetLeaveTypeForm commandForm = EmployeeUtil.getHome().getGetLeaveTypeForm();
+        var commandForm = EmployeeUtil.getHome().getGetLeaveTypeForm();
 
         commandForm.setLeaveTypeName(actionForm.getLeaveTypeName());
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getLeaveType(getUserVisitPK(request), commandForm);
+
+        var commandResult = EmployeeUtil.getHome().getLeaveType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLeaveTypeResult result = (GetLeaveTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.LEAVE_TYPE, result.getLeaveType());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateLeaveTypeDescriptionForm commandForm = EmployeeUtil.getHome().getCreateLeaveTypeDescriptionForm();
+        var commandForm = EmployeeUtil.getHome().getCreateLeaveTypeDescriptionForm();
 
         commandForm.setLeaveTypeName( actionForm.getLeaveTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

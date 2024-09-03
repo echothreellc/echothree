@@ -52,7 +52,7 @@ public class OrderPriorityHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("orderPriorityDescription")) {
-            CreateOrderPriorityDescriptionForm commandForm = OrderFormFactory.getCreateOrderPriorityDescriptionForm();
+            var commandForm = OrderFormFactory.getCreateOrderPriorityDescriptionForm();
             
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.setOrderPriorityName(orderPriorityName);

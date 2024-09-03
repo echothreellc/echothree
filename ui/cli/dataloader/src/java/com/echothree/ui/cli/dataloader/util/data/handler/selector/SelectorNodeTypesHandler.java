@@ -47,9 +47,9 @@ public class SelectorNodeTypesHandler
         if(localName.equals("selectorNodeType")) {
             String selectorNodeTypeName = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("selectorNodeTypeName"))
                     selectorNodeTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("sortOrder"))
@@ -57,7 +57,7 @@ public class SelectorNodeTypesHandler
             }
             
             try {
-                CreateSelectorNodeTypeForm commandForm = SelectorFormFactory.getCreateSelectorNodeTypeForm();
+                var commandForm = SelectorFormFactory.getCreateSelectorNodeTypeForm();
                 
                 commandForm.setSelectorNodeTypeName(selectorNodeTypeName);
                 commandForm.setSortOrder(sortOrder);

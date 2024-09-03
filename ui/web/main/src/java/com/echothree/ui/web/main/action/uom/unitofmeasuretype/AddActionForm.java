@@ -49,14 +49,14 @@ public class AddActionForm
     private void setupSymbolPositionChoices() {
         if(symbolPositionChoices == null) {
             try {
-                GetSymbolPositionChoicesForm commandForm = AccountingUtil.getHome().getGetSymbolPositionChoicesForm();
+                var commandForm = AccountingUtil.getHome().getGetSymbolPositionChoicesForm();
                 
                 commandForm.setDefaultSymbolPositionChoice(symbolPositionChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getSymbolPositionChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSymbolPositionChoicesResult getSymbolPositionChoicesResult = (GetSymbolPositionChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getSymbolPositionChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getSymbolPositionChoicesResult = (GetSymbolPositionChoicesResult)executionResult.getResult();
                 symbolPositionChoices = getSymbolPositionChoicesResult.getSymbolPositionChoices();
                 
                 if(symbolPositionChoice == null) {

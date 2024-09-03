@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
-            GetAssociateProgramDescriptionsForm commandForm = AssociateUtil.getHome().getGetAssociateProgramDescriptionsForm();
+            var associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
+            var commandForm = AssociateUtil.getHome().getGetAssociateProgramDescriptionsForm();
             
             commandForm.setAssociateProgramName(associateProgramName);
-            
-            CommandResult commandResult = AssociateUtil.getHome().getAssociateProgramDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAssociateProgramDescriptionsResult result = (GetAssociateProgramDescriptionsResult)executionResult.getResult();
-            AssociateProgramTransfer associateProgramTransfer = result.getAssociateProgram();
+
+            var commandResult = AssociateUtil.getHome().getAssociateProgramDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAssociateProgramDescriptionsResult)executionResult.getResult();
+            var associateProgramTransfer = result.getAssociateProgram();
             
             request.setAttribute(AttributeConstants.ASSOCIATE_PROGRAM, associateProgramTransfer);
             request.setAttribute(AttributeConstants.ASSOCIATE_PROGRAM_NAME, associateProgramTransfer.getAssociateProgramName());

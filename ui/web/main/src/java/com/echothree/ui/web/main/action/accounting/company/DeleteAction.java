@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteCompanyForm commandForm = PartyUtil.getHome().getDeleteCompanyForm();
-            String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
+            var commandForm = PartyUtil.getHome().getDeleteCompanyForm();
+            var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
             
             commandForm.setCompanyName(companyName);
             

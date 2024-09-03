@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteResponsibilityTypeForm commandForm = EmployeeUtil.getHome().getDeleteResponsibilityTypeForm();
-            String responsibilityTypeName = request.getParameter(ParameterConstants.RESPONSIBILITY_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getDeleteResponsibilityTypeForm();
+            var responsibilityTypeName = request.getParameter(ParameterConstants.RESPONSIBILITY_TYPE_NAME);
             
             commandForm.setResponsibilityTypeName(responsibilityTypeName);
             

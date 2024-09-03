@@ -48,7 +48,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultItemCategoryForm commandForm = ItemUtil.getHome().getSetDefaultItemCategoryForm();
+        var commandForm = ItemUtil.getHome().getSetDefaultItemCategoryForm();
 
         commandForm.setItemCategoryName(request.getParameter(ParameterConstants.ITEM_CATEGORY_NAME));
 

@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String jobName = request.getParameter(ParameterConstants.JOB_NAME);
-            GetJobDescriptionsForm commandForm = JobUtil.getHome().getGetJobDescriptionsForm();
+            var jobName = request.getParameter(ParameterConstants.JOB_NAME);
+            var commandForm = JobUtil.getHome().getGetJobDescriptionsForm();
             
             commandForm.setJobName(jobName);
-            
-            CommandResult commandResult = JobUtil.getHome().getJobDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetJobDescriptionsResult result = (GetJobDescriptionsResult)executionResult.getResult();
-            JobTransfer jobTransfer = result.getJob();
+
+            var commandResult = JobUtil.getHome().getJobDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetJobDescriptionsResult)executionResult.getResult();
+            var jobTransfer = result.getJob();
             
             request.setAttribute(AttributeConstants.JOB, jobTransfer);
             request.setAttribute(AttributeConstants.JOB_NAME, jobTransfer.getJobName());

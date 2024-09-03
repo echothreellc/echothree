@@ -43,8 +43,8 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
-        DeleteEntityBlobAttributeForm commandForm = CoreUtil.getHome().getDeleteEntityBlobAttributeForm();
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var commandForm = CoreUtil.getHome().getDeleteEntityBlobAttributeForm();
 
         commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));
         commandForm.setEntityAttributeName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME));

@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetChainKindForm commandForm = ChainUtil.getHome().getGetChainKindForm();
+        var commandForm = ChainUtil.getHome().getGetChainKindForm();
 
         commandForm.setChainKindName(actionForm.getChainKindName());
-        
-        CommandResult commandResult = ChainUtil.getHome().getChainKind(getUserVisitPK(request), commandForm);
+
+        var commandResult = ChainUtil.getHome().getChainKind(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetChainKindResult result = (GetChainKindResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetChainKindResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CHAIN_KIND, result.getChainKind());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateChainKindDescriptionForm commandForm = ChainUtil.getHome().getCreateChainKindDescriptionForm();
+        var commandForm = ChainUtil.getHome().getCreateChainKindDescriptionForm();
 
         commandForm.setChainKindName(actionForm.getChainKindName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

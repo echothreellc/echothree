@@ -49,9 +49,9 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        CommandResult commandResult = TrainingUtil.getHome().getTrainingClasses(getUserVisitPK(request), null);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetTrainingClassesResult result = (GetTrainingClassesResult)executionResult.getResult();
+        var commandResult = TrainingUtil.getHome().getTrainingClasses(getUserVisitPK(request), null);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetTrainingClassesResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.TRAINING_CLASSES, result.getTrainingClasses());
         

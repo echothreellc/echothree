@@ -65,26 +65,26 @@ public class CommentDeleteAction
     
     public void setupPaymentProcessorTransfer(CommentDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPaymentProcessorForm commandForm = PaymentUtil.getHome().getGetPaymentProcessorForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentProcessorForm();
         
         commandForm.setPaymentProcessorName(actionForm.getPaymentProcessorName());
-        
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentProcessor(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPaymentProcessorResult result = (GetPaymentProcessorResult)executionResult.getResult();
+
+        var commandResult = PaymentUtil.getHome().getPaymentProcessor(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPaymentProcessorResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.PAYMENT_PROCESSOR, result.getPaymentProcessor());
     }
     
     public void setupCommentTransfer(CommentDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCommentForm commandForm = CommentUtil.getHome().getGetCommentForm();
+        var commandForm = CommentUtil.getHome().getGetCommentForm();
         
         commandForm.setCommentName(actionForm.getCommentName());
 
-        CommandResult commandResult = CommentUtil.getHome().getComment(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCommentResult result = (GetCommentResult)executionResult.getResult();
+        var commandResult = CommentUtil.getHome().getComment(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCommentResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.COMMENT, result.getComment());
     }
@@ -99,7 +99,7 @@ public class CommentDeleteAction
     @Override
     public CommandResult doDelete(CommentDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteCommentForm commandForm = CommentUtil.getHome().getDeleteCommentForm();
+        var commandForm = CommentUtil.getHome().getDeleteCommentForm();
         
         commandForm.setCommentName(actionForm.getCommentName());
 

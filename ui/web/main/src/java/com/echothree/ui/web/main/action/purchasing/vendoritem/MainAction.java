@@ -59,26 +59,26 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetVendorItemsForm commandForm = VendorUtil.getHome().getGetVendorItemsForm();
-        String results = request.getParameter(ParameterConstants.RESULTS);
+        var commandForm = VendorUtil.getHome().getGetVendorItemsForm();
+        var results = request.getParameter(ParameterConstants.RESULTS);
         
         commandForm.setVendorName(request.getParameter(ParameterConstants.VENDOR_NAME));
         commandForm.setItemName(request.getParameter(ParameterConstants.ITEM_NAME));
 
         if(results == null) {
-            String offsetParameter = request.getParameter(new ParamEncoder("vendorItem").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
-            Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
+            var offsetParameter = request.getParameter(new ParamEncoder("vendorItem").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
+            var offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
             Map<String, Limit> limits = new HashMap<>();
             limits.put(VendorItemConstants.ENTITY_TYPE_NAME, new Limit("20", offset == null ? null : offset.toString()));
             commandForm.setLimits(limits);
         }
-        
-        CommandResult commandResult = VendorUtil.getHome().getVendorItems(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetVendorItemsResult result = (GetVendorItemsResult)executionResult.getResult();
-        
-        Long vendorItemCount = result.getVendorItemCount();
+
+        var commandResult = VendorUtil.getHome().getVendorItems(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetVendorItemsResult)executionResult.getResult();
+
+        var vendorItemCount = result.getVendorItemCount();
         if(vendorItemCount != null) {
             request.setAttribute(AttributeConstants.VENDOR_ITEM_COUNT, toIntExact(vendorItemCount));
         }

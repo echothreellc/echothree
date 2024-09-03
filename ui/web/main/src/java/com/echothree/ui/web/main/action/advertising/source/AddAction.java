@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateSourceForm commandForm = OfferUtil.getHome().getCreateSourceForm();
+        var commandForm = OfferUtil.getHome().getCreateSourceForm();
 
         commandForm.setSourceName(actionForm.getSourceName());
         commandForm.setOfferName(actionForm.getOfferChoice());

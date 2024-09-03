@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = AccountingUtil.getHome().getItemAccountingCategories(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemAccountingCategoriesResult result = (GetItemAccountingCategoriesResult)executionResult.getResult();
+            var commandResult = AccountingUtil.getHome().getItemAccountingCategories(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemAccountingCategoriesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ITEM_ACCOUNTING_CATEGORIES, result.getItemAccountingCategories());
             forwardKey = ForwardConstants.DISPLAY;

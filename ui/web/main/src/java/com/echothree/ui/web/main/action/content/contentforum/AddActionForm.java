@@ -43,14 +43,14 @@ public class AddActionForm
     private void setupForumChoices()
             throws NamingException {
         if(forumChoices == null) {
-            GetForumChoicesForm form = ForumUtil.getHome().getGetForumChoicesForm();
+            var form = ForumUtil.getHome().getGetForumChoicesForm();
 
             form.setDefaultForumChoice(getForumChoice());
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ForumUtil.getHome().getForumChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetForumChoicesResult result = (GetForumChoicesResult)executionResult.getResult();
+            var commandResult = ForumUtil.getHome().getForumChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetForumChoicesResult)executionResult.getResult();
             forumChoices = result.getForumChoices();
 
             if(getForumChoice() == null)

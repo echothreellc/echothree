@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String itemDescriptionTypeUseTypeName = request.getParameter(ParameterConstants.ITEM_DESCRIPTION_TYPE_USE_TYPE_NAME);
-        GetItemDescriptionTypeUseTypeDescriptionsForm commandForm = ItemUtil.getHome().getGetItemDescriptionTypeUseTypeDescriptionsForm();
+        var itemDescriptionTypeUseTypeName = request.getParameter(ParameterConstants.ITEM_DESCRIPTION_TYPE_USE_TYPE_NAME);
+        var commandForm = ItemUtil.getHome().getGetItemDescriptionTypeUseTypeDescriptionsForm();
 
         commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
 
-        CommandResult commandResult = ItemUtil.getHome().getItemDescriptionTypeUseTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getItemDescriptionTypeUseTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemDescriptionTypeUseTypeDescriptionsResult result = (GetItemDescriptionTypeUseTypeDescriptionsResult) executionResult.getResult();
-            ItemDescriptionTypeUseTypeTransfer itemDescriptionTypeUseTypeTransfer = result.getItemDescriptionTypeUseType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemDescriptionTypeUseTypeDescriptionsResult) executionResult.getResult();
+            var itemDescriptionTypeUseTypeTransfer = result.getItemDescriptionTypeUseType();
 
             request.setAttribute(AttributeConstants.ITEM_DESCRIPTION_TYPE_USE_TYPE, itemDescriptionTypeUseTypeTransfer);
             request.setAttribute(AttributeConstants.ITEM_DESCRIPTION_TYPE_USE_TYPE_DESCRIPTIONS, result.getItemDescriptionTypeUseTypeDescriptions());

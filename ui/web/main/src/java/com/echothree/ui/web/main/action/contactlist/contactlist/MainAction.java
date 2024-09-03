@@ -51,12 +51,12 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetContactListsForm commandForm = ContactListUtil.getHome().getGetContactListsForm();
+        var commandForm = ContactListUtil.getHome().getGetContactListsForm();
 
-        CommandResult commandResult = ContactListUtil.getHome().getContactLists(getUserVisitPK(request), commandForm);
+        var commandResult = ContactListUtil.getHome().getContactLists(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListsResult result = (GetContactListsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CONTACT_LISTS, result.getContactLists());
             forwardKey = ForwardConstants.DISPLAY;

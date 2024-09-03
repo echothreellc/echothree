@@ -50,7 +50,7 @@ public class CarrierTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("carrierTypeDescription")) {
-            CreateCarrierTypeDescriptionForm commandForm = CarrierFormFactory.getCreateCarrierTypeDescriptionForm();
+            var commandForm = CarrierFormFactory.getCreateCarrierTypeDescriptionForm();
 
             commandForm.setCarrierTypeName(carrierTypeName);
             commandForm.set(getAttrsMap(attrs));

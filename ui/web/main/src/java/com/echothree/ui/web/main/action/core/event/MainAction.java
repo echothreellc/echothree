@@ -63,7 +63,7 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetEventsForm commandForm = CoreUtil.getHome().getGetEventsForm();
+        var commandForm = CoreUtil.getHome().getGetEventsForm();
 
         commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));
         commandForm.setKey(request.getParameter(ParameterConstants.KEY));
@@ -82,23 +82,23 @@ public class MainAction
         options.add(CoreOptions.EntityInstanceIncludeUlidIfAvailable);
         options.add(CoreOptions.EntityVisitIncludeVisitedTime);
         commandForm.setOptions(options);
-        
-        String offsetParameter = request.getParameter(new ParamEncoder("event").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
-        Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
+
+        var offsetParameter = request.getParameter(new ParamEncoder("event").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
+        var offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
         Map<String, Limit> limits = new HashMap<>();
         limits.put(EventConstants.ENTITY_TYPE_NAME, new Limit("20", offset == null ? null : offset.toString()));
         commandForm.setLimits(limits);
 
-        CommandResult commandResult = CoreUtil.getHome().getEvents(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getEvents(getUserVisitPK(request), commandForm);
         
         if(commandResult.hasErrors()) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEventsResult result = (GetEventsResult)executionResult.getResult();
-            EntityInstanceTransfer entityInstance = result.getEntityInstance();
-            EntityInstanceTransfer createdByEntityInstance = result.getCreatedByEntityInstance();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEventsResult)executionResult.getResult();
+            var entityInstance = result.getEntityInstance();
+            var createdByEntityInstance = result.getCreatedByEntityInstance();
 
             if(entityInstance != null) {
                 request.setAttribute(AttributeConstants.ENTITY_INSTANCE, entityInstance);

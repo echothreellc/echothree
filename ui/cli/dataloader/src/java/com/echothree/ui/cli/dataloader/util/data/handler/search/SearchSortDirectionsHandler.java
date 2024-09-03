@@ -47,7 +47,7 @@ public class SearchSortDirectionsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("searchSortDirection")) {
-            CreateSearchSortDirectionForm commandForm = SearchFormFactory.getCreateSearchSortDirectionForm();
+            var commandForm = SearchFormFactory.getCreateSearchSortDirectionForm();
 
             commandForm.set(getAttrsMap(attrs));
 

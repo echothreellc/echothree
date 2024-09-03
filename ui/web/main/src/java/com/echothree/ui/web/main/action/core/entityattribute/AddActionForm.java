@@ -57,13 +57,13 @@ public class AddActionForm
     private void setupEntityAttributeTypeChoices()
             throws NamingException {
         if(entityAttributeTypeChoices == null) {
-            GetEntityAttributeTypeChoicesForm commandForm = CoreUtil.getHome().getGetEntityAttributeTypeChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeTypeChoicesForm();
 
             commandForm.setDefaultEntityAttributeTypeChoice(entityAttributeTypeChoice);
 
-            CommandResult commandResult = CoreUtil.getHome().getEntityAttributeTypeChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeTypeChoicesResult getEntityAttributeTypeChoicesResult = (GetEntityAttributeTypeChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getEntityAttributeTypeChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getEntityAttributeTypeChoicesResult = (GetEntityAttributeTypeChoicesResult)executionResult.getResult();
             entityAttributeTypeChoices = getEntityAttributeTypeChoicesResult.getEntityAttributeTypeChoices();
 
             if(entityAttributeTypeChoice == null)
@@ -74,15 +74,15 @@ public class AddActionForm
     private void setupEntityListItemSequenceChoices()
             throws NamingException {
         if(entityListItemSequenceChoices == null) {
-            GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
+            var commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
 
             commandForm.setSequenceTypeName(SequenceTypes.ENTITY_LIST_ITEM.name());
             commandForm.setDefaultSequenceChoice(entityListItemSequenceChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSequenceChoicesResult getSequenceChoicesResult = (GetSequenceChoicesResult)executionResult.getResult();
+            var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getSequenceChoicesResult = (GetSequenceChoicesResult)executionResult.getResult();
             entityListItemSequenceChoices = getSequenceChoicesResult.getSequenceChoices();
 
             if(entityListItemSequenceChoice == null)

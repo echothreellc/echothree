@@ -52,11 +52,11 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
+        var geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
         
         try {
-            DeleteGeoCodeCurrencyForm commandForm = GeoUtil.getHome().getDeleteGeoCodeCurrencyForm();
-            String currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
+            var commandForm = GeoUtil.getHome().getDeleteGeoCodeCurrencyForm();
+            var currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
             
             commandForm.setGeoCodeName(geoCodeName);
             commandForm.setCurrencyIsoName(currencyIsoName);
@@ -67,8 +67,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

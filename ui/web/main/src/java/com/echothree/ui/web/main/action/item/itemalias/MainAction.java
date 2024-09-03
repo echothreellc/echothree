@@ -53,15 +53,15 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetItemAliasesForm commandForm = ItemUtil.getHome().getGetItemAliasesForm();
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        var commandForm = ItemUtil.getHome().getGetItemAliasesForm();
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
 
         commandForm.setItemName(itemName);
 
-        CommandResult commandResult = ItemUtil.getHome().getItemAliases(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemAliasesResult result = (GetItemAliasesResult)executionResult.getResult();
-        ItemTransfer item = result.getItem();
+        var commandResult = ItemUtil.getHome().getItemAliases(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemAliasesResult)executionResult.getResult();
+        var item = result.getItem();
 
         if(item != null) {
             request.setAttribute(AttributeConstants.ITEM, result.getItem());

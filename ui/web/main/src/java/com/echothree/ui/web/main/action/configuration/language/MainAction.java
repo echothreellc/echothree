@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = PartyUtil.getHome().getLanguages(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLanguagesResult result = (GetLanguagesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getLanguages(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLanguagesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.LANGUAGES, result.getLanguages());
             forwardKey = ForwardConstants.DISPLAY;

@@ -45,7 +45,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateSalesOrderBatchForm commandForm = SalesUtil.getHome().getCreateSalesOrderBatchForm();
+        var commandForm = SalesUtil.getHome().getCreateSalesOrderBatchForm();
 
         commandForm.setCurrencyIsoName(actionForm.getCurrencyChoice());
         commandForm.setPaymentMethodName(actionForm.getPaymentMethodChoice());

@@ -42,15 +42,15 @@ public class AddActionForm
     public void setupPartyAliasTypeChoices()
             throws NamingException {
         if(partyAliasTypeChoices == null) {
-            GetPartyAliasTypeChoicesForm form = PartyUtil.getHome().getGetPartyAliasTypeChoicesForm();
+            var form = PartyUtil.getHome().getGetPartyAliasTypeChoicesForm();
 
             form.setPartyTypeName(PartyTypes.CUSTOMER.name());
             form.setDefaultPartyAliasTypeChoice(partyAliasTypeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getPartyAliasTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyAliasTypeChoicesResult getPartyAliasTypeChoicesResult = (GetPartyAliasTypeChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getPartyAliasTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getPartyAliasTypeChoicesResult = (GetPartyAliasTypeChoicesResult)executionResult.getResult();
             partyAliasTypeChoices = getPartyAliasTypeChoicesResult.getPartyAliasTypeChoices();
 
             if(partyAliasTypeChoice == null) {

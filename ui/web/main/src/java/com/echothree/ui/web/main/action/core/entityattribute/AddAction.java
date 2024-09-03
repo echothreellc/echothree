@@ -61,16 +61,16 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateEntityAttributeForm commandForm = CoreUtil.getHome().getCreateEntityAttributeForm();
-                    String entityAttributeTypeChoice = actionForm.getEntityAttributeTypeChoice();
+                    var commandForm = CoreUtil.getHome().getCreateEntityAttributeForm();
+                    var entityAttributeTypeChoice = actionForm.getEntityAttributeTypeChoice();
                     
                     if(componentVendorName == null)
                         componentVendorName = actionForm.getComponentVendorName();
@@ -99,8 +99,8 @@ public class AddAction
                         default:
                             break;
                     }
-                    
-                    CommandResult commandResult = CoreUtil.getHome().createEntityAttribute(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CoreUtil.getHome().createEntityAttribute(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -117,8 +117,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
 
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorName);

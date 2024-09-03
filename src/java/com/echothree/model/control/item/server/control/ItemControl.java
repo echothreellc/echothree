@@ -2169,7 +2169,7 @@ public class ItemControl
     public ItemStatusChoicesBean getItemStatusChoices(String defaultItemStatusChoice, Language language, boolean allowNullChoice,
             Item item, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        ItemStatusChoicesBean itemStatusChoicesBean = new ItemStatusChoicesBean();
+        var itemStatusChoicesBean = new ItemStatusChoicesBean();
         
         if(item == null) {
             workflowControl.getWorkflowEntranceChoices(itemStatusChoicesBean, defaultItemStatusChoice, language, allowNullChoice,
@@ -10424,7 +10424,7 @@ public class ItemControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.HarmonizedTariffScheduleCode */
     public HarmonizedTariffScheduleCode getHarmonizedTariffScheduleCodeByEntityInstance(EntityInstance entityInstance) {
-        HarmonizedTariffScheduleCodePK pk = new HarmonizedTariffScheduleCodePK(entityInstance.getEntityUniqueId());
+        var pk = new HarmonizedTariffScheduleCodePK(entityInstance.getEntityUniqueId());
         var harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
         
         return harmonizedTariffScheduleCode;

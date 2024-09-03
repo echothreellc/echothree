@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String geoCodeTypeName = request.getParameter(ParameterConstants.GEO_CODE_TYPE_NAME);
-        GetGeoCodeTypeDescriptionsForm commandForm = GeoUtil.getHome().getGetGeoCodeTypeDescriptionsForm();
+        var geoCodeTypeName = request.getParameter(ParameterConstants.GEO_CODE_TYPE_NAME);
+        var commandForm = GeoUtil.getHome().getGetGeoCodeTypeDescriptionsForm();
 
         commandForm.setGeoCodeTypeName(geoCodeTypeName);
 
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = GeoUtil.getHome().getGeoCodeTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeTypeDescriptionsResult result = (GetGeoCodeTypeDescriptionsResult) executionResult.getResult();
-            GeoCodeTypeTransfer geoCodeTypeTransfer = result.getGeoCodeType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeTypeDescriptionsResult) executionResult.getResult();
+            var geoCodeTypeTransfer = result.getGeoCodeType();
 
             request.setAttribute(AttributeConstants.GEO_CODE_TYPE, geoCodeTypeTransfer);
             request.setAttribute(AttributeConstants.GEO_CODE_TYPE_DESCRIPTIONS, result.getGeoCodeTypeDescriptions());

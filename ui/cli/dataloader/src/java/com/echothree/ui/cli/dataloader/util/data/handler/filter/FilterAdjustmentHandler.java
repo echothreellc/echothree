@@ -55,9 +55,9 @@ public class FilterAdjustmentHandler
         if(localName.equals("filterAdjustmentDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -65,7 +65,7 @@ public class FilterAdjustmentHandler
             }
             
             try {
-                CreateFilterAdjustmentDescriptionForm commandForm = FilterFormFactory.getCreateFilterAdjustmentDescriptionForm();
+                var commandForm = FilterFormFactory.getCreateFilterAdjustmentDescriptionForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterAdjustmentName(filterAdjustmentName);
@@ -81,9 +81,9 @@ public class FilterAdjustmentHandler
             String unitOfMeasureTypeName = null;
             String currencyIsoName = null;
             String amount = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("unitOfMeasureKindName"))
                     unitOfMeasureKindName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
@@ -95,7 +95,7 @@ public class FilterAdjustmentHandler
             }
             
             try {
-                CreateFilterAdjustmentAmountForm commandForm = FilterFormFactory.getCreateFilterAdjustmentAmountForm();
+                var commandForm = FilterFormFactory.getCreateFilterAdjustmentAmountForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterAdjustmentName(filterAdjustmentName);
@@ -113,10 +113,9 @@ public class FilterAdjustmentHandler
             String unitOfMeasureTypeName = null;
             String currencyIsoName = null;
             String unitAmount = null;
-            
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("unitOfMeasureKindName"))
                     unitOfMeasureKindName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
@@ -128,7 +127,7 @@ public class FilterAdjustmentHandler
             }
             
             try {
-                CreateFilterAdjustmentFixedAmountForm commandForm = FilterFormFactory.getCreateFilterAdjustmentFixedAmountForm();
+                var commandForm = FilterFormFactory.getCreateFilterAdjustmentFixedAmountForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterAdjustmentName(filterAdjustmentName);
@@ -146,10 +145,9 @@ public class FilterAdjustmentHandler
             String unitOfMeasureTypeName = null;
             String currencyIsoName = null;
             String percent = null;
-            
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("unitOfMeasureKindName"))
                     unitOfMeasureKindName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
@@ -161,7 +159,7 @@ public class FilterAdjustmentHandler
             }
             
             try {
-                CreateFilterAdjustmentPercentForm commandForm = FilterFormFactory.getCreateFilterAdjustmentPercentForm();
+                var commandForm = FilterFormFactory.getCreateFilterAdjustmentPercentForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterAdjustmentName(filterAdjustmentName);

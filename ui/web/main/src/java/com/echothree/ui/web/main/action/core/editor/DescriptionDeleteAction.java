@@ -63,15 +63,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEditorDescriptionForm commandForm = CoreUtil.getHome().getGetEditorDescriptionForm();
+        var commandForm = CoreUtil.getHome().getGetEditorDescriptionForm();
         
         commandForm.setEditorName(actionForm.getEditorName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEditorDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEditorDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEditorDescriptionResult result = (GetEditorDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEditorDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.EDITOR_DESCRIPTION, result.getEditorDescription());
         }
@@ -80,7 +80,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteEditorDescriptionForm commandForm = CoreUtil.getHome().getDeleteEditorDescriptionForm();
+        var commandForm = CoreUtil.getHome().getDeleteEditorDescriptionForm();
 
         commandForm.setEditorName(actionForm.getEditorName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

@@ -54,18 +54,18 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateReturnKindForm commandForm = ReturnPolicyUtil.getHome().getCreateReturnKindForm();
+                    var commandForm = ReturnPolicyUtil.getHome().getCreateReturnKindForm();
                     
                     commandForm.setReturnKindName(actionForm.getReturnKindName());
                     commandForm.setReturnSequenceTypeName(actionForm.getReturnSequenceTypeChoice());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ReturnPolicyUtil.getHome().createReturnKind(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ReturnPolicyUtil.getHome().createReturnKind(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

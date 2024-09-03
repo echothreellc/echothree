@@ -48,15 +48,15 @@ public class AddActionForm
     private void setupDefaultApplicationEditorChoices()
             throws NamingException {
         if(defaultApplicationEditorChoices == null) {
-            GetApplicationEditorChoicesForm commandForm = CoreUtil.getHome().getGetApplicationEditorChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetApplicationEditorChoicesForm();
 
             commandForm.setApplicationName(applicationName);
             commandForm.setDefaultEditorChoice(defaultEditorChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getApplicationEditorChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetApplicationEditorChoicesResult getApplicationEditorChoicesResult = (GetApplicationEditorChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getApplicationEditorChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getApplicationEditorChoicesResult = (GetApplicationEditorChoicesResult)executionResult.getResult();
             defaultApplicationEditorChoices = getApplicationEditorChoicesResult.getApplicationEditorChoices();
 
             if(defaultEditorChoice == null) {

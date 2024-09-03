@@ -46,14 +46,14 @@ public class AddActionForm
     public void setupWorkflowStepTypeChoices()
             throws NamingException {
         if(workflowStepTypeChoices == null) {
-            GetWorkflowStepTypeChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepTypeChoicesForm();
+            var form = WorkflowUtil.getHome().getGetWorkflowStepTypeChoicesForm();
 
             form.setDefaultWorkflowStepTypeChoice(workflowStepTypeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowStepTypeChoicesResult result = (GetWorkflowStepTypeChoicesResult)executionResult.getResult();
+            var commandResult = WorkflowUtil.getHome().getWorkflowStepTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowStepTypeChoicesResult)executionResult.getResult();
             workflowStepTypeChoices = result.getWorkflowStepTypeChoices();
 
             if(workflowStepTypeChoice == null) {

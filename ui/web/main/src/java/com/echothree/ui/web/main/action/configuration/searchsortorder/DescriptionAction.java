@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetSearchSortOrderDescriptionsForm commandForm = SearchUtil.getHome().getGetSearchSortOrderDescriptionsForm();
+        var commandForm = SearchUtil.getHome().getGetSearchSortOrderDescriptionsForm();
 
         commandForm.setSearchKindName(request.getParameter(ParameterConstants.SEARCH_KIND_NAME));
         commandForm.setSearchSortOrderName(request.getParameter(ParameterConstants.SEARCH_SORT_ORDER_NAME));
 
-        CommandResult commandResult = SearchUtil.getHome().getSearchSortOrderDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = SearchUtil.getHome().getSearchSortOrderDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSearchSortOrderDescriptionsResult result = (GetSearchSortOrderDescriptionsResult) executionResult.getResult();
-            SearchSortOrderTransfer searchSortOrderTransfer = result.getSearchSortOrder();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchSortOrderDescriptionsResult) executionResult.getResult();
+            var searchSortOrderTransfer = result.getSearchSortOrder();
 
             request.setAttribute(AttributeConstants.SEARCH_SORT_ORDER, searchSortOrderTransfer);
             request.setAttribute(AttributeConstants.SEARCH_SORT_ORDER_DESCRIPTIONS, result.getSearchSortOrderDescriptions());

@@ -49,9 +49,9 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        CommandResult commandResult = UserUtil.getHome().getUserVisitGroups(getUserVisitPK(request), null);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetUserVisitGroupsResult result = (GetUserVisitGroupsResult)executionResult.getResult();
+        var commandResult = UserUtil.getHome().getUserVisitGroups(getUserVisitPK(request), null);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetUserVisitGroupsResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.USER_VISIT_GROUPS, result.getUserVisitGroups());
 

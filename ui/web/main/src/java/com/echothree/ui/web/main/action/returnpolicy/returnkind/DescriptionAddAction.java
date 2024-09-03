@@ -56,14 +56,14 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+        var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateReturnKindDescriptionForm commandForm = ReturnPolicyUtil.getHome().getCreateReturnKindDescriptionForm();
+                    var commandForm = ReturnPolicyUtil.getHome().getCreateReturnKindDescriptionForm();
                     
                     if(returnKindName == null)
                         returnKindName = actionForm.getReturnKindName();
@@ -71,8 +71,8 @@ public class DescriptionAddAction
                     commandForm.setReturnKindName(returnKindName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ReturnPolicyUtil.getHome().createReturnKindDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ReturnPolicyUtil.getHome().createReturnKindDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -88,8 +88,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.RETURN_KIND_NAME, returnKindName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

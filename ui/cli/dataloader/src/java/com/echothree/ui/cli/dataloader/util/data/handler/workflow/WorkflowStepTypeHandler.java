@@ -49,7 +49,7 @@ public class WorkflowStepTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("workflowStepTypeDescription")) {
-            CreateWorkflowStepTypeDescriptionForm commandForm = WorkflowFormFactory.getCreateWorkflowStepTypeDescriptionForm();
+            var commandForm = WorkflowFormFactory.getCreateWorkflowStepTypeDescriptionForm();
             
             commandForm.setWorkflowStepTypeName(workflowStepTypeName);
             commandForm.set(getAttrsMap(attrs));

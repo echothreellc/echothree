@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetSubscriptionTypesForm getSubscriptionTypesForm = SubscriptionUtil.getHome().getGetSubscriptionTypesForm();
-            String subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
+            var getSubscriptionTypesForm = SubscriptionUtil.getHome().getGetSubscriptionTypesForm();
+            var subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
             
             getSubscriptionTypesForm.setSubscriptionKindName(subscriptionKindName);
 
-            CommandResult commandResult = SubscriptionUtil.getHome().getSubscriptionTypes(getUserVisitPK(request), getSubscriptionTypesForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSubscriptionTypesResult getSubscriptionTypesResult = (GetSubscriptionTypesResult)executionResult.getResult();
+            var commandResult = SubscriptionUtil.getHome().getSubscriptionTypes(getUserVisitPK(request), getSubscriptionTypesForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getSubscriptionTypesResult = (GetSubscriptionTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SUBSCRIPTION_KIND, getSubscriptionTypesResult.getSubscriptionKind());
             request.setAttribute(AttributeConstants.SUBSCRIPTION_TYPES, getSubscriptionTypesResult.getSubscriptionTypes());

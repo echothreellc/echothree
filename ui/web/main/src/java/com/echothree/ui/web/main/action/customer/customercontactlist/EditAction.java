@@ -53,7 +53,7 @@ public class EditAction
     @Override
     protected PartyContactListSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyContactListSpec spec = ContactListUtil.getHome().getPartyContactListSpec();
+        var spec = ContactListUtil.getHome().getPartyContactListSpec();
 
         spec.setPartyName(findParameter(request, ParameterConstants.PARTY_NAME, actionForm.getPartyName()));
         spec.setContactListName(findParameter(request, ParameterConstants.CONTACT_LIST_NAME, actionForm.getContactListName()));
@@ -64,7 +64,7 @@ public class EditAction
     @Override
     protected PartyContactListEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyContactListEdit edit = ContactListUtil.getHome().getPartyContactListEdit();
+        var edit = ContactListUtil.getHome().getPartyContactListEdit();
 
         edit.setPreferredContactMechanismPurposeName(actionForm.getPreferredContactMechanismPurposeChoice());
 
@@ -87,10 +87,10 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditPartyContactListForm commandForm)
             throws Exception {
-        CommandResult commandResult = ContactListUtil.getHome().editPartyContactList(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditPartyContactListResult result = (EditPartyContactListResult)executionResult.getResult();
-        PartyContactListTransfer partyAlias = result.getPartyContactList();
+        var commandResult = ContactListUtil.getHome().editPartyContactList(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditPartyContactListResult)executionResult.getResult();
+        var partyAlias = result.getPartyContactList();
 
         if(partyAlias != null) {
             request.setAttribute(AttributeConstants.PARTY_CONTACT_LIST, partyAlias);

@@ -57,9 +57,9 @@ public class OfferItemHandler
             String minimumUnitPrice = null;
             String maximumUnitPrice = null;
             String unitPriceIncrement = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("inventoryConditionName"))
                     inventoryConditionName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
@@ -77,7 +77,7 @@ public class OfferItemHandler
             }
             
             try {
-                CreateOfferItemPriceForm form = OfferFormFactory.getCreateOfferItemPriceForm();
+                var form = OfferFormFactory.getCreateOfferItemPriceForm();
                 
                 form.setOfferName(offerName);
                 form.setItemName(itemName);

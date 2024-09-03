@@ -54,17 +54,17 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateGlResourceTypeForm commandForm = AccountingUtil.getHome().getCreateGlResourceTypeForm();
+                    var commandForm = AccountingUtil.getHome().getCreateGlResourceTypeForm();
                     
                     commandForm.setGlResourceTypeName(actionForm.getGlResourceTypeName());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().createGlResourceType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AccountingUtil.getHome().createGlResourceType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

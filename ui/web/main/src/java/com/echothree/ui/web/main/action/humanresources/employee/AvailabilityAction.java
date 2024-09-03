@@ -54,13 +54,13 @@ public class AvailabilityAction
 
     public void setupEmployee(HttpServletRequest request, String employeeName)
             throws NamingException {
-        GetEmployeeForm commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
+        var commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
 
         commandForm.setEmployeeName(employeeName);
 
-        CommandResult commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEmployeeResult result = (GetEmployeeResult)executionResult.getResult();
+        var commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEmployeeResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.EMPLOYEE, result.getEmployee());
     }
@@ -69,8 +69,8 @@ public class AvailabilityAction
     public ActionForward executeAction(ActionMapping mapping, AvailabilityActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
-        String employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
 
         if(returnUrl == null) {
             returnUrl = actionForm.getReturnUrl();
@@ -83,7 +83,7 @@ public class AvailabilityAction
             CommandResult commandResult = null;
 
             if(!wasCanceled(request)) {
-                SetEmployeeAvailabilityForm commandForm = PartyUtil.getHome().getSetEmployeeAvailabilityForm();
+                var commandForm = PartyUtil.getHome().getSetEmployeeAvailabilityForm();
 
                 commandForm.setEmployeeName(employeeName);
                 commandForm.setEmployeeAvailabilityChoice(actionForm.getEmployeeAvailabilityChoice());

@@ -61,14 +61,14 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-        String originalReturnTypeName = request.getParameter(ParameterConstants.ORIGINAL_RETURN_TYPE_NAME);
+        var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+        var originalReturnTypeName = request.getParameter(ParameterConstants.ORIGINAL_RETURN_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditReturnTypeForm commandForm = ReturnPolicyUtil.getHome().getEditReturnTypeForm();
-                ReturnTypeSpec spec = ReturnPolicyUtil.getHome().getReturnTypeSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = ReturnPolicyUtil.getHome().getEditReturnTypeForm();
+                var spec = ReturnPolicyUtil.getHome().getReturnTypeSpec();
                 
                 if(returnKindName == null)
                     returnKindName = actionForm.getReturnKindName();
@@ -80,7 +80,7 @@ public class EditAction
                 spec.setReturnTypeName(originalReturnTypeName);
                 
                 if(wasPost(request)) {
-                    ReturnTypeEdit edit = ReturnPolicyUtil.getHome().getReturnTypeEdit();
+                    var edit = ReturnPolicyUtil.getHome().getReturnTypeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -90,14 +90,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ReturnPolicyUtil.getHome().editReturnType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ReturnPolicyUtil.getHome().editReturnType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditReturnTypeResult result = (EditReturnTypeResult)executionResult.getResult();
+                            var result = (EditReturnTypeResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -110,13 +110,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = ReturnPolicyUtil.getHome().editReturnType(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditReturnTypeResult result = (EditReturnTypeResult)executionResult.getResult();
+
+                    var commandResult = ReturnPolicyUtil.getHome().editReturnType(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditReturnTypeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        ReturnTypeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setReturnKindName(returnKindName);
@@ -139,8 +139,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.RETURN_KIND_NAME, returnKindName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

@@ -52,11 +52,11 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-            String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
         
         try {
-            SetDefaultInventoryLocationGroupForm commandForm = InventoryUtil.getHome().getSetDefaultInventoryLocationGroupForm();
-            String inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
+            var commandForm = InventoryUtil.getHome().getSetDefaultInventoryLocationGroupForm();
+            var inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
             
             commandForm.setWarehouseName(warehouseName);
             commandForm.setInventoryLocationGroupName(inventoryLocationGroupName);
@@ -67,8 +67,8 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

@@ -53,7 +53,7 @@ public class UnitOfMeasureKindHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("unitOfMeasureKindDescription")) {
-            CreateUnitOfMeasureKindDescriptionForm form = UomFormFactory.getCreateUnitOfMeasureKindDescriptionForm();
+            var form = UomFormFactory.getCreateUnitOfMeasureKindDescriptionForm();
 
             form.setUnitOfMeasureKindName(unitOfMeasureKindName);
             form.set(getAttrsMap(attrs));
@@ -62,9 +62,9 @@ public class UnitOfMeasureKindHandler
         } else if(localName.equals("unitOfMeasureType")) {
             String unitOfMeasureTypeName = null;
             String doCreate = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
                     unitOfMeasureTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("doCreate"))
@@ -72,7 +72,7 @@ public class UnitOfMeasureKindHandler
             }
             
             if(doCreate == null || doCreate.equalsIgnoreCase("true")) {
-                CreateUnitOfMeasureTypeForm form = UomFormFactory.getCreateUnitOfMeasureTypeForm();
+                var form = UomFormFactory.getCreateUnitOfMeasureTypeForm();
 
                 form.setUnitOfMeasureKindName(unitOfMeasureKindName);
                 form.set(getAttrsMap(attrs));
@@ -82,14 +82,14 @@ public class UnitOfMeasureKindHandler
 
             initialDataParser.pushHandler(new UnitOfMeasureTypeHandler(initialDataParser, this, unitOfMeasureKindName, unitOfMeasureTypeName));
         } else if(localName.equals("unitOfMeasureEquivalent")) {
-            CreateUnitOfMeasureEquivalentForm form = UomFormFactory.getCreateUnitOfMeasureEquivalentForm();
+            var form = UomFormFactory.getCreateUnitOfMeasureEquivalentForm();
 
             form.setUnitOfMeasureKindName(unitOfMeasureKindName);
             form.set(getAttrsMap(attrs));
 
             checkCommandResult(uomService.createUnitOfMeasureEquivalent(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("unitOfMeasureKindUse")) {
-            CreateUnitOfMeasureKindUseForm form = UomFormFactory.getCreateUnitOfMeasureKindUseForm();
+            var form = UomFormFactory.getCreateUnitOfMeasureKindUseForm();
 
             form.setUnitOfMeasureKindName(unitOfMeasureKindName);
             form.set(getAttrsMap(attrs));

@@ -45,14 +45,14 @@ public class AddActionForm
     private void setupParentGeoCodeTypeChoices() {
         if(parentGeoCodeTypeChoices == null) {
             try {
-                GetGeoCodeTypeChoicesForm form = GeoUtil.getHome().getGetGeoCodeTypeChoicesForm();
+                var form = GeoUtil.getHome().getGetGeoCodeTypeChoicesForm();
 
                 form.setDefaultGeoCodeTypeChoice(parentGeoCodeTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = GeoUtil.getHome().getGeoCodeTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGeoCodeTypeChoicesResult getGeoCodeTypeChoicesResult = (GetGeoCodeTypeChoicesResult)executionResult.getResult();
+                var commandResult = GeoUtil.getHome().getGeoCodeTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getGeoCodeTypeChoicesResult = (GetGeoCodeTypeChoicesResult)executionResult.getResult();
                 parentGeoCodeTypeChoices = getGeoCodeTypeChoicesResult.getGeoCodeTypeChoices();
 
                 if(parentGeoCodeTypeChoice == null) {

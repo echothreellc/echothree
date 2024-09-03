@@ -58,10 +58,10 @@ public class ContactWebAddressEditAction
     public ActionForward executeAction(ActionMapping mapping, ContactWebAddressEditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);
-        EditContactWebAddressForm commandForm = ContactUtil.getHome().getEditContactWebAddressForm();
-        PartyContactMechanismSpec spec = ContactUtil.getHome().getPartyContactMechanismSpec();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);
+        var commandForm = ContactUtil.getHome().getEditContactWebAddressForm();
+        var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
 
         if(partyName == null) {
             partyName = actionForm.getPartyName();
@@ -75,12 +75,12 @@ public class ContactWebAddressEditAction
         spec.setContactMechanismName(contactMechanismName);
 
         if(wasPost(request)) {
-            boolean wasCanceled = wasCanceled(request);
+            var wasCanceled = wasCanceled(request);
 
             if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
-                ContactWebAddressEdit edit = ContactUtil.getHome().getContactWebAddressEdit();
+                var edit = ContactUtil.getHome().getContactWebAddressEdit();
 
                 commandForm.setEditMode(EditMode.UPDATE);
                 commandForm.setEdit(edit);
@@ -89,13 +89,13 @@ public class ContactWebAddressEditAction
                 edit.setDescription(actionForm.getDescription());
             }
 
-            CommandResult commandResult = ContactUtil.getHome().editContactWebAddress(getUserVisitPK(request), commandForm);
+            var commandResult = ContactUtil.getHome().editContactWebAddress(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors() && !wasCanceled) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {
-                    EditContactWebAddressResult result = (EditContactWebAddressResult)executionResult.getResult();
+                    var result = (EditContactWebAddressResult)executionResult.getResult();
 
                     request.setAttribute(AttributeConstants.CONTACT_MECHANISM, result.getContactMechanism());
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
@@ -110,12 +110,12 @@ public class ContactWebAddressEditAction
         } else {
             commandForm.setEditMode(EditMode.LOCK);
 
-            CommandResult commandResult = ContactUtil.getHome().editContactWebAddress(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditContactWebAddressResult result = (EditContactWebAddressResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().editContactWebAddress(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditContactWebAddressResult)executionResult.getResult();
 
             if(result != null) {
-                ContactWebAddressEdit edit = result.getEdit();
+                var edit = result.getEdit();
 
                 if(edit != null) {
                     actionForm.setPartyName(partyName);
@@ -133,7 +133,7 @@ public class ContactWebAddressEditAction
             forwardKey = ForwardConstants.FORM;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupWarehouse(request, partyName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

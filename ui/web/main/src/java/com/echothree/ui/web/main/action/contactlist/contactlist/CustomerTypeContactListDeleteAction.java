@@ -63,15 +63,15 @@ public class CustomerTypeContactListDeleteAction
     @Override
     public void setupTransfer(CustomerTypeContactListDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerTypeContactListForm commandForm = ContactListUtil.getHome().getGetCustomerTypeContactListForm();
+        var commandForm = ContactListUtil.getHome().getGetCustomerTypeContactListForm();
         
         commandForm.setContactListName(actionForm.getContactListName());
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getCustomerTypeContactList(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getCustomerTypeContactList(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypeContactListResult result = (GetCustomerTypeContactListResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypeContactListResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_CONTACT_LIST, result.getCustomerTypeContactList());
         }
@@ -80,7 +80,7 @@ public class CustomerTypeContactListDeleteAction
     @Override
     public CommandResult doDelete(CustomerTypeContactListDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteCustomerTypeContactListForm commandForm = ContactListUtil.getHome().getDeleteCustomerTypeContactListForm();
+        var commandForm = ContactListUtil.getHome().getDeleteCustomerTypeContactListForm();
 
         commandForm.setContactListName(actionForm.getContactListName());
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());

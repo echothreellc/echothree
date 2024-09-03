@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetUseTypeForm commandForm = OfferUtil.getHome().getGetUseTypeForm();
-            String useTypeName = request.getParameter(ParameterConstants.USE_TYPE_NAME);
+            var commandForm = OfferUtil.getHome().getGetUseTypeForm();
+            var useTypeName = request.getParameter(ParameterConstants.USE_TYPE_NAME);
             
             commandForm.setUseTypeName(useTypeName);
-            
-            CommandResult commandResult = OfferUtil.getHome().getUseType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUseTypeResult result = (GetUseTypeResult)executionResult.getResult();
+
+            var commandResult = OfferUtil.getHome().getUseType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetUseTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.USE_TYPE, result.getUseType());
             forwardKey = ForwardConstants.DISPLAY;

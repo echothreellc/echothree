@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String glResourceTypeName = request.getParameter(ParameterConstants.GL_RESOURCE_TYPE_NAME);
-            GetGlResourceTypeDescriptionsForm commandForm = AccountingUtil.getHome().getGetGlResourceTypeDescriptionsForm();
+            var glResourceTypeName = request.getParameter(ParameterConstants.GL_RESOURCE_TYPE_NAME);
+            var commandForm = AccountingUtil.getHome().getGetGlResourceTypeDescriptionsForm();
             
             commandForm.setGlResourceTypeName(glResourceTypeName);
-            
-            CommandResult commandResult = AccountingUtil.getHome().getGlResourceTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGlResourceTypeDescriptionsResult result = (GetGlResourceTypeDescriptionsResult)executionResult.getResult();
-            GlResourceTypeTransfer glResourceTypeTransfer = result.getGlResourceType();
+
+            var commandResult = AccountingUtil.getHome().getGlResourceTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGlResourceTypeDescriptionsResult)executionResult.getResult();
+            var glResourceTypeTransfer = result.getGlResourceType();
             
             request.setAttribute(AttributeConstants.GL_RESOURCE_TYPE, glResourceTypeTransfer);
             request.setAttribute(AttributeConstants.GL_RESOURCE_TYPE_NAME, glResourceTypeTransfer.getGlResourceTypeName());

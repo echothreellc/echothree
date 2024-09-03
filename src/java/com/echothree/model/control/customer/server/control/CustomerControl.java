@@ -834,7 +834,7 @@ public class CustomerControl
     public CustomerStatusChoicesBean getCustomerStatusChoices(String defaultCustomerStatusChoice, Language language,
             boolean allowNullChoice, Party customerParty, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        CustomerStatusChoicesBean customerStatusChoicesBean = new CustomerStatusChoicesBean();
+        var customerStatusChoicesBean = new CustomerStatusChoicesBean();
         
         if(customerParty == null) {
             workflowControl.getWorkflowEntranceChoices(customerStatusChoicesBean, defaultCustomerStatusChoice, language, allowNullChoice,
@@ -869,7 +869,7 @@ public class CustomerControl
     public CustomerCreditStatusChoicesBean getCustomerCreditStatusChoices(String defaultCustomerCreditStatusChoice, Language language,
             boolean allowNullChoice, Party customerParty, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        CustomerCreditStatusChoicesBean customerCreditStatusChoicesBean = new CustomerCreditStatusChoicesBean();
+        var customerCreditStatusChoicesBean = new CustomerCreditStatusChoicesBean();
         
         if(customerParty == null) {
             workflowControl.getWorkflowEntranceChoices(customerCreditStatusChoicesBean, defaultCustomerCreditStatusChoice, language, allowNullChoice,

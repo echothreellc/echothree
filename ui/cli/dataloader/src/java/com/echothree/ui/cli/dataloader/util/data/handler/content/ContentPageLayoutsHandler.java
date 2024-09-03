@@ -48,9 +48,9 @@ public class ContentPageLayoutsHandler
             String contentPageLayoutName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("contentPageLayoutName"))
                     contentPageLayoutName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class ContentPageLayoutsHandler
             }
             
             try {
-                CreateContentPageLayoutForm createContentPageLayoutForm = ContentFormFactory.getCreateContentPageLayoutForm();
+                var createContentPageLayoutForm = ContentFormFactory.getCreateContentPageLayoutForm();
                 
                 createContentPageLayoutForm.setContentPageLayoutName(contentPageLayoutName);
                 createContentPageLayoutForm.setIsDefault(isDefault);

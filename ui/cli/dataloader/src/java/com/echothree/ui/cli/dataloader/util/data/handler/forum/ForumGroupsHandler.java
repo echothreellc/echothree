@@ -45,13 +45,13 @@ public class ForumGroupsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("forumGroup")) {
-            CreateForumGroupForm form = ForumFormFactory.getCreateForumGroupForm();
+            var form = ForumFormFactory.getCreateForumGroupForm();
             String forumGroupName = null;
             String iconName = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("forumGroupName"))
                     forumGroupName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("iconName"))

@@ -59,9 +59,9 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
-        String originalVendorItemName = request.getParameter(ParameterConstants.ORIGINAL_VENDOR_ITEM_NAME);
-        EditVendorItemForm commandForm = VendorUtil.getHome().getEditVendorItemForm();
+        var vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
+        var originalVendorItemName = request.getParameter(ParameterConstants.ORIGINAL_VENDOR_ITEM_NAME);
+        var commandForm = VendorUtil.getHome().getEditVendorItemForm();
         var spec = VendorUtil.getHome().getVendorItemUniversalSpec();
         
         if(vendorName == null)
@@ -74,7 +74,7 @@ public class EditAction
         spec.setVendorItemName(originalVendorItemName);
         
         if(wasPost(request)) {
-            VendorItemEdit edit = VendorUtil.getHome().getVendorItemEdit();
+            var edit = VendorUtil.getHome().getVendorItemEdit();
             
             commandForm.setEditMode(EditMode.UPDATE);
             commandForm.setEdit(edit);
@@ -84,14 +84,14 @@ public class EditAction
             edit.setPriority(actionForm.getPriority());
             edit.setCancellationPolicyName(actionForm.getCancellationPolicyChoice());
             edit.setReturnPolicyName(actionForm.getReturnPolicyChoice());
-            
-            CommandResult commandResult = VendorUtil.getHome().editVendorItem(getUserVisitPK(request), commandForm);
+
+            var commandResult = VendorUtil.getHome().editVendorItem(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    EditVendorItemResult result = (EditVendorItemResult)executionResult.getResult();
+                    var result = (EditVendorItemResult)executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -104,13 +104,13 @@ public class EditAction
             }
         } else {
             commandForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = VendorUtil.getHome().editVendorItem(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditVendorItemResult result = (EditVendorItemResult)executionResult.getResult();
+
+            var commandResult = VendorUtil.getHome().editVendorItem(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditVendorItemResult)executionResult.getResult();
             
             if(result != null) {
-                VendorItemEdit edit = result.getEdit();
+                var edit = result.getEdit();
                 
                 if(edit != null) {
                     actionForm.setVendorName(vendorName);
@@ -129,8 +129,8 @@ public class EditAction
             
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.VENDOR_NAME, vendorName);
             request.setAttribute(AttributeConstants.ORIGINAL_VENDOR_ITEM_NAME, originalVendorItemName);

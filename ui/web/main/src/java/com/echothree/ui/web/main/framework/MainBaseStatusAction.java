@@ -54,9 +54,9 @@ public abstract class MainBaseStatusAction<A extends ActionForm, R extends BaseS
 
         if(wasPost(request)) {
             if(!wasCanceled(request)) {
-                CommandResult commandResult = doStatus(actionForm, request);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                R result = (R)executionResult.getResult();
+                var commandResult = doStatus(actionForm, request);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (R)executionResult.getResult();
 
                 if(result != null) {
                     setLockAttribute(request, result);

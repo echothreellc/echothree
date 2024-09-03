@@ -57,7 +57,7 @@ public class PartyPaymentMethodLogic
     }
 
     private String getDigitsOnly(String s) {
-        StringBuilder digitsOnly = new StringBuilder();
+        var digitsOnly = new StringBuilder();
 
         for(var i = 0; i < s.length(); i++) {
             var c = s.charAt(i);

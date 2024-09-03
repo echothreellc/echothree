@@ -63,15 +63,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetHarmonizedTariffScheduleCodeUnitDescriptionForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitDescriptionForm();
+        var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitDescriptionForm();
         
         commandForm.setHarmonizedTariffScheduleCodeUnitName(actionForm.getHarmonizedTariffScheduleCodeUnitName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeUnitDescriptionResult result = (GetHarmonizedTariffScheduleCodeUnitDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodeUnitDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT_DESCRIPTION, result.getHarmonizedTariffScheduleCodeUnitDescription());
         }
@@ -80,7 +80,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteHarmonizedTariffScheduleCodeUnitDescriptionForm commandForm = ItemUtil.getHome().getDeleteHarmonizedTariffScheduleCodeUnitDescriptionForm();
+        var commandForm = ItemUtil.getHome().getDeleteHarmonizedTariffScheduleCodeUnitDescriptionForm();
 
         commandForm.setHarmonizedTariffScheduleCodeUnitName(actionForm.getHarmonizedTariffScheduleCodeUnitName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

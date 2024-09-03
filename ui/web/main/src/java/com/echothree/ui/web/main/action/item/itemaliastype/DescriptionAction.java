@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String itemAliasTypeName = request.getParameter(ParameterConstants.ITEM_ALIAS_TYPE_NAME);
-        GetItemAliasTypeDescriptionsForm commandForm = ItemUtil.getHome().getGetItemAliasTypeDescriptionsForm();
+        var itemAliasTypeName = request.getParameter(ParameterConstants.ITEM_ALIAS_TYPE_NAME);
+        var commandForm = ItemUtil.getHome().getGetItemAliasTypeDescriptionsForm();
 
         commandForm.setItemAliasTypeName(itemAliasTypeName);
 
-        CommandResult commandResult = ItemUtil.getHome().getItemAliasTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getItemAliasTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemAliasTypeDescriptionsResult result = (GetItemAliasTypeDescriptionsResult) executionResult.getResult();
-            ItemAliasTypeTransfer itemAliasTypeTransfer = result.getItemAliasType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemAliasTypeDescriptionsResult) executionResult.getResult();
+            var itemAliasTypeTransfer = result.getItemAliasType();
 
             request.setAttribute(AttributeConstants.ITEM_ALIAS_TYPE, itemAliasTypeTransfer);
             request.setAttribute(AttributeConstants.ITEM_ALIAS_TYPE_DESCRIPTIONS, result.getItemAliasTypeDescriptions());

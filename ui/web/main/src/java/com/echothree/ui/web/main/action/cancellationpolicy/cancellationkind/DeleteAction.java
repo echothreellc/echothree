@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteCancellationKindForm commandForm = CancellationPolicyUtil.getHome().getDeleteCancellationKindForm();
-            String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+            var commandForm = CancellationPolicyUtil.getHome().getDeleteCancellationKindForm();
+            var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
             
             commandForm.setCancellationKindName(cancellationKindName);
             

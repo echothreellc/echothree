@@ -47,7 +47,7 @@ public class ColorsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("color")) {
-            CreateColorForm commandForm = CoreFormFactory.getCreateColorForm();
+            var commandForm = CoreFormFactory.getCreateColorForm();
             
             commandForm.set(getAttrsMap(attrs));
             

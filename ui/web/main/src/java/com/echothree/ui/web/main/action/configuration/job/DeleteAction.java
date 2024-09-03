@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteJobForm commandForm = JobUtil.getHome().getDeleteJobForm();
-            String jobName = request.getParameter(ParameterConstants.JOB_NAME);
+            var commandForm = JobUtil.getHome().getDeleteJobForm();
+            var jobName = request.getParameter(ParameterConstants.JOB_NAME);
             
             commandForm.setJobName(jobName);
             

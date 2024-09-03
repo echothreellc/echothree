@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetItemAccountingCategoryForm commandForm = AccountingUtil.getHome().getGetItemAccountingCategoryForm();
-            String itemAccountingCategoryName = request.getParameter(ParameterConstants.ITEM_ACCOUNTING_CATEGORY_NAME);
+            var commandForm = AccountingUtil.getHome().getGetItemAccountingCategoryForm();
+            var itemAccountingCategoryName = request.getParameter(ParameterConstants.ITEM_ACCOUNTING_CATEGORY_NAME);
             
             commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
-            
-            CommandResult commandResult = AccountingUtil.getHome().getItemAccountingCategory(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemAccountingCategoryResult result = (GetItemAccountingCategoryResult)executionResult.getResult();
+
+            var commandResult = AccountingUtil.getHome().getItemAccountingCategory(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemAccountingCategoryResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ITEM_ACCOUNTING_CATEGORY, result.getItemAccountingCategory());
             forwardKey = ForwardConstants.DISPLAY;

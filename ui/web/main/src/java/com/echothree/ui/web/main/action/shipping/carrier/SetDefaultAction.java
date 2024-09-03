@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultCarrierForm commandForm = CarrierUtil.getHome().getSetDefaultCarrierForm();
-            String carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
+            var commandForm = CarrierUtil.getHome().getSetDefaultCarrierForm();
+            var carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
             
             commandForm.setCarrierName(carrierName);
             

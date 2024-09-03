@@ -63,15 +63,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemDescriptionTypeUseTypeDescriptionForm commandForm = ItemUtil.getHome().getGetItemDescriptionTypeUseTypeDescriptionForm();
+        var commandForm = ItemUtil.getHome().getGetItemDescriptionTypeUseTypeDescriptionForm();
         
         commandForm.setItemDescriptionTypeUseTypeName(actionForm.getItemDescriptionTypeUseTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getItemDescriptionTypeUseTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getItemDescriptionTypeUseTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemDescriptionTypeUseTypeDescriptionResult result = (GetItemDescriptionTypeUseTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemDescriptionTypeUseTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.ITEM_DESCRIPTION_TYPE_USE_TYPE_DESCRIPTION, result.getItemDescriptionTypeUseTypeDescription());
         }
@@ -80,7 +80,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteItemDescriptionTypeUseTypeDescriptionForm commandForm = ItemUtil.getHome().getDeleteItemDescriptionTypeUseTypeDescriptionForm();
+        var commandForm = ItemUtil.getHome().getDeleteItemDescriptionTypeUseTypeDescriptionForm();
 
         commandForm.setItemDescriptionTypeUseTypeName(actionForm.getItemDescriptionTypeUseTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

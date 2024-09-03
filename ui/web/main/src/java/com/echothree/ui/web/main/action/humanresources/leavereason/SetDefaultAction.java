@@ -48,7 +48,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultLeaveReasonForm commandForm = EmployeeUtil.getHome().getSetDefaultLeaveReasonForm();
+        var commandForm = EmployeeUtil.getHome().getSetDefaultLeaveReasonForm();
 
         commandForm.setLeaveReasonName(request.getParameter(ParameterConstants.LEAVE_REASON_NAME));
 

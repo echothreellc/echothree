@@ -56,17 +56,17 @@ public class WishlistReviewAction
         String forwardKey;
         
         try {
-            GetWishlistLinesForm commandForm = WishlistUtil.getHome().getGetWishlistLinesForm();
-            String customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
-            String wishlistName = request.getParameter(ParameterConstants.WISHLIST_NAME);
-            String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+            var commandForm = WishlistUtil.getHome().getGetWishlistLinesForm();
+            var customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
+            var wishlistName = request.getParameter(ParameterConstants.WISHLIST_NAME);
+            var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
             
             commandForm.setWishlistName(wishlistName);
             commandForm.setItemName(itemName);
-            
-            CommandResult commandResult = WishlistUtil.getHome().getWishlistLines(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWishlistLinesResult result = (GetWishlistLinesResult)executionResult.getResult();
+
+            var commandResult = WishlistUtil.getHome().getWishlistLines(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWishlistLinesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WISHLIST_LINES, result.getWishlistLines());
             request.setAttribute(AttributeConstants.CUSTOMER_NAME, customerName);

@@ -54,18 +54,18 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateCancellationKindForm commandForm = CancellationPolicyUtil.getHome().getCreateCancellationKindForm();
+                    var commandForm = CancellationPolicyUtil.getHome().getCreateCancellationKindForm();
                     
                     commandForm.setCancellationKindName(actionForm.getCancellationKindName());
                     commandForm.setCancellationSequenceTypeName(actionForm.getCancellationSequenceTypeChoice());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CancellationPolicyUtil.getHome().createCancellationKind(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CancellationPolicyUtil.getHome().createCancellationKind(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

@@ -48,7 +48,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultMimeTypeForm commandForm = CoreUtil.getHome().getSetDefaultMimeTypeForm();
+        var commandForm = CoreUtil.getHome().getSetDefaultMimeTypeForm();
 
         commandForm.setMimeTypeName(request.getParameter(ParameterConstants.MIME_TYPE_NAME));
 

@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteCarrierForm commandForm = CarrierUtil.getHome().getDeleteCarrierForm();
-            String carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
+            var commandForm = CarrierUtil.getHome().getDeleteCarrierForm();
+            var carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
             
             commandForm.setCarrierName(carrierName);
             

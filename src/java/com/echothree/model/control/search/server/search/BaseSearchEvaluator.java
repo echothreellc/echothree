@@ -109,7 +109,7 @@ public abstract class BaseSearchEvaluator
     }
 
     private EntityInstancePKHolder convertPKListToEntityInstancePKHolder(List<EntityInstancePK> entityInstancePKs) {
-        EntityInstancePKHolder entityInstancePKHolder = new EntityInstancePKHolder(entityInstancePKs.size());
+        var entityInstancePKHolder = new EntityInstancePKHolder(entityInstancePKs.size());
         var i = 0;
 
         for(var entityInstancePK : entityInstancePKs) {

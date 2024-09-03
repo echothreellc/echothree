@@ -44,14 +44,14 @@ public class AddActionForm
     private void setupCustomerTypeChoices() {
         if(customerTypeChoices == null) {
             try {
-                GetCustomerTypeChoicesForm form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
+                var form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
                 
                 form.setDefaultCustomerTypeChoice(customerTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCustomerTypeChoicesResult result = (GetCustomerTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetCustomerTypeChoicesResult)executionResult.getResult();
                 customerTypeChoices = result.getCustomerTypeChoices();
                 
                 if(customerTypeChoice == null)

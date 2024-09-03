@@ -63,14 +63,14 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+        var commandForm = ItemUtil.getHome().getGetItemForm();
 
         commandForm.setItemName(actionForm.getFromItemName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemResult result = (GetItemResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ITEM, result.getItem());
         }
@@ -79,7 +79,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateRelatedItemForm commandForm = ItemUtil.getHome().getCreateRelatedItemForm();
+        var commandForm = ItemUtil.getHome().getCreateRelatedItemForm();
 
         commandForm.setRelatedItemTypeName(actionForm.getRelatedItemTypeName());
         commandForm.setFromItemName(actionForm.getFromItemName());

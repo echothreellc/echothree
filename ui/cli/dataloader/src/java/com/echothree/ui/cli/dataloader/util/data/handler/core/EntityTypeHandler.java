@@ -138,7 +138,7 @@ public class EntityTypeHandler
                         commandForm.getEntityAliasTypeName()));
             }
             case "entityAttribute" -> {
-                CreateEntityAttributeForm commandForm = CoreFormFactory.getCreateEntityAttributeForm();
+                var commandForm = CoreFormFactory.getCreateEntityAttributeForm();
 
                 commandForm.setComponentVendorName(componentVendorName);
                 commandForm.setEntityTypeName(entityTypeName);
@@ -150,7 +150,7 @@ public class EntityTypeHandler
                         commandForm.getEntityAttributeName()));
             }
             case "commentType" -> {
-                CreateCommentTypeForm commandForm = CommentFormFactory.getCreateCommentTypeForm();
+                var commandForm = CommentFormFactory.getCreateCommentTypeForm();
 
                 commandForm.setComponentVendorName(componentVendorName);
                 commandForm.setEntityTypeName(entityTypeName);
@@ -162,7 +162,7 @@ public class EntityTypeHandler
                         commandForm.getCommentTypeName()));
             }
             case "ratingType" -> {
-                CreateRatingTypeForm commandForm = RatingFormFactory.getCreateRatingTypeForm();
+                var commandForm = RatingFormFactory.getCreateRatingTypeForm();
 
                 commandForm.setComponentVendorName(componentVendorName);
                 commandForm.setEntityTypeName(entityTypeName);
@@ -174,7 +174,7 @@ public class EntityTypeHandler
                         commandForm.getRatingTypeName()));
             }
             case "messageType" -> {
-                CreateMessageTypeForm commandForm = MessageFormFactory.getCreateMessageTypeForm();
+                var commandForm = MessageFormFactory.getCreateMessageTypeForm();
 
                 commandForm.setComponentVendorName(componentVendorName);
                 commandForm.setEntityTypeName(entityTypeName);

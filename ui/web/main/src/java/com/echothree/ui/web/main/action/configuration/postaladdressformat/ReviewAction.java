@@ -56,15 +56,15 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            String postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
-            GetPostalAddressFormatForm commandForm = ContactUtil.getHome().getGetPostalAddressFormatForm();
+            var postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
+            var commandForm = ContactUtil.getHome().getGetPostalAddressFormatForm();
             
             commandForm.setPostalAddressFormatName(postalAddressFormatName);
-            
-            CommandResult commandResult = ContactUtil.getHome().getPostalAddressFormat(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPostalAddressFormatResult result = (GetPostalAddressFormatResult)executionResult.getResult();
-            PostalAddressFormatTransfer postalAddressFormatTransfer = result.getPostalAddressFormat();
+
+            var commandResult = ContactUtil.getHome().getPostalAddressFormat(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPostalAddressFormatResult)executionResult.getResult();
+            var postalAddressFormatTransfer = result.getPostalAddressFormat();
             
             if(postalAddressFormatTransfer == null) {
                 forwardKey = ForwardConstants.ERROR_404;

@@ -38,13 +38,13 @@ public abstract class BaseCompanyCarrierAction<A
 
     public static void setupCompany(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetCompanyForm commandForm = PartyUtil.getHome().getGetCompanyForm();
+        var commandForm = PartyUtil.getHome().getGetCompanyForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCompanyResult result = (GetCompanyResult)executionResult.getResult();
+        var commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCompanyResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.COMPANY, result.getCompany());
     }
@@ -56,14 +56,14 @@ public abstract class BaseCompanyCarrierAction<A
 
     public static PartyCarrierTransfer getPartyCarrierTransfer(HttpServletRequest request, String partyName, String carrierName)
             throws NamingException {
-        GetPartyCarrierForm commandForm = CarrierUtil.getHome().getGetPartyCarrierForm();
+        var commandForm = CarrierUtil.getHome().getGetPartyCarrierForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setCarrierName(carrierName);
 
-        CommandResult commandResult = CarrierUtil.getHome().getPartyCarrier(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyCarrierResult result = (GetPartyCarrierResult)executionResult.getResult();
+        var commandResult = CarrierUtil.getHome().getPartyCarrier(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyCarrierResult)executionResult.getResult();
 
         return result.getPartyCarrier();
     }

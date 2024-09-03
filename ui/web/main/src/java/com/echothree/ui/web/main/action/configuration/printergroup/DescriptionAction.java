@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
-            GetPrinterGroupDescriptionsForm commandForm = PrinterUtil.getHome().getGetPrinterGroupDescriptionsForm();
+            var printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
+            var commandForm = PrinterUtil.getHome().getGetPrinterGroupDescriptionsForm();
             
             commandForm.setPrinterGroupName(printerGroupName);
-            
-            CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterGroupDescriptionsResult result = (GetPrinterGroupDescriptionsResult)executionResult.getResult();
-            PrinterGroupTransfer printerGroupTransfer = result.getPrinterGroup();
+
+            var commandResult = PrinterUtil.getHome().getPrinterGroupDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPrinterGroupDescriptionsResult)executionResult.getResult();
+            var printerGroupTransfer = result.getPrinterGroup();
             
             request.setAttribute(AttributeConstants.PRINTER_GROUP, printerGroupTransfer);
             request.setAttribute(AttributeConstants.PRINTER_GROUP_DESCRIPTIONS, result.getPrinterGroupDescriptions());

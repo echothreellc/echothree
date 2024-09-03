@@ -46,15 +46,15 @@ public class AddActionForm
     public void setupRatingSequenceChoices()
             throws NamingException {
         if(ratingSequenceChoices == null) {
-            GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
+            var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
 
             form.setSequenceTypeName(SequenceTypes.RATING.name());
             form.setDefaultSequenceChoice(ratingSequenceChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+            var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceChoicesResult)executionResult.getResult();
             ratingSequenceChoices = result.getSequenceChoices();
 
             if(ratingSequenceChoice == null)

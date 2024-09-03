@@ -47,7 +47,7 @@ public class ScalesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("scale")) {
-            CreateScaleForm commandForm = ScaleFormFactory.getCreateScaleForm();
+            var commandForm = ScaleFormFactory.getCreateScaleForm();
 
             commandForm.set(getAttrsMap(attrs));
 

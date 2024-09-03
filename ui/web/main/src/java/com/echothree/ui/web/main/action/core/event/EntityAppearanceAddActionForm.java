@@ -40,14 +40,14 @@ public class EntityAppearanceAddActionForm
     private void setupAppearanceChoices()
             throws NamingException {
         if(appearanceChoices == null) {
-                GetAppearanceChoicesForm commandForm = CoreUtil.getHome().getGetAppearanceChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetAppearanceChoicesForm();
                 
                 commandForm.setDefaultAppearanceChoice(appearanceChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CoreUtil.getHome().getAppearanceChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetAppearanceChoicesResult getAppearanceChoicesResult = (GetAppearanceChoicesResult)executionResult.getResult();
+
+            var commandResult = CoreUtil.getHome().getAppearanceChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getAppearanceChoicesResult = (GetAppearanceChoicesResult)executionResult.getResult();
                 appearanceChoices = getAppearanceChoicesResult.getAppearanceChoices();
                 
                 if(appearanceChoice == null)

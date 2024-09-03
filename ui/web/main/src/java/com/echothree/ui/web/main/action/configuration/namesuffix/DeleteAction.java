@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteNameSuffixForm commandForm = PartyUtil.getHome().getDeleteNameSuffixForm();
-            String nameSuffixId = request.getParameter(ParameterConstants.NAME_SUFFIX_ID);
+            var commandForm = PartyUtil.getHome().getDeleteNameSuffixForm();
+            var nameSuffixId = request.getParameter(ParameterConstants.NAME_SUFFIX_ID);
             
             commandForm.setNameSuffixId(nameSuffixId);
             

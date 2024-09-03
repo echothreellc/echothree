@@ -43,7 +43,7 @@ public class LotTimeTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("lotTimeType")) {
-            CreateLotTimeTypeForm commandForm = InventoryFormFactory.getCreateLotTimeTypeForm();
+            var commandForm = InventoryFormFactory.getCreateLotTimeTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

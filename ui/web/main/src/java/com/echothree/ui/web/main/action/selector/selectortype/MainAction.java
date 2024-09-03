@@ -54,14 +54,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetSelectorTypesForm commandForm = SelectorUtil.getHome().getGetSelectorTypesForm();
-            String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+            var commandForm = SelectorUtil.getHome().getGetSelectorTypesForm();
+            var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
             
             commandForm.setSelectorKindName(selectorKindName);
-            
-            CommandResult commandResult = SelectorUtil.getHome().getSelectorTypes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSelectorTypesResult getSelectorTypesResult = (GetSelectorTypesResult)executionResult.getResult();
+
+            var commandResult = SelectorUtil.getHome().getSelectorTypes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getSelectorTypesResult = (GetSelectorTypesResult)executionResult.getResult();
             
             request.setAttribute("selectorKind", getSelectorTypesResult.getSelectorKind());
             request.setAttribute("selectorTypes", getSelectorTypesResult.getSelectorTypes());

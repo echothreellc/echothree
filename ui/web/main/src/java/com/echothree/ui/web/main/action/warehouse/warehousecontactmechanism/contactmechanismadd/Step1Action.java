@@ -49,9 +49,9 @@ public class Step1Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        CommandResult commandResult = ContactUtil.getHome().getContactMechanismTypes(getUserVisitPK(request), null);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetContactMechanismTypesResult result = (GetContactMechanismTypesResult)executionResult.getResult();
+        var commandResult = ContactUtil.getHome().getContactMechanismTypes(getUserVisitPK(request), null);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetContactMechanismTypesResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CONTACT_MECHANISM_TYPES, result.getContactMechanismTypes());
 

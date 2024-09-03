@@ -57,9 +57,9 @@ public class FilterStepHandler
         if(localName.equals("filterStepDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -67,7 +67,7 @@ public class FilterStepHandler
             }
             
             try {
-                CreateFilterStepDescriptionForm commandForm = FilterFormFactory.getCreateFilterStepDescriptionForm();
+                var commandForm = FilterFormFactory.getCreateFilterStepDescriptionForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterTypeName(filterTypeName);
@@ -84,9 +84,9 @@ public class FilterStepHandler
             String filterStepElementName = null;
             String filterItemSelectorName = null;
             String filterAdjustmentName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("filterStepElementName"))
                     filterStepElementName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("filterItemSelectorName"))
@@ -96,7 +96,7 @@ public class FilterStepHandler
             }
             
             try {
-                CreateFilterStepElementForm commandForm = FilterFormFactory.getCreateFilterStepElementForm();
+                var commandForm = FilterFormFactory.getCreateFilterStepElementForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterTypeName(filterTypeName);

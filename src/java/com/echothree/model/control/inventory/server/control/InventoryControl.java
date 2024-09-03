@@ -388,7 +388,7 @@ public class InventoryControl
     public InventoryLocationGroupStatusChoicesBean getInventoryLocationGroupStatusChoices(String defaultInventoryLocationGroupStatusChoice, Language language,
             InventoryLocationGroup inventoryLocationGroup, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
-        InventoryLocationGroupStatusChoicesBean inventoryLocationGroupStatusChoicesBean = new InventoryLocationGroupStatusChoicesBean();
+        var inventoryLocationGroupStatusChoicesBean = new InventoryLocationGroupStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(inventoryLocationGroup);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS,
                 entityInstance);

@@ -52,7 +52,7 @@ public class SearchSortOrderHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("searchSortOrderDescription")) {
-            CreateSearchSortOrderDescriptionForm commandForm = SearchFormFactory.getCreateSearchSortOrderDescriptionForm();
+            var commandForm = SearchFormFactory.getCreateSearchSortOrderDescriptionForm();
 
             commandForm.setSearchKindName(searchKindName);
             commandForm.setSearchSortOrderName(searchSortOrderName);

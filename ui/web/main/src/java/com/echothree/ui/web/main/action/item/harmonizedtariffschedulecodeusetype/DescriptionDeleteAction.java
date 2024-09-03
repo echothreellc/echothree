@@ -63,15 +63,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetHarmonizedTariffScheduleCodeUseTypeDescriptionForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseTypeDescriptionForm();
+        var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseTypeDescriptionForm();
         
         commandForm.setHarmonizedTariffScheduleCodeUseTypeName(actionForm.getHarmonizedTariffScheduleCodeUseTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeUseTypeDescriptionResult result = (GetHarmonizedTariffScheduleCodeUseTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodeUseTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_DESCRIPTION, result.getHarmonizedTariffScheduleCodeUseTypeDescription());
         }
@@ -80,7 +80,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteHarmonizedTariffScheduleCodeUseTypeDescriptionForm commandForm = ItemUtil.getHome().getDeleteHarmonizedTariffScheduleCodeUseTypeDescriptionForm();
+        var commandForm = ItemUtil.getHome().getDeleteHarmonizedTariffScheduleCodeUseTypeDescriptionForm();
 
         commandForm.setHarmonizedTariffScheduleCodeUseTypeName(actionForm.getHarmonizedTariffScheduleCodeUseTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

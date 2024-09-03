@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetCommandMessageTypeForm commandForm = CoreUtil.getHome().getGetCommandMessageTypeForm();
+        var commandForm = CoreUtil.getHome().getGetCommandMessageTypeForm();
 
         commandForm.setCommandMessageTypeName(request.getParameter(ParameterConstants.COMMAND_MESSAGE_TYPE_NAME));
-        
-        CommandResult commandResult = CoreUtil.getHome().getCommandMessageType(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getCommandMessageType(getUserVisitPK(request), commandForm);
         CommandMessageTypeTransfer commandMessageType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommandMessageTypeResult result = (GetCommandMessageTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommandMessageTypeResult)executionResult.getResult();
             
             commandMessageType = result.getCommandMessageType();
         }

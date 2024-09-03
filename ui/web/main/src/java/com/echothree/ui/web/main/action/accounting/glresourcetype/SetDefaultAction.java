@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultGlResourceTypeForm commandForm = AccountingUtil.getHome().getSetDefaultGlResourceTypeForm();
-            String glResourceTypeName = request.getParameter(ParameterConstants.GL_RESOURCE_TYPE_NAME);
+            var commandForm = AccountingUtil.getHome().getSetDefaultGlResourceTypeForm();
+            var glResourceTypeName = request.getParameter(ParameterConstants.GL_RESOURCE_TYPE_NAME);
             
             commandForm.setGlResourceTypeName(glResourceTypeName);
             

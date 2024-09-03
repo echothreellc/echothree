@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = PartyUtil.getHome().getTimeZones(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTimeZonesResult result = (GetTimeZonesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getTimeZones(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTimeZonesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TIME_ZONES, result.getTimeZones());
             forwardKey = ForwardConstants.DISPLAY;

@@ -51,7 +51,7 @@ public class DescriptionEditAction
     @Override
     protected ColorDescriptionSpec getSpec(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ColorDescriptionSpec spec = CoreUtil.getHome().getColorDescriptionSpec();
+        var spec = CoreUtil.getHome().getColorDescriptionSpec();
         
         spec.setColorName(findParameter(request, ParameterConstants.COLOR_NAME, actionForm.getColorName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
@@ -62,7 +62,7 @@ public class DescriptionEditAction
     @Override
     protected ColorDescriptionEdit getEdit(HttpServletRequest request, DescriptionEditActionForm actionForm)
             throws NamingException {
-        ColorDescriptionEdit edit = CoreUtil.getHome().getColorDescriptionEdit();
+        var edit = CoreUtil.getHome().getColorDescriptionEdit();
 
         edit.setDescription(actionForm.getDescription());
 

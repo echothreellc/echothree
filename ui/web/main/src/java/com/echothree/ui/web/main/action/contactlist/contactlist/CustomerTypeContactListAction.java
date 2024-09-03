@@ -53,16 +53,16 @@ public class CustomerTypeContactListAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String contactListName = request.getParameter(ParameterConstants.CONTACT_LIST_NAME);
-        GetCustomerTypeContactListsForm commandForm = ContactListUtil.getHome().getGetCustomerTypeContactListsForm();
+        var contactListName = request.getParameter(ParameterConstants.CONTACT_LIST_NAME);
+        var commandForm = ContactListUtil.getHome().getGetCustomerTypeContactListsForm();
 
         commandForm.setContactListName(contactListName);
 
-        CommandResult commandResult = ContactListUtil.getHome().getCustomerTypeContactLists(getUserVisitPK(request), commandForm);
+        var commandResult = ContactListUtil.getHome().getCustomerTypeContactLists(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypeContactListsResult result = (GetCustomerTypeContactListsResult) executionResult.getResult();
-            ContactListTransfer contactListTransfer = result.getContactList();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypeContactListsResult) executionResult.getResult();
+            var contactListTransfer = result.getContactList();
 
             request.setAttribute(AttributeConstants.CONTACT_LIST, contactListTransfer);
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_CONTACT_LISTS, result.getCustomerTypeContactLists());

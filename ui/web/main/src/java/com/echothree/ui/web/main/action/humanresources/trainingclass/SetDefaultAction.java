@@ -47,7 +47,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        SetDefaultTrainingClassForm commandForm = TrainingUtil.getHome().getSetDefaultTrainingClassForm();
+        var commandForm = TrainingUtil.getHome().getSetDefaultTrainingClassForm();
 
         commandForm.setTrainingClassName(request.getParameter(ParameterConstants.TRAINING_CLASS_NAME));
 

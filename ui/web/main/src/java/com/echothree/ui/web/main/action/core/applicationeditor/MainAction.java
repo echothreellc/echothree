@@ -52,14 +52,14 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetApplicationEditorsForm commandForm = CoreUtil.getHome().getGetApplicationEditorsForm();
+        var commandForm = CoreUtil.getHome().getGetApplicationEditorsForm();
 
         commandForm.setApplicationName(request.getParameter(ParameterConstants.APPLICATION_NAME));
 
-        CommandResult commandResult = CoreUtil.getHome().getApplicationEditors(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getApplicationEditors(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetApplicationEditorsResult result = (GetApplicationEditorsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetApplicationEditorsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.APPLICATION, result.getApplication());
             request.setAttribute(AttributeConstants.APPLICATION_EDITORS, result.getApplicationEditors());

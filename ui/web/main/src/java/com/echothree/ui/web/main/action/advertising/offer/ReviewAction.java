@@ -57,8 +57,8 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetOfferForm commandForm = OfferUtil.getHome().getGetOfferForm();
-        String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+        var commandForm = OfferUtil.getHome().getGetOfferForm();
+        var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
 
         commandForm.setOfferName(offerName);
 
@@ -72,10 +72,10 @@ public class ReviewAction
         options.add(CoreOptions.EntityInstanceIncludeNames);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = OfferUtil.getHome().getOffer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetOfferResult result = (GetOfferResult)executionResult.getResult();
-        OfferTransfer offer = result.getOffer();
+        var commandResult = OfferUtil.getHome().getOffer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetOfferResult)executionResult.getResult();
+        var offer = result.getOffer();
 
         if(offer == null) {
             forwardKey = ForwardConstants.ERROR_404;

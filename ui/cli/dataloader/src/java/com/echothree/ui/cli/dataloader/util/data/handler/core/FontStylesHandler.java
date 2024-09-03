@@ -47,7 +47,7 @@ public class FontStylesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("fontStyle")) {
-            CreateFontStyleForm commandForm = CoreFormFactory.getCreateFontStyleForm();
+            var commandForm = CoreFormFactory.getCreateFontStyleForm();
             
             commandForm.set(getAttrsMap(attrs));
             

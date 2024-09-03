@@ -54,7 +54,7 @@ public class SelectorHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("selectorDescription")) {
-            CreateSelectorDescriptionForm commandForm = SelectorFormFactory.getCreateSelectorDescriptionForm();
+            var commandForm = SelectorFormFactory.getCreateSelectorDescriptionForm();
             
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setSelectorTypeName(selectorTypeName);
@@ -63,7 +63,7 @@ public class SelectorHandler
             
             selectorService.createSelectorDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("selectorNode")) {
-            CreateSelectorNodeForm commandForm = SelectorFormFactory.getCreateSelectorNodeForm();
+            var commandForm = SelectorFormFactory.getCreateSelectorNodeForm();
             
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setSelectorTypeName(selectorTypeName);

@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeletePartySecurityRoleTemplateForm commandForm = SecurityUtil.getHome().getDeletePartySecurityRoleTemplateForm();
-            String partySecurityRoleTemplateName = request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME);
+            var commandForm = SecurityUtil.getHome().getDeletePartySecurityRoleTemplateForm();
+            var partySecurityRoleTemplateName = request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME);
             
             commandForm.setPartySecurityRoleTemplateName(partySecurityRoleTemplateName);
             

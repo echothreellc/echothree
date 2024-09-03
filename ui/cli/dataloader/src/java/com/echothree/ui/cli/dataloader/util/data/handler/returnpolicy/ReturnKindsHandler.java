@@ -49,9 +49,9 @@ public class ReturnKindsHandler
             String returnSequenceTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("returnKindName"))
                     returnKindName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("returnSequenceTypeName"))
@@ -63,7 +63,7 @@ public class ReturnKindsHandler
             }
             
             try {
-                CreateReturnKindForm commandForm = ReturnPolicyFormFactory.getCreateReturnKindForm();
+                var commandForm = ReturnPolicyFormFactory.getCreateReturnKindForm();
                 
                 commandForm.setReturnKindName(returnKindName);
                 commandForm.setReturnSequenceTypeName(returnSequenceTypeName);

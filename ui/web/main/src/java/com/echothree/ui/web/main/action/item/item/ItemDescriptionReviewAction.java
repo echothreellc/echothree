@@ -56,10 +56,10 @@ public class ItemDescriptionReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
-        String itemDescriptionTypeName = request.getParameter(ParameterConstants.ITEM_DESCRIPTION_TYPE_NAME);
-        String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-        GetItemDescriptionForm commandForm = ItemUtil.getHome().getGetItemDescriptionForm();
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        var itemDescriptionTypeName = request.getParameter(ParameterConstants.ITEM_DESCRIPTION_TYPE_NAME);
+        var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
+        var commandForm = ItemUtil.getHome().getGetItemDescriptionForm();
 
         commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
         commandForm.setItemName(itemName);
@@ -70,11 +70,11 @@ public class ItemDescriptionReviewAction
         options.add(ItemOptions.ItemDescriptionIncludeTagScopes);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = ItemUtil.getHome().getItemDescription(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getItemDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemDescriptionResult result = (GetItemDescriptionResult)executionResult.getResult();
-            ItemDescriptionTransfer itemDescription = result.getItemDescription();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemDescriptionResult)executionResult.getResult();
+            var itemDescription = result.getItemDescription();
 
             if(itemDescription != null) {
                 request.setAttribute(AttributeConstants.ITEM_DESCRIPTION, itemDescription);

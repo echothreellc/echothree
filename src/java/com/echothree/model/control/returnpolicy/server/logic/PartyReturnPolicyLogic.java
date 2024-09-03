@@ -108,7 +108,7 @@ public class PartyReturnPolicyLogic
     public PartyReturnPolicyStatusChoicesBean getPartyReturnPolicyStatusChoices(final String defaultOrderStatusChoice, final Language language, final boolean allowNullChoice,
             final PartyReturnPolicy partyReturnPolicy, final PartyPK partyPK) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        PartyReturnPolicyStatusChoicesBean partyReturnPolicyStatusChoicesBean = new PartyReturnPolicyStatusChoicesBean();
+        var partyReturnPolicyStatusChoicesBean = new PartyReturnPolicyStatusChoicesBean();
 
         if(partyReturnPolicy == null) {
             workflowControl.getWorkflowEntranceChoices(partyReturnPolicyStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice,

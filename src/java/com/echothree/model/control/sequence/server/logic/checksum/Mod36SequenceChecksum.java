@@ -43,7 +43,7 @@ public class Mod36SequenceChecksum
             sum += (bytes [i] * (i + 1));
         }
 
-        char[] modCharacter = { SequenceGeneratorLogic.ALPHANUMERIC_VALUES.charAt(sum % SequenceGeneratorLogic.ALPHANUMERIC_MAX_INDEX) };
+        var modCharacter = new char[]{SequenceGeneratorLogic.ALPHANUMERIC_VALUES.charAt(sum % SequenceGeneratorLogic.ALPHANUMERIC_MAX_INDEX)};
         return new String(modCharacter);
     }
 

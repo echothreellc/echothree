@@ -63,15 +63,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetApplicationDescriptionForm commandForm = CoreUtil.getHome().getGetApplicationDescriptionForm();
+        var commandForm = CoreUtil.getHome().getGetApplicationDescriptionForm();
         
         commandForm.setApplicationName(actionForm.getApplicationName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getApplicationDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getApplicationDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetApplicationDescriptionResult result = (GetApplicationDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetApplicationDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.APPLICATION_DESCRIPTION, result.getApplicationDescription());
         }
@@ -80,7 +80,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteApplicationDescriptionForm commandForm = CoreUtil.getHome().getDeleteApplicationDescriptionForm();
+        var commandForm = CoreUtil.getHome().getDeleteApplicationDescriptionForm();
 
         commandForm.setApplicationName(actionForm.getApplicationName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

@@ -57,15 +57,15 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetWorkEffortScopeForm commandForm = WorkEffortUtil.getHome().getGetWorkEffortScopeForm();
+        var commandForm = WorkEffortUtil.getHome().getGetWorkEffortScopeForm();
 
         commandForm.setWorkEffortTypeName(actionForm.getWorkEffortTypeName());
         commandForm.setWorkEffortScopeName(actionForm.getWorkEffortScopeName());
-        
-        CommandResult commandResult = WorkEffortUtil.getHome().getWorkEffortScope(getUserVisitPK(request), commandForm);
+
+        var commandResult = WorkEffortUtil.getHome().getWorkEffortScope(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkEffortScopeResult result = (GetWorkEffortScopeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkEffortScopeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORK_EFFORT_SCOPE, result.getWorkEffortScope());
         }
@@ -74,7 +74,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateWorkEffortScopeDescriptionForm commandForm = WorkEffortUtil.getHome().getCreateWorkEffortScopeDescriptionForm();
+        var commandForm = WorkEffortUtil.getHome().getCreateWorkEffortScopeDescriptionForm();
 
         commandForm.setWorkEffortTypeName(actionForm.getWorkEffortTypeName());
         commandForm.setWorkEffortScopeName(actionForm.getWorkEffortScopeName());

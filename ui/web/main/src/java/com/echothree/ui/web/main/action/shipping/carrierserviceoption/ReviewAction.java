@@ -56,19 +56,19 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            String carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
-            String carrierServiceName = request.getParameter(ParameterConstants.CARRIER_SERVICE_NAME);
-            String carrierOptionName = request.getParameter(ParameterConstants.CARRIER_OPTION_NAME);
-            GetCarrierServiceOptionForm commandForm = CarrierUtil.getHome().getGetCarrierServiceOptionForm();
+            var carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
+            var carrierServiceName = request.getParameter(ParameterConstants.CARRIER_SERVICE_NAME);
+            var carrierOptionName = request.getParameter(ParameterConstants.CARRIER_OPTION_NAME);
+            var commandForm = CarrierUtil.getHome().getGetCarrierServiceOptionForm();
             
             commandForm.setCarrierName(carrierName);
             commandForm.setCarrierServiceName(carrierServiceName);
             commandForm.setCarrierOptionName(carrierOptionName);
-            
-            CommandResult commandResult = CarrierUtil.getHome().getCarrierServiceOption(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCarrierServiceOptionResult result = (GetCarrierServiceOptionResult)executionResult.getResult();
-            CarrierServiceOptionTransfer carrierServiceOption = result.getCarrierServiceOption();
+
+            var commandResult = CarrierUtil.getHome().getCarrierServiceOption(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCarrierServiceOptionResult)executionResult.getResult();
+            var carrierServiceOption = result.getCarrierServiceOption();
             
             if(carrierServiceOption != null) {
                 request.setAttribute(AttributeConstants.CARRIER, result.getCarrier());

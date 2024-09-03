@@ -51,13 +51,13 @@ public class Step1Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetPartyTypeDocumentTypeUsageTypesForm commandForm = DocumentUtil.getHome().getGetPartyTypeDocumentTypeUsageTypesForm();
+        var commandForm = DocumentUtil.getHome().getGetPartyTypeDocumentTypeUsageTypesForm();
 
         commandForm.setPartyTypeName(PartyTypes.COMPANY.name());
 
-        CommandResult commandResult = DocumentUtil.getHome().getPartyTypeDocumentTypeUsageTypes(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyTypeDocumentTypeUsageTypesResult result = (GetPartyTypeDocumentTypeUsageTypesResult)executionResult.getResult();
+        var commandResult = DocumentUtil.getHome().getPartyTypeDocumentTypeUsageTypes(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyTypeDocumentTypeUsageTypesResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_TYPE_DOCUMENT_TYPE_USAGE_TYPES, result.getPartyTypeDocumentTypeUsageTypes());
 

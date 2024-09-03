@@ -56,14 +56,14 @@ public class AddActionForm
     public void setupFirstHarmonizedTariffScheduleCodeUnitChoices() {
         if(firstHarmonizedTariffScheduleCodeUnitChoices == null) {
             try {
-                GetHarmonizedTariffScheduleCodeUnitChoicesForm form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitChoicesForm();
+                var form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitChoicesForm();
 
                 form.setDefaultHarmonizedTariffScheduleCodeUnitChoice(firstHarmonizedTariffScheduleCodeUnitChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetHarmonizedTariffScheduleCodeUnitChoicesResult getHarmonizedTariffScheduleCodeUnitChoicesResult = (GetHarmonizedTariffScheduleCodeUnitChoicesResult)executionResult.getResult();
+                var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getHarmonizedTariffScheduleCodeUnitChoicesResult = (GetHarmonizedTariffScheduleCodeUnitChoicesResult)executionResult.getResult();
                 firstHarmonizedTariffScheduleCodeUnitChoices = getHarmonizedTariffScheduleCodeUnitChoicesResult.getHarmonizedTariffScheduleCodeUnitChoices();
 
                 if(firstHarmonizedTariffScheduleCodeUnitChoice == null) {
@@ -79,14 +79,14 @@ public class AddActionForm
     public void setupSecondHarmonizedTariffScheduleCodeUnitChoices() {
         if(secondHarmonizedTariffScheduleCodeUnitChoices == null) {
             try {
-                GetHarmonizedTariffScheduleCodeUnitChoicesForm form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitChoicesForm();
+                var form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitChoicesForm();
 
                 form.setDefaultHarmonizedTariffScheduleCodeUnitChoice(secondHarmonizedTariffScheduleCodeUnitChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetHarmonizedTariffScheduleCodeUnitChoicesResult getHarmonizedTariffScheduleCodeUnitChoicesResult = (GetHarmonizedTariffScheduleCodeUnitChoicesResult)executionResult.getResult();
+                var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getHarmonizedTariffScheduleCodeUnitChoicesResult = (GetHarmonizedTariffScheduleCodeUnitChoicesResult)executionResult.getResult();
                 secondHarmonizedTariffScheduleCodeUnitChoices = getHarmonizedTariffScheduleCodeUnitChoicesResult.getHarmonizedTariffScheduleCodeUnitChoices();
 
                 if(secondHarmonizedTariffScheduleCodeUnitChoice == null) {
@@ -102,15 +102,15 @@ public class AddActionForm
      private void setupOverviewMimeTypeChoices() {
         if(overviewMimeTypeChoices == null) {
             try {
-                GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+                var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
                 
                 commandForm.setDefaultMimeTypeChoice(overviewMimeTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
-                
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
                 overviewMimeTypeChoices = result.getMimeTypeChoices();
                 
                 if(overviewMimeTypeChoice == null) {

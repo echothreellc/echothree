@@ -52,15 +52,15 @@ public class DescriptionAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
-        GetLetterSourceDescriptionsForm commandForm = LetterUtil.getHome().getGetLetterSourceDescriptionsForm();
+        var letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
+        var commandForm = LetterUtil.getHome().getGetLetterSourceDescriptionsForm();
         
         commandForm.setLetterSourceName(letterSourceName);
-        
-        CommandResult commandResult = LetterUtil.getHome().getLetterSourceDescriptions(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetLetterSourceDescriptionsResult result = (GetLetterSourceDescriptionsResult)executionResult.getResult();
-        LetterSourceTransfer letterSourceTransfer = result.getLetterSource();
+
+        var commandResult = LetterUtil.getHome().getLetterSourceDescriptions(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetLetterSourceDescriptionsResult)executionResult.getResult();
+        var letterSourceTransfer = result.getLetterSource();
         
         request.setAttribute(AttributeConstants.LETTER_SOURCE, letterSourceTransfer);
         request.setAttribute(AttributeConstants.LETTER_SOURCE_NAME, letterSourceTransfer.getLetterSourceName());

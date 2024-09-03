@@ -56,7 +56,7 @@ public class WorkflowDestinationPartyTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("workflowDestinationSecurityRole")) {
-            CreateWorkflowDestinationSecurityRoleForm commandForm = WorkflowFormFactory.getCreateWorkflowDestinationSecurityRoleForm();
+            var commandForm = WorkflowFormFactory.getCreateWorkflowDestinationSecurityRoleForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);

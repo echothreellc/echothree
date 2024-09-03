@@ -50,7 +50,7 @@ public class ReturnPolicyHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("returnPolicyTranslation")) {
-            CreateReturnPolicyTranslationForm commandForm = ReturnPolicyFormFactory.getCreateReturnPolicyTranslationForm();
+            var commandForm = ReturnPolicyFormFactory.getCreateReturnPolicyTranslationForm();
 
             commandForm.setReturnKindName(returnKindName);
             commandForm.setReturnPolicyName(returnPolicyName);

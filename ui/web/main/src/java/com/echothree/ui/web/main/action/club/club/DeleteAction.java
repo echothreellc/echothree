@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteClubForm commandForm = ClubUtil.getHome().getDeleteClubForm();
-            String clubName = request.getParameter(ParameterConstants.CLUB_NAME);
+            var commandForm = ClubUtil.getHome().getDeleteClubForm();
+            var clubName = request.getParameter(ParameterConstants.CLUB_NAME);
             
             commandForm.setClubName(clubName);
             

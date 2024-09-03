@@ -50,18 +50,18 @@ public class DeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardParameter = request.getParameter(ParameterConstants.FORWARD_PARAMETER);
-        String unitOfMeasureKindUseTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_USE_TYPE_NAME);
-        String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-        
-        DeleteUnitOfMeasureKindUseForm commandForm = UomUtil.getHome().getDeleteUnitOfMeasureKindUseForm();
+        var forwardParameter = request.getParameter(ParameterConstants.FORWARD_PARAMETER);
+        var unitOfMeasureKindUseTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_USE_TYPE_NAME);
+        var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+
+        var commandForm = UomUtil.getHome().getDeleteUnitOfMeasureKindUseForm();
         
         commandForm.setUnitOfMeasureKindUseTypeName(unitOfMeasureKindUseTypeName);
         commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
         
         UomUtil.getHome().deleteUnitOfMeasureKindUse(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         if(forwardParameter == null || forwardParameter.equals("UnitOfMeasureKindUseTypeName")) {

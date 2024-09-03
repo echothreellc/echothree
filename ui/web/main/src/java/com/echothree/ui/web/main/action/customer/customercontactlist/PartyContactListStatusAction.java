@@ -53,8 +53,8 @@ public class PartyContactListStatusAction
     public ActionForward executeAction(ActionMapping mapping, PartyContactListStatusActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String contactListName = request.getParameter(ParameterConstants.CONTACT_LIST_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var contactListName = request.getParameter(ParameterConstants.CONTACT_LIST_NAME);
 
         if(partyName == null) {
             partyName = actionForm.getPartyName();
@@ -67,7 +67,7 @@ public class PartyContactListStatusAction
             CommandResult commandResult = null;
 
             if(!wasCanceled(request)) {
-                SetPartyContactListStatusForm commandForm = ContactListUtil.getHome().getSetPartyContactListStatusForm();
+                var commandForm = ContactListUtil.getHome().getSetPartyContactListStatusForm();
 
                 commandForm.setPartyName(partyName);
                 commandForm.setContactListName(contactListName);
@@ -88,7 +88,7 @@ public class PartyContactListStatusAction
             forwardKey = ForwardConstants.FORM;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             CustomerContactListUtil.getInstance().setupCustomer(request, partyName);
             CustomerContactListUtil.getInstance().setupPartyContactListTransfer(request, partyName, contactListName);

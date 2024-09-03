@@ -50,15 +50,15 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String searchKindName = request.getParameter(ParameterConstants.SEARCH_KIND_NAME);
-        SetDefaultSearchTypeForm commandForm = SearchUtil.getHome().getSetDefaultSearchTypeForm();
+        var searchKindName = request.getParameter(ParameterConstants.SEARCH_KIND_NAME);
+        var commandForm = SearchUtil.getHome().getSetDefaultSearchTypeForm();
 
         commandForm.setSearchKindName(searchKindName);
         commandForm.setSearchTypeName(request.getParameter(ParameterConstants.SEARCH_TYPE_NAME));
 
         SearchUtil.getHome().setDefaultSearchType(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.SEARCH_KIND_NAME, searchKindName);

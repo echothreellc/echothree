@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String TermName = request.getParameter(ParameterConstants.TERM_NAME);
-            GetTermDescriptionsForm commandForm = TermUtil.getHome().getGetTermDescriptionsForm();
+            var TermName = request.getParameter(ParameterConstants.TERM_NAME);
+            var commandForm = TermUtil.getHome().getGetTermDescriptionsForm();
             
             commandForm.setTermName(TermName);
-            
-            CommandResult commandResult = TermUtil.getHome().getTermDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTermDescriptionsResult result = (GetTermDescriptionsResult)executionResult.getResult();
-            TermTransfer termTransfer = result.getTerm();
+
+            var commandResult = TermUtil.getHome().getTermDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTermDescriptionsResult)executionResult.getResult();
+            var termTransfer = result.getTerm();
             
             request.setAttribute(AttributeConstants.TERM, termTransfer);
             request.setAttribute(AttributeConstants.TERM_NAME, termTransfer.getTermName());

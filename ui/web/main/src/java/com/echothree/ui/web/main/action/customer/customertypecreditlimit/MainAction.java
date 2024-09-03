@@ -56,15 +56,15 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
-            GetCustomerTypeCreditLimitsForm commandForm = TermUtil.getHome().getGetCustomerTypeCreditLimitsForm();
+            var customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
+            var commandForm = TermUtil.getHome().getGetCustomerTypeCreditLimitsForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
-            
-            CommandResult commandResult = TermUtil.getHome().getCustomerTypeCreditLimits(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypeCreditLimitsResult result = (GetCustomerTypeCreditLimitsResult)executionResult.getResult();
-            CustomerTypeTransfer customerTypeTransfer = result.getCustomerType();
+
+            var commandResult = TermUtil.getHome().getCustomerTypeCreditLimits(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypeCreditLimitsResult)executionResult.getResult();
+            var customerTypeTransfer = result.getCustomerType();
             
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE, customerTypeTransfer);
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_CREDIT_LIMITS, result.getCustomerTypeCreditLimits());

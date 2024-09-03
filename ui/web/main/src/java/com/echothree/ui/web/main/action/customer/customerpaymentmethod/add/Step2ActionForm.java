@@ -71,14 +71,14 @@ public class Step2ActionForm
     private void setupPersonalTitleChoices()
             throws NamingException {
         if(personalTitleChoices == null) {
-            GetPersonalTitleChoicesForm commandForm = PartyUtil.getHome().getGetPersonalTitleChoicesForm();
+            var commandForm = PartyUtil.getHome().getGetPersonalTitleChoicesForm();
 
             commandForm.setDefaultPersonalTitleChoice(personalTitleChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPersonalTitleChoicesResult result = (GetPersonalTitleChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPersonalTitleChoicesResult)executionResult.getResult();
             personalTitleChoices = result.getPersonalTitleChoices();
 
             if(personalTitleChoice == null)
@@ -89,14 +89,14 @@ public class Step2ActionForm
     private void setupNameSuffixChoices()
             throws NamingException {
         if(nameSuffixChoices == null) {
-            GetNameSuffixChoicesForm commandForm = PartyUtil.getHome().getGetNameSuffixChoicesForm();
+            var commandForm = PartyUtil.getHome().getGetNameSuffixChoicesForm();
 
             commandForm.setDefaultNameSuffixChoice(nameSuffixChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetNameSuffixChoicesResult result = (GetNameSuffixChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetNameSuffixChoicesResult)executionResult.getResult();
             nameSuffixChoices = result.getNameSuffixChoices();
 
             if(nameSuffixChoice == null)
@@ -107,16 +107,16 @@ public class Step2ActionForm
     private void setupBillingContactMechanismChoices()
             throws NamingException {
         if(billingContactMechanismChoices == null) {
-            GetContactMechanismChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
+            var commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
 
             commandForm.setPartyName(partyName);
             commandForm.setContactMechanismTypeName(ContactMechanismTypes.POSTAL_ADDRESS.name());
             commandForm.setDefaultContactMechanismChoice(billingContactMechanismChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactMechanismChoicesResult result = (GetContactMechanismChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactMechanismChoicesResult)executionResult.getResult();
             billingContactMechanismChoices = result.getContactMechanismChoices();
 
             if(billingContactMechanismChoice == null) {
@@ -128,16 +128,16 @@ public class Step2ActionForm
     private void setupIssuerContactMechanismChoices()
             throws NamingException {
         if(issuerContactMechanismChoices == null) {
-            GetContactMechanismChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
+            var commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
 
             commandForm.setPartyName(partyName);
             commandForm.setContactMechanismTypeName(ContactMechanismTypes.TELECOM_ADDRESS.name());
             commandForm.setDefaultContactMechanismChoice(issuerContactMechanismChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactMechanismChoicesResult result = (GetContactMechanismChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactMechanismChoicesResult)executionResult.getResult();
             issuerContactMechanismChoices = result.getContactMechanismChoices();
 
             if(issuerContactMechanismChoice == null) {

@@ -53,14 +53,14 @@ public class CommentAddActionForm
     private void setupLanguageChoices() {
         if(languageChoices == null) {
             try {
-                GetLanguageChoicesForm commandForm = PartyUtil.getHome().getGetLanguageChoicesForm();
+                var commandForm = PartyUtil.getHome().getGetLanguageChoicesForm();
                 
                 commandForm.setDefaultLanguageChoice(languageChoice);
                 commandForm.setAllowNullChoice(Boolean.toString(commentName == null));
-                
-                CommandResult commandResult = PartyUtil.getHome().getLanguageChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetLanguageChoicesResult getLanguageChoicesResult = (GetLanguageChoicesResult)executionResult.getResult();
+
+                var commandResult = PartyUtil.getHome().getLanguageChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var getLanguageChoicesResult = (GetLanguageChoicesResult)executionResult.getResult();
                 languageChoices = getLanguageChoicesResult.getLanguageChoices();
                 
                 if(languageChoice == null) {
@@ -75,7 +75,7 @@ public class CommentAddActionForm
     private void setupMimeTypeChoices() {
         if(mimeTypeChoices == null) {
             try {
-                GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+                var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
                 
                 commandForm.setDefaultMimeTypeChoice(mimeTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
@@ -86,10 +86,10 @@ public class CommentAddActionForm
                 } else {
                     commandForm.setCommentName(commentName);
                 }
-                
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
                 mimeTypeChoices = result.getMimeTypeChoices();
                 
                 if(mimeTypeChoice == null) {

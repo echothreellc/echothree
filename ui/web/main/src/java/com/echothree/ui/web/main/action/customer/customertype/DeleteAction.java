@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            String customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
-            DeleteCustomerTypeForm commandForm = CustomerUtil.getHome().getDeleteCustomerTypeForm();
+            var customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
+            var commandForm = CustomerUtil.getHome().getDeleteCustomerTypeForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
             

@@ -56,14 +56,14 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String terminationReasonName = request.getParameter(ParameterConstants.TERMINATION_REASON_NAME);
+        var terminationReasonName = request.getParameter(ParameterConstants.TERMINATION_REASON_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateTerminationReasonDescriptionForm commandForm = EmployeeUtil.getHome().getCreateTerminationReasonDescriptionForm();
+                    var commandForm = EmployeeUtil.getHome().getCreateTerminationReasonDescriptionForm();
                     
                     if(terminationReasonName == null)
                         terminationReasonName = actionForm.getTerminationReasonName();
@@ -71,8 +71,8 @@ public class DescriptionAddAction
                     commandForm.setTerminationReasonName(terminationReasonName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().createTerminationReasonDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = EmployeeUtil.getHome().createTerminationReasonDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -88,8 +88,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.TERMINATION_REASON_NAME, terminationReasonName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

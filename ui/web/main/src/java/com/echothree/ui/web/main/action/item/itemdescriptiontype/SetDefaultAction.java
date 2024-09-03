@@ -48,7 +48,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultItemDescriptionTypeForm commandForm = ItemUtil.getHome().getSetDefaultItemDescriptionTypeForm();
+        var commandForm = ItemUtil.getHome().getSetDefaultItemDescriptionTypeForm();
 
         commandForm.setItemDescriptionTypeName(request.getParameter(ParameterConstants.ITEM_DESCRIPTION_TYPE_NAME));
 

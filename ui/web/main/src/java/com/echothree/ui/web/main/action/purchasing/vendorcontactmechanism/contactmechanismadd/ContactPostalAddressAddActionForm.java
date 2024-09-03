@@ -62,14 +62,14 @@ public class ContactPostalAddressAddActionForm
     private void setupPersonalTitleChoices() {
         if(personalTitleChoices == null) {
             try {
-                GetPersonalTitleChoicesForm commandForm = PartyUtil.getHome().getGetPersonalTitleChoicesForm();
+                var commandForm = PartyUtil.getHome().getGetPersonalTitleChoicesForm();
                 
                 commandForm.setDefaultPersonalTitleChoice(personalTitleChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPersonalTitleChoicesResult result = (GetPersonalTitleChoicesResult)executionResult.getResult();
+
+                var commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPersonalTitleChoicesResult)executionResult.getResult();
                 personalTitleChoices = result.getPersonalTitleChoices();
                 
                 if(personalTitleChoice == null)
@@ -84,14 +84,14 @@ public class ContactPostalAddressAddActionForm
     private void setupNameSuffixChoices() {
         if(nameSuffixChoices == null) {
             try {
-                GetNameSuffixChoicesForm commandForm = PartyUtil.getHome().getGetNameSuffixChoicesForm();
+                var commandForm = PartyUtil.getHome().getGetNameSuffixChoicesForm();
                 
                 commandForm.setDefaultNameSuffixChoice(nameSuffixChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetNameSuffixChoicesResult result = (GetNameSuffixChoicesResult)executionResult.getResult();
+
+                var commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetNameSuffixChoicesResult)executionResult.getResult();
                 nameSuffixChoices = result.getNameSuffixChoices();
                 
                 if(nameSuffixChoice == null)

@@ -61,14 +61,14 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
-        String originalCancellationPolicyName = request.getParameter(ParameterConstants.ORIGINAL_CANCELLATION_POLICY_NAME);
+        var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+        var originalCancellationPolicyName = request.getParameter(ParameterConstants.ORIGINAL_CANCELLATION_POLICY_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditCancellationPolicyForm commandForm = CancellationPolicyUtil.getHome().getEditCancellationPolicyForm();
-                CancellationPolicySpec spec = CancellationPolicyUtil.getHome().getCancellationPolicySpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = CancellationPolicyUtil.getHome().getEditCancellationPolicyForm();
+                var spec = CancellationPolicyUtil.getHome().getCancellationPolicySpec();
                 
                 if(cancellationKindName == null)
                     cancellationKindName = actionForm.getCancellationKindName();
@@ -80,7 +80,7 @@ public class EditAction
                 spec.setCancellationPolicyName(originalCancellationPolicyName);
                 
                 if(wasPost(request)) {
-                    CancellationPolicyEdit edit = CancellationPolicyUtil.getHome().getCancellationPolicyEdit();
+                    var edit = CancellationPolicyUtil.getHome().getCancellationPolicyEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -91,14 +91,14 @@ public class EditAction
                     edit.setDescription(actionForm.getDescription());
                     edit.setPolicyMimeTypeName(actionForm.getPolicyMimeTypeChoice());
                     edit.setPolicy(actionForm.getPolicy());
-                    
-                    CommandResult commandResult = CancellationPolicyUtil.getHome().editCancellationPolicy(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CancellationPolicyUtil.getHome().editCancellationPolicy(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditCancellationPolicyResult result = (EditCancellationPolicyResult)executionResult.getResult();
+                            var result = (EditCancellationPolicyResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -111,13 +111,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CancellationPolicyUtil.getHome().editCancellationPolicy(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditCancellationPolicyResult result = (EditCancellationPolicyResult)executionResult.getResult();
+
+                    var commandResult = CancellationPolicyUtil.getHome().editCancellationPolicy(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditCancellationPolicyResult)executionResult.getResult();
                     
                     if(result != null) {
-                        CancellationPolicyEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setCancellationKindName(cancellationKindName);
@@ -141,8 +141,8 @@ public class EditAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CANCELLATION_KIND_NAME, cancellationKindName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

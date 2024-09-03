@@ -51,8 +51,8 @@ public class DeleteAction
         String forwardKey;
         
         try {
-            DeleteAssociateProgramForm commandForm = AssociateUtil.getHome().getDeleteAssociateProgramForm();
-            String associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
+            var commandForm = AssociateUtil.getHome().getDeleteAssociateProgramForm();
+            var associateProgramName = request.getParameter(ParameterConstants.ASSOCIATE_PROGRAM_NAME);
             
             commandForm.setAssociateProgramName(associateProgramName);
             

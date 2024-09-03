@@ -64,15 +64,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemUnitLimitForm commandForm = ItemUtil.getHome().getGetItemUnitLimitForm();
+        var commandForm = ItemUtil.getHome().getGetItemUnitLimitForm();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setInventoryConditionName(actionForm.getInventoryConditionName());
         commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeName());
 
-        CommandResult commandResult = ItemUtil.getHome().getItemUnitLimit(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemUnitLimitResult result = (GetItemUnitLimitResult)executionResult.getResult();
+        var commandResult = ItemUtil.getHome().getItemUnitLimit(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemUnitLimitResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM_UNIT_LIMIT, result.getItemUnitLimit());
     }
@@ -80,7 +80,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteItemUnitLimitForm commandForm = ItemUtil.getHome().getDeleteItemUnitLimitForm();
+        var commandForm = ItemUtil.getHome().getDeleteItemUnitLimitForm();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setInventoryConditionName(actionForm.getInventoryConditionName());

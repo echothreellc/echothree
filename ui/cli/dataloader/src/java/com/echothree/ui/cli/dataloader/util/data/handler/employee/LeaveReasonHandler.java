@@ -50,9 +50,9 @@ public class LeaveReasonHandler
         if(localName.equals("leaveReasonDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +60,7 @@ public class LeaveReasonHandler
             }
             
             try {
-                CreateLeaveReasonDescriptionForm form = EmployeeFormFactory.getCreateLeaveReasonDescriptionForm();
+                var form = EmployeeFormFactory.getCreateLeaveReasonDescriptionForm();
                 
                 form.setLeaveReasonName(leaveReasonName);
                 form.setLanguageIsoName(languageIsoName);

@@ -49,15 +49,15 @@ public class AddActionForm
     private void setupElevationUnitOfMeasureTypeChoices()
             throws NamingException {
         if(elevationUnitOfMeasureTypeChoices == null) {
-            GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(elevationUnitOfMeasureTypeChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_ELEVATION);
 
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
             elevationUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(elevationUnitOfMeasureTypeChoice == null) {
@@ -69,15 +69,15 @@ public class AddActionForm
     private void setupAltitudeUnitOfMeasureTypeChoices()
             throws NamingException {
         if(altitudeUnitOfMeasureTypeChoices == null) {
-            GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(altitudeUnitOfMeasureTypeChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_ALTITUDE);
 
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
             altitudeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(altitudeUnitOfMeasureTypeChoice == null) {

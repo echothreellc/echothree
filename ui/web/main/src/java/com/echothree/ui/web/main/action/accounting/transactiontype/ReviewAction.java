@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetTransactionTypeForm commandForm = AccountingUtil.getHome().getGetTransactionTypeForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionTypeForm();
 
         commandForm.setTransactionTypeName(request.getParameter(ParameterConstants.TRANSACTION_TYPE_NAME));
-        
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionType(getUserVisitPK(request), commandForm);
+
+        var commandResult = AccountingUtil.getHome().getTransactionType(getUserVisitPK(request), commandForm);
         TransactionTypeTransfer transactionType = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTransactionTypeResult result = (GetTransactionTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionTypeResult)executionResult.getResult();
             
             transactionType = result.getTransactionType();
         }

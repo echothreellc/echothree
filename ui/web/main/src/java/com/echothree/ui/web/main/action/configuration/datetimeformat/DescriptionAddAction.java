@@ -56,14 +56,14 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String dateTimeFormatName = request.getParameter(ParameterConstants.DATE_TIME_FORMAT_NAME);
+        var dateTimeFormatName = request.getParameter(ParameterConstants.DATE_TIME_FORMAT_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
+                var actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateDateTimeFormatDescriptionForm commandForm = PartyUtil.getHome().getCreateDateTimeFormatDescriptionForm();
+                    var commandForm = PartyUtil.getHome().getCreateDateTimeFormatDescriptionForm();
                     
                     if(dateTimeFormatName == null)
                         dateTimeFormatName = actionForm.getDateTimeFormatName();
@@ -71,8 +71,8 @@ public class DescriptionAddAction
                     commandForm.setDateTimeFormatName(dateTimeFormatName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = PartyUtil.getHome().createDateTimeFormatDescription(getUserVisitPK(request), commandForm);
+
+                    var commandResult = PartyUtil.getHome().createDateTimeFormatDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -88,8 +88,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.DATE_TIME_FORMAT_NAME, dateTimeFormatName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

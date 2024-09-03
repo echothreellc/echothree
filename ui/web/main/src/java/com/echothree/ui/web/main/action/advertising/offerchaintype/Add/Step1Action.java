@@ -48,9 +48,9 @@ public class Step1Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        CommandResult commandResult = ChainUtil.getHome().getChainKinds(getUserVisitPK(request), null);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetChainKindsResult result = (GetChainKindsResult)executionResult.getResult();
+        var commandResult = ChainUtil.getHome().getChainKinds(getUserVisitPK(request), null);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetChainKindsResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CHAIN_KINDS, result.getChainKinds());
         

@@ -71,7 +71,7 @@ public class WarehouseHandler
 
             partyService.createPartyAlias(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("inventoryLocationGroup")) {
-            CreateInventoryLocationGroupForm commandForm = InventoryFormFactory.getCreateInventoryLocationGroupForm();
+            var commandForm = InventoryFormFactory.getCreateInventoryLocationGroupForm();
 
             commandForm.setWarehouseName(warehouseName);
             commandForm.set(getAttrsMap(attrs));
@@ -80,7 +80,7 @@ public class WarehouseHandler
 
             initialDataParser.pushHandler(new InventoryLocationGroupHandler(initialDataParser, this, warehouseName, commandForm.getInventoryLocationGroupName()));
         } else if(localName.equals("locationType")) {
-            CreateLocationTypeForm commandForm = WarehouseFormFactory.getCreateLocationTypeForm();
+            var commandForm = WarehouseFormFactory.getCreateLocationTypeForm();
 
             commandForm.setWarehouseName(warehouseName);
             commandForm.set(getAttrsMap(attrs));
@@ -89,16 +89,16 @@ public class WarehouseHandler
 
             initialDataParser.pushHandler(new LocationTypeHandler(initialDataParser, this, warehouseName, commandForm.getLocationTypeName()));
         } else if(localName.equals("location")) {
-            CreateLocationForm commandForm = WarehouseFormFactory.getCreateLocationForm();
+            var commandForm = WarehouseFormFactory.getCreateLocationForm();
 
             commandForm.setWarehouseName(warehouseName);
             commandForm.set(getAttrsMap(attrs));
 
-            CommandResult commandResult = warehouseService.createLocation(initialDataParser.getUserVisit(), commandForm);
+            var commandResult = warehouseService.createLocation(initialDataParser.getUserVisit(), commandForm);
 
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateLocationResult result = (CreateLocationResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateLocationResult)executionResult.getResult();
 
                 initialDataParser.pushHandler(new LocationHandler(initialDataParser, this, warehouseName, result.getLocationName(), result.getEntityRef()));
             }

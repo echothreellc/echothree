@@ -50,7 +50,7 @@ public class EntityMultipleListItemAttributesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("entityMultipleListItemAttribute")) {
-            CreateEntityMultipleListItemAttributeForm commandForm = CoreFormFactory.getCreateEntityMultipleListItemAttributeForm();
+            var commandForm = CoreFormFactory.getCreateEntityMultipleListItemAttributeForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.setEntityAttributeName(entityAttributeName);

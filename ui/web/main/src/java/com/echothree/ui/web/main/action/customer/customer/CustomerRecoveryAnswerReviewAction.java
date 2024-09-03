@@ -56,16 +56,16 @@ public class CustomerRecoveryAnswerReviewAction
 
     public void setupCustomerTransfer(HttpServletRequest request, HttpServletResponse response)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
-            CustomerTransfer customer = result.getCustomer();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerResult)executionResult.getResult();
+            var customer = result.getCustomer();
 
             if(customer != null) {
                 request.setAttribute(AttributeConstants.CUSTOMER, customer);
@@ -77,17 +77,17 @@ public class CustomerRecoveryAnswerReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetRecoveryAnswerForm commandForm = UserUtil.getHome().getGetRecoveryAnswerForm();
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = UserUtil.getHome().getGetRecoveryAnswerForm();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = UserUtil.getHome().getRecoveryAnswer(getUserVisitPK(request), commandForm);
+        var commandResult = UserUtil.getHome().getRecoveryAnswer(getUserVisitPK(request), commandForm);
         RecoveryAnswerTransfer recoveryAnswer = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetRecoveryAnswerResult result = (GetRecoveryAnswerResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetRecoveryAnswerResult)executionResult.getResult();
             recoveryAnswer = result.getRecoveryAnswer();
         }
 

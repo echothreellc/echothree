@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = GeoUtil.getHome().getCountries(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCountriesResult result = (GetCountriesResult)executionResult.getResult();
+            var commandResult = GeoUtil.getHome().getCountries(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCountriesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COUNTRIES, result.getCountries());
             forwardKey = ForwardConstants.DISPLAY;

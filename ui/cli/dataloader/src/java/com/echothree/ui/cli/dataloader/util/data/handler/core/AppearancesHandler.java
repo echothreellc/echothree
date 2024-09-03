@@ -47,7 +47,7 @@ public class AppearancesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("appearance")) {
-            CreateAppearanceForm commandForm = CoreFormFactory.getCreateAppearanceForm();
+            var commandForm = CoreFormFactory.getCreateAppearanceForm();
             
             commandForm.set(getAttrsMap(attrs));
             

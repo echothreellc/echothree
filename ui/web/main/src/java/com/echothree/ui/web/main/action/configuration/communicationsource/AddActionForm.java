@@ -62,14 +62,14 @@ public class AddActionForm
     public void setupServerChoices() {
         if(serverChoices == null) {
             try {
-                GetServerChoicesForm form = CoreUtil.getHome().getGetServerChoicesForm();
+                var form = CoreUtil.getHome().getGetServerChoicesForm();
                 
                 form.setDefaultServerChoice(serverChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CoreUtil.getHome().getServerChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetServerChoicesResult result = (GetServerChoicesResult)executionResult.getResult();
+
+                var commandResult = CoreUtil.getHome().getServerChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetServerChoicesResult)executionResult.getResult();
                 serverChoices = result.getServerChoices();
                 
                 if(serverChoice == null) {
@@ -85,15 +85,15 @@ public class AddActionForm
     public void setupReceiveWorkEffortScopeChoices() {
         if(receiveWorkEffortScopeChoices == null) {
             try {
-                GetWorkEffortScopeChoicesForm form = WorkEffortUtil.getHome().getGetWorkEffortScopeChoicesForm();
+                var form = WorkEffortUtil.getHome().getGetWorkEffortScopeChoicesForm();
                 
                 form.setWorkEffortTypeName(ReceiveCustomerEmailConstants.WorkEffortType_RECEIVE_CUSTOMER_EMAIL);
                 form.setDefaultWorkEffortScopeChoice(receiveWorkEffortScopeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = WorkEffortUtil.getHome().getWorkEffortScopeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetWorkEffortScopeChoicesResult result = (GetWorkEffortScopeChoicesResult)executionResult.getResult();
+
+                var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetWorkEffortScopeChoicesResult)executionResult.getResult();
                 receiveWorkEffortScopeChoices = result.getWorkEffortScopeChoices();
                 
                 if(receiveWorkEffortScopeChoice == null) {
@@ -109,15 +109,15 @@ public class AddActionForm
     public void setupSendWorkEffortScopeChoices() {
         if(sendWorkEffortScopeChoices == null) {
             try {
-                GetWorkEffortScopeChoicesForm form = WorkEffortUtil.getHome().getGetWorkEffortScopeChoicesForm();
+                var form = WorkEffortUtil.getHome().getGetWorkEffortScopeChoicesForm();
                 
                 form.setWorkEffortTypeName(SendCustomerEmailConstants.WorkEffortType_SEND_CUSTOMER_EMAIL);
                 form.setDefaultWorkEffortScopeChoice(sendWorkEffortScopeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = WorkEffortUtil.getHome().getWorkEffortScopeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetWorkEffortScopeChoicesResult result = (GetWorkEffortScopeChoicesResult)executionResult.getResult();
+
+                var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetWorkEffortScopeChoicesResult)executionResult.getResult();
                 sendWorkEffortScopeChoices = result.getWorkEffortScopeChoices();
                 
                 if(sendWorkEffortScopeChoice == null) {
@@ -133,16 +133,16 @@ public class AddActionForm
     public void setupReviewEmployeeSelectorChoices() {
         if(reviewEmployeeSelectorChoices == null) {
             try {
-                GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
+                var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
                 
                 form.setSelectorKindName(SelectorKinds.EMPLOYEE.name());
                 form.setSelectorTypeName(SelectorTypes.EMAIL_REVIEW.name());
                 form.setDefaultSelectorChoice(reviewEmployeeSelectorChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSelectorChoicesResult result = (GetSelectorChoicesResult)executionResult.getResult();
+
+                var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSelectorChoicesResult)executionResult.getResult();
                 reviewEmployeeSelectorChoices = result.getSelectorChoices();
                 
                 if(reviewEmployeeSelectorChoice == null) {

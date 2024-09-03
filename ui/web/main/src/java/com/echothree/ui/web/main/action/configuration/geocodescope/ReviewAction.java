@@ -53,16 +53,16 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetGeoCodeScopeForm commandForm = GeoUtil.getHome().getGetGeoCodeScopeForm();
+        var commandForm = GeoUtil.getHome().getGetGeoCodeScopeForm();
 
         commandForm.setGeoCodeScopeName(request.getParameter(ParameterConstants.GEO_CODE_SCOPE_NAME));
-        
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeScope(getUserVisitPK(request), commandForm);
+
+        var commandResult = GeoUtil.getHome().getGeoCodeScope(getUserVisitPK(request), commandForm);
         GeoCodeScopeTransfer geoCodeScope = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeScopeResult result = (GetGeoCodeScopeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeScopeResult)executionResult.getResult();
             
             geoCodeScope = result.getGeoCodeScope();
         }

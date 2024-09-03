@@ -56,21 +56,21 @@ public class EntityListItemStep4Action
         String forwardKey;
         
         try {
-            final String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-            final String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-            final String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
-            final String selectorNodeTypeName = request.getParameter(ParameterConstants.SELECTOR_NODE_TYPE_NAME);
-            final String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            final String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            GetEntityAttributesForm commandForm = CoreUtil.getHome().getGetEntityAttributesForm();
+            final var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+            final var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+            final var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+            final var selectorNodeTypeName = request.getParameter(ParameterConstants.SELECTOR_NODE_TYPE_NAME);
+            final var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            final var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var commandForm = CoreUtil.getHome().getGetEntityAttributesForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeTypeNames(EntityAttributeTypes.LISTITEM.name() + ":" + EntityAttributeTypes.MULTIPLELISTITEM.name());
-            
-            CommandResult commandResult = CoreUtil.getHome().getEntityAttributes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributesResult result = (GetEntityAttributesResult)executionResult.getResult();
+
+            var commandResult = CoreUtil.getHome().getEntityAttributes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityAttributesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SELECTOR_KIND_NAME, selectorKindName);
             request.setAttribute(AttributeConstants.SELECTOR_TYPE_NAME, selectorTypeName);

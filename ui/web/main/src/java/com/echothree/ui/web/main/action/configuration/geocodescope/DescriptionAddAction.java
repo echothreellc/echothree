@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetGeoCodeScopeForm commandForm = GeoUtil.getHome().getGetGeoCodeScopeForm();
+        var commandForm = GeoUtil.getHome().getGetGeoCodeScopeForm();
 
         commandForm.setGeoCodeScopeName(actionForm.getGeoCodeScopeName());
-        
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeScope(getUserVisitPK(request), commandForm);
+
+        var commandResult = GeoUtil.getHome().getGeoCodeScope(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeScopeResult result = (GetGeoCodeScopeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeScopeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.GEO_CODE_SCOPE, result.getGeoCodeScope());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateGeoCodeScopeDescriptionForm commandForm = GeoUtil.getHome().getCreateGeoCodeScopeDescriptionForm();
+        var commandForm = GeoUtil.getHome().getCreateGeoCodeScopeDescriptionForm();
 
         commandForm.setGeoCodeScopeName( actionForm.getGeoCodeScopeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

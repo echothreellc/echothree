@@ -46,7 +46,7 @@ public class EventTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("eventType")) {
-            CreateEventTypeForm commandForm = CoreFormFactory.getCreateEventTypeForm();
+            var commandForm = CoreFormFactory.getCreateEventTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

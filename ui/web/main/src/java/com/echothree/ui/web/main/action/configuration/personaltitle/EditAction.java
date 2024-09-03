@@ -58,13 +58,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String personalTitleId = request.getParameter(ParameterConstants.PERSONAL_TITLE_ID);
+        var personalTitleId = request.getParameter(ParameterConstants.PERSONAL_TITLE_ID);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditPersonalTitleForm commandForm = PartyUtil.getHome().getEditPersonalTitleForm();
-                PersonalTitleSpec spec = PartyUtil.getHome().getPersonalTitleSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = PartyUtil.getHome().getEditPersonalTitleForm();
+                var spec = PartyUtil.getHome().getPersonalTitleSpec();
                 
                 if(personalTitleId == null)
                     personalTitleId = actionForm.getPersonalTitleId();
@@ -73,7 +73,7 @@ public class EditAction
                 spec.setPersonalTitleId(personalTitleId);
                 
                 if(wasPost(request)) {
-                    PersonalTitleEdit edit = PartyUtil.getHome().getPersonalTitleEdit();
+                    var edit = PartyUtil.getHome().getPersonalTitleEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -81,14 +81,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = PartyUtil.getHome().editPersonalTitle(getUserVisitPK(request), commandForm);
+
+                    var commandResult = PartyUtil.getHome().editPersonalTitle(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditPersonalTitleResult result = (EditPersonalTitleResult)executionResult.getResult();
+                            var result = (EditPersonalTitleResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -101,13 +101,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = PartyUtil.getHome().editPersonalTitle(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditPersonalTitleResult result = (EditPersonalTitleResult)executionResult.getResult();
+
+                    var commandResult = PartyUtil.getHome().editPersonalTitle(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditPersonalTitleResult)executionResult.getResult();
                     
                     if(result != null) {
-                        PersonalTitleEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setPersonalTitleId(personalTitleId);

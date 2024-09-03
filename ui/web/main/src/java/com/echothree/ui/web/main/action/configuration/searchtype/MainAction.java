@@ -52,15 +52,15 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetSearchTypesForm commandForm = SearchUtil.getHome().getGetSearchTypesForm();
+        var commandForm = SearchUtil.getHome().getGetSearchTypesForm();
 
         commandForm.setSearchKindName(request.getParameter(ParameterConstants.SEARCH_KIND_NAME));
 
-        CommandResult commandResult = SearchUtil.getHome().getSearchTypes(getUserVisitPK(request), commandForm);
+        var commandResult = SearchUtil.getHome().getSearchTypes(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSearchTypesResult result = (GetSearchTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchTypesResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.SEARCH_KIND, result.getSearchKind());
             request.setAttribute(AttributeConstants.SEARCH_TYPES, result.getSearchTypes());

@@ -25,7 +25,7 @@ public class BaseTableDecorator
     
     public String computeURL(String path, Map parameters) {
         var pageContext = getPageContext();
-        StringBuilder url = new StringBuilder(path);
+        var url = new StringBuilder(path);
         String urlResult;
         
         if(parameters != null && parameters.size() > 0) {

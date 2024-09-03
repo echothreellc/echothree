@@ -58,10 +58,10 @@ public class ContactTelephoneEditAction
     public ActionForward executeAction(ActionMapping mapping, ContactTelephoneEditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);
-        EditContactTelephoneForm commandForm = ContactUtil.getHome().getEditContactTelephoneForm();
-        PartyContactMechanismSpec spec = ContactUtil.getHome().getPartyContactMechanismSpec();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);
+        var commandForm = ContactUtil.getHome().getEditContactTelephoneForm();
+        var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
 
         if(partyName == null) {
             partyName = actionForm.getPartyName();
@@ -75,12 +75,12 @@ public class ContactTelephoneEditAction
         spec.setContactMechanismName(contactMechanismName);
 
         if(wasPost(request)) {
-            boolean wasCanceled = wasCanceled(request);
+            var wasCanceled = wasCanceled(request);
 
             if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
-                ContactTelephoneEdit edit = ContactUtil.getHome().getContactTelephoneEdit();
+                var edit = ContactUtil.getHome().getContactTelephoneEdit();
 
                 commandForm.setEditMode(EditMode.UPDATE);
                 commandForm.setEdit(edit);
@@ -93,13 +93,13 @@ public class ContactTelephoneEditAction
                 edit.setDescription(actionForm.getDescription());
             }
 
-            CommandResult commandResult = ContactUtil.getHome().editContactTelephone(getUserVisitPK(request), commandForm);
+            var commandResult = ContactUtil.getHome().editContactTelephone(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors() && !wasCanceled) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {
-                    EditContactTelephoneResult result = (EditContactTelephoneResult)executionResult.getResult();
+                    var result = (EditContactTelephoneResult)executionResult.getResult();
 
                     request.setAttribute(AttributeConstants.CONTACT_MECHANISM, result.getContactMechanism());
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
@@ -114,12 +114,12 @@ public class ContactTelephoneEditAction
         } else {
             commandForm.setEditMode(EditMode.LOCK);
 
-            CommandResult commandResult = ContactUtil.getHome().editContactTelephone(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditContactTelephoneResult result = (EditContactTelephoneResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().editContactTelephone(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditContactTelephoneResult)executionResult.getResult();
 
             if(result != null) {
-                ContactTelephoneEdit edit = result.getEdit();
+                var edit = result.getEdit();
 
                 if(edit != null) {
                     actionForm.setPartyName(partyName);
@@ -141,7 +141,7 @@ public class ContactTelephoneEditAction
             forwardKey = ForwardConstants.FORM;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupCarrier(request, partyName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

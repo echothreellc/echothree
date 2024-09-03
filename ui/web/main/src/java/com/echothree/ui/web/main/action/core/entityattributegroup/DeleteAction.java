@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEntityAttributeGroupForm commandForm = CoreUtil.getHome().getGetEntityAttributeGroupForm();
+        var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupForm();
         
         commandForm.setEntityAttributeGroupName(actionForm.getEntityAttributeGroupName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityAttributeGroup(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEntityAttributeGroupResult result = (GetEntityAttributeGroupResult)executionResult.getResult();
+
+        var commandResult = CoreUtil.getHome().getEntityAttributeGroup(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEntityAttributeGroupResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE_GROUP, result.getEntityAttributeGroup());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteEntityAttributeGroupForm commandForm = CoreUtil.getHome().getDeleteEntityAttributeGroupForm();
+        var commandForm = CoreUtil.getHome().getDeleteEntityAttributeGroupForm();
 
         commandForm.setEntityAttributeGroupName(actionForm.getEntityAttributeGroupName());
 

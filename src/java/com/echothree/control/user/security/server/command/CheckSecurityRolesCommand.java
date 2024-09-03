@@ -50,7 +50,7 @@ public class CheckSecurityRolesCommand
     protected BaseResult execute() {
         var result = SecurityResultFactory.getCheckSecurityRolesResult();
         var userVisit = getUserVisit();
-        StringBuilder resultSecurityRoles = new StringBuilder();
+        var resultSecurityRoles = new StringBuilder();
         
         if(userVisit != null) {
             var userKeyDetail = userVisit.getUserKey().getLastDetail();

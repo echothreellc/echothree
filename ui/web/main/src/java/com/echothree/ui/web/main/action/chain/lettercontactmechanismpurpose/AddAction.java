@@ -54,12 +54,12 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
-        String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
-        String letterName = request.getParameter(ParameterConstants.LETTER_NAME);
+        var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
+        var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
+        var letterName = request.getParameter(ParameterConstants.LETTER_NAME);
         
         if(wasPost(request)) {
-            CreateLetterContactMechanismPurposeForm commandForm = LetterUtil.getHome().getCreateLetterContactMechanismPurposeForm();
+            var commandForm = LetterUtil.getHome().getCreateLetterContactMechanismPurposeForm();
             
             if(chainKindName == null) {
                 chainKindName = actionForm.getChainKindName();
@@ -78,8 +78,8 @@ public class AddAction
             commandForm.setLetterName(actionForm.getLetterName());
             commandForm.setPriority(actionForm.getPriority());
             commandForm.setContactMechanismPurposeName(actionForm.getContactMechanismPurposeChoice());
-            
-            CommandResult commandResult = LetterUtil.getHome().createLetterContactMechanismPurpose(getUserVisitPK(request), commandForm);
+
+            var commandResult = LetterUtil.getHome().createLetterContactMechanismPurpose(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -93,8 +93,8 @@ public class AddAction
             actionForm.setLetterName(letterName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.CHAIN_KIND_NAME, chainKindName);
             request.setAttribute(AttributeConstants.CHAIN_TYPE_NAME, chainTypeName);

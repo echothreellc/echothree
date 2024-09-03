@@ -60,16 +60,16 @@ public class ReviewAction
 
     public void setupCustomerTransfer(HttpServletRequest request, HttpServletResponse response)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
-            CustomerTransfer customer = result.getCustomer();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerResult)executionResult.getResult();
+            var customer = result.getCustomer();
 
             if(customer != null) {
                 request.setAttribute(AttributeConstants.CUSTOMER, customer);
@@ -81,8 +81,8 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetPartyPaymentMethodForm commandForm = PaymentUtil.getHome().getGetPartyPaymentMethodForm();
-        String partyPaymentMethodName = request.getParameter(ParameterConstants.PARTY_PAYMENT_METHOD_NAME);
+        var commandForm = PaymentUtil.getHome().getGetPartyPaymentMethodForm();
+        var partyPaymentMethodName = request.getParameter(ParameterConstants.PARTY_PAYMENT_METHOD_NAME);
 
         commandForm.setPartyPaymentMethodName(partyPaymentMethodName);
 
@@ -93,12 +93,12 @@ public class ReviewAction
         options.add(PaymentOptions.PartyPaymentMethodIncludePartyPaymentMethodContactMechanisms);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = PaymentUtil.getHome().getPartyPaymentMethod(getUserVisitPK(request), commandForm);
+        var commandResult = PaymentUtil.getHome().getPartyPaymentMethod(getUserVisitPK(request), commandForm);
         PartyPaymentMethodTransfer partyPaymentMethod = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyPaymentMethodResult result = (GetPartyPaymentMethodResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyPaymentMethodResult)executionResult.getResult();
             partyPaymentMethod = result.getPartyPaymentMethod();
         }
 

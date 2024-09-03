@@ -56,15 +56,15 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            String associateReferralName = request.getParameter(ParameterConstants.ASSOCIATE_REFERRAL_NAME);
-            GetAssociateReferralForm commandForm = AssociateUtil.getHome().getGetAssociateReferralForm();
+            var associateReferralName = request.getParameter(ParameterConstants.ASSOCIATE_REFERRAL_NAME);
+            var commandForm = AssociateUtil.getHome().getGetAssociateReferralForm();
             
             commandForm.setAssociateReferralName(associateReferralName);
-            
-            CommandResult commandResult = AssociateUtil.getHome().getAssociateReferral(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetAssociateReferralResult result = (GetAssociateReferralResult)executionResult.getResult();
-            AssociateReferralTransfer associateReferralTransfer = result.getAssociateReferral();
+
+            var commandResult = AssociateUtil.getHome().getAssociateReferral(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetAssociateReferralResult)executionResult.getResult();
+            var associateReferralTransfer = result.getAssociateReferral();
             
             request.setAttribute(AttributeConstants.ASSOCIATE_REFERRAL, associateReferralTransfer);
             forwardKey = ForwardConstants.DISPLAY;

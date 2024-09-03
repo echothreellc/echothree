@@ -55,16 +55,16 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
-            String workRequirementTypeName = request.getParameter(ParameterConstants.WORK_REQUIREMENT_TYPE_NAME);
-            GetWorkRequirementTypeDescriptionsForm commandForm = WorkRequirementUtil.getHome().getGetWorkRequirementTypeDescriptionsForm();
+            var workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
+            var workRequirementTypeName = request.getParameter(ParameterConstants.WORK_REQUIREMENT_TYPE_NAME);
+            var commandForm = WorkRequirementUtil.getHome().getGetWorkRequirementTypeDescriptionsForm();
             
             commandForm.setWorkEffortTypeName(workEffortTypeName);
             commandForm.setWorkRequirementTypeName(workRequirementTypeName);
-            
-            CommandResult commandResult = WorkRequirementUtil.getHome().getWorkRequirementTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkRequirementTypeDescriptionsResult result = (GetWorkRequirementTypeDescriptionsResult)executionResult.getResult();
+
+            var commandResult = WorkRequirementUtil.getHome().getWorkRequirementTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkRequirementTypeDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORK_REQUIREMENT_TYPE, result.getWorkRequirementType());
             request.setAttribute(AttributeConstants.WORK_REQUIREMENT_TYPE_DESCRIPTIONS, result.getWorkRequirementTypeDescriptions());

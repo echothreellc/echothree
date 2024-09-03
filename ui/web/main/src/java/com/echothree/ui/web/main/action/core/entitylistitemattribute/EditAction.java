@@ -57,16 +57,16 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
         
         try {
-            String entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
-            String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+            var entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
+            var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
             
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditEntityListItemAttributeForm commandForm = CoreUtil.getHome().getEditEntityListItemAttributeForm();
-                EntityListItemAttributeSpec spec = CoreUtil.getHome().getEntityListItemAttributeSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = CoreUtil.getHome().getEditEntityListItemAttributeForm();
+                var spec = CoreUtil.getHome().getEntityListItemAttributeSpec();
                 
                 if(entityRef == null)
                     entityRef = actionForm.getEntityRef();
@@ -80,20 +80,20 @@ public class EditAction
                 spec.setEntityAttributeName(entityAttributeName);
                 
                 if(wasPost(request)) {
-                    EntityListItemAttributeEdit edit = CoreUtil.getHome().getEntityListItemAttributeEdit();
+                    var edit = CoreUtil.getHome().getEntityListItemAttributeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     
                     edit.setEntityListItemName(actionForm.getEntityListItemChoice());
-                    
-                    CommandResult commandResult = CoreUtil.getHome().editEntityListItemAttribute(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CoreUtil.getHome().editEntityListItemAttribute(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditEntityListItemAttributeResult result = (EditEntityListItemAttributeResult)executionResult.getResult();
+                            var result = (EditEntityListItemAttributeResult)executionResult.getResult();
                             
                             if(result != null) {
                                 request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
@@ -106,13 +106,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CoreUtil.getHome().editEntityListItemAttribute(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditEntityListItemAttributeResult result = (EditEntityListItemAttributeResult)executionResult.getResult();
+
+                    var commandResult = CoreUtil.getHome().editEntityListItemAttribute(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditEntityListItemAttributeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        EntityListItemAttributeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setEntityRef(entityRef);

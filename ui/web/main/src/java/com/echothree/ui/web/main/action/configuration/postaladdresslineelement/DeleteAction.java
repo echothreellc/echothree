@@ -52,12 +52,12 @@ public class DeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
-        String postalAddressLineSortOrder = request.getParameter(ParameterConstants.POSTAL_ADDRESS_LINE_SORT_ORDER);
+        var postalAddressFormatName = request.getParameter(ParameterConstants.POSTAL_ADDRESS_FORMAT_NAME);
+        var postalAddressLineSortOrder = request.getParameter(ParameterConstants.POSTAL_ADDRESS_LINE_SORT_ORDER);
         
         try {
-            String postalAddressLineElementSortOrder = request.getParameter(ParameterConstants.POSTAL_ADDRESS_LINE_ELEMENT_SORT_ORDER);
-            DeletePostalAddressLineElementForm commandForm = ContactUtil.getHome().getDeletePostalAddressLineElementForm();
+            var postalAddressLineElementSortOrder = request.getParameter(ParameterConstants.POSTAL_ADDRESS_LINE_ELEMENT_SORT_ORDER);
+            var commandForm = ContactUtil.getHome().getDeletePostalAddressLineElementForm();
             
             commandForm.setPostalAddressFormatName(postalAddressFormatName);
             commandForm.setPostalAddressLineSortOrder(postalAddressLineSortOrder);
@@ -69,8 +69,8 @@ public class DeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(2);
             

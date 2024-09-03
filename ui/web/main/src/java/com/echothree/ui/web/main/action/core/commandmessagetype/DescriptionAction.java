@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String commandMessageTypeName = request.getParameter(ParameterConstants.COMMAND_MESSAGE_TYPE_NAME);
-        GetCommandMessageTypeDescriptionsForm commandForm = CoreUtil.getHome().getGetCommandMessageTypeDescriptionsForm();
+        var commandMessageTypeName = request.getParameter(ParameterConstants.COMMAND_MESSAGE_TYPE_NAME);
+        var commandForm = CoreUtil.getHome().getGetCommandMessageTypeDescriptionsForm();
 
         commandForm.setCommandMessageTypeName(commandMessageTypeName);
 
-        CommandResult commandResult = CoreUtil.getHome().getCommandMessageTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getCommandMessageTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommandMessageTypeDescriptionsResult result = (GetCommandMessageTypeDescriptionsResult) executionResult.getResult();
-            CommandMessageTypeTransfer commandMessageTypeTransfer = result.getCommandMessageType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommandMessageTypeDescriptionsResult) executionResult.getResult();
+            var commandMessageTypeTransfer = result.getCommandMessageType();
 
             request.setAttribute(AttributeConstants.COMMAND_MESSAGE_TYPE, commandMessageTypeTransfer);
             request.setAttribute(AttributeConstants.COMMAND_MESSAGE_TYPE_DESCRIPTIONS, result.getCommandMessageTypeDescriptions());

@@ -64,16 +64,16 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetSearchSortOrderDescriptionForm commandForm = SearchUtil.getHome().getGetSearchSortOrderDescriptionForm();
+        var commandForm = SearchUtil.getHome().getGetSearchSortOrderDescriptionForm();
         
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchSortOrderName(actionForm.getSearchSortOrderName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = SearchUtil.getHome().getSearchSortOrderDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = SearchUtil.getHome().getSearchSortOrderDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSearchSortOrderDescriptionResult result = (GetSearchSortOrderDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchSortOrderDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.SEARCH_SORT_ORDER_DESCRIPTION, result.getSearchSortOrderDescription());
         }
@@ -82,7 +82,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteSearchSortOrderDescriptionForm commandForm = SearchUtil.getHome().getDeleteSearchSortOrderDescriptionForm();
+        var commandForm = SearchUtil.getHome().getDeleteSearchSortOrderDescriptionForm();
 
         commandForm.setSearchKindName(actionForm.getSearchKindName());
         commandForm.setSearchSortOrderName(actionForm.getSearchSortOrderName());

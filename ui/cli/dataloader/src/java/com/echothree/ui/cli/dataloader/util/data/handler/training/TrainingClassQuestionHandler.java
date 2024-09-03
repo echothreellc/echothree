@@ -56,7 +56,7 @@ public class TrainingClassQuestionHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("trainingClassQuestionTranslation")) {
-            CreateTrainingClassQuestionTranslationForm commandForm = TrainingFormFactory.getCreateTrainingClassQuestionTranslationForm();
+            var commandForm = TrainingFormFactory.getCreateTrainingClassQuestionTranslationForm();
 
             commandForm.setTrainingClassName(trainingClassName);
             commandForm.setTrainingClassSectionName(trainingClassSectionName);
@@ -65,7 +65,7 @@ public class TrainingClassQuestionHandler
 
             trainingService.createTrainingClassQuestionTranslation(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("trainingClassAnswer")) {
-            CreateTrainingClassAnswerForm commandForm = TrainingFormFactory.getCreateTrainingClassAnswerForm();
+            var commandForm = TrainingFormFactory.getCreateTrainingClassAnswerForm();
 
             commandForm.setTrainingClassName(trainingClassName);
             commandForm.setTrainingClassSectionName(trainingClassSectionName);

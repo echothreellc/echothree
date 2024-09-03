@@ -55,16 +55,16 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
-            String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
-            GetOfferItemPricesForm commandForm = OfferUtil.getHome().getGetOfferItemPricesForm();
+            var offerName = request.getParameter(ParameterConstants.OFFER_NAME);
+            var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+            var commandForm = OfferUtil.getHome().getGetOfferItemPricesForm();
             
             commandForm.setOfferName(offerName);
             commandForm.setItemName(itemName);
-            
-            CommandResult commandResult = OfferUtil.getHome().getOfferItemPrices(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetOfferItemPricesResult result = (GetOfferItemPricesResult)executionResult.getResult();
+
+            var commandResult = OfferUtil.getHome().getOfferItemPrices(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetOfferItemPricesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.OFFER, result.getOffer());
             request.setAttribute(AttributeConstants.ITEM, result.getItem());

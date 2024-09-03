@@ -102,7 +102,7 @@ public class CreatePaymentMethodCommand
     
     @Override
     protected ValidationResult validate() {
-        Validator validator = new Validator(this);
+        var validator = new Validator(this);
         var validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
         
         if(!validationResult.getHasErrors()) {

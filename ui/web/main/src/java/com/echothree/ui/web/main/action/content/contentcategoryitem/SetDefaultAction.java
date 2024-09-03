@@ -50,10 +50,10 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-        String contentCatalogName = request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME);
-        String contentCategoryName = request.getParameter(ParameterConstants.CONTENT_CATEGORY_NAME);
-        SetDefaultContentCategoryItemForm commandForm = ContentUtil.getHome().getSetDefaultContentCategoryItemForm();
+        var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+        var contentCatalogName = request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME);
+        var contentCategoryName = request.getParameter(ParameterConstants.CONTENT_CATEGORY_NAME);
+        var commandForm = ContentUtil.getHome().getSetDefaultContentCategoryItemForm();
 
         commandForm.setContentCollectionName(contentCollectionName);
         commandForm.setContentCatalogName(contentCatalogName);
@@ -65,7 +65,7 @@ public class SetDefaultAction
 
         ContentUtil.getHome().setDefaultContentCategoryItem(getUserVisitPK(request), commandForm);
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(3);
 
         parameters.put(ParameterConstants.CONTENT_COLLECTION_NAME, contentCollectionName);

@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateHarmonizedTariffScheduleCodeUnitForm commandForm = ItemUtil.getHome().getCreateHarmonizedTariffScheduleCodeUnitForm();
+        var commandForm = ItemUtil.getHome().getCreateHarmonizedTariffScheduleCodeUnitForm();
 
         commandForm.setHarmonizedTariffScheduleCodeUnitName(actionForm.getHarmonizedTariffScheduleCodeUnitName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());

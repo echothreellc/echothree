@@ -76,14 +76,14 @@ public class AddActionForm
     private void setupInventoryMovePrinterGroupChoices() {
         if(inventoryMovePrinterGroupChoices == null) {
             try {
-                GetPrinterGroupChoicesForm form = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
+                var form = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
                 
                 form.setDefaultPrinterGroupChoice(inventoryMovePrinterGroupChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPrinterGroupChoicesResult result = (GetPrinterGroupChoicesResult)executionResult.getResult();
+
+                var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPrinterGroupChoicesResult)executionResult.getResult();
                 inventoryMovePrinterGroupChoices = result.getPrinterGroupChoices();
                 
                 if(inventoryMovePrinterGroupChoice == null) {
@@ -98,14 +98,14 @@ public class AddActionForm
     private void setupPicklistPrinterGroupChoices() {
         if(picklistPrinterGroupChoices == null) {
             try {
-                GetPrinterGroupChoicesForm form = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
+                var form = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
                 
                 form.setDefaultPrinterGroupChoice(picklistPrinterGroupChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPrinterGroupChoicesResult result = (GetPrinterGroupChoicesResult)executionResult.getResult();
+
+                var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPrinterGroupChoicesResult)executionResult.getResult();
                 picklistPrinterGroupChoices = result.getPrinterGroupChoices();
                 
                 if(picklistPrinterGroupChoice == null) {
@@ -120,14 +120,14 @@ public class AddActionForm
     private void setupPackingListPrinterGroupChoices() {
         if(packingListPrinterGroupChoices == null) {
             try {
-                GetPrinterGroupChoicesForm form = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
+                var form = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
                 
                 form.setDefaultPrinterGroupChoice(packingListPrinterGroupChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPrinterGroupChoicesResult result = (GetPrinterGroupChoicesResult)executionResult.getResult();
+
+                var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPrinterGroupChoicesResult)executionResult.getResult();
                 packingListPrinterGroupChoices = result.getPrinterGroupChoices();
                 
                 if(packingListPrinterGroupChoice == null) {
@@ -142,14 +142,14 @@ public class AddActionForm
     private void setupShippingManifestPrinterGroupChoices() {
         if(shippingManifestPrinterGroupChoices == null) {
             try {
-                GetPrinterGroupChoicesForm form = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
+                var form = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
                 
                 form.setDefaultPrinterGroupChoice(shippingManifestPrinterGroupChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPrinterGroupChoicesResult result = (GetPrinterGroupChoicesResult)executionResult.getResult();
+
+                var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetPrinterGroupChoicesResult)executionResult.getResult();
                 shippingManifestPrinterGroupChoices = result.getPrinterGroupChoices();
                 
                 if(shippingManifestPrinterGroupChoice == null) {

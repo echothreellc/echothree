@@ -55,18 +55,18 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String ratingTypeName = request.getParameter(ParameterConstants.RATING_TYPE_NAME);
-            GetRatingTypeDescriptionsForm commandForm = RatingUtil.getHome().getGetRatingTypeDescriptionsForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var ratingTypeName = request.getParameter(ParameterConstants.RATING_TYPE_NAME);
+            var commandForm = RatingUtil.getHome().getGetRatingTypeDescriptionsForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setRatingTypeName(ratingTypeName);
-            
-            CommandResult commandResult = RatingUtil.getHome().getRatingTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetRatingTypeDescriptionsResult result = (GetRatingTypeDescriptionsResult)executionResult.getResult();
+
+            var commandResult = RatingUtil.getHome().getRatingTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetRatingTypeDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RATING_TYPE, result.getRatingType());
             request.setAttribute(AttributeConstants.RATING_TYPE_DESCRIPTIONS, result.getRatingTypeDescriptions());

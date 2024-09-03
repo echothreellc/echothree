@@ -56,15 +56,15 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String partySecurityRoleTemplateName = request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME);
-            GetPartySecurityRoleTemplateRolesForm commandForm = SecurityUtil.getHome().getGetPartySecurityRoleTemplateRolesForm();
+            var partySecurityRoleTemplateName = request.getParameter(ParameterConstants.PARTY_SECURITY_ROLE_TEMPLATE_NAME);
+            var commandForm = SecurityUtil.getHome().getGetPartySecurityRoleTemplateRolesForm();
             
             commandForm.setPartySecurityRoleTemplateName(partySecurityRoleTemplateName);
-            
-            CommandResult commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateRoles(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartySecurityRoleTemplateRolesResult result = (GetPartySecurityRoleTemplateRolesResult)executionResult.getResult();
-            PartySecurityRoleTemplateTransfer partySecurityRoleTemplateTransfer = result.getPartySecurityRoleTemplate();
+
+            var commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateRoles(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartySecurityRoleTemplateRolesResult)executionResult.getResult();
+            var partySecurityRoleTemplateTransfer = result.getPartySecurityRoleTemplate();
             
             request.setAttribute(AttributeConstants.PARTY_SECURITY_ROLE_TEMPLATE, partySecurityRoleTemplateTransfer);
             request.setAttribute(AttributeConstants.PARTY_SECURITY_ROLE_TEMPLATE_ROLES, result.getPartySecurityRoleTemplateRoles());

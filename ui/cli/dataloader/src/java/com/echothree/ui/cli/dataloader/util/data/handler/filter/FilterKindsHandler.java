@@ -47,7 +47,7 @@ public class FilterKindsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("filterKind")) {
-            CreateFilterKindForm commandForm = FilterFormFactory.getCreateFilterKindForm();
+            var commandForm = FilterFormFactory.getCreateFilterKindForm();
 
             commandForm.set(getAttrsMap(attrs));
 

@@ -53,12 +53,12 @@ public class StatusAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        StatusActionForm actionForm = (StatusActionForm)form;
+        var actionForm = (StatusActionForm)form;
         String forwardKey;
-        String eventGroupName = request.getParameter(ParameterConstants.EVENT_GROUP_NAME);
+        var eventGroupName = request.getParameter(ParameterConstants.EVENT_GROUP_NAME);
         
         try {
-            SetEventGroupStatusForm commandForm = CoreUtil.getHome().getSetEventGroupStatusForm();
+            var commandForm = CoreUtil.getHome().getSetEventGroupStatusForm();
             
             if(eventGroupName == null)
                 eventGroupName = actionForm.getEventGroupName();
@@ -66,8 +66,8 @@ public class StatusAction
             if(wasPost(request)) {
                 commandForm.setEventGroupName(eventGroupName);
                 commandForm.setEventGroupStatusChoice(actionForm.getEventGroupStatusChoice());
-                
-                CommandResult commandResult = CoreUtil.getHome().setEventGroupStatus(getUserVisitPK(request), commandForm);
+
+                var commandResult = CoreUtil.getHome().setEventGroupStatus(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);
@@ -83,8 +83,8 @@ public class StatusAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.EVENT_GROUP_NAME, eventGroupName);
         }

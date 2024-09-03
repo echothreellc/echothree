@@ -71,9 +71,9 @@ public class CountriesHandler
             String postalCodeExample = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("countryName"))
                     countryName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("iso3Number"))
@@ -123,7 +123,7 @@ public class CountriesHandler
             }
             
             try {
-                CreateCountryForm form = GeoFormFactory.getCreateCountryForm();
+                var form = GeoFormFactory.getCreateCountryForm();
                 
                 form.setCountryName(countryName);
                 form.setIso3Number(iso3Number);
@@ -148,12 +148,12 @@ public class CountriesHandler
                 form.setPostalCodeExample(postalCodeExample);
                 form.setIsDefault(isDefault);
                 form.setSortOrder(sortOrder);
-                
-                CommandResult commandResult = geoService.createCountry(initialDataParser.getUserVisit(), form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateCountryResult createCountryResult = (CreateCountryResult)executionResult.getResult();
-                String countryGeoCodeName = createCountryResult.getGeoCodeName();
-                String countryEntityRef = createCountryResult.getEntityRef();
+
+                var commandResult = geoService.createCountry(initialDataParser.getUserVisit(), form);
+                var executionResult = commandResult.getExecutionResult();
+                var createCountryResult = (CreateCountryResult)executionResult.getResult();
+                var countryGeoCodeName = createCountryResult.getGeoCodeName();
+                var countryEntityRef = createCountryResult.getEntityRef();
                 
                 initialDataParser.pushHandler(new CountryHandler(initialDataParser, this, countryGeoCodeName, countryEntityRef));
             } catch (Exception e) {

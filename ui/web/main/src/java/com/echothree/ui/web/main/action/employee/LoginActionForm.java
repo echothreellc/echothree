@@ -42,14 +42,14 @@ public class LoginActionForm
     private void setupCompanyChoices()
             throws NamingException {
         if(companyChoices == null) {
-            GetCompanyChoicesForm commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
+            var commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
 
             commandForm.setDefaultCompanyChoice(companyChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCompanyChoicesResult result = (GetCompanyChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCompanyChoicesResult)executionResult.getResult();
             companyChoices = result.getCompanyChoices();
 
             if(companyChoice == null)

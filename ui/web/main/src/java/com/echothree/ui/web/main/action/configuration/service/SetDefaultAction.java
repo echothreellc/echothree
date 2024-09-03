@@ -48,7 +48,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SetDefaultServiceForm commandForm = CoreUtil.getHome().getSetDefaultServiceForm();
+        var commandForm = CoreUtil.getHome().getSetDefaultServiceForm();
 
         commandForm.setServiceName(request.getParameter(ParameterConstants.SERVICE_NAME));
 

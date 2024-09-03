@@ -64,7 +64,7 @@ public class SecurityRoleGroupTransferCache
 
             if(includeSecurityRoles) {
                 var securityRoleTransfers = securityControl.getSecurityRoleTransfersBySecurityRoleGroup(userVisit, securityRoleGroup);
-                MapWrapper<SecurityRoleTransfer> securityRoles = new MapWrapper<>(securityRoleTransfers.size());
+                var securityRoles = new MapWrapper<SecurityRoleTransfer>(securityRoleTransfers.size());
 
                 securityRoleTransfers.forEach((securityRoleTransfer) -> {
                     securityRoles.put(securityRoleTransfer.getSecurityRoleName(), securityRoleTransfer);

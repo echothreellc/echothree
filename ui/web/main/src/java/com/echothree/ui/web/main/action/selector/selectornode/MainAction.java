@@ -54,18 +54,18 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetSelectorNodesForm commandForm = SelectorUtil.getHome().getGetSelectorNodesForm();
-            String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
-            String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
-            String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
+            var commandForm = SelectorUtil.getHome().getGetSelectorNodesForm();
+            var selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
+            var selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
+            var selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);
             
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setSelectorTypeName(selectorTypeName);
             commandForm.setSelectorName(selectorName);
-            
-            CommandResult commandResult = SelectorUtil.getHome().getSelectorNodes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSelectorNodesResult result = (GetSelectorNodesResult)executionResult.getResult();
+
+            var commandResult = SelectorUtil.getHome().getSelectorNodes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSelectorNodesResult)executionResult.getResult();
             
             request.setAttribute("selectorKind", result.getSelectorKind());
             request.setAttribute("selectorType", result.getSelectorType());

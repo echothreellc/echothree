@@ -52,17 +52,17 @@ public class TranslationReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetReturnPolicyTranslationForm commandForm = ReturnPolicyUtil.getHome().getGetReturnPolicyTranslationForm();
+        var commandForm = ReturnPolicyUtil.getHome().getGetReturnPolicyTranslationForm();
 
         commandForm.setReturnKindName(request.getParameter(ParameterConstants.RETURN_KIND_NAME));
         commandForm.setReturnPolicyName(request.getParameter(ParameterConstants.RETURN_POLICY_NAME));
         commandForm.setLanguageIsoName(request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME));
-        
-        CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnPolicyTranslation(getUserVisitPK(request), commandForm);
+
+        var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyTranslation(getUserVisitPK(request), commandForm);
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetReturnPolicyTranslationResult result = (GetReturnPolicyTranslationResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnPolicyTranslationResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RETURN_POLICY_TRANSLATION, result.getReturnPolicyTranslation());
             forwardKey = ForwardConstants.DISPLAY;

@@ -54,17 +54,17 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateForumGroupForm commandForm = ForumUtil.getHome().getCreateForumGroupForm();
+                    var commandForm = ForumUtil.getHome().getCreateForumGroupForm();
                     
                     commandForm.setForumGroupName(actionForm.getForumGroupName());
                     commandForm.setIconName(actionForm.getIconChoice());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = ForumUtil.getHome().createForumGroup(getUserVisitPK(request), commandForm);
+
+                    var commandResult = ForumUtil.getHome().createForumGroup(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

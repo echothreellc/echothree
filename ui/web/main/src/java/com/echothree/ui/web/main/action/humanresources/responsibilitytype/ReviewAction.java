@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetResponsibilityTypeForm commandForm = EmployeeUtil.getHome().getGetResponsibilityTypeForm();
-            String responsibilityTypeName = request.getParameter(ParameterConstants.RESPONSIBILITY_TYPE_NAME);
+            var commandForm = EmployeeUtil.getHome().getGetResponsibilityTypeForm();
+            var responsibilityTypeName = request.getParameter(ParameterConstants.RESPONSIBILITY_TYPE_NAME);
             
             commandForm.setResponsibilityTypeName(responsibilityTypeName);
-            
-            CommandResult commandResult = EmployeeUtil.getHome().getResponsibilityType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetResponsibilityTypeResult result = (GetResponsibilityTypeResult)executionResult.getResult();
+
+            var commandResult = EmployeeUtil.getHome().getResponsibilityType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetResponsibilityTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RESPONSIBILITY_TYPE, result.getResponsibilityType());
             forwardKey = ForwardConstants.DISPLAY;

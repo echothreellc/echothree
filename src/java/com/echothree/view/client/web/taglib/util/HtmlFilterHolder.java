@@ -71,7 +71,7 @@ public class HtmlFilterHolder {
     }
 
     public ElementRemover getElementRemover() {
-        ElementRemover elementRemover = new ElementRemover();
+        var elementRemover = new ElementRemover();
 
         for(var htmlTagHolder : htmlTagHolders) {
             switch(htmlTagHolder.getHtmlFilterAction()) {

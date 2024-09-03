@@ -56,14 +56,14 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+        var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateLocationForm commandForm = WarehouseUtil.getHome().getCreateLocationForm();
+                    var commandForm = WarehouseUtil.getHome().getCreateLocationForm();
                     
                     if(warehouseName == null)
                         warehouseName = actionForm.getWarehouseName();
@@ -75,8 +75,8 @@ public class AddAction
                     commandForm.setVelocity(actionForm.getVelocity());
                     commandForm.setInventoryLocationGroupName(actionForm.getInventoryLocationGroupChoice());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = WarehouseUtil.getHome().createLocation(getUserVisitPK(request), commandForm);
+
+                    var commandResult = WarehouseUtil.getHome().createLocation(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -93,8 +93,8 @@ public class AddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WAREHOUSE_NAME, warehouseName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

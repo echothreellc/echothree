@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String terminationReasonName = request.getParameter(ParameterConstants.TERMINATION_REASON_NAME);
-            GetTerminationReasonDescriptionsForm commandForm = EmployeeUtil.getHome().getGetTerminationReasonDescriptionsForm();
+            var terminationReasonName = request.getParameter(ParameterConstants.TERMINATION_REASON_NAME);
+            var commandForm = EmployeeUtil.getHome().getGetTerminationReasonDescriptionsForm();
             
             commandForm.setTerminationReasonName(terminationReasonName);
-            
-            CommandResult commandResult = EmployeeUtil.getHome().getTerminationReasonDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTerminationReasonDescriptionsResult result = (GetTerminationReasonDescriptionsResult)executionResult.getResult();
-            TerminationReasonTransfer terminationReasonTransfer = result.getTerminationReason();
+
+            var commandResult = EmployeeUtil.getHome().getTerminationReasonDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTerminationReasonDescriptionsResult)executionResult.getResult();
+            var terminationReasonTransfer = result.getTerminationReason();
             
             request.setAttribute(AttributeConstants.TERMINATION_REASON, terminationReasonTransfer);
             request.setAttribute(AttributeConstants.TERMINATION_REASON_NAME, terminationReasonTransfer.getTerminationReasonName());

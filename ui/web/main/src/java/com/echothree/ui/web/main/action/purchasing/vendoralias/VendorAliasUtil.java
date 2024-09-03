@@ -47,16 +47,16 @@ public class VendorAliasUtil {
 
     public void setupVendor(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetVendorForm commandForm = VendorUtil.getHome().getGetVendorForm();
+        var commandForm = VendorUtil.getHome().getGetVendorForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = VendorUtil.getHome().getVendor(MainBaseAction.getUserVisitPK(request), commandForm);
+        var commandResult = VendorUtil.getHome().getVendor(MainBaseAction.getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetVendorResult result = (GetVendorResult)executionResult.getResult();
-            VendorTransfer vendor = result.getVendor();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetVendorResult)executionResult.getResult();
+            var vendor = result.getVendor();
 
             if(vendor != null) {
                 request.setAttribute(AttributeConstants.VENDOR, vendor);
@@ -71,14 +71,14 @@ public class VendorAliasUtil {
 
     public void setupPartyAliasTransfer(HttpServletRequest request, String partyName, String partyAliasTypeName)
             throws NamingException {
-        GetPartyAliasForm commandForm = PartyUtil.getHome().getGetPartyAliasForm();
+        var commandForm = PartyUtil.getHome().getGetPartyAliasForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setPartyAliasTypeName(partyAliasTypeName);
 
-        CommandResult commandResult = PartyUtil.getHome().getPartyAlias(MainBaseAction.getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyAliasResult result = (GetPartyAliasResult)executionResult.getResult();
+        var commandResult = PartyUtil.getHome().getPartyAlias(MainBaseAction.getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyAliasResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_ALIAS, result.getPartyAlias());
     }

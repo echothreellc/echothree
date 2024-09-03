@@ -57,7 +57,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetWorkEffortForm commandForm = WorkEffortUtil.getHome().getGetWorkEffortForm();
+        var commandForm = WorkEffortUtil.getHome().getGetWorkEffortForm();
 
         commandForm.setWorkEffortName(request.getParameter(ParameterConstants.WORK_EFFORT_NAME));
 
@@ -66,12 +66,12 @@ public class ReviewAction
         options.add(WorkEffortOptions.WorkEffortIncludeWorkRequirements);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = WorkEffortUtil.getHome().getWorkEffort(getUserVisitPK(request), commandForm);
+        var commandResult = WorkEffortUtil.getHome().getWorkEffort(getUserVisitPK(request), commandForm);
         WorkEffortTransfer workEffort = null;
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkEffortResult result = (GetWorkEffortResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkEffortResult)executionResult.getResult();
 
             workEffort = result.getWorkEffort();
         }

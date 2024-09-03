@@ -58,9 +58,9 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetCarrierForm commandForm = CarrierUtil.getHome().getGetCarrierForm();
-        String carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var commandForm = CarrierUtil.getHome().getGetCarrierForm();
+        var carrierName = request.getParameter(ParameterConstants.CARRIER_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         
         commandForm.setCarrierName(carrierName);
         commandForm.setPartyName(partyName);
@@ -70,11 +70,11 @@ public class MainAction
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismPurposes);
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismRelationshipsByFromPartyContactMechanism);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
-        
-        CommandResult commandResult = CarrierUtil.getHome().getCarrier(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCarrierResult result = (GetCarrierResult)executionResult.getResult();
-        CarrierTransfer carrier = result.getCarrier();
+
+        var commandResult = CarrierUtil.getHome().getCarrier(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCarrierResult)executionResult.getResult();
+        var carrier = result.getCarrier();
         
         if(carrier == null) {
             forwardKey = ForwardConstants.ERROR_404;

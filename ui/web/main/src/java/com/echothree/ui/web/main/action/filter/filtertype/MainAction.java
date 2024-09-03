@@ -55,14 +55,14 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetFilterTypesForm commandForm = FilterUtil.getHome().getGetFilterTypesForm();
-            String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+            var commandForm = FilterUtil.getHome().getGetFilterTypesForm();
+            var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
             
             commandForm.setFilterKindName(filterKindName);
 
-            CommandResult commandResult = FilterUtil.getHome().getFilterTypes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterTypesResult getFilterTypesResult = (GetFilterTypesResult)executionResult.getResult();
+            var commandResult = FilterUtil.getHome().getFilterTypes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getFilterTypesResult = (GetFilterTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FILTER_KIND, getFilterTypesResult.getFilterKind());
             request.setAttribute(AttributeConstants.FILTER_TYPES, getFilterTypesResult.getFilterTypes());

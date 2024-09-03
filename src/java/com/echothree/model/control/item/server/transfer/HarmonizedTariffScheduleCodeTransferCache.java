@@ -68,7 +68,7 @@ public class HarmonizedTariffScheduleCodeTransferCache
             
             if(includeHarmonizedTariffScheduleCodeUses) {
                 var harmonizedTariffScheduleCodeUseTransfers = itemControl.getHarmonizedTariffScheduleCodeUseTransfersByHarmonizedTariffScheduleCode(userVisit, harmonizedTariffScheduleCode);
-                MapWrapper<HarmonizedTariffScheduleCodeUseTransfer> harmonizedTariffScheduleCodeUses = new MapWrapper<>();
+                var harmonizedTariffScheduleCodeUses = new MapWrapper<HarmonizedTariffScheduleCodeUseTransfer>();
                 
                 harmonizedTariffScheduleCodeUseTransfers.forEach((harmonizedTariffScheduleCodeUseTransfer) -> {
                     harmonizedTariffScheduleCodeUses.put(harmonizedTariffScheduleCodeUseTransfer.getHarmonizedTariffScheduleCodeUseType().getHarmonizedTariffScheduleCodeUseTypeName(), harmonizedTariffScheduleCodeUseTransfer);

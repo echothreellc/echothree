@@ -42,15 +42,15 @@ public class StatusActionForm
     public void setupJobStatusChoices() {
         if(jobStatusChoices == null) {
             try {
-                GetJobStatusChoicesForm form = JobUtil.getHome().getGetJobStatusChoicesForm();
+                var form = JobUtil.getHome().getGetJobStatusChoicesForm();
                 
                 form.setJobName(jobName);
                 form.setDefaultJobStatusChoice(jobStatusChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = JobUtil.getHome().getJobStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetJobStatusChoicesResult getJobStatusChoicesResult = (GetJobStatusChoicesResult)executionResult.getResult();
+
+                var commandResult = JobUtil.getHome().getJobStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getJobStatusChoicesResult = (GetJobStatusChoicesResult)executionResult.getResult();
                 jobStatusChoices = getJobStatusChoicesResult.getJobStatusChoices();
                 
                 if(jobStatusChoice == null)

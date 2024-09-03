@@ -55,16 +55,16 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-            String returnReasonName = request.getParameter(ParameterConstants.RETURN_REASON_NAME);
-            GetReturnReasonForm commandForm = ReturnPolicyUtil.getHome().getGetReturnReasonForm();
+            var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+            var returnReasonName = request.getParameter(ParameterConstants.RETURN_REASON_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getGetReturnReasonForm();
             
             commandForm.setReturnKindName(returnKindName);
             commandForm.setReturnReasonName(returnReasonName);
-            
-            CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnReason(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetReturnReasonResult result = (GetReturnReasonResult)executionResult.getResult();
+
+            var commandResult = ReturnPolicyUtil.getHome().getReturnReason(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnReasonResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RETURN_REASON, result.getReturnReason());
             forwardKey = ForwardConstants.DISPLAY;

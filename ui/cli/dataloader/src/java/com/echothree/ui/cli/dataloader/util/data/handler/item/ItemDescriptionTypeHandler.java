@@ -51,14 +51,14 @@ public class ItemDescriptionTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("itemDescriptionTypeDescription")) {
-            CreateItemDescriptionTypeDescriptionForm commandForm = ItemFormFactory.getCreateItemDescriptionTypeDescriptionForm();
+            var commandForm = ItemFormFactory.getCreateItemDescriptionTypeDescriptionForm();
 
             commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
             commandForm.set(getAttrsMap(attrs));
 
             itemService.createItemDescriptionTypeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("itemDescriptionTypeUse")) {
-            CreateItemDescriptionTypeUseForm commandForm = ItemFormFactory.getCreateItemDescriptionTypeUseForm();
+            var commandForm = ItemFormFactory.getCreateItemDescriptionTypeUseForm();
 
             commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
             commandForm.set(getAttrsMap(attrs));

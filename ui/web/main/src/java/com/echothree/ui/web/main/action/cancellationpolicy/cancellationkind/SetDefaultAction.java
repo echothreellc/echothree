@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultCancellationKindForm commandForm = CancellationPolicyUtil.getHome().getSetDefaultCancellationKindForm();
-            String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
+            var commandForm = CancellationPolicyUtil.getHome().getSetDefaultCancellationKindForm();
+            var cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
             
             commandForm.setCancellationKindName(cancellationKindName);
             

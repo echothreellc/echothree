@@ -56,15 +56,15 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetTermForm commandForm = TermUtil.getHome().getGetTermForm();
-            String termName = request.getParameter(ParameterConstants.TERM_NAME);
+            var commandForm = TermUtil.getHome().getGetTermForm();
+            var termName = request.getParameter(ParameterConstants.TERM_NAME);
             
             commandForm.setTermName(termName);
-            
-            CommandResult commandResult = TermUtil.getHome().getTerm(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTermResult result = (GetTermResult)executionResult.getResult();
-            TermTransfer term = result.getTerm();
+
+            var commandResult = TermUtil.getHome().getTerm(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTermResult)executionResult.getResult();
+            var term = result.getTerm();
             
             if(term == null) {
                 forwardKey = ForwardConstants.ERROR_404;

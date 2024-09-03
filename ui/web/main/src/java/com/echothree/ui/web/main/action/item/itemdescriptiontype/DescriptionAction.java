@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String itemDescriptionTypeName = request.getParameter(ParameterConstants.ITEM_DESCRIPTION_TYPE_NAME);
-        GetItemDescriptionTypeDescriptionsForm commandForm = ItemUtil.getHome().getGetItemDescriptionTypeDescriptionsForm();
+        var itemDescriptionTypeName = request.getParameter(ParameterConstants.ITEM_DESCRIPTION_TYPE_NAME);
+        var commandForm = ItemUtil.getHome().getGetItemDescriptionTypeDescriptionsForm();
 
         commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
 
-        CommandResult commandResult = ItemUtil.getHome().getItemDescriptionTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getItemDescriptionTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemDescriptionTypeDescriptionsResult result = (GetItemDescriptionTypeDescriptionsResult) executionResult.getResult();
-            ItemDescriptionTypeTransfer itemDescriptionTypeTransfer = result.getItemDescriptionType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemDescriptionTypeDescriptionsResult) executionResult.getResult();
+            var itemDescriptionTypeTransfer = result.getItemDescriptionType();
 
             request.setAttribute(AttributeConstants.ITEM_DESCRIPTION_TYPE, itemDescriptionTypeTransfer);
             request.setAttribute(AttributeConstants.ITEM_DESCRIPTION_TYPE_DESCRIPTIONS, result.getItemDescriptionTypeDescriptions());

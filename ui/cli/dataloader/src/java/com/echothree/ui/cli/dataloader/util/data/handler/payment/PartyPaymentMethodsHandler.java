@@ -54,18 +54,18 @@ public class PartyPaymentMethodsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("partyPaymentMethod")) {
-            CreatePartyPaymentMethodForm commandForm = PaymentFormFactory.getCreatePartyPaymentMethodForm();
+            var commandForm = PaymentFormFactory.getCreatePartyPaymentMethodForm();
             
             commandForm.setPartyName(partyName);
             commandForm.setBillingContactMechanismName(contactMechanismName);
             commandForm.set(getAttrsMap(attrs));
-            
-            CommandResult commandResult = paymentService.createPartyPaymentMethod(initialDataParser.getUserVisit(), commandForm);
+
+            var commandResult = paymentService.createPartyPaymentMethod(initialDataParser.getUserVisit(), commandForm);
 
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreatePartyPaymentMethodResult result = (CreatePartyPaymentMethodResult)executionResult.getResult();
-                String entityRef = result.getEntityRef();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreatePartyPaymentMethodResult)executionResult.getResult();
+                var entityRef = result.getEntityRef();
 
                 initialDataParser.pushHandler(new PartyPaymentMethodHandler(initialDataParser, this, entityRef));
             }

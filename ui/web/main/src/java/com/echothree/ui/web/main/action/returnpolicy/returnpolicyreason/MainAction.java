@@ -55,16 +55,16 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetReturnPolicyReasonsForm commandForm = ReturnPolicyUtil.getHome().getGetReturnPolicyReasonsForm();
-            String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
-            String returnPolicyName = request.getParameter(ParameterConstants.RETURN_POLICY_NAME);
+            var commandForm = ReturnPolicyUtil.getHome().getGetReturnPolicyReasonsForm();
+            var returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
+            var returnPolicyName = request.getParameter(ParameterConstants.RETURN_POLICY_NAME);
             
             commandForm.setReturnKindName(returnKindName);
             commandForm.setReturnPolicyName(returnPolicyName);
 
-            CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnPolicyReasons(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetReturnPolicyReasonsResult result = (GetReturnPolicyReasonsResult)executionResult.getResult();
+            var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyReasons(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnPolicyReasonsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RETURN_POLICY, result.getReturnPolicy());
             request.setAttribute(AttributeConstants.RETURN_POLICY_REASONS, result.getReturnPolicyReasons());

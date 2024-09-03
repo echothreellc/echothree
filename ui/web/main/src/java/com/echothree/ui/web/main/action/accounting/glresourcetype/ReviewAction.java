@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetGlResourceTypeForm commandForm = AccountingUtil.getHome().getGetGlResourceTypeForm();
-            String glResourceTypeName = request.getParameter(ParameterConstants.GL_RESOURCE_TYPE_NAME);
+            var commandForm = AccountingUtil.getHome().getGetGlResourceTypeForm();
+            var glResourceTypeName = request.getParameter(ParameterConstants.GL_RESOURCE_TYPE_NAME);
             
             commandForm.setGlResourceTypeName(glResourceTypeName);
-            
-            CommandResult commandResult = AccountingUtil.getHome().getGlResourceType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGlResourceTypeResult result = (GetGlResourceTypeResult)executionResult.getResult();
+
+            var commandResult = AccountingUtil.getHome().getGlResourceType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGlResourceTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.GL_RESOURCE_TYPE, result.getGlResourceType());
             forwardKey = ForwardConstants.DISPLAY;

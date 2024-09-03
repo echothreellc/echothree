@@ -66,8 +66,8 @@ public class SecurityRoleGroupHandler
 
             editForm.setSpec(spec);
             editForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = securityService.editSecurityRoleGroupDescription(initialDataParser.getUserVisit(), editForm);
+
+            var commandResult = securityService.editSecurityRoleGroupDescription(initialDataParser.getUserVisit(), editForm);
             
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownSecurityRoleGroupDescription.name())) {
@@ -127,8 +127,8 @@ public class SecurityRoleGroupHandler
 
             editForm.setSpec(spec);
             editForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = securityService.editSecurityRole(initialDataParser.getUserVisit(), editForm);
+
+            var commandResult = securityService.editSecurityRole(initialDataParser.getUserVisit(), editForm);
             
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownSecurityRoleName.name())) {

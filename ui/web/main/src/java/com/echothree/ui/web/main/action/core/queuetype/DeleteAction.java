@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetQueueTypeForm commandForm = QueueUtil.getHome().getGetQueueTypeForm();
+        var commandForm = QueueUtil.getHome().getGetQueueTypeForm();
         
         commandForm.setQueueTypeName(actionForm.getQueueTypeName());
-        
-        CommandResult commandResult = QueueUtil.getHome().getQueueType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetQueueTypeResult result = (GetQueueTypeResult)executionResult.getResult();
+
+        var commandResult = QueueUtil.getHome().getQueueType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetQueueTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.QUEUE_TYPE, result.getQueueType());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteQueueTypeForm commandForm = QueueUtil.getHome().getDeleteQueueTypeForm();
+        var commandForm = QueueUtil.getHome().getDeleteQueueTypeForm();
 
         commandForm.setQueueTypeName(actionForm.getQueueTypeName());
 

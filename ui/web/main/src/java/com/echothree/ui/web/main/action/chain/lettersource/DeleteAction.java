@@ -47,8 +47,8 @@ public class DeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        DeleteLetterSourceForm commandForm = LetterUtil.getHome().getDeleteLetterSourceForm();
-        String letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
+        var commandForm = LetterUtil.getHome().getDeleteLetterSourceForm();
+        var letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
         
         commandForm.setLetterSourceName(letterSourceName);
         

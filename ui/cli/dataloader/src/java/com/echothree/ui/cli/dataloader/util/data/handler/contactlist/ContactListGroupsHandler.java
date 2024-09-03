@@ -47,7 +47,7 @@ public class ContactListGroupsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("contactListGroup")) {
-            CreateContactListGroupForm commandForm = ContactListFormFactory.getCreateContactListGroupForm();
+            var commandForm = ContactListFormFactory.getCreateContactListGroupForm();
 
             commandForm.set(getAttrsMap(attrs));
             

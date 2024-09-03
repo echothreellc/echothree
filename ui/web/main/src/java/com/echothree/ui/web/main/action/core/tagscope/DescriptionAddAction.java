@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTagScopeForm commandForm = TagUtil.getHome().getGetTagScopeForm();
+        var commandForm = TagUtil.getHome().getGetTagScopeForm();
 
         commandForm.setTagScopeName(actionForm.getTagScopeName());
-        
-        CommandResult commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
+
+        var commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTagScopeResult result = (GetTagScopeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTagScopeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TAG_SCOPE, result.getTagScope());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateTagScopeDescriptionForm commandForm = TagUtil.getHome().getCreateTagScopeDescriptionForm();
+        var commandForm = TagUtil.getHome().getCreateTagScopeDescriptionForm();
 
         commandForm.setTagScopeName( actionForm.getTagScopeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

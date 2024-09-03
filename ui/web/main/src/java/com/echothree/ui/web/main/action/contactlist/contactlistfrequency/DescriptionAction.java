@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String contactListFrequencyName = request.getParameter(ParameterConstants.CONTACT_LIST_FREQUENCY_NAME);
-        GetContactListFrequencyDescriptionsForm commandForm = ContactListUtil.getHome().getGetContactListFrequencyDescriptionsForm();
+        var contactListFrequencyName = request.getParameter(ParameterConstants.CONTACT_LIST_FREQUENCY_NAME);
+        var commandForm = ContactListUtil.getHome().getGetContactListFrequencyDescriptionsForm();
 
         commandForm.setContactListFrequencyName(contactListFrequencyName);
 
-        CommandResult commandResult = ContactListUtil.getHome().getContactListFrequencyDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ContactListUtil.getHome().getContactListFrequencyDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListFrequencyDescriptionsResult result = (GetContactListFrequencyDescriptionsResult) executionResult.getResult();
-            ContactListFrequencyTransfer contactListFrequencyTransfer = result.getContactListFrequency();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListFrequencyDescriptionsResult) executionResult.getResult();
+            var contactListFrequencyTransfer = result.getContactListFrequency();
 
             request.setAttribute(AttributeConstants.CONTACT_LIST_FREQUENCY, contactListFrequencyTransfer);
             request.setAttribute(AttributeConstants.CONTACT_LIST_FREQUENCY_DESCRIPTIONS, result.getContactListFrequencyDescriptions());

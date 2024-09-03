@@ -50,9 +50,9 @@ public class NameSuffixesHandler
             String description = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("description"))
                     description = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -63,15 +63,15 @@ public class NameSuffixesHandler
             
             try {
                 if(initialDataParser.getNameSuffixes().get(description) == null) {
-                    CreateNameSuffixForm form = PartyFormFactory.getCreateNameSuffixForm();
+                    var form = PartyFormFactory.getCreateNameSuffixForm();
                     
                     form.setDescription(description);
                     form.setIsDefault(isDefault);
                     form.setSortOrder(sortOrder);
-                    
-                    CommandResult commandResult = partyService.createNameSuffix(initialDataParser.getUserVisit(), form);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    CreateNameSuffixResult result = (CreateNameSuffixResult)executionResult.getResult();
+
+                    var commandResult = partyService.createNameSuffix(initialDataParser.getUserVisit(), form);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (CreateNameSuffixResult)executionResult.getResult();
                     
                     initialDataParser.addNameSuffix(result.getNameSuffixId(), description);
                 }

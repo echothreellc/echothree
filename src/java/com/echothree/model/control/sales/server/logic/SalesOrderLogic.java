@@ -488,7 +488,7 @@ public class SalesOrderLogic
     public SalesOrderStatusChoicesBean getSalesOrderStatusChoices(final String defaultOrderStatusChoice, final Language language, final boolean allowNullChoice,
             final Order order, final PartyPK partyPK) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        SalesOrderStatusChoicesBean salesOrderStatusChoicesBean = new SalesOrderStatusChoicesBean();
+        var salesOrderStatusChoicesBean = new SalesOrderStatusChoicesBean();
 
         if(order == null) {
             workflowControl.getWorkflowEntranceChoices(salesOrderStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice,

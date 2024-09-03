@@ -51,10 +51,10 @@ public class MainAction
             throws Exception {
         String forwardKey = null;
 
-        CommandResult commandResult = CoreUtil.getHome().getCommandMessageTypes(getUserVisitPK(request), null);
+        var commandResult = CoreUtil.getHome().getCommandMessageTypes(getUserVisitPK(request), null);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommandMessageTypesResult result = (GetCommandMessageTypesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommandMessageTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMMAND_MESSAGE_TYPES, result.getCommandMessageTypes());
             forwardKey = ForwardConstants.DISPLAY;

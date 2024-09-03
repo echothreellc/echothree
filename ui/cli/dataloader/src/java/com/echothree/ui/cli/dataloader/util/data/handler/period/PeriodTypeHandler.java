@@ -52,7 +52,7 @@ public class PeriodTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("periodTypeDescription")) {
-            CreatePeriodTypeDescriptionForm commandForm = PeriodFormFactory.getCreatePeriodTypeDescriptionForm();
+            var commandForm = PeriodFormFactory.getCreatePeriodTypeDescriptionForm();
 
             commandForm.setPeriodKindName(periodKindName);
             commandForm.setPeriodTypeName(periodTypeName);

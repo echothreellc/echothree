@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultUseTypeForm commandForm = OfferUtil.getHome().getSetDefaultUseTypeForm();
-            String useTypeName = request.getParameter(ParameterConstants.USE_TYPE_NAME);
+            var commandForm = OfferUtil.getHome().getSetDefaultUseTypeForm();
+            var useTypeName = request.getParameter(ParameterConstants.USE_TYPE_NAME);
             
             commandForm.setUseTypeName(useTypeName);
             

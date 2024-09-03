@@ -58,15 +58,15 @@ public class AddActionForm
     private void setupInventoryConditionChoices() {
         if(inventoryConditionChoices == null) {
             try {
-                GetInventoryConditionChoicesForm form = InventoryUtil.getHome().getGetInventoryConditionChoicesForm();
+                var form = InventoryUtil.getHome().getGetInventoryConditionChoicesForm();
                 
                 form.setInventoryConditionUseTypeName(InventoryConstants.InventoryConditionUseType_PURCHASE_ORDER);
                 form.setDefaultInventoryConditionChoice(inventoryConditionChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetInventoryConditionChoicesResult getInventoryConditionChoicesResult = (GetInventoryConditionChoicesResult)executionResult.getResult();
+
+                var commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getInventoryConditionChoicesResult = (GetInventoryConditionChoicesResult)executionResult.getResult();
                 inventoryConditionChoices = getInventoryConditionChoicesResult.getInventoryConditionChoices();
                 
                 if(inventoryConditionChoice == null)
@@ -81,15 +81,15 @@ public class AddActionForm
     private void setupUnitOfMeasureTypeChoices() {
         if(unitOfMeasureTypeChoices == null) {
             try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
                 
                 form.setItemName(itemName);
                 form.setDefaultUnitOfMeasureTypeChoice(unitOfMeasureTypeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
                 unitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
                 
                 if(unitOfMeasureTypeChoice == null)
@@ -104,14 +104,14 @@ public class AddActionForm
     public void setupCurrencyChoices() {
         if(currencyChoices == null) {
             try {
-                GetCurrencyChoicesForm form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
+                var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
                 
                 form.setDefaultCurrencyChoice(currencyChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCurrencyChoicesResult getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+
+                var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
                 currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
                 
                 if(currencyChoice == null)

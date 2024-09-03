@@ -50,15 +50,15 @@ public class WarehousesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException, NamingException {
         if(localName.equals("warehouse")) {
-            CreateWarehouseForm commandForm = WarehouseFormFactory.getCreateWarehouseForm();
+            var commandForm = WarehouseFormFactory.getCreateWarehouseForm();
 
             commandForm.set(getAttrsMap(attrs));
 
-            CommandResult commandResult = warehouseService.createWarehouse(initialDataParser.getUserVisit(), commandForm);
+            var commandResult = warehouseService.createWarehouse(initialDataParser.getUserVisit(), commandForm);
 
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateWarehouseResult result = (CreateWarehouseResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateWarehouseResult)executionResult.getResult();
 
                 initialDataParser.pushHandler(new WarehouseHandler(initialDataParser, this, result.getPartyName(), result.getWarehouseName(), result.getEntityRef()));
             }

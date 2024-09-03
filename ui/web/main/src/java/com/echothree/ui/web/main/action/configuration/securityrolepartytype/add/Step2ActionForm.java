@@ -43,16 +43,16 @@ public class Step2ActionForm
     public void setupPartySelectorChoices() {
         if(partySelectorChoices == null) {
             try {
-                GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
+                var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
                 
                 form.setSelectorKindName(getPartyTypeName());
                 form.setSelectorTypeName(SelectorTypes.SECURITY_ROLE.name());
                 form.setDefaultSelectorChoice(partySelectorChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSelectorChoicesResult result = (GetSelectorChoicesResult)executionResult.getResult();
+
+                var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetSelectorChoicesResult)executionResult.getResult();
                 partySelectorChoices = result.getSelectorChoices();
                 
                 if(partySelectorChoice == null) {

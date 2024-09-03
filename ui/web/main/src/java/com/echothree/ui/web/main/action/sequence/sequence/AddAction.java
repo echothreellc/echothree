@@ -54,10 +54,10 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
+        var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
 
         if(wasPost(request)) {
-            CreateSequenceForm commandForm = SequenceUtil.getHome().getCreateSequenceForm();
+            var commandForm = SequenceUtil.getHome().getCreateSequenceForm();
 
             if(sequenceTypeName == null) {
                 sequenceTypeName = actionForm.getSequenceTypeName();
@@ -71,7 +71,7 @@ public class AddAction
             commandForm.setValue(actionForm.getValue());
             commandForm.setDescription(actionForm.getDescription());
 
-            CommandResult commandResult = SequenceUtil.getHome().createSequence(getUserVisitPK(request), commandForm);
+            var commandResult = SequenceUtil.getHome().createSequence(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -85,7 +85,7 @@ public class AddAction
             forwardKey = ForwardConstants.FORM;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.SEQUENCE_TYPE_NAME, sequenceTypeName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

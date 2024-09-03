@@ -55,18 +55,18 @@ public class EntityAttributeGroupAction
         String forwardKey = null;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-            GetEntityAttributeEntityAttributeGroupsForm commandForm = CoreUtil.getHome().getGetEntityAttributeEntityAttributeGroupsForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeEntityAttributeGroupsForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeName(entityAttributeName);
-            
-            CommandResult commandResult = CoreUtil.getHome().getEntityAttributeEntityAttributeGroups(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeEntityAttributeGroupsResult result = (GetEntityAttributeEntityAttributeGroupsResult)executionResult.getResult();
+
+            var commandResult = CoreUtil.getHome().getEntityAttributeEntityAttributeGroups(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityAttributeEntityAttributeGroupsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE, result.getEntityAttribute());
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS, result.getEntityAttributeEntityAttributeGroups());

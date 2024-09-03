@@ -95,7 +95,7 @@ public class WorkEffortLogic {
 
     public PreparedWorkEffort prepareForWorkEffort(final ExecutionErrorAccumulator ema, final WorkEffortScope workEffortScope, Long scheduledTime,
             Long estimatedTimeAllowed, Long maximumTimeAllowed) {
-        PreparedWorkEffort preparedWorkEffort = new PreparedWorkEffort();
+        var preparedWorkEffort = new PreparedWorkEffort();
         var workEffortScopeDetail = workEffortScope.getLastDetail();
         var workEffortTypeDetail = workEffortScopeDetail.getWorkEffortType().getLastDetail();
         var workEffortSequence = workEffortScopeDetail.getWorkEffortSequence();

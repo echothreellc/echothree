@@ -58,12 +58,12 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalItemPurchasingCategoryName = request.getParameter(ParameterConstants.ORIGINAL_ITEM_PURCHASING_CATEGORY_NAME);
+        var originalItemPurchasingCategoryName = request.getParameter(ParameterConstants.ORIGINAL_ITEM_PURCHASING_CATEGORY_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditItemPurchasingCategoryForm commandForm = VendorUtil.getHome().getEditItemPurchasingCategoryForm();
+                var actionForm = (EditActionForm)form;
+                var commandForm = VendorUtil.getHome().getEditItemPurchasingCategoryForm();
                 var spec = VendorUtil.getHome().getItemPurchasingCategoryUniversalSpec();
                 
                 if(originalItemPurchasingCategoryName == null)
@@ -73,7 +73,7 @@ public class EditAction
                 spec.setItemPurchasingCategoryName(originalItemPurchasingCategoryName);
                 
                 if(wasPost(request)) {
-                    ItemPurchasingCategoryEdit edit = VendorUtil.getHome().getItemPurchasingCategoryEdit();
+                    var edit = VendorUtil.getHome().getItemPurchasingCategoryEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -83,14 +83,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = VendorUtil.getHome().editItemPurchasingCategory(getUserVisitPK(request), commandForm);
+
+                    var commandResult = VendorUtil.getHome().editItemPurchasingCategory(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditItemPurchasingCategoryResult result = (EditItemPurchasingCategoryResult)executionResult.getResult();
+                            var result = (EditItemPurchasingCategoryResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -103,13 +103,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = VendorUtil.getHome().editItemPurchasingCategory(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditItemPurchasingCategoryResult result = (EditItemPurchasingCategoryResult)executionResult.getResult();
+
+                    var commandResult = VendorUtil.getHome().editItemPurchasingCategory(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditItemPurchasingCategoryResult)executionResult.getResult();
                     
                     if(result != null) {
-                        ItemPurchasingCategoryEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalItemPurchasingCategoryName(edit.getItemPurchasingCategoryName());

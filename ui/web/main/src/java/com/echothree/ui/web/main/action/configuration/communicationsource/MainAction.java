@@ -54,11 +54,11 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetCommunicationSourcesForm commandForm = CommunicationUtil.getHome().getGetCommunicationSourcesForm();
-            
-            CommandResult commandResult = CommunicationUtil.getHome().getCommunicationSources(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommunicationSourcesResult result = (GetCommunicationSourcesResult)executionResult.getResult();
+            var commandForm = CommunicationUtil.getHome().getGetCommunicationSourcesForm();
+
+            var commandResult = CommunicationUtil.getHome().getCommunicationSources(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommunicationSourcesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMMUNICATION_SOURCES, result.getCommunicationSources());
             forwardKey = ForwardConstants.DISPLAY;

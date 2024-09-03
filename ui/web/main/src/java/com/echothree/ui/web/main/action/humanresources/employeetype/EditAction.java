@@ -58,13 +58,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String originalEmployeeTypeName = request.getParameter(ParameterConstants.ORIGINAL_EMPLOYEE_TYPE_NAME);
+        var originalEmployeeTypeName = request.getParameter(ParameterConstants.ORIGINAL_EMPLOYEE_TYPE_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditEmployeeTypeForm commandForm = EmployeeUtil.getHome().getEditEmployeeTypeForm();
-                EmployeeTypeSpec spec = EmployeeUtil.getHome().getEmployeeTypeSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = EmployeeUtil.getHome().getEditEmployeeTypeForm();
+                var spec = EmployeeUtil.getHome().getEmployeeTypeSpec();
                 
                 if(originalEmployeeTypeName == null)
                     originalEmployeeTypeName = actionForm.getOriginalEmployeeTypeName();
@@ -73,7 +73,7 @@ public class EditAction
                 spec.setEmployeeTypeName(originalEmployeeTypeName);
                 
                 if(wasPost(request)) {
-                    EmployeeTypeEdit edit = EmployeeUtil.getHome().getEmployeeTypeEdit();
+                    var edit = EmployeeUtil.getHome().getEmployeeTypeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -82,14 +82,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().editEmployeeType(getUserVisitPK(request), commandForm);
+
+                    var commandResult = EmployeeUtil.getHome().editEmployeeType(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditEmployeeTypeResult result = (EditEmployeeTypeResult)executionResult.getResult();
+                            var result = (EditEmployeeTypeResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -102,13 +102,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = EmployeeUtil.getHome().editEmployeeType(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditEmployeeTypeResult result = (EditEmployeeTypeResult)executionResult.getResult();
+
+                    var commandResult = EmployeeUtil.getHome().editEmployeeType(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditEmployeeTypeResult)executionResult.getResult();
                     
                     if(result != null) {
-                        EmployeeTypeEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalEmployeeTypeName(edit.getEmployeeTypeName());

@@ -56,13 +56,13 @@ public class AddAction
     @Override
     public void setupTransfer(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetOfferForm commandForm = OfferUtil.getHome().getGetOfferForm();
+        var commandForm = OfferUtil.getHome().getGetOfferForm();
 
         commandForm.setOfferName(actionForm.getOfferName());
 
-        CommandResult commandResult = OfferUtil.getHome().getOffer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetOfferResult result = (GetOfferResult)executionResult.getResult();
+        var commandResult = OfferUtil.getHome().getOffer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetOfferResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.OFFER, result.getOffer());
     }
@@ -70,7 +70,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateOfferItemForm commandForm = OfferUtil.getHome().getCreateOfferItemForm();
+        var commandForm = OfferUtil.getHome().getCreateOfferItemForm();
 
         commandForm.setOfferName(actionForm.getOfferName());
         commandForm.setItemName(actionForm.getItemName());

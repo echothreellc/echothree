@@ -53,7 +53,7 @@ public class IndexQuery
     
     protected int getNumHits(IndexSearcher is)
             throws IOException {
-        TotalHitCountCollector collector = new TotalHitCountCollector();
+        var collector = new TotalHitCountCollector();
         
         is.search(query, collector);
         
@@ -63,7 +63,7 @@ public class IndexQuery
     @Override
     protected EntityInstancePKHolder useIndex(IndexReader ir)
             throws IOException {
-        final IndexSearcher is = new IndexSearcher(ir);
+        final var is = new IndexSearcher(ir);
         EntityInstancePKHolder entityInstancePKHolder = null;
 
         if(!eea.hasExecutionErrors()) {

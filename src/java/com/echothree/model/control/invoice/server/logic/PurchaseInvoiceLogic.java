@@ -83,7 +83,7 @@ public class PurchaseInvoiceLogic {
     protected GlAccount getApGlAccount(final ExecutionErrorAccumulator eea, final Vendor vendor) {
         var vendorApGlAccount = vendor.getApGlAccount();
         var vendorTypeDefaultApGlAccount = vendor.getVendorType().getLastDetail().getDefaultApGlAccount();
-        GlAccount[] glAccounts = { vendorApGlAccount, vendorTypeDefaultApGlAccount };
+        var glAccounts = new GlAccount[]{vendorApGlAccount, vendorTypeDefaultApGlAccount};
 
         return GlAccountLogic.getInstance().getDefaultGlAccountByCategory(eea, new GlAccount[]{
                     vendor.getApGlAccount(),
@@ -142,7 +142,7 @@ public class PurchaseInvoiceLogic {
     public PurchaseInvoiceStatusChoicesBean getPurchaseInvoiceStatusChoices(final String defaultInvoiceStatusChoice, final Language language, final boolean allowNullChoice,
             final Invoice invoice, final PartyPK partyPK) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        PurchaseInvoiceStatusChoicesBean purchaseInvoiceStatusChoicesBean = new PurchaseInvoiceStatusChoicesBean();
+        var purchaseInvoiceStatusChoicesBean = new PurchaseInvoiceStatusChoicesBean();
         
         if(invoice == null) {
             workflowControl.getWorkflowEntranceChoices(purchaseInvoiceStatusChoicesBean, defaultInvoiceStatusChoice, language, allowNullChoice,

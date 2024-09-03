@@ -52,8 +52,8 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, StatusActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String userVisitGroupName = request.getParameter(ParameterConstants.USER_VISIT_GROUP_NAME);
-        SetUserVisitGroupStatusForm commandForm = UserUtil.getHome().getSetUserVisitGroupStatusForm();
+        var userVisitGroupName = request.getParameter(ParameterConstants.USER_VISIT_GROUP_NAME);
+        var commandForm = UserUtil.getHome().getSetUserVisitGroupStatusForm();
 
         if(userVisitGroupName == null) {
             userVisitGroupName = actionForm.getUserVisitGroupName();
@@ -62,7 +62,7 @@ public class StatusAction
             commandForm.setUserVisitGroupName(userVisitGroupName);
             commandForm.setUserVisitGroupStatusChoice(actionForm.getUserVisitGroupStatusChoice());
 
-            CommandResult commandResult = UserUtil.getHome().setUserVisitGroupStatus(getUserVisitPK(request), commandForm);
+            var commandResult = UserUtil.getHome().setUserVisitGroupStatus(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -76,7 +76,7 @@ public class StatusAction
             forwardKey = ForwardConstants.FORM;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.USER_VISIT_GROUP_NAME, userVisitGroupName);
         }

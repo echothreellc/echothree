@@ -56,15 +56,15 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
-            GetCustomerTypeShippingMethodsForm commandForm = CustomerUtil.getHome().getGetCustomerTypeShippingMethodsForm();
+            var customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
+            var commandForm = CustomerUtil.getHome().getGetCustomerTypeShippingMethodsForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
-            
-            CommandResult commandResult = CustomerUtil.getHome().getCustomerTypeShippingMethods(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypeShippingMethodsResult result = (GetCustomerTypeShippingMethodsResult)executionResult.getResult();
-            CustomerTypeTransfer customerTypeTransfer = result.getCustomerType();
+
+            var commandResult = CustomerUtil.getHome().getCustomerTypeShippingMethods(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypeShippingMethodsResult)executionResult.getResult();
+            var customerTypeTransfer = result.getCustomerType();
             
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE, customerTypeTransfer);
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_SHIPPING_METHODS, result.getCustomerTypeShippingMethods());

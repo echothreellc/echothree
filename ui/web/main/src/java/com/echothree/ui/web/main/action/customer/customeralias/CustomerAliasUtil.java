@@ -47,16 +47,16 @@ public class CustomerAliasUtil {
 
     public void setupCustomer(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(MainBaseAction.getUserVisitPK(request), commandForm);
+        var commandResult = CustomerUtil.getHome().getCustomer(MainBaseAction.getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
-            CustomerTransfer customer = result.getCustomer();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerResult)executionResult.getResult();
+            var customer = result.getCustomer();
 
             if(customer != null) {
                 request.setAttribute(AttributeConstants.CUSTOMER, customer);
@@ -71,14 +71,14 @@ public class CustomerAliasUtil {
 
     public void setupPartyAliasTransfer(HttpServletRequest request, String partyName, String partyAliasTypeName)
             throws NamingException {
-        GetPartyAliasForm commandForm = PartyUtil.getHome().getGetPartyAliasForm();
+        var commandForm = PartyUtil.getHome().getGetPartyAliasForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setPartyAliasTypeName(partyAliasTypeName);
 
-        CommandResult commandResult = PartyUtil.getHome().getPartyAlias(MainBaseAction.getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyAliasResult result = (GetPartyAliasResult)executionResult.getResult();
+        var commandResult = PartyUtil.getHome().getPartyAlias(MainBaseAction.getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyAliasResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_ALIAS, result.getPartyAlias());
     }

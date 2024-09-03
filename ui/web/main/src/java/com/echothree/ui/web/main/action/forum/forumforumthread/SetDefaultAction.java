@@ -50,15 +50,15 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forumThreadName = request.getParameter(ParameterConstants.FORUM_THREAD_NAME);
-        SetDefaultForumForumThreadForm commandForm = ForumUtil.getHome().getSetDefaultForumForumThreadForm();
+        var forumThreadName = request.getParameter(ParameterConstants.FORUM_THREAD_NAME);
+        var commandForm = ForumUtil.getHome().getSetDefaultForumForumThreadForm();
         
         commandForm.setForumName(request.getParameter(ParameterConstants.FORUM_NAME));
         commandForm.setForumThreadName(forumThreadName);
         
         ForumUtil.getHome().setDefaultForumForumThread(getUserVisitPK(request), commandForm);
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(1);
         
         parameters.put(ParameterConstants.FORUM_THREAD_NAME, forumThreadName);

@@ -47,7 +47,7 @@ public class ItemDescriptionTypeUseTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("itemDescriptionTypeUseType")) {
-            CreateItemDescriptionTypeUseTypeForm commandForm = ItemFormFactory.getCreateItemDescriptionTypeUseTypeForm();
+            var commandForm = ItemFormFactory.getCreateItemDescriptionTypeUseTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 

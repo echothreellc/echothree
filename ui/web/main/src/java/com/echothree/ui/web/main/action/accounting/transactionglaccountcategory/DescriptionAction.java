@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetTransactionGlAccountCategoryDescriptionsForm commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoryDescriptionsForm();
+        var commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoryDescriptionsForm();
 
         commandForm.setTransactionTypeName(request.getParameter(ParameterConstants.TRANSACTION_TYPE_NAME));
         commandForm.setTransactionGlAccountCategoryName(request.getParameter(ParameterConstants.TRANSACTION_GL_ACCOUNT_CATEGORY_NAME));
 
-        CommandResult commandResult = AccountingUtil.getHome().getTransactionGlAccountCategoryDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = AccountingUtil.getHome().getTransactionGlAccountCategoryDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTransactionGlAccountCategoryDescriptionsResult result = (GetTransactionGlAccountCategoryDescriptionsResult) executionResult.getResult();
-            TransactionGlAccountCategoryTransfer transactionGlAccountCategoryTransfer = result.getTransactionGlAccountCategory();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionGlAccountCategoryDescriptionsResult) executionResult.getResult();
+            var transactionGlAccountCategoryTransfer = result.getTransactionGlAccountCategory();
 
             request.setAttribute(AttributeConstants.TRANSACTION_GL_ACCOUNT_CATEGORY, transactionGlAccountCategoryTransfer);
             request.setAttribute(AttributeConstants.TRANSACTION_GL_ACCOUNT_CATEGORY_DESCRIPTIONS, result.getTransactionGlAccountCategoryDescriptions());

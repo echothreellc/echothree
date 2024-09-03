@@ -48,9 +48,9 @@ public class ShippingMethodsHandler
             String shippingMethodName = null;
             String itemSelectorName = null;
             String sortOrder = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("shippingMethodName"))
                     shippingMethodName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("itemSelectorName"))
@@ -60,7 +60,7 @@ public class ShippingMethodsHandler
             }
             
             try {
-                CreateShippingMethodForm commandForm = ShippingFormFactory.getCreateShippingMethodForm();
+                var commandForm = ShippingFormFactory.getCreateShippingMethodForm();
                 
                 commandForm.setShippingMethodName(shippingMethodName);
                 commandForm.setItemSelectorName(itemSelectorName);

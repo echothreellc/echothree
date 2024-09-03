@@ -49,8 +49,8 @@ public class EditAction
     @Override
     protected ForumGroupSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ForumGroupSpec spec = ForumUtil.getHome().getForumGroupSpec();
-        String originalForumGroupName = request.getParameter(ParameterConstants.ORIGINAL_FORUM_GROUP_NAME);
+        var spec = ForumUtil.getHome().getForumGroupSpec();
+        var originalForumGroupName = request.getParameter(ParameterConstants.ORIGINAL_FORUM_GROUP_NAME);
 
         if(originalForumGroupName == null) {
             originalForumGroupName = actionForm.getOriginalForumGroupName();
@@ -64,7 +64,7 @@ public class EditAction
     @Override
     protected ForumGroupEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ForumGroupEdit edit = ForumUtil.getHome().getForumGroupEdit();
+        var edit = ForumUtil.getHome().getForumGroupEdit();
 
         edit.setForumGroupName(actionForm.getForumGroupName());
         edit.setIconName(actionForm.getIconChoice());

@@ -63,14 +63,14 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemVolumeForm commandForm = ItemUtil.getHome().getGetItemVolumeForm();
+        var commandForm = ItemUtil.getHome().getGetItemVolumeForm();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeName());
 
-        CommandResult commandResult = ItemUtil.getHome().getItemVolume(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemVolumeResult result = (GetItemVolumeResult)executionResult.getResult();
+        var commandResult = ItemUtil.getHome().getItemVolume(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemVolumeResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM_VOLUME, result.getItemVolume());
     }
@@ -78,7 +78,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteItemVolumeForm commandForm = ItemUtil.getHome().getDeleteItemVolumeForm();
+        var commandForm = ItemUtil.getHome().getDeleteItemVolumeForm();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeName());

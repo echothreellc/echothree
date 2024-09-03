@@ -52,21 +52,21 @@ public class ApplicationHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("applicationDescription")) {
-            CreateApplicationDescriptionForm commandForm = CoreFormFactory.getCreateApplicationDescriptionForm();
+            var commandForm = CoreFormFactory.getCreateApplicationDescriptionForm();
             
             commandForm.setApplicationName(applicationName);
             commandForm.set(getAttrsMap(attrs));
             
             coreService.createApplicationDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("applicationEditor")) {
-            CreateApplicationEditorForm commandForm = CoreFormFactory.getCreateApplicationEditorForm();
+            var commandForm = CoreFormFactory.getCreateApplicationEditorForm();
             
             commandForm.setApplicationName(applicationName);
             commandForm.set(getAttrsMap(attrs));
             
             coreService.createApplicationEditor(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("applicationEditorUse")) {
-            CreateApplicationEditorUseForm commandForm = CoreFormFactory.getCreateApplicationEditorUseForm();
+            var commandForm = CoreFormFactory.getCreateApplicationEditorUseForm();
             
             commandForm.setApplicationName(applicationName);
             commandForm.set(getAttrsMap(attrs));

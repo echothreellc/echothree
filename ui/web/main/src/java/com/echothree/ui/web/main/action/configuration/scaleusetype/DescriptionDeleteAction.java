@@ -63,15 +63,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetScaleUseTypeDescriptionForm commandForm = ScaleUtil.getHome().getGetScaleUseTypeDescriptionForm();
+        var commandForm = ScaleUtil.getHome().getGetScaleUseTypeDescriptionForm();
         
         commandForm.setScaleUseTypeName(actionForm.getScaleUseTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = ScaleUtil.getHome().getScaleUseTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = ScaleUtil.getHome().getScaleUseTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetScaleUseTypeDescriptionResult result = (GetScaleUseTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetScaleUseTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.SCALE_USE_TYPE_DESCRIPTION, result.getScaleUseTypeDescription());
         }
@@ -80,7 +80,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteScaleUseTypeDescriptionForm commandForm = ScaleUtil.getHome().getDeleteScaleUseTypeDescriptionForm();
+        var commandForm = ScaleUtil.getHome().getDeleteScaleUseTypeDescriptionForm();
 
         commandForm.setScaleUseTypeName(actionForm.getScaleUseTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

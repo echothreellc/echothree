@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String shippingMethodName = request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME);
-            GetShippingMethodDescriptionsForm commandForm = ShippingUtil.getHome().getGetShippingMethodDescriptionsForm();
+            var shippingMethodName = request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME);
+            var commandForm = ShippingUtil.getHome().getGetShippingMethodDescriptionsForm();
             
             commandForm.setShippingMethodName(shippingMethodName);
-            
-            CommandResult commandResult = ShippingUtil.getHome().getShippingMethodDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetShippingMethodDescriptionsResult result = (GetShippingMethodDescriptionsResult)executionResult.getResult();
-            ShippingMethodTransfer shippingMethodTransfer = result.getShippingMethod();
+
+            var commandResult = ShippingUtil.getHome().getShippingMethodDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetShippingMethodDescriptionsResult)executionResult.getResult();
+            var shippingMethodTransfer = result.getShippingMethod();
             
             request.setAttribute(AttributeConstants.SHIPPING_METHOD, shippingMethodTransfer);
             request.setAttribute(AttributeConstants.SHIPPING_METHOD_NAME, shippingMethodTransfer.getShippingMethodName());

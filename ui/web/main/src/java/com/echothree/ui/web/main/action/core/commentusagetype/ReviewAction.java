@@ -53,21 +53,21 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetCommentUsageTypeForm commandForm = CommentUtil.getHome().getGetCommentUsageTypeForm();
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-        String commentTypeName = request.getParameter(ParameterConstants.COMMENT_TYPE_NAME);
-        String commentUsageTypeName = request.getParameter(ParameterConstants.COMMENT_USAGE_TYPE_NAME);
+        var commandForm = CommentUtil.getHome().getGetCommentUsageTypeForm();
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var commentTypeName = request.getParameter(ParameterConstants.COMMENT_TYPE_NAME);
+        var commentUsageTypeName = request.getParameter(ParameterConstants.COMMENT_USAGE_TYPE_NAME);
 
         commandForm.setEntityTypeName(entityTypeName);
         commandForm.setComponentVendorName(componentVendorName);
         commandForm.setCommentTypeName(commentTypeName);
         commandForm.setCommentUsageTypeName(commentUsageTypeName);
 
-        CommandResult commandResult = CommentUtil.getHome().getCommentUsageType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCommentUsageTypeResult result = (GetCommentUsageTypeResult)executionResult.getResult();
-        CommentUsageTypeTransfer commentUsageType = result.getCommentUsageType();
+        var commandResult = CommentUtil.getHome().getCommentUsageType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCommentUsageTypeResult)executionResult.getResult();
+        var commentUsageType = result.getCommentUsageType();
 
         if(commentUsageType == null) {
             forwardKey = ForwardConstants.ERROR_404;

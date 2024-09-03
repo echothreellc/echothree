@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateContactListTypeForm commandForm = ContactListUtil.getHome().getCreateContactListTypeForm();
+        var commandForm = ContactListUtil.getHome().getCreateContactListTypeForm();
 
         commandForm.setContactListTypeName(actionForm.getContactListTypeName());
         commandForm.setConfirmationRequestChainName(actionForm.getConfirmationRequestChainChoice());

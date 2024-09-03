@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCountryForm commandForm = GeoUtil.getHome().getCreateCountryForm();
+        var commandForm = GeoUtil.getHome().getCreateCountryForm();
 
         commandForm.setCountryName(actionForm.getCountryName());
         commandForm.setIso3Number(actionForm.getIso3Number());

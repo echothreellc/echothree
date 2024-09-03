@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetPartyAliasTypeDescriptionsForm commandForm = PartyUtil.getHome().getGetPartyAliasTypeDescriptionsForm();
+        var commandForm = PartyUtil.getHome().getGetPartyAliasTypeDescriptionsForm();
 
         commandForm.setPartyTypeName(request.getParameter(ParameterConstants.PARTY_TYPE_NAME));
         commandForm.setPartyAliasTypeName(request.getParameter(ParameterConstants.PARTY_ALIAS_TYPE_NAME));
 
-        CommandResult commandResult = PartyUtil.getHome().getPartyAliasTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = PartyUtil.getHome().getPartyAliasTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyAliasTypeDescriptionsResult result = (GetPartyAliasTypeDescriptionsResult) executionResult.getResult();
-            PartyAliasTypeTransfer partyAliasTypeTransfer = result.getPartyAliasType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyAliasTypeDescriptionsResult) executionResult.getResult();
+            var partyAliasTypeTransfer = result.getPartyAliasType();
 
             request.setAttribute(AttributeConstants.PARTY_ALIAS_TYPE, partyAliasTypeTransfer);
             request.setAttribute(AttributeConstants.PARTY_ALIAS_TYPE_DESCRIPTIONS, result.getPartyAliasTypeDescriptions());

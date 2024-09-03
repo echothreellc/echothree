@@ -55,13 +55,13 @@ public class Step1Action
 
     public void setupCustomer(HttpServletRequest request)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }
@@ -69,13 +69,13 @@ public class Step1Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetPaymentMethodsForm commandForm = PaymentUtil.getHome().getGetPaymentMethodsForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentMethodsForm();
 
         commandForm.setPaymentMethodTypeName(PaymentMethodTypes.CREDIT_CARD.name());
 
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentMethods(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPaymentMethodsResult result = (GetPaymentMethodsResult)executionResult.getResult();
+        var commandResult = PaymentUtil.getHome().getPaymentMethods(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPaymentMethodsResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PAYMENT_METHODS, result.getPaymentMethods());
 

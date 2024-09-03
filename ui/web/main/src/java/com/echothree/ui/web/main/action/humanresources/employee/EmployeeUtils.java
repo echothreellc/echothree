@@ -42,16 +42,16 @@ public class EmployeeUtils {
     public EmployeeTransfer getEmployee(UserVisitPK userVisitPK, String partyName, String employeeName)
             throws NamingException {
         EmployeeTransfer employee = null;
-        GetEmployeeForm commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
+        var commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setEmployeeName(employeeName);
 
-        CommandResult commandResult = EmployeeUtil.getHome().getEmployee(userVisitPK, commandForm);
+        var commandResult = EmployeeUtil.getHome().getEmployee(userVisitPK, commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEmployeeResult result = (GetEmployeeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEmployeeResult)executionResult.getResult();
 
             employee = result.getEmployee();
         }

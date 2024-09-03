@@ -63,15 +63,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetLeaveReasonDescriptionForm commandForm = EmployeeUtil.getHome().getGetLeaveReasonDescriptionForm();
+        var commandForm = EmployeeUtil.getHome().getGetLeaveReasonDescriptionForm();
         
         commandForm.setLeaveReasonName(actionForm.getLeaveReasonName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = EmployeeUtil.getHome().getLeaveReasonDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = EmployeeUtil.getHome().getLeaveReasonDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLeaveReasonDescriptionResult result = (GetLeaveReasonDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveReasonDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.LEAVE_REASON_DESCRIPTION, result.getLeaveReasonDescription());
         }
@@ -80,7 +80,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteLeaveReasonDescriptionForm commandForm = EmployeeUtil.getHome().getDeleteLeaveReasonDescriptionForm();
+        var commandForm = EmployeeUtil.getHome().getDeleteLeaveReasonDescriptionForm();
 
         commandForm.setLeaveReasonName(actionForm.getLeaveReasonName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

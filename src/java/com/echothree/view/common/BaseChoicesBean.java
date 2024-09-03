@@ -67,7 +67,7 @@ public class BaseChoicesBean implements Serializable {
     
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
+        var result = new StringBuilder();
         var valueIter = values.iterator();
 
         labels.stream().map((label) -> {

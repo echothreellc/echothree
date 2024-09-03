@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = TagUtil.getHome().getTagScopes(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTagScopesResult result = (GetTagScopesResult)executionResult.getResult();
+            var commandResult = TagUtil.getHome().getTagScopes(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTagScopesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TAG_SCOPES, result.getTagScopes());
             forwardKey = ForwardConstants.DISPLAY;

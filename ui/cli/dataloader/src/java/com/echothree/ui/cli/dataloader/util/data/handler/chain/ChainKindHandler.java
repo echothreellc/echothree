@@ -52,21 +52,21 @@ public class ChainKindHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("chainKindDescription")) {
-            CreateChainKindDescriptionForm commandForm = ChainFormFactory.getCreateChainKindDescriptionForm();
+            var commandForm = ChainFormFactory.getCreateChainKindDescriptionForm();
 
             commandForm.setChainKindName(chainKindName);
             commandForm.set(getAttrsMap(attrs));
 
             chainService.createChainKindDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("chainActionTypeUse")) {
-            CreateChainActionTypeUseForm commandForm = ChainFormFactory.getCreateChainActionTypeUseForm();
+            var commandForm = ChainFormFactory.getCreateChainActionTypeUseForm();
 
             commandForm.setChainKindName(chainKindName);
             commandForm.set(getAttrsMap(attrs));
 
             chainService.createChainActionTypeUse(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("chainType")) {
-            CreateChainTypeForm commandForm = ChainFormFactory.getCreateChainTypeForm();
+            var commandForm = ChainFormFactory.getCreateChainTypeForm();
 
             commandForm.setChainKindName(chainKindName);
             commandForm.set(getAttrsMap(attrs));

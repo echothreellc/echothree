@@ -58,10 +58,10 @@ public class ContactEmailAddressEditAction
     public ActionForward executeAction(ActionMapping mapping, ContactEmailAddressEditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        String contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);
-        EditContactEmailAddressForm commandForm = ContactUtil.getHome().getEditContactEmailAddressForm();
-        PartyContactMechanismSpec spec = ContactUtil.getHome().getPartyContactMechanismSpec();
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);
+        var commandForm = ContactUtil.getHome().getEditContactEmailAddressForm();
+        var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
 
         if(partyName == null) {
             partyName = actionForm.getPartyName();
@@ -75,12 +75,12 @@ public class ContactEmailAddressEditAction
         spec.setContactMechanismName(contactMechanismName);
 
         if(wasPost(request)) {
-            boolean wasCanceled = wasCanceled(request);
+            var wasCanceled = wasCanceled(request);
 
             if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
-                ContactEmailAddressEdit edit = ContactUtil.getHome().getContactEmailAddressEdit();
+                var edit = ContactUtil.getHome().getContactEmailAddressEdit();
 
                 commandForm.setEditMode(EditMode.UPDATE);
                 commandForm.setEdit(edit);
@@ -90,13 +90,13 @@ public class ContactEmailAddressEditAction
                 edit.setDescription(actionForm.getDescription());
             }
 
-            CommandResult commandResult = ContactUtil.getHome().editContactEmailAddress(getUserVisitPK(request), commandForm);
+            var commandResult = ContactUtil.getHome().editContactEmailAddress(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors() && !wasCanceled) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
+                var executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {
-                    EditContactEmailAddressResult result = (EditContactEmailAddressResult)executionResult.getResult();
+                    var result = (EditContactEmailAddressResult)executionResult.getResult();
 
                     request.setAttribute(AttributeConstants.CONTACT_MECHANISM, result.getContactMechanism());
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
@@ -111,12 +111,12 @@ public class ContactEmailAddressEditAction
         } else {
             commandForm.setEditMode(EditMode.LOCK);
 
-            CommandResult commandResult = ContactUtil.getHome().editContactEmailAddress(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            EditContactEmailAddressResult result = (EditContactEmailAddressResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().editContactEmailAddress(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditContactEmailAddressResult)executionResult.getResult();
 
             if(result != null) {
-                ContactEmailAddressEdit edit = result.getEdit();
+                var edit = result.getEdit();
 
                 if(edit != null) {
                     actionForm.setPartyName(partyName);
@@ -135,7 +135,7 @@ public class ContactEmailAddressEditAction
             forwardKey = ForwardConstants.FORM;
         }
 
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupCompany(request, partyName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

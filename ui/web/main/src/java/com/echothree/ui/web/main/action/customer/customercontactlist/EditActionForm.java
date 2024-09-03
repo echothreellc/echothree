@@ -41,15 +41,15 @@ public class EditActionForm
     public void setupPreferredContactMechanismPurposeChoices()
             throws NamingException {
         if(preferredContactMechanismPurposeChoices == null) {
-            GetContactMechanismPurposeChoicesForm form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
+            var form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
 
             form.setContactListName(contactListName);
             form.setDefaultContactMechanismPurposeChoice(preferredContactMechanismPurposeChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactMechanismPurposeChoicesResult getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
             preferredContactMechanismPurposeChoices = getContactMechanismPurposeChoicesResult.getContactMechanismPurposeChoices();
 
             if(preferredContactMechanismPurposeChoice == null) {

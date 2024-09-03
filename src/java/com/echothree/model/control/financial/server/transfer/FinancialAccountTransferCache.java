@@ -75,7 +75,7 @@ public class FinancialAccountTransferCache
             
             if(includeRoles) {
                 var financialAccountRoleTransfers = financialControl.getFinancialAccountRoleTransfersByFinancialAccount(userVisit, financialAccount);
-                MapWrapper<FinancialAccountRoleTransfer> financialAccountRolesMap = new MapWrapper<>(financialAccountRoleTransfers.size());
+                var financialAccountRolesMap = new MapWrapper<FinancialAccountRoleTransfer>(financialAccountRoleTransfers.size());
 
                 financialAccountRoleTransfers.forEach((financialAccountRoleTransfer) -> {
                     financialAccountRolesMap.put(financialAccountRoleTransfer.getFinancialAccountRoleType().getFinancialAccountRoleTypeName(), financialAccountRoleTransfer);

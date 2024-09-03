@@ -49,9 +49,9 @@ public class UseNameElementsHandler
             String offset = null;
             String length = null;
             String validationPattern = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("useNameElementName"))
                     useNameElementName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("offset"))
@@ -63,7 +63,7 @@ public class UseNameElementsHandler
             }
             
             try {
-                CreateUseNameElementForm form = OfferFormFactory.getCreateUseNameElementForm();
+                var form = OfferFormFactory.getCreateUseNameElementForm();
                 
                 form.setUseNameElementName(useNameElementName);
                 form.setOffset(offset);

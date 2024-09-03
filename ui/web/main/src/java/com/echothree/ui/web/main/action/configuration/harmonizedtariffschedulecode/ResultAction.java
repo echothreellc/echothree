@@ -68,13 +68,13 @@ public class ResultAction
     
     public void setupTransfer(HttpServletRequest request)
             throws NamingException {
-        GetCountryForm commandForm = GeoUtil.getHome().getGetCountryForm();
+        var commandForm = GeoUtil.getHome().getGetCountryForm();
         
         commandForm.setGeoCodeName(request.getParameter(ParameterConstants.COUNTRY_NAME));
-        
-        CommandResult commandResult = GeoUtil.getHome().getCountry(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCountryResult result = (GetCountryResult)executionResult.getResult();
+
+        var commandResult = GeoUtil.getHome().getCountry(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCountryResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.COUNTRY, result.getCountry());
     }
@@ -82,8 +82,8 @@ public class ResultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        GetHarmonizedTariffScheduleCodeResultsForm commandForm = SearchUtil.getHome().getGetHarmonizedTariffScheduleCodeResultsForm();
-        String results = request.getParameter(ParameterConstants.RESULTS);
+        var commandForm = SearchUtil.getHome().getGetHarmonizedTariffScheduleCodeResultsForm();
+        var results = request.getParameter(ParameterConstants.RESULTS);
 
         commandForm.setSearchTypeName(SearchTypes.EMPLOYEE.name());
 
@@ -92,18 +92,18 @@ public class ResultAction
         commandForm.setOptions(options);
 
         if(results == null) {
-            String offsetParameter = request.getParameter(new ParamEncoder(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_RESULT).encodeParameterName(TableTagParameters.PARAMETER_PAGE));
-            Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * pageSize;
+            var offsetParameter = request.getParameter(new ParamEncoder(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_RESULT).encodeParameterName(TableTagParameters.PARAMETER_PAGE));
+            var offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * pageSize;
 
             Map<String, Limit> limits = new HashMap<>();
             limits.put(SearchResultConstants.ENTITY_TYPE_NAME, new Limit(Integer.toString(pageSize), offset == null ? null : offset.toString()));
             commandForm.setLimits(limits);
         }
 
-        CommandResult commandResult = setCommandResultAttribute(request, SearchUtil.getHome().getHarmonizedTariffScheduleCodeResults(getUserVisitPK(request), commandForm));
+        var commandResult = setCommandResultAttribute(request, SearchUtil.getHome().getHarmonizedTariffScheduleCodeResults(getUserVisitPK(request), commandForm));
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeResultsResult result = (GetHarmonizedTariffScheduleCodeResultsResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodeResultsResult)executionResult.getResult();
 
             var harmonizedTariffScheduleCodeResultCount = result.getHarmonizedTariffScheduleCodeResultCount();
             if(harmonizedTariffScheduleCodeResultCount != null) {

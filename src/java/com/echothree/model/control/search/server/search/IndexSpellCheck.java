@@ -83,7 +83,7 @@ public class IndexSpellCheck
     protected List<List<CheckSpellingSuggestionTransfer>> useIndex(IndexReader ir)
             throws IOException {
         List<List<CheckSpellingSuggestionTransfer>> suggestions;
-        DirectSpellChecker directSpellChecker = new DirectSpellChecker();
+        var directSpellChecker = new DirectSpellChecker();
         var analyzedWordsIter = analyzedWords.iterator();
 
         suggestions = new ArrayList<>(words.size());
@@ -97,7 +97,7 @@ public class IndexSpellCheck
                     getLog().info("  Skipping: " + word);
                 }
             } else {
-                Term term = new Term(dictionaryField, word);
+                var term = new Term(dictionaryField, word);
                 var suggestWords = directSpellChecker.suggestSimilar(term, 5, ir);
 
                 if(EvaluatorDebugFlags.LogCheckSpelling) {

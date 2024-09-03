@@ -48,9 +48,9 @@ public class PartyTypeUseTypesHandler
             String partyTypeUseTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("partyTypeUseTypeName"))
                     partyTypeUseTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class PartyTypeUseTypesHandler
             }
             
             try {
-                CreatePartyTypeUseTypeForm form = PartyFormFactory.getCreatePartyTypeUseTypeForm();
+                var form = PartyFormFactory.getCreatePartyTypeUseTypeForm();
                 
                 form.setPartyTypeUseTypeName(partyTypeUseTypeName);
                 form.setIsDefault(isDefault);

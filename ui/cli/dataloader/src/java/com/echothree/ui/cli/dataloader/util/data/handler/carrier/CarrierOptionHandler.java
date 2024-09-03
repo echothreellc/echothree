@@ -53,9 +53,9 @@ public class CarrierOptionHandler
         if(localName.equals("carrierOptionDescription")) {
             String attrLanguageIsoName = null;
             String attrDescription = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     attrLanguageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -63,7 +63,7 @@ public class CarrierOptionHandler
             }
             
             try {
-                CreateCarrierOptionDescriptionForm commandForm = CarrierFormFactory.getCreateCarrierOptionDescriptionForm();
+                var commandForm = CarrierFormFactory.getCreateCarrierOptionDescriptionForm();
                 
                 commandForm.setCarrierName(carrierName);
                 commandForm.setCarrierOptionName(carrierOptionName);

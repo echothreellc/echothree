@@ -55,16 +55,16 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String geoCodeTypeName = request.getParameter(ParameterConstants.GEO_CODE_TYPE_NAME);
-            String geoCodeAliasTypeName = request.getParameter(ParameterConstants.GEO_CODE_ALIAS_TYPE_NAME);
-            GetGeoCodeAliasTypeDescriptionsForm commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypeDescriptionsForm();
+            var geoCodeTypeName = request.getParameter(ParameterConstants.GEO_CODE_TYPE_NAME);
+            var geoCodeAliasTypeName = request.getParameter(ParameterConstants.GEO_CODE_ALIAS_TYPE_NAME);
+            var commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypeDescriptionsForm();
             
             commandForm.setGeoCodeTypeName(geoCodeTypeName);
             commandForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
-            
-            CommandResult commandResult = GeoUtil.getHome().getGeoCodeAliasTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGeoCodeAliasTypeDescriptionsResult result = (GetGeoCodeAliasTypeDescriptionsResult)executionResult.getResult();
+
+            var commandResult = GeoUtil.getHome().getGeoCodeAliasTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGeoCodeAliasTypeDescriptionsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.GEO_CODE_ALIAS_TYPE, result.getGeoCodeAliasType());
             request.setAttribute(AttributeConstants.GEO_CODE_ALIAS_TYPE_DESCRIPTIONS, result.getGeoCodeAliasTypeDescriptions());

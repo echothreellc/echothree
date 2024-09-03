@@ -51,14 +51,14 @@ public class AddActionForm
     private void setupCurrencyChoices()
             throws NamingException {
         if(currencyChoices == null) {
-            GetCurrencyChoicesForm form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
+            var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
 
             form.setDefaultCurrencyChoice(currencyChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCurrencyChoicesResult getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+            var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
             currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
 
             if(currencyChoice == null)
@@ -69,14 +69,14 @@ public class AddActionForm
     private void setupUnitOfMeasureChoices()
             throws NamingException {
         if(unitOfMeasureChoices == null) {
-            GetUnitOfMeasureChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureChoicesForm();
+            var form = UomUtil.getHome().getGetUnitOfMeasureChoicesForm();
 
             form.setDefaultUnitOfMeasureChoice(unitOfMeasureChoice);
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_QUANTITY);
 
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureChoicesResult getUnitOfMeasureChoicesResult = (GetUnitOfMeasureChoicesResult)executionResult.getResult();
+            var commandResult = UomUtil.getHome().getUnitOfMeasureChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureChoicesResult = (GetUnitOfMeasureChoicesResult)executionResult.getResult();
             unitOfMeasureChoices = getUnitOfMeasureChoicesResult.getUnitOfMeasureChoices();
 
             if(unitOfMeasureChoice == null)

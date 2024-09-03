@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetTerminationReasonForm commandForm = EmployeeUtil.getHome().getGetTerminationReasonForm();
-            String terminationReasonName = request.getParameter(ParameterConstants.TERMINATION_REASON_NAME);
+            var commandForm = EmployeeUtil.getHome().getGetTerminationReasonForm();
+            var terminationReasonName = request.getParameter(ParameterConstants.TERMINATION_REASON_NAME);
             
             commandForm.setTerminationReasonName(terminationReasonName);
-            
-            CommandResult commandResult = EmployeeUtil.getHome().getTerminationReason(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTerminationReasonResult result = (GetTerminationReasonResult)executionResult.getResult();
+
+            var commandResult = EmployeeUtil.getHome().getTerminationReason(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTerminationReasonResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TERMINATION_REASON, result.getTerminationReason());
             forwardKey = ForwardConstants.DISPLAY;

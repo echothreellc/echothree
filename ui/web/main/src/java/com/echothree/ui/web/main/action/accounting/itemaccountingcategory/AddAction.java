@@ -54,18 +54,18 @@ public class AddAction
         
         try {
             if(forwardKey == null) {
-                AddActionForm actionForm = (AddActionForm)form;
+                var actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateItemAccountingCategoryForm commandForm = AccountingUtil.getHome().getCreateItemAccountingCategoryForm();
+                    var commandForm = AccountingUtil.getHome().getCreateItemAccountingCategoryForm();
                     
                     commandForm.setItemAccountingCategoryName(actionForm.getItemAccountingCategoryName());
                     commandForm.setParentItemAccountingCategoryName(actionForm.getParentItemAccountingCategoryChoice());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = AccountingUtil.getHome().createItemAccountingCategory(getUserVisitPK(request), commandForm);
+
+                    var commandResult = AccountingUtil.getHome().createItemAccountingCategory(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

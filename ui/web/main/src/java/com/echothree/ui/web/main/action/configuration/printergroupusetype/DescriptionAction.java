@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String printerGroupUseTypeName = request.getParameter(ParameterConstants.PRINTER_GROUP_USE_TYPE_NAME);
-        GetPrinterGroupUseTypeDescriptionsForm commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypeDescriptionsForm();
+        var printerGroupUseTypeName = request.getParameter(ParameterConstants.PRINTER_GROUP_USE_TYPE_NAME);
+        var commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypeDescriptionsForm();
 
         commandForm.setPrinterGroupUseTypeName(printerGroupUseTypeName);
 
-        CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupUseTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = PrinterUtil.getHome().getPrinterGroupUseTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPrinterGroupUseTypeDescriptionsResult result = (GetPrinterGroupUseTypeDescriptionsResult) executionResult.getResult();
-            PrinterGroupUseTypeTransfer printerGroupUseTypeTransfer = result.getPrinterGroupUseType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPrinterGroupUseTypeDescriptionsResult) executionResult.getResult();
+            var printerGroupUseTypeTransfer = result.getPrinterGroupUseType();
 
             request.setAttribute(AttributeConstants.PRINTER_GROUP_USE_TYPE, printerGroupUseTypeTransfer);
             request.setAttribute(AttributeConstants.PRINTER_GROUP_USE_TYPE_DESCRIPTIONS, result.getPrinterGroupUseTypeDescriptions());

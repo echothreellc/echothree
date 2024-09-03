@@ -100,7 +100,7 @@ public class LicenseCheckLogic
                         .build())
                 .build()) {
             for(var foundServerName : foundServerNames) {
-                HttpGet httpGet = new HttpGet("https://www.echothree.com/licenses/v1/" + URLEncoder.encode(foundServerName, StandardCharsets.UTF_8) + ".xml");
+                var httpGet = new HttpGet("https://www.echothree.com/licenses/v1/" + URLEncoder.encode(foundServerName, StandardCharsets.UTF_8) + ".xml");
 
                 log.info("Requesting license for: " + foundServerName);
 
@@ -113,7 +113,7 @@ public class LicenseCheckLogic
 
                             if(entity != null) {
                                 var text = CharStreams.toString(new InputStreamReader(entity.getContent(), Charsets.UTF_8));
-                                Properties properties = new Properties();
+                                var properties = new Properties();
 
                                 properties.loadFromXML(new ByteArrayInputStream(text.getBytes(Charsets.UTF_8)));
 

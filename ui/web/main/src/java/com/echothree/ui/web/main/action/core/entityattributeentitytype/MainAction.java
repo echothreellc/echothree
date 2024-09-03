@@ -55,16 +55,16 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws NamingException {
         String forwardKey = null;
-        GetEntityAttributeEntityTypesForm commandForm = CoreUtil.getHome().getGetEntityAttributeEntityTypesForm();
+        var commandForm = CoreUtil.getHome().getGetEntityAttributeEntityTypesForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
         commandForm.setEntityAttributeName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME));
 
-        CommandResult commandResult = CoreUtil.getHome().getEntityAttributeEntityTypes(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetEntityAttributeEntityTypesResult result = (GetEntityAttributeEntityTypesResult)executionResult.getResult();
-        EntityAttributeTransfer entityAttribute = result.getEntityAttribute();
+        var commandResult = CoreUtil.getHome().getEntityAttributeEntityTypes(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEntityAttributeEntityTypesResult)executionResult.getResult();
+        var entityAttribute = result.getEntityAttribute();
 
         if(entityAttribute == null) {
             forwardKey = ForwardConstants.ERROR_404;

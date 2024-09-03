@@ -48,16 +48,16 @@ public class AddActionForm
     private void setupFilterItemSelectorChoices()
             throws NamingException {
         if(filterItemSelectorChoices == null) {
-            GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
+            var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
 
             form.setSelectorKindName(SelectorKinds.ITEM.name());
             form.setSelectorTypeName(SelectorTypes.FILTER.name());
             form.setDefaultSelectorChoice(filterItemSelectorChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSelectorChoicesResult result = (GetSelectorChoicesResult)executionResult.getResult();
+            var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSelectorChoicesResult)executionResult.getResult();
             filterItemSelectorChoices = result.getSelectorChoices();
 
             if(filterItemSelectorChoice == null)

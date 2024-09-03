@@ -60,7 +60,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateDocumentDescriptionForm commandForm = DocumentUtil.getHome().getCreateDocumentDescriptionForm();
+        var commandForm = DocumentUtil.getHome().getCreateDocumentDescriptionForm();
 
         commandForm.setDocumentName( actionForm.getDocumentName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

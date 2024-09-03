@@ -208,7 +208,7 @@ public class ForumControl
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumGroup */
     public ForumGroup getForumGroupByEntityInstance(EntityInstance entityInstance) {
-        ForumGroupPK pk = new ForumGroupPK(entityInstance.getEntityUniqueId());
+        var pk = new ForumGroupPK(entityInstance.getEntityUniqueId());
         var forumGroup = ForumGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return forumGroup;
@@ -563,7 +563,7 @@ public class ForumControl
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Forum */
     public Forum getForumByEntityInstance(EntityInstance entityInstance) {
-        ForumPK pk = new ForumPK(entityInstance.getEntityUniqueId());
+        var pk = new ForumPK(entityInstance.getEntityUniqueId());
         var forum = ForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return forum;
@@ -2590,7 +2590,7 @@ public class ForumControl
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumThread */
     public ForumThread getForumThreadByEntityInstance(EntityInstance entityInstance) {
-        ForumThreadPK pk = new ForumThreadPK(entityInstance.getEntityUniqueId());
+        var pk = new ForumThreadPK(entityInstance.getEntityUniqueId());
         var forumThread = ForumThreadFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return forumThread;
@@ -2825,7 +2825,7 @@ public class ForumControl
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumMessage */
     public ForumMessage getForumMessageByEntityInstance(EntityInstance entityInstance) {
-        ForumMessagePK pk = new ForumMessagePK(entityInstance.getEntityUniqueId());
+        var pk = new ForumMessagePK(entityInstance.getEntityUniqueId());
         var forumMessage = ForumMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return forumMessage;

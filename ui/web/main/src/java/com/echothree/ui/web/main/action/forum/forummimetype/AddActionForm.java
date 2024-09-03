@@ -45,15 +45,15 @@ public class AddActionForm
     private void setupMimeTypeChoices()
             throws NamingException {
         if(mimeTypeChoices == null) {
-            GetMimeTypeChoicesForm form = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+            var form = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
             form.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
             form.setDefaultMimeTypeChoice(mimeTypeChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeChoicesResult getMimeTypeChoicesResult = (GetMimeTypeChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getMimeTypeChoicesResult = (GetMimeTypeChoicesResult)executionResult.getResult();
             mimeTypeChoices = getMimeTypeChoicesResult.getMimeTypeChoices();
 
             if(mimeTypeChoice == null) {

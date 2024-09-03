@@ -57,7 +57,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetTagScopeForm commandForm = TagUtil.getHome().getGetTagScopeForm();
+        var commandForm = TagUtil.getHome().getGetTagScopeForm();
 
         Set<String> options = new HashSet<>();
         options.add(TagOptions.TagScopeIncludeTags);
@@ -65,13 +65,13 @@ public class ReviewAction
         commandForm.setOptions(options);
 
         commandForm.setTagScopeName(request.getParameter(ParameterConstants.TAG_SCOPE_NAME));
-        
-        CommandResult commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
+
+        var commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
         TagScopeTransfer tagScope = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTagScopeResult result = (GetTagScopeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTagScopeResult)executionResult.getResult();
             
             tagScope = result.getTagScope();
         }
@@ -79,10 +79,10 @@ public class ReviewAction
         if(tagScope == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
-            long minimumUsageCount = Long.MAX_VALUE;
+            var minimumUsageCount = Long.MAX_VALUE;
             long maximumUsageCount = 0;
 
-            for(TagTransfer tag : tagScope.getTags().getList()) {
+            for(var tag : tagScope.getTags().getList()) {
                 long usageCount = tag.getUsageCount();
 
                 if(usageCount < minimumUsageCount) {

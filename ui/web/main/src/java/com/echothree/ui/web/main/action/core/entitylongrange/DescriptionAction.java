@@ -52,17 +52,17 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetEntityLongRangeDescriptionsForm commandForm = CoreUtil.getHome().getGetEntityLongRangeDescriptionsForm();
+        var commandForm = CoreUtil.getHome().getGetEntityLongRangeDescriptionsForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
         commandForm.setEntityAttributeName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME));
         commandForm.setEntityLongRangeName(request.getParameter(ParameterConstants.ENTITY_LONG_RANGE_NAME));
 
-        CommandResult commandResult = CoreUtil.getHome().getEntityLongRangeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getEntityLongRangeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityLongRangeDescriptionsResult result = (GetEntityLongRangeDescriptionsResult) executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityLongRangeDescriptionsResult) executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ENTITY_LONG_RANGE, result.getEntityLongRange());
             request.setAttribute(AttributeConstants.ENTITY_LONG_RANGE_DESCRIPTIONS, result.getEntityLongRangeDescriptions());

@@ -51,14 +51,14 @@ public class InvoiceTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("invoiceTypeDescription")) {
-            CreateInvoiceTypeDescriptionForm commandForm = InvoiceFormFactory.getCreateInvoiceTypeDescriptionForm();
+            var commandForm = InvoiceFormFactory.getCreateInvoiceTypeDescriptionForm();
             
             commandForm.setInvoiceTypeName(invoiceTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             checkCommandResult(invoiceService.createInvoiceTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("invoiceTimeType")) {
-            CreateInvoiceTimeTypeForm commandForm = InvoiceFormFactory.getCreateInvoiceTimeTypeForm();
+            var commandForm = InvoiceFormFactory.getCreateInvoiceTimeTypeForm();
 
             commandForm.setInvoiceTypeName(invoiceTypeName);
             commandForm.set(getAttrsMap(attrs));
@@ -67,7 +67,7 @@ public class InvoiceTypeHandler
 
             initialDataParser.pushHandler(new InvoiceTimeTypeHandler(initialDataParser, this, invoiceTypeName, commandForm.getInvoiceTimeTypeName()));
         } else if(localName.equals("invoiceLineType")) {
-            CreateInvoiceLineTypeForm commandForm = InvoiceFormFactory.getCreateInvoiceLineTypeForm();
+            var commandForm = InvoiceFormFactory.getCreateInvoiceLineTypeForm();
             
             commandForm.setInvoiceTypeName(invoiceTypeName);
             commandForm.set(getAttrsMap(attrs));

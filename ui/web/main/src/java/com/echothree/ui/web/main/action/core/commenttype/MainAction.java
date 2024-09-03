@@ -57,18 +57,18 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            GetCommentTypesForm commandForm = CommentUtil.getHome().getGetCommentTypesForm();
+            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+            var commandForm = CommentUtil.getHome().getGetCommentTypesForm();
             
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
-            
-            CommandResult commandResult = CommentUtil.getHome().getCommentTypes(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommentTypesResult result = (GetCommentTypesResult)executionResult.getResult();
-            ComponentVendorTransfer componentVendorTransfer = result.getComponentVendor();
-            EntityTypeTransfer entityTypeTransfer = result.getEntityType();
+
+            var commandResult = CommentUtil.getHome().getCommentTypes(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommentTypesResult)executionResult.getResult();
+            var componentVendorTransfer = result.getComponentVendor();
+            var entityTypeTransfer = result.getEntityType();
             
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR, componentVendorTransfer);
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorTransfer.getComponentVendorName());

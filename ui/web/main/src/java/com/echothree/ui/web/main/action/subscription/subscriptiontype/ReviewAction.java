@@ -55,16 +55,16 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetSubscriptionTypeForm commandForm = SubscriptionUtil.getHome().getGetSubscriptionTypeForm();
-            String subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
-            String subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
+            var commandForm = SubscriptionUtil.getHome().getGetSubscriptionTypeForm();
+            var subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
+            var subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
             
             commandForm.setSubscriptionKindName(subscriptionKindName);
             commandForm.setSubscriptionTypeName(subscriptionTypeName);
-            
-            CommandResult commandResult = SubscriptionUtil.getHome().getSubscriptionType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetSubscriptionTypeResult result = (GetSubscriptionTypeResult)executionResult.getResult();
+
+            var commandResult = SubscriptionUtil.getHome().getSubscriptionType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSubscriptionTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SUBSCRIPTION_TYPE, result.getSubscriptionType());
             forwardKey = ForwardConstants.DISPLAY;

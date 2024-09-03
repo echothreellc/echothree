@@ -46,15 +46,15 @@ public class AddActionForm
     private void setupPageMimeTypeChoices() {
         if(pageMimeTypeChoices == null) {
             try {
-                GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+                var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
                 
                 commandForm.setDefaultMimeTypeChoice(pageMimeTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
-                
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+
+                var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
                 pageMimeTypeChoices = result.getMimeTypeChoices();
                 
                 if(pageMimeTypeChoice == null) {

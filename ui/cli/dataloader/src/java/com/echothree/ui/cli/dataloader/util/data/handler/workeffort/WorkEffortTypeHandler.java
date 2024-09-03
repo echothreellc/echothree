@@ -61,7 +61,7 @@ public class WorkEffortTypeHandler
     throws SAXException {
         if(localName.equals("workEffortTypeDescription")) {
             try {
-                CreateWorkEffortTypeDescriptionForm commandForm = WorkEffortFormFactory.getCreateWorkEffortTypeDescriptionForm();
+                var commandForm = WorkEffortFormFactory.getCreateWorkEffortTypeDescriptionForm();
                 
                 commandForm.setWorkEffortTypeName(workEffortTypeName);
                 commandForm.set(getAttrsMap(attrs));
@@ -72,8 +72,8 @@ public class WorkEffortTypeHandler
             }
         } else if(localName.equals("workEffortScope")) {
             try {
-                CreateWorkEffortScopeForm commandForm = WorkEffortFormFactory.getCreateWorkEffortScopeForm();
-                Map<String, Object> attrsMap = getAttrsMap(attrs);
+                var commandForm = WorkEffortFormFactory.getCreateWorkEffortScopeForm();
+                var attrsMap = getAttrsMap(attrs);
                 
                 commandForm.setWorkEffortTypeName(workEffortTypeName);
                 commandForm.set(attrsMap);
@@ -87,8 +87,8 @@ public class WorkEffortTypeHandler
             }
         } else if(localName.equals("workRequirementType")) {
             try {
-                CreateWorkRequirementTypeForm commandForm = WorkRequirementFormFactory.getCreateWorkRequirementTypeForm();
-                Map<String, Object> attrsMap = getAttrsMap(attrs);
+                var commandForm = WorkRequirementFormFactory.getCreateWorkRequirementTypeForm();
+                var attrsMap = getAttrsMap(attrs);
                 
                 commandForm.setWorkEffortTypeName(workEffortTypeName);
                 commandForm.set(attrsMap);

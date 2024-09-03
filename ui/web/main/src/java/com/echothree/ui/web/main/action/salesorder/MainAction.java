@@ -44,7 +44,7 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = ForwardConstants.DISPLAY;
+        var forwardKey = ForwardConstants.DISPLAY;
                 
         return mapping.findForward(forwardKey);
     }

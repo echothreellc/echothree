@@ -63,15 +63,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContactListFrequencyDescriptionForm commandForm = ContactListUtil.getHome().getGetContactListFrequencyDescriptionForm();
+        var commandForm = ContactListUtil.getHome().getGetContactListFrequencyDescriptionForm();
         
         commandForm.setContactListFrequencyName(actionForm.getContactListFrequencyName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getContactListFrequencyDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getContactListFrequencyDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListFrequencyDescriptionResult result = (GetContactListFrequencyDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListFrequencyDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CONTACT_LIST_FREQUENCY_DESCRIPTION, result.getContactListFrequencyDescription());
         }
@@ -80,7 +80,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteContactListFrequencyDescriptionForm commandForm = ContactListUtil.getHome().getDeleteContactListFrequencyDescriptionForm();
+        var commandForm = ContactListUtil.getHome().getDeleteContactListFrequencyDescriptionForm();
 
         commandForm.setContactListFrequencyName(actionForm.getContactListFrequencyName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

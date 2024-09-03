@@ -72,16 +72,16 @@ public class Step3Action
     
     private void setupCustomerTransfer(Step3ActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
 
         commandForm.setPartyName(actionForm.getPartyName());
 
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
-            CustomerTransfer customer = result.getCustomer();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerResult)executionResult.getResult();
+            var customer = result.getCustomer();
 
             if(customer != null) {
                 request.setAttribute(AttributeConstants.CUSTOMER, customer);
@@ -91,13 +91,13 @@ public class Step3Action
 
     private DocumentTypeTransfer getDocumentTypeTransfer(Step3ActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetDocumentTypeForm commandForm = DocumentUtil.getHome().getGetDocumentTypeForm();
+        var commandForm = DocumentUtil.getHome().getGetDocumentTypeForm();
 
         commandForm.setDocumentTypeName(actionForm.getDocumentTypeName());
 
-        CommandResult commandResult = DocumentUtil.getHome().getDocumentType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetDocumentTypeResult result = (GetDocumentTypeResult)executionResult.getResult();
+        var commandResult = DocumentUtil.getHome().getDocumentType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetDocumentTypeResult)executionResult.getResult();
 
         return result.getDocumentType();
     }
@@ -117,9 +117,9 @@ public class Step3Action
     @Override
     public CommandResult doAdd(Step3ActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreatePartyDocumentForm commandForm = DocumentUtil.getHome().getCreatePartyDocumentForm();
-        DocumentTypeTransfer documentType = getDocumentTypeTransfer(actionForm, request);
-        String mimeTypeUsageTypeName = documentType.getMimeTypeUsageType().getMimeTypeUsageTypeName();
+        var commandForm = DocumentUtil.getHome().getCreatePartyDocumentForm();
+        var documentType = getDocumentTypeTransfer(actionForm, request);
+        var mimeTypeUsageTypeName = documentType.getMimeTypeUsageType().getMimeTypeUsageTypeName();
 
         commandForm.setPartyName(actionForm.getPartyName());
         commandForm.setDocumentTypeName(actionForm.getDocumentTypeName());
@@ -131,7 +131,7 @@ public class Step3Action
             commandForm.setMimeTypeName(actionForm.getMimeTypeChoice());
             commandForm.setClob(actionForm.getClob());
         } else {
-            FormFile blob = actionForm.getBlob();
+            var blob = actionForm.getBlob();
 
             commandForm.setMimeTypeName(blob.getContentType());
 

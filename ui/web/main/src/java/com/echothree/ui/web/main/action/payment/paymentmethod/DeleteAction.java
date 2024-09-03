@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPaymentMethodForm commandForm = PaymentUtil.getHome().getGetPaymentMethodForm();
+        var commandForm = PaymentUtil.getHome().getGetPaymentMethodForm();
         
         commandForm.setPaymentMethodName(actionForm.getPaymentMethodName());
-        
-        CommandResult commandResult = PaymentUtil.getHome().getPaymentMethod(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPaymentMethodResult result = (GetPaymentMethodResult)executionResult.getResult();
+
+        var commandResult = PaymentUtil.getHome().getPaymentMethod(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPaymentMethodResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.PAYMENT_METHOD, result.getPaymentMethod());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePaymentMethodForm commandForm = PaymentUtil.getHome().getDeletePaymentMethodForm();
+        var commandForm = PaymentUtil.getHome().getDeletePaymentMethodForm();
 
         commandForm.setPaymentMethodName(actionForm.getPaymentMethodName());
 

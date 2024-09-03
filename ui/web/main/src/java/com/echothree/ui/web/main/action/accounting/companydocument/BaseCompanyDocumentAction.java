@@ -40,16 +40,16 @@ public abstract class BaseCompanyDocumentAction<A
 
     public static CompanyTransfer setupCompany(HttpServletRequest request, String partyName)
             throws NamingException {
-        GetCompanyForm commandForm = PartyUtil.getHome().getGetCompanyForm();
+        var commandForm = PartyUtil.getHome().getGetCompanyForm();
         CompanyTransfer company = null;
 
         commandForm.setPartyName(partyName);
 
-        CommandResult commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
+        var commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCompanyResult result = (GetCompanyResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCompanyResult)executionResult.getResult();
 
             company = result.getCompany();
 
@@ -68,7 +68,7 @@ public abstract class BaseCompanyDocumentAction<A
 
     public static PartyDocumentTransfer setupPartyDocumentTransfer(HttpServletRequest request, String documentName, Set<String> options)
             throws NamingException {
-        GetPartyDocumentForm commandForm = DocumentUtil.getHome().getGetPartyDocumentForm();
+        var commandForm = DocumentUtil.getHome().getGetPartyDocumentForm();
         PartyDocumentTransfer partyDocument = null;
 
         commandForm.setDocumentName(documentName);
@@ -77,11 +77,11 @@ public abstract class BaseCompanyDocumentAction<A
             commandForm.setOptions(options);
         }
 
-        CommandResult commandResult = DocumentUtil.getHome().getPartyDocument(getUserVisitPK(request), commandForm);
+        var commandResult = DocumentUtil.getHome().getPartyDocument(getUserVisitPK(request), commandForm);
 
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartyDocumentResult result = (GetPartyDocumentResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyDocumentResult)executionResult.getResult();
 
             partyDocument = result.getPartyDocument();
 

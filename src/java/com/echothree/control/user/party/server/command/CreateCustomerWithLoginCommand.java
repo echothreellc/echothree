@@ -141,7 +141,7 @@ public class CreateCustomerWithLoginCommand
     protected ValidationResult validate() {
         var partyTypeName = getPartyTypeName();
         var FORM_FIELD_DEFINITIONS = partyTypeName == null || partyTypeName.equals(PartyTypes.CUSTOMER.name())? customerFormFieldDefinitions: otherFormFieldDefinitions;
-        Validator validator = new Validator(this);
+        var validator = new Validator(this);
         var validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
         
         return validationResult;
@@ -295,7 +295,7 @@ public class CreateCustomerWithLoginCommand
 
                                                                 if(recoveryQuestion != null) {
                                                                     var workflowControl = Session.getModelController(WorkflowControl.class);
-                                                                    Soundex soundex = new Soundex();
+                                                                    var soundex = new Soundex();
                                                                     BasePK createdBy = getPartyPK();
                                                                     var personalTitleId = form.getPersonalTitleId();
                                                                     var personalTitle = personalTitleId == null ? null

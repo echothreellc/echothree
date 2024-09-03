@@ -51,7 +51,7 @@ public class AddAction
         String forwardKey = null;
         
         if(wasPost(request)) {
-            CreateEmployeeForm commandForm = PartyUtil.getHome().getCreateEmployeeForm();
+            var commandForm = PartyUtil.getHome().getCreateEmployeeForm();
             
             commandForm.setEmployeeTypeName(actionForm.getEmployeeTypeChoice());
             commandForm.setPersonalTitleId(actionForm.getPersonalTitleChoice());
@@ -69,8 +69,8 @@ public class AddAction
             commandForm.setPassword1(actionForm.getPassword1());
             commandForm.setPassword2(actionForm.getPassword2());
             commandForm.setPartySecurityRoleTemplateName(actionForm.getPartySecurityRoleTemplateChoice());
-            
-            CommandResult commandResult = PartyUtil.getHome().createEmployee(getUserVisitPK(request), commandForm);
+
+            var commandResult = PartyUtil.getHome().createEmployee(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

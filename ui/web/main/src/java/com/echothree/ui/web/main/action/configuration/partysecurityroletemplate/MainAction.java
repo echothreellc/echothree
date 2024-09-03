@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplates(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPartySecurityRoleTemplatesResult result = (GetPartySecurityRoleTemplatesResult)executionResult.getResult();
+            var commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplates(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartySecurityRoleTemplatesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PARTY_SECURITY_ROLE_TEMPLATES, result.getPartySecurityRoleTemplates());
             forwardKey = ForwardConstants.DISPLAY;

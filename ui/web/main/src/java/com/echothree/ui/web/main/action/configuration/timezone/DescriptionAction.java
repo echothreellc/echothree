@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String javaTimeZoneName = request.getParameter(ParameterConstants.JAVA_TIME_ZONE_NAME);
-            GetTimeZoneDescriptionsForm commandForm = PartyUtil.getHome().getGetTimeZoneDescriptionsForm();
+            var javaTimeZoneName = request.getParameter(ParameterConstants.JAVA_TIME_ZONE_NAME);
+            var commandForm = PartyUtil.getHome().getGetTimeZoneDescriptionsForm();
             
             commandForm.setJavaTimeZoneName(javaTimeZoneName);
-            
-            CommandResult commandResult = PartyUtil.getHome().getTimeZoneDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTimeZoneDescriptionsResult result = (GetTimeZoneDescriptionsResult)executionResult.getResult();
-            TimeZoneTransfer timeZoneTransfer = result.getTimeZone();
+
+            var commandResult = PartyUtil.getHome().getTimeZoneDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTimeZoneDescriptionsResult)executionResult.getResult();
+            var timeZoneTransfer = result.getTimeZone();
             
             request.setAttribute(AttributeConstants.TIME_ZONE, timeZoneTransfer);
             request.setAttribute(AttributeConstants.JAVA_TIME_ZONE_NAME, timeZoneTransfer.getJavaTimeZoneName());

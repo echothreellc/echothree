@@ -50,9 +50,9 @@ public class TermHandler
         if(localName.equals("termDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -60,7 +60,7 @@ public class TermHandler
             }
             
             try {
-                CreateTermDescriptionForm commandForm = TermFormFactory.getCreateTermDescriptionForm();
+                var commandForm = TermFormFactory.getCreateTermDescriptionForm();
                 
                 commandForm.setTermName(termName);
                 commandForm.setLanguageIsoName(languageIsoName);

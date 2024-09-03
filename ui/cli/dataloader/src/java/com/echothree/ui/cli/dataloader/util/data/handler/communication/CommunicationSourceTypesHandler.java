@@ -48,9 +48,9 @@ public class CommunicationSourceTypesHandler
             String communicationSourceTypeName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("communicationSourceTypeName"))
                     communicationSourceTypeName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
@@ -60,7 +60,7 @@ public class CommunicationSourceTypesHandler
             }
             
             try {
-                CreateCommunicationSourceTypeForm form = CommunicationFormFactory.getCreateCommunicationSourceTypeForm();
+                var form = CommunicationFormFactory.getCreateCommunicationSourceTypeForm();
                 
                 form.setCommunicationSourceTypeName(communicationSourceTypeName);
                 form.setIsDefault(isDefault);

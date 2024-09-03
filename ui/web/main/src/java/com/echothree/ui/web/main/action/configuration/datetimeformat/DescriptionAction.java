@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String dateTimeFormatName = request.getParameter(ParameterConstants.DATE_TIME_FORMAT_NAME);
-            GetDateTimeFormatDescriptionsForm commandForm = PartyUtil.getHome().getGetDateTimeFormatDescriptionsForm();
+            var dateTimeFormatName = request.getParameter(ParameterConstants.DATE_TIME_FORMAT_NAME);
+            var commandForm = PartyUtil.getHome().getGetDateTimeFormatDescriptionsForm();
             
             commandForm.setDateTimeFormatName(dateTimeFormatName);
-            
-            CommandResult commandResult = PartyUtil.getHome().getDateTimeFormatDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetDateTimeFormatDescriptionsResult result = (GetDateTimeFormatDescriptionsResult)executionResult.getResult();
-            DateTimeFormatTransfer dateTimeFormatTransfer = result.getDateTimeFormat();
+
+            var commandResult = PartyUtil.getHome().getDateTimeFormatDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetDateTimeFormatDescriptionsResult)executionResult.getResult();
+            var dateTimeFormatTransfer = result.getDateTimeFormat();
             
             request.setAttribute(AttributeConstants.DATE_TIME_FORMAT, dateTimeFormatTransfer);
             request.setAttribute(AttributeConstants.DATE_TIME_FORMAT_NAME, dateTimeFormatTransfer.getDateTimeFormatName());

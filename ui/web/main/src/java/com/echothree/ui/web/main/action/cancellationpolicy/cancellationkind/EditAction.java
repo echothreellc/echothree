@@ -58,13 +58,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String originalCancellationKindName = request.getParameter(ParameterConstants.ORIGINAL_CANCELLATION_KIND_NAME);
+        var originalCancellationKindName = request.getParameter(ParameterConstants.ORIGINAL_CANCELLATION_KIND_NAME);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditCancellationKindForm commandForm = CancellationPolicyUtil.getHome().getEditCancellationKindForm();
-                CancellationKindSpec spec = CancellationPolicyUtil.getHome().getCancellationKindSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = CancellationPolicyUtil.getHome().getEditCancellationKindForm();
+                var spec = CancellationPolicyUtil.getHome().getCancellationKindSpec();
                 
                 if(originalCancellationKindName == null)
                     originalCancellationKindName = actionForm.getOriginalCancellationKindName();
@@ -73,7 +73,7 @@ public class EditAction
                 spec.setCancellationKindName(originalCancellationKindName);
                 
                 if(wasPost(request)) {
-                    CancellationKindEdit edit = CancellationPolicyUtil.getHome().getCancellationKindEdit();
+                    var edit = CancellationPolicyUtil.getHome().getCancellationKindEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -83,14 +83,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = CancellationPolicyUtil.getHome().editCancellationKind(getUserVisitPK(request), commandForm);
+
+                    var commandResult = CancellationPolicyUtil.getHome().editCancellationKind(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditCancellationKindResult result = (EditCancellationKindResult)executionResult.getResult();
+                            var result = (EditCancellationKindResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -103,13 +103,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = CancellationPolicyUtil.getHome().editCancellationKind(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditCancellationKindResult result = (EditCancellationKindResult)executionResult.getResult();
+
+                    var commandResult = CancellationPolicyUtil.getHome().editCancellationKind(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditCancellationKindResult)executionResult.getResult();
                     
                     if(result != null) {
-                        CancellationKindEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setOriginalCancellationKindName(edit.getCancellationKindName());

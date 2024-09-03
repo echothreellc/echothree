@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = VendorUtil.getHome().getItemPurchasingCategories(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemPurchasingCategoriesResult result = (GetItemPurchasingCategoriesResult)executionResult.getResult();
+            var commandResult = VendorUtil.getHome().getItemPurchasingCategories(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemPurchasingCategoriesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ITEM_PURCHASING_CATEGORIES, result.getItemPurchasingCategories());
             forwardKey = ForwardConstants.DISPLAY;

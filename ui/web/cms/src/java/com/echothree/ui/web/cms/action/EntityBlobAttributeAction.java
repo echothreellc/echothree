@@ -87,7 +87,7 @@ public class EntityBlobAttributeAction
 
     protected EntityBlobAttributeTransfer getEntityBlobAttribute(HttpServletRequest request, EntityBlobAttributeNames entityBlobAttributeNames, Set<String> options)
             throws NamingException {
-        GetEntityBlobAttributeForm commandForm = CoreUtil.getHome().getGetEntityBlobAttributeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityBlobAttributeForm();
         EntityBlobAttributeTransfer entityBlobAttribute = null;
 
         commandForm.setEntityRef(entityBlobAttributeNames.entityRef);
@@ -97,10 +97,10 @@ public class EntityBlobAttributeAction
         
         commandForm.setOptions(options);
 
-        CommandResult commandResult = CoreUtil.getHome().getEntityBlobAttribute(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getEntityBlobAttribute(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityBlobAttributeResult result = (GetEntityBlobAttributeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityBlobAttributeResult)executionResult.getResult();
 
             entityBlobAttribute = result.getEntityBlobAttribute();
         }
@@ -137,15 +137,15 @@ public class EntityBlobAttributeAction
     @Override
     protected String getETag(HttpServletRequest request)
             throws NamingException {
-        EntityBlobAttributeNames entityBlobAttributeNames = new EntityBlobAttributeNames(request);
+        var entityBlobAttributeNames = new EntityBlobAttributeNames(request);
         String eTag = null;
 
         if(entityBlobAttributeNames.hasAllNames()) {
-            Unmanaged.UnmanagedInstance<CmsCacheBean> cmsCacheBeanInstance = unmanagedCmsCacheBean.newInstance();
-            CmsCacheBean cmsCacheBean = cmsCacheBeanInstance.produce().inject().postConstruct().get();
-            Cache<String, Object> cache = cmsCacheBean.getCache();
-            String fqn = getFqn(entityBlobAttributeNames);
-            EntityBlobAttributeTransfer entityBlobAttribute = getCachedEntityBlobAttribute(cache, fqn);
+            var cmsCacheBeanInstance = unmanagedCmsCacheBean.newInstance();
+            var cmsCacheBean = cmsCacheBeanInstance.produce().inject().postConstruct().get();
+            var cache = cmsCacheBean.getCache();
+            var fqn = getFqn(entityBlobAttributeNames);
+            var entityBlobAttribute = getCachedEntityBlobAttribute(cache, fqn);
 
             if(entityBlobAttribute == null) {
                 Set<String> options = new HashSet<>();
@@ -171,12 +171,12 @@ public class EntityBlobAttributeAction
     @Override
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         StreamInfo streamInfo = null;
-        EntityBlobAttributeTransfer entityBlobAttribute = (EntityBlobAttributeTransfer)request.getAttribute(attributeTransferObject);
+        var entityBlobAttribute = (EntityBlobAttributeTransfer)request.getAttribute(attributeTransferObject);
 
         if(entityBlobAttribute != null) {
-            MimeTypeTransfer mimeType = entityBlobAttribute.getMimeType();
-            EntityTimeTransfer entityTime = entityBlobAttribute.getEntityInstance().getEntityTime();
-            Long modifiedTime = entityTime.getUnformattedModifiedTime();
+            var mimeType = entityBlobAttribute.getMimeType();
+            var entityTime = entityBlobAttribute.getEntityInstance().getEntityTime();
+            var modifiedTime = entityTime.getUnformattedModifiedTime();
             byte bytes[] = entityBlobAttribute.getBlobAttribute().byteArrayValue();
 
             if(bytes != null) {

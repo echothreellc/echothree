@@ -47,7 +47,7 @@ public class ContactListTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("contactListType")) {
-            CreateContactListTypeForm commandForm = ContactListFormFactory.getCreateContactListTypeForm();
+            var commandForm = ContactListFormFactory.getCreateContactListTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
             

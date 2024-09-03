@@ -47,15 +47,15 @@ public class AddActionForm
     public void setupPreferredMimeTypeChoices() {
         if(preferredMimeTypeChoices == null) {
             try {
-                GetMimeTypeChoicesForm form = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+                var form = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
                 form.setMimeTypeUsageTypeName(MimeTypeUsageTypes.IMAGE.name());
                 form.setDefaultMimeTypeChoice(preferredMimeTypeChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+                var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
                 preferredMimeTypeChoices = result.getMimeTypeChoices();
 
                 if(preferredMimeTypeChoice == null) {

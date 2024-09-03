@@ -51,13 +51,13 @@ public class AddActionForm
     private void setupFilterAdjustmentSourceChoices()
             throws NamingException {
         if(filterAdjustmentSourceChoices == null) {
-            GetFilterAdjustmentSourceChoicesForm getFilterAdjustmentSourceChoicesForm = FilterUtil.getHome().getGetFilterAdjustmentSourceChoicesForm();
+            var getFilterAdjustmentSourceChoicesForm = FilterUtil.getHome().getGetFilterAdjustmentSourceChoicesForm();
 
             getFilterAdjustmentSourceChoicesForm.setDefaultFilterAdjustmentSourceChoice(filterAdjustmentSourceChoice);
 
-            CommandResult commandResult = FilterUtil.getHome().getFilterAdjustmentSourceChoices(userVisitPK, getFilterAdjustmentSourceChoicesForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterAdjustmentSourceChoicesResult getFilterAdjustmentSourceChoicesResult = (GetFilterAdjustmentSourceChoicesResult)executionResult.getResult();
+            var commandResult = FilterUtil.getHome().getFilterAdjustmentSourceChoices(userVisitPK, getFilterAdjustmentSourceChoicesForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getFilterAdjustmentSourceChoicesResult = (GetFilterAdjustmentSourceChoicesResult)executionResult.getResult();
             filterAdjustmentSourceChoices = getFilterAdjustmentSourceChoicesResult.getFilterAdjustmentSourceChoices();
 
             if(filterAdjustmentSourceChoice == null)
@@ -68,13 +68,13 @@ public class AddActionForm
     private void setupFilterAdjustmentTypeChoices()
             throws NamingException {
         if(filterAdjustmentTypeChoices == null) {
-            GetFilterAdjustmentTypeChoicesForm getFilterAdjustmentTypeChoicesForm = FilterUtil.getHome().getGetFilterAdjustmentTypeChoicesForm();
+            var getFilterAdjustmentTypeChoicesForm = FilterUtil.getHome().getGetFilterAdjustmentTypeChoicesForm();
 
             getFilterAdjustmentTypeChoicesForm.setDefaultFilterAdjustmentTypeChoice(filterAdjustmentTypeChoice);
 
-            CommandResult commandResult = FilterUtil.getHome().getFilterAdjustmentTypeChoices(userVisitPK, getFilterAdjustmentTypeChoicesForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFilterAdjustmentTypeChoicesResult getFilterAdjustmentTypeChoicesResult = (GetFilterAdjustmentTypeChoicesResult)executionResult.getResult();
+            var commandResult = FilterUtil.getHome().getFilterAdjustmentTypeChoices(userVisitPK, getFilterAdjustmentTypeChoicesForm);
+            var executionResult = commandResult.getExecutionResult();
+            var getFilterAdjustmentTypeChoicesResult = (GetFilterAdjustmentTypeChoicesResult)executionResult.getResult();
             filterAdjustmentTypeChoices = getFilterAdjustmentTypeChoicesResult.getFilterAdjustmentTypeChoices();
 
             if(filterAdjustmentTypeChoice == null)

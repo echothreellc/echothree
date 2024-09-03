@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = ContactUtil.getHome().getPostalAddressFormats(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetPostalAddressFormatsResult result = (GetPostalAddressFormatsResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getPostalAddressFormats(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPostalAddressFormatsResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.POSTAL_ADDRESS_FORMATS, result.getPostalAddressFormats());
             forwardKey = ForwardConstants.DISPLAY;

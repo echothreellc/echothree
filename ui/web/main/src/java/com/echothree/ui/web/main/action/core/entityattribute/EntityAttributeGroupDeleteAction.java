@@ -65,17 +65,17 @@ public class EntityAttributeGroupDeleteAction
     @Override
     public void setupTransfer(EntityAttributeGroupDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetEntityAttributeEntityAttributeGroupForm commandForm = CoreUtil.getHome().getGetEntityAttributeEntityAttributeGroupForm();
+        var commandForm = CoreUtil.getHome().getGetEntityAttributeEntityAttributeGroupForm();
         
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityAttributeName(actionForm.getEntityAttributeName());
         commandForm.setEntityAttributeGroupName(actionForm.getEntityAttributeGroupName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityAttributeEntityAttributeGroup(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEntityAttributeEntityAttributeGroup(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeEntityAttributeGroupResult result = (GetEntityAttributeEntityAttributeGroupResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityAttributeEntityAttributeGroupResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUP, result.getEntityAttributeEntityAttributeGroup());
         }
@@ -84,7 +84,7 @@ public class EntityAttributeGroupDeleteAction
     @Override
     public CommandResult doDelete(EntityAttributeGroupDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteEntityAttributeEntityAttributeGroupForm commandForm = CoreUtil.getHome().getDeleteEntityAttributeEntityAttributeGroupForm();
+        var commandForm = CoreUtil.getHome().getDeleteEntityAttributeEntityAttributeGroupForm();
 
         commandForm.setComponentVendorName(actionForm.getComponentVendorName());
         commandForm.setEntityTypeName(actionForm.getEntityTypeName());

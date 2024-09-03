@@ -134,7 +134,7 @@ public class TaxControl
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.TaxClassification */
     public TaxClassification getTaxClassificationByEntityInstance(EntityInstance entityInstance) {
-        TaxClassificationPK pk = new TaxClassificationPK(entityInstance.getEntityUniqueId());
+        var pk = new TaxClassificationPK(entityInstance.getEntityUniqueId());
         var taxClassification = TaxClassificationFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
         
         return taxClassification;

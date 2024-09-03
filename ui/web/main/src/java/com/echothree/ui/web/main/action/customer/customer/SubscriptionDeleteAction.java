@@ -52,11 +52,11 @@ public class SubscriptionDeleteAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey;
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         
         try {
-            String subscriptionName = request.getParameter(ParameterConstants.SUBSCRIPTION_NAME);
-            DeleteSubscriptionForm commandForm = SubscriptionUtil.getHome().getDeleteSubscriptionForm();
+            var subscriptionName = request.getParameter(ParameterConstants.SUBSCRIPTION_NAME);
+            var commandForm = SubscriptionUtil.getHome().getDeleteSubscriptionForm();
             
             commandForm.setSubscriptionName(subscriptionName);
             
@@ -66,8 +66,8 @@ public class SubscriptionDeleteAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(1);
             

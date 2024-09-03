@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultItemPurchasingCategoryForm commandForm = VendorUtil.getHome().getSetDefaultItemPurchasingCategoryForm();
-            String itemPurchasingCategoryName = request.getParameter(ParameterConstants.ITEM_PURCHASING_CATEGORY_NAME);
+            var commandForm = VendorUtil.getHome().getSetDefaultItemPurchasingCategoryForm();
+            var itemPurchasingCategoryName = request.getParameter(ParameterConstants.ITEM_PURCHASING_CATEGORY_NAME);
             
             commandForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
             

@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = CustomerUtil.getHome().getCustomerTypes(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypesResult result = (GetCustomerTypesResult)executionResult.getResult();
+            var commandResult = CustomerUtil.getHome().getCustomerTypes(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CUSTOMER_TYPES, result.getCustomerTypes());
             forwardKey = ForwardConstants.DISPLAY;

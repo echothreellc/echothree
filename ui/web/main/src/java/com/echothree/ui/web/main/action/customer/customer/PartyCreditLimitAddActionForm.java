@@ -43,14 +43,14 @@ public class PartyCreditLimitAddActionForm
     public void setupCurrencyChoices()
             throws NamingException {
         if(currencyChoices == null) {
-            GetCurrencyChoicesForm form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
+            var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
 
             form.setDefaultCurrencyChoice(currencyChoice);
             form.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCurrencyChoicesResult getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+            var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
             currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
 
             if(currencyChoice == null)

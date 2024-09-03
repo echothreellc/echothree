@@ -66,18 +66,18 @@ public class TranslationDeleteAction
     @Override
     public void setupTransfer(TranslationDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetTrainingClassAnswerTranslationForm commandForm = TrainingUtil.getHome().getGetTrainingClassAnswerTranslationForm();
+        var commandForm = TrainingUtil.getHome().getGetTrainingClassAnswerTranslationForm();
         
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());
         commandForm.setTrainingClassQuestionName(actionForm.getTrainingClassQuestionName());
         commandForm.setTrainingClassAnswerName(actionForm.getTrainingClassAnswerName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = TrainingUtil.getHome().getTrainingClassAnswerTranslation(getUserVisitPK(request), commandForm);
+
+        var commandResult = TrainingUtil.getHome().getTrainingClassAnswerTranslation(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetTrainingClassAnswerTranslationResult result = (GetTrainingClassAnswerTranslationResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTrainingClassAnswerTranslationResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.TRAINING_CLASS_ANSWER_TRANSLATION, result.getTrainingClassAnswerTranslation());
         }
@@ -86,7 +86,7 @@ public class TranslationDeleteAction
     @Override
     public CommandResult doDelete(TranslationDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteTrainingClassAnswerTranslationForm commandForm = TrainingUtil.getHome().getDeleteTrainingClassAnswerTranslationForm();
+        var commandForm = TrainingUtil.getHome().getDeleteTrainingClassAnswerTranslationForm();
 
         commandForm.setTrainingClassName(actionForm.getTrainingClassName());
         commandForm.setTrainingClassSectionName(actionForm.getTrainingClassSectionName());

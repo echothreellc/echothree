@@ -57,11 +57,11 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-        AddActionForm actionForm = (AddActionForm)form;
+        var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+        var actionForm = (AddActionForm)form;
 
         if(wasPost(request)) {
-            CreatePartyResponsibilityForm commandForm = EmployeeUtil.getHome().getCreatePartyResponsibilityForm();
+            var commandForm = EmployeeUtil.getHome().getCreatePartyResponsibilityForm();
 
             if(partyName == null) {
                 partyName = actionForm.getPartyName();
@@ -70,7 +70,7 @@ public class AddAction
             commandForm.setPartyName(partyName);
             commandForm.setResponsibilityTypeName(actionForm.getResponsibilityTypeChoice());
 
-            CommandResult commandResult = EmployeeUtil.getHome().createPartyResponsibility(getUserVisitPK(request), commandForm);
+            var commandResult = EmployeeUtil.getHome().createPartyResponsibility(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -82,8 +82,8 @@ public class AddAction
             actionForm.setPartyName(partyName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.EMPLOYEE, EmployeeUtils.getInstance().getEmployee(getUserVisitPK(request), actionForm.getPartyName(), null));
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {

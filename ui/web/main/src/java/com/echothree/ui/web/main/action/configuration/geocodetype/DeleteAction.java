@@ -61,13 +61,13 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetGeoCodeTypeForm commandForm = GeoUtil.getHome().getGetGeoCodeTypeForm();
+        var commandForm = GeoUtil.getHome().getGetGeoCodeTypeForm();
         
         commandForm.setGeoCodeTypeName(actionForm.getGeoCodeTypeName());
-        
-        CommandResult commandResult = GeoUtil.getHome().getGeoCodeType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetGeoCodeTypeResult result = (GetGeoCodeTypeResult)executionResult.getResult();
+
+        var commandResult = GeoUtil.getHome().getGeoCodeType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetGeoCodeTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.GEO_CODE_TYPE, result.getGeoCodeType());
     }
@@ -75,7 +75,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteGeoCodeTypeForm commandForm = GeoUtil.getHome().getDeleteGeoCodeTypeForm();
+        var commandForm = GeoUtil.getHome().getDeleteGeoCodeTypeForm();
 
         commandForm.setGeoCodeTypeName(actionForm.getGeoCodeTypeName());
 

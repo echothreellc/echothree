@@ -51,15 +51,15 @@ public class PartySkillsHandler
             throws SAXException {
         if(localName.equals("partySkill")) {
             String skillTypeName = null;
-            
-            int attrCount = attrs.getLength();
-            for(int i = 0; i < attrCount; i++) {
+
+            var attrCount = attrs.getLength();
+            for(var i = 0; i < attrCount; i++) {
                 if(attrs.getQName(i).equals("skillTypeName"))
                     skillTypeName = attrs.getValue(i);
             }
             
             try {
-                CreatePartySkillForm commandForm = EmployeeFormFactory.getCreatePartySkillForm();
+                var commandForm = EmployeeFormFactory.getCreatePartySkillForm();
                 
                 commandForm.setPartyName(partyName);
                 commandForm.setSkillTypeName(skillTypeName);

@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateEntityAttributeGroupForm commandForm = CoreUtil.getHome().getCreateEntityAttributeGroupForm();
+        var commandForm = CoreUtil.getHome().getCreateEntityAttributeGroupForm();
 
         commandForm.setEntityAttributeGroupName(actionForm.getEntityAttributeGroupName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());

@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultCompanyForm commandForm = PartyUtil.getHome().getSetDefaultCompanyForm();
-            String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
+            var commandForm = PartyUtil.getHome().getSetDefaultCompanyForm();
+            var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
             
             commandForm.setCompanyName(companyName);
             

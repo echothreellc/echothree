@@ -55,17 +55,17 @@ public class DescriptionAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
-        String contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
-        String contentPageName = request.getParameter(ParameterConstants.CONTENT_PAGE_NAME);
-        String parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
+        var contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
+        var contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
+        var contentPageName = request.getParameter(ParameterConstants.CONTENT_PAGE_NAME);
+        var parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
         
         try {
             if(forwardKey == null) {
-                DescriptionAddActionForm descriptionAddActionForm = (DescriptionAddActionForm)form;
+                var descriptionAddActionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateContentPageDescriptionForm createContentPageDescriptionForm = ContentUtil.getHome().getCreateContentPageDescriptionForm();
+                    var createContentPageDescriptionForm = ContentUtil.getHome().getCreateContentPageDescriptionForm();
                     
                     if(contentCollectionName == null)
                         contentCollectionName = descriptionAddActionForm.getContentCollectionName();
@@ -81,8 +81,8 @@ public class DescriptionAddAction
                     createContentPageDescriptionForm.setContentPageName(contentPageName);
                     createContentPageDescriptionForm.setLanguageIsoName(descriptionAddActionForm.getLanguageChoice());
                     createContentPageDescriptionForm.setDescription(descriptionAddActionForm.getDescription());
-                    
-                    CommandResult commandResult = ContentUtil.getHome().createContentPageDescription(getUserVisitPK(request), createContentPageDescriptionForm);
+
+                    var commandResult = ContentUtil.getHome().createContentPageDescription(getUserVisitPK(request), createContentPageDescriptionForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -101,8 +101,8 @@ public class DescriptionAddAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute("contentCollectionName", contentCollectionName);
             request.setAttribute("contentSectionName", contentSectionName);

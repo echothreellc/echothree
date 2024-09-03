@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String contactListTypeName = request.getParameter(ParameterConstants.CONTACT_LIST_TYPE_NAME);
-        GetContactListTypeDescriptionsForm commandForm = ContactListUtil.getHome().getGetContactListTypeDescriptionsForm();
+        var contactListTypeName = request.getParameter(ParameterConstants.CONTACT_LIST_TYPE_NAME);
+        var commandForm = ContactListUtil.getHome().getGetContactListTypeDescriptionsForm();
 
         commandForm.setContactListTypeName(contactListTypeName);
 
-        CommandResult commandResult = ContactListUtil.getHome().getContactListTypeDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ContactListUtil.getHome().getContactListTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListTypeDescriptionsResult result = (GetContactListTypeDescriptionsResult) executionResult.getResult();
-            ContactListTypeTransfer contactListTypeTransfer = result.getContactListType();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListTypeDescriptionsResult) executionResult.getResult();
+            var contactListTypeTransfer = result.getContactListType();
 
             request.setAttribute(AttributeConstants.CONTACT_LIST_TYPE, contactListTypeTransfer);
             request.setAttribute(AttributeConstants.CONTACT_LIST_TYPE_DESCRIPTIONS, result.getContactListTypeDescriptions());

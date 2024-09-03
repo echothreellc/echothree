@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            SetDefaultRecoveryQuestionForm commandForm = UserUtil.getHome().getSetDefaultRecoveryQuestionForm();
-            String recoveryQuestionName = request.getParameter(ParameterConstants.RECOVERY_QUESTION_NAME);
+            var commandForm = UserUtil.getHome().getSetDefaultRecoveryQuestionForm();
+            var recoveryQuestionName = request.getParameter(ParameterConstants.RECOVERY_QUESTION_NAME);
             
             commandForm.setRecoveryQuestionName(recoveryQuestionName);
             

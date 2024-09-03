@@ -62,7 +62,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetEntityAttributeForm commandForm = CoreUtil.getHome().getGetEntityAttributeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityAttributeForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
@@ -81,12 +81,12 @@ public class ReviewAction
         limits.put(EntityAttributeEntityTypeConstants.ENTITY_TYPE_NAME, new Limit("10"));
         commandForm.setLimits(limits);
 
-        CommandResult commandResult = CoreUtil.getHome().getEntityAttribute(getUserVisitPK(request), commandForm);
+        var commandResult = CoreUtil.getHome().getEntityAttribute(getUserVisitPK(request), commandForm);
         EntityAttributeTransfer entityAttribute = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityAttributeResult result = (GetEntityAttributeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityAttributeResult)executionResult.getResult();
             
             entityAttribute = result.getEntityAttribute();
         }

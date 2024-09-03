@@ -66,15 +66,15 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetPartyTrainingClassSessionForm commandForm = TrainingUtil.getHome().getGetPartyTrainingClassSessionForm();
+        var commandForm = TrainingUtil.getHome().getGetPartyTrainingClassSessionForm();
         
         commandForm.setPartyTrainingClassName(actionForm.getPartyTrainingClassName());
         commandForm.setPartyTrainingClassSessionSequence(actionForm.getPartyTrainingClassSessionSequence());
-        
-        CommandResult commandResult = TrainingUtil.getHome().getPartyTrainingClassSession(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetPartyTrainingClassSessionResult result = (GetPartyTrainingClassSessionResult)executionResult.getResult();
-        PartyTrainingClassSessionTransfer partyTrainingClassSession = result.getPartyTrainingClassSession();
+
+        var commandResult = TrainingUtil.getHome().getPartyTrainingClassSession(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyTrainingClassSessionResult)executionResult.getResult();
+        var partyTrainingClassSession = result.getPartyTrainingClassSession();
         
         request.setAttribute(AttributeConstants.PARTY_TRAINING_CLASS_SESSION, result.getPartyTrainingClassSession());
         request.setAttribute(AttributeConstants.EMPLOYEE, EmployeeUtils.getInstance().getEmployee(getUserVisitPK(request),
@@ -84,7 +84,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeletePartyTrainingClassSessionForm commandForm = TrainingUtil.getHome().getDeletePartyTrainingClassSessionForm();
+        var commandForm = TrainingUtil.getHome().getDeletePartyTrainingClassSessionForm();
 
         commandForm.setPartyTrainingClassName(actionForm.getPartyTrainingClassName());
         commandForm.setPartyTrainingClassSessionSequence(actionForm.getPartyTrainingClassSessionSequence());

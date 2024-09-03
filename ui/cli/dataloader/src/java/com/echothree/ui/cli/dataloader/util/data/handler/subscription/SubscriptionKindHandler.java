@@ -52,9 +52,9 @@ public class SubscriptionKindHandler
         if(localName.equals("subscriptionKindDescription")) {
             String languageIsoName = null;
             String description = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -62,7 +62,7 @@ public class SubscriptionKindHandler
             }
             
             try {
-                CreateSubscriptionKindDescriptionForm commandForm = SubscriptionFormFactory.getCreateSubscriptionKindDescriptionForm();
+                var commandForm = SubscriptionFormFactory.getCreateSubscriptionKindDescriptionForm();
                 
                 commandForm.setSubscriptionKindName(subscriptionKindName);
                 commandForm.setLanguageIsoName(languageIsoName);
@@ -77,9 +77,9 @@ public class SubscriptionKindHandler
             String subscriptionSequenceName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("subscriptionTypeName"))
                     subscriptionTypeName = attrs.getValue(i);
                 if(attrs.getQName(i).equals("subscriptionSequenceName"))
@@ -91,7 +91,7 @@ public class SubscriptionKindHandler
             }
             
             try {
-                CreateSubscriptionTypeForm commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeForm();
+                var commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeForm();
                 
                 commandForm.setSubscriptionKindName(subscriptionKindName);
                 commandForm.setSubscriptionTypeName(subscriptionTypeName);

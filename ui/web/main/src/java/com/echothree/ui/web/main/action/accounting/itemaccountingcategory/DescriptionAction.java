@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String itemAccountingCategoryName = request.getParameter(ParameterConstants.ITEM_ACCOUNTING_CATEGORY_NAME);
-            GetItemAccountingCategoryDescriptionsForm commandForm = AccountingUtil.getHome().getGetItemAccountingCategoryDescriptionsForm();
+            var itemAccountingCategoryName = request.getParameter(ParameterConstants.ITEM_ACCOUNTING_CATEGORY_NAME);
+            var commandForm = AccountingUtil.getHome().getGetItemAccountingCategoryDescriptionsForm();
             
             commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
-            
-            CommandResult commandResult = AccountingUtil.getHome().getItemAccountingCategoryDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetItemAccountingCategoryDescriptionsResult result = (GetItemAccountingCategoryDescriptionsResult)executionResult.getResult();
-            ItemAccountingCategoryTransfer itemAccountingCategoryTransfer = result.getItemAccountingCategory();
+
+            var commandResult = AccountingUtil.getHome().getItemAccountingCategoryDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemAccountingCategoryDescriptionsResult)executionResult.getResult();
+            var itemAccountingCategoryTransfer = result.getItemAccountingCategory();
             
             request.setAttribute(AttributeConstants.ITEM_ACCOUNTING_CATEGORY, itemAccountingCategoryTransfer);
             request.setAttribute(AttributeConstants.ITEM_ACCOUNTING_CATEGORY_NAME, itemAccountingCategoryTransfer.getItemAccountingCategoryName());

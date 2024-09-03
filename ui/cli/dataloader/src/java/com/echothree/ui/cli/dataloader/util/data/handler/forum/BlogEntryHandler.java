@@ -58,17 +58,17 @@ public class BlogEntryHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("blogComment")) {
-            CreateBlogCommentForm commandForm = ForumFormFactory.getCreateBlogCommentForm();
-            Map<String, Object> attrsMap = getAttrsMap(attrs);
+            var commandForm = ForumFormFactory.getCreateBlogCommentForm();
+            var attrsMap = getAttrsMap(attrs);
 
             commandForm.setParentForumMessageName(forumMessageName);
             commandForm.set(attrsMap);
 
-            CommandResult commandResult = forumService.createBlogComment(initialDataParser.getUserVisit(), commandForm);
+            var commandResult = forumService.createBlogComment(initialDataParser.getUserVisit(), commandForm);
 
             if(!commandResult.hasErrors()) {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateBlogCommentResult result = (CreateBlogCommentResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateBlogCommentResult)executionResult.getResult();
 
                 initialDataParser.pushHandler(new BlogEntryHandler(initialDataParser, this, result.getForumMessageName(), result.getEntityRef()));
             }

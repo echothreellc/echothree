@@ -63,15 +63,15 @@ public class DescriptionDeleteAction
     @Override
     public void setupTransfer(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCommandMessageTypeDescriptionForm commandForm = CoreUtil.getHome().getGetCommandMessageTypeDescriptionForm();
+        var commandForm = CoreUtil.getHome().getGetCommandMessageTypeDescriptionForm();
         
         commandForm.setCommandMessageTypeName(actionForm.getCommandMessageTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getCommandMessageTypeDescription(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getCommandMessageTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommandMessageTypeDescriptionResult result = (GetCommandMessageTypeDescriptionResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommandMessageTypeDescriptionResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.COMMAND_MESSAGE_TYPE_DESCRIPTION, result.getCommandMessageTypeDescription());
         }
@@ -80,7 +80,7 @@ public class DescriptionDeleteAction
     @Override
     public CommandResult doDelete(DescriptionDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteCommandMessageTypeDescriptionForm commandForm = CoreUtil.getHome().getDeleteCommandMessageTypeDescriptionForm();
+        var commandForm = CoreUtil.getHome().getDeleteCommandMessageTypeDescriptionForm();
 
         commandForm.setCommandMessageTypeName(actionForm.getCommandMessageTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());

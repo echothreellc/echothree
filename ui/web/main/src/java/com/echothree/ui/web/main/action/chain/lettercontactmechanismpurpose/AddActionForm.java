@@ -44,14 +44,14 @@ public class AddActionForm
     private void setupContactMechanismPurposeChoices()
             throws NamingException {
         if(contactMechanismPurposeChoices == null) {
-            GetContactMechanismPurposeChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
+            var commandForm = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
 
             commandForm.setDefaultContactMechanismPurposeChoice(contactMechanismPurposeChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactMechanismPurposeChoicesResult result = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
+            var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
             contactMechanismPurposeChoices = result.getContactMechanismPurposeChoices();
 
             if(contactMechanismPurposeChoice == null) {

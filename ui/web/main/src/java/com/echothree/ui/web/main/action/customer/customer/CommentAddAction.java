@@ -62,14 +62,14 @@ public class CommentAddAction
     
     public String getCustomerEntityRef(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
         
         commandForm.setPartyName(actionForm.getPartyName());
-        
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
-        CustomerTransfer customer = result.getCustomer();
+
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
+        var customer = result.getCustomer();
         
         request.setAttribute(AttributeConstants.CUSTOMER, customer);
         
@@ -78,15 +78,15 @@ public class CommentAddAction
     
     public void setupCommentTypeTransfer(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCommentTypeForm commandForm = CommentUtil.getHome().getGetCommentTypeForm();
+        var commandForm = CommentUtil.getHome().getGetCommentTypeForm();
         
         commandForm.setComponentVendorName(ComponentVendors.ECHO_THREE.name());
         commandForm.setEntityTypeName(EntityTypes.Party.name());
         commandForm.setCommentTypeName(actionForm.getCommentTypeName());
 
-        CommandResult commandResult = CommentUtil.getHome().getCommentType(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCommentTypeResult result = (GetCommentTypeResult)executionResult.getResult();
+        var commandResult = CommentUtil.getHome().getCommentType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCommentTypeResult)executionResult.getResult();
         
         request.setAttribute(AttributeConstants.COMMENT_TYPE, result.getCommentType());
     }
@@ -104,7 +104,7 @@ public class CommentAddAction
     @Override
     public CommandResult doAdd(CommentAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCommentForm commandForm = CommentUtil.getHome().getCreateCommentForm();
+        var commandForm = CommentUtil.getHome().getCreateCommentForm();
 
         commandForm.setEntityRef(getCustomerEntityRef(actionForm, request));
         commandForm.setCommentTypeName(actionForm.getCommentTypeName());

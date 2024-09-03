@@ -47,8 +47,8 @@ public class CommunicationSourcesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("communicationSource")) {
-            CreateCommunicationSourceForm commandForm = CommunicationFormFactory.getCreateCommunicationSourceForm();
-            Map<String, Object> attrsMap = getAttrsMap(attrs);
+            var commandForm = CommunicationFormFactory.getCreateCommunicationSourceForm();
+            var attrsMap = getAttrsMap(attrs);
             
             commandForm.set(attrsMap);
             

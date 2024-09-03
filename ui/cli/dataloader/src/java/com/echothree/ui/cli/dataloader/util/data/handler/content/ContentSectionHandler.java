@@ -54,9 +54,9 @@ public class ContentSectionHandler
             String languageIsoName = null;
             String description = null;
             String doUpdate = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("languageIsoName"))
                     languageIsoName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("description"))
@@ -66,7 +66,7 @@ public class ContentSectionHandler
             }
             
             try {
-                CreateContentSectionDescriptionForm createContentSectionDescriptionForm = ContentFormFactory.getCreateContentSectionDescriptionForm();
+                var createContentSectionDescriptionForm = ContentFormFactory.getCreateContentSectionDescriptionForm();
                 
                 createContentSectionDescriptionForm.setContentCollectionName(contentCollectionName);
                 createContentSectionDescriptionForm.setContentSectionName(contentSectionName);
@@ -82,9 +82,9 @@ public class ContentSectionHandler
             String contentPageLayoutName = null;
             String isDefault = null;
             String sortOrder = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 if(attrs.getQName(i).equals("contentPageName"))
                     contentPageName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("contentPageLayoutName"))
@@ -96,7 +96,7 @@ public class ContentSectionHandler
             }
             
             try {
-                CreateContentPageForm createContentPageForm = ContentFormFactory.getCreateContentPageForm();
+                var createContentPageForm = ContentFormFactory.getCreateContentPageForm();
                 
                 createContentPageForm.setContentCollectionName(contentCollectionName);
                 createContentPageForm.setContentSectionName(contentSectionName);

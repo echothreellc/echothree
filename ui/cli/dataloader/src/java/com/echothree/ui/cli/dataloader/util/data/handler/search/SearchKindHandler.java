@@ -61,20 +61,20 @@ public class SearchKindHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("searchKindDescription")) {
-            SearchKindDescriptionSpec spec = SearchSpecFactory.getSearchKindDescriptionSpec();
-            EditSearchKindDescriptionForm editForm = SearchFormFactory.getEditSearchKindDescriptionForm();
+            var spec = SearchSpecFactory.getSearchKindDescriptionSpec();
+            var editForm = SearchFormFactory.getEditSearchKindDescriptionForm();
 
             spec.setSearchKindName(searchKindName);
             spec.set(getAttrsMap(attrs));
 
             editForm.setSpec(spec);
             editForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = searchService.editSearchKindDescription(initialDataParser.getUserVisit(), editForm);
+
+            var commandResult = searchService.editSearchKindDescription(initialDataParser.getUserVisit(), editForm);
             
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownSearchKindDescription.name())) {
-                    CreateSearchKindDescriptionForm createForm = SearchFormFactory.getCreateSearchKindDescriptionForm();
+                    var createForm = SearchFormFactory.getCreateSearchKindDescriptionForm();
 
                     createForm.setSearchKindName(searchKindName);
                     createForm.set(getAttrsMap(attrs));
@@ -88,13 +88,13 @@ public class SearchKindHandler
                     getLogger().error(commandResult.toString());
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditSearchKindDescriptionResult result = (EditSearchKindDescriptionResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditSearchKindDescriptionResult)executionResult.getResult();
 
                 if(result != null) {
-                    SearchKindDescriptionEdit edit = (SearchKindDescriptionEdit)result.getEdit();
-                    String description = attrs.getValue("description");
-                    boolean changed = false;
+                    var edit = (SearchKindDescriptionEdit)result.getEdit();
+                    var description = attrs.getValue("description");
+                    var changed = false;
                     
                     if(!edit.getDescription().equals(description)) {
                         edit.setDescription(description);
@@ -123,7 +123,7 @@ public class SearchKindHandler
                 }
             }
         } else if(localName.equals("searchType")) {
-            CreateSearchTypeForm commandForm = SearchFormFactory.getCreateSearchTypeForm();
+            var commandForm = SearchFormFactory.getCreateSearchTypeForm();
 
             commandForm.setSearchKindName(searchKindName);
             commandForm.set(getAttrsMap(attrs));
@@ -132,7 +132,7 @@ public class SearchKindHandler
 
             initialDataParser.pushHandler(new SearchTypeHandler(initialDataParser, this, searchKindName, commandForm.getSearchTypeName()));
         } else if(localName.equals("searchSortOrder")) {
-            CreateSearchSortOrderForm commandForm = SearchFormFactory.getCreateSearchSortOrderForm();
+            var commandForm = SearchFormFactory.getCreateSearchSortOrderForm();
 
             commandForm.setSearchKindName(searchKindName);
             commandForm.set(getAttrsMap(attrs));

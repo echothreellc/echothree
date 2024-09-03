@@ -51,8 +51,8 @@ public class SetDefaultAction
         String forwardKey;
         
         try {
-            String termName = request.getParameter(ParameterConstants.TERM_NAME);
-            SetDefaultTermForm commandForm = TermUtil.getHome().getSetDefaultTermForm();
+            var termName = request.getParameter(ParameterConstants.TERM_NAME);
+            var commandForm = TermUtil.getHome().getSetDefaultTermForm();
             
             commandForm.setTermName(termName);
             

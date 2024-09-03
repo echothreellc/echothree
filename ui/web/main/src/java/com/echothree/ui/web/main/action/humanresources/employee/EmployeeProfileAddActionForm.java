@@ -73,15 +73,15 @@ public class EmployeeProfileAddActionForm
     private void setupIconChoices()
             throws NamingException {
         if(iconChoices == null) {
-            GetIconChoicesForm commandForm = IconUtil.getHome().getGetIconChoicesForm();
+            var commandForm = IconUtil.getHome().getGetIconChoicesForm();
 
             commandForm.setIconUsageTypeName(IconConstants.IconUsageType_PROFILE);
             commandForm.setDefaultIconChoice(iconChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetIconChoicesResult result = (GetIconChoicesResult)executionResult.getResult();
+            var commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetIconChoicesResult)executionResult.getResult();
             iconChoices = result.getIconChoices();
 
             if(iconChoice == null) {
@@ -93,14 +93,14 @@ public class EmployeeProfileAddActionForm
     private void setupGenderChoices()
             throws NamingException {
         if(genderChoices == null) {
-            GetGenderChoicesForm commandForm = PartyUtil.getHome().getGetGenderChoicesForm();
+            var commandForm = PartyUtil.getHome().getGetGenderChoicesForm();
 
             commandForm.setDefaultGenderChoice(genderChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getGenderChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetGenderChoicesResult result = (GetGenderChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getGenderChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetGenderChoicesResult)executionResult.getResult();
             genderChoices = result.getGenderChoices();
 
             if(genderChoice == null) {
@@ -112,14 +112,14 @@ public class EmployeeProfileAddActionForm
     private void setupBirthdayFormatChoices()
             throws NamingException {
         if(birthdayFormatChoices == null) {
-            GetBirthdayFormatChoicesForm commandForm = PartyUtil.getHome().getGetBirthdayFormatChoicesForm();
+            var commandForm = PartyUtil.getHome().getGetBirthdayFormatChoicesForm();
 
             commandForm.setDefaultBirthdayFormatChoice(birthdayFormatChoice);
             commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-            CommandResult commandResult = PartyUtil.getHome().getBirthdayFormatChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetBirthdayFormatChoicesResult result = (GetBirthdayFormatChoicesResult)executionResult.getResult();
+            var commandResult = PartyUtil.getHome().getBirthdayFormatChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetBirthdayFormatChoicesResult)executionResult.getResult();
             birthdayFormatChoices = result.getBirthdayFormatChoices();
 
             if(birthdayFormatChoice == null) {
@@ -131,15 +131,15 @@ public class EmployeeProfileAddActionForm
     private void setupBioMimeTypeChoices()
             throws NamingException {
         if(bioMimeTypeChoices == null) {
-            GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
             commandForm.setDefaultMimeTypeChoice(bioMimeTypeChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
             commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
 
-            CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeChoicesResult)executionResult.getResult();
             bioMimeTypeChoices = result.getMimeTypeChoices();
 
             if(bioMimeTypeChoice == null) {
@@ -151,15 +151,15 @@ public class EmployeeProfileAddActionForm
     private void setupSignatureMimeTypeChoices()
             throws NamingException {
         if(signatureMimeTypeChoices == null) {
-            GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+            var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
             commandForm.setDefaultMimeTypeChoice(signatureMimeTypeChoice);
             commandForm.setAllowNullChoice(Boolean.TRUE.toString());
             commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
 
-            CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeChoicesResult)executionResult.getResult();
             signatureMimeTypeChoices = result.getMimeTypeChoices();
 
             if(signatureMimeTypeChoice == null) {

@@ -63,14 +63,14 @@ public class DeleteAction
     @Override
     public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetItemPackCheckRequirementForm commandForm = ItemUtil.getHome().getGetItemPackCheckRequirementForm();
+        var commandForm = ItemUtil.getHome().getGetItemPackCheckRequirementForm();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeName());
 
-        CommandResult commandResult = ItemUtil.getHome().getItemPackCheckRequirement(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetItemPackCheckRequirementResult result = (GetItemPackCheckRequirementResult)executionResult.getResult();
+        var commandResult = ItemUtil.getHome().getItemPackCheckRequirement(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetItemPackCheckRequirementResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM_PACK_CHECK_REQUIREMENT, result.getItemPackCheckRequirement());
     }
@@ -78,7 +78,7 @@ public class DeleteAction
     @Override
     public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteItemPackCheckRequirementForm commandForm = ItemUtil.getHome().getDeleteItemPackCheckRequirementForm();
+        var commandForm = ItemUtil.getHome().getDeleteItemPackCheckRequirementForm();
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeName());

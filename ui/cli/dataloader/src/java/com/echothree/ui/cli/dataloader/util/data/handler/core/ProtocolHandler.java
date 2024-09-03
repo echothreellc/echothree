@@ -50,7 +50,7 @@ public class ProtocolHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("protocolDescription")) {
-            CreateProtocolDescriptionForm commandForm = CoreFormFactory.getCreateProtocolDescriptionForm();
+            var commandForm = CoreFormFactory.getCreateProtocolDescriptionForm();
 
             commandForm.setProtocolName(protocolName);
             commandForm.set(getAttrsMap(attrs));

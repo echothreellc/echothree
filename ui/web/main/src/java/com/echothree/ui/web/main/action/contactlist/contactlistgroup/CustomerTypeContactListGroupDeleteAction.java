@@ -63,15 +63,15 @@ public class CustomerTypeContactListGroupDeleteAction
     @Override
     public void setupTransfer(CustomerTypeContactListGroupDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCustomerTypeContactListGroupForm commandForm = ContactListUtil.getHome().getGetCustomerTypeContactListGroupForm();
+        var commandForm = ContactListUtil.getHome().getGetCustomerTypeContactListGroupForm();
         
         commandForm.setContactListGroupName(actionForm.getContactListGroupName());
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getCustomerTypeContactListGroup(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getCustomerTypeContactListGroup(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypeContactListGroupResult result = (GetCustomerTypeContactListGroupResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypeContactListGroupResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_CONTACT_LIST_GROUP, result.getCustomerTypeContactListGroup());
         }
@@ -80,7 +80,7 @@ public class CustomerTypeContactListGroupDeleteAction
     @Override
     public CommandResult doDelete(CustomerTypeContactListGroupDeleteActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        DeleteCustomerTypeContactListGroupForm commandForm = ContactListUtil.getHome().getDeleteCustomerTypeContactListGroupForm();
+        var commandForm = ContactListUtil.getHome().getDeleteCustomerTypeContactListGroupForm();
 
         commandForm.setContactListGroupName(actionForm.getContactListGroupName());
         commandForm.setCustomerTypeName(actionForm.getCustomerTypeName());

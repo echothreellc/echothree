@@ -56,15 +56,15 @@ public class DescriptionAction
         String forwardKey;
         
         try {
-            String customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
-            GetCustomerTypeDescriptionsForm commandForm = CustomerUtil.getHome().getGetCustomerTypeDescriptionsForm();
+            var customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
+            var commandForm = CustomerUtil.getHome().getGetCustomerTypeDescriptionsForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
-            
-            CommandResult commandResult = CustomerUtil.getHome().getCustomerTypeDescriptions(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCustomerTypeDescriptionsResult result = (GetCustomerTypeDescriptionsResult)executionResult.getResult();
-            CustomerTypeTransfer customerTypeTransfer = result.getCustomerType();
+
+            var commandResult = CustomerUtil.getHome().getCustomerTypeDescriptions(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypeDescriptionsResult)executionResult.getResult();
+            var customerTypeTransfer = result.getCustomerType();
             
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE, customerTypeTransfer);
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_NAME, customerTypeTransfer.getCustomerTypeName());

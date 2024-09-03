@@ -66,27 +66,27 @@ public class AddAction
     
     private ForumMessageTransfer getForumMessageTransfer(UserVisitPK userVisitPK, String parentForumMessageName)
             throws NamingException {
-        GetForumMessageForm commandForm = ForumUtil.getHome().getGetForumMessageForm();
+        var commandForm = ForumUtil.getHome().getGetForumMessageForm();
         
         commandForm.setForumMessageName(parentForumMessageName);
         
         Set<String> options = new HashSet<>();
         options.add(ForumOptions.ForumThreadIncludeForumForumThreads);
         commandForm.setOptions(options);
-        
-        CommandResult commandResult = ForumUtil.getHome().getForumMessage(userVisitPK, commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetForumMessageResult result = (GetForumMessageResult)executionResult.getResult();
+
+        var commandResult = ForumUtil.getHome().getForumMessage(userVisitPK, commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetForumMessageResult)executionResult.getResult();
         
         return result.getForumMessage();
     }
     
     public ForumTransfer getDefaultForum(ForumMessageTransfer forumMessage) {
-        ForumThreadTransfer forumThread = forumMessage.getForumThread();
+        var forumThread = forumMessage.getForumThread();
         ForumTransfer forum = null;
         
         if(forumThread != null) {
-            for(ForumForumThreadTransfer forumForumThread: forumThread.getForumForumThreads().getList()) {
+            for(var forumForumThread: forumThread.getForumForumThreads().getList()) {
                 if(forumForumThread.getIsDefault()) {
                     forum = forumForumThread.getForum();
                     break;
@@ -101,24 +101,24 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        String forumName = request.getParameter(ParameterConstants.FORUM_NAME);
-        String parentForumMessageName = request.getParameter(ParameterConstants.PARENT_FORUM_MESSAGE_NAME);
-        AddActionForm actionForm = (AddActionForm)form;
+        var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
+        var parentForumMessageName = request.getParameter(ParameterConstants.PARENT_FORUM_MESSAGE_NAME);
+        var actionForm = (AddActionForm)form;
         
         if(forumName == null)
             forumName = actionForm.getForumName();
         if(parentForumMessageName == null)
             parentForumMessageName = actionForm.getParentForumMessageName();
-        
-        UserVisitPK userVisitPK = getUserVisitPK(request);
-        ForumMessageTransfer forumMessage = getForumMessageTransfer(userVisitPK, parentForumMessageName);
+
+        var userVisitPK = getUserVisitPK(request);
+        var forumMessage = getForumMessageTransfer(userVisitPK, parentForumMessageName);
         
         if(wasPost(request)) {
-            String forumTypeName = getDefaultForum(forumMessage).getForumType().getForumTypeName();
+            var forumTypeName = getDefaultForum(forumMessage).getForumType().getForumTypeName();
             CommandResult commandResult = null;
             
             if(forumTypeName.equals(ForumConstants.ForumType_BLOG)) {
-                CreateBlogCommentForm commandForm = ForumUtil.getHome().getCreateBlogCommentForm();
+                var commandForm = ForumUtil.getHome().getCreateBlogCommentForm();
                 
                 commandForm.setParentForumMessageName(parentForumMessageName);
                 commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
@@ -142,8 +142,8 @@ public class AddAction
             actionForm.setParentForumMessageName(parentForumMessageName);
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.FORUM_NAME, forumName);
             request.setAttribute(AttributeConstants.PARENT_FORUM_MESSAGE, forumMessage);

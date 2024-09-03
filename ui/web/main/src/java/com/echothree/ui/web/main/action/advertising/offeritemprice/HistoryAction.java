@@ -52,7 +52,7 @@ public class HistoryAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey = null;
-        GetOfferItemPriceForm commandForm = OfferUtil.getHome().getGetOfferItemPriceForm();
+        var commandForm = OfferUtil.getHome().getGetOfferItemPriceForm();
 
         commandForm.setOfferName(request.getParameter(ParameterConstants.OFFER_NAME));
         commandForm.setItemName(request.getParameter(ParameterConstants.ITEM_NAME));
@@ -61,11 +61,11 @@ public class HistoryAction
         commandForm.setCurrencyIsoName(request.getParameter(ParameterConstants.CURRENCY_ISO_NAME));
         commandForm.setIncludeHistory(Boolean.TRUE.toString());
 
-        CommandResult commandResult = OfferUtil.getHome().getOfferItemPrice(getUserVisitPK(request), commandForm);
+        var commandResult = OfferUtil.getHome().getOfferItemPrice(getUserVisitPK(request), commandForm);
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetOfferItemPriceResult result = (GetOfferItemPriceResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetOfferItemPriceResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.OFFER_ITEM_PRICE, result.getOfferItemPrice());
             request.setAttribute(AttributeConstants.OFFER_ITEM_PRICE_HISTORY, result.getHistory());

@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetCommandMessageTypeForm commandForm = CoreUtil.getHome().getGetCommandMessageTypeForm();
+        var commandForm = CoreUtil.getHome().getGetCommandMessageTypeForm();
 
         commandForm.setCommandMessageTypeName(actionForm.getCommandMessageTypeName());
-        
-        CommandResult commandResult = CoreUtil.getHome().getCommandMessageType(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getCommandMessageType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCommandMessageTypeResult result = (GetCommandMessageTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommandMessageTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMMAND_MESSAGE_TYPE, result.getCommandMessageType());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateCommandMessageTypeDescriptionForm commandForm = CoreUtil.getHome().getCreateCommandMessageTypeDescriptionForm();
+        var commandForm = CoreUtil.getHome().getCreateCommandMessageTypeDescriptionForm();
 
         commandForm.setCommandMessageTypeName( actionForm.getCommandMessageTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());

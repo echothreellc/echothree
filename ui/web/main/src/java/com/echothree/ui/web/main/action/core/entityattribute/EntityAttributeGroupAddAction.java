@@ -55,13 +55,13 @@ public class EntityAttributeGroupAddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-        String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-        EntityAttributeGroupAddActionForm actionForm = (EntityAttributeGroupAddActionForm)form;
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
+        var actionForm = (EntityAttributeGroupAddActionForm)form;
 
         if(wasPost(request)) {
-            CreateEntityAttributeEntityAttributeGroupForm commandForm = CoreUtil.getHome().getCreateEntityAttributeEntityAttributeGroupForm();
+            var commandForm = CoreUtil.getHome().getCreateEntityAttributeEntityAttributeGroupForm();
 
             if(componentVendorName == null)
                 componentVendorName = actionForm.getComponentVendorName();
@@ -76,7 +76,7 @@ public class EntityAttributeGroupAddAction
             commandForm.setEntityAttributeGroupName(actionForm.getEntityAttributeGroupChoice());
             commandForm.setSortOrder(actionForm.getSortOrder());
 
-            CommandResult commandResult = CoreUtil.getHome().createEntityAttributeEntityAttributeGroup(getUserVisitPK(request), commandForm);
+            var commandResult = CoreUtil.getHome().createEntityAttributeEntityAttributeGroup(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
@@ -91,8 +91,8 @@ public class EntityAttributeGroupAddAction
             actionForm.setSortOrder("1");
             forwardKey = ForwardConstants.FORM;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorName);
             request.setAttribute(AttributeConstants.ENTITY_TYPE_NAME, entityTypeName);

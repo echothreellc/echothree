@@ -56,12 +56,12 @@ public class StatusAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        StatusActionForm actionForm = (StatusActionForm)form;
-        String forwardKey = request.getParameter(ParameterConstants.FORWARD_KEY);
-        String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
+        var actionForm = (StatusActionForm)form;
+        var forwardKey = request.getParameter(ParameterConstants.FORWARD_KEY);
+        var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
         
         try {
-            SetItemStatusForm commandForm = ItemUtil.getHome().getSetItemStatusForm();
+            var commandForm = ItemUtil.getHome().getSetItemStatusForm();
             
             if(itemName == null)
                 itemName = actionForm.getItemName();
@@ -69,8 +69,8 @@ public class StatusAction
             if(wasPost(request)) {
                 commandForm.setItemName(itemName);
                 commandForm.setItemStatusChoice(actionForm.getItemStatusChoice());
-                
-                CommandResult commandResult = ItemUtil.getHome().setItemStatus(getUserVisitPK(request), commandForm);
+
+                var commandResult = ItemUtil.getHome().setItemStatus(getUserVisitPK(request), commandForm);
                 
                 if(commandResult.hasErrors()) {
                     setCommandResultAttribute(request, commandResult);
@@ -87,8 +87,8 @@ public class StatusAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.ITEM_NAME, itemName);
             request.setAttribute(AttributeConstants.FORWARD_KEY, actionForm.getForwardKey());

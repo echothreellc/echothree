@@ -53,16 +53,16 @@ public class DescriptionAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        String harmonizedTariffScheduleCodeUnitName = request.getParameter(ParameterConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT_NAME);
-        GetHarmonizedTariffScheduleCodeUnitDescriptionsForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitDescriptionsForm();
+        var harmonizedTariffScheduleCodeUnitName = request.getParameter(ParameterConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT_NAME);
+        var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitDescriptionsForm();
 
         commandForm.setHarmonizedTariffScheduleCodeUnitName(harmonizedTariffScheduleCodeUnitName);
 
-        CommandResult commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitDescriptions(getUserVisitPK(request), commandForm);
+        var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetHarmonizedTariffScheduleCodeUnitDescriptionsResult result = (GetHarmonizedTariffScheduleCodeUnitDescriptionsResult) executionResult.getResult();
-            HarmonizedTariffScheduleCodeUnitTransfer harmonizedTariffScheduleCodeUnitTransfer = result.getHarmonizedTariffScheduleCodeUnit();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetHarmonizedTariffScheduleCodeUnitDescriptionsResult) executionResult.getResult();
+            var harmonizedTariffScheduleCodeUnitTransfer = result.getHarmonizedTariffScheduleCodeUnit();
 
             request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT, harmonizedTariffScheduleCodeUnitTransfer);
             request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT_DESCRIPTIONS, result.getHarmonizedTariffScheduleCodeUnitDescriptions());

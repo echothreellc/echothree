@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public CommandResult doAdd(AddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateMimeTypeForm commandForm = CoreUtil.getHome().getCreateMimeTypeForm();
+        var commandForm = CoreUtil.getHome().getCreateMimeTypeForm();
 
         commandForm.setMimeTypeName(actionForm.getMimeTypeName());
         commandForm.setEntityAttributeTypeName(actionForm.getEntityAttributeTypeChoice());

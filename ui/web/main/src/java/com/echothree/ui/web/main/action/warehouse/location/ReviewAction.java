@@ -65,9 +65,9 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetLocationForm commandForm = WarehouseUtil.getHome().getGetLocationForm();
-            String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-            String locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
+            var commandForm = WarehouseUtil.getHome().getGetLocationForm();
+            var warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
+            var locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
             
             commandForm.setWarehouseName(warehouseName);
             commandForm.setLocationName(locationName);
@@ -84,9 +84,9 @@ public class ReviewAction
             options.add(CoreOptions.AppearanceIncludeTextTransformations);
             commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
 
-            CommandResult commandResult = WarehouseUtil.getHome().getLocation(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetLocationResult result = (GetLocationResult)executionResult.getResult();
+            var commandResult = WarehouseUtil.getHome().getLocation(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLocationResult)executionResult.getResult();
             Collection<LocationNameElementTransfer> locationNameElements = result.getLocationNameElements();
             Collection<LocationCapacityTransfer> locationCapacities = result.getLocationCapacities();
             

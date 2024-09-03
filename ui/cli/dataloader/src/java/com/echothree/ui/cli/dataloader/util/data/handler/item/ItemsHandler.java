@@ -56,9 +56,9 @@ public class ItemsHandler
             String itemName = null;
             String companyName = null;
             String commandAction = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
+
+            var count = attrs.getLength();
+            for(var i = 0; i < count; i++) {
                 switch (attrs.getQName(i)) {
                     case "itemName":
                         itemName = attrs.getValue(i);
@@ -73,27 +73,27 @@ public class ItemsHandler
             }
             
             if(commandAction == null || commandAction.equals("create")) {
-                CreateItemForm commandForm = ItemFormFactory.getCreateItemForm();
+                var commandForm = ItemFormFactory.getCreateItemForm();
                 
                 commandForm.set(getAttrsMap(attrs));
-                
-                CommandResult commandResult = itemService.createItem(initialDataParser.getUserVisit(), commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateItemResult result = (CreateItemResult)executionResult.getResult();
+
+                var commandResult = itemService.createItem(initialDataParser.getUserVisit(), commandForm);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (CreateItemResult)executionResult.getResult();
                 
                 itemName = result.getItemName();
                 entityRef = result.getEntityRef();
             } else if(commandAction.equals("none")) {
-                GetItemForm commandForm = ItemFormFactory.getGetItemForm();
+                var commandForm = ItemFormFactory.getGetItemForm();
                 
                 commandForm.setItemName(itemName);
-                
-                CommandResult commandResult = itemService.getItem(initialDataParser.getUserVisit(), commandForm);
+
+                var commandResult = itemService.getItem(initialDataParser.getUserVisit(), commandForm);
                 
                 if(!commandResult.hasErrors()) {
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    GetItemResult result = (GetItemResult)executionResult.getResult();
-                    ItemTransfer item = result.getItem();
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (GetItemResult)executionResult.getResult();
+                    var item = result.getItem();
                     
                     companyName = item.getCompany().getCompanyName();
                     entityRef = item.getEntityInstance().getEntityRef();

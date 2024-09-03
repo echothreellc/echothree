@@ -54,16 +54,16 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            GetUnitOfMeasureKindUsesForm commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUsesForm();
-            String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
-            String unitOfMeasureKindUseTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_USE_TYPE_NAME);
+            var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUsesForm();
+            var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
+            var unitOfMeasureKindUseTypeName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_USE_TYPE_NAME);
             
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
             commandForm.setUnitOfMeasureKindUseTypeName(unitOfMeasureKindUseTypeName);
-            
-            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureKindUses(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUnitOfMeasureKindUsesResult result = (GetUnitOfMeasureKindUsesResult)executionResult.getResult();
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureKindUses(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetUnitOfMeasureKindUsesResult)executionResult.getResult();
             
             request.setAttribute("unitOfMeasureKind", result.getUnitOfMeasureKind());
             request.setAttribute("unitOfMeasureKindUseType", result.getUnitOfMeasureKindUseType());

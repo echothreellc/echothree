@@ -53,9 +53,9 @@ public class MainAction
         String forwardKey = null;
         
         try {
-            CommandResult commandResult = ContentUtil.getHome().getContentWebAddresses(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContentWebAddressesResult result = (GetContentWebAddressesResult)executionResult.getResult();
+            var commandResult = ContentUtil.getHome().getContentWebAddresses(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContentWebAddressesResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CONTENT_WEB_ADDRESSES, result.getContentWebAddresses());
             forwardKey = ForwardConstants.DISPLAY;

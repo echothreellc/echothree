@@ -55,14 +55,14 @@ public class ReviewAction
         String forwardKey = null;
         
         try {
-            GetWorkEffortTypeForm commandForm = WorkEffortUtil.getHome().getGetWorkEffortTypeForm();
-            String workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
+            var commandForm = WorkEffortUtil.getHome().getGetWorkEffortTypeForm();
+            var workEffortTypeName = request.getParameter(ParameterConstants.WORK_EFFORT_TYPE_NAME);
             
             commandForm.setWorkEffortTypeName(workEffortTypeName);
-            
-            CommandResult commandResult = WorkEffortUtil.getHome().getWorkEffortType(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkEffortTypeResult result = (GetWorkEffortTypeResult)executionResult.getResult();
+
+            var commandResult = WorkEffortUtil.getHome().getWorkEffortType(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkEffortTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORK_EFFORT_TYPE, result.getWorkEffortType());
             forwardKey = ForwardConstants.DISPLAY;

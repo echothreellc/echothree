@@ -51,12 +51,12 @@ public class SetDefaultAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        final String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-        final String filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
+        final var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+        final var filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
         
         try {
-            String filterName = request.getParameter(ParameterConstants.FILTER_NAME);
-            SetDefaultFilterForm commandForm = FilterUtil.getHome().getSetDefaultFilterForm();
+            var filterName = request.getParameter(ParameterConstants.FILTER_NAME);
+            var commandForm = FilterUtil.getHome().getSetDefaultFilterForm();
 
             commandForm.setFilterKindName(filterKindName);
             commandForm.setFilterTypeName(filterTypeName);
@@ -68,8 +68,8 @@ public class SetDefaultAction
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             customActionForward.setParameters(Map.of(
                     ParameterConstants.FILTER_KIND_NAME, filterKindName,

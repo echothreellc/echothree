@@ -42,16 +42,16 @@ public class StatusActionForm
     public void setupVendorItemStatusChoices() {
         if(vendorItemStatusChoices == null) {
             try {
-                GetVendorItemStatusChoicesForm form = VendorUtil.getHome().getGetVendorItemStatusChoicesForm();
+                var form = VendorUtil.getHome().getGetVendorItemStatusChoicesForm();
                 
                 form.setVendorName(vendorName);
                 form.setVendorItemName(vendorItemName);
                 form.setDefaultVendorItemStatusChoice(vendorItemStatusChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = VendorUtil.getHome().getVendorItemStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetVendorItemStatusChoicesResult result = (GetVendorItemStatusChoicesResult)executionResult.getResult();
+
+                var commandResult = VendorUtil.getHome().getVendorItemStatusChoices(userVisitPK, form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = (GetVendorItemStatusChoicesResult)executionResult.getResult();
                 vendorItemStatusChoices = result.getVendorItemStatusChoices();
                 
                 if(vendorItemStatusChoice == null) {

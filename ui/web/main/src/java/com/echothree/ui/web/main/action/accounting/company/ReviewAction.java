@@ -64,7 +64,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetCompanyForm commandForm = PartyUtil.getHome().getGetCompanyForm();
+        var commandForm = PartyUtil.getHome().getGetCompanyForm();
 
         commandForm.setCompanyName(request.getParameter(ParameterConstants.COMPANY_NAME));
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
@@ -91,11 +91,11 @@ public class ReviewAction
         Map<String, Limit> limits = new HashMap<>();
         limits.put(InvoiceConstants.ENTITY_TYPE_NAME, new Limit("5"));
         commandForm.setLimits(limits);
-        
-        CommandResult commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCompanyResult result = (GetCompanyResult)executionResult.getResult();
-        CompanyTransfer company = result.getCompany();
+
+        var commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCompanyResult)executionResult.getResult();
+        var company = result.getCompany();
 
         if(company == null) {
             forwardKey = ForwardConstants.ERROR_404;

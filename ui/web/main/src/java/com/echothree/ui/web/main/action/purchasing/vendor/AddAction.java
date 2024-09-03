@@ -85,7 +85,7 @@ public class AddAction
             commandForm.setEmailAddress(actionForm.getEmailAddress());
             commandForm.setAllowSolicitation(actionForm.getAllowSolicitation().toString());
 
-            CommandResult commandResult = PartyUtil.getHome().createVendor(getUserVisitPK(request), commandForm);
+            var commandResult = PartyUtil.getHome().createVendor(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);

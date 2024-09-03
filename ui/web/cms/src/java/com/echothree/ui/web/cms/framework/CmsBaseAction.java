@@ -81,7 +81,7 @@ public abstract class CmsBaseAction<A extends ActionForm>
     
     protected CustomActionForward getCustomActionForward(ActionMapping mapping, String forwardKey, A actionForm, HttpServletRequest request)
             throws NamingException {
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey == null ? getDisplayForward(actionForm) : forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey == null ? getDisplayForward(actionForm) : forwardKey));
         
         if(forwardKey == null || forwardKey.equals(ForwardConstants.CANCEL)) {
             // Sending them to 'Display'
@@ -104,11 +104,11 @@ public abstract class CmsBaseAction<A extends ActionForm>
         String forwardKey = null;
         
         if(applicationRequired ? doesApplicationExist(request) : true) {
-            CommandResult commandResult = UserUtil.getHome().getUserSession(getUserVisitPK(request), null);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetUserSessionResult result = (GetUserSessionResult)executionResult.getResult();
-            UserSessionTransfer userSession = result.getUserSession();
-            PartyTransfer party = userSession == null? null: userSession.getParty();
+            var commandResult = UserUtil.getHome().getUserSession(getUserVisitPK(request), null);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetUserSessionResult)executionResult.getResult();
+            var userSession = result.getUserSession();
+            var party = userSession == null? null: userSession.getParty();
 
             if(partyRequired && (party == null || (party != null && userSession.getIdentityVerifiedTime() == null))) {
                 forwardKey = ForwardConstants.LOGIN;
@@ -137,15 +137,15 @@ public abstract class CmsBaseAction<A extends ActionForm>
     
     public CompanyTransfer getCompany(HttpServletRequest request)
             throws NamingException {
-        GetCompanyForm commandForm = PartyUtil.getHome().getGetCompanyForm();
-        UserSessionTransfer userSession = (UserSessionTransfer)request.getAttribute(AttributeConstants.USER_SESSION);
-        String partyName = userSession.getPartyRelationship().getFromParty().getPartyName();
+        var commandForm = PartyUtil.getHome().getGetCompanyForm();
+        var userSession = (UserSessionTransfer)request.getAttribute(AttributeConstants.USER_SESSION);
+        var partyName = userSession.getPartyRelationship().getFromParty().getPartyName();
         
         commandForm.setPartyName(partyName);
-        
-        CommandResult commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCompanyResult result = (GetCompanyResult)executionResult.getResult();
+
+        var commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCompanyResult)executionResult.getResult();
         
         return result.getCompany();
     }
@@ -158,17 +158,17 @@ public abstract class CmsBaseAction<A extends ActionForm>
     public ApplicationTransfer getApplication(HttpServletRequest request)
             throws NamingException {
         ApplicationTransfer application = null;
-        GetApplicationForm commandForm = CoreUtil.getHome().getGetApplicationForm();
+        var commandForm = CoreUtil.getHome().getGetApplicationForm();
         
         commandForm.setApplicationName(request.getParameter(ParameterConstants.APPLICATION_NAME));
         commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));
         commandForm.setKey(request.getParameter(ParameterConstants.KEY));
         commandForm.setGuid(request.getParameter(ParameterConstants.GUID));
-        
-        CommandResult commandResult = CoreUtil.getHome().getApplication(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getApplication(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetApplicationResult result = (GetApplicationResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetApplicationResult)executionResult.getResult();
             
             application = result.getApplication();
         }

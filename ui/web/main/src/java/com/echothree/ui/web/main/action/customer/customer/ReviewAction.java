@@ -70,7 +70,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+        var commandForm = CustomerUtil.getHome().getGetCustomerForm();
         
         commandForm.setCustomerName(request.getParameter(ParameterConstants.CUSTOMER_NAME));
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
@@ -115,16 +115,16 @@ public class ReviewAction
         limits.put(InvoiceConstants.ENTITY_TYPE_NAME, new Limit("5"));
         limits.put(CommunicationEventConstants.ENTITY_TYPE_NAME, new Limit("5"));
         commandForm.setLimits(limits);
-        
-        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
-        CustomerTransfer customer = result.getCustomer();
+
+        var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCustomerResult)executionResult.getResult();
+        var customer = result.getCustomer();
         
         if(customer == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
-            List<WishlistTransfer> wishlists = result.getWishlists();
+            var wishlists = result.getWishlists();
             
             request.setAttribute(AttributeConstants.CUSTOMER, customer);
             request.setAttribute(AttributeConstants.WISHLISTS, wishlists.isEmpty() ? null: wishlists);

@@ -58,13 +58,13 @@ public class EditAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         String forwardKey = null;
-        String nameSuffixId = request.getParameter(ParameterConstants.NAME_SUFFIX_ID);
+        var nameSuffixId = request.getParameter(ParameterConstants.NAME_SUFFIX_ID);
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditNameSuffixForm commandForm = PartyUtil.getHome().getEditNameSuffixForm();
-                NameSuffixSpec spec = PartyUtil.getHome().getNameSuffixSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = PartyUtil.getHome().getEditNameSuffixForm();
+                var spec = PartyUtil.getHome().getNameSuffixSpec();
                 
                 if(nameSuffixId == null)
                     nameSuffixId = actionForm.getNameSuffixId();
@@ -73,7 +73,7 @@ public class EditAction
                 spec.setNameSuffixId(nameSuffixId);
                 
                 if(wasPost(request)) {
-                    NameSuffixEdit edit = PartyUtil.getHome().getNameSuffixEdit();
+                    var edit = PartyUtil.getHome().getNameSuffixEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
@@ -81,14 +81,14 @@ public class EditAction
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
-                    
-                    CommandResult commandResult = PartyUtil.getHome().editNameSuffix(getUserVisitPK(request), commandForm);
+
+                    var commandResult = PartyUtil.getHome().editNameSuffix(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
-                        ExecutionResult executionResult = commandResult.getExecutionResult();
+                        var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditNameSuffixResult result = (EditNameSuffixResult)executionResult.getResult();
+                            var result = (EditNameSuffixResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -101,13 +101,13 @@ public class EditAction
                     }
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
-                    
-                    CommandResult commandResult = PartyUtil.getHome().editNameSuffix(getUserVisitPK(request), commandForm);
-                    ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditNameSuffixResult result = (EditNameSuffixResult)executionResult.getResult();
+
+                    var commandResult = PartyUtil.getHome().editNameSuffix(getUserVisitPK(request), commandForm);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditNameSuffixResult)executionResult.getResult();
                     
                     if(result != null) {
-                        NameSuffixEdit edit = result.getEdit();
+                        var edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setNameSuffixId(nameSuffixId);

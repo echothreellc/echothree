@@ -56,14 +56,14 @@ public class DescriptionAddAction
     @Override
     public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        GetContactListTypeForm commandForm = ContactListUtil.getHome().getGetContactListTypeForm();
+        var commandForm = ContactListUtil.getHome().getGetContactListTypeForm();
 
         commandForm.setContactListTypeName(actionForm.getContactListTypeName());
-        
-        CommandResult commandResult = ContactListUtil.getHome().getContactListType(getUserVisitPK(request), commandForm);
+
+        var commandResult = ContactListUtil.getHome().getContactListType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetContactListTypeResult result = (GetContactListTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListTypeResult)executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CONTACT_LIST_TYPE, result.getContactListType());
         }
@@ -72,7 +72,7 @@ public class DescriptionAddAction
     @Override
     public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
             throws NamingException {
-        CreateContactListTypeDescriptionForm commandForm = ContactListUtil.getHome().getCreateContactListTypeDescriptionForm();
+        var commandForm = ContactListUtil.getHome().getCreateContactListTypeDescriptionForm();
 
         commandForm.setContactListTypeName( actionForm.getContactListTypeName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
