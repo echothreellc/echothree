@@ -53,7 +53,7 @@ public class DescriptionEditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, DescriptionEditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var taxName = request.getParameter(ParameterConstants.TAX_NAME);
         var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         var commandForm = TaxUtil.getHome().getEditTaxDescriptionForm();

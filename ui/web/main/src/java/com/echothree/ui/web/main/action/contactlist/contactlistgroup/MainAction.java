@@ -47,7 +47,7 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = ContactListUtil.getHome().getGetContactListGroupsForm();
 
         var commandResult = ContactListUtil.getHome().getContactListGroups(getUserVisitPK(request), commandForm);

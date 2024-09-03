@@ -55,7 +55,7 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = ContactUtil.getHome().getGetContactMechanismForm();
         var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         var contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);

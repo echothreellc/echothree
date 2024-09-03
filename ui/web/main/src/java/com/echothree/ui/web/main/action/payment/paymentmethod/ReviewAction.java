@@ -54,7 +54,7 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = PaymentUtil.getHome().getGetPaymentMethodForm();
 
         commandForm.setPaymentMethodName(request.getParameter(ParameterConstants.PAYMENT_METHOD_NAME));

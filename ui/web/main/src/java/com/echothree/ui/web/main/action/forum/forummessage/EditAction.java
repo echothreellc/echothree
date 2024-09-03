@@ -56,7 +56,7 @@ public class EditAction
 
     private String editBlogEntry(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, String forumName, String forumMessageName)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = ForumUtil.getHome().getEditBlogEntryForm();
         var spec = ForumUtil.getHome().getForumMessageSpec();
 
@@ -144,7 +144,7 @@ public class EditAction
 
     private String editBlogComment(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, String forumName, String forumMessageName)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = ForumUtil.getHome().getEditBlogCommentForm();
         var spec = ForumUtil.getHome().getForumMessageSpec();
 

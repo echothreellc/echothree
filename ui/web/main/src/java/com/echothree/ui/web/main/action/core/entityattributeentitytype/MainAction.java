@@ -50,7 +50,7 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws NamingException {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = CoreUtil.getHome().getGetEntityAttributeEntityTypesForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));

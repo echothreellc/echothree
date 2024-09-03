@@ -52,7 +52,7 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
         var employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
         var partyName = request.getParameter(ParameterConstants.PARTY_NAME);

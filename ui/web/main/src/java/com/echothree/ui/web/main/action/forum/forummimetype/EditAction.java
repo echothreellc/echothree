@@ -54,7 +54,7 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
         var mimeTypeName = request.getParameter(ParameterConstants.MIME_TYPE_NAME);
         var actionForm = (EditActionForm)form;

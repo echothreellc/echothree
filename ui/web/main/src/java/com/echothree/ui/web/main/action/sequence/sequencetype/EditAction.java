@@ -50,7 +50,7 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var originalTypeSequenceName = request.getParameter(ParameterConstants.ORIGINAL_SEQUENCE_TYPE_NAME);
         var commandForm = SequenceUtil.getHome().getEditSequenceTypeForm();
         var spec = SequenceUtil.getHome().getSequenceTypeSpec();

@@ -53,7 +53,7 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
         var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
         var originalLetterName = request.getParameter(ParameterConstants.ORIGINAL_LETTER_NAME);

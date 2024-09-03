@@ -48,7 +48,7 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = UserUtil.getHome().getGetUserVisitGroupForm();
         var userVisitGroupName = request.getParameter(ParameterConstants.USER_VISIT_GROUP_NAME);
 

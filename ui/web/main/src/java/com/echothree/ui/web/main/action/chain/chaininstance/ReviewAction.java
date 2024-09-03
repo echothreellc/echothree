@@ -52,7 +52,7 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = ChainUtil.getHome().getGetChainInstanceForm();
         
         commandForm.setChainInstanceName(request.getParameter(ParameterConstants.CHAIN_INSTANCE_NAME));

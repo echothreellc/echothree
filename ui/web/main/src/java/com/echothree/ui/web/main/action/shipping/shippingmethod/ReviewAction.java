@@ -54,7 +54,7 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = ShippingUtil.getHome().getGetShippingMethodForm();
 
         commandForm.setShippingMethodName(request.getParameter(ParameterConstants.SHIPPING_METHOD_NAME));

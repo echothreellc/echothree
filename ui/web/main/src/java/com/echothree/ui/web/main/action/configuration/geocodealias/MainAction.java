@@ -48,7 +48,7 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
         var commandForm = GeoUtil.getHome().getGetGeoCodeAliasesForm();
 

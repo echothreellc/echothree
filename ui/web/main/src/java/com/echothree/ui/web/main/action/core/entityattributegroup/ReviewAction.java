@@ -49,7 +49,7 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupForm();
 
         commandForm.setEntityAttributeGroupName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME));

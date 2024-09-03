@@ -49,7 +49,7 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypeForm();
 
         commandForm.setPrinterGroupUseTypeName(request.getParameter(ParameterConstants.PRINTER_GROUP_USE_TYPE_NAME));

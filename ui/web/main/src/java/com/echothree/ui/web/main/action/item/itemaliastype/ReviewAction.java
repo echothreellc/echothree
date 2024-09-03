@@ -49,7 +49,7 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = ItemUtil.getHome().getGetItemAliasTypeForm();
 
         commandForm.setItemAliasTypeName(request.getParameter(ParameterConstants.ITEM_ALIAS_TYPE_NAME));

@@ -49,7 +49,7 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = ScaleUtil.getHome().getGetScaleTypeForm();
 
         commandForm.setScaleTypeName(request.getParameter(ParameterConstants.SCALE_TYPE_NAME));

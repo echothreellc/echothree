@@ -53,7 +53,7 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
         var originalDivisionName = request.getParameter(ParameterConstants.ORIGINAL_DIVISION_NAME);
         var commandForm = PartyUtil.getHome().getEditDivisionForm();

@@ -53,7 +53,7 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);
         var fromUnitOfMeasureTypeName = request.getParameter(ParameterConstants.FROM_UNIT_OF_MEASURE_TYPE_NAME);
         var toUnitOfMeasureTypeName = request.getParameter(ParameterConstants.TO_UNIT_OF_MEASURE_TYPE_NAME);

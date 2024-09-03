@@ -49,7 +49,7 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitForm();
 
         commandForm.setHarmonizedTariffScheduleCodeUnitName(request.getParameter(ParameterConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT_NAME));

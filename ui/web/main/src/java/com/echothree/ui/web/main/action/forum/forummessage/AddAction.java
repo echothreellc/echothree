@@ -95,7 +95,7 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
         var parentForumMessageName = request.getParameter(ParameterConstants.PARENT_FORUM_MESSAGE_NAME);
         var actionForm = (AddActionForm)form;

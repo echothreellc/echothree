@@ -53,7 +53,7 @@ public class AddAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         var actionForm = (AddActionForm)form;
-        String forwardKey = null;
+        String forwardKey;
         String customerName = null;
         
         if(wasPost(request)) {

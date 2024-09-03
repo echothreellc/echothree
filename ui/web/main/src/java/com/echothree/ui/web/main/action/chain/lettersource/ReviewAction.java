@@ -48,7 +48,7 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = LetterUtil.getHome().getGetLetterSourceForm();
         var letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
         

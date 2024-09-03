@@ -53,7 +53,7 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var customerTypeName = request.getParameter(ParameterConstants.CUSTOMER_TYPE_NAME);
         
         try {

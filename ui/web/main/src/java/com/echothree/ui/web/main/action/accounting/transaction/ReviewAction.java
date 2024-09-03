@@ -54,7 +54,7 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = AccountingUtil.getHome().getGetTransactionForm();
         var transactionName = request.getParameter(ParameterConstants.TRANSACTION_NAME);
 

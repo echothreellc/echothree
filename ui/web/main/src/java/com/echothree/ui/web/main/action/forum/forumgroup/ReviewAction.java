@@ -52,7 +52,7 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = ForumUtil.getHome().getGetForumGroupForm();
         var forumGroupName = request.getParameter(ParameterConstants.FORUM_GROUP_NAME);
         

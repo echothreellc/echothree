@@ -50,7 +50,7 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws NamingException {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = TagUtil.getHome().getGetTagScopeEntityTypesForm();
 
         commandForm.setTagScopeName(request.getParameter(ParameterConstants.TAG_SCOPE_NAME));

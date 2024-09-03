@@ -51,7 +51,7 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = ItemUtil.getHome().getGetItemForm();
         var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
         

@@ -50,7 +50,7 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var originalGlAccountName = request.getParameter(ParameterConstants.ORIGINAL_GL_ACCOUNT_NAME);
         var commandForm = AccountingUtil.getHome().getEditGlAccountForm();
         var spec = AccountingUtil.getHome().getGlAccountUniversalSpec();

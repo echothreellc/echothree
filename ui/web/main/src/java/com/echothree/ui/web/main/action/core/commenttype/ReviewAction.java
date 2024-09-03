@@ -48,7 +48,7 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = CommentUtil.getHome().getGetCommentTypeForm();
         var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
         var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);

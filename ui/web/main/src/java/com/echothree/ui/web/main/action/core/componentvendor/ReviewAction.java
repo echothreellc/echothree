@@ -50,7 +50,7 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = CoreUtil.getHome().getGetComponentVendorForm();
         var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
 

@@ -59,7 +59,7 @@ public class MainAction
 
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws NamingException {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = ForumUtil.getHome().getGetForumThreadsForm();
         var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
 

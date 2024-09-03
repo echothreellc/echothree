@@ -49,7 +49,7 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var commandForm = EmployeeUtil.getHome().getGetLeaveReasonForm();
 
         commandForm.setLeaveReasonName(request.getParameter(ParameterConstants.LEAVE_REASON_NAME));

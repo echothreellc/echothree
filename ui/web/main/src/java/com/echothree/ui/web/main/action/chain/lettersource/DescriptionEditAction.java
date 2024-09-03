@@ -53,7 +53,7 @@ public class DescriptionEditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, DescriptionEditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
         var languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         var commandForm = LetterUtil.getHome().getEditLetterSourceDescriptionForm();

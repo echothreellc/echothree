@@ -51,7 +51,7 @@ public class DescriptionAddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, DescriptionAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var letterSourceName = request.getParameter(ParameterConstants.LETTER_SOURCE_NAME);
         
         if(wasPost(request)) {

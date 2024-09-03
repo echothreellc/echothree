@@ -52,7 +52,7 @@ public class DescriptionAddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
         var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
         var letterName = request.getParameter(ParameterConstants.LETTER_NAME);

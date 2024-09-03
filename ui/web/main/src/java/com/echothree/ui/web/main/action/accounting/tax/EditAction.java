@@ -50,7 +50,7 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var originalTaxName = request.getParameter(ParameterConstants.ORIGINAL_TAX_NAME);
         var commandForm = TaxUtil.getHome().getEditTaxForm();
         var spec = TaxUtil.getHome().getTaxSpec();

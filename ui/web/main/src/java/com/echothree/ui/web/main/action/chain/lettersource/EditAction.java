@@ -50,7 +50,7 @@ public class EditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, EditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var originalLetterSourceName = request.getParameter(ParameterConstants.ORIGINAL_LETTER_SOURCE_NAME);
         var commandForm = LetterUtil.getHome().getEditLetterSourceForm();
         var spec = LetterUtil.getHome().getLetterSourceSpec();

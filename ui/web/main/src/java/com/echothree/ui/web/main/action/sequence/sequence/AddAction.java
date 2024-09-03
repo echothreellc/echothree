@@ -51,7 +51,7 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         var sequenceTypeName = request.getParameter(ParameterConstants.SEQUENCE_TYPE_NAME);
 
         if(wasPost(request)) {
