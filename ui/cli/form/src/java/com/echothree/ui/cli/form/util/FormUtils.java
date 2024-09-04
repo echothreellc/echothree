@@ -60,64 +60,74 @@ public class FormUtils {
         }
     }
 
-    private List<String> getInterfaces(String commonBase, String packageName, String interfaceSuffix) {
+    private List<String> getInterfaces(String commonBase, String packageName, String interfaceSuffix)
+            throws Exception {
         List<String> interfaces = new ArrayList<>();
-        var editBase = new StringBuilder(commonBase).append("/").append(packageName).toString();
+        var editBase = commonBase + "/" + packageName;
         var editDirectory = new File(editBase);
         
         if(editDirectory.exists()) {
             var editFiles = editDirectory.listFiles();
-            var fileSuffix = new StringBuilder(interfaceSuffix).append(".java").toString();
+            var fileSuffix = interfaceSuffix + ".java";
 
-            for(var k = 0; k < editFiles.length; k++) {
-                var editFile = editFiles[k];
-                var editFileName = editFile.getName();
+            if(editFiles != null) {
+                for(var editFile : editFiles) {
+                    var editFileName = editFile.getName();
 
-                if(editFile.isFile() && editFileName.endsWith(fileSuffix)) {
-                    interfaces.add(editFileName.substring(0, editFileName.length() - 5));
+                    if(editFile.isFile() && editFileName.endsWith(fileSuffix)) {
+                        interfaces.add(editFileName.substring(0, editFileName.length() - 5));
+                    }
                 }
+            } else {
+                throw new Exception(editDirectory + " is not a directory");
             }
         }
 
         return interfaces;
     }
 
-    private List<ComponentInformation> getComponents(String sourceDirectory) {
+    private List<ComponentInformation> getComponents(String sourceDirectory)
+            throws Exception {
         List<ComponentInformation> components = new ArrayList<>();
-        var componentBase = new StringBuilder(sourceDirectory).append("/java/com/echothree/control/user").toString();
+        var componentBase = sourceDirectory + "/java/com/echothree/control/user";
         var componentsDirectory = new File(componentBase);
 
         if(componentsDirectory.exists()) {
             var componentDirectories = componentsDirectory.listFiles();
 
-            for(var i = 0; i < componentDirectories.length; i++) {
-                var componentDirectory = componentDirectories[i];
+            if(componentDirectories != null) {
+                for(var componentDirectory : componentDirectories) {
+                    if(componentDirectory.isDirectory()) {
+                        var packageName = componentDirectory.getName();
+                        var beanBase = componentBase + '/' + packageName + "/server";
+                        var beanDirectory = new File(beanBase);
 
-                if(componentDirectory.isDirectory()) {
-                    var packageName = componentDirectory.getName();
-                    var beanBase = new StringBuilder(componentBase).append('/').append(packageName).append("/server").toString();
-                    var beanDirectory = new File(beanBase);
+                        if(beanDirectory.exists()) {
+                            var beanFiles = beanDirectory.listFiles();
 
-                    if(beanDirectory.exists()) {
-                        var beanFiles = beanDirectory.listFiles();
+                            if(beanFiles != null) {
+                                for(var beanFile : beanFiles) {
+                                    var beanFileName = beanFile.getName();
 
-                        for(var j = 0; j < beanFiles.length; j++) {
-                            var beanFile = beanFiles[j];
-                            var beanFileName = beanFile.getName();
+                                    if(beanFile.isFile() && beanFileName.endsWith("Bean.java")) {
+                                        var commonBase = componentBase + '/' + componentDirectory.getName() + "/common";
+                                        var name = beanFileName.substring(0, beanFileName.length() - 9);
+                                        var editInterfaces = getInterfaces(commonBase, "edit", "Edit");
+                                        var formInterfaces = getInterfaces(commonBase, "form", "Form");
+                                        var specInterfaces = getInterfaces(commonBase, "spec", "Spec");
+                                        var resultInterfaces = getInterfaces(commonBase, "result", "Result");
 
-                            if(beanFile.isFile() && beanFileName.endsWith("Bean.java")) {
-                                var commonBase = new StringBuilder(componentBase).append('/').append(componentDirectory.getName()).append("/common").toString();
-                                var name = beanFileName.substring(0, beanFileName.length() - 9);
-                                var editInterfaces = getInterfaces(commonBase, "edit", "Edit");
-                                var formInterfaces = getInterfaces(commonBase, "form", "Form");
-                                var specInterfaces = getInterfaces(commonBase, "spec", "Spec");
-                                var resultInterfaces = getInterfaces(commonBase, "result", "Result");
-
-                                components.add(new ComponentInformation(name, packageName, editInterfaces, formInterfaces, specInterfaces, resultInterfaces));
+                                        components.add(new ComponentInformation(name, packageName, editInterfaces, formInterfaces, specInterfaces, resultInterfaces));
+                                    }
+                                }
+                            } else {
+                                throw new Exception(beanDirectory + " is not a directory");
                             }
                         }
                     }
                 }
+            } else {
+                throw new Exception(componentsDirectory + " is not a directory");
             }
         } else {
             System.err.println("sourceDirectory doesn't exist: " + sourceDirectory);
@@ -126,25 +136,29 @@ public class FormUtils {
         return components;
     }
 
-    public String createDirectoryForClassPackage(String classPackage, String generatedDirectory) {
-        var directory = generatedDirectory;
+    public String createDirectoryForClassPackage(String classPackage, String generatedDirectory)
+            throws Exception {
+        var directory = new StringBuilder(generatedDirectory);
         var currentIndex = 0;
         int nextDot;
+
         do {
             nextDot = classPackage.indexOf('.', currentIndex);
             if(nextDot == -1)
-                directory = directory + File.separatorChar + classPackage.substring(currentIndex);
+                directory.append(File.separatorChar).append(classPackage.substring(currentIndex));
             else
-                directory = directory + File.separatorChar + classPackage.substring(currentIndex, nextDot);
+                directory.append(File.separatorChar).append(classPackage, currentIndex, nextDot);
             currentIndex = nextDot + 1;
         } while (nextDot != -1);
 
-        var theDirectory = new File(directory);
-        if(theDirectory.exists() == false) {
-            theDirectory.mkdirs();
+        var theDirectory = new File(directory.toString());
+        if(!theDirectory.exists()) {
+            if(!theDirectory.mkdirs()) {
+                throw new Exception(theDirectory + " could not be created");
+            }
         }
 
-        return directory;
+        return directory.toString();
     }
 
     public void writeCopyright(PrintWriter pw) {
@@ -196,28 +210,25 @@ public class FormUtils {
             writeVersion(pw, classFileName);
             writePackage(pw, interfacePackage);
             
-            if(componentInformation.editInterfaces.size() > 0) {
+            if(!componentInformation.editInterfaces.isEmpty()) {
                 pw.println("import com.echothree.control.user." + componentInformation.packageName + ".common.edit.*;");
             }
-            if(componentInformation.formInterfaces.size() > 0) {
+            if(!componentInformation.formInterfaces.isEmpty()) {
                 pw.println("import com.echothree.control.user." + componentInformation.packageName + ".common.form.*;");
             }
-            if(componentInformation.specInterfaces.size() > 0) {
+            if(!componentInformation.specInterfaces.isEmpty()) {
                 pw.println("import com.echothree.control.user." + componentInformation.packageName + ".common.spec.*;");
             }
             pw.println("");
             
             pw.println("public interface " + className + " {");
             pw.println("");
-            componentInformation.editInterfaces.stream().forEach((interfaceName) -> {
-                pw.println("    " + interfaceName + " get" + interfaceName + "();");
-            });
-            componentInformation.formInterfaces.stream().forEach((interfaceName) -> {
-                pw.println("    " + interfaceName + " get" + interfaceName + "();");
-            });
-            componentInformation.specInterfaces.stream().forEach((interfaceName) -> {
-                pw.println("    " + interfaceName + " get" + interfaceName + "();");
-            });
+            componentInformation.editInterfaces
+                    .forEach((interfaceName) -> pw.println("    " + interfaceName + " get" + interfaceName + "();"));
+            componentInformation.formInterfaces
+                    .forEach((interfaceName) -> pw.println("    " + interfaceName + " get" + interfaceName + "();"));
+            componentInformation.specInterfaces
+                    .forEach((interfaceName) -> pw.println("    " + interfaceName + " get" + interfaceName + "();"));
             pw.println("");
             pw.println("}");
         }
@@ -239,57 +250,36 @@ public class FormUtils {
             writeVersion(pw, classFileName);
             writePackage(pw, interfacePackage);
             
-            if(componentInformation.editInterfaces.size() > 0) {
+            if(!componentInformation.editInterfaces.isEmpty()) {
                 pw.println("import com.echothree.control.user." + componentInformation.packageName + ".common.edit.*;");
             }
-            if(componentInformation.formInterfaces.size() > 0) {
+            if(!componentInformation.formInterfaces.isEmpty()) {
                 pw.println("import com.echothree.control.user." + componentInformation.packageName + ".common.form.*;");
             }
-            if(componentInformation.specInterfaces.size() > 0) {
+            if(!componentInformation.specInterfaces.isEmpty()) {
                 pw.println("import com.echothree.control.user." + componentInformation.packageName + ".common.spec.*;");
             }
-            if(componentInformation.editInterfaces.size() > 0 || componentInformation.formInterfaces.size() > 0 || componentInformation.specInterfaces.size() > 0) {
+            if(!componentInformation.editInterfaces.isEmpty() || !componentInformation.formInterfaces.isEmpty() || !componentInformation.specInterfaces.isEmpty()) {
                 pw.println("");
             }
             
             pw.println("public class " + className + " {");
             pw.println("    ");
-            componentInformation.editInterfaces.stream().map((interfaceName) -> {
-                pw.println("    public " + interfaceName + " get" + interfaceName + "() {");
-                return interfaceName;
-            }).map((interfaceName) -> {
-                pw.println("        return " + componentInformation.name + "EditFactory.get" + interfaceName + "();");
-                return interfaceName;
-            }).map((_item) -> {
-                pw.println("    }");
-                return _item;
-            }).forEach((_item) -> {
-                pw.println("    ");
-            });
-            componentInformation.formInterfaces.stream().map((interfaceName) -> {
-                pw.println("    public " + interfaceName + " get" + interfaceName + "() {");
-                return interfaceName;
-            }).map((interfaceName) -> {
-                pw.println("        return " + componentInformation.name + "FormFactory.get" + interfaceName + "();");
-                return interfaceName;
-            }).map((_item) -> {
-                pw.println("    }");
-                return _item;
-            }).forEach((_item) -> {
-                pw.println("    ");
-            });
-            componentInformation.specInterfaces.stream().map((interfaceName) -> {
-                pw.println("    public " + interfaceName + " get" + interfaceName + "() {");
-                return interfaceName;
-            }).map((interfaceName) -> {
-                pw.println("        return " + componentInformation.name + "SpecFactory.get" + interfaceName + "();");
-                return interfaceName;
-            }).map((_item) -> {
-                pw.println("    }");
-                return _item;
-            }).forEach((_item) -> {
-                pw.println("    ");
-            });
+            componentInformation.editInterfaces.stream()
+                    .peek((interfaceName) -> pw.println("    public " + interfaceName + " get" + interfaceName + "() {"))
+                    .peek((interfaceName) -> pw.println("        return " + componentInformation.name + "EditFactory.get" + interfaceName + "();"))
+                    .peek((_item) -> pw.println("    }"))
+                    .forEach((_item) -> pw.println("    "));
+            componentInformation.formInterfaces.stream()
+                    .peek((interfaceName) -> pw.println("    public " + interfaceName + " get" + interfaceName + "() {"))
+                    .peek((interfaceName) -> pw.println("        return " + componentInformation.name + "FormFactory.get" + interfaceName + "();"))
+                    .peek((_item) -> pw.println("    }")).
+                    forEach((_item) -> pw.println("    "));
+            componentInformation.specInterfaces.stream()
+                    .peek((interfaceName) -> pw.println("    public " + interfaceName + " get" + interfaceName + "() {"))
+                    .peek((interfaceName) -> pw.println("        return " + componentInformation.name + "SpecFactory.get" + interfaceName + "();"))
+                    .peek((_item) -> pw.println("    }"))
+                    .forEach((_item) -> pw.println("    "));
             pw.println("}");
         }
     }
@@ -316,18 +306,11 @@ public class FormUtils {
             pw.println("public class " + className);
             pw.println("        extends BaseFormFactory {");
             pw.println("    ");
-            componentInformation.editInterfaces.stream().map((interfaceName) -> {
-                pw.println("    static public " + interfaceName + " get" + interfaceName + "() {");
-                return interfaceName;
-            }).map((interfaceName) -> {
-                pw.println("        return createForm(" + interfaceName + ".class);");
-                return interfaceName;
-            }).map((_item) -> {
-                pw.println("    }");
-                return _item;
-            }).forEach((_item) -> {
-                pw.println("    ");
-            });
+            componentInformation.editInterfaces.stream()
+                    .peek((interfaceName) -> pw.println("    static public " + interfaceName + " get" + interfaceName + "() {"))
+                    .peek((interfaceName) -> pw.println("        return createForm(" + interfaceName + ".class);"))
+                    .peek((_item) -> pw.println("    }"))
+                    .forEach((_item) -> pw.println("    "));
             pw.println("}");
         }
     }
@@ -354,18 +337,11 @@ public class FormUtils {
             pw.println("public class " + className);
             pw.println("        extends BaseFormFactory {");
             pw.println("    ");
-            componentInformation.formInterfaces.stream().map((interfaceName) -> {
-                pw.println("    static public " + interfaceName + " get" + interfaceName + "() {");
-                return interfaceName;
-            }).map((interfaceName) -> {
-                pw.println("        return createForm(" + interfaceName + ".class);");
-                return interfaceName;
-            }).map((_item) -> {
-                pw.println("    }");
-                return _item;
-            }).forEach((_item) -> {
-                pw.println("    ");
-            });
+            componentInformation.formInterfaces.stream()
+                    .peek((interfaceName) -> pw.println("    static public " + interfaceName + " get" + interfaceName + "() {"))
+                    .peek((interfaceName) -> pw.println("        return createForm(" + interfaceName + ".class);"))
+                    .peek((_item) -> pw.println("    }"))
+                    .forEach((_item) -> pw.println("    "));
             pw.println("}");
         }
     }
@@ -392,18 +368,11 @@ public class FormUtils {
             pw.println("public class " + className);
             pw.println("        extends BaseFormFactory {");
             pw.println("    ");
-            componentInformation.specInterfaces.stream().map((interfaceName) -> {
-                pw.println("    static public " + interfaceName + " get" + interfaceName + "() {");
-                return interfaceName;
-            }).map((interfaceName) -> {
-                pw.println("        return createForm(" + interfaceName + ".class);");
-                return interfaceName;
-            }).map((_item) -> {
-                pw.println("    }");
-                return _item;
-            }).forEach((_item) -> {
-                pw.println("    ");
-            });
+            componentInformation.specInterfaces.stream()
+                    .peek((interfaceName) -> pw.println("    static public " + interfaceName + " get" + interfaceName + "() {"))
+                    .peek((interfaceName) -> pw.println("        return createForm(" + interfaceName + ".class);"))
+                    .peek((_item) -> pw.println("    }"))
+                    .forEach((_item) -> pw.println("    "));
             pw.println("}");
         }
     }
@@ -430,18 +399,11 @@ public class FormUtils {
             pw.println("public class " + className);
             pw.println("        extends BaseResultFactory {");
             pw.println("    ");
-            componentInformation.resultInterfaces.stream().map((interfaceName) -> {
-                pw.println("    static public " + interfaceName + " get" + interfaceName + "() {");
-                return interfaceName;
-            }).map((interfaceName) -> {
-                pw.println("        return createResult(" + interfaceName + ".class);");
-                return interfaceName;
-            }).map((_item) -> {
-                pw.println("    }");
-                return _item;
-            }).forEach((_item) -> {
-                pw.println("    ");
-            });
+            componentInformation.resultInterfaces.stream()
+                    .peek((interfaceName) -> pw.println("    static public " + interfaceName + " get" + interfaceName + "() {"))
+                    .peek((interfaceName) -> pw.println("        return createResult(" + interfaceName + ".class);"))
+                    .peek((_item) -> pw.println("    }"))
+                    .forEach((_item) -> pw.println("    "));
             pw.println("}");
         }
     }
