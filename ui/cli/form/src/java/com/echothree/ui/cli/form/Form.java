@@ -34,12 +34,13 @@ public class Form {
         return options;
     }
 
-    static CommandLine getCommandLine(String args[])
+    static CommandLine getCommandLine(String[] args)
             throws ParseException {
         return new DefaultParser().parse(getOptions(), args);
     }
 
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args)
+            throws Exception {
         var line = getCommandLine(args);
         var doVerbose = line.hasOption("v");
         var doGenerated = line.hasOption("g");
