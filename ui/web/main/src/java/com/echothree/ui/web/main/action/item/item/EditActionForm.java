@@ -69,118 +69,98 @@ public class EditActionForm
     private String cancellationPolicyChoice;
     private String returnPolicyChoice;
     
-    private void setupItemCategoryChoices() {
+    private void setupItemCategoryChoices()
+            throws NamingException {
         if(itemCategoryChoices == null) {
-            try {
-                var form = ItemUtil.getHome().getGetItemCategoryChoicesForm();
-                
-                form.setDefaultItemCategoryChoice(itemCategoryChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = ItemUtil.getHome().getGetItemCategoryChoicesForm();
 
-                var commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetItemCategoryChoicesResult)executionResult.getResult();
-                itemCategoryChoices = result.getItemCategoryChoices();
-                
-                if(itemCategoryChoice == null) {
-                    itemCategoryChoice = itemCategoryChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, itemCategoryChoices remains null, no default
+            form.setDefaultItemCategoryChoice(itemCategoryChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemCategoryChoicesResult)executionResult.getResult();
+            itemCategoryChoices = result.getItemCategoryChoices();
+
+            if(itemCategoryChoice == null) {
+                itemCategoryChoice = itemCategoryChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupItemAccountingCategoryChoices() {
+    private void setupItemAccountingCategoryChoices()
+            throws NamingException {
         if(itemAccountingCategoryChoices == null) {
-            try {
-                var form = AccountingUtil.getHome().getGetItemAccountingCategoryChoicesForm();
-                
-                form.setDefaultItemAccountingCategoryChoice(itemAccountingCategoryChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = AccountingUtil.getHome().getGetItemAccountingCategoryChoicesForm();
 
-                var commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetItemAccountingCategoryChoicesResult)executionResult.getResult();
-                itemAccountingCategoryChoices = result.getItemAccountingCategoryChoices();
-                
-                if(itemAccountingCategoryChoice == null) {
-                    itemAccountingCategoryChoice = itemAccountingCategoryChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, itemAccountingCategoryChoices remains null, no default
+            form.setDefaultItemAccountingCategoryChoice(itemAccountingCategoryChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemAccountingCategoryChoicesResult)executionResult.getResult();
+            itemAccountingCategoryChoices = result.getItemAccountingCategoryChoices();
+
+            if(itemAccountingCategoryChoice == null) {
+                itemAccountingCategoryChoice = itemAccountingCategoryChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupItemPurchasingCategoryChoices() {
+    private void setupItemPurchasingCategoryChoices()
+            throws NamingException {
         if(itemPurchasingCategoryChoices == null) {
-            try {
-                var form = VendorUtil.getHome().getGetItemPurchasingCategoryChoicesForm();
-                
-                form.setDefaultItemPurchasingCategoryChoice(itemPurchasingCategoryChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = VendorUtil.getHome().getGetItemPurchasingCategoryChoicesForm();
 
-                var commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetItemPurchasingCategoryChoicesResult)executionResult.getResult();
-                itemPurchasingCategoryChoices = result.getItemPurchasingCategoryChoices();
-                
-                if(itemPurchasingCategoryChoice == null) {
-                    itemPurchasingCategoryChoice = itemPurchasingCategoryChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, itemPurchasingCategoryChoices remains null, no default
+            form.setDefaultItemPurchasingCategoryChoice(itemPurchasingCategoryChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemPurchasingCategoryChoicesResult)executionResult.getResult();
+            itemPurchasingCategoryChoices = result.getItemPurchasingCategoryChoices();
+
+            if(itemPurchasingCategoryChoice == null) {
+                itemPurchasingCategoryChoice = itemPurchasingCategoryChoices.getDefaultValue();
             }
         }
     }
     
-    public void setupCancellationPolicyChoices() {
+    public void setupCancellationPolicyChoices()
+            throws NamingException {
         if(cancellationPolicyChoices == null) {
-            try {
-                var form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
-                
-                form.setCancellationKindName(CancellationKinds.CUSTOMER_CANCELLATION.name());
-                form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
 
-                var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
-                cancellationPolicyChoices = result.getCancellationPolicyChoices();
-                
-                if(cancellationPolicyChoice == null)
-                    cancellationPolicyChoice = cancellationPolicyChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, cancellationPolicyChoices remains null, no default
-            }
+            form.setCancellationKindName(CancellationKinds.CUSTOMER_CANCELLATION.name());
+            form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+            cancellationPolicyChoices = result.getCancellationPolicyChoices();
+
+            if(cancellationPolicyChoice == null)
+                cancellationPolicyChoice = cancellationPolicyChoices.getDefaultValue();
         }
     }
     
-    public void setupReturnPolicyChoices() {
+    public void setupReturnPolicyChoices()
+            throws NamingException {
         if(returnPolicyChoices == null) {
-            try {
-                var form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
-                
-                form.setReturnKindName(ReturnKinds.CUSTOMER_RETURN.name());
-                form.setDefaultReturnPolicyChoice(returnPolicyChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
 
-                var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
-                returnPolicyChoices = result.getReturnPolicyChoices();
-                
-                if(returnPolicyChoice == null)
-                    returnPolicyChoice = returnPolicyChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, returnPolicyChoices remains null, no default
-            }
+            form.setReturnKindName(ReturnKinds.CUSTOMER_RETURN.name());
+            form.setDefaultReturnPolicyChoice(returnPolicyChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+            returnPolicyChoices = result.getReturnPolicyChoices();
+
+            if(returnPolicyChoice == null)
+                returnPolicyChoice = returnPolicyChoices.getDefaultValue();
         }
     }
     
@@ -200,7 +180,8 @@ public class EditActionForm
         this.itemName = itemName;
     }
     
-    public String getItemCategoryChoice() {
+    public String getItemCategoryChoice()
+            throws NamingException {
         setupItemCategoryChoices();
         
         return itemCategoryChoice;
@@ -210,7 +191,8 @@ public class EditActionForm
         this.itemCategoryChoice = itemCategoryChoice;
     }
     
-    public List<LabelValueBean> getItemCategoryChoices() {
+    public List<LabelValueBean> getItemCategoryChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupItemCategoryChoices();
@@ -221,7 +203,8 @@ public class EditActionForm
         return choices;
     }
     
-    public String getItemAccountingCategoryChoice() {
+    public String getItemAccountingCategoryChoice()
+            throws NamingException {
         setupItemAccountingCategoryChoices();
         
         return itemAccountingCategoryChoice;
@@ -231,7 +214,8 @@ public class EditActionForm
         this.itemAccountingCategoryChoice = itemAccountingCategoryChoice;
     }
     
-    public List<LabelValueBean> getItemAccountingCategoryChoices() {
+    public List<LabelValueBean> getItemAccountingCategoryChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupItemAccountingCategoryChoices();
@@ -242,7 +226,8 @@ public class EditActionForm
         return choices;
     }
     
-    public String getItemPurchasingCategoryChoice() {
+    public String getItemPurchasingCategoryChoice()
+            throws NamingException {
         setupItemPurchasingCategoryChoices();
         
         return itemPurchasingCategoryChoice;
@@ -252,7 +237,8 @@ public class EditActionForm
         this.itemPurchasingCategoryChoice = itemPurchasingCategoryChoice;
     }
     
-    public List<LabelValueBean> getItemPurchasingCategoryChoices() {
+    public List<LabelValueBean> getItemPurchasingCategoryChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupItemPurchasingCategoryChoices();
@@ -343,7 +329,8 @@ public class EditActionForm
         this.allowAssociatePayments = allowAssociatePayments;
     }
     
-    public List<LabelValueBean> getCancellationPolicyChoices() {
+    public List<LabelValueBean> getCancellationPolicyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCancellationPolicyChoices();
@@ -358,13 +345,15 @@ public class EditActionForm
         this.cancellationPolicyChoice = cancellationPolicyChoice;
     }
     
-    public String getCancellationPolicyChoice() {
+    public String getCancellationPolicyChoice()
+            throws NamingException {
         setupCancellationPolicyChoices();
         
         return cancellationPolicyChoice;
     }
     
-    public List<LabelValueBean> getReturnPolicyChoices() {
+    public List<LabelValueBean> getReturnPolicyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupReturnPolicyChoices();
@@ -379,7 +368,8 @@ public class EditActionForm
         this.returnPolicyChoice = returnPolicyChoice;
     }
     
-    public String getReturnPolicyChoice() {
+    public String getReturnPolicyChoice()
+            throws NamingException {
         setupReturnPolicyChoices();
         
         return returnPolicyChoice;

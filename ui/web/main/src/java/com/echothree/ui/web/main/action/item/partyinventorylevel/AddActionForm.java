@@ -57,149 +57,126 @@ public class AddActionForm
     private String reorderQuantity;
     private String reorderQuantityUnitOfMeasureTypeChoice;
     
-    private void setupCompanyChoices() {
+    private void setupCompanyChoices()
+            throws NamingException {
         if(companyChoices == null) {
-            try {
-                var commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
+            var commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
 
-                commandForm.setDefaultCompanyChoice(companyChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setDefaultCompanyChoice(companyChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-                var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetCompanyChoicesResult)executionResult.getResult();
-                companyChoices = result.getCompanyChoices();
+            var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCompanyChoicesResult)executionResult.getResult();
+            companyChoices = result.getCompanyChoices();
 
-                if(companyChoice == null) {
-                    companyChoice = companyChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, companyChoices remains null, no default
+            if(companyChoice == null) {
+                companyChoice = companyChoices.getDefaultValue();
             }
         }
     }
 
-    private void setupWarehouseChoices() {
+    private void setupWarehouseChoices()
+            throws NamingException {
         if(warehouseChoices == null) {
-            try {
-                var commandForm = WarehouseUtil.getHome().getGetWarehouseChoicesForm();
+            var commandForm = WarehouseUtil.getHome().getGetWarehouseChoicesForm();
 
-                commandForm.setDefaultWarehouseChoice(warehouseChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setDefaultWarehouseChoice(warehouseChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-                var commandResult = WarehouseUtil.getHome().getWarehouseChoices(userVisitPK, commandForm);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetWarehouseChoicesResult)executionResult.getResult();
-                warehouseChoices = result.getWarehouseChoices();
+            var commandResult = WarehouseUtil.getHome().getWarehouseChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWarehouseChoicesResult)executionResult.getResult();
+            warehouseChoices = result.getWarehouseChoices();
 
-                if(warehouseChoice == null) {
-                    warehouseChoice = warehouseChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, warehouseChoices remains null, no default
+            if(warehouseChoice == null) {
+                warehouseChoice = warehouseChoices.getDefaultValue();
             }
         }
     }
 
-    private void setupInventoryConditionChoices() {
+    private void setupInventoryConditionChoices()
+            throws NamingException {
         if(inventoryConditionChoices == null) {
-            try {
-                var form = InventoryUtil.getHome().getGetInventoryConditionChoicesForm();
+            var form = InventoryUtil.getHome().getGetInventoryConditionChoicesForm();
 
-                form.setInventoryConditionUseTypeName(InventoryConstants.InventoryConditionUseType_PURCHASE_ORDER);
-                form.setDefaultInventoryConditionChoice(inventoryConditionChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setInventoryConditionUseTypeName(InventoryConstants.InventoryConditionUseType_PURCHASE_ORDER);
+            form.setDefaultInventoryConditionChoice(inventoryConditionChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                var commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetInventoryConditionChoicesResult)executionResult.getResult();
-                inventoryConditionChoices = result.getInventoryConditionChoices();
+            var commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetInventoryConditionChoicesResult)executionResult.getResult();
+            inventoryConditionChoices = result.getInventoryConditionChoices();
 
-                if(inventoryConditionChoice == null) {
-                    inventoryConditionChoice = inventoryConditionChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, inventoryConditionChoices remains null, no default
+            if(inventoryConditionChoice == null) {
+                inventoryConditionChoice = inventoryConditionChoices.getDefaultValue();
             }
         }
     }
 
-    private void setupMinimumInventoryUnitOfMeasureTypeChoices() {
+    private void setupMinimumInventoryUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(minimumInventoryUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(minimumInventoryUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setItemName(itemName);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                minimumInventoryUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(minimumInventoryUnitOfMeasureTypeChoice == null) {
-                    minimumInventoryUnitOfMeasureTypeChoice = minimumInventoryUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, locationChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(minimumInventoryUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setItemName(itemName);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            minimumInventoryUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(minimumInventoryUnitOfMeasureTypeChoice == null) {
+                minimumInventoryUnitOfMeasureTypeChoice = minimumInventoryUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupMaximumInventoryUnitOfMeasureTypeChoices() {
+    private void setupMaximumInventoryUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(maximumInventoryUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(maximumInventoryUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setItemName(itemName);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                maximumInventoryUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(maximumInventoryUnitOfMeasureTypeChoice == null) {
-                    maximumInventoryUnitOfMeasureTypeChoice = maximumInventoryUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, locationChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(maximumInventoryUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setItemName(itemName);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            maximumInventoryUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(maximumInventoryUnitOfMeasureTypeChoice == null) {
+                maximumInventoryUnitOfMeasureTypeChoice = maximumInventoryUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupReorderQuantityUnitOfMeasureTypeChoices() {
+    private void setupReorderQuantityUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(reorderQuantityUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(reorderQuantityUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setItemName(itemName);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                reorderQuantityUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(reorderQuantityUnitOfMeasureTypeChoice == null) {
-                    reorderQuantityUnitOfMeasureTypeChoice = reorderQuantityUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, locationChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(reorderQuantityUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setItemName(itemName);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            reorderQuantityUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(reorderQuantityUnitOfMeasureTypeChoice == null) {
+                reorderQuantityUnitOfMeasureTypeChoice = reorderQuantityUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
     
-    public String getCompanyChoice() {
+    public String getCompanyChoice()
+            throws NamingException {
         setupCompanyChoices();
 
         return companyChoice;
@@ -209,7 +186,8 @@ public class AddActionForm
         this.companyChoice = companyChoice;
     }
 
-    public List<LabelValueBean> getCompanyChoices() {
+    public List<LabelValueBean> getCompanyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupCompanyChoices();
@@ -220,7 +198,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getWarehouseChoice() {
+    public String getWarehouseChoice()
+            throws NamingException {
         setupWarehouseChoices();
 
         return warehouseChoice;
@@ -230,7 +209,8 @@ public class AddActionForm
         this.warehouseChoice = warehouseChoice;
     }
 
-    public List<LabelValueBean> getWarehouseChoices() {
+    public List<LabelValueBean> getWarehouseChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupWarehouseChoices();
@@ -249,7 +229,8 @@ public class AddActionForm
         this.itemName = itemName;
     }
     
-    public String getInventoryConditionChoice() {
+    public String getInventoryConditionChoice()
+            throws NamingException {
         setupInventoryConditionChoices();
 
         return inventoryConditionChoice;
@@ -259,7 +240,8 @@ public class AddActionForm
         this.inventoryConditionChoice = inventoryConditionChoice;
     }
 
-    public List<LabelValueBean> getInventoryConditionChoices() {
+    public List<LabelValueBean> getInventoryConditionChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupInventoryConditionChoices();
@@ -278,7 +260,8 @@ public class AddActionForm
         this.minimumInventory = minimumInventory;
     }
     
-    public List<LabelValueBean> getMinimumInventoryUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getMinimumInventoryUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupMinimumInventoryUnitOfMeasureTypeChoices();
@@ -289,7 +272,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getMinimumInventoryUnitOfMeasureTypeChoice() {
+    public String getMinimumInventoryUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupMinimumInventoryUnitOfMeasureTypeChoices();
         return minimumInventoryUnitOfMeasureTypeChoice;
     }
@@ -306,7 +290,8 @@ public class AddActionForm
         this.maximumInventory = maximumInventory;
     }
     
-    public List<LabelValueBean> getMaximumInventoryUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getMaximumInventoryUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupMaximumInventoryUnitOfMeasureTypeChoices();
@@ -317,7 +302,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getMaximumInventoryUnitOfMeasureTypeChoice() {
+    public String getMaximumInventoryUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupMaximumInventoryUnitOfMeasureTypeChoices();
         return maximumInventoryUnitOfMeasureTypeChoice;
     }
@@ -334,7 +320,8 @@ public class AddActionForm
         this.reorderQuantity = reorderQuantity;
     }
     
-    public List<LabelValueBean> getReorderQuantityUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getReorderQuantityUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupReorderQuantityUnitOfMeasureTypeChoices();
@@ -345,7 +332,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getReorderQuantityUnitOfMeasureTypeChoice() {
+    public String getReorderQuantityUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupReorderQuantityUnitOfMeasureTypeChoices();
         return reorderQuantityUnitOfMeasureTypeChoice;
     }
