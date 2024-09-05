@@ -35,26 +35,22 @@ public class CommentStatusActionForm
     private String commentName;
     private String commentStatusChoice;
     
-    public void setupCommentStatusChoices() {
+    public void setupCommentStatusChoices()
+            throws NamingException {
         if(commentStatusChoices == null) {
-            try {
-                var form = CommentUtil.getHome().getGetCommentStatusChoicesForm();
-                
-                form.setCommentName(commentName);
-                form.setDefaultCommentStatusChoice(commentStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = CommentUtil.getHome().getGetCommentStatusChoicesForm();
 
-                var commandResult = CommentUtil.getHome().getCommentStatusChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetCommentStatusChoicesResult)executionResult.getResult();
-                commentStatusChoices = result.getCommentStatusChoices();
-                
-                if(commentStatusChoice == null)
-                    commentStatusChoice = commentStatusChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, commentStatusChoices remains null, no default
-            }
+            form.setCommentName(commentName);
+            form.setDefaultCommentStatusChoice(commentStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = CommentUtil.getHome().getCommentStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCommentStatusChoicesResult)executionResult.getResult();
+            commentStatusChoices = result.getCommentStatusChoices();
+
+            if(commentStatusChoice == null)
+                commentStatusChoice = commentStatusChoices.getDefaultValue();
         }
     }
     
@@ -82,7 +78,8 @@ public class CommentStatusActionForm
         this.commentStatusChoice = commentStatusChoice;
     }
     
-    public List<LabelValueBean> getCommentStatusChoices() {
+    public List<LabelValueBean> getCommentStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCommentStatusChoices();

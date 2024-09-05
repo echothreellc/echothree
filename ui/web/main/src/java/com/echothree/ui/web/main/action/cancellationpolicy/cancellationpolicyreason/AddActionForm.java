@@ -39,26 +39,22 @@ public class AddActionForm
     private Boolean isDefault;
     private String sortOrder;
     
-    private void setupCancellationReasonChoices() {
+    private void setupCancellationReasonChoices()
+            throws NamingException {
         if(cancellationReasonChoices == null) {
-            try {
-                var form = CancellationPolicyUtil.getHome().getGetCancellationReasonChoicesForm();
-                
-                form.setCancellationKindName(cancellationKindName);
-                form.setDefaultCancellationReasonChoice(cancellationReasonChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = CancellationPolicyUtil.getHome().getGetCancellationReasonChoicesForm();
 
-                var commandResult = CancellationPolicyUtil.getHome().getCancellationReasonChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getCancellationReasonChoicesResult = (GetCancellationReasonChoicesResult)executionResult.getResult();
-                cancellationReasonChoices = getCancellationReasonChoicesResult.getCancellationReasonChoices();
-                
-                if(cancellationReasonChoice == null) {
-                    cancellationReasonChoice = cancellationReasonChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, cancellationReasonChoices remains null, no default
+            form.setCancellationKindName(cancellationKindName);
+            form.setDefaultCancellationReasonChoice(cancellationReasonChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationReasonChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getCancellationReasonChoicesResult = (GetCancellationReasonChoicesResult)executionResult.getResult();
+            cancellationReasonChoices = getCancellationReasonChoicesResult.getCancellationReasonChoices();
+
+            if(cancellationReasonChoice == null) {
+                cancellationReasonChoice = cancellationReasonChoices.getDefaultValue();
             }
         }
     }
@@ -79,7 +75,8 @@ public class AddActionForm
         this.cancellationPolicyName = cancellationPolicyName;
     }
     
-    public String getCancellationReasonChoice() {
+    public String getCancellationReasonChoice()
+            throws NamingException {
         setupCancellationReasonChoices();
         
         return cancellationReasonChoice;
@@ -89,7 +86,8 @@ public class AddActionForm
         this.cancellationReasonChoice = cancellationReasonChoice;
     }
     
-    public List<LabelValueBean> getCancellationReasonChoices() {
+    public List<LabelValueBean> getCancellationReasonChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCancellationReasonChoices();

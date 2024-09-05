@@ -46,72 +46,60 @@ public class SearchActionForm
     private String createdSince;
     private String modifiedSince;
     
-    private void setupLeaveTypeChoices() {
+    private void setupLeaveTypeChoices()
+            throws NamingException {
         if(leaveTypeChoices == null) {
-            try {
-                var form = EmployeeUtil.getHome().getGetLeaveTypeChoicesForm();
-                
-                form.setDefaultLeaveTypeChoice(leaveTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = EmployeeUtil.getHome().getGetLeaveTypeChoicesForm();
 
-                var commandResult = EmployeeUtil.getHome().getLeaveTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetLeaveTypeChoicesResult)executionResult.getResult();
-                leaveTypeChoices = result.getLeaveTypeChoices();
-                
-                if(leaveTypeChoice == null) {
-                    leaveTypeChoice = leaveTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, leaveTypeChoices remains null, no default
+            form.setDefaultLeaveTypeChoice(leaveTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = EmployeeUtil.getHome().getLeaveTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveTypeChoicesResult)executionResult.getResult();
+            leaveTypeChoices = result.getLeaveTypeChoices();
+
+            if(leaveTypeChoice == null) {
+                leaveTypeChoice = leaveTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupLeaveReasonChoices() {
+    private void setupLeaveReasonChoices()
+            throws NamingException {
         if(leaveReasonChoices == null) {
-            try {
-                var form = EmployeeUtil.getHome().getGetLeaveReasonChoicesForm();
-                
-                form.setDefaultLeaveReasonChoice(leaveReasonChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = EmployeeUtil.getHome().getGetLeaveReasonChoicesForm();
 
-                var commandResult = EmployeeUtil.getHome().getLeaveReasonChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetLeaveReasonChoicesResult)executionResult.getResult();
-                leaveReasonChoices = result.getLeaveReasonChoices();
-                
-                if(leaveReasonChoice == null) {
-                    leaveReasonChoice = leaveReasonChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, leaveReasonChoices remains null, no default
+            form.setDefaultLeaveReasonChoice(leaveReasonChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = EmployeeUtil.getHome().getLeaveReasonChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveReasonChoicesResult)executionResult.getResult();
+            leaveReasonChoices = result.getLeaveReasonChoices();
+
+            if(leaveReasonChoice == null) {
+                leaveReasonChoice = leaveReasonChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupLeaveStatusChoices() {
+    private void setupLeaveStatusChoices()
+            throws NamingException {
         if(leaveStatusChoices == null) {
-            try {
-                var form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
-                
-                form.setWorkflowName(LeaveStatusConstants.Workflow_LEAVE_STATUS);
-                form.setDefaultWorkflowStepChoice(leaveStatusChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
 
-                var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
-                leaveStatusChoices = result.getWorkflowStepChoices();
-                
-                if(leaveStatusChoice == null) {
-                    leaveStatusChoice = leaveStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, leaveStatusChoices remains null, no default
+            form.setWorkflowName(LeaveStatusConstants.Workflow_LEAVE_STATUS);
+            form.setDefaultWorkflowStepChoice(leaveStatusChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            leaveStatusChoices = result.getWorkflowStepChoices();
+
+            if(leaveStatusChoice == null) {
+                leaveStatusChoice = leaveStatusChoices.getDefaultValue();
             }
         }
     }
@@ -124,7 +112,8 @@ public class SearchActionForm
         this.leaveName = leaveName;
     }
     
-    public String getLeaveTypeChoice() {
+    public String getLeaveTypeChoice()
+            throws NamingException {
         setupLeaveTypeChoices();
         return leaveTypeChoice;
     }
@@ -133,7 +122,8 @@ public class SearchActionForm
         this.leaveTypeChoice = leaveTypeChoice;
     }
     
-    public List<LabelValueBean> getLeaveTypeChoices() {
+    public List<LabelValueBean> getLeaveTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupLeaveTypeChoices();
@@ -143,7 +133,8 @@ public class SearchActionForm
         return choices;
     }
     
-    public String getLeaveReasonChoice() {
+    public String getLeaveReasonChoice()
+            throws NamingException {
         setupLeaveReasonChoices();
         return leaveReasonChoice;
     }
@@ -152,7 +143,8 @@ public class SearchActionForm
         this.leaveReasonChoice = leaveReasonChoice;
     }
     
-    public List<LabelValueBean> getLeaveReasonChoices() {
+    public List<LabelValueBean> getLeaveReasonChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupLeaveReasonChoices();
@@ -162,7 +154,8 @@ public class SearchActionForm
         return choices;
     }
     
-    public String getLeaveStatusChoice() {
+    public String getLeaveStatusChoice()
+            throws NamingException {
         setupLeaveStatusChoices();
         return leaveStatusChoice;
     }
@@ -171,7 +164,8 @@ public class SearchActionForm
         this.leaveStatusChoice = leaveStatusChoice;
     }
     
-    public List<LabelValueBean> getLeaveStatusChoices() {
+    public List<LabelValueBean> getLeaveStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupLeaveStatusChoices();

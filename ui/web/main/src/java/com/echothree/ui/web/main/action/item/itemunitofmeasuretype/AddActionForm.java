@@ -38,26 +38,22 @@ public class AddActionForm
     private Boolean isDefault;
     private String sortOrder;
     
-    private void setupUnitOfMeasureTypeChoices() {
+    private void setupUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(unitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setItemName(itemName);
-                form.setDefaultUnitOfMeasureTypeChoice(unitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                unitOfMeasureTypeChoices = result.getUnitOfMeasureTypeChoices();
-                
-                if(unitOfMeasureTypeChoice == null) {
-                    unitOfMeasureTypeChoice = unitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setItemName(itemName);
+            form.setDefaultUnitOfMeasureTypeChoice(unitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            unitOfMeasureTypeChoices = result.getUnitOfMeasureTypeChoices();
+
+            if(unitOfMeasureTypeChoice == null) {
+                unitOfMeasureTypeChoice = unitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
@@ -70,7 +66,8 @@ public class AddActionForm
         this.itemName = itemName;
     }
     
-    public String getUnitOfMeasureTypeChoice() {
+    public String getUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupUnitOfMeasureTypeChoices();
         
         return unitOfMeasureTypeChoice;
@@ -80,7 +77,8 @@ public class AddActionForm
         this.unitOfMeasureTypeChoice = unitOfMeasureTypeChoice;
     }
     
-    public List<LabelValueBean> getUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupUnitOfMeasureTypeChoices();

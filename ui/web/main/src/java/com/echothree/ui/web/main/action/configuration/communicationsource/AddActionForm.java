@@ -54,98 +54,82 @@ public class AddActionForm
     private String reviewEmployeeSelectorChoice;
     private String description;
     
-    public void setupServerChoices() {
+    public void setupServerChoices()
+            throws NamingException {
         if(serverChoices == null) {
-            try {
-                var form = CoreUtil.getHome().getGetServerChoicesForm();
-                
-                form.setDefaultServerChoice(serverChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = CoreUtil.getHome().getGetServerChoicesForm();
 
-                var commandResult = CoreUtil.getHome().getServerChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetServerChoicesResult)executionResult.getResult();
-                serverChoices = result.getServerChoices();
-                
-                if(serverChoice == null) {
-                    serverChoice = serverChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, serverChoices remains null, no default
+            form.setDefaultServerChoice(serverChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = CoreUtil.getHome().getServerChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetServerChoicesResult)executionResult.getResult();
+            serverChoices = result.getServerChoices();
+
+            if(serverChoice == null) {
+                serverChoice = serverChoices.getDefaultValue();
             }
         }
     }
     
-    public void setupReceiveWorkEffortScopeChoices() {
+    public void setupReceiveWorkEffortScopeChoices()
+            throws NamingException {
         if(receiveWorkEffortScopeChoices == null) {
-            try {
-                var form = WorkEffortUtil.getHome().getGetWorkEffortScopeChoicesForm();
-                
-                form.setWorkEffortTypeName(ReceiveCustomerEmailConstants.WorkEffortType_RECEIVE_CUSTOMER_EMAIL);
-                form.setDefaultWorkEffortScopeChoice(receiveWorkEffortScopeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = WorkEffortUtil.getHome().getGetWorkEffortScopeChoicesForm();
 
-                var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetWorkEffortScopeChoicesResult)executionResult.getResult();
-                receiveWorkEffortScopeChoices = result.getWorkEffortScopeChoices();
-                
-                if(receiveWorkEffortScopeChoice == null) {
-                    receiveWorkEffortScopeChoice = receiveWorkEffortScopeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, receiveWorkEffortScopeChoices remains null, no default
+            form.setWorkEffortTypeName(ReceiveCustomerEmailConstants.WorkEffortType_RECEIVE_CUSTOMER_EMAIL);
+            form.setDefaultWorkEffortScopeChoice(receiveWorkEffortScopeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkEffortScopeChoicesResult)executionResult.getResult();
+            receiveWorkEffortScopeChoices = result.getWorkEffortScopeChoices();
+
+            if(receiveWorkEffortScopeChoice == null) {
+                receiveWorkEffortScopeChoice = receiveWorkEffortScopeChoices.getDefaultValue();
             }
         }
     }
     
-    public void setupSendWorkEffortScopeChoices() {
+    public void setupSendWorkEffortScopeChoices()
+            throws NamingException {
         if(sendWorkEffortScopeChoices == null) {
-            try {
-                var form = WorkEffortUtil.getHome().getGetWorkEffortScopeChoicesForm();
-                
-                form.setWorkEffortTypeName(SendCustomerEmailConstants.WorkEffortType_SEND_CUSTOMER_EMAIL);
-                form.setDefaultWorkEffortScopeChoice(sendWorkEffortScopeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = WorkEffortUtil.getHome().getGetWorkEffortScopeChoicesForm();
 
-                var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetWorkEffortScopeChoicesResult)executionResult.getResult();
-                sendWorkEffortScopeChoices = result.getWorkEffortScopeChoices();
-                
-                if(sendWorkEffortScopeChoice == null) {
-                    sendWorkEffortScopeChoice = sendWorkEffortScopeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, sendWorkEffortScopeChoices remains null, no default
+            form.setWorkEffortTypeName(SendCustomerEmailConstants.WorkEffortType_SEND_CUSTOMER_EMAIL);
+            form.setDefaultWorkEffortScopeChoice(sendWorkEffortScopeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkEffortScopeChoicesResult)executionResult.getResult();
+            sendWorkEffortScopeChoices = result.getWorkEffortScopeChoices();
+
+            if(sendWorkEffortScopeChoice == null) {
+                sendWorkEffortScopeChoice = sendWorkEffortScopeChoices.getDefaultValue();
             }
         }
     }
     
-    public void setupReviewEmployeeSelectorChoices() {
+    public void setupReviewEmployeeSelectorChoices()
+            throws NamingException {
         if(reviewEmployeeSelectorChoices == null) {
-            try {
-                var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
-                
-                form.setSelectorKindName(SelectorKinds.EMPLOYEE.name());
-                form.setSelectorTypeName(SelectorTypes.EMAIL_REVIEW.name());
-                form.setDefaultSelectorChoice(reviewEmployeeSelectorChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
 
-                var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSelectorChoicesResult)executionResult.getResult();
-                reviewEmployeeSelectorChoices = result.getSelectorChoices();
-                
-                if(reviewEmployeeSelectorChoice == null) {
-                    reviewEmployeeSelectorChoice = reviewEmployeeSelectorChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, reviewEmployeeSelectorChoices remains null, no default
+            form.setSelectorKindName(SelectorKinds.EMPLOYEE.name());
+            form.setSelectorTypeName(SelectorTypes.EMAIL_REVIEW.name());
+            form.setDefaultSelectorChoice(reviewEmployeeSelectorChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSelectorChoicesResult)executionResult.getResult();
+            reviewEmployeeSelectorChoices = result.getSelectorChoices();
+
+            if(reviewEmployeeSelectorChoice == null) {
+                reviewEmployeeSelectorChoice = reviewEmployeeSelectorChoices.getDefaultValue();
             }
         }
     }
@@ -174,7 +158,8 @@ public class AddActionForm
         this.serverChoice = serverChoice;
     }
     
-    public List<LabelValueBean> getServerChoices() {
+    public List<LabelValueBean> getServerChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupServerChoices();
@@ -193,7 +178,8 @@ public class AddActionForm
         this.receiveWorkEffortScopeChoice = receiveWorkEffortScopeChoice;
     }
     
-    public List<LabelValueBean> getReceiveWorkEffortScopeChoices() {
+    public List<LabelValueBean> getReceiveWorkEffortScopeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupReceiveWorkEffortScopeChoices();
@@ -212,7 +198,8 @@ public class AddActionForm
         this.sendWorkEffortScopeChoice = sendWorkEffortScopeChoice;
     }
     
-    public List<LabelValueBean> getSendWorkEffortScopeChoices() {
+    public List<LabelValueBean> getSendWorkEffortScopeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupSendWorkEffortScopeChoices();
@@ -231,7 +218,8 @@ public class AddActionForm
         this.reviewEmployeeSelectorChoice = reviewEmployeeSelectorChoice;
     }
     
-    public List<LabelValueBean> getReviewEmployeeSelectorChoices() {
+    public List<LabelValueBean> getReviewEmployeeSelectorChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupReviewEmployeeSelectorChoices();

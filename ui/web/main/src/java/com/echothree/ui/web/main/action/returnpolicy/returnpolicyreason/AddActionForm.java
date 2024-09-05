@@ -39,26 +39,22 @@ public class AddActionForm
     private Boolean isDefault;
     private String sortOrder;
     
-    private void setupReturnReasonChoices() {
+    private void setupReturnReasonChoices()
+            throws NamingException {
         if(returnReasonChoices == null) {
-            try {
-                var form = ReturnPolicyUtil.getHome().getGetReturnReasonChoicesForm();
-                
-                form.setReturnKindName(returnKindName);
-                form.setDefaultReturnReasonChoice(returnReasonChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = ReturnPolicyUtil.getHome().getGetReturnReasonChoicesForm();
 
-                var commandResult = ReturnPolicyUtil.getHome().getReturnReasonChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getReturnReasonChoicesResult = (GetReturnReasonChoicesResult)executionResult.getResult();
-                returnReasonChoices = getReturnReasonChoicesResult.getReturnReasonChoices();
-                
-                if(returnReasonChoice == null) {
-                    returnReasonChoice = returnReasonChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, returnReasonChoices remains null, no default
+            form.setReturnKindName(returnKindName);
+            form.setDefaultReturnReasonChoice(returnReasonChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = ReturnPolicyUtil.getHome().getReturnReasonChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getReturnReasonChoicesResult = (GetReturnReasonChoicesResult)executionResult.getResult();
+            returnReasonChoices = getReturnReasonChoicesResult.getReturnReasonChoices();
+
+            if(returnReasonChoice == null) {
+                returnReasonChoice = returnReasonChoices.getDefaultValue();
             }
         }
     }
@@ -79,7 +75,8 @@ public class AddActionForm
         this.returnPolicyName = returnPolicyName;
     }
     
-    public String getReturnReasonChoice() {
+    public String getReturnReasonChoice()
+            throws NamingException {
         setupReturnReasonChoices();
         
         return returnReasonChoice;
@@ -89,7 +86,8 @@ public class AddActionForm
         this.returnReasonChoice = returnReasonChoice;
     }
     
-    public List<LabelValueBean> getReturnReasonChoices() {
+    public List<LabelValueBean> getReturnReasonChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupReturnReasonChoices();

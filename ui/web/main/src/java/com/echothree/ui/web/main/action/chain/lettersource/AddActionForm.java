@@ -45,77 +45,65 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupEmailAddressContactMechanismChoices() {
+    private void setupEmailAddressContactMechanismChoices()
+            throws NamingException {
         if(emailAddressContactMechanismChoices == null) {
-            try {
-                var commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
-                
-                commandForm.setPartyName(partyName);
-                commandForm.setContactMechanismTypeName(ContactMechanismTypes.EMAIL_ADDRESS.name());
-                commandForm.setDefaultContactMechanismChoice(emailAddressContactMechanismChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            var commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
 
-                var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetContactMechanismChoicesResult)executionResult.getResult();
-                emailAddressContactMechanismChoices = result.getContactMechanismChoices();
-                
-                if(emailAddressContactMechanismChoice == null) {
-                    emailAddressContactMechanismChoice = emailAddressContactMechanismChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, emailAddressContactMechanismChoices remains null, no default
+            commandForm.setPartyName(partyName);
+            commandForm.setContactMechanismTypeName(ContactMechanismTypes.EMAIL_ADDRESS.name());
+            commandForm.setDefaultContactMechanismChoice(emailAddressContactMechanismChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactMechanismChoicesResult)executionResult.getResult();
+            emailAddressContactMechanismChoices = result.getContactMechanismChoices();
+
+            if(emailAddressContactMechanismChoice == null) {
+                emailAddressContactMechanismChoice = emailAddressContactMechanismChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupPostalAddressContactMechanismChoices() {
+    private void setupPostalAddressContactMechanismChoices()
+            throws NamingException {
         if(postalAddressContactMechanismChoices == null) {
-            try {
-                var commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
-                
-                commandForm.setPartyName(partyName);
-                commandForm.setContactMechanismTypeName(ContactMechanismTypes.POSTAL_ADDRESS.name());
-                commandForm.setDefaultContactMechanismChoice(postalAddressContactMechanismChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            var commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
 
-                var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetContactMechanismChoicesResult)executionResult.getResult();
-                postalAddressContactMechanismChoices = result.getContactMechanismChoices();
-                
-                if(postalAddressContactMechanismChoice == null) {
-                    postalAddressContactMechanismChoice = postalAddressContactMechanismChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, postalAddressContactMechanismChoices remains null, no default
+            commandForm.setPartyName(partyName);
+            commandForm.setContactMechanismTypeName(ContactMechanismTypes.POSTAL_ADDRESS.name());
+            commandForm.setDefaultContactMechanismChoice(postalAddressContactMechanismChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactMechanismChoicesResult)executionResult.getResult();
+            postalAddressContactMechanismChoices = result.getContactMechanismChoices();
+
+            if(postalAddressContactMechanismChoice == null) {
+                postalAddressContactMechanismChoice = postalAddressContactMechanismChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupLetterSourceContactMechanismChoices() {
+    private void setupLetterSourceContactMechanismChoices()
+            throws NamingException {
         if(letterSourceContactMechanismChoices == null) {
-            try {
-                var commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
-                
-                commandForm.setPartyName(partyName);
-                commandForm.setContactMechanismTypeName(ContactMechanismTypes.WEB_ADDRESS.name());
-                commandForm.setDefaultContactMechanismChoice(letterSourceContactMechanismChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            var commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
 
-                var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetContactMechanismChoicesResult)executionResult.getResult();
-                letterSourceContactMechanismChoices = result.getContactMechanismChoices();
-                
-                if(letterSourceContactMechanismChoice == null) {
-                    letterSourceContactMechanismChoice = letterSourceContactMechanismChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, letterSourceContactMechanismChoices remains null, no default
+            commandForm.setPartyName(partyName);
+            commandForm.setContactMechanismTypeName(ContactMechanismTypes.WEB_ADDRESS.name());
+            commandForm.setDefaultContactMechanismChoice(letterSourceContactMechanismChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactMechanismChoicesResult)executionResult.getResult();
+            letterSourceContactMechanismChoices = result.getContactMechanismChoices();
+
+            if(letterSourceContactMechanismChoice == null) {
+                letterSourceContactMechanismChoice = letterSourceContactMechanismChoices.getDefaultValue();
             }
         }
     }
@@ -136,7 +124,8 @@ public class AddActionForm
         return letterSourceName;
     }
     
-    public List<LabelValueBean> getEmailAddressContactMechanismChoices() {
+    public List<LabelValueBean> getEmailAddressContactMechanismChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupEmailAddressContactMechanismChoices();
@@ -151,13 +140,15 @@ public class AddActionForm
         this.emailAddressContactMechanismChoice = emailAddressContactMechanismChoice;
     }
     
-    public String getEmailAddressContactMechanismChoice() {
+    public String getEmailAddressContactMechanismChoice()
+            throws NamingException {
         setupEmailAddressContactMechanismChoices();
         
         return emailAddressContactMechanismChoice;
     }
     
-    public List<LabelValueBean> getPostalAddressContactMechanismChoices() {
+    public List<LabelValueBean> getPostalAddressContactMechanismChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPostalAddressContactMechanismChoices();
@@ -172,13 +163,15 @@ public class AddActionForm
         this.postalAddressContactMechanismChoice = postalAddressContactMechanismChoice;
     }
     
-    public String getPostalAddressContactMechanismChoice() {
+    public String getPostalAddressContactMechanismChoice()
+            throws NamingException {
         setupPostalAddressContactMechanismChoices();
         
         return postalAddressContactMechanismChoice;
     }
     
-    public List<LabelValueBean> getLetterSourceContactMechanismChoices() {
+    public List<LabelValueBean> getLetterSourceContactMechanismChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupLetterSourceContactMechanismChoices();
@@ -193,7 +186,8 @@ public class AddActionForm
         this.letterSourceContactMechanismChoice = letterSourceContactMechanismChoice;
     }
     
-    public String getLetterSourceContactMechanismChoice() {
+    public String getLetterSourceContactMechanismChoice()
+            throws NamingException {
         setupLetterSourceContactMechanismChoices();
         
         return letterSourceContactMechanismChoice;

@@ -35,9 +35,9 @@ public class AddActionForm
     private String geoCodeAliasTypeChoice;
     private String alias;
 
-    public void setupGeoCodeAliasTypeChoices() {
+    public void setupGeoCodeAliasTypeChoices()
+            throws NamingException {
         if(geoCodeAliasTypeChoices == null) {
-            try {
                 var form = GeoUtil.getHome().getGetGeoCodeAliasTypeChoicesForm();
 
                 form.setGeoCodeName(geoCodeName);
@@ -52,10 +52,6 @@ public class AddActionForm
                 if(geoCodeAliasTypeChoice == null) {
                     geoCodeAliasTypeChoice = geoCodeAliasTypeChoices.getDefaultValue();
                 }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, geoCodeAliasTypeChoices remains null, no default
-            }
         }
     }
 
@@ -75,7 +71,8 @@ public class AddActionForm
         this.geoCodeName = geoCodeName;
     }
 
-    public List<LabelValueBean> getGeoCodeAliasTypeChoices() {
+    public List<LabelValueBean> getGeoCodeAliasTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupGeoCodeAliasTypeChoices();
@@ -90,7 +87,8 @@ public class AddActionForm
         this.geoCodeAliasTypeChoice = geoCodeAliasTypeChoice;
     }
 
-    public String getGeoCodeAliasTypeChoice() {
+    public String getGeoCodeAliasTypeChoice()
+            throws NamingException {
         setupGeoCodeAliasTypeChoices();
         return geoCodeAliasTypeChoice;
     }

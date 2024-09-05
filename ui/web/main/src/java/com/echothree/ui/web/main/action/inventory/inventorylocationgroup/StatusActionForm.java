@@ -37,26 +37,22 @@ public class StatusActionForm
     private String inventoryLocationGroupName;
     private String inventoryLocationGroupStatusChoice;
     
-    public void setupInventoryLocationGroupStatusChoices() {
+    public void setupInventoryLocationGroupStatusChoices()
+            throws NamingException {
         if(inventoryLocationGroupStatusChoices == null) {
-            try {
-                var form = InventoryUtil.getHome().getGetInventoryLocationGroupStatusChoicesForm();
-                
-                form.setWarehouseName(warehouseName);
-                form.setInventoryLocationGroupName(inventoryLocationGroupName);
-                form.setDefaultInventoryLocationGroupStatusChoice(inventoryLocationGroupStatusChoice);
+            var form = InventoryUtil.getHome().getGetInventoryLocationGroupStatusChoicesForm();
 
-                var commandResult = InventoryUtil.getHome().getInventoryLocationGroupStatusChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getInventoryLocationGroupStatusChoicesResult = (GetInventoryLocationGroupStatusChoicesResult)executionResult.getResult();
-                inventoryLocationGroupStatusChoices = getInventoryLocationGroupStatusChoicesResult.getInventoryLocationGroupStatusChoices();
-                
-                if(inventoryLocationGroupStatusChoice == null)
-                    inventoryLocationGroupStatusChoice = inventoryLocationGroupStatusChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, inventoryLocationGroupStatusChoices remains null, no default
-            }
+            form.setWarehouseName(warehouseName);
+            form.setInventoryLocationGroupName(inventoryLocationGroupName);
+            form.setDefaultInventoryLocationGroupStatusChoice(inventoryLocationGroupStatusChoice);
+
+            var commandResult = InventoryUtil.getHome().getInventoryLocationGroupStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getInventoryLocationGroupStatusChoicesResult = (GetInventoryLocationGroupStatusChoicesResult)executionResult.getResult();
+            inventoryLocationGroupStatusChoices = getInventoryLocationGroupStatusChoicesResult.getInventoryLocationGroupStatusChoices();
+
+            if(inventoryLocationGroupStatusChoice == null)
+                inventoryLocationGroupStatusChoice = inventoryLocationGroupStatusChoices.getDefaultValue();
         }
     }
     
@@ -84,7 +80,8 @@ public class StatusActionForm
         this.inventoryLocationGroupStatusChoice = inventoryLocationGroupStatusChoice;
     }
     
-    public List<LabelValueBean> getInventoryLocationGroupStatusChoices() {
+    public List<LabelValueBean> getInventoryLocationGroupStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupInventoryLocationGroupStatusChoices();

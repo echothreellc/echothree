@@ -39,25 +39,21 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupParentGeoCodeTypeChoices() {
+    private void setupParentGeoCodeTypeChoices()
+            throws NamingException {
         if(parentGeoCodeTypeChoices == null) {
-            try {
-                var form = GeoUtil.getHome().getGetGeoCodeTypeChoicesForm();
+            var form = GeoUtil.getHome().getGetGeoCodeTypeChoicesForm();
 
-                form.setDefaultGeoCodeTypeChoice(parentGeoCodeTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setDefaultGeoCodeTypeChoice(parentGeoCodeTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                var commandResult = GeoUtil.getHome().getGeoCodeTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getGeoCodeTypeChoicesResult = (GetGeoCodeTypeChoicesResult)executionResult.getResult();
-                parentGeoCodeTypeChoices = getGeoCodeTypeChoicesResult.getGeoCodeTypeChoices();
+            var commandResult = GeoUtil.getHome().getGeoCodeTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getGeoCodeTypeChoicesResult = (GetGeoCodeTypeChoicesResult)executionResult.getResult();
+            parentGeoCodeTypeChoices = getGeoCodeTypeChoicesResult.getGeoCodeTypeChoices();
 
-                if(parentGeoCodeTypeChoice == null) {
-                    parentGeoCodeTypeChoice = parentGeoCodeTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, parentGeoCodeTypeChoices remains null, no default
+            if(parentGeoCodeTypeChoice == null) {
+                parentGeoCodeTypeChoice = parentGeoCodeTypeChoices.getDefaultValue();
             }
         }
     }
@@ -70,7 +66,8 @@ public class AddActionForm
         return geoCodeTypeName;
     }
     
-    public String getParentGeoCodeTypeChoice() {
+    public String getParentGeoCodeTypeChoice()
+            throws NamingException {
         setupParentGeoCodeTypeChoices();
         return parentGeoCodeTypeChoice;
     }
@@ -79,7 +76,8 @@ public class AddActionForm
         this.parentGeoCodeTypeChoice = parentGeoCodeTypeChoice;
     }
 
-    public List<LabelValueBean> getParentGeoCodeTypeChoices() {
+    public List<LabelValueBean> getParentGeoCodeTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupParentGeoCodeTypeChoices();

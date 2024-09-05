@@ -39,25 +39,21 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    public void setupReturnSequenceTypeChoices() {
+    public void setupReturnSequenceTypeChoices()
+            throws NamingException {
         if(returnSequenceTypeChoices == null) {
-            try {
-                var form = SequenceUtil.getHome().getGetSequenceTypeChoicesForm();
-                
-                form.setDefaultSequenceTypeChoice(returnSequenceTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = SequenceUtil.getHome().getGetSequenceTypeChoicesForm();
 
-                var commandResult = SequenceUtil.getHome().getSequenceTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSequenceTypeChoicesResult)executionResult.getResult();
-                returnSequenceTypeChoices = result.getSequenceTypeChoices();
-                
-                if(returnSequenceTypeChoice == null)
-                    returnSequenceTypeChoice = returnSequenceTypeChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, returnSequenceTypeChoices remains null, no default
-            }
+            form.setDefaultSequenceTypeChoice(returnSequenceTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = SequenceUtil.getHome().getSequenceTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceTypeChoicesResult)executionResult.getResult();
+            returnSequenceTypeChoices = result.getSequenceTypeChoices();
+
+            if(returnSequenceTypeChoice == null)
+                returnSequenceTypeChoice = returnSequenceTypeChoices.getDefaultValue();
         }
     }
     
@@ -69,7 +65,8 @@ public class AddActionForm
         return returnKindName;
     }
     
-    public List<LabelValueBean> getReturnSequenceTypeChoices() {
+    public List<LabelValueBean> getReturnSequenceTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupReturnSequenceTypeChoices();
@@ -84,7 +81,8 @@ public class AddActionForm
         this.returnSequenceTypeChoice = returnSequenceTypeChoice;
     }
     
-    public String getReturnSequenceTypeChoice() {
+    public String getReturnSequenceTypeChoice()
+            throws NamingException {
         setupReturnSequenceTypeChoices();
         
         return returnSequenceTypeChoice;

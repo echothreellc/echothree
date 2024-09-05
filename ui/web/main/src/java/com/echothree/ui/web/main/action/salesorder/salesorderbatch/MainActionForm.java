@@ -54,95 +54,79 @@ public class MainActionForm
     private String createdSince;
     private String modifiedSince;
     
-    public void setupCurrencyChoices() {
+    public void setupCurrencyChoices()
+            throws NamingException {
         if(currencyChoices == null) {
-            try {
-                var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
-                
-                form.setDefaultCurrencyChoice(currencyChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
 
-                var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetCurrencyChoicesResult)executionResult.getResult();
-                currencyChoices = result.getCurrencyChoices();
-                
-                if(currencyChoice == null) {
-                    currencyChoice = currencyChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, currencyChoices remains null, no default
+            form.setDefaultCurrencyChoice(currencyChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCurrencyChoicesResult)executionResult.getResult();
+            currencyChoices = result.getCurrencyChoices();
+
+            if(currencyChoice == null) {
+                currencyChoice = currencyChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupPaymentMethodChoices() {
+    private void setupPaymentMethodChoices()
+            throws NamingException {
         if(paymentMethodChoices == null) {
-            try {
-                var form = PaymentUtil.getHome().getGetPaymentMethodChoicesForm();
-                
-                form.setDefaultPaymentMethodChoice(paymentMethodChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = PaymentUtil.getHome().getGetPaymentMethodChoicesForm();
 
-                var commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getPaymentMethodChoicesResult = (GetPaymentMethodChoicesResult)executionResult.getResult();
-                paymentMethodChoices = getPaymentMethodChoicesResult.getPaymentMethodChoices();
-                
-                if(paymentMethodChoice == null)
-                    paymentMethodChoice = paymentMethodChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, paymentMethodChoices remains null, no default
-            }
+            form.setDefaultPaymentMethodChoice(paymentMethodChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getPaymentMethodChoicesResult = (GetPaymentMethodChoicesResult)executionResult.getResult();
+            paymentMethodChoices = getPaymentMethodChoicesResult.getPaymentMethodChoices();
+
+            if(paymentMethodChoice == null)
+                paymentMethodChoice = paymentMethodChoices.getDefaultValue();
         }
     }
     
-    private void setupSalesOrderBatchStatusChoices() {
+    private void setupSalesOrderBatchStatusChoices()
+            throws NamingException {
         if(salesOrderBatchStatusChoices == null) {
-            try {
-                var form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
-                
-                form.setWorkflowName(SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS);
-                form.setDefaultWorkflowStepChoice(salesOrderBatchStatusChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
 
-                var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
-                salesOrderBatchStatusChoices = result.getWorkflowStepChoices();
-                
-                if(salesOrderBatchStatusChoice == null) {
-                    salesOrderBatchStatusChoice = salesOrderBatchStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, salesOrderBatchStatusChoices remains null, no default
+            form.setWorkflowName(SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS);
+            form.setDefaultWorkflowStepChoice(salesOrderBatchStatusChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            salesOrderBatchStatusChoices = result.getWorkflowStepChoices();
+
+            if(salesOrderBatchStatusChoice == null) {
+                salesOrderBatchStatusChoice = salesOrderBatchStatusChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupBatchAliasTypeChoices() {
+    private void setupBatchAliasTypeChoices()
+            throws NamingException {
         if(batchAliasTypeChoices == null) {
-            try {
-                var form = BatchUtil.getHome().getGetBatchAliasTypeChoicesForm();
+            var form = BatchUtil.getHome().getGetBatchAliasTypeChoicesForm();
 
-                form.setBatchTypeName(BatchConstants.BatchType_SALES_ORDER);
-                form.setDefaultBatchAliasTypeChoice(batchAliasTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setBatchTypeName(BatchConstants.BatchType_SALES_ORDER);
+            form.setDefaultBatchAliasTypeChoice(batchAliasTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                var commandResult = BatchUtil.getHome().getBatchAliasTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getBatchAliasTypeChoicesResult = (GetBatchAliasTypeChoicesResult)executionResult.getResult();
-                batchAliasTypeChoices = getBatchAliasTypeChoicesResult.getBatchAliasTypeChoices();
+            var commandResult = BatchUtil.getHome().getBatchAliasTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getBatchAliasTypeChoicesResult = (GetBatchAliasTypeChoicesResult)executionResult.getResult();
+            batchAliasTypeChoices = getBatchAliasTypeChoicesResult.getBatchAliasTypeChoices();
 
-                if(batchAliasTypeChoice == null) {
-                    batchAliasTypeChoice = batchAliasTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, batchAliasTypeChoices remains null, no default
+            if(batchAliasTypeChoice == null) {
+                batchAliasTypeChoice = batchAliasTypeChoices.getDefaultValue();
             }
         }
     }
@@ -159,13 +143,15 @@ public class MainActionForm
         this.currencyChoice = currencyChoice;
     }
     
-    public String getCurrencyChoice() {
+    public String getCurrencyChoice()
+            throws NamingException {
         setupCurrencyChoices();
         
         return currencyChoice;
     }
     
-    public List<LabelValueBean> getCurrencyChoices() {
+    public List<LabelValueBean> getCurrencyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCurrencyChoices();
@@ -184,7 +170,8 @@ public class MainActionForm
         this.paymentMethodChoice = paymentMethodChoice;
     }
     
-    public List<LabelValueBean> getPaymentMethodChoices() {
+    public List<LabelValueBean> getPaymentMethodChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPaymentMethodChoices();
@@ -195,7 +182,8 @@ public class MainActionForm
         return choices;
     }
     
-    public String getSalesOrderBatchStatusChoice() {
+    public String getSalesOrderBatchStatusChoice()
+            throws NamingException {
         setupSalesOrderBatchStatusChoices();
         
         return salesOrderBatchStatusChoice;
@@ -205,7 +193,8 @@ public class MainActionForm
         this.salesOrderBatchStatusChoice = salesOrderBatchStatusChoice;
     }
     
-    public List<LabelValueBean> getSalesOrderBatchStatusChoices() {
+    public List<LabelValueBean> getSalesOrderBatchStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupSalesOrderBatchStatusChoices();
@@ -216,7 +205,8 @@ public class MainActionForm
         return choices;
     }
 
-    public String getBatchAliasTypeChoice() {
+    public String getBatchAliasTypeChoice()
+            throws NamingException {
         setupBatchAliasTypeChoices();
         
         return batchAliasTypeChoice;
@@ -226,7 +216,8 @@ public class MainActionForm
         this.batchAliasTypeChoice = batchAliasTypeChoice;
     }
     
-    public List<LabelValueBean> getBatchAliasTypeChoices() {
+    public List<LabelValueBean> getBatchAliasTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupBatchAliasTypeChoices();

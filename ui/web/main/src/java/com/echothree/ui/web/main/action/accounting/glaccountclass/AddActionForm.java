@@ -39,25 +39,21 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupParentGlAccountClassChoices() {
+    private void setupParentGlAccountClassChoices()
+            throws NamingException {
         if(parentGlAccountClassChoices == null) {
-            try {
-                var form = AccountingUtil.getHome().getGetGlAccountClassChoicesForm();
-                
-                form.setDefaultGlAccountClassChoice(parentGlAccountClassChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = AccountingUtil.getHome().getGetGlAccountClassChoicesForm();
 
-                var commandResult = AccountingUtil.getHome().getGlAccountClassChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getGlAccountClassChoicesResult = (GetGlAccountClassChoicesResult)executionResult.getResult();
-                parentGlAccountClassChoices = getGlAccountClassChoicesResult.getGlAccountClassChoices();
-                
-                if(parentGlAccountClassChoice == null)
-                    parentGlAccountClassChoice = parentGlAccountClassChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, parentGlAccountClassChoices remains null, no default
-            }
+            form.setDefaultGlAccountClassChoice(parentGlAccountClassChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = AccountingUtil.getHome().getGlAccountClassChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getGlAccountClassChoicesResult = (GetGlAccountClassChoicesResult)executionResult.getResult();
+            parentGlAccountClassChoices = getGlAccountClassChoicesResult.getGlAccountClassChoices();
+
+            if(parentGlAccountClassChoice == null)
+                parentGlAccountClassChoice = parentGlAccountClassChoices.getDefaultValue();
         }
     }
     
@@ -77,7 +73,8 @@ public class AddActionForm
         this.parentGlAccountClassChoice = parentGlAccountClassChoice;
     }
     
-    public List<LabelValueBean> getParentGlAccountClassChoices() {
+    public List<LabelValueBean> getParentGlAccountClassChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupParentGlAccountClassChoices();

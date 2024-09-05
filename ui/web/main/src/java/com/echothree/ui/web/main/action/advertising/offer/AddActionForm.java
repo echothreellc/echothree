@@ -57,76 +57,64 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    public void setupSalesOrderSequenceChoices() {
+    public void setupSalesOrderSequenceChoices()
+            throws NamingException {
         if(salesOrderSequenceChoices == null) {
-            try {
-                var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
-                
-                form.setSequenceTypeName(SequenceTypes.SALES_ORDER.name());
-                form.setDefaultSequenceChoice(salesOrderSequenceChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
 
-                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSequenceChoicesResult)executionResult.getResult();
-                salesOrderSequenceChoices = result.getSequenceChoices();
-                
-                if(salesOrderSequenceChoice == null) {
-                    salesOrderSequenceChoice = salesOrderSequenceChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, salesOrderSequenceChoices remains null, no default
+            form.setSequenceTypeName(SequenceTypes.SALES_ORDER.name());
+            form.setDefaultSequenceChoice(salesOrderSequenceChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceChoicesResult)executionResult.getResult();
+            salesOrderSequenceChoices = result.getSequenceChoices();
+
+            if(salesOrderSequenceChoice == null) {
+                salesOrderSequenceChoice = salesOrderSequenceChoices.getDefaultValue();
             }
         }
     }
     
-    public void setupOfferItemSelectorChoices() {
+    public void setupOfferItemSelectorChoices()
+            throws NamingException {
         if(offerItemSelectorChoices == null) {
-            try {
-                var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
-                
-                form.setSelectorKindName(SelectorKinds.ITEM.name());
-                form.setSelectorTypeName(SelectorTypes.OFFER.name());
-                form.setDefaultSelectorChoice(offerItemSelectorChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
 
-                var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSelectorChoicesResult)executionResult.getResult();
-                offerItemSelectorChoices = result.getSelectorChoices();
-                
-                if(offerItemSelectorChoice == null) {
-                    offerItemSelectorChoice = offerItemSelectorChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, offerItemSelectorChoices remains null, no default
+            form.setSelectorKindName(SelectorKinds.ITEM.name());
+            form.setSelectorTypeName(SelectorTypes.OFFER.name());
+            form.setDefaultSelectorChoice(offerItemSelectorChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSelectorChoicesResult)executionResult.getResult();
+            offerItemSelectorChoices = result.getSelectorChoices();
+
+            if(offerItemSelectorChoice == null) {
+                offerItemSelectorChoice = offerItemSelectorChoices.getDefaultValue();
             }
         }
     }
     
-    public void setupOfferItemPriceFilterChoices() {
+    public void setupOfferItemPriceFilterChoices()
+            throws NamingException {
         if(offerItemPriceFilterChoices == null) {
-            try {
-                var form = FilterUtil.getHome().getGetFilterChoicesForm();
-                
-                form.setFilterKindName(FilterKinds.PRICE.name());
-                form.setFilterTypeName(FilterTypes.OFFER_ITEM_PRICE.name());
-                form.setDefaultFilterChoice(offerItemPriceFilterChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = FilterUtil.getHome().getGetFilterChoicesForm();
 
-                var commandResult = FilterUtil.getHome().getFilterChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetFilterChoicesResult)executionResult.getResult();
-                offerItemPriceFilterChoices = result.getFilterChoices();
-                
-                if(offerItemPriceFilterChoice == null) {
-                    offerItemPriceFilterChoice = offerItemPriceFilterChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, offerItemPriceFilterChoices remains null, no default
+            form.setFilterKindName(FilterKinds.PRICE.name());
+            form.setFilterTypeName(FilterTypes.OFFER_ITEM_PRICE.name());
+            form.setDefaultFilterChoice(offerItemPriceFilterChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = FilterUtil.getHome().getFilterChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetFilterChoicesResult)executionResult.getResult();
+            offerItemPriceFilterChoices = result.getFilterChoices();
+
+            if(offerItemPriceFilterChoice == null) {
+                offerItemPriceFilterChoice = offerItemPriceFilterChoices.getDefaultValue();
             }
         }
     }
@@ -139,7 +127,8 @@ public class AddActionForm
         return offerName;
     }
     
-    public List<LabelValueBean> getSalesOrderSequenceChoices() {
+    public List<LabelValueBean> getSalesOrderSequenceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupSalesOrderSequenceChoices();
@@ -154,7 +143,8 @@ public class AddActionForm
         this.salesOrderSequenceChoice = salesOrderSequenceChoice;
     }
     
-    public String getSalesOrderSequenceChoice() {
+    public String getSalesOrderSequenceChoice()
+            throws NamingException {
         setupSalesOrderSequenceChoices();
         
         return salesOrderSequenceChoice;
@@ -184,7 +174,8 @@ public class AddActionForm
         this.departmentName = departmentName;
     }
     
-    public List<LabelValueBean> getOfferItemSelectorChoices() {
+    public List<LabelValueBean> getOfferItemSelectorChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupOfferItemSelectorChoices();
@@ -199,13 +190,15 @@ public class AddActionForm
         this.offerItemSelectorChoice = offerItemSelectorChoice;
     }
     
-    public String getOfferItemSelectorChoice() {
+    public String getOfferItemSelectorChoice()
+            throws NamingException {
         setupOfferItemSelectorChoices();
         
         return offerItemSelectorChoice;
     }
     
-    public List<LabelValueBean> getOfferItemPriceFilterChoices() {
+    public List<LabelValueBean> getOfferItemPriceFilterChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupOfferItemPriceFilterChoices();
@@ -220,7 +213,8 @@ public class AddActionForm
         this.offerItemPriceFilterChoice = offerItemPriceFilterChoice;
     }
     
-    public String getOfferItemPriceFilterChoice() {
+    public String getOfferItemPriceFilterChoice()
+            throws NamingException {
         setupOfferItemPriceFilterChoices();
         
         return offerItemPriceFilterChoice;

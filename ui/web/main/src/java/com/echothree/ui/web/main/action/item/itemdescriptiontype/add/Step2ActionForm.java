@@ -57,49 +57,41 @@ public class Step2ActionForm
     private String quality;
     private Boolean scaleFromParent;
 
-    private void setupParentItemDescriptionTypeChoices() {
+    private void setupParentItemDescriptionTypeChoices()
+            throws NamingException {
         if(parentItemDescriptionTypeChoices == null) {
-            try {
-                var form = ItemUtil.getHome().getGetItemDescriptionTypeChoicesForm();
+            var form = ItemUtil.getHome().getGetItemDescriptionTypeChoicesForm();
 
-                form.setDefaultItemDescriptionTypeChoice(parentItemDescriptionTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setDefaultItemDescriptionTypeChoice(parentItemDescriptionTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                var commandResult = ItemUtil.getHome().getItemDescriptionTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getItemDescriptionTypeChoicesResult = (GetItemDescriptionTypeChoicesResult)executionResult.getResult();
-                parentItemDescriptionTypeChoices = getItemDescriptionTypeChoicesResult.getItemDescriptionTypeChoices();
+            var commandResult = ItemUtil.getHome().getItemDescriptionTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getItemDescriptionTypeChoicesResult = (GetItemDescriptionTypeChoicesResult)executionResult.getResult();
+            parentItemDescriptionTypeChoices = getItemDescriptionTypeChoicesResult.getItemDescriptionTypeChoices();
 
-                if(parentItemDescriptionTypeChoice == null) {
-                    parentItemDescriptionTypeChoice = parentItemDescriptionTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, parentItemDescriptionTypeChoices remains null, no default
+            if(parentItemDescriptionTypeChoice == null) {
+                parentItemDescriptionTypeChoice = parentItemDescriptionTypeChoices.getDefaultValue();
             }
         }
     }
 
-    public void setupPreferredMimeTypeChoices() {
+    public void setupPreferredMimeTypeChoices()
+            throws NamingException {
         if(preferredMimeTypeChoices == null) {
-            try {
-                var form = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+            var form = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
-                form.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
-                form.setDefaultMimeTypeChoice(preferredMimeTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
+            form.setDefaultMimeTypeChoice(preferredMimeTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
-                preferredMimeTypeChoices = result.getMimeTypeChoices();
+            var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            preferredMimeTypeChoices = result.getMimeTypeChoices();
 
-                if(preferredMimeTypeChoice == null) {
-                    preferredMimeTypeChoice = preferredMimeTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, mimeTypeChoices remains null, no default
+            if(preferredMimeTypeChoice == null) {
+                preferredMimeTypeChoice = preferredMimeTypeChoices.getDefaultValue();
             }
         }
     }
@@ -112,7 +104,8 @@ public class Step2ActionForm
         return itemDescriptionTypeName;
     }
 
-    public List<LabelValueBean> getParentItemDescriptionTypeChoices() {
+    public List<LabelValueBean> getParentItemDescriptionTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupParentItemDescriptionTypeChoices();
@@ -123,7 +116,8 @@ public class Step2ActionForm
         return choices;
     }
 
-    public String getParentItemDescriptionTypeChoice() {
+    public String getParentItemDescriptionTypeChoice()
+            throws NamingException {
         setupParentItemDescriptionTypeChoices();
         return parentItemDescriptionTypeChoice;
     }
@@ -324,7 +318,8 @@ public class Step2ActionForm
         this.preferredWidth = preferredWidth;
     }
 
-    public List<LabelValueBean> getPreferredMimeTypeChoices() {
+    public List<LabelValueBean> getPreferredMimeTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupPreferredMimeTypeChoices();
@@ -338,7 +333,8 @@ public class Step2ActionForm
         this.preferredMimeTypeChoice = preferredMimeTypeChoice;
     }
 
-    public String getPreferredMimeTypeChoice() {
+    public String getPreferredMimeTypeChoice()
+            throws NamingException {
         setupPreferredMimeTypeChoices();
         return preferredMimeTypeChoice;
     }

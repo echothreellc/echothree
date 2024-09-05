@@ -31,9 +31,7 @@ public class TranslationEditActionForm
         extends BaseActionForm {
     
     private MimeTypeChoicesBean questionMimeTypeChoices;
-    private MimeTypeChoicesBean correctMimeTypeChoices;
-    private MimeTypeChoicesBean selectedMimeTypeChoices;
-    
+
     private String trainingClassName;
     private String trainingClassSectionName;
     private String trainingClassQuestionName;

@@ -42,47 +42,39 @@ public class AddActionForm
     private Boolean isDefault;
     private String sortOrder;
     
-    public void setupOfferChoices() {
+    public void setupOfferChoices()
+            throws NamingException {
         if(offerChoices == null) {
-            try {
-                var form = OfferUtil.getHome().getGetOfferChoicesForm();
+            var form = OfferUtil.getHome().getGetOfferChoicesForm();
 
-                form.setDefaultOfferChoice(offerChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setDefaultOfferChoice(offerChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                var commandResult = OfferUtil.getHome().getOfferChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetOfferChoicesResult)executionResult.getResult();
-                offerChoices = result.getOfferChoices();
+            var commandResult = OfferUtil.getHome().getOfferChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetOfferChoicesResult)executionResult.getResult();
+            offerChoices = result.getOfferChoices();
 
-                if(offerChoice == null)
-                    offerChoice = offerChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, offerChoices remains null, no default
-            }
+            if(offerChoice == null)
+                offerChoice = offerChoices.getDefaultValue();
         }
     }
 
-    public void setupUseChoices() {
+    public void setupUseChoices()
+            throws NamingException {
         if(useChoices == null) {
-            try {
-                var form = OfferUtil.getHome().getGetUseChoicesForm();
+            var form = OfferUtil.getHome().getGetUseChoicesForm();
 
-                form.setDefaultUseChoice(useChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setDefaultUseChoice(useChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                var commandResult = OfferUtil.getHome().getUseChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetUseChoicesResult)executionResult.getResult();
-                useChoices = result.getUseChoices();
+            var commandResult = OfferUtil.getHome().getUseChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetUseChoicesResult)executionResult.getResult();
+            useChoices = result.getUseChoices();
 
-                if(useChoice == null)
-                    useChoice = useChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, useChoices remains null, no default
-            }
+            if(useChoice == null)
+                useChoice = useChoices.getDefaultValue();
         }
     }
 
@@ -94,7 +86,8 @@ public class AddActionForm
         this.sourceName = sourceName;
     }
 
-    public List<LabelValueBean> getOfferChoices() {
+    public List<LabelValueBean> getOfferChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupOfferChoices();
@@ -108,12 +101,14 @@ public class AddActionForm
         this.offerChoice = offerChoice;
     }
 
-    public String getOfferChoice() {
+    public String getOfferChoice()
+            throws NamingException {
         setupOfferChoices();
         return offerChoice;
     }
 
-    public List<LabelValueBean> getUseChoices() {
+    public List<LabelValueBean> getUseChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupUseChoices();
@@ -127,7 +122,8 @@ public class AddActionForm
         this.useChoice = useChoice;
     }
 
-    public String getUseChoice() {
+    public String getUseChoice()
+            throws NamingException {
         setupUseChoices();
         return useChoice;
     }
