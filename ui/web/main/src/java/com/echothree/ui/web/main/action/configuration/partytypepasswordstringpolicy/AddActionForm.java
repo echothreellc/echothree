@@ -57,74 +57,62 @@ public class AddActionForm
     private String maximumRepeated;
     private String minimumCharacterTypes;
     
-    private void setupMinimumPasswordLifetimeUnitOfMeasureTypeChoices() {
+    private void setupMinimumPasswordLifetimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(minimumPasswordLifetimeUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(minimumPasswordLifetimeUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                minimumPasswordLifetimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(minimumPasswordLifetimeUnitOfMeasureTypeChoice == null) {
-                    minimumPasswordLifetimeUnitOfMeasureTypeChoice = minimumPasswordLifetimeUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(minimumPasswordLifetimeUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            minimumPasswordLifetimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(minimumPasswordLifetimeUnitOfMeasureTypeChoice == null) {
+                minimumPasswordLifetimeUnitOfMeasureTypeChoice = minimumPasswordLifetimeUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupMaximumPasswordLifetimeUnitOfMeasureTypeChoices() {
+    private void setupMaximumPasswordLifetimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(maximumPasswordLifetimeUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(maximumPasswordLifetimeUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                maximumPasswordLifetimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(maximumPasswordLifetimeUnitOfMeasureTypeChoice == null) {
-                    maximumPasswordLifetimeUnitOfMeasureTypeChoice = maximumPasswordLifetimeUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(maximumPasswordLifetimeUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            maximumPasswordLifetimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(maximumPasswordLifetimeUnitOfMeasureTypeChoice == null) {
+                maximumPasswordLifetimeUnitOfMeasureTypeChoice = maximumPasswordLifetimeUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupExpirationWarningTimeUnitOfMeasureTypeChoices() {
+    private void setupExpirationWarningTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(expirationWarningTimeUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(expirationWarningTimeUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                expirationWarningTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(expirationWarningTimeUnitOfMeasureTypeChoice == null) {
-                    expirationWarningTimeUnitOfMeasureTypeChoice = expirationWarningTimeUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(expirationWarningTimeUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            expirationWarningTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(expirationWarningTimeUnitOfMeasureTypeChoice == null) {
+                expirationWarningTimeUnitOfMeasureTypeChoice = expirationWarningTimeUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
@@ -177,7 +165,8 @@ public class AddActionForm
         this.minimumPasswordLifetime = minimumPasswordLifetime;
     }
     
-    public List<LabelValueBean> getMinimumPasswordLifetimeUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getMinimumPasswordLifetimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupMinimumPasswordLifetimeUnitOfMeasureTypeChoices();
@@ -188,7 +177,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getMinimumPasswordLifetimeUnitOfMeasureTypeChoice() {
+    public String getMinimumPasswordLifetimeUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupMinimumPasswordLifetimeUnitOfMeasureTypeChoices();
         
         return minimumPasswordLifetimeUnitOfMeasureTypeChoice;
@@ -206,7 +196,8 @@ public class AddActionForm
         this.maximumPasswordLifetime = maximumPasswordLifetime;
     }
     
-    public List<LabelValueBean> getMaximumPasswordLifetimeUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getMaximumPasswordLifetimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupMaximumPasswordLifetimeUnitOfMeasureTypeChoices();
@@ -217,7 +208,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getMaximumPasswordLifetimeUnitOfMeasureTypeChoice() {
+    public String getMaximumPasswordLifetimeUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupMaximumPasswordLifetimeUnitOfMeasureTypeChoices();
         
         return maximumPasswordLifetimeUnitOfMeasureTypeChoice;
@@ -235,7 +227,8 @@ public class AddActionForm
         this.expirationWarningTime = expirationWarningTime;
     }
     
-    public List<LabelValueBean> getExpirationWarningTimeUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getExpirationWarningTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupExpirationWarningTimeUnitOfMeasureTypeChoices();
@@ -246,7 +239,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getExpirationWarningTimeUnitOfMeasureTypeChoice() {
+    public String getExpirationWarningTimeUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupExpirationWarningTimeUnitOfMeasureTypeChoices();
         return expirationWarningTimeUnitOfMeasureTypeChoice;
     }

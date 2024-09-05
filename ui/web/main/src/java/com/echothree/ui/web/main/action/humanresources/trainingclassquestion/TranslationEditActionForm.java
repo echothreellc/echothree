@@ -41,25 +41,22 @@ public class TranslationEditActionForm
     private String questionMimeTypeChoice;
     private String question;
     
-     private void setupQuestionMimeTypeChoices() {
+     private void setupQuestionMimeTypeChoices()
+             throws NamingException {
         if(questionMimeTypeChoices == null) {
-            try {
-                var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
-                
-                commandForm.setDefaultMimeTypeChoice(questionMimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
+            var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
-                var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
-                questionMimeTypeChoices = result.getMimeTypeChoices();
-                
-                if(questionMimeTypeChoice == null) {
-                    questionMimeTypeChoice = questionMimeTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                // failed, questionMimeTypeChoices remains null, no default
+            commandForm.setDefaultMimeTypeChoice(questionMimeTypeChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
+
+            var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            questionMimeTypeChoices = result.getMimeTypeChoices();
+
+            if(questionMimeTypeChoice == null) {
+                questionMimeTypeChoice = questionMimeTypeChoices.getDefaultValue();
             }
         }
     }
@@ -96,7 +93,8 @@ public class TranslationEditActionForm
         this.languageIsoName = languageIsoName;
     }
     
-    public List<LabelValueBean> getQuestionMimeTypeChoices() {
+    public List<LabelValueBean> getQuestionMimeTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupQuestionMimeTypeChoices();
@@ -111,7 +109,8 @@ public class TranslationEditActionForm
         this.questionMimeTypeChoice = questionMimeTypeChoice;
     }
     
-    public String getQuestionMimeTypeChoice() {
+    public String getQuestionMimeTypeChoice()
+            throws NamingException {
         setupQuestionMimeTypeChoices();
         
         return questionMimeTypeChoice;

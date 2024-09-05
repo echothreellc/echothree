@@ -42,50 +42,42 @@ public class AddActionForm
     private String minimumQuantity;
     private String maximumQuantity;
     
-    private void setupInventoryConditionChoices() {
+    private void setupInventoryConditionChoices()
+            throws NamingException {
         if(inventoryConditionChoices == null) {
-            try {
-                var form = InventoryUtil.getHome().getGetInventoryConditionChoicesForm();
-                
-                form.setInventoryConditionUseTypeName(InventoryConstants.InventoryConditionUseType_PURCHASE_ORDER);
-                form.setDefaultInventoryConditionChoice(inventoryConditionChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = InventoryUtil.getHome().getGetInventoryConditionChoicesForm();
 
-                var commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetInventoryConditionChoicesResult)executionResult.getResult();
-                inventoryConditionChoices = result.getInventoryConditionChoices();
-                
-                if(inventoryConditionChoice == null) {
-                    inventoryConditionChoice = inventoryConditionChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, inventoryConditionChoices remains null, no default
+            form.setInventoryConditionUseTypeName(InventoryConstants.InventoryConditionUseType_PURCHASE_ORDER);
+            form.setDefaultInventoryConditionChoice(inventoryConditionChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetInventoryConditionChoicesResult)executionResult.getResult();
+            inventoryConditionChoices = result.getInventoryConditionChoices();
+
+            if(inventoryConditionChoice == null) {
+                inventoryConditionChoice = inventoryConditionChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupUnitOfMeasureTypeChoices() {
+    private void setupUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(unitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setItemName(itemName);
-                form.setDefaultUnitOfMeasureTypeChoice(unitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                unitOfMeasureTypeChoices = result.getUnitOfMeasureTypeChoices();
-                
-                if(unitOfMeasureTypeChoice == null) {
-                    unitOfMeasureTypeChoice = unitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setItemName(itemName);
+            form.setDefaultUnitOfMeasureTypeChoice(unitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            unitOfMeasureTypeChoices = result.getUnitOfMeasureTypeChoices();
+
+            if(unitOfMeasureTypeChoice == null) {
+                unitOfMeasureTypeChoice = unitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
@@ -98,7 +90,8 @@ public class AddActionForm
         this.itemName = itemName;
     }
     
-    public String getInventoryConditionChoice() {
+    public String getInventoryConditionChoice()
+            throws NamingException {
         setupInventoryConditionChoices();
         
         return inventoryConditionChoice;
@@ -108,7 +101,8 @@ public class AddActionForm
         this.inventoryConditionChoice = inventoryConditionChoice;
     }
     
-    public List<LabelValueBean> getInventoryConditionChoices() {
+    public List<LabelValueBean> getInventoryConditionChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupInventoryConditionChoices();
@@ -119,7 +113,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getUnitOfMeasureTypeChoice() {
+    public String getUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupUnitOfMeasureTypeChoices();
         
         return unitOfMeasureTypeChoice;
@@ -129,7 +124,8 @@ public class AddActionForm
         this.unitOfMeasureTypeChoice = unitOfMeasureTypeChoice;
     }
     
-    public List<LabelValueBean> getUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupUnitOfMeasureTypeChoices();

@@ -35,26 +35,22 @@ public class StatusActionForm
     private String partyTrainingClassName;
     private String partyTrainingClassStatusChoice;
     
-    public void setupPartyTrainingClassStatusChoices() {
+    public void setupPartyTrainingClassStatusChoices()
+            throws NamingException {
         if(partyTrainingClassStatusChoices == null) {
-            try {
-                var form = TrainingUtil.getHome().getGetPartyTrainingClassStatusChoicesForm();
-                
-                form.setPartyTrainingClassName(partyTrainingClassName);
-                form.setDefaultPartyTrainingClassStatusChoice(partyTrainingClassStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = TrainingUtil.getHome().getGetPartyTrainingClassStatusChoicesForm();
 
-                var commandResult = TrainingUtil.getHome().getPartyTrainingClassStatusChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetPartyTrainingClassStatusChoicesResult)executionResult.getResult();
-                partyTrainingClassStatusChoices = result.getPartyTrainingClassStatusChoices();
-                
-                if(partyTrainingClassStatusChoice == null) {
-                    partyTrainingClassStatusChoice = partyTrainingClassStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, partyTrainingClassStatusChoices remains null, no default
+            form.setPartyTrainingClassName(partyTrainingClassName);
+            form.setDefaultPartyTrainingClassStatusChoice(partyTrainingClassStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = TrainingUtil.getHome().getPartyTrainingClassStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPartyTrainingClassStatusChoicesResult)executionResult.getResult();
+            partyTrainingClassStatusChoices = result.getPartyTrainingClassStatusChoices();
+
+            if(partyTrainingClassStatusChoice == null) {
+                partyTrainingClassStatusChoice = partyTrainingClassStatusChoices.getDefaultValue();
             }
         }
     }
@@ -83,7 +79,8 @@ public class StatusActionForm
         this.partyTrainingClassStatusChoice = partyTrainingClassStatusChoice;
     }
     
-    public List<LabelValueBean> getPartyTrainingClassStatusChoices() {
+    public List<LabelValueBean> getPartyTrainingClassStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPartyTrainingClassStatusChoices();

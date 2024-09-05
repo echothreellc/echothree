@@ -26,8 +26,8 @@ import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureTypeChoicesBean;
-import com.echothree.model.control.workeffort.common.workeffort.TrainingConstants;
 import com.echothree.model.control.workeffort.common.choice.WorkEffortScopeChoicesBean;
+import com.echothree.model.control.workeffort.common.workeffort.TrainingConstants;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -78,240 +78,202 @@ public class AddActionForm
     private String introductionMimeTypeChoice;
     private String introduction;
     
-    private void setupEstimatedReadingTimeUnitOfMeasureTypeChoices() {
+    private void setupEstimatedReadingTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(estimatedReadingTimeUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(estimatedReadingTimeUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                estimatedReadingTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(estimatedReadingTimeUnitOfMeasureTypeChoice == null) {
-                    estimatedReadingTimeUnitOfMeasureTypeChoice = estimatedReadingTimeUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(estimatedReadingTimeUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            estimatedReadingTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(estimatedReadingTimeUnitOfMeasureTypeChoice == null) {
+                estimatedReadingTimeUnitOfMeasureTypeChoice = estimatedReadingTimeUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupReadingTimeAllowedUnitOfMeasureTypeChoices() {
+    private void setupReadingTimeAllowedUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(readingTimeAllowedUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(readingTimeAllowedUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                readingTimeAllowedUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(readingTimeAllowedUnitOfMeasureTypeChoice == null) {
-                    readingTimeAllowedUnitOfMeasureTypeChoice = readingTimeAllowedUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(readingTimeAllowedUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            readingTimeAllowedUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(readingTimeAllowedUnitOfMeasureTypeChoice == null) {
+                readingTimeAllowedUnitOfMeasureTypeChoice = readingTimeAllowedUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupEstimatedTestingTimeUnitOfMeasureTypeChoices() {
+    private void setupEstimatedTestingTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(estimatedTestingTimeUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(estimatedTestingTimeUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                estimatedTestingTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(estimatedTestingTimeUnitOfMeasureTypeChoice == null) {
-                    estimatedTestingTimeUnitOfMeasureTypeChoice = estimatedTestingTimeUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(estimatedTestingTimeUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            estimatedTestingTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(estimatedTestingTimeUnitOfMeasureTypeChoice == null) {
+                estimatedTestingTimeUnitOfMeasureTypeChoice = estimatedTestingTimeUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupTestingTimeAllowedUnitOfMeasureTypeChoices() {
+    private void setupTestingTimeAllowedUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(testingTimeAllowedUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                form.setDefaultUnitOfMeasureTypeChoice(testingTimeAllowedUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            form.setDefaultUnitOfMeasureTypeChoice(testingTimeAllowedUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                testingTimeAllowedUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            testingTimeAllowedUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
-                if(testingTimeAllowedUnitOfMeasureTypeChoice == null) {
-                    testingTimeAllowedUnitOfMeasureTypeChoice = testingTimeAllowedUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            if(testingTimeAllowedUnitOfMeasureTypeChoice == null) {
+                testingTimeAllowedUnitOfMeasureTypeChoice = testingTimeAllowedUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
 
-    private void setupRequiredCompletionTimeUnitOfMeasureTypeChoices() {
+    private void setupRequiredCompletionTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(requiredCompletionTimeUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                form.setDefaultUnitOfMeasureTypeChoice(requiredCompletionTimeUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            form.setDefaultUnitOfMeasureTypeChoice(requiredCompletionTimeUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                requiredCompletionTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            requiredCompletionTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
-                if(requiredCompletionTimeUnitOfMeasureTypeChoice == null) {
-                    requiredCompletionTimeUnitOfMeasureTypeChoice = requiredCompletionTimeUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            if(requiredCompletionTimeUnitOfMeasureTypeChoice == null) {
+                requiredCompletionTimeUnitOfMeasureTypeChoice = requiredCompletionTimeUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
 
-    public void setupWorkEffortScopeChoices() {
+    public void setupWorkEffortScopeChoices()
+            throws NamingException {
         if(workEffortScopeChoices == null) {
-            try {
-                var form = WorkEffortUtil.getHome().getGetWorkEffortScopeChoicesForm();
+            var form = WorkEffortUtil.getHome().getGetWorkEffortScopeChoicesForm();
 
-                form.setWorkEffortTypeName(TrainingConstants.WorkEffortType_TRAINING);
-                form.setDefaultWorkEffortScopeChoice(workEffortScopeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setWorkEffortTypeName(TrainingConstants.WorkEffortType_TRAINING);
+            form.setDefaultWorkEffortScopeChoice(workEffortScopeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetWorkEffortScopeChoicesResult)executionResult.getResult();
-                workEffortScopeChoices = result.getWorkEffortScopeChoices();
+            var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkEffortScopeChoicesResult)executionResult.getResult();
+            workEffortScopeChoices = result.getWorkEffortScopeChoices();
 
-                if(workEffortScopeChoice == null) {
-                    workEffortScopeChoice = workEffortScopeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, workEffortScopeChoices remains null, no default
+            if(workEffortScopeChoice == null) {
+                workEffortScopeChoice = workEffortScopeChoices.getDefaultValue();
             }
         }
     }
 
-    private void setupTestingValidityTimeUnitOfMeasureTypeChoices() {
+    private void setupTestingValidityTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(testingValidityTimeUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(testingValidityTimeUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                testingValidityTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(testingValidityTimeUnitOfMeasureTypeChoice == null) {
-                    testingValidityTimeUnitOfMeasureTypeChoice = testingValidityTimeUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(testingValidityTimeUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            testingValidityTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(testingValidityTimeUnitOfMeasureTypeChoice == null) {
+                testingValidityTimeUnitOfMeasureTypeChoice = testingValidityTimeUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupExpiredRetentionTimeUnitOfMeasureTypeChoices() {
+    private void setupExpiredRetentionTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(expiredRetentionTimeUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(expiredRetentionTimeUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                expiredRetentionTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(expiredRetentionTimeUnitOfMeasureTypeChoice == null) {
-                    expiredRetentionTimeUnitOfMeasureTypeChoice = expiredRetentionTimeUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(expiredRetentionTimeUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            expiredRetentionTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(expiredRetentionTimeUnitOfMeasureTypeChoice == null) {
+                expiredRetentionTimeUnitOfMeasureTypeChoice = expiredRetentionTimeUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
     
-     private void setupOverviewMimeTypeChoices() {
+     private void setupOverviewMimeTypeChoices()
+             throws NamingException {
         if(overviewMimeTypeChoices == null) {
-            try {
-                var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
-                
-                commandForm.setDefaultMimeTypeChoice(overviewMimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
+            var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
-                var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
-                overviewMimeTypeChoices = result.getMimeTypeChoices();
-                
-                if(overviewMimeTypeChoice == null) {
-                    overviewMimeTypeChoice = overviewMimeTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                // failed, overviewMimeTypeChoices remains null, no default
+            commandForm.setDefaultMimeTypeChoice(overviewMimeTypeChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
+
+            var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            overviewMimeTypeChoices = result.getMimeTypeChoices();
+
+            if(overviewMimeTypeChoice == null) {
+                overviewMimeTypeChoice = overviewMimeTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupIntroductionMimeTypeChoices() {
+    private void setupIntroductionMimeTypeChoices()
+            throws NamingException {
         if(introductionMimeTypeChoices == null) {
-            try {
-                var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
-                
-                commandForm.setDefaultMimeTypeChoice(introductionMimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
+            var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
-                var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
-                introductionMimeTypeChoices = result.getMimeTypeChoices();
-                
-                if(introductionMimeTypeChoice == null) {
-                    introductionMimeTypeChoice = introductionMimeTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                // failed, introductionMimeTypeChoices remains null, no default
+            commandForm.setDefaultMimeTypeChoice(introductionMimeTypeChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
+
+            var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            introductionMimeTypeChoices = result.getMimeTypeChoices();
+
+            if(introductionMimeTypeChoice == null) {
+                introductionMimeTypeChoice = introductionMimeTypeChoices.getDefaultValue();
             }
         }
     }
@@ -332,7 +294,8 @@ public class AddActionForm
         this.estimatedReadingTime = estimatedReadingTime;
     }
     
-    public List<LabelValueBean> getEstimatedReadingTimeUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getEstimatedReadingTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupEstimatedReadingTimeUnitOfMeasureTypeChoices();
@@ -343,7 +306,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getEstimatedReadingTimeUnitOfMeasureTypeChoice() {
+    public String getEstimatedReadingTimeUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupEstimatedReadingTimeUnitOfMeasureTypeChoices();
         return estimatedReadingTimeUnitOfMeasureTypeChoice;
     }
@@ -360,7 +324,8 @@ public class AddActionForm
         this.readingTimeAllowed = readingTimeAllowed;
     }
     
-    public List<LabelValueBean> getReadingTimeAllowedUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getReadingTimeAllowedUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupReadingTimeAllowedUnitOfMeasureTypeChoices();
@@ -371,7 +336,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getReadingTimeAllowedUnitOfMeasureTypeChoice() {
+    public String getReadingTimeAllowedUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupReadingTimeAllowedUnitOfMeasureTypeChoices();
         return readingTimeAllowedUnitOfMeasureTypeChoice;
     }
@@ -388,7 +354,8 @@ public class AddActionForm
         this.estimatedTestingTime = estimatedTestingTime;
     }
     
-    public List<LabelValueBean> getEstimatedTestingTimeUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getEstimatedTestingTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupEstimatedTestingTimeUnitOfMeasureTypeChoices();
@@ -399,7 +366,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getEstimatedTestingTimeUnitOfMeasureTypeChoice() {
+    public String getEstimatedTestingTimeUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupEstimatedTestingTimeUnitOfMeasureTypeChoices();
         return estimatedTestingTimeUnitOfMeasureTypeChoice;
     }
@@ -416,7 +384,8 @@ public class AddActionForm
         this.testingTimeAllowed = testingTimeAllowed;
     }
 
-    public List<LabelValueBean> getTestingTimeAllowedUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getTestingTimeAllowedUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupTestingTimeAllowedUnitOfMeasureTypeChoices();
@@ -427,7 +396,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getTestingTimeAllowedUnitOfMeasureTypeChoice() {
+    public String getTestingTimeAllowedUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupTestingTimeAllowedUnitOfMeasureTypeChoices();
         return testingTimeAllowedUnitOfMeasureTypeChoice;
     }
@@ -444,7 +414,8 @@ public class AddActionForm
         this.requiredCompletionTime = requiredCompletionTime;
     }
 
-    public List<LabelValueBean> getRequiredCompletionTimeUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getRequiredCompletionTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupRequiredCompletionTimeUnitOfMeasureTypeChoices();
@@ -455,7 +426,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getRequiredCompletionTimeUnitOfMeasureTypeChoice() {
+    public String getRequiredCompletionTimeUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupRequiredCompletionTimeUnitOfMeasureTypeChoices();
         return requiredCompletionTimeUnitOfMeasureTypeChoice;
     }
@@ -464,7 +436,8 @@ public class AddActionForm
         this.requiredCompletionTimeUnitOfMeasureTypeChoice = requiredCompletionTimeUnitOfMeasureTypeChoice;
     }
 
-    public List<LabelValueBean> getWorkEffortScopeChoices() {
+    public List<LabelValueBean> getWorkEffortScopeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupWorkEffortScopeChoices();
@@ -475,7 +448,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getWorkEffortScopeChoice() {
+    public String getWorkEffortScopeChoice()
+            throws NamingException {
         setupWorkEffortScopeChoices();
         return workEffortScopeChoice;
     }
@@ -508,7 +482,8 @@ public class AddActionForm
         this.testingValidityTime = testingValidityTime;
     }
     
-    public List<LabelValueBean> getTestingValidityTimeUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getTestingValidityTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupTestingValidityTimeUnitOfMeasureTypeChoices();
@@ -519,7 +494,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getTestingValidityTimeUnitOfMeasureTypeChoice() {
+    public String getTestingValidityTimeUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupTestingValidityTimeUnitOfMeasureTypeChoices();
         return testingValidityTimeUnitOfMeasureTypeChoice;
     }
@@ -536,7 +512,8 @@ public class AddActionForm
         this.expiredRetentionTime = expiredRetentionTime;
     }
     
-    public List<LabelValueBean> getExpiredRetentionTimeUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getExpiredRetentionTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupExpiredRetentionTimeUnitOfMeasureTypeChoices();
@@ -547,7 +524,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getExpiredRetentionTimeUnitOfMeasureTypeChoice() {
+    public String getExpiredRetentionTimeUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupExpiredRetentionTimeUnitOfMeasureTypeChoices();
         return expiredRetentionTimeUnitOfMeasureTypeChoice;
     }
@@ -588,7 +566,8 @@ public class AddActionForm
         return description;
     }
     
-    public List<LabelValueBean> getOverviewMimeTypeChoices() {
+    public List<LabelValueBean> getOverviewMimeTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupOverviewMimeTypeChoices();
@@ -603,7 +582,8 @@ public class AddActionForm
         this.overviewMimeTypeChoice = overviewMimeTypeChoice;
     }
     
-    public String getOverviewMimeTypeChoice() {
+    public String getOverviewMimeTypeChoice()
+            throws NamingException {
         setupOverviewMimeTypeChoices();
         
         return overviewMimeTypeChoice;
@@ -617,7 +597,8 @@ public class AddActionForm
         this.overview = overview;
     }
     
-    public List<LabelValueBean> getIntroductionMimeTypeChoices() {
+    public List<LabelValueBean> getIntroductionMimeTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupIntroductionMimeTypeChoices();
@@ -632,7 +613,8 @@ public class AddActionForm
         this.introductionMimeTypeChoice = introductionMimeTypeChoice;
     }
     
-    public String getIntroductionMimeTypeChoice() {
+    public String getIntroductionMimeTypeChoice()
+            throws NamingException {
         setupIntroductionMimeTypeChoices();
         
         return introductionMimeTypeChoice;

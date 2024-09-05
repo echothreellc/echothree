@@ -57,118 +57,98 @@ public class AddActionForm
     private String totalTimeUnitOfMeasureTypeChoice;
     private String leaveStatusChoice;
     
-    public void setupCompanyChoices() {
+    public void setupCompanyChoices()
+            throws NamingException {
         if(companyChoices == null) {
-            try {
-                var form = PartyUtil.getHome().getGetCompanyChoicesForm();
+            var form = PartyUtil.getHome().getGetCompanyChoicesForm();
 
-                form.setDefaultCompanyChoice(companyChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setDefaultCompanyChoice(companyChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetCompanyChoicesResult)executionResult.getResult();
-                companyChoices = result.getCompanyChoices();
+            var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCompanyChoicesResult)executionResult.getResult();
+            companyChoices = result.getCompanyChoices();
 
-                if(companyChoice == null) {
-                    companyChoice = companyChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, companyChoices remains null, no default
+            if(companyChoice == null) {
+                companyChoice = companyChoices.getDefaultValue();
             }
         }
     }
 
-    public void setupLeaveTypeChoices() {
+    public void setupLeaveTypeChoices()
+            throws NamingException {
         if(leaveTypeChoices == null) {
-            try {
-                var form = EmployeeUtil.getHome().getGetLeaveTypeChoicesForm();
+            var form = EmployeeUtil.getHome().getGetLeaveTypeChoicesForm();
 
-                form.setDefaultLeaveTypeChoice(leaveTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setDefaultLeaveTypeChoice(leaveTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                var commandResult = EmployeeUtil.getHome().getLeaveTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetLeaveTypeChoicesResult)executionResult.getResult();
-                leaveTypeChoices = result.getLeaveTypeChoices();
+            var commandResult = EmployeeUtil.getHome().getLeaveTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveTypeChoicesResult)executionResult.getResult();
+            leaveTypeChoices = result.getLeaveTypeChoices();
 
-                if(leaveTypeChoice == null) {
-                    leaveTypeChoice = leaveTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, leaveTypeChoices remains null, no default
+            if(leaveTypeChoice == null) {
+                leaveTypeChoice = leaveTypeChoices.getDefaultValue();
             }
         }
     }
 
-    public void setupLeaveReasonChoices() {
+    public void setupLeaveReasonChoices()
+            throws NamingException {
         if(leaveReasonChoices == null) {
-            try {
-                var form = EmployeeUtil.getHome().getGetLeaveReasonChoicesForm();
+            var form = EmployeeUtil.getHome().getGetLeaveReasonChoicesForm();
 
-                form.setDefaultLeaveReasonChoice(leaveReasonChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setDefaultLeaveReasonChoice(leaveReasonChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                var commandResult = EmployeeUtil.getHome().getLeaveReasonChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetLeaveReasonChoicesResult)executionResult.getResult();
-                leaveReasonChoices = result.getLeaveReasonChoices();
+            var commandResult = EmployeeUtil.getHome().getLeaveReasonChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveReasonChoicesResult)executionResult.getResult();
+            leaveReasonChoices = result.getLeaveReasonChoices();
 
-                if(leaveReasonChoice == null) {
-                    leaveReasonChoice = leaveReasonChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, leaveReasonChoices remains null, no default
+            if(leaveReasonChoice == null) {
+                leaveReasonChoice = leaveReasonChoices.getDefaultValue();
             }
         }
     }
 
-    private void setupTotalTimeUnitOfMeasureTypeChoices() {
+    private void setupTotalTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(totalTimeUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(totalTimeUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                totalTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(totalTimeUnitOfMeasureTypeChoice == null) {
-                    totalTimeUnitOfMeasureTypeChoice = totalTimeUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(totalTimeUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            totalTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(totalTimeUnitOfMeasureTypeChoice == null) {
+                totalTimeUnitOfMeasureTypeChoice = totalTimeUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
     
-    public void setupLeaveStatusChoices() {
+    public void setupLeaveStatusChoices()
+            throws NamingException {
         if(leaveStatusChoices == null) {
-            try {
-                var form = EmployeeUtil.getHome().getGetLeaveStatusChoicesForm();
+            var form = EmployeeUtil.getHome().getGetLeaveStatusChoicesForm();
 
-                form.setDefaultLeaveStatusChoice(leaveStatusChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setDefaultLeaveStatusChoice(leaveStatusChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                var commandResult = EmployeeUtil.getHome().getLeaveStatusChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetLeaveStatusChoicesResult)executionResult.getResult();
-                leaveStatusChoices = result.getLeaveStatusChoices();
+            var commandResult = EmployeeUtil.getHome().getLeaveStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveStatusChoicesResult)executionResult.getResult();
+            leaveStatusChoices = result.getLeaveStatusChoices();
 
-                if(leaveStatusChoice == null) {
-                    leaveStatusChoice = leaveStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, LeaveStatusChoices remains null, no default
+            if(leaveStatusChoice == null) {
+                leaveStatusChoice = leaveStatusChoices.getDefaultValue();
             }
         }
     }
@@ -189,7 +169,8 @@ public class AddActionForm
         this.leaveName = leaveName;
     }
 
-    public String getCompanyChoice() {
+    public String getCompanyChoice()
+            throws NamingException {
         setupCompanyChoices();
 
         return companyChoice;
@@ -199,7 +180,8 @@ public class AddActionForm
         this.companyChoice = companyChoice;
     }
 
-    public List<LabelValueBean> getCompanyChoices() {
+    public List<LabelValueBean> getCompanyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupCompanyChoices();
@@ -210,7 +192,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getLeaveTypeChoice() {
+    public String getLeaveTypeChoice()
+            throws NamingException {
         setupLeaveTypeChoices();
 
         return leaveTypeChoice;
@@ -220,7 +203,8 @@ public class AddActionForm
         this.leaveTypeChoice = leaveTypeChoice;
     }
 
-    public List<LabelValueBean> getLeaveTypeChoices() {
+    public List<LabelValueBean> getLeaveTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupLeaveTypeChoices();
@@ -231,7 +215,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getLeaveReasonChoice() {
+    public String getLeaveReasonChoice()
+            throws NamingException {
         setupLeaveReasonChoices();
 
         return leaveReasonChoice;
@@ -241,7 +226,8 @@ public class AddActionForm
         this.leaveReasonChoice = leaveReasonChoice;
     }
 
-    public List<LabelValueBean> getLeaveReasonChoices() {
+    public List<LabelValueBean> getLeaveReasonChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupLeaveReasonChoices();
@@ -276,7 +262,8 @@ public class AddActionForm
         this.totalTime = totalTime;
     }
     
-    public List<LabelValueBean> getTotalTimeUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getTotalTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupTotalTimeUnitOfMeasureTypeChoices();
@@ -287,7 +274,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getTotalTimeUnitOfMeasureTypeChoice() {
+    public String getTotalTimeUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupTotalTimeUnitOfMeasureTypeChoices();
         return totalTimeUnitOfMeasureTypeChoice;
     }
@@ -296,7 +284,8 @@ public class AddActionForm
         this.totalTimeUnitOfMeasureTypeChoice = totalTimeUnitOfMeasureTypeChoice;
     }
     
-    public String getLeaveStatusChoice() {
+    public String getLeaveStatusChoice()
+            throws NamingException {
         setupLeaveStatusChoices();
 
         return leaveStatusChoice;
@@ -306,7 +295,8 @@ public class AddActionForm
         this.leaveStatusChoice = leaveStatusChoice;
     }
 
-    public List<LabelValueBean> getLeaveStatusChoices() {
+    public List<LabelValueBean> getLeaveStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupLeaveStatusChoices();
