@@ -36,26 +36,22 @@ public class StatusActionForm
     private String batchName;
     private String salesOrderBatchStatusChoice;
     
-    public void setupSalesOrderBatchStatusChoices() {
+    public void setupSalesOrderBatchStatusChoices()
+            throws NamingException {
         if(salesOrderBatchStatusChoices == null) {
-            try {
-                var form = SalesUtil.getHome().getGetSalesOrderBatchStatusChoicesForm();
-                
-                form.setBatchName(batchName);
-                form.setDefaultSalesOrderBatchStatusChoice(salesOrderBatchStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = SalesUtil.getHome().getGetSalesOrderBatchStatusChoicesForm();
 
-                var commandResult = SalesUtil.getHome().getSalesOrderBatchStatusChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getSalesOrderBatchStatusChoicesResult = (GetSalesOrderBatchStatusChoicesResult)executionResult.getResult();
-                salesOrderBatchStatusChoices = getSalesOrderBatchStatusChoicesResult.getSalesOrderBatchStatusChoices();
-                
-                if(salesOrderBatchStatusChoice == null) {
-                    salesOrderBatchStatusChoice = salesOrderBatchStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, salesOrderBatchStatusChoices remains null, no default
+            form.setBatchName(batchName);
+            form.setDefaultSalesOrderBatchStatusChoice(salesOrderBatchStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = SalesUtil.getHome().getSalesOrderBatchStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getSalesOrderBatchStatusChoicesResult = (GetSalesOrderBatchStatusChoicesResult)executionResult.getResult();
+            salesOrderBatchStatusChoices = getSalesOrderBatchStatusChoicesResult.getSalesOrderBatchStatusChoices();
+
+            if(salesOrderBatchStatusChoice == null) {
+                salesOrderBatchStatusChoice = salesOrderBatchStatusChoices.getDefaultValue();
             }
         }
     }
@@ -76,7 +72,8 @@ public class StatusActionForm
         this.salesOrderBatchStatusChoice = salesOrderBatchStatusChoice;
     }
     
-    public List<LabelValueBean> getSalesOrderBatchStatusChoices() {
+    public List<LabelValueBean> getSalesOrderBatchStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupSalesOrderBatchStatusChoices();

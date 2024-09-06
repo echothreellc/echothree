@@ -37,27 +37,23 @@ public class Step2ActionForm
     private String partyTypeName;
     String partySelectorChoice;
     
-    public void setupPartySelectorChoices() {
+    public void setupPartySelectorChoices()
+            throws NamingException {
         if(partySelectorChoices == null) {
-            try {
-                var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
-                
-                form.setSelectorKindName(getPartyTypeName());
-                form.setSelectorTypeName(SelectorTypes.SECURITY_ROLE.name());
-                form.setDefaultSelectorChoice(partySelectorChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
 
-                var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSelectorChoicesResult)executionResult.getResult();
-                partySelectorChoices = result.getSelectorChoices();
-                
-                if(partySelectorChoice == null) {
-                    partySelectorChoice = partySelectorChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, partySelectorChoices remains null, no default
+            form.setSelectorKindName(getPartyTypeName());
+            form.setSelectorTypeName(SelectorTypes.SECURITY_ROLE.name());
+            form.setDefaultSelectorChoice(partySelectorChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSelectorChoicesResult)executionResult.getResult();
+            partySelectorChoices = result.getSelectorChoices();
+
+            if(partySelectorChoice == null) {
+                partySelectorChoice = partySelectorChoices.getDefaultValue();
             }
         }
     }
@@ -86,7 +82,8 @@ public class Step2ActionForm
         this.partyTypeName = partyTypeName;
     }
     
-    public List<LabelValueBean> getPartySelectorChoices() {
+    public List<LabelValueBean> getPartySelectorChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPartySelectorChoices();
@@ -101,7 +98,8 @@ public class Step2ActionForm
         this.partySelectorChoice = partySelectorChoice;
     }
     
-    public String getPartySelectorChoice() {
+    public String getPartySelectorChoice()
+            throws NamingException {
         setupPartySelectorChoices();
         
         return partySelectorChoice;

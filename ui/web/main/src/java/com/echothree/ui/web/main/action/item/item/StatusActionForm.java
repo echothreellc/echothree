@@ -35,26 +35,22 @@ public class StatusActionForm
     private String itemName;
     private String itemStatusChoice;
     
-    public void setupItemStatusChoices() {
+    public void setupItemStatusChoices()
+            throws NamingException {
         if(itemStatusChoices == null) {
-            try {
-                var form = ItemUtil.getHome().getGetItemStatusChoicesForm();
-                
-                form.setItemName(itemName);
-                form.setDefaultItemStatusChoice(itemStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = ItemUtil.getHome().getGetItemStatusChoicesForm();
 
-                var commandResult = ItemUtil.getHome().getItemStatusChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetItemStatusChoicesResult)executionResult.getResult();
-                itemStatusChoices = result.getItemStatusChoices();
-                
-                if(itemStatusChoice == null)
-                    itemStatusChoice = itemStatusChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, itemStatusChoices remains null, no default
-            }
+            form.setItemName(itemName);
+            form.setDefaultItemStatusChoice(itemStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = ItemUtil.getHome().getItemStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemStatusChoicesResult)executionResult.getResult();
+            itemStatusChoices = result.getItemStatusChoices();
+
+            if(itemStatusChoice == null)
+                itemStatusChoice = itemStatusChoices.getDefaultValue();
         }
     }
     
@@ -82,7 +78,8 @@ public class StatusActionForm
         this.itemStatusChoice = itemStatusChoice;
     }
     
-    public List<LabelValueBean> getItemStatusChoices() {
+    public List<LabelValueBean> getItemStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupItemStatusChoices();

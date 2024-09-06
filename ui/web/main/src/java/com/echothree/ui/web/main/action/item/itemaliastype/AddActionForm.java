@@ -41,25 +41,21 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    public void setupItemAliasChecksumTypeChoices() {
+    public void setupItemAliasChecksumTypeChoices()
+            throws NamingException {
         if(itemAliasChecksumTypeChoices == null) {
-            try {
-                var form = ItemUtil.getHome().getGetItemAliasChecksumTypeChoicesForm();
+            var form = ItemUtil.getHome().getGetItemAliasChecksumTypeChoicesForm();
 
-                form.setDefaultItemAliasChecksumTypeChoice(itemAliasChecksumTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setDefaultItemAliasChecksumTypeChoice(itemAliasChecksumTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                var commandResult = ItemUtil.getHome().getItemAliasChecksumTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getItemAliasChecksumTypeChoicesResult = (GetItemAliasChecksumTypeChoicesResult)executionResult.getResult();
-                itemAliasChecksumTypeChoices = getItemAliasChecksumTypeChoicesResult.getItemAliasChecksumTypeChoices();
+            var commandResult = ItemUtil.getHome().getItemAliasChecksumTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getItemAliasChecksumTypeChoicesResult = (GetItemAliasChecksumTypeChoicesResult)executionResult.getResult();
+            itemAliasChecksumTypeChoices = getItemAliasChecksumTypeChoicesResult.getItemAliasChecksumTypeChoices();
 
-                if(itemAliasChecksumTypeChoice == null) {
-                    itemAliasChecksumTypeChoice = itemAliasChecksumTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, itemAliasChecksumTypeChoices remains null, no default
+            if(itemAliasChecksumTypeChoice == null) {
+                itemAliasChecksumTypeChoice = itemAliasChecksumTypeChoices.getDefaultValue();
             }
         }
     }
@@ -80,7 +76,8 @@ public class AddActionForm
         this.validationPattern = validationPattern;
     }
 
-    public String getItemAliasChecksumTypeChoice() {
+    public String getItemAliasChecksumTypeChoice()
+            throws NamingException {
         setupItemAliasChecksumTypeChoices();
         return itemAliasChecksumTypeChoice;
     }
@@ -89,7 +86,8 @@ public class AddActionForm
         this.itemAliasChecksumTypeChoice = itemAliasChecksumTypeChoice;
     }
 
-    public List<LabelValueBean> getItemAliasChecksumTypeChoices() {
+    public List<LabelValueBean> getItemAliasChecksumTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupItemAliasChecksumTypeChoices();

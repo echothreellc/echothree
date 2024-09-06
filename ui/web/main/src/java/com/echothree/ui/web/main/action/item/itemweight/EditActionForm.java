@@ -37,26 +37,22 @@ public class EditActionForm
     private String weight;
     private String weightUnitOfMeasureTypeChoice;
     
-    private void setupWeightUnitOfMeasureTypeChoices() {
+    private void setupWeightUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(weightUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(weightUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                weightUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(weightUnitOfMeasureTypeChoice == null) {
-                    weightUnitOfMeasureTypeChoice = weightUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(weightUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            weightUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(weightUnitOfMeasureTypeChoice == null) {
+                weightUnitOfMeasureTypeChoice = weightUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
@@ -85,7 +81,8 @@ public class EditActionForm
         this.weight = weight;
     }
     
-    public List<LabelValueBean> getWeightUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getWeightUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupWeightUnitOfMeasureTypeChoices();
@@ -96,7 +93,8 @@ public class EditActionForm
         return choices;
     }
     
-    public String getWeightUnitOfMeasureTypeChoice() {
+    public String getWeightUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupWeightUnitOfMeasureTypeChoices();
         return weightUnitOfMeasureTypeChoice;
     }

@@ -45,50 +45,42 @@ public class AddActionForm
     private String cancellationPolicyChoice;
     private String returnPolicyChoice;
     
-    public void setupCancellationPolicyChoices() {
+    public void setupCancellationPolicyChoices()
+            throws NamingException {
         if(cancellationPolicyChoices == null) {
-            try {
-                var form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
-                
-                form.setCancellationKindName(CancellationKinds.VENDOR_CANCELLATION.name());
-                form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
 
-                var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
-                cancellationPolicyChoices = result.getCancellationPolicyChoices();
-                
-                if(cancellationPolicyChoice == null) {
-                    cancellationPolicyChoice = cancellationPolicyChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, cancellationPolicyChoices remains null, no default
+            form.setCancellationKindName(CancellationKinds.VENDOR_CANCELLATION.name());
+            form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+            cancellationPolicyChoices = result.getCancellationPolicyChoices();
+
+            if(cancellationPolicyChoice == null) {
+                cancellationPolicyChoice = cancellationPolicyChoices.getDefaultValue();
             }
         }
     }
     
-    public void setupReturnPolicyChoices() {
+    public void setupReturnPolicyChoices()
+            throws NamingException {
         if(returnPolicyChoices == null) {
-            try {
-                var form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
-                
-                form.setReturnKindName(ReturnKinds.VENDOR_RETURN.name());
-                form.setDefaultReturnPolicyChoice(returnPolicyChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
 
-                var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
-                returnPolicyChoices = result.getReturnPolicyChoices();
-                
-                if(returnPolicyChoice == null) {
-                    returnPolicyChoice = returnPolicyChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, returnPolicyChoices remains null, no default
+            form.setReturnKindName(ReturnKinds.VENDOR_RETURN.name());
+            form.setDefaultReturnPolicyChoice(returnPolicyChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+            returnPolicyChoices = result.getReturnPolicyChoices();
+
+            if(returnPolicyChoice == null) {
+                returnPolicyChoice = returnPolicyChoices.getDefaultValue();
             }
         }
     }
@@ -133,7 +125,8 @@ public class AddActionForm
         this.priority = priority;
     }
     
-    public List<LabelValueBean> getCancellationPolicyChoices() {
+    public List<LabelValueBean> getCancellationPolicyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCancellationPolicyChoices();
@@ -147,13 +140,15 @@ public class AddActionForm
         this.cancellationPolicyChoice = cancellationPolicyChoice;
     }
     
-    public String getCancellationPolicyChoice() {
+    public String getCancellationPolicyChoice()
+            throws NamingException {
         setupCancellationPolicyChoices();
         
         return cancellationPolicyChoice;
     }
     
-    public List<LabelValueBean> getReturnPolicyChoices() {
+    public List<LabelValueBean> getReturnPolicyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupReturnPolicyChoices();
@@ -167,7 +162,8 @@ public class AddActionForm
         this.returnPolicyChoice = returnPolicyChoice;
     }
     
-    public String getReturnPolicyChoice() {
+    public String getReturnPolicyChoice()
+            throws NamingException {
         setupReturnPolicyChoices();
         
         return returnPolicyChoice;

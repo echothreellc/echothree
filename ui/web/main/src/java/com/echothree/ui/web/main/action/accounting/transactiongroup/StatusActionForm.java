@@ -34,26 +34,22 @@ public class StatusActionForm
     private String transactionGroupName;
     private String transactionGroupStatusChoice;
     
-    public void setupTransactionGroupStatusChoices() {
+    public void setupTransactionGroupStatusChoices()
+            throws NamingException {
         if(transactionGroupStatusChoices == null) {
-            try {
-                var form = AccountingUtil.getHome().getGetTransactionGroupStatusChoicesForm();
-                
-                form.setTransactionGroupName(transactionGroupName);
-                form.setDefaultTransactionGroupStatusChoice(transactionGroupStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = AccountingUtil.getHome().getGetTransactionGroupStatusChoicesForm();
 
-                var commandResult = AccountingUtil.getHome().getTransactionGroupStatusChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetTransactionGroupStatusChoicesResult)executionResult.getResult();
-                transactionGroupStatusChoices = result.getTransactionGroupStatusChoices();
-                
-                if(transactionGroupStatusChoice == null) {
-                    transactionGroupStatusChoice = transactionGroupStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, transactionGroupStatusChoices remains null, no default
+            form.setTransactionGroupName(transactionGroupName);
+            form.setDefaultTransactionGroupStatusChoice(transactionGroupStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = AccountingUtil.getHome().getTransactionGroupStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTransactionGroupStatusChoicesResult)executionResult.getResult();
+            transactionGroupStatusChoices = result.getTransactionGroupStatusChoices();
+
+            if(transactionGroupStatusChoice == null) {
+                transactionGroupStatusChoice = transactionGroupStatusChoices.getDefaultValue();
             }
         }
     }
@@ -74,7 +70,8 @@ public class StatusActionForm
         this.transactionGroupStatusChoice = transactionGroupStatusChoice;
     }
     
-    public List<LabelValueBean> getTransactionGroupStatusChoices() {
+    public List<LabelValueBean> getTransactionGroupStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupTransactionGroupStatusChoices();

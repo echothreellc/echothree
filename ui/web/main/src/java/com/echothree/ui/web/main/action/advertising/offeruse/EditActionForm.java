@@ -36,26 +36,22 @@ public class EditActionForm
     private String useName;
     private String salesOrderSequenceChoice;
     
-    public void setupSalesOrderSequenceChoices() {
+    public void setupSalesOrderSequenceChoices()
+            throws NamingException {
         if(salesOrderSequenceChoices == null) {
-            try {
-                var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
-                
-                form.setSequenceTypeName(SequenceTypes.SALES_ORDER.name());
-                form.setDefaultSequenceChoice(salesOrderSequenceChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
 
-                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSequenceChoicesResult)executionResult.getResult();
-                salesOrderSequenceChoices = result.getSequenceChoices();
-                
-                if(salesOrderSequenceChoice == null)
-                    salesOrderSequenceChoice = salesOrderSequenceChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, salesOrderSequenceChoices remains null, no default
-            }
+            form.setSequenceTypeName(SequenceTypes.SALES_ORDER.name());
+            form.setDefaultSequenceChoice(salesOrderSequenceChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceChoicesResult)executionResult.getResult();
+            salesOrderSequenceChoices = result.getSequenceChoices();
+
+            if(salesOrderSequenceChoice == null)
+                salesOrderSequenceChoice = salesOrderSequenceChoices.getDefaultValue();
         }
     }
     
@@ -75,7 +71,8 @@ public class EditActionForm
         this.useName = useName;
     }
     
-    public List<LabelValueBean> getSalesOrderSequenceChoices() {
+    public List<LabelValueBean> getSalesOrderSequenceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupSalesOrderSequenceChoices();
@@ -89,7 +86,8 @@ public class EditActionForm
         this.salesOrderSequenceChoice = salesOrderSequenceChoice;
     }
     
-    public String getSalesOrderSequenceChoice() {
+    public String getSalesOrderSequenceChoice()
+            throws NamingException {
         setupSalesOrderSequenceChoices();
         return salesOrderSequenceChoice;
     }

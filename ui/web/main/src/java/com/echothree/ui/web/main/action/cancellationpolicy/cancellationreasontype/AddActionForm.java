@@ -39,26 +39,22 @@ public class AddActionForm
     private Boolean isDefault;
     private String sortOrder;
     
-    private void setupCancellationTypeChoices() {
+    private void setupCancellationTypeChoices()
+            throws NamingException {
         if(cancellationTypeChoices == null) {
-            try {
-                var form = CancellationPolicyUtil.getHome().getGetCancellationTypeChoicesForm();
-                
-                form.setCancellationKindName(cancellationKindName);
-                form.setDefaultCancellationTypeChoice(cancellationTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = CancellationPolicyUtil.getHome().getGetCancellationTypeChoicesForm();
 
-                var commandResult = CancellationPolicyUtil.getHome().getCancellationTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getCancellationTypeChoicesResult = (GetCancellationTypeChoicesResult)executionResult.getResult();
-                cancellationTypeChoices = getCancellationTypeChoicesResult.getCancellationTypeChoices();
-                
-                if(cancellationTypeChoice == null) {
-                    cancellationTypeChoice = cancellationTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, cancellationTypeChoices remains null, no default
+            form.setCancellationKindName(cancellationKindName);
+            form.setDefaultCancellationTypeChoice(cancellationTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getCancellationTypeChoicesResult = (GetCancellationTypeChoicesResult)executionResult.getResult();
+            cancellationTypeChoices = getCancellationTypeChoicesResult.getCancellationTypeChoices();
+
+            if(cancellationTypeChoice == null) {
+                cancellationTypeChoice = cancellationTypeChoices.getDefaultValue();
             }
         }
     }
@@ -79,7 +75,8 @@ public class AddActionForm
         this.cancellationReasonName = cancellationReasonName;
     }
     
-    public String getCancellationTypeChoice() {
+    public String getCancellationTypeChoice()
+            throws NamingException {
         setupCancellationTypeChoices();
         
         return cancellationTypeChoice;
@@ -89,7 +86,8 @@ public class AddActionForm
         this.cancellationTypeChoice = cancellationTypeChoice;
     }
     
-    public List<LabelValueBean> getCancellationTypeChoices() {
+    public List<LabelValueBean> getCancellationTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCancellationTypeChoices();

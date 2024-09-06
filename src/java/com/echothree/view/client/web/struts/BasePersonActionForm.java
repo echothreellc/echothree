@@ -41,37 +41,30 @@ public class BasePersonActionForm
         super();
     }
     
-    private void setupPersonalTitleChoices() {
+    private void setupPersonalTitleChoices()
+            throws NamingException {
         if(personalTitleChoices == null) {
-            try {
-                personalTitleChoices = PersonalTitlesHelper.getInstance().getPersonalTitleChoices(userVisitPK, Boolean.TRUE);
+            personalTitleChoices = PersonalTitlesHelper.getInstance().getPersonalTitleChoices(userVisitPK, Boolean.TRUE);
 
-                if(personalTitleChoice == null) {
-                    personalTitleChoice = personalTitleChoices == null ? null : personalTitleChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, personalTitleChoices remains null, no default
+            if(personalTitleChoice == null) {
+                personalTitleChoice = personalTitleChoices == null ? null : personalTitleChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupNameSuffixChoices() {
+    private void setupNameSuffixChoices()
+            throws NamingException {
         if(nameSuffixChoices == null) {
-            try {
-                nameSuffixChoices = NameSuffixesHelper.getInstance().getNameSuffixChoices(userVisitPK, Boolean.TRUE);
-                
-                if(nameSuffixChoice == null) {
-                    nameSuffixChoice = nameSuffixChoices == null ? null : nameSuffixChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, nameSuffixChoices remains null, no default
+            nameSuffixChoices = NameSuffixesHelper.getInstance().getNameSuffixChoices(userVisitPK, Boolean.TRUE);
+
+            if(nameSuffixChoice == null) {
+                nameSuffixChoice = nameSuffixChoices == null ? null : nameSuffixChoices.getDefaultValue();
             }
         }
     }
     
-    public List<LabelValueBean> getPersonalTitleChoices() {
+    public List<LabelValueBean> getPersonalTitleChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPersonalTitleChoices();
@@ -86,7 +79,8 @@ public class BasePersonActionForm
         this.personalTitleChoice = personalTitleChoice;
     }
     
-    public String getPersonalTitleChoice() {
+    public String getPersonalTitleChoice()
+            throws NamingException {
         setupPersonalTitleChoices();
         
         return personalTitleChoice;
@@ -116,7 +110,8 @@ public class BasePersonActionForm
         return lastName;
     }
     
-    public List<LabelValueBean> getNameSuffixChoices() {
+    public List<LabelValueBean> getNameSuffixChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupNameSuffixChoices();
@@ -131,7 +126,8 @@ public class BasePersonActionForm
         this.nameSuffixChoice = nameSuffixChoice;
     }
     
-    public String getNameSuffixChoice() {
+    public String getNameSuffixChoice()
+            throws NamingException {
         setupNameSuffixChoices();
         
         return nameSuffixChoice;

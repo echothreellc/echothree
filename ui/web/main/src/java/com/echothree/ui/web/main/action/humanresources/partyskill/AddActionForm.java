@@ -34,25 +34,21 @@ public class AddActionForm
     private String partyName;
     private String skillTypeChoice;
     
-    public void setupSkillTypeChoices() {
+    public void setupSkillTypeChoices()
+            throws NamingException {
         if(skillTypeChoices == null) {
-            try {
-                var form = EmployeeUtil.getHome().getGetSkillTypeChoicesForm();
-                
-                form.setDefaultSkillTypeChoice(skillTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = EmployeeUtil.getHome().getGetSkillTypeChoicesForm();
 
-                var commandResult = EmployeeUtil.getHome().getSkillTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSkillTypeChoicesResult)executionResult.getResult();
-                skillTypeChoices = result.getSkillTypeChoices();
-                
-                if(skillTypeChoice == null)
-                    skillTypeChoice = skillTypeChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, skillTypeChoices remains null, no default
-            }
+            form.setDefaultSkillTypeChoice(skillTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = EmployeeUtil.getHome().getSkillTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSkillTypeChoicesResult)executionResult.getResult();
+            skillTypeChoices = result.getSkillTypeChoices();
+
+            if(skillTypeChoice == null)
+                skillTypeChoice = skillTypeChoices.getDefaultValue();
         }
     }
     
@@ -72,7 +68,8 @@ public class AddActionForm
         this.skillTypeChoice = skillTypeChoice;
     }
     
-    public List<LabelValueBean> getSkillTypeChoices() {
+    public List<LabelValueBean> getSkillTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupSkillTypeChoices();

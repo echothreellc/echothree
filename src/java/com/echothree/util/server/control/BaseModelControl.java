@@ -89,11 +89,11 @@ public abstract class BaseModelControl {
         return workflowControl;
     }
     
-    protected EntityInstance getEntityInstanceByBasePK(BasePK pk) {
+    protected EntityInstance getEntityInstanceByBasePK(final BasePK pk) {
         return getCoreControl().getEntityInstanceByBasePK(pk);
     }
     
-    protected EntityInstance getEntityInstanceByBaseEntity(BaseEntity baseEntity) {
+    protected EntityInstance getEntityInstanceByBaseEntity(final BaseEntity baseEntity) {
         return getEntityInstanceByBasePK(baseEntity.getPrimaryKey());
     }
 

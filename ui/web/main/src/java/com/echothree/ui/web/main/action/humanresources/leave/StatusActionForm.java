@@ -36,26 +36,22 @@ public class StatusActionForm
     private String leaveName;
     private String leaveStatusChoice;
     
-    public void setupLeaveStatusChoices() {
+    public void setupLeaveStatusChoices()
+            throws NamingException {
         if(leaveStatusChoices == null) {
-            try {
-                var form = EmployeeUtil.getHome().getGetLeaveStatusChoicesForm();
+            var form = EmployeeUtil.getHome().getGetLeaveStatusChoicesForm();
 
-                form.setLeaveName(leaveName);
-                form.setDefaultLeaveStatusChoice(leaveStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setLeaveName(leaveName);
+            form.setDefaultLeaveStatusChoice(leaveStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                var commandResult = EmployeeUtil.getHome().getLeaveStatusChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetLeaveStatusChoicesResult)executionResult.getResult();
-                leaveStatusChoices = result.getLeaveStatusChoices();
+            var commandResult = EmployeeUtil.getHome().getLeaveStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLeaveStatusChoicesResult)executionResult.getResult();
+            leaveStatusChoices = result.getLeaveStatusChoices();
 
-                if(leaveStatusChoice == null) {
-                    leaveStatusChoice = leaveStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, LeaveStatusChoices remains null, no default
+            if(leaveStatusChoice == null) {
+                leaveStatusChoice = leaveStatusChoices.getDefaultValue();
             }
         }
     }
@@ -84,7 +80,8 @@ public class StatusActionForm
         this.leaveName = leaveName;
     }
 
-    public String getLeaveStatusChoice() {
+    public String getLeaveStatusChoice()
+            throws NamingException {
         setupLeaveStatusChoices();
 
         return leaveStatusChoice;
@@ -94,7 +91,8 @@ public class StatusActionForm
         this.leaveStatusChoice = leaveStatusChoice;
     }
 
-    public List<LabelValueBean> getLeaveStatusChoices() {
+    public List<LabelValueBean> getLeaveStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupLeaveStatusChoices();

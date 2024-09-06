@@ -39,26 +39,22 @@ public class AddActionForm
     private String retainUserVisitsTime;
     private String retainUserVisitsTimeUnitOfMeasureTypeChoice;
     
-    private void setupRetainUserVisitsTimeUnitOfMeasureTypeChoices() {
+    private void setupRetainUserVisitsTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(retainUserVisitsTimeUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(retainUserVisitsTimeUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                retainUserVisitsTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(retainUserVisitsTimeUnitOfMeasureTypeChoice == null) {
-                    retainUserVisitsTimeUnitOfMeasureTypeChoice = retainUserVisitsTimeUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(retainUserVisitsTimeUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            retainUserVisitsTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(retainUserVisitsTimeUnitOfMeasureTypeChoice == null) {
+                retainUserVisitsTimeUnitOfMeasureTypeChoice = retainUserVisitsTimeUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
@@ -87,7 +83,8 @@ public class AddActionForm
         this.retainUserVisitsTime = retainUserVisitsTime;
     }
     
-    public List<LabelValueBean> getRetainUserVisitsTimeUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getRetainUserVisitsTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupRetainUserVisitsTimeUnitOfMeasureTypeChoices();
@@ -98,7 +95,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getRetainUserVisitsTimeUnitOfMeasureTypeChoice() {
+    public String getRetainUserVisitsTimeUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupRetainUserVisitsTimeUnitOfMeasureTypeChoices();
         return retainUserVisitsTimeUnitOfMeasureTypeChoice;
     }

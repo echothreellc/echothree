@@ -35,25 +35,21 @@ public class AddActionForm
     private String harmonizedTariffScheduleCodeName;
     private String harmonizedTariffScheduleCodeUseTypeChoice;
     
-    public void setupHarmonizedTariffScheduleCodeUseTypeChoices() {
+    public void setupHarmonizedTariffScheduleCodeUseTypeChoices()
+            throws NamingException {
         if(harmonizedTariffScheduleCodeUseTypeChoices == null) {
-            try {
-                var form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseTypeChoicesForm();
+            var form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUseTypeChoicesForm();
 
-                form.setDefaultHarmonizedTariffScheduleCodeUseTypeChoice(harmonizedTariffScheduleCodeUseTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setDefaultHarmonizedTariffScheduleCodeUseTypeChoice(harmonizedTariffScheduleCodeUseTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getHarmonizedTariffScheduleCodeUseTypeChoicesResult = (GetHarmonizedTariffScheduleCodeUseTypeChoicesResult)executionResult.getResult();
-                harmonizedTariffScheduleCodeUseTypeChoices = getHarmonizedTariffScheduleCodeUseTypeChoicesResult.getHarmonizedTariffScheduleCodeUseTypeChoices();
+            var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getHarmonizedTariffScheduleCodeUseTypeChoicesResult = (GetHarmonizedTariffScheduleCodeUseTypeChoicesResult)executionResult.getResult();
+            harmonizedTariffScheduleCodeUseTypeChoices = getHarmonizedTariffScheduleCodeUseTypeChoicesResult.getHarmonizedTariffScheduleCodeUseTypeChoices();
 
-                if(harmonizedTariffScheduleCodeUseTypeChoice == null) {
-                    harmonizedTariffScheduleCodeUseTypeChoice = harmonizedTariffScheduleCodeUseTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, harmonizedTariffScheduleCodeUseTypeChoices remains null, no default
+            if(harmonizedTariffScheduleCodeUseTypeChoice == null) {
+                harmonizedTariffScheduleCodeUseTypeChoice = harmonizedTariffScheduleCodeUseTypeChoices.getDefaultValue();
             }
         }
     }
@@ -74,7 +70,8 @@ public class AddActionForm
         return harmonizedTariffScheduleCodeName;
     }
 
-    public String getHarmonizedTariffScheduleCodeUseTypeChoice() {
+    public String getHarmonizedTariffScheduleCodeUseTypeChoice()
+            throws NamingException {
         setupHarmonizedTariffScheduleCodeUseTypeChoices();
         return harmonizedTariffScheduleCodeUseTypeChoice;
     }
@@ -83,7 +80,8 @@ public class AddActionForm
         this.harmonizedTariffScheduleCodeUseTypeChoice = harmonizedTariffScheduleCodeUseTypeChoice;
     }
 
-    public List<LabelValueBean> getHarmonizedTariffScheduleCodeUseTypeChoices() {
+    public List<LabelValueBean> getHarmonizedTariffScheduleCodeUseTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupHarmonizedTariffScheduleCodeUseTypeChoices();

@@ -40,26 +40,22 @@ public class AddActionForm
     private Boolean isDefault;
     private String sortOrder;
     
-    private void setupShippingMethodChoices() {
+    private void setupShippingMethodChoices()
+            throws NamingException {
         if(shippingMethodChoices == null) {
-            try {
-                var form = ShippingUtil.getHome().getGetShippingMethodChoicesForm();
-                
-                form.setShipmentTypeName(ShipmentTypes.CUSTOMER_RETURN.name());
-                form.setDefaultShippingMethodChoice(shippingMethodChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = ShippingUtil.getHome().getGetShippingMethodChoicesForm();
 
-                var commandResult = ShippingUtil.getHome().getShippingMethodChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getShippingMethodChoicesResult = (GetShippingMethodChoicesResult)executionResult.getResult();
-                shippingMethodChoices = getShippingMethodChoicesResult.getShippingMethodChoices();
-                
-                if(shippingMethodChoice == null) {
-                    shippingMethodChoice = shippingMethodChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, shippingMethodChoices remains null, no default
+            form.setShipmentTypeName(ShipmentTypes.CUSTOMER_RETURN.name());
+            form.setDefaultShippingMethodChoice(shippingMethodChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = ShippingUtil.getHome().getShippingMethodChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getShippingMethodChoicesResult = (GetShippingMethodChoicesResult)executionResult.getResult();
+            shippingMethodChoices = getShippingMethodChoicesResult.getShippingMethodChoices();
+
+            if(shippingMethodChoice == null) {
+                shippingMethodChoice = shippingMethodChoices.getDefaultValue();
             }
         }
     }
@@ -80,7 +76,8 @@ public class AddActionForm
         this.returnTypeName = returnTypeName;
     }
     
-    public String getShippingMethodChoice() {
+    public String getShippingMethodChoice()
+            throws NamingException {
         setupShippingMethodChoices();
         
         return shippingMethodChoice;
@@ -90,7 +87,8 @@ public class AddActionForm
         this.shippingMethodChoice = shippingMethodChoice;
     }
     
-    public List<LabelValueBean> getShippingMethodChoices() {
+    public List<LabelValueBean> getShippingMethodChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupShippingMethodChoices();

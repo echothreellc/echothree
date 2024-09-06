@@ -46,48 +46,40 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupLetterSourceChoices() {
+    private void setupLetterSourceChoices()
+            throws NamingException {
         if(letterSourceChoices == null) {
-            try {
-                var commandForm = LetterUtil.getHome().getGetLetterSourceChoicesForm();
-                
-                commandForm.setDefaultLetterSourceChoice(letterSourceChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            var commandForm = LetterUtil.getHome().getGetLetterSourceChoicesForm();
 
-                var commandResult = LetterUtil.getHome().getLetterSourceChoices(userVisitPK, commandForm);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetLetterSourceChoicesResult)executionResult.getResult();
-                letterSourceChoices = result.getLetterSourceChoices();
-                
-                if(letterSourceChoice == null) {
-                    letterSourceChoice = letterSourceChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, letterSourceChoices remains null, no default
+            commandForm.setDefaultLetterSourceChoice(letterSourceChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = LetterUtil.getHome().getLetterSourceChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetLetterSourceChoicesResult)executionResult.getResult();
+            letterSourceChoices = result.getLetterSourceChoices();
+
+            if(letterSourceChoice == null) {
+                letterSourceChoice = letterSourceChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupContactListChoices() {
+    private void setupContactListChoices()
+            throws NamingException {
         if(contactListChoices == null) {
-            try {
-                var commandForm = ContactListUtil.getHome().getGetContactListChoicesForm();
-                
-                commandForm.setDefaultContactListChoice(contactListChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            var commandForm = ContactListUtil.getHome().getGetContactListChoicesForm();
 
-                var commandResult = ContactListUtil.getHome().getContactListChoices(userVisitPK, commandForm);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetContactListChoicesResult)executionResult.getResult();
-                contactListChoices = result.getContactListChoices();
-                
-                if(contactListChoice == null) {
-                    contactListChoice = contactListChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, contactListChoices remains null, no default
+            commandForm.setDefaultContactListChoice(contactListChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = ContactListUtil.getHome().getContactListChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetContactListChoicesResult)executionResult.getResult();
+            contactListChoices = result.getContactListChoices();
+
+            if(contactListChoice == null) {
+                contactListChoice = contactListChoices.getDefaultValue();
             }
         }
     }
@@ -116,7 +108,8 @@ public class AddActionForm
         return letterName;
     }
     
-    public List<LabelValueBean> getLetterSourceChoices() {
+    public List<LabelValueBean> getLetterSourceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupLetterSourceChoices();
@@ -131,12 +124,14 @@ public class AddActionForm
         this.letterSourceChoice = letterSourceChoice;
     }
     
-    public String getLetterSourceChoice() {
+    public String getLetterSourceChoice()
+            throws NamingException {
         setupLetterSourceChoices();
         return letterSourceChoice;
     }
     
-    public List<LabelValueBean> getContactListChoices() {
+    public List<LabelValueBean> getContactListChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupContactListChoices();
@@ -151,7 +146,8 @@ public class AddActionForm
         this.contactListChoice = contactListChoice;
     }
     
-    public String getContactListChoice() {
+    public String getContactListChoice()
+            throws NamingException {
         setupContactListChoices();
         return contactListChoice;
     }

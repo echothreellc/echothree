@@ -43,50 +43,42 @@ public class AddActionForm
     private String lockoutInactiveTime;
     private String lockoutInactiveTimeUnitOfMeasureTypeChoice;
     
-    private void setupResetFailureCountTimeUnitOfMeasureTypeChoices() {
+    private void setupResetFailureCountTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(resetFailureCountTimeUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(resetFailureCountTimeUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                resetFailureCountTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(resetFailureCountTimeUnitOfMeasureTypeChoice == null) {
-                    resetFailureCountTimeUnitOfMeasureTypeChoice = resetFailureCountTimeUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(resetFailureCountTimeUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            resetFailureCountTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(resetFailureCountTimeUnitOfMeasureTypeChoice == null) {
+                resetFailureCountTimeUnitOfMeasureTypeChoice = resetFailureCountTimeUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupLockoutInactiveTimeUnitOfMeasureTypeChoices() {
+    private void setupLockoutInactiveTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(lockoutInactiveTimeUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(lockoutInactiveTimeUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                lockoutInactiveTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(lockoutInactiveTimeUnitOfMeasureTypeChoice == null) {
-                    lockoutInactiveTimeUnitOfMeasureTypeChoice = lockoutInactiveTimeUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(lockoutInactiveTimeUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            lockoutInactiveTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(lockoutInactiveTimeUnitOfMeasureTypeChoice == null) {
+                lockoutInactiveTimeUnitOfMeasureTypeChoice = lockoutInactiveTimeUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
@@ -115,7 +107,8 @@ public class AddActionForm
         this.resetFailureCountTime = resetFailureCountTime;
     }
     
-    public List<LabelValueBean> getResetFailureCountTimeUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getResetFailureCountTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupResetFailureCountTimeUnitOfMeasureTypeChoices();
@@ -126,7 +119,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getResetFailureCountTimeUnitOfMeasureTypeChoice() {
+    public String getResetFailureCountTimeUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupResetFailureCountTimeUnitOfMeasureTypeChoices();
         return resetFailureCountTimeUnitOfMeasureTypeChoice;
     }
@@ -151,7 +145,8 @@ public class AddActionForm
         this.lockoutInactiveTime = lockoutInactiveTime;
     }
     
-    public List<LabelValueBean> getLockoutInactiveTimeUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getLockoutInactiveTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupLockoutInactiveTimeUnitOfMeasureTypeChoices();
@@ -162,7 +157,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getLockoutInactiveTimeUnitOfMeasureTypeChoice() {
+    public String getLockoutInactiveTimeUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupLockoutInactiveTimeUnitOfMeasureTypeChoices();
         return lockoutInactiveTimeUnitOfMeasureTypeChoice;
     }

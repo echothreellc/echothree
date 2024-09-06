@@ -39,25 +39,21 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupParentItemCategoryChoices() {
+    private void setupParentItemCategoryChoices()
+            throws NamingException {
         if(parentItemCategoryChoices == null) {
-            try {
-                var form = ItemUtil.getHome().getGetItemCategoryChoicesForm();
+            var form = ItemUtil.getHome().getGetItemCategoryChoicesForm();
 
-                form.setDefaultItemCategoryChoice(parentItemCategoryChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setDefaultItemCategoryChoice(parentItemCategoryChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                var commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getItemCategoryChoicesResult = (GetItemCategoryChoicesResult)executionResult.getResult();
-                parentItemCategoryChoices = getItemCategoryChoicesResult.getItemCategoryChoices();
+            var commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getItemCategoryChoicesResult = (GetItemCategoryChoicesResult)executionResult.getResult();
+            parentItemCategoryChoices = getItemCategoryChoicesResult.getItemCategoryChoices();
 
-                if(parentItemCategoryChoice == null) {
-                    parentItemCategoryChoice = parentItemCategoryChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, parentItemCategoryChoices remains null, no default
+            if(parentItemCategoryChoice == null) {
+                parentItemCategoryChoice = parentItemCategoryChoices.getDefaultValue();
             }
         }
     }
@@ -70,7 +66,8 @@ public class AddActionForm
         return itemCategoryName;
     }
     
-    public String getParentItemCategoryChoice() {
+    public String getParentItemCategoryChoice()
+            throws NamingException {
         setupParentItemCategoryChoices();
         return parentItemCategoryChoice;
     }
@@ -79,7 +76,8 @@ public class AddActionForm
         this.parentItemCategoryChoice = parentItemCategoryChoice;
     }
 
-    public List<LabelValueBean> getParentItemCategoryChoices() {
+    public List<LabelValueBean> getParentItemCategoryChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupParentItemCategoryChoices();
