@@ -26,17 +26,33 @@ public class EntityAttributeTypeTest
     @Test
     public void entityAttributeTypes()
             throws Exception {
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        commandResult {
+                            hasErrors
+                        }
+                    }
+                }
+                """);
+
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
+
         var entityAttributeTypesBody = executeUsingPost("""
                 query {
                     entityAttributeTypes {
-                        entityAttributeTypeName
-                        description
-                        id
+                        edges {
+                            node {
+                                entityAttributeTypeName
+                                description
+                                id
+                            }
+                        }
                     }
                 }
                 """);
         
-        var entityAttributeTypes = getList(entityAttributeTypesBody, "data.entityAttributeTypes");
+        var entityAttributeTypes = getList(entityAttributeTypesBody, "data.entityAttributeTypes.edges");
 
         assertThat(entityAttributeTypes).isNotEmpty();
     }
@@ -44,24 +60,41 @@ public class EntityAttributeTypeTest
     @Test
     public void entityAttributeType()
             throws Exception {
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        commandResult {
+                            hasErrors
+                        }
+                    }
+                }
+                """);
+
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
+
         var entityAttributeTypesBody = executeUsingPost("""
                 query {
                     entityAttributeTypes {
-                        entityAttributeTypeName
-                        description
-                        id
+                        edges {
+                            node {
+                                entityAttributeTypeName
+                                description
+                                id
+                            }
+                        }
                     }
                 }
                 """);
                 
-        var entityAttributeTypes = getList(entityAttributeTypesBody, "data.entityAttributeTypes");
+        var entityAttributeTypes = getList(entityAttributeTypesBody, "data.entityAttributeTypes.edges");
 
         assertThat(entityAttributeTypes).isNotEmpty();
         
         var first = entityAttributeTypes.get(0);
-        var entityAttributeTypeName = getString(first, "entityAttributeTypeName");
-        var description = getString(first, "description");
-        var id = getString(first, "id");
+        var node = getMap(first, "node");
+        var entityAttributeTypeName = getString(node, "entityAttributeTypeName");
+        var description = getString(node, "description");
+        var id = getString(node, "id");
         
         var entityAttributeType = executeUsingPost("""
                 query {

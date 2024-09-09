@@ -100,24 +100,28 @@ public class QueueTypeTest
         var queueTypesBody = executeUsingPost("""
                 query {
                     queueTypes {
-                        queueTypeName
-                        isDefault
-                        sortOrder
-                        description
-                        id
-                        oldestQueuedEntityTime {
-                          unformattedTime
+                        edges {
+                            node {
+                                queueTypeName
+                                isDefault
+                                sortOrder
+                                description
+                                id
+                                oldestQueuedEntityTime {
+                                  unformattedTime
+                                }
+                                latestQueuedEntityTime {
+                                  unformattedTime
+                                }
+                                queuedEntityCount
+                            }
                         }
-                        latestQueuedEntityTime {
-                          unformattedTime
-                        }
-                        queuedEntityCount
                     }
                 }
                 """);
         
-        var queueTypes = getList(queueTypesBody, "data.queueTypes");
-        assertThat(queueTypes.size() == 0).isTrue();
+        var queueTypes = getList(queueTypesBody, "data.queueTypes.edges");
+        assertThat(queueTypes.isEmpty()).isTrue();
     }
 
     @Test
@@ -144,28 +148,33 @@ public class QueueTypeTest
         var queueTypesBody = executeUsingPost("""
                 query {
                     queueTypes {
-                        queueTypeName
-                        isDefault
-                        sortOrder
-                        description
-                        id
-                        oldestQueuedEntityTime {
-                          unformattedTime
+                        edges {
+                            node {
+                                queueTypeName
+                                isDefault
+                                sortOrder
+                                description
+                                id
+                                oldestQueuedEntityTime {
+                                  unformattedTime
+                                }
+                                latestQueuedEntityTime {
+                                  unformattedTime
+                                }
+                                queuedEntityCount
+                            }
                         }
-                        latestQueuedEntityTime {
-                          unformattedTime
-                        }
-                        queuedEntityCount
                     }
                 }
                 """);
         
-        var queueTypes = getList(queueTypesBody, "data.queueTypes");
-        assertThat(queueTypes.size() > 0).isTrue();
+        var queueTypes = getList(queueTypesBody, "data.queueTypes.edges");
+        assertThat(queueTypes.isEmpty()).isFalse();
 
         var foundIndexing = false;
         for(var queueType : queueTypes) {
-            if(getString(queueType, "queueTypeName").equals(QueueTypes.INDEXING.name())) {
+            var node = getMap(queueType, "node");
+            if(getString(node, "queueTypeName").equals(QueueTypes.INDEXING.name())) {
                 foundIndexing = true;
                 break;
             }
