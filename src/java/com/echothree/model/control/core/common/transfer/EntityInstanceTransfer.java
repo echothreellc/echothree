@@ -25,9 +25,7 @@ public final class EntityInstanceTransfer
 
     private EntityTypeTransfer entityType;
     private Long entityUniqueId;
-    private String key;
     private String guid;
-    private String ulid;
     private String entityRef;
     private EntityTimeTransfer entityTime;
     private String description;
@@ -37,13 +35,11 @@ public final class EntityInstanceTransfer
     private EntityNames entityNames;
 
     /** Creates a new instance of EntityInstanceTransfer */
-    public EntityInstanceTransfer(EntityTypeTransfer entityType, Long entityUniqueId, String key, String guid, String ulid,
+    public EntityInstanceTransfer(EntityTypeTransfer entityType, Long entityUniqueId, String guid,
             String entityRef, EntityTimeTransfer entityTime, String description) {
         this.entityType = entityType;
         this.entityUniqueId = entityUniqueId;
-        this.key = key;
         this.guid = guid;
-        this.ulid = ulid;
         this.entityRef = entityRef;
         this.entityTime = entityTime;
         this.description = description;
@@ -65,14 +61,6 @@ public final class EntityInstanceTransfer
         this.entityUniqueId = entityUniqueId;
     }
     
-    public String getKey() {
-        return key;
-    }
-    
-    public void setKey(String key) {
-        this.key = key;
-    }
-    
     public String getGuid() {
         return guid;
     }
@@ -81,14 +69,6 @@ public final class EntityInstanceTransfer
         this.guid = guid;
     }
     
-    public String getUlid() {
-        return ulid;
-    }
-
-    public void setUlid(String ulid) {
-        this.ulid = ulid;
-    }
-
     public String getEntityRef() {
         if(entityRef == null) {
             entityRef = entityType.getComponentVendor().getComponentVendorName() + '.' + entityType.getEntityTypeName() + '.' + entityUniqueId;

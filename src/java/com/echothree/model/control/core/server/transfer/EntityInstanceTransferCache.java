@@ -35,10 +35,8 @@ public class EntityInstanceTransferCache
     boolean includeEntityAppearance;
     boolean includeEntityVisit;
     boolean includeNames;
-    boolean includeKeyIfAvailable;
     boolean includeGuidIfAvailable;
-    boolean includeUlidIfAvailable;
-    
+
     TransferProperties transferProperties;
     boolean filterEntityType;
     boolean filterEntityUniqueId;
@@ -55,9 +53,7 @@ public class EntityInstanceTransferCache
             includeEntityAppearance = options.contains(CoreOptions.EntityInstanceIncludeEntityAppearance);
             includeEntityVisit = options.contains(CoreOptions.EntityInstanceIncludeEntityVisit);
             includeNames = options.contains(CoreOptions.EntityInstanceIncludeNames);
-            includeKeyIfAvailable = options.contains(CoreOptions.EntityInstanceIncludeKeyIfAvailable);
             includeGuidIfAvailable = options.contains(CoreOptions.EntityInstanceIncludeGuidIfAvailable);
-            includeUlidIfAvailable = options.contains(CoreOptions.EntityInstanceIncludeUlidIfAvailable);
         }
         
         transferProperties = session.getTransferProperties();
@@ -81,9 +77,7 @@ public class EntityInstanceTransferCache
         if(entityInstanceTransfer == null) {
             var entityTypeTransfer = filterEntityType ? null : coreControl.getEntityTypeTransfer(userVisit, entityInstance.getEntityType());
             var entityUniqueId = filterEntityUniqueId ? null : entityInstance.getEntityUniqueId();
-            String key = null;
             String guid = null;
-            String ulid = null;
             var componentVendorTransfer = entityTypeTransfer == null ? null : entityTypeTransfer.getComponentVendor();
             var componentVendorName = componentVendorTransfer == null ? null : componentVendorTransfer.getComponentVendorName();
             var entityTypeName = entityTypeTransfer == null ? null : entityTypeTransfer.getEntityTypeName();
@@ -105,7 +99,7 @@ public class EntityInstanceTransferCache
                 description = EntityDescriptionUtils.getInstance().getDescription(userVisit, entityInstance);
             }
             
-            entityInstanceTransfer = new EntityInstanceTransfer(entityTypeTransfer, entityUniqueId, key, guid, ulid, entityRef,
+            entityInstanceTransfer = new EntityInstanceTransfer(entityTypeTransfer, entityUniqueId, guid, entityRef,
                     entityTimeTransfer, description);
             put(entityInstance, entityInstanceTransfer);
 
