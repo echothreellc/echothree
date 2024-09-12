@@ -54,27 +54,4 @@ public class SelectorNodeTypeLogic
         return selectorNodeType;
     }
 
-    public SelectorNodeType getSelectorNodeTypeByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
-        SelectorNodeType selectorNodeType = null;
-        
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHO_THREE.name(), EntityTypes.SelectorNodeType.name());
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var selectorControl = Session.getModelController(SelectorControl.class);
-            
-            selectorNodeType = selectorControl.getSelectorNodeTypeByEntityInstance(entityInstance, entityPermission);
-        }
-
-        return selectorNodeType;
-    }
-    
-    public SelectorNodeType getSelectorNodeTypeByUlid(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getSelectorNodeTypeByUlid(eea, ulid, EntityPermission.READ_ONLY);
-    }
-    
-    public SelectorNodeType getSelectorNodeTypeByUlidForUpdate(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getSelectorNodeTypeByUlid(eea, ulid, EntityPermission.READ_WRITE);
-    }
-    
 }

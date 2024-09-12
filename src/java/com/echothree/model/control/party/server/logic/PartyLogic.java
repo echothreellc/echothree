@@ -123,29 +123,6 @@ public class PartyLogic
         return getPartyByName(eea, partyName, EntityPermission.READ_WRITE);
     }
     
-    public Party getPartyByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
-        Party party = null;
-        
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name());
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var partyControl = Session.getModelController(PartyControl.class);
-            
-            party = partyControl.getPartyByEntityInstance(entityInstance, entityPermission);
-        }
-
-        return party;
-    }
-    
-    public Party getPartyByUlid(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getPartyByUlid(eea, ulid, EntityPermission.READ_ONLY);
-    }
-    
-    public Party getPartyByUlidForUpdate(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getPartyByUlid(eea, ulid, EntityPermission.READ_WRITE);
-    }
-        
     public Party getPartyByName(final ExecutionErrorAccumulator eea, final String partyName, final String ... partyTypeNames) {
         var party = getPartyByName(eea, partyName);
 

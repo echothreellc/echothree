@@ -96,29 +96,6 @@ public class UnitOfMeasureTypeLogic
         return unitOfMeasureType;
     }
 
-    public UnitOfMeasureType getUnitOfMeasureTypeByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
-        UnitOfMeasureType unitOfMeasureType = null;
-        
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHO_THREE.name(), EntityTypes.UnitOfMeasureType.name());
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var uomControl = Session.getModelController(UomControl.class);
-            
-            unitOfMeasureType = uomControl.getUnitOfMeasureTypeByEntityInstance(entityInstance, entityPermission);
-        }
-
-        return unitOfMeasureType;
-    }
-    
-    public UnitOfMeasureType getUnitOfMeasureTypeByUlid(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getUnitOfMeasureTypeByUlid(eea, ulid, EntityPermission.READ_ONLY);
-    }
-    
-    public UnitOfMeasureType getUnitOfMeasureTypeByUlidForUpdate(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getUnitOfMeasureTypeByUlid(eea, ulid, EntityPermission.READ_WRITE);
-    }
-    
     public Long checkUnitOfMeasure(final ExecutionErrorAccumulator eea, final UnitOfMeasureKind unitOfMeasureKind, final String value,
             final String unitOfMeasureTypeName, final Class<? extends BaseException> missingErrorClass, final String missingErrorKey,
             final Class<? extends BaseException> unitOfMeasureTypeMissingErrorClass, final String unitOfMeasureTypeMissingErrorKey,

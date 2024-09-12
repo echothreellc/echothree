@@ -54,27 +54,4 @@ public class SymbolPositionLogic
         return symbolPosition;
     }
 
-    public SymbolPosition getSymbolPositionByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
-        SymbolPosition symbolPosition = null;
-        
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHO_THREE.name(), EntityTypes.SymbolPosition.name());
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-            
-            symbolPosition = accountingControl.getSymbolPositionByEntityInstance(entityInstance, entityPermission);
-        }
-
-        return symbolPosition;
-    }
-    
-    public SymbolPosition getSymbolPositionByUlid(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getSymbolPositionByUlid(eea, ulid, EntityPermission.READ_ONLY);
-    }
-    
-    public SymbolPosition getSymbolPositionByUlidForUpdate(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getSymbolPositionByUlid(eea, ulid, EntityPermission.READ_WRITE);
-    }
-
 }
