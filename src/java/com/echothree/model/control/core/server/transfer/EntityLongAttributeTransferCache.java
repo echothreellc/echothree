@@ -38,7 +38,7 @@ public class EntityLongAttributeTransferCache
         
         if(entityLongAttributeTransfer == null) {
             var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityLongAttribute.getEntityAttribute(), entityInstance) : null;
-            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityLongAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityLongAttribute.getEntityInstance(), false, false, false, false);
             var longAttribute = entityLongAttribute.getLongAttribute();
             
             entityLongAttributeTransfer = new EntityLongAttributeTransfer(entityAttribute, entityInstanceTransfer, longAttribute);

@@ -112,7 +112,7 @@ public class GetEntityTagsCommand
             if(taggedEntityInstance != null) {
                 var coreControl = getCoreControl();
 
-                result.setTaggedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, taggedEntityInstance, false, false, false, false, false, false));
+                result.setTaggedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, taggedEntityInstance, false, false, false, false));
             } else {
                 result.setTag(tagControl.getTagTransfer(userVisit, tag));
             }

@@ -405,7 +405,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         // converted to a versioned one.
         if(entityInstance != null) {
             transfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, includeEntityAppearance,
-                    includeEntityVisit, includeNames, includeKey, includeGuid, includeUlid));
+                    includeEntityVisit, includeNames, includeGuid));
 
             if(includeEntityAliasTypes || includeEntityAttributeGroups || includeTagScopes) {
                 if(includeEntityAliasTypes) {

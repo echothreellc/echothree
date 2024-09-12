@@ -69,7 +69,7 @@ public class GetEntityMessagesCommand
                 var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
                 
                 if(entityInstance != null) {
-                    result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false, false));
+                    result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false));
                     result.setEntityMessages(messageControl.getEntityMessageTransfersByEntityInstance(userVisit, entityInstance));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);

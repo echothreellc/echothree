@@ -39,7 +39,7 @@ public class EntityDateAttributeTransferCache
         
         if(entityDateAttributeTransfer == null) {
             var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityDateAttribute.getEntityAttribute(), entityInstance) : null;
-            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityDateAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityDateAttribute.getEntityInstance(), false, false, false, false);
             var unformattedDateAttribute = entityDateAttribute.getDateAttribute();
             var dateAttribute = DateUtils.getInstance().formatDate(userVisit, unformattedDateAttribute);
             

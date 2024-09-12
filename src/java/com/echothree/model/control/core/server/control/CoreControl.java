@@ -2455,36 +2455,34 @@ public class CoreControl
     }
     
     public EntityInstanceTransfer getEntityInstanceTransfer(UserVisit userVisit, EntityInstance entityInstance, boolean includeEntityAppearance,
-            boolean includeEntityVisit, boolean includeNames, boolean includeKey, boolean includeGuid, boolean includeUlid) {
+            boolean includeEntityVisit, boolean includeNames, boolean includeGuid) {
         return getCoreTransferCaches(userVisit).getEntityInstanceTransferCache().getEntityInstanceTransfer(entityInstance, includeEntityAppearance,
-                includeEntityVisit, includeNames, includeKey, includeGuid, includeUlid);
+                includeEntityVisit, includeNames, includeGuid);
     }
     
     public EntityInstanceTransfer getEntityInstanceTransfer(UserVisit userVisit, BaseEntity baseEntity, boolean includeEntityAppearance,
-            boolean includeEntityVisit, boolean includeNames, boolean includeKey, boolean includeGuid, boolean includeUlid) {
+            boolean includeEntityVisit, boolean includeNames, boolean includeGuid) {
         return getEntityInstanceTransfer(userVisit, getEntityInstanceByBasePK(baseEntity.getPrimaryKey()), includeEntityAppearance,
-                includeEntityVisit, includeNames, includeKey, includeGuid, includeUlid);
+                includeEntityVisit, includeNames, includeGuid);
     }
 
     public List<EntityInstanceTransfer> getEntityInstanceTransfers(UserVisit userVisit, Collection<EntityInstance> entityInstances,
-            boolean includeEntityAppearance, boolean includeEntityVisit, boolean includeNames, boolean includeKey, boolean includeGuid,
-            boolean includeUlid) {
+            boolean includeEntityAppearance, boolean includeEntityVisit, boolean includeNames, boolean includeGuid) {
         var entityInstanceTransfers = new ArrayList<EntityInstanceTransfer>(entityInstances.size());
         var entityInstanceTransferCache = getCoreTransferCaches(userVisit).getEntityInstanceTransferCache();
 
         entityInstances.forEach((entityInstance) ->
                 entityInstanceTransfers.add(entityInstanceTransferCache.getEntityInstanceTransfer(entityInstance,
-                        includeEntityAppearance, includeEntityVisit, includeNames, includeKey, includeGuid, includeUlid))
+                        includeEntityAppearance, includeEntityVisit, includeNames, includeGuid))
         );
 
         return entityInstanceTransfers;
     }
 
     public List<EntityInstanceTransfer> getEntityInstanceTransfersByEntityType(UserVisit userVisit, EntityType entityType,
-            boolean includeEntityAppearance, boolean includeEntityVisit, boolean includeNames, boolean includeKey, boolean includeGuid,
-            boolean includeUlid) {
+            boolean includeEntityAppearance, boolean includeEntityVisit, boolean includeNames, boolean includeGuid) {
         return getEntityInstanceTransfers(userVisit, getEntityInstancesByEntityType(entityType), includeEntityAppearance,
-                includeEntityVisit, includeNames, includeKey, includeGuid, includeUlid);
+                includeEntityVisit, includeNames, includeGuid);
     }
 
     /** Gets an EntityInstance for BasePK, creating it if necessary. Overrides function from BaseModelControl.

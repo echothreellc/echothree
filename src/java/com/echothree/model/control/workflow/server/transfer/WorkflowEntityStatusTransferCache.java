@@ -48,7 +48,7 @@ public class WorkflowEntityStatusTransferCache
 
         if(workflowEntityStatusTransfer == null) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, workflowEntityStatus.getEntityInstance(), false, false, false, false, false, false);
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, workflowEntityStatus.getEntityInstance(), false, false, false, false);
             var workflowStepTransfer = workflowControl.getWorkflowStepTransfer(userVisit, workflowEntityStatus.getWorkflowStep());
             var workEffortScope = workflowEntityStatus.getWorkEffortScope();
             var workEffortScopeTransfer = workEffortScope == null ? null : workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortScope);

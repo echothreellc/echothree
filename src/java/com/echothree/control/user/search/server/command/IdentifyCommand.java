@@ -91,7 +91,7 @@ public class IdentifyCommand
     }
     
     private EntityInstanceTransfer fillInEntityInstance(EntityInstanceAndNames entityInstanceAndNames) {
-        var entityInstance = getCoreControl().getEntityInstanceTransfer(getUserVisit(), entityInstanceAndNames.getEntityInstance(), false, false, false, false, false, false);
+        var entityInstance = getCoreControl().getEntityInstanceTransfer(getUserVisit(), entityInstanceAndNames.getEntityInstance(), false, false, false, false);
 
         entityInstance.setEntityNames(entityInstanceAndNames.getEntityNames());
         

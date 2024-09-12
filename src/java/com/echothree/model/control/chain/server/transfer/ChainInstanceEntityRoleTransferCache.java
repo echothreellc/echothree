@@ -39,7 +39,7 @@ public class ChainInstanceEntityRoleTransferCache
         if(chainInstanceEntityRoleTransfer == null) {
             var chainInstance = chainControl.getChainInstanceTransfer(userVisit, chainInstanceEntityRole.getChainInstance());
             var chainEntityRoleType = chainControl.getChainEntityRoleTypeTransfer(userVisit, chainInstanceEntityRole.getChainEntityRoleType());
-            var entityInstance = coreControl.getEntityInstanceTransfer(userVisit, chainInstanceEntityRole.getEntityInstance(), false, false, false, false, false, false);
+            var entityInstance = coreControl.getEntityInstanceTransfer(userVisit, chainInstanceEntityRole.getEntityInstance(), false, false, false, false);
             
             chainInstanceEntityRoleTransfer = new ChainInstanceEntityRoleTransfer(chainInstance, chainEntityRoleType, entityInstance);
             put(chainInstanceEntityRole, chainInstanceEntityRoleTransfer);

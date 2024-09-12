@@ -122,11 +122,11 @@ public class GetEventsCommand
             result.setEventCount(eventCount);
 
             if(entityInstance != null) {
-                result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false, false));
+                result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false));
             }
 
             if(createdBy != null) {
-                result.setCreatedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, createdBy, false, false, false, false, false, false));
+                result.setCreatedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, createdBy, false, false, false, false));
             }
 
             result.setEvents(coreControl.getEventTransfers(userVisit, entities));

@@ -36,7 +36,7 @@ public class EntityAppearanceTransferCache
         var entityAppearanceTransfer = get(entityAppearance);
         
         if(entityAppearanceTransfer == null) {
-            var entityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityAppearance.getEntityInstance(), false, false, false, false, false, false);
+            var entityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityAppearance.getEntityInstance(), false, false, false, false);
             var appearance = coreControl.getAppearanceTransfer(userVisit, entityAppearance.getAppearance());
             
             entityAppearanceTransfer = new EntityAppearanceTransfer(entityInstance, appearance);

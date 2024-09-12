@@ -38,7 +38,7 @@ public class EntityTimeAttributeTransferCache
         
         if(entityTimeAttributeTransfer == null) {
             var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityTimeAttribute.getEntityAttribute(), entityInstance) : null;
-            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityTimeAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityTimeAttribute.getEntityInstance(), false, false, false, false);
             var unformattedTimeAttribute = entityTimeAttribute.getTimeAttribute();
             var timeAttribute = formatTypicalDateTime(unformattedTimeAttribute);
             

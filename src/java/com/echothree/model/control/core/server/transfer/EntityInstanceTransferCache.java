@@ -71,7 +71,7 @@ public class EntityInstanceTransferCache
     }
 
     public EntityInstanceTransfer getEntityInstanceTransfer(EntityInstance entityInstance, boolean includeEntityAppearance,
-            boolean includeEntityVisit, boolean includeNames, boolean includeKey, boolean includeGuid, boolean includeUlid) {
+            boolean includeEntityVisit, boolean includeNames, boolean includeGuid) {
         var entityInstanceTransfer = get(entityInstance);
         
         if(entityInstanceTransfer == null) {

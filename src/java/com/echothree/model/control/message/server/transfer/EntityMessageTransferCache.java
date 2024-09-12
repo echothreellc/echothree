@@ -39,7 +39,7 @@ public class EntityMessageTransferCache
         var entityMessageTransfer = get(entityMessage);
         
         if(entityMessageTransfer == null) {
-            var entityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityMessage, false, false, false, false, false, false);
+            var entityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityMessage, false, false, false, false);
             var message = messageControl.getMessageTransfer(userVisit, entityMessage.getMessage());
             
             entityMessageTransfer = new EntityMessageTransfer(entityInstance, message);
