@@ -3981,7 +3981,6 @@ public interface GraphQlQueries {
     static EntityInstanceObject entityInstance(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("entityRef") final String entityRef,
-            @GraphQLName("key") final String key,
             @GraphQLName("guid") final String guid) {
         EntityInstance entityInstance;
 
@@ -3990,7 +3989,6 @@ public interface GraphQlQueries {
 
             commandForm.setGuid(id);
             commandForm.setEntityRef(entityRef);
-            commandForm.setKey(key);
             commandForm.setGuid(guid);
 
             entityInstance = new GetEntityInstanceCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();

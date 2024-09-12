@@ -4022,7 +4022,6 @@ public interface GraphQlMutations {
     static MutationResultObject deleteEntityInstance(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("entityRef") final String entityRef,
-            @GraphQLName("key") final String key,
             @GraphQLName("guid") final String guid) {
         var mutationResultObject = new MutationResultObject();
 
@@ -4031,7 +4030,6 @@ public interface GraphQlMutations {
 
             commandForm.setGuid(id);
             commandForm.setEntityRef(entityRef);
-            commandForm.setKey(key);
             commandForm.setGuid(guid);
 
             var commandResult = CoreUtil.getHome().deleteEntityInstance(BaseGraphQl.getUserVisitPK(env), commandForm);
@@ -4048,7 +4046,6 @@ public interface GraphQlMutations {
     static MutationResultObject removeEntityInstance(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("entityRef") final String entityRef,
-            @GraphQLName("key") final String key,
             @GraphQLName("guid") final String guid) {
         var mutationResultObject = new MutationResultObject();
 
@@ -4057,7 +4054,6 @@ public interface GraphQlMutations {
 
             commandForm.setGuid(id);
             commandForm.setEntityRef(entityRef);
-            commandForm.setKey(key);
             commandForm.setGuid(guid);
 
             var commandResult = CoreUtil.getHome().removeEntityInstance(BaseGraphQl.getUserVisitPK(env), commandForm);
@@ -4074,7 +4070,6 @@ public interface GraphQlMutations {
     static MutationResultObject sendEvent(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("entityRef") final String entityRef,
-            @GraphQLName("key") final String key,
             @GraphQLName("guid") final String guid,
             @GraphQLName("eventTypeName") @GraphQLNonNull final String eventTypeName) {
         var mutationResultObject = new MutationResultObject();
@@ -4084,7 +4079,6 @@ public interface GraphQlMutations {
 
             commandForm.setGuid(id);
             commandForm.setEntityRef(entityRef);
-            commandForm.setKey(key);
             commandForm.setGuid(guid);
             commandForm.setEventTypeName(eventTypeName);
 
