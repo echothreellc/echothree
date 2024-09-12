@@ -62,20 +62,15 @@ public class MainAction
         var commandForm = CoreUtil.getHome().getGetEventsForm();
 
         commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));
-        commandForm.setKey(request.getParameter(ParameterConstants.KEY));
         commandForm.setGuid(request.getParameter(ParameterConstants.GUID));
-        commandForm.setUlid(request.getParameter(ParameterConstants.ULID));
         commandForm.setCreatedByEntityRef(request.getParameter(ParameterConstants.CREATED_BY_ENTITY_REF));
-        commandForm.setCreatedByKey(request.getParameter(ParameterConstants.CREATED_BY_KEY));
         commandForm.setCreatedByGuid(request.getParameter(ParameterConstants.CREATED_BY_GUID));
 
         Set<String> options = new HashSet<>();
         options.add(CoreOptions.EntityInstanceIncludeNames);
         options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
         options.add(CoreOptions.EntityInstanceIncludeEntityVisit);
-        options.add(CoreOptions.EntityInstanceIncludeKeyIfAvailable);
         options.add(CoreOptions.EntityInstanceIncludeGuidIfAvailable);
-        options.add(CoreOptions.EntityInstanceIncludeUlidIfAvailable);
         options.add(CoreOptions.EntityVisitIncludeVisitedTime);
         commandForm.setOptions(options);
 

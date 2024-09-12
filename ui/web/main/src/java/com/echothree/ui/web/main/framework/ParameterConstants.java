@@ -29,10 +29,8 @@ public interface ParameterConstants {
     String ENTITY_ATTRIBUTE_NAME = "EntityAttributeName";
     String ENTITY_LIST_ITEM_NAME = "EntityListItemName";
     String ENTITY_REF = "EntityRef";
-    String KEY = "Key";
     String GUID = "Guid";
     String CREATED_BY_ENTITY_REF = "CreatedByEntityRef";
-    String CREATED_BY_KEY = "CreatedByKey";
     String CREATED_BY_GUID = "CreatedByGuid";
     String FORCE_REGENERATION = "ForceRegeneration";
     String ENTITY_REF_ATTRIBUTE = "EntityRefAttribute";
@@ -446,7 +444,6 @@ public interface ParameterConstants {
     String DISPOSITION = "Disposition";
     String QUEUE_TYPE_NAME = "QueueTypeName";
     String ORIGINAL_QUEUE_TYPE_NAME = "OriginalQueueTypeName";
-    String ULID = "Ulid";
     String GRAPHQL_QUERY = "query";
     String GRAPHQL_OPERATION_NAME = "operationName";
     String WAREHOUSE_TYPE_NAME = "WarehouseTypeName";

@@ -58,7 +58,6 @@ public class ReviewAction
         
         commandForm.setForumThreadName(request.getParameter(ParameterConstants.FORUM_THREAD_NAME));
         commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));
-        commandForm.setKey(request.getParameter(ParameterConstants.KEY));
         commandForm.setGuid(request.getParameter(ParameterConstants.GUID));
         
         Set<String> options = new HashSet<>();

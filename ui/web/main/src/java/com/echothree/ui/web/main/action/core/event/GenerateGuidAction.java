@@ -53,14 +53,10 @@ public class GenerateGuidAction
         String forwardKey = null;
         var commandForm = CoreUtil.getHome().getGenerateGuidForm();
         var entityRef = request.getParameter(ParameterConstants.ENTITY_REF);
-        var key = request.getParameter(ParameterConstants.KEY);
         var guid = request.getParameter(ParameterConstants.GUID);
-        var ulid = request.getParameter(ParameterConstants.ULID);
 
         commandForm.setEntityRef(entityRef);
-        commandForm.setKey(key);
         commandForm.setGuid(guid);
-        commandForm.setUlid(ulid);
         commandForm.setForceRegeneration(request.getParameter(ParameterConstants.FORCE_REGENERATION));
 
         var commandResult = CoreUtil.getHome().generateGuid(getUserVisitPK(request), commandForm);
