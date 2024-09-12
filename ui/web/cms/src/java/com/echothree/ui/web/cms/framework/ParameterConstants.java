@@ -59,7 +59,6 @@ public interface ParameterConstants {
     String ITEM_STATUS_CHOICES = "ItemStatusChoices";
     String ITEM_TYPE_NAME = "ItemTypeName";
     String ITEM_USE_TYPE_NAME = "ItemUseTypeName";
-    String KEY = "Key";
     String LANGUAGE_ISO_NAME = "LanguageIsoName";
     String MODIFIED_SINCE = "ModifiedSince";
     String OPTIONS = "Options";
