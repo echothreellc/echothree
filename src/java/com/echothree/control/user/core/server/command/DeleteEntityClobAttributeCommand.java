@@ -52,7 +52,7 @@ public class DeleteEntityClobAttributeCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeGuid", FieldType.GUID, false, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("LanguageUlid", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("LanguageGuid", FieldType.GUID, false, null, null)
                 ));
     }
     
