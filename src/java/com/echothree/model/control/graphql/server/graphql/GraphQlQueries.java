@@ -3980,8 +3980,7 @@ public interface GraphQlQueries {
     @GraphQLName("entityInstance")
     static EntityInstanceObject entityInstance(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
-            @GraphQLName("entityRef") final String entityRef,
-            @GraphQLName("guid") final String guid) {
+            @GraphQLName("entityRef") final String entityRef) {
         EntityInstance entityInstance;
 
         try {
@@ -3989,7 +3988,6 @@ public interface GraphQlQueries {
 
             commandForm.setGuid(id);
             commandForm.setEntityRef(entityRef);
-            commandForm.setGuid(guid);
 
             entityInstance = new GetEntityInstanceCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
