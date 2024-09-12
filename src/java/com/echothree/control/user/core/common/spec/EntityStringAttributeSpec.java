@@ -22,6 +22,6 @@ import com.echothree.control.user.party.common.spec.LanguageGuid;
 public interface EntityStringAttributeSpec
         extends UniversalEntitySpec, EntityAttributeSpec, EntityAttributeGuid, LanguageSpec, LanguageGuid {
     
-    // Nothing additional beyond UniversalEntitySpec, EntityAttributeSpec, EntityAttributeUlid, LanguageSpec, LanguageUlid
+    // Nothing additional beyond UniversalEntitySpec, EntityAttributeSpec, EntityAttributeGuid, LanguageSpec, LanguageGuid
     
 }

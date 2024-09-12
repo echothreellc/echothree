@@ -19,6 +19,6 @@ package com.echothree.control.user.core.common.spec;
 public interface EntityDateAttributeSpec
         extends UniversalEntitySpec, EntityAttributeSpec, EntityAttributeGuid {
     
-    // Nothing additional beyond UniversalEntitySpec, EntityAttributeSpec, EntityAttributeUlid
+    // Nothing additional beyond UniversalEntitySpec, EntityAttributeSpec, EntityAttributeGuid
     
 }
