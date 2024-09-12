@@ -58,9 +58,9 @@ public class EventTopic {
                     var eventId = event.getPrimaryKey().getEntityId();
                     var eventTime = event.getEventTime();
                     var eventTimeSequence = event.getEventTimeSequence();
-                    var entityInstance = coreControl.ensureUlidForEntityInstance(event.getEntityInstance(), false);
+                    var entityInstance = coreControl.ensureGuidForEntityInstance(event.getEntityInstance(), false);
                     var entityRef = entityInstanceUtils.getEntityRefByEntityInstance(entityInstance);
-                    var id = entityInstance.getUlid();
+                    var id = entityInstance.getGuid();
                     var eventTypeName = event.getEventType().getEventTypeName();
                     var relatedEntityRef = entityInstanceUtils.getEntityRefByEntityInstance(event.getRelatedEntityInstance());
                     var relatedEventType = event.getRelatedEventType();
