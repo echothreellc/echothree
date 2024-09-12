@@ -57,9 +57,7 @@ public class GetEventsCommand
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
                 new FieldDefinition("CreatedByEntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("CreatedByKey", FieldType.KEY, false, null, null),
-                new FieldDefinition("CreatedByGuid", FieldType.GUID, false, null, null),
-                new FieldDefinition("CreatedByUlid", FieldType.ULID, false, null, null)
+                new FieldDefinition("CreatedByGuid", FieldType.GUID, false, null, null)
                 ));
     }
     
@@ -77,11 +75,9 @@ public class GetEventsCommand
         var entityRef = form.getEntityRef();
         var guid = form.getGuid();
         var createdByEntityRef = form.getCreatedByEntityRef();
-        var createdByKey = form.getCreatedByKey();
         var createdByGuid = form.getCreatedByGuid();
-        var createdByUlid = form.getCreatedByUlid();
         var parameterCount = (entityRef == null ? 0 : 1) + (guid == null ? 0 : 1)
-                + (createdByEntityRef == null ? 0 : 1) + (createdByKey == null ? 0 : 1) + (createdByGuid == null ? 0 : 1) + (createdByUlid == null ? 0 : 1);
+                + (createdByEntityRef == null ? 0 : 1) + (createdByGuid == null ? 0 : 1);
         Collection<Event> entities = null;
 
         if(parameterCount == 1) {
@@ -98,7 +94,7 @@ public class GetEventsCommand
                     entities = coreControl.getEventsByEntityInstance(entityInstance);
                 }
             } else {
-                createdBy = EntityInstanceLogic.getInstance().getEntityInstance(this, createdByEntityRef, createdByKey, createdByGuid, createdByUlid, null);
+                createdBy = EntityInstanceLogic.getInstance().getEntityInstance(this, createdByEntityRef, createdByGuid, null);
 
                 if(!hasExecutionErrors()) {
                     if(session.hasLimit(EventFactory.class)) {
