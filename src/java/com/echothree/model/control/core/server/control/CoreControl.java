@@ -2302,7 +2302,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     public EntityInstance createEntityInstance(EntityType entityType, Long entityUniqueId) {
-        return EntityInstanceFactory.getInstance().create(entityType, entityUniqueId, null, null, null);
+        return EntityInstanceFactory.getInstance().create(entityType, entityUniqueId, null);
     }
     
     public boolean verifyEntityInstance(final EntityInstance entityInstance, final String componentVendorName, final String entityTypeName) {
