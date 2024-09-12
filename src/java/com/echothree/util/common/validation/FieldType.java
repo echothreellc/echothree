@@ -70,7 +70,6 @@ public enum FieldType {
     TIME,
     TIME_ZONE_NAME,
     TRUE_OR_FALSE,
-    ULID,
     UNSIGNED_COST_LINE,
     UNSIGNED_COST_UNIT,
     UNSIGNED_INTEGER,

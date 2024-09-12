@@ -51,7 +51,7 @@ public class CreateEntityGeoPointAttributeCommand
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EntityAttributeGuid", FieldType.ULID, false, null, null),
+                new FieldDefinition("EntityAttributeGuid", FieldType.GUID, false, null, null),
                 new FieldDefinition("Latitude", FieldType.LATITUDE, true, null, null),
                 new FieldDefinition("Longitude", FieldType.LONGITUDE, true, null, null),
                 new FieldDefinition("Elevation", FieldType.UNSIGNED_LONG, false, null, null),

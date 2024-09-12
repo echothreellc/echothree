@@ -92,30 +92,12 @@ public class EntityInstanceTransferCache
             var entityTimeTransfer = entityTime == null ? null : coreControl.getEntityTimeTransfer(userVisit, entityTime);
             String description = null;
             
-            if(includeKey || includeKeyIfAvailable) {
-                key = entityInstance.getKey();
-                
-                if(includeKey && key == null) {
-                    entityInstance = coreControl.ensureKeyForEntityInstance(entityInstance, false);
-                    key = entityInstance.getKey();
-                }
-            }
-            
             if(includeGuid || includeGuidIfAvailable) {
                 guid = entityInstance.getGuid();
                 
                 if(includeGuid && guid == null) {
                     entityInstance = coreControl.ensureGuidForEntityInstance(entityInstance, false);
                     guid = entityInstance.getGuid();
-                }
-            }
-            
-            if(includeUlid || includeUlidIfAvailable) {
-                ulid = entityInstance.getUlid();
-                
-                if(includeUlid && ulid == null) {
-                    entityInstance = coreControl.ensureUlidForEntityInstance(entityInstance, false);
-                    ulid = entityInstance.getUlid();
                 }
             }
             

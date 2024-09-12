@@ -515,8 +515,6 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.Sha1Utils;
 import com.echothree.util.server.string.EntityInstanceUtils;
 import com.echothree.util.server.string.GuidUtils;
-import com.echothree.util.server.string.KeyUtils;
-import com.echothree.util.server.string.UlidUtils;
 import com.google.common.base.Splitter;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -2394,69 +2392,7 @@ public class CoreControl
     public EntityInstance getEntityInstanceForUpdate(EntityType entityType, Long entityUniqueId) {
         return getEntityInstance(entityType, entityUniqueId, EntityPermission.READ_WRITE);
     }
-    
 
-    private EntityInstance getEntityInstanceByKey(String key, EntityPermission entityPermission) {
-        EntityInstance entityInstance;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityinstances " +
-                        "WHERE eni_key = ?";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityinstances " +
-                        "WHERE eni_key = ? " +
-                        "FOR UPDATE";
-            }
-
-            var ps = EntityInstanceFactory.getInstance().prepareStatement(query);
-            
-            ps.setString(1, key);
-            
-            entityInstance = EntityInstanceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityInstance;
-    }
-    
-    public EntityInstance getEntityInstanceByKey(String key) {
-        return getEntityInstanceByKey(key, EntityPermission.READ_ONLY);
-    }
-    
-    public EntityInstance getEntityInstanceByKeyForUpdate(String key) {
-        return getEntityInstanceByKey(key, EntityPermission.READ_WRITE);
-    }
-    
-    public EntityInstance ensureKeyForEntityInstance(EntityInstance entityInstance, boolean forceRegeneration) {
-        var key = entityInstance.getKey();
-        
-        if(key == null || forceRegeneration) {
-            // Convert to READ_WRITE if necessary...
-            if(entityInstance.getEntityPermission().equals(EntityPermission.READ_ONLY)) {
-                entityInstance = EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityInstance.getPrimaryKey());
-            }
-            
-            // Keep generating keys until a unique one is found...
-            EntityInstance duplicateEntityInstance;
-            do {
-                key = KeyUtils.getInstance().generateKey();
-                duplicateEntityInstance = getEntityInstanceByKey(key);
-            } while(duplicateEntityInstance != null);
-            
-            // Store it immediately in order to decrease the odds of another thread choosing the same key...
-            entityInstance.setKey(key);
-            entityInstance.store();
-        }
-        
-        return entityInstance;
-    }
-    
     private EntityInstance getEntityInstanceByGuid(String guid, EntityPermission entityPermission) {
         EntityInstance entityInstance;
         
@@ -2518,75 +2454,6 @@ public class CoreControl
         return entityInstance;
     }
     
-    private EntityInstance getEntityInstanceByUlid(String ulid, EntityPermission entityPermission) {
-        EntityInstance entityInstance;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityinstances " +
-                        "WHERE eni_ulid = ?";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityinstances " +
-                        "WHERE eni_ulid = ? " +
-                        "FOR UPDATE";
-            }
-
-            var ps = EntityInstanceFactory.getInstance().prepareStatement(query);
-            
-            ps.setString(1, ulid);
-            
-            entityInstance = EntityInstanceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityInstance;
-    }
-    
-    public EntityInstance getEntityInstanceByUlid(String ulid) {
-        return getEntityInstanceByUlid(ulid, EntityPermission.READ_ONLY);
-    }
-    
-    public EntityInstance getEntityInstanceByUlidForUpdate(String ulid) {
-        return getEntityInstanceByUlid(ulid, EntityPermission.READ_WRITE);
-    }
-    
-    public EntityInstance ensureUlidForEntityInstance(EntityInstance entityInstance, boolean forceRegeneration) {
-        var ulid = entityInstance.getUlid();
-        
-        if(ulid == null || forceRegeneration) {
-            // Convert to READ_WRITE if necessary...
-            if(entityInstance.getEntityPermission().equals(EntityPermission.READ_ONLY)) {
-                entityInstance = EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityInstance.getPrimaryKey());
-            }
-            
-            // Keep generating ULIDs until a unique one is found...
-            EntityInstance duplicateEntityInstance;
-            do {
-                ulid = UlidUtils.getInstance().generateUlid(entityInstance);
-                duplicateEntityInstance = getEntityInstanceByUlid(ulid);
-            } while(duplicateEntityInstance != null);
-            
-            // Store it immediately in order to decrease the odds of another thread choosing the same ULID...
-            entityInstance.setUlid(ulid);
-            entityInstance.store();
-        }
-        
-        return entityInstance;
-    }
-
-    public String getUlidForEntityInstance(EntityInstance entityInstance) {
-        return ensureUlidForEntityInstance(entityInstance, false).getUlid();
-    }
-
-    public String getUlidForBasePK(BasePK basePK) {
-        return getUlidForEntityInstance(getEntityInstanceByBasePK(basePK));
-    }
-
     public EntityInstanceTransfer getEntityInstanceTransfer(UserVisit userVisit, EntityInstance entityInstance, boolean includeEntityAppearance,
             boolean includeEntityVisit, boolean includeNames, boolean includeKey, boolean includeGuid, boolean includeUlid) {
         return getCoreTransferCaches(userVisit).getEntityInstanceTransferCache().getEntityInstanceTransfer(entityInstance, includeEntityAppearance,

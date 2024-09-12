@@ -49,7 +49,7 @@ public class CreateEntityEntityAttributeCommand
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null),
+                new FieldDefinition("EntityAttributeGuid", FieldType.GUID, false, null, null),
                 new FieldDefinition("EntityRefAttribute", FieldType.ENTITY_REF, true, null, null)
                 ));
     }

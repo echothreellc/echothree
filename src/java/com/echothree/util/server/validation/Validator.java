@@ -113,7 +113,6 @@ public class Validator {
         map.put(FieldType.UNSIGNED_PRICE_UNIT, UnsignedPriceUnitFieldType.class);
         map.put(FieldType.UPPER_LETTER_2, UpperLetter2FieldType.class);
         map.put(FieldType.UPPER_LETTER_3, UpperLetter3FieldType.class);
-        map.put(FieldType.ULID, UlidFieldType.class);
         map.put(FieldType.URL, UrlFieldType.class);
         map.put(FieldType.YEAR, YearFieldType.class);
         

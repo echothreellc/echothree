@@ -51,7 +51,7 @@ public class DeleteEntityAliasCommand
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
                 new FieldDefinition("EntityAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EntityAliasTypeGuid", FieldType.ULID, false, null, null)
+                new FieldDefinition("EntityAliasTypeGuid", FieldType.GUID, false, null, null)
         );
     }
 
