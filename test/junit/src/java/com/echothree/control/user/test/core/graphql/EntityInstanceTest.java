@@ -51,7 +51,7 @@ public class EntityInstanceTest
                             totalCount
                             edges {
                                 node {
-                                    ulid
+                                    guid
                                 }
                             }
                         }
@@ -74,7 +74,7 @@ public class EntityInstanceTest
                     entityInstances(componentVendorName: "%s", entityTypeName: "%s") {
                         edges {
                             node {
-                                ulid
+                                guid
                             }
                         }
                     }
@@ -104,7 +104,7 @@ public class EntityInstanceTest
                     entityInstances(componentVendorName: "%s", entityTypeName: "%s") {
                         edges {
                             node {
-                                ulid
+                                guid
                             }
                         }
                     }
@@ -135,7 +135,7 @@ public class EntityInstanceTest
                         entityInstances {
                             edges {
                                 node {
-                                    ulid
+                                    guid
                                 }
                             }
                         }
@@ -145,7 +145,7 @@ public class EntityInstanceTest
 
         var entityInstances = getList(entityTypeBody, "data.entityType.entityInstances.edges");
         var entityInstance = getObject(entityInstances, "[0]");
-        var ulid = getString(entityInstance, "node.ulid");
+        var guid = getString(entityInstance, "node.guid");
 
         var logoutBody = executeUsingPost("""
                 mutation {
@@ -170,7 +170,7 @@ public class EntityInstanceTest
                         }
                     }
                 }
-                """.formatted(ulid));
+                """.formatted(guid));
 
         assertThat(getMap(entityInstanceBody, "data.entityInstance")).isNull();
     }
@@ -196,7 +196,7 @@ public class EntityInstanceTest
                         entityInstances {
                             edges {
                                 node {
-                                    ulid
+                                    guid
                                 }
                             }
                         }
@@ -206,7 +206,7 @@ public class EntityInstanceTest
 
         var entityInstances = getList(entityTypeBody, "data.entityType.entityInstances.edges");
         var entityInstance = getObject(entityInstances, "[0]");
-        var ulid = getString(entityInstance, "node.ulid");
+        var guid = getString(entityInstance, "node.guid");
 
         var entityInstanceBody = executeUsingPost("""
                 query {
@@ -219,7 +219,7 @@ public class EntityInstanceTest
                         }
                     }
                 }
-                """.formatted(ulid));
+                """.formatted(guid));
 
         assertThat(getString(entityInstanceBody, "data.entityInstance.entityType.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHO_THREE.toString());
         assertThat(getString(entityInstanceBody, "data.entityInstance.entityType.entityTypeName")).isEqualTo(EntityTypes.GlAccount.toString());
