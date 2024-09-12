@@ -49,9 +49,7 @@ public class DeleteEntityAliasCommand
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Key", FieldType.KEY, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
-                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
                 new FieldDefinition("EntityAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAliasTypeUlid", FieldType.ULID, false, null, null)
         );

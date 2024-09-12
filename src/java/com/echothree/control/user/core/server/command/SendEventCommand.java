@@ -54,9 +54,7 @@ public class SendEventCommand
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Key", FieldType.KEY, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
-                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
                 new FieldDefinition("EventTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }

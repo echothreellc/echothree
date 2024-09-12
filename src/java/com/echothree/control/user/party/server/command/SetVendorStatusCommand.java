@@ -51,9 +51,7 @@ public class SetVendorStatusCommand
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Key", FieldType.KEY, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
-                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
                 new FieldDefinition("VendorStatusChoice", FieldType.ENTITY_NAME, true, null, null)
                 ));
     }

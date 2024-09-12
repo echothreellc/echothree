@@ -57,9 +57,7 @@ public class EditEntityClobAttributeCommand
 
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Key", FieldType.KEY, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
-                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),

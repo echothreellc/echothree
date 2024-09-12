@@ -50,9 +50,7 @@ public class CreateEntityAliasCommand
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Key", FieldType.KEY, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
-                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
                 new FieldDefinition("EntityAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAliasTypeUlid", FieldType.ULID, false, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
