@@ -49,9 +49,9 @@ public class DeleteEntityStringAttributeCommand
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null),
+                new FieldDefinition("EntityAttributeGuid", FieldType.ULID, false, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("LanguageUlid", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("LanguageGuid", FieldType.ENTITY_NAME, false, null, null)
                 ));
     }
     
@@ -69,25 +69,25 @@ public class DeleteEntityStringAttributeCommand
 
             if(!hasExecutionErrors()) {
                 var entityAttributeName = form.getEntityAttributeName();
-                var entityAttributeUlid = form.getEntityAttributeUlid();
+                var entityAttributeGuid = form.getEntityAttributeGuid();
                 
-                parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
+                parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeGuid == null ? 0 : 1);
                 
                 if(parameterCount == 1) {
                     var entityAttribute = entityAttributeName == null ?
-                            EntityAttributeLogic.getInstance().getEntityAttributeByUlid(this, entityAttributeUlid) :
+                            EntityAttributeLogic.getInstance().getEntityAttributeByGuid(this, entityAttributeGuid) :
                             EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
                             var languageIsoName = form.getLanguageIsoName();
-                            var languageUlid = form.getLanguageUlid();
+                            var languageGuid = form.getLanguageGuid();
                             
-                            parameterCount = (languageIsoName == null ? 0 : 1) + (languageUlid == null ? 0 : 1);
+                            parameterCount = (languageIsoName == null ? 0 : 1) + (languageGuid == null ? 0 : 1);
 
                             if(parameterCount == 1) {
                                 var language = languageIsoName == null ?
-                                        LanguageLogic.getInstance().getLanguageByUlid(this, languageUlid) :
+                                        LanguageLogic.getInstance().getLanguageByGuid(this, languageGuid) :
                                         LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
 
                                 if(!hasExecutionErrors()) {

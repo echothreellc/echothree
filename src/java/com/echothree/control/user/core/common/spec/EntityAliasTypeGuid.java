@@ -16,12 +16,10 @@
 
 package com.echothree.control.user.core.common.spec;
 
-import com.echothree.util.common.form.BaseSpec;
-
-public interface EntityListItemUlid
-        extends BaseSpec {
+public interface EntityAliasTypeGuid
+        extends EntityTypeSpec {
     
-    String getEntityListItemUlid();
-    void setEntityListItemUlid(String entityListItemUlid);
+    String getEntityAliasTypeGuid();
+    void setEntityAliasTypeGuid(String entityAliasTypeGuid);
     
 }

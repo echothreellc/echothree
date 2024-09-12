@@ -58,9 +58,9 @@ public class EditEntityStringAttributeCommand
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null),
+                new FieldDefinition("EntityAttributeGuid", FieldType.ULID, false, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("LanguageUlid", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("LanguageGuid", FieldType.ENTITY_NAME, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -83,25 +83,25 @@ public class EditEntityStringAttributeCommand
 
             if(!hasExecutionErrors()) {
                 var entityAttributeName = spec.getEntityAttributeName();
-                var entityAttributeUlid = spec.getEntityAttributeUlid();
+                var entityAttributeGuid = spec.getEntityAttributeGuid();
                 
-                parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
+                parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeGuid == null ? 0 : 1);
                 
                 if(parameterCount == 1) {
                     var entityAttribute = entityAttributeName == null ?
-                            EntityAttributeLogic.getInstance().getEntityAttributeByUlid(this, entityAttributeUlid) :
+                            EntityAttributeLogic.getInstance().getEntityAttributeByGuid(this, entityAttributeGuid) :
                             EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
                             var languageIsoName = spec.getLanguageIsoName();
-                            var languageUlid = spec.getLanguageUlid();
+                            var languageGuid = spec.getLanguageGuid();
                             
-                            parameterCount = (languageIsoName == null ? 0 : 1) + (languageUlid == null ? 0 : 1);
+                            parameterCount = (languageIsoName == null ? 0 : 1) + (languageGuid == null ? 0 : 1);
 
                             if(parameterCount == 1) {
                                 var language = languageIsoName == null ?
-                                        LanguageLogic.getInstance().getLanguageByUlid(this, languageUlid) :
+                                        LanguageLogic.getInstance().getLanguageByGuid(this, languageGuid) :
                                         LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
 
                                 if(!hasExecutionErrors()) {

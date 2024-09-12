@@ -51,7 +51,7 @@ public class DeleteEntityAliasCommand
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
                 new FieldDefinition("EntityAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EntityAliasTypeUlid", FieldType.ULID, false, null, null)
+                new FieldDefinition("EntityAliasTypeGuid", FieldType.ULID, false, null, null)
         );
     }
 
@@ -69,13 +69,13 @@ public class DeleteEntityAliasCommand
 
             if(!hasExecutionErrors()) {
                 var entityAliasTypeName = form.getEntityAliasTypeName();
-                var entityAliasTypeUlid = form.getEntityAliasTypeUlid();
+                var entityAliasTypeGuid = form.getEntityAliasTypeGuid();
 
-                parameterCount = (entityAliasTypeName == null ? 0 : 1) + (entityAliasTypeUlid == null ? 0 : 1);
+                parameterCount = (entityAliasTypeName == null ? 0 : 1) + (entityAliasTypeGuid == null ? 0 : 1);
 
                 if(parameterCount == 1) {
                     var entityAliasType = entityAliasTypeName == null ?
-                            EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUlid(this, entityAliasTypeUlid) :
+                            EntityAliasTypeLogic.getInstance().getEntityAliasTypeByGuid(this, entityAliasTypeGuid) :
                             EntityAliasTypeLogic.getInstance().getEntityAliasTypeByName(this, entityInstance.getEntityType(), entityAliasTypeName);
 
                     if(!hasExecutionErrors()) {

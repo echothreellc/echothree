@@ -17,10 +17,10 @@
 package com.echothree.control.user.core.common.spec;
 
 import com.echothree.control.user.party.common.spec.LanguageSpec;
-import com.echothree.control.user.party.common.spec.LanguageUlid;
+import com.echothree.control.user.party.common.spec.LanguageGuid;
 
 public interface EntityStringAttributeSpec
-        extends UniversalEntitySpec, EntityAttributeSpec, EntityAttributeUlid, LanguageSpec, LanguageUlid {
+        extends UniversalEntitySpec, EntityAttributeSpec, EntityAttributeGuid, LanguageSpec, LanguageGuid {
     
     // Nothing additional beyond UniversalEntitySpec, EntityAttributeSpec, EntityAttributeUlid, LanguageSpec, LanguageUlid
     

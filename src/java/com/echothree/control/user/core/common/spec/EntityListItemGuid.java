@@ -14,14 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.party.common.spec;
+package com.echothree.control.user.core.common.spec;
 
 import com.echothree.util.common.form.BaseSpec;
 
-public interface LanguageUlid
+public interface EntityListItemGuid
         extends BaseSpec {
     
-    String getLanguageUlid();
-    void setLanguageUlid(String languageUlid);
+    String getEntityListItemGuid();
+    void setEntityListItemGuid(String entityListItemGuid);
     
 }

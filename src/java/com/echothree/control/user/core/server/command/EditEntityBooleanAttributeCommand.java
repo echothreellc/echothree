@@ -56,7 +56,7 @@ public class EditEntityBooleanAttributeCommand
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null)
+                new FieldDefinition("EntityAttributeGuid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -79,13 +79,13 @@ public class EditEntityBooleanAttributeCommand
 
             if(!hasExecutionErrors()) {
                 var entityAttributeName = spec.getEntityAttributeName();
-                var entityAttributeUlid = spec.getEntityAttributeUlid();
+                var entityAttributeGuid = spec.getEntityAttributeGuid();
                 
-                parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
+                parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeGuid == null ? 0 : 1);
                 
                 if(parameterCount == 1) {
                     var entityAttribute = entityAttributeName == null ?
-                            EntityAttributeLogic.getInstance().getEntityAttributeByUlid(this, entityAttributeUlid) :
+                            EntityAttributeLogic.getInstance().getEntityAttributeByGuid(this, entityAttributeGuid) :
                             EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
                     if(!hasExecutionErrors()) {

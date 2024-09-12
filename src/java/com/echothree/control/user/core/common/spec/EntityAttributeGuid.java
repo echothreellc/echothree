@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.core.common.spec;
 
-public interface EntityAttributeUlid
+public interface EntityAttributeGuid
         extends EntityTypeSpec {
     
-    String getEntityAttributeUlid();
-    void setEntityAttributeUlid(String entityAttributeUlid);
+    String getEntityAttributeGuid();
+    void setEntityAttributeGuid(String entityAttributeGuid);
     
 }
