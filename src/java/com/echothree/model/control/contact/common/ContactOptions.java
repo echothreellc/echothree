@@ -22,7 +22,6 @@ public interface ContactOptions {
     
     String PostalAddressLineIncludeElements = "PostalAddressLineIncludeElements";
 
-    String ContactMechanismIncludeKey = "ContactMechanismIncludeKey";
     String ContactMechanismIncludeGuid = "ContactMechanismIncludeGuid";
     String ContactMechanismIncludeComments = "ContactMechanismIncludeComments";
     String ContactMechanismIncludeEntityAttributeGroups = "ContactMechanismIncludeEntityAttributeGroups";
@@ -32,7 +31,6 @@ public interface ContactOptions {
     String PartyContactMechanismIncludePartyContactMechanismRelationships = "PartyContactMechanismIncludePartyContactMechanismRelationships";
     String PartyContactMechanismIncludePartyContactMechanismRelationshipsByFromPartyContactMechanism = "PartyContactMechanismIncludePartyContactMechanismRelationshipsByFromPartyContactMechanism";
     String PartyContactMechanismIncludePartyContactMechanismRelationshipsByToPartyContactMechanism = "PartyContactMechanismIncludePartyContactMechanismRelationshipsByToPartyContactMechanism";
-    String PartyContactMechanismIncludeKey = "PartyContactMechanismIncludeKey";
     String PartyContactMechanismIncludeGuid = "PartyContactMechanismIncludeGuid";
 
 }

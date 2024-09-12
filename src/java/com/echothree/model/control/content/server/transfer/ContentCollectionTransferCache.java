@@ -42,7 +42,6 @@ public class ContentCollectionTransferCache
             includeContentCatalogs = options.contains(ContentOptions.ContentCollectionIncludeContentCatalogs);
             includeContentForums = options.contains(ContentOptions.ContentCollectionIncludeContentForums);
             includeContentSections = options.contains(ContentOptions.ContentCollectionIncludeContentSections);
-            setIncludeKey(options.contains(ContentOptions.ContentCollectionIncludeKey));
             setIncludeGuid(options.contains(ContentOptions.ContentCollectionIncludeGuid));
             setIncludeEntityAttributeGroups(options.contains(ContentOptions.ContentCollectionIncludeEntityAttributeGroups));
             setIncludeTagScopes(options.contains(ContentOptions.ContentCollectionIncludeTagScopes));

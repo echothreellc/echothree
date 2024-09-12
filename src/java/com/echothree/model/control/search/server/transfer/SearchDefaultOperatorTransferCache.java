@@ -31,7 +31,6 @@ public class SearchDefaultOperatorTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(SearchOptions.SearchDefaultOperatorIncludeKey));
             setIncludeGuid(options.contains(SearchOptions.SearchDefaultOperatorIncludeGuid));
         }
         

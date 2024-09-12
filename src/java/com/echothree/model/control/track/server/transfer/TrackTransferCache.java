@@ -38,7 +38,6 @@ public class TrackTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(TrackOptions.TrackIncludeKey));
             setIncludeGuid(options.contains(TrackOptions.TrackIncludeGuid));
         }
         

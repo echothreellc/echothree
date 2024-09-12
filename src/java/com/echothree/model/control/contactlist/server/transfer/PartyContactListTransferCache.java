@@ -43,7 +43,6 @@ public class PartyContactListTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(ContactListOptions.PartyContactListIncludeKey));
             setIncludeGuid(options.contains(ContactListOptions.PartyContactListIncludeGuid));
             includeStatus = options.contains(ContactListOptions.PartyContactListIncludeStatus);
             includeComments = options.contains(ContactListOptions.PartyContactListIncludeComments);

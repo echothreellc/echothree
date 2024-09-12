@@ -31,7 +31,6 @@ public class SearchCheckSpellingActionTypeTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(SearchOptions.SearchCheckSpellingActionTypeIncludeKey));
             setIncludeGuid(options.contains(SearchOptions.SearchCheckSpellingActionTypeIncludeGuid));
         }
         

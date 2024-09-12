@@ -38,7 +38,6 @@ public class CampaignContentTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(CampaignOptions.CampaignContentIncludeKey));
             setIncludeGuid(options.contains(CampaignOptions.CampaignContentIncludeGuid));
         }
         

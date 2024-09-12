@@ -52,7 +52,6 @@ public class LotTransferCache
 
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(InventoryOptions.LotIncludeKey));
             setIncludeGuid(options.contains(InventoryOptions.LotIncludeGuid));
             includeLotAliases = options.contains(InventoryOptions.LotIncludeLotAliases);
             includeLotTimes = options.contains(InventoryOptions.LotIncludeLotTimes);

@@ -74,9 +74,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     boolean includeEntityAppearance;
     boolean includeEntityVisit;
     boolean includeNames;
-    boolean includeKey;
     boolean includeGuid;
-    boolean includeUlid;
     boolean includeEntityAliasTypes;
     boolean includeEntityAttributeGroups;
     boolean includeTagScopes;
@@ -355,22 +353,6 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
-     * Returns the includeKey.
-     * @return the includeKey
-     */
-    protected boolean getIncludeKey() {
-        return includeKey;
-    }
-
-    /**
-     * Sets the includeKey.
-     * @param includeKey the includeKey to set
-     */
-    protected void setIncludeKey(boolean includeKey) {
-        this.includeKey = includeKey;
-    }
-
-    /**
      * Returns the includeGuid.
      * @return the includeGuid
      */
@@ -385,15 +367,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     protected void setIncludeGuid(boolean includeGuid) {
         this.includeGuid = includeGuid;
     }
-    
-    /**
-     * Sets the includeUlid.
-     * @param includeUlid the includeUlid to set
-     */
-    protected void setIncludeUlid(boolean includeUlid) {
-        this.includeUlid = includeUlid;
-    }
-    
+
     protected void setupEntityInstance(final K baseEntity, EntityInstance entityInstance, final V transfer) {
         var coreControl = Session.getModelController(CoreControl.class);
         

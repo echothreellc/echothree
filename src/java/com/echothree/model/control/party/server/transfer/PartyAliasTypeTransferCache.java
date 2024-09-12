@@ -31,7 +31,6 @@ public class PartyAliasTypeTransferCache
 
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(PartyOptions.PartyAliasTypeIncludeKey));
             setIncludeGuid(options.contains(PartyOptions.PartyAliasTypeIncludeGuid));
             setIncludeEntityAttributeGroups(options.contains(PartyOptions.PartyAliasTypeIncludeEntityAttributeGroups));
             setIncludeTagScopes(options.contains(PartyOptions.PartyAliasTypeIncludeTagScopes));

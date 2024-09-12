@@ -21,14 +21,12 @@ public interface ContentOptions {
     String ContentCollectionIncludeContentCatalogs = "ContentCollectionIncludeContentCatalogs";
     String ContentCollectionIncludeContentForums = "ContentCollectionIncludeContentForums";
     String ContentCollectionIncludeContentSections = "ContentCollectionIncludeContentSections";
-    String ContentCollectionIncludeKey = "ContentCollectionIncludeKey";
     String ContentCollectionIncludeGuid = "ContentCollectionIncludeGuid";
     String ContentCollectionIncludeEntityAttributeGroups = "ContentCollectionIncludeEntityAttributeGroups";
     String ContentCollectionIncludeTagScopes = "ContentCollectionIncludeTagScopes";
     
     String ContentCatalogIncludeContentCatalogItems = "ContentCatalogIncludeContentCatalogItems";
     String ContentCatalogIncludeContentCatalogCategories = "ContentCatalogIncludeContentCatalogCategories";
-    String ContentCatalogIncludeKey = "ContentCatalogIncludeKey";
     String ContentCatalogIncludeGuid = "ContentCatalogIncludeGuid";
     String ContentCatalogIncludeEntityAttributeGroups = "ContentCatalogIncludeEntityAttributeGroups";
     String ContentCatalogIncludeTagScopes = "ContentCatalogIncludeTagScopes";
@@ -37,19 +35,16 @@ public interface ContentOptions {
     String ContentCatalogItemIncludeTagScopes = "ContentCatalogItemIncludeTagScopes";
 
     String ContentCategoryIncludeContentCategoryItems = "ContentCategoryIncludeContentCategoryItems";
-    String ContentCategoryIncludeKey = "ContentCategoryIncludeKey";
     String ContentCategoryIncludeGuid = "ContentCategoryIncludeGuid";
     String ContentCategoryIncludeEntityAttributeGroups = "ContentCategoryIncludeEntityAttributeGroups";
     String ContentCategoryIncludeTagScopes = "ContentCategoryIncludeTagScopes";
     
     String ContentSectionIncludeContentPages = "ContentSectionIncludeContentPages";
-    String ContentSectionIncludeKey = "ContentSectionIncludeKey";
     String ContentSectionIncludeGuid = "ContentSectionIncludeGuid";
     String ContentSectionIncludeEntityAttributeGroups = "ContentSectionIncludeEntityAttributeGroups";
     String ContentSectionIncludeTagScopes = "ContentSectionIncludeTagScopes";
     
     String ContentPageIncludeContentPageAreas = "ContentPageIncludeContentPageAreas";
-    String ContentPageIncludeKey = "ContentPageIncludeKey";
     String ContentPageIncludeGuid = "ContentPageIncludeGuid";
     String ContentPageIncludeEntityAttributeGroups = "ContentPageIncludeEntityAttributeGroups";
     String ContentPageIncludeTagScopes = "ContentPageIncludeTagScopes";
@@ -59,7 +54,6 @@ public interface ContentOptions {
     String ContentPageAreaIncludeString = "ContentPageAreaIncludeString";
     String ContentPageAreaIncludeUrl    = "ContentPageAreaIncludeUrl";
     
-    String ContentWebAddressIncludeKey = "ContentWebAddressIncludeKey";
     String ContentWebAddressIncludeGuid = "ContentWebAddressIncludeGuid";
     String ContentWebAddressIncludeEntityAttributeGroups = "ContentWebAddressIncludeEntityAttributeGroups";
     String ContentWebAddressIncludeTagScopes = "ContentWebAddressIncludeTagScopes";

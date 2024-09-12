@@ -41,7 +41,6 @@ public class QueueTypeTransferCache
             includeOldestQueuedEntityTime = options.contains(QueueOptions.QueueTypeIncludeOldestQueuedEntityTime);
             includeLatestQueuedEntityTime = options.contains(QueueOptions.QueueTypeIncludeLatestQueuedEntityTime);
             includeQueuedEntities = options.contains(QueueOptions.QueueTypeIncludeQueuedEntities);
-            setIncludeKey(options.contains(QueueOptions.QueueTypeIncludeKey));
             setIncludeGuid(options.contains(QueueOptions.QueueTypeIncludeGuid));
         }
         

@@ -31,7 +31,6 @@ public class ContentWebAddressTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(ContentOptions.ContentWebAddressIncludeKey));
             setIncludeGuid(options.contains(ContentOptions.ContentWebAddressIncludeGuid));
             setIncludeEntityAttributeGroups(options.contains(ContentOptions.ContentWebAddressIncludeEntityAttributeGroups));
             setIncludeTagScopes(options.contains(ContentOptions.ContentWebAddressIncludeTagScopes));

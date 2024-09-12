@@ -54,7 +54,6 @@ public class ContentCategoryTransferCache
         var options = session.getOptions();
         if(options != null) {
             includeContentCategoryItems = options.contains(ContentOptions.ContentCategoryIncludeContentCategoryItems);
-            setIncludeKey(options.contains(ContentOptions.ContentCategoryIncludeKey));
             setIncludeGuid(options.contains(ContentOptions.ContentCategoryIncludeGuid));
             setIncludeEntityAttributeGroups(options.contains(ContentOptions.ContentCategoryIncludeEntityAttributeGroups));
             setIncludeTagScopes(options.contains(ContentOptions.ContentCategoryIncludeTagScopes));

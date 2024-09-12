@@ -51,7 +51,6 @@ public class DivisionTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(PartyOptions.PartyIncludeKey) || options.contains(PartyOptions.DivisionIncludeKey));
             setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(PartyOptions.DivisionIncludeGuid));
             includePartyContactMechanisms = options.contains(PartyOptions.PartyIncludePartyContactMechanisms);
             includePartyDocuments = options.contains(PartyOptions.PartyIncludePartyDocuments);

@@ -31,7 +31,6 @@ public class SearchSortDirectionTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(SearchOptions.SearchSortDirectionIncludeKey));
             setIncludeGuid(options.contains(SearchOptions.SearchSortDirectionIncludeGuid));
         }
         

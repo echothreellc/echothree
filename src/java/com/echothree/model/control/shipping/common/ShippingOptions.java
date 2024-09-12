@@ -18,7 +18,6 @@ package com.echothree.model.control.shipping.common;
 
 public interface ShippingOptions {
 
-    String ShippingMethodIncludeKey = "ShippingMethodIncludeKey";
     String ShippingMethodIncludeGuid = "ShippingMethodIncludeGuid";
     String ShippingMethodIncludeComments = "ShippingMethodIncludeComments";
     String ShippingMethodIncludeEntityAttributeGroups = "ShippingMethodIncludeEntityAttributeGroups";

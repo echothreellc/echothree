@@ -82,7 +82,6 @@ public class EmployeeTransferCache
 
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(PartyOptions.PartyIncludeKey) || options.contains(EmployeeOptions.EmployeeIncludeKey));
             setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(EmployeeOptions.EmployeeIncludeGuid));
             includeUserLogin = options.contains(PartyOptions.PartyIncludeUserLogin);
             includeRecoveryAnswer = options.contains(PartyOptions.PartyIncludeRecoveryAnswer);

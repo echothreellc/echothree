@@ -26,7 +26,6 @@ public interface EmployeeOptions {
     String EmployeeIncludePartyResponsibilities = "EmployeeIncludePartyResponsibilities";
     String EmployeeIncludePartyTrainingClasses = "EmployeeIncludePartyTrainingClasses";
     String EmployeeIncludePartySkills = "EmployeeIncludePartySkills";
-    String EmployeeIncludeKey = "EmployeeIncludeKey";
     String EmployeeIncludeGuid = "EmployeeIncludeGuid";
     String EmployeeIncludeEntityAttributeGroups = "EmployeeIncludeEntityAttributeGroups";
     String EmployeeIncludeTagScopes = "EmployeeIncludeTagScopes";

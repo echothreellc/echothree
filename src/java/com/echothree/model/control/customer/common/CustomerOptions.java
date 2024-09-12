@@ -18,7 +18,6 @@ package com.echothree.model.control.customer.common;
 
 public interface CustomerOptions {
     
-    String CustomerIncludeKey = "CustomerIncludeKey";
     String CustomerIncludeGuid = "CustomerIncludeGuid";
     String CustomerIncludeCustomerServiceComments = "CustomerIncludeCustomerServiceComments";
     String CustomerIncludeOrderEntryComments      = "CustomerIncludeOrderEntryComments";

@@ -23,7 +23,6 @@ public interface PartyOptions {
     String PartyTypeIncludePasswordStringPolicy = "PartyTypeIncludePasswordStringPolicy";
     String PartyTypeIncludePartyAliasTypes = "PartyTypeIncludePartyAliasTypes";
     
-    String PartyIncludeKey = "PartyIncludeKey";
     String PartyIncludeGuid = "PartyIncludeGuid";
     String PartyIncludeDescription = "PartyIncludeDescription";
     String PartyIncludePartyCarriers = "PartyIncludePartyCarriers";
@@ -49,12 +48,10 @@ public interface PartyOptions {
 
     String PartyAliasTypeIncludeEntityAttributeGroups = "PartyAliasTypeIncludeEntityAttributeGroups";
     String PartyAliasTypeIncludeTagScopes = "PartyAliasTypeIncludeTagScopes";
-    String PartyAliasTypeIncludeKey = "PartyAliasTypeIncludeKey";
     String PartyAliasTypeIncludeGuid = "PartyAliasTypeIncludeGuid";
     
     String CompanyIncludeEntityAttributeGroups = "CompanyIncludeEntityAttributeGroups";
     String CompanyIncludeTagScopes = "CompanyIncludeTagScopes";
-    String CompanyIncludeKey = "CompanyIncludeKey";
     String CompanyIncludeGuid = "CompanyIncludeGuid";
     String CompanyIncludeBillingAccounts = "CompanyIncludeBillingAccounts";
     String CompanyIncludeInvoicesFrom = "CompanyIncludeInvoicesFrom";
@@ -62,12 +59,10 @@ public interface PartyOptions {
     
     String DivisionIncludeEntityAttributeGroups = "DivisionIncludeEntityAttributeGroups";
     String DivisionIncludeTagScopes = "DivisionIncludeTagScopes";
-    String DivisionIncludeKey = "DivisionIncludeKey";
     String DivisionIncludeGuid = "DivisionIncludeGuid";
     
     String DepartmentIncludeEntityAttributeGroups = "DepartmentIncludeEntityAttributeGroups";
     String DepartmentIncludeTagScopes = "DepartmentIncludeTagScopes";
-    String DepartmentIncludeKey = "DepartmentIncludeKey";
     String DepartmentIncludeGuid = "DepartmentIncludeGuid";
     
 }

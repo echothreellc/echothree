@@ -78,7 +78,6 @@ public class PartyTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(PartyOptions.PartyIncludeKey));
             setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid));
             includeUserLogin = options.contains(PartyOptions.PartyIncludeUserLogin);
             includeRecoveryAnswer = options.contains(PartyOptions.PartyIncludeRecoveryAnswer);

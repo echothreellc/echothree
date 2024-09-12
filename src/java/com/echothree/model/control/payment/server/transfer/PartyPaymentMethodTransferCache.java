@@ -64,7 +64,6 @@ public class PartyPaymentMethodTransferCache
 
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(PaymentOptions.PartyPaymentMethodIncludeKey));
             setIncludeGuid(options.contains(PaymentOptions.PartyPaymentMethodIncludeGuid));
             includeNumber = options.contains(PaymentOptions.PartyPaymentMethodIncludeNumber);
             includeSecurityCode = options.contains(PaymentOptions.PartyPaymentMethodIncludeSecurityCode);

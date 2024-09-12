@@ -43,7 +43,6 @@ public class PaymentProcessorTransferCache
 
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(PaymentOptions.PaymentProcessorIncludeKey));
             setIncludeGuid(options.contains(PaymentOptions.PaymentProcessorIncludeGuid));
             includeComments = options.contains(PaymentOptions.PaymentProcessorIncludeComments);
             includePaymentProcessorTransactions = options.contains(PaymentOptions.PaymentProcessorIncludePaymentProcessorTransactions);
