@@ -26,15 +26,15 @@ public interface PaymentOptions {
     
     String BillingAccountIncludeRoles = "BillingAccountIncludeRoles";
 
-    String PaymentProcessorIncludeGuid = "PaymentProcessorIncludeGuid";
+    String PaymentProcessorIncludeUuid = "PaymentProcessorIncludeUuid";
     String PaymentProcessorIncludeComments = "PaymentProcessorIncludeComments";
     String PaymentProcessorIncludePaymentProcessorTransactions = "PaymentProcessorIncludePaymentProcessorTransactions";
 
-    String PaymentMethodIncludeGuid = "PaymentMethodIncludeGuid";
+    String PaymentMethodIncludeUuid = "PaymentMethodIncludeUuid";
     String PaymentMethodIncludeComments = "PaymentMethodIncludeComments";
     String PaymentMethodIncludeEntityAttributeGroups = "PaymentMethodIncludeEntityAttributeGroups";
 
-    String PartyPaymentMethodIncludeGuid = "PartyPaymentMethodIncludeGuid";
+    String PartyPaymentMethodIncludeUuid = "PartyPaymentMethodIncludeUuid";
     String PartyPaymentMethodIncludeComments = "PartyPaymentMethodIncludeComments";
 
     String PaymentProcessorTransactionIncludePaymentProcessorTransactionCodes = "PaymentProcessorTransactionIncludePaymentProcessorTransactionCodes";

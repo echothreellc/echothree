@@ -43,7 +43,7 @@ public class PaymentProcessorTransferCache
 
         var options = session.getOptions();
         if(options != null) {
-            setIncludeGuid(options.contains(PaymentOptions.PaymentProcessorIncludeGuid));
+            setIncludeUuid(options.contains(PaymentOptions.PaymentProcessorIncludeUuid));
             includeComments = options.contains(PaymentOptions.PaymentProcessorIncludeComments);
             includePaymentProcessorTransactions = options.contains(PaymentOptions.PaymentProcessorIncludePaymentProcessorTransactions);
         }

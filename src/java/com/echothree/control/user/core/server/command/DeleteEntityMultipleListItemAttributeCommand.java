@@ -45,11 +45,11 @@ public class DeleteEntityMultipleListItemAttributeCommand
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EntityAttributeGuid", FieldType.GUID, false, null, null),
+                new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EntityListItemGuid", FieldType.GUID, false, null, null)
+                new FieldDefinition("EntityListItemUuid", FieldType.UUID, false, null, null)
         );
     }
     

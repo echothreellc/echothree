@@ -31,7 +31,7 @@ public class SearchDefaultOperatorTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeGuid(options.contains(SearchOptions.SearchDefaultOperatorIncludeGuid));
+            setIncludeUuid(options.contains(SearchOptions.SearchDefaultOperatorIncludeUuid));
         }
         
         setIncludeEntityInstance(true);

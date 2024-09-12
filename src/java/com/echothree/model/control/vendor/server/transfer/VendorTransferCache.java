@@ -106,7 +106,7 @@ public class VendorTransferCache
 
         var options = session.getOptions();
         if(options != null) {
-            setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(VendorOptions.VendorIncludeGuid));
+            setIncludeUuid(options.contains(PartyOptions.PartyIncludeUuid) || options.contains(VendorOptions.VendorIncludeUuid));
             includeUserLogin = options.contains(PartyOptions.PartyIncludeUserLogin);
             includeRecoveryAnswer = options.contains(PartyOptions.PartyIncludeRecoveryAnswer);
             includePartyAliases = options.contains(PartyOptions.PartyIncludePartyAliases);

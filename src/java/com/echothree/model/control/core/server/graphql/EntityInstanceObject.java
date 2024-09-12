@@ -66,14 +66,14 @@ public class EntityInstanceObject
     }
 
     @GraphQLField
-    @GraphQLDescription("guid")
+    @GraphQLDescription("uuid")
     @GraphQLNonNull
-    public String getGuid() {
+    public String getUuid() {
         var coreControl = Session.getModelController(CoreControl.class);
 
-        entityInstance = coreControl.ensureGuidForEntityInstance(entityInstance, false);
+        entityInstance = coreControl.ensureUuidForEntityInstance(entityInstance, false);
 
-        return entityInstance.getGuid();
+        return entityInstance.getUuid();
     }
 
     @GraphQLField

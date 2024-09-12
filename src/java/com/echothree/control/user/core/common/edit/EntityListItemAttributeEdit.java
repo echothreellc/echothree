@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.core.common.edit;
 
-import com.echothree.control.user.core.common.spec.EntityListItemGuid;
+import com.echothree.control.user.core.common.spec.EntityListItemUuid;
 import com.echothree.util.common.form.BaseEdit;
 
 public interface EntityListItemAttributeEdit
-        extends BaseEdit, EntityListItemGuid {
+        extends BaseEdit, EntityListItemUuid {
     
     String getEntityListItemName();
     void setEntityListItemName(String entityListItemName);

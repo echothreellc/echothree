@@ -848,7 +848,7 @@ public interface GraphQlMutations {
             spec.setSelectorKindName(selectorKindName);
             spec.setSelectorTypeName(selectorTypeName);
             spec.setSelectorName(originalSelectorName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = SelectorUtil.getHome().getEditSelectorForm();
 
@@ -972,7 +972,7 @@ public interface GraphQlMutations {
             spec.setFilterKindName(filterKindName);
             spec.setFilterTypeName(filterTypeName);
             spec.setFilterName(originalFilterName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = FilterUtil.getHome().getEditFilterForm();
 
@@ -1097,7 +1097,7 @@ public interface GraphQlMutations {
             spec.setFilterTypeName(filterTypeName);
             spec.setFilterName(filterName);
             spec.setFilterStepName(originalFilterStepName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = FilterUtil.getHome().getEditFilterStepForm();
 
@@ -1213,7 +1213,7 @@ public interface GraphQlMutations {
 
             spec.setFilterKindName(filterKindName);
             spec.setFilterAdjustmentName(originalFilterAdjustmentName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = FilterUtil.getHome().getEditFilterAdjustmentForm();
 
@@ -1675,7 +1675,7 @@ public interface GraphQlMutations {
 
             spec.setSequenceTypeName(sequenceTypeName);
             spec.setSequenceName(originalSequenceName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = SequenceUtil.getHome().getEditSequenceForm();
 
@@ -1824,7 +1824,7 @@ public interface GraphQlMutations {
             var spec = SequenceUtil.getHome().getSequenceTypeUniversalSpec();
 
             spec.setSequenceTypeName(originalSequenceTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = SequenceUtil.getHome().getEditSequenceTypeForm();
 
@@ -2054,7 +2054,7 @@ public interface GraphQlMutations {
             var spec = OfferUtil.getHome().getOfferUniversalSpec();
 
             spec.setOfferName(originalOfferName);
-            //spec.setGuid(id);
+            //spec.setUuid(id);
 
             var commandForm = OfferUtil.getHome().getEditOfferForm();
 
@@ -2343,7 +2343,7 @@ public interface GraphQlMutations {
             var spec = OfferUtil.getHome().getUseUniversalSpec();
 
             spec.setUseName(originalUseName);
-            //spec.setGuid(id);
+            //spec.setUuid(id);
 
             var commandForm = OfferUtil.getHome().getEditUseForm();
 
@@ -2455,7 +2455,7 @@ public interface GraphQlMutations {
             var spec = OfferUtil.getHome().getOfferNameElementUniversalSpec();
 
             spec.setOfferNameElementName(originalOfferNameElementName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = OfferUtil.getHome().getEditOfferNameElementForm();
 
@@ -2567,7 +2567,7 @@ public interface GraphQlMutations {
             var spec = OfferUtil.getHome().getUseNameElementUniversalSpec();
 
             spec.setUseNameElementName(originalUseNameElementName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = OfferUtil.getHome().getEditUseNameElementForm();
 
@@ -2676,7 +2676,7 @@ public interface GraphQlMutations {
             var spec = OfferUtil.getHome().getUseTypeUniversalSpec();
 
             spec.setUseTypeName(originalUseTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = OfferUtil.getHome().getEditUseTypeForm();
 
@@ -2783,7 +2783,7 @@ public interface GraphQlMutations {
             var spec = ShipmentUtil.getHome().getFreeOnBoardUniversalSpec();
 
             spec.setFreeOnBoardName(originalFreeOnBoardName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = ShipmentUtil.getHome().getEditFreeOnBoardForm();
 
@@ -2890,7 +2890,7 @@ public interface GraphQlMutations {
             var spec = PaymentUtil.getHome().getPaymentProcessorUniversalSpec();
 
             spec.setPaymentProcessorName(originalPaymentProcessorName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = PaymentUtil.getHome().getEditPaymentProcessorForm();
 
@@ -2997,7 +2997,7 @@ public interface GraphQlMutations {
             var spec = PaymentUtil.getHome().getPaymentProcessorTypeUniversalSpec();
 
             spec.setPaymentProcessorTypeName(originalPaymentProcessorTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = PaymentUtil.getHome().getEditPaymentProcessorTypeForm();
 
@@ -3104,7 +3104,7 @@ public interface GraphQlMutations {
             var spec = PaymentUtil.getHome().getPaymentMethodTypeUniversalSpec();
 
             spec.setPaymentMethodTypeName(originalPaymentMethodTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = PaymentUtil.getHome().getEditPaymentMethodTypeForm();
 
@@ -3211,7 +3211,7 @@ public interface GraphQlMutations {
             var spec = PaymentUtil.getHome().getPaymentProcessorResultCodeUniversalSpec();
 
             spec.setPaymentProcessorResultCodeName(originalPaymentProcessorResultCodeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = PaymentUtil.getHome().getEditPaymentProcessorResultCodeForm();
 
@@ -3318,7 +3318,7 @@ public interface GraphQlMutations {
             var spec = PaymentUtil.getHome().getPaymentProcessorActionTypeUniversalSpec();
 
             spec.setPaymentProcessorActionTypeName(originalPaymentProcessorActionTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = PaymentUtil.getHome().getEditPaymentProcessorActionTypeForm();
 
@@ -3428,7 +3428,7 @@ public interface GraphQlMutations {
             var spec = InventoryUtil.getHome().getAllocationPriorityUniversalSpec();
 
             spec.setAllocationPriorityName(originalAllocationPriorityName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = InventoryUtil.getHome().getEditAllocationPriorityForm();
 
@@ -3537,7 +3537,7 @@ public interface GraphQlMutations {
             var spec = InventoryUtil.getHome().getInventoryConditionUniversalSpec();
 
             spec.setInventoryConditionName(originalInventoryConditionName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = InventoryUtil.getHome().getEditInventoryConditionForm();
 
@@ -3644,7 +3644,7 @@ public interface GraphQlMutations {
             var spec = ContentUtil.getHome().getContentPageLayoutUniversalSpec();
 
             spec.setContentPageLayoutName(originalContentPageLayoutName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = ContentUtil.getHome().getEditContentPageLayoutForm();
 
@@ -4022,15 +4022,15 @@ public interface GraphQlMutations {
     static MutationResultObject deleteEntityInstance(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("entityRef") final String entityRef,
-            @GraphQLName("guid") final String guid) {
+            @GraphQLName("uuid") final String uuid) {
         var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityInstanceForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setEntityRef(entityRef);
-            commandForm.setGuid(guid);
+            commandForm.setUuid(uuid);
 
             var commandResult = CoreUtil.getHome().deleteEntityInstance(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
@@ -4046,15 +4046,15 @@ public interface GraphQlMutations {
     static MutationResultObject removeEntityInstance(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("entityRef") final String entityRef,
-            @GraphQLName("guid") final String guid) {
+            @GraphQLName("uuid") final String uuid) {
         var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getRemoveEntityInstanceForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setEntityRef(entityRef);
-            commandForm.setGuid(guid);
+            commandForm.setUuid(uuid);
 
             var commandResult = CoreUtil.getHome().removeEntityInstance(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
@@ -4070,16 +4070,16 @@ public interface GraphQlMutations {
     static MutationResultObject sendEvent(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("entityRef") final String entityRef,
-            @GraphQLName("guid") final String guid,
+            @GraphQLName("uuid") final String uuid,
             @GraphQLName("eventTypeName") @GraphQLNonNull final String eventTypeName) {
         var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getSendEventForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setEntityRef(entityRef);
-            commandForm.setGuid(guid);
+            commandForm.setUuid(uuid);
             commandForm.setEventTypeName(eventTypeName);
 
             var commandResult = CoreUtil.getHome().sendEvent(BaseGraphQl.getUserVisitPK(env), commandForm);
@@ -4351,7 +4351,7 @@ public interface GraphQlMutations {
         try {
             var commandForm = TagUtil.getHome().getCreateEntityTagForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setTagScopeName(tagScopeName);
             commandForm.setTagName(tagName);
 
@@ -4375,7 +4375,7 @@ public interface GraphQlMutations {
         try {
             var commandForm = TagUtil.getHome().getDeleteEntityTagForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setTagScopeName(tagScopeName);
             commandForm.setTagName(tagName);
 
@@ -4404,7 +4404,7 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityAliasTypeForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAliasTypeName(entityAliasTypeName);
@@ -4445,7 +4445,7 @@ public interface GraphQlMutations {
         try {
             var spec = CoreUtil.getHome().getEntityAliasTypeUniversalSpec();
 
-            spec.setGuid(id);
+            spec.setUuid(id);
             spec.setComponentVendorName(componentVendorName);
             spec.setEntityTypeName(entityTypeName);
             spec.setEntityAliasTypeName(originalEntityAliasTypeName);
@@ -4500,7 +4500,7 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityAliasTypeForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAliasTypeName(entityAliasTypeName);
@@ -4525,8 +4525,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityAliasForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAliasTypeGuid(entityAliasTypeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAliasTypeUuid(entityAliasTypeId);
             commandForm.setAlias(alias);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityAlias(BaseGraphQl.getUserVisitPK(env), commandForm));
@@ -4548,8 +4548,8 @@ public interface GraphQlMutations {
         try {
             var spec = CoreUtil.getHome().getEntityAliasSpec();
 
-            spec.setGuid(id);
-            spec.setEntityAliasTypeGuid(entityAliasTypeId);
+            spec.setUuid(id);
+            spec.setEntityAliasTypeUuid(entityAliasTypeId);
 
             var commandForm = CoreUtil.getHome().getEditEntityAliasForm();
 
@@ -4591,8 +4591,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityAliasForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAliasTypeGuid(entityAliasTypeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAliasTypeUuid(entityAliasTypeId);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityAlias(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -4737,7 +4737,7 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityAttributeForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeName(entityAttributeName);
@@ -4791,7 +4791,7 @@ public interface GraphQlMutations {
         try {
             var spec = CoreUtil.getHome().getEntityAttributeUniversalSpec();
 
-            spec.setGuid(id);
+            spec.setUuid(id);
             spec.setComponentVendorName(componentVendorName);
             spec.setEntityTypeName(entityTypeName);
             spec.setEntityAttributeName(originalEntityAttributeName);
@@ -4844,7 +4844,7 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityAttributeForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeName(entityAttributeName);
@@ -4976,7 +4976,7 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityListItemForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeName(entityAttributeName);
@@ -5017,7 +5017,7 @@ public interface GraphQlMutations {
         try {
             var spec = CoreUtil.getHome().getEntityListItemUniversalSpec();
 
-            spec.setGuid(id);
+            spec.setUuid(id);
             spec.setComponentVendorName(componentVendorName);
             spec.setEntityTypeName(entityTypeName);
             spec.setEntityAttributeName(entityAttributeName);
@@ -5072,7 +5072,7 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityListItemForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeName(entityAttributeName);
@@ -5100,11 +5100,11 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityListItemAttributeForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setEntityAttributeName(entityAttributeName);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
             commandForm.setEntityListItemName(entityListItemName);
-            commandForm.setEntityListItemGuid(entityListItemId);
+            commandForm.setEntityListItemUuid(entityListItemId);
 
             var commandResult = CoreUtil.getHome().createEntityListItemAttribute(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
@@ -5128,9 +5128,9 @@ public interface GraphQlMutations {
         try {
             var spec = CoreUtil.getHome().getEntityListItemAttributeSpec();
 
-            spec.setGuid(id);
+            spec.setUuid(id);
             spec.setEntityAttributeName(entityAttributeName);
-            spec.setEntityAttributeGuid(entityAttributeId);
+            spec.setEntityAttributeUuid(entityAttributeId);
 
             var commandForm = CoreUtil.getHome().getEditEntityListItemAttributeForm();
 
@@ -5148,7 +5148,7 @@ public interface GraphQlMutations {
                 if(arguments.containsKey("entityListItemName"))
                     edit.setEntityListItemName(entityListItemName);
                 if(arguments.containsKey("entityListItemId"))
-                    edit.setEntityListItemGuid(entityListItemId);
+                    edit.setEntityListItemUuid(entityListItemId);
 
                 commandForm.setEdit(edit);
                 commandForm.setEditMode(EditMode.UPDATE);
@@ -5175,9 +5175,9 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityListItemAttributeForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setEntityAttributeName(entityAttributeName);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
 
             var commandResult = CoreUtil.getHome().deleteEntityListItemAttribute(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
@@ -5201,11 +5201,11 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityMultipleListItemAttributeForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setEntityAttributeName(entityAttributeName);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
             commandForm.setEntityListItemName(entityListItemName);
-            commandForm.setEntityListItemGuid(entityListItemId);
+            commandForm.setEntityListItemUuid(entityListItemId);
 
             var commandResult = CoreUtil.getHome().createEntityMultipleListItemAttribute(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
@@ -5229,11 +5229,11 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityMultipleListItemAttributeForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setEntityAttributeName(entityAttributeName);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
             commandForm.setEntityListItemName(entityListItemName);
-            commandForm.setEntityListItemGuid(entityListItemId);
+            commandForm.setEntityListItemUuid(entityListItemId);
 
             var commandResult = CoreUtil.getHome().deleteEntityMultipleListItemAttribute(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
@@ -5255,8 +5255,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityBooleanAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
             commandForm.setBooleanAttribute(booleanAttribute);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityBooleanAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
@@ -5278,8 +5278,8 @@ public interface GraphQlMutations {
         try {
             var spec = CoreUtil.getHome().getEntityBooleanAttributeSpec();
 
-            spec.setGuid(id);
-            spec.setEntityAttributeGuid(entityAttributeId);
+            spec.setUuid(id);
+            spec.setEntityAttributeUuid(entityAttributeId);
 
             var commandForm = CoreUtil.getHome().getEditEntityBooleanAttributeForm();
 
@@ -5321,8 +5321,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityBooleanAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityBooleanAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -5343,8 +5343,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityIntegerAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
             commandForm.setIntegerAttribute(integerAttribute);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityIntegerAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
@@ -5366,8 +5366,8 @@ public interface GraphQlMutations {
         try {
             var spec = CoreUtil.getHome().getEntityIntegerAttributeSpec();
 
-            spec.setGuid(id);
-            spec.setEntityAttributeGuid(entityAttributeId);
+            spec.setUuid(id);
+            spec.setEntityAttributeUuid(entityAttributeId);
 
             var commandForm = CoreUtil.getHome().getEditEntityIntegerAttributeForm();
 
@@ -5409,8 +5409,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityIntegerAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityIntegerAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -5431,8 +5431,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityLongAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
             commandForm.setLongAttribute(longAttribute);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityLongAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
@@ -5454,8 +5454,8 @@ public interface GraphQlMutations {
         try {
             var spec = CoreUtil.getHome().getEntityLongAttributeSpec();
 
-            spec.setGuid(id);
-            spec.setEntityAttributeGuid(entityAttributeId);
+            spec.setUuid(id);
+            spec.setEntityAttributeUuid(entityAttributeId);
 
             var commandForm = CoreUtil.getHome().getEditEntityLongAttributeForm();
 
@@ -5497,8 +5497,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityLongAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityLongAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -5520,9 +5520,9 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityStringAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
-            commandForm.setLanguageGuid(languageId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
+            commandForm.setLanguageUuid(languageId);
             commandForm.setStringAttribute(stringAttribute);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityStringAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
@@ -5545,9 +5545,9 @@ public interface GraphQlMutations {
         try {
             var spec = CoreUtil.getHome().getEntityStringAttributeSpec();
 
-            spec.setGuid(id);
-            spec.setEntityAttributeGuid(entityAttributeId);
-            spec.setLanguageGuid(languageId);
+            spec.setUuid(id);
+            spec.setEntityAttributeUuid(entityAttributeId);
+            spec.setLanguageUuid(languageId);
 
             var commandForm = CoreUtil.getHome().getEditEntityStringAttributeForm();
 
@@ -5590,9 +5590,9 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityStringAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
-            commandForm.setLanguageGuid(languageId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
+            commandForm.setLanguageUuid(languageId);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityStringAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -5615,9 +5615,9 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityClobAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
-            commandForm.setLanguageGuid(languageId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
+            commandForm.setLanguageUuid(languageId);
             commandForm.setClobAttribute(clobAttribute);
             commandForm.setMimeTypeName(mimeTypeName);
 
@@ -5642,9 +5642,9 @@ public interface GraphQlMutations {
         try {
             var spec = CoreUtil.getHome().getEntityClobAttributeSpec();
 
-            spec.setGuid(id);
-            spec.setEntityAttributeGuid(entityAttributeId);
-            spec.setLanguageGuid(languageId);
+            spec.setUuid(id);
+            spec.setEntityAttributeUuid(entityAttributeId);
+            spec.setLanguageUuid(languageId);
 
             var commandForm = CoreUtil.getHome().getEditEntityClobAttributeForm();
 
@@ -5689,9 +5689,9 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityClobAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
-            commandForm.setLanguageGuid(languageId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
+            commandForm.setLanguageUuid(languageId);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityClobAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -5712,8 +5712,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityNameAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
             commandForm.setNameAttribute(nameAttribute);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityNameAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
@@ -5735,8 +5735,8 @@ public interface GraphQlMutations {
         try {
             var spec = CoreUtil.getHome().getEntityNameAttributeSpec();
 
-            spec.setGuid(id);
-            spec.setEntityAttributeGuid(entityAttributeId);
+            spec.setUuid(id);
+            spec.setEntityAttributeUuid(entityAttributeId);
 
             var commandForm = CoreUtil.getHome().getEditEntityNameAttributeForm();
 
@@ -5778,8 +5778,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityNameAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityNameAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -5800,8 +5800,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityDateAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
             commandForm.setDateAttribute(dateAttribute);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityDateAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
@@ -5823,8 +5823,8 @@ public interface GraphQlMutations {
         try {
             var spec = CoreUtil.getHome().getEntityDateAttributeSpec();
 
-            spec.setGuid(id);
-            spec.setEntityAttributeGuid(entityAttributeId);
+            spec.setUuid(id);
+            spec.setEntityAttributeUuid(entityAttributeId);
 
             var commandForm = CoreUtil.getHome().getEditEntityDateAttributeForm();
 
@@ -5866,8 +5866,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityDateAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityDateAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -5888,8 +5888,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityTimeAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
             commandForm.setTimeAttribute(timeAttribute);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityTimeAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
@@ -5911,8 +5911,8 @@ public interface GraphQlMutations {
         try {
             var spec = CoreUtil.getHome().getEntityTimeAttributeSpec();
 
-            spec.setGuid(id);
-            spec.setEntityAttributeGuid(entityAttributeId);
+            spec.setUuid(id);
+            spec.setEntityAttributeUuid(entityAttributeId);
 
             var commandForm = CoreUtil.getHome().getEditEntityTimeAttributeForm();
 
@@ -5954,8 +5954,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityTimeAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityTimeAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -5981,8 +5981,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityGeoPointAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
             commandForm.setLatitude(latitude);
             commandForm.setLongitude(longitude);
             commandForm.setElevation(elevation);
@@ -6014,8 +6014,8 @@ public interface GraphQlMutations {
         try {
             var spec = CoreUtil.getHome().getEntityGeoPointAttributeSpec();
 
-            spec.setGuid(id);
-            spec.setEntityAttributeGuid(entityAttributeId);
+            spec.setUuid(id);
+            spec.setEntityAttributeUuid(entityAttributeId);
 
             var commandForm = CoreUtil.getHome().getEditEntityGeoPointAttributeForm();
 
@@ -6067,8 +6067,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityGeoPointAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityGeoPointAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -6089,8 +6089,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityEntityAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
             commandForm.setEntityRefAttribute(entityRefAttribute);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityEntityAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
@@ -6112,8 +6112,8 @@ public interface GraphQlMutations {
         try {
             var spec = CoreUtil.getHome().getEntityEntityAttributeSpec();
 
-            spec.setGuid(id);
-            spec.setEntityAttributeGuid(entityAttributeId);
+            spec.setUuid(id);
+            spec.setEntityAttributeUuid(entityAttributeId);
 
             var commandForm = CoreUtil.getHome().getEditEntityEntityAttributeForm();
 
@@ -6155,8 +6155,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityEntityAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityEntityAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -6177,8 +6177,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityCollectionAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
             commandForm.setEntityRefAttribute(entityRefAttribute);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityCollectionAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
@@ -6200,8 +6200,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityCollectionAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
             commandForm.setEntityRefAttribute(entityRefAttribute);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityCollectionAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
@@ -6223,8 +6223,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityWorkflowAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
             commandForm.setWorkflowEntranceName(workflowEntranceName);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityWorkflowAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
@@ -6249,8 +6249,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getSetEntityWorkflowAttributeStatusForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
             commandForm.setWorkflowStepName(workflowStepName);
             commandForm.setWorkflowDestinationName(workflowDestinationName);
 
@@ -6272,8 +6272,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityWorkflowAttributeForm();
 
-            commandForm.setGuid(id);
-            commandForm.setEntityAttributeGuid(entityAttributeId);
+            commandForm.setUuid(id);
+            commandForm.setEntityAttributeUuid(entityAttributeId);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityWorkflowAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -6330,7 +6330,7 @@ public interface GraphQlMutations {
             var spec = SearchUtil.getHome().getSearchResultActionTypeUniversalSpec();
 
             spec.setSearchResultActionTypeName(originalSearchResultActionTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = SearchUtil.getHome().getEditSearchResultActionTypeForm();
 
@@ -6381,7 +6381,7 @@ public interface GraphQlMutations {
             var commandForm = SearchUtil.getHome().getDeleteSearchResultActionTypeForm();
 
             commandForm.setSearchResultActionTypeName(searchResultActionTypeName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(SearchUtil.getHome().deleteSearchResultActionType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -6779,7 +6779,7 @@ public interface GraphQlMutations {
             var commandForm = UserUtil.getHome().getCreateUserLoginForm();
 
             commandForm.setPartyName(partyName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setUsername(username);
             commandForm.setPassword1(password1);
             commandForm.setPassword2(password2);
@@ -6807,7 +6807,7 @@ public interface GraphQlMutations {
             var spec = PartyUtil.getHome().getPartyUniversalSpec();
 
             spec.setPartyName(partyName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = UserUtil.getHome().getEditUserLoginForm();
 
@@ -6850,7 +6850,7 @@ public interface GraphQlMutations {
             var commandForm = UserUtil.getHome().getDeleteUserLoginForm();
 
             commandForm.setPartyName(partyName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(UserUtil.getHome().deleteUserLogin(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -6871,7 +6871,7 @@ public interface GraphQlMutations {
             var commandForm = UserUtil.getHome().getResetLockoutForm();
 
             commandForm.setPartyName(partyName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(UserUtil.getHome().resetLockout(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -6931,7 +6931,7 @@ public interface GraphQlMutations {
             var spec = ItemUtil.getHome().getItemCategoryUniversalSpec();
 
             spec.setItemCategoryName(originalItemCategoryName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = ItemUtil.getHome().getEditItemCategoryForm();
 
@@ -6984,7 +6984,7 @@ public interface GraphQlMutations {
             var commandForm = ItemUtil.getHome().getDeleteItemCategoryForm();
 
             commandForm.setItemCategoryName(itemCategoryName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemCategory(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -7056,7 +7056,7 @@ public interface GraphQlMutations {
             var spec = AccountingUtil.getHome().getGlAccountUniversalSpec();
 
             spec.setGlAccountName(originalGlAccountName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = AccountingUtil.getHome().getEditGlAccountForm();
 
@@ -7113,7 +7113,7 @@ public interface GraphQlMutations {
             var commandForm = AccountingUtil.getHome().getDeleteGlAccountForm();
 
             commandForm.setGlAccountName(glAccountName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(AccountingUtil.getHome().deleteGlAccount(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -7173,7 +7173,7 @@ public interface GraphQlMutations {
             var spec = AccountingUtil.getHome().getItemAccountingCategoryUniversalSpec();
 
             spec.setItemAccountingCategoryName(originalItemAccountingCategoryName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = AccountingUtil.getHome().getEditItemAccountingCategoryForm();
 
@@ -7226,7 +7226,7 @@ public interface GraphQlMutations {
             var commandForm = AccountingUtil.getHome().getDeleteItemAccountingCategoryForm();
 
             commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(AccountingUtil.getHome().deleteItemAccountingCategory(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -7286,7 +7286,7 @@ public interface GraphQlMutations {
             var spec = VendorUtil.getHome().getItemPurchasingCategoryUniversalSpec();
 
             spec.setItemPurchasingCategoryName(originalItemPurchasingCategoryName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = VendorUtil.getHome().getEditItemPurchasingCategoryForm();
 
@@ -7339,7 +7339,7 @@ public interface GraphQlMutations {
             var commandForm = VendorUtil.getHome().getDeleteItemPurchasingCategoryForm();
 
             commandForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(VendorUtil.getHome().deleteItemPurchasingCategory(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -7404,7 +7404,7 @@ public interface GraphQlMutations {
 
             spec.setPartyTypeName(partyTypeName);
             spec.setPartyAliasTypeName(originalPartyAliasTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = PartyUtil.getHome().getEditPartyAliasTypeForm();
 
@@ -7459,7 +7459,7 @@ public interface GraphQlMutations {
 
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.setPartyAliasTypeName(partyAliasTypeName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(PartyUtil.getHome().deletePartyAliasType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -7640,7 +7640,7 @@ public interface GraphQlMutations {
             var spec = VendorUtil.getHome().getVendorTypeUniversalSpec();
 
             spec.setVendorTypeName(originalVendorTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = VendorUtil.getHome().getEditVendorTypeForm();
 
@@ -7715,7 +7715,7 @@ public interface GraphQlMutations {
             var commandForm = VendorUtil.getHome().getDeleteVendorTypeForm();
 
             commandForm.setVendorTypeName(vendorTypeName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(VendorUtil.getHome().deleteVendorType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -7837,7 +7837,7 @@ public interface GraphQlMutations {
 
             spec.setVendorName(originalVendorName);
             spec.setPartyName(partyName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = VendorUtil.getHome().getEditVendorForm();
 
@@ -7940,7 +7940,7 @@ public interface GraphQlMutations {
 
             commandForm.setVendorName(vendorName);
             commandForm.setPartyName(partyName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setVendorStatusChoice(vendorStatusChoice);
 
             mutationResultObject.setCommandResult(PartyUtil.getHome().setVendorStatus(BaseGraphQl.getUserVisitPK(env), commandForm));
@@ -8009,7 +8009,7 @@ public interface GraphQlMutations {
             spec.setVendorName(vendorName);
             spec.setPartyName(partyName);
             spec.setVendorItemName(originalVendorItemName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = VendorUtil.getHome().getEditVendorItemForm();
 
@@ -8068,7 +8068,7 @@ public interface GraphQlMutations {
             commandForm.setVendorName(vendorName);
             commandForm.setPartyName(partyName);
             commandForm.setVendorItemName(vendorItemName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
             commandForm.setVendorItemStatusChoice(vendorItemStatusChoice);
 
             mutationResultObject.setCommandResult(VendorUtil.getHome().setVendorItemStatus(BaseGraphQl.getUserVisitPK(env), commandForm));
@@ -8094,7 +8094,7 @@ public interface GraphQlMutations {
             commandForm.setVendorName(vendorName);
             commandForm.setPartyName(partyName);
             commandForm.setVendorItemName(vendorItemName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(VendorUtil.getHome().deleteVendorItem(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -8276,7 +8276,7 @@ public interface GraphQlMutations {
             var spec = WarehouseUtil.getHome().getWarehouseTypeUniversalSpec();
 
             spec.setWarehouseTypeName(originalWarehouseTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = WarehouseUtil.getHome().getEditWarehouseTypeForm();
 
@@ -8394,7 +8394,7 @@ public interface GraphQlMutations {
 
             spec.setWarehouseName(originalWarehouseName);
             spec.setPartyName(partyName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = WarehouseUtil.getHome().getEditWarehouseForm();
 
@@ -8463,7 +8463,7 @@ public interface GraphQlMutations {
             var commandForm = WarehouseUtil.getHome().getDeleteWarehouseForm();
 
             commandForm.setWarehouseName(warehouseName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(WarehouseUtil.getHome().deleteWarehouse(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -8526,7 +8526,7 @@ public interface GraphQlMutations {
             var spec = ItemUtil.getHome().getItemImageTypeUniversalSpec();
 
             spec.setItemImageTypeName(originalItemImageTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = ItemUtil.getHome().getEditItemImageTypeForm();
 
@@ -8581,7 +8581,7 @@ public interface GraphQlMutations {
             var commandForm = ItemUtil.getHome().getDeleteItemImageTypeForm();
 
             commandForm.setItemImageTypeName(itemImageTypeName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemImageType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -8638,7 +8638,7 @@ public interface GraphQlMutations {
             var spec = ItemUtil.getHome().getItemDescriptionTypeUseTypeUniversalSpec();
 
             spec.setItemDescriptionTypeUseTypeName(originalItemDescriptionTypeUseTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = ItemUtil.getHome().getEditItemDescriptionTypeUseTypeForm();
 
@@ -8689,7 +8689,7 @@ public interface GraphQlMutations {
             var commandForm = ItemUtil.getHome().getDeleteItemDescriptionTypeUseTypeForm();
 
             commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemDescriptionTypeUseType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -8833,7 +8833,7 @@ public interface GraphQlMutations {
             var spec = ItemUtil.getHome().getItemDescriptionTypeUniversalSpec();
 
             spec.setItemDescriptionTypeName(originalItemDescriptionTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = ItemUtil.getHome().getEditItemDescriptionTypeForm();
 
@@ -8910,7 +8910,7 @@ public interface GraphQlMutations {
             var commandForm = ItemUtil.getHome().getDeleteItemDescriptionTypeForm();
 
             commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemDescriptionType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -8976,7 +8976,7 @@ public interface GraphQlMutations {
             var spec = ItemUtil.getHome().getItemAliasTypeUniversalSpec();
 
             spec.setItemAliasTypeName(originalItemAliasTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = ItemUtil.getHome().getEditItemAliasTypeForm();
 
@@ -9033,7 +9033,7 @@ public interface GraphQlMutations {
             var commandForm = ItemUtil.getHome().getDeleteItemAliasTypeForm();
 
             commandForm.setItemAliasTypeName(itemAliasTypeName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemAliasType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -9183,7 +9183,7 @@ public interface GraphQlMutations {
             var spec = ItemUtil.getHome().getRelatedItemTypeUniversalSpec();
 
             spec.setRelatedItemTypeName(originalRelatedItemTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = ItemUtil.getHome().getEditRelatedItemTypeForm();
 
@@ -9234,7 +9234,7 @@ public interface GraphQlMutations {
             var commandForm = ItemUtil.getHome().getDeleteRelatedItemTypeForm();
 
             commandForm.setRelatedItemTypeName(relatedItemTypeName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(ItemUtil.getHome().deleteRelatedItemType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -9448,7 +9448,7 @@ public interface GraphQlMutations {
             var spec = ItemUtil.getHome().getItemUniversalSpec();
 
             spec.setItemName(originalItemName);
-            // spec.setGuid(id);
+            // spec.setUuid(id);
 
             var commandForm = ItemUtil.getHome().getEditItemForm();
 
@@ -9922,7 +9922,7 @@ public interface GraphQlMutations {
             var spec = OrderUtil.getHome().getOrderTypeUniversalSpec();
 
             spec.setOrderTypeName(originalOrderTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = OrderUtil.getHome().getEditOrderTypeForm();
 
@@ -9981,7 +9981,7 @@ public interface GraphQlMutations {
             var commandForm = OrderUtil.getHome().getDeleteOrderTypeForm();
 
             commandForm.setOrderTypeName(orderTypeName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(OrderUtil.getHome().deleteOrderType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -10042,7 +10042,7 @@ public interface GraphQlMutations {
 
             spec.setOrderTypeName(orderTypeName);
             spec.setOrderTimeTypeName(originalOrderTimeTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = OrderUtil.getHome().getEditOrderTimeTypeForm();
 
@@ -10095,7 +10095,7 @@ public interface GraphQlMutations {
 
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.setOrderTimeTypeName(orderTimeTypeName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(OrderUtil.getHome().deleteOrderTimeType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -10159,7 +10159,7 @@ public interface GraphQlMutations {
 
             spec.setOrderTypeName(orderTypeName);
             spec.setOrderPriorityName(originalOrderPriorityName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = OrderUtil.getHome().getEditOrderPriorityForm();
 
@@ -10214,7 +10214,7 @@ public interface GraphQlMutations {
 
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.setOrderPriorityName(orderPriorityName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(OrderUtil.getHome().deleteOrderPriority(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -10271,7 +10271,7 @@ public interface GraphQlMutations {
             var spec = WishlistUtil.getHome().getWishlistTypeUniversalSpec();
 
             spec.setWishlistTypeName(originalWishlistTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = WishlistUtil.getHome().getEditWishlistTypeForm();
 
@@ -10322,7 +10322,7 @@ public interface GraphQlMutations {
             var commandForm = WishlistUtil.getHome().getDeleteWishlistTypeForm();
 
             commandForm.setWishlistTypeName(wishlistTypeName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(WishlistUtil.getHome().deleteWishlistType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -10383,7 +10383,7 @@ public interface GraphQlMutations {
 
             spec.setWishlistTypeName(wishlistTypeName);
             spec.setWishlistPriorityName(originalWishlistPriorityName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = WishlistUtil.getHome().getEditWishlistPriorityForm();
 
@@ -10436,7 +10436,7 @@ public interface GraphQlMutations {
 
             commandForm.setWishlistTypeName(wishlistTypeName);
             commandForm.setWishlistPriorityName(wishlistPriorityName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(WishlistUtil.getHome().deleteWishlistPriority(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -10455,7 +10455,7 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getUnlockEntityForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().unlockEntity(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -10474,7 +10474,7 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getLockEntityForm();
 
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().lockEntity(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -10613,7 +10613,7 @@ public interface GraphQlMutations {
             var spec = CustomerUtil.getHome().getCustomerTypeUniversalSpec();
 
             spec.setCustomerTypeName(originalCustomerTypeName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = CustomerUtil.getHome().getEditCustomerTypeForm();
 
@@ -10704,7 +10704,7 @@ public interface GraphQlMutations {
             var commandForm = CustomerUtil.getHome().getDeleteCustomerTypeForm();
 
             commandForm.setCustomerTypeName(customerTypeName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(CustomerUtil.getHome().deleteCustomerType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -10991,7 +10991,7 @@ public interface GraphQlMutations {
             var spec = SecurityUtil.getHome().getSecurityRoleGroupUniversalSpec();
 
             spec.setSecurityRoleGroupName(originalSecurityRoleGroupName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = SecurityUtil.getHome().getEditSecurityRoleGroupForm();
 
@@ -11044,7 +11044,7 @@ public interface GraphQlMutations {
             var commandForm = SecurityUtil.getHome().getDeleteSecurityRoleGroupForm();
 
             commandForm.setSecurityRoleGroupName(securityRoleGroupName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(SecurityUtil.getHome().deleteSecurityRoleGroup(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -11105,7 +11105,7 @@ public interface GraphQlMutations {
 
             spec.setSecurityRoleGroupName(securityRoleGroupName);
             spec.setSecurityRoleName(originalSecurityRoleName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = SecurityUtil.getHome().getEditSecurityRoleForm();
 
@@ -11158,7 +11158,7 @@ public interface GraphQlMutations {
 
             commandForm.setSecurityRoleGroupName(securityRoleGroupName);
             commandForm.setSecurityRoleName(securityRoleName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(SecurityUtil.getHome().deleteSecurityRole(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -11221,7 +11221,7 @@ public interface GraphQlMutations {
             var spec = WorkflowUtil.getHome().getWorkflowUniversalSpec();
 
             spec.setWorkflowName(originalWorkflowName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = WorkflowUtil.getHome().getEditWorkflowForm();
 
@@ -11276,7 +11276,7 @@ public interface GraphQlMutations {
             var commandForm = WorkflowUtil.getHome().getDeleteWorkflowForm();
 
             commandForm.setWorkflowName(workflowName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(WorkflowUtil.getHome().deleteWorkflow(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -11387,7 +11387,7 @@ public interface GraphQlMutations {
 
             spec.setWorkflowName(workflowName);
             spec.setWorkflowStepName(originalWorkflowStepName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = WorkflowUtil.getHome().getEditWorkflowStepForm();
 
@@ -11442,7 +11442,7 @@ public interface GraphQlMutations {
 
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(WorkflowUtil.getHome().deleteWorkflowStep(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -11503,7 +11503,7 @@ public interface GraphQlMutations {
 
             spec.setWorkflowName(workflowName);
             spec.setWorkflowEntranceName(originalWorkflowEntranceName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = WorkflowUtil.getHome().getEditWorkflowEntranceForm();
 
@@ -11556,7 +11556,7 @@ public interface GraphQlMutations {
 
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowEntranceName(workflowEntranceName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(WorkflowUtil.getHome().deleteWorkflowEntrance(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -11770,7 +11770,7 @@ public interface GraphQlMutations {
             spec.setWorkflowName(workflowName);
             spec.setWorkflowStepName(workflowStepName);
             spec.setWorkflowDestinationName(originalWorkflowDestinationName);
-            spec.setGuid(id);
+            spec.setUuid(id);
 
             var commandForm = WorkflowUtil.getHome().getEditWorkflowDestinationForm();
 
@@ -11825,7 +11825,7 @@ public interface GraphQlMutations {
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);
             commandForm.setWorkflowDestinationName(workflowDestinationName);
-            commandForm.setGuid(id);
+            commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(WorkflowUtil.getHome().deleteWorkflowDestination(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {

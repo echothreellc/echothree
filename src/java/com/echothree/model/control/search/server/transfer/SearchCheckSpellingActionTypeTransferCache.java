@@ -31,7 +31,7 @@ public class SearchCheckSpellingActionTypeTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeGuid(options.contains(SearchOptions.SearchCheckSpellingActionTypeIncludeGuid));
+            setIncludeUuid(options.contains(SearchOptions.SearchCheckSpellingActionTypeIncludeUuid));
         }
         
         setIncludeEntityInstance(true);

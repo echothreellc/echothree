@@ -111,9 +111,9 @@ public abstract class BaseEntityInstanceObject
     public String getId() {
         var coreControl = Session.getModelController(CoreControl.class);
 
-        entityInstance = coreControl.ensureGuidForEntityInstance(getEntityInstanceByBasePK(), false);
+        entityInstance = coreControl.ensureUuidForEntityInstance(getEntityInstanceByBasePK(), false);
 
-        return entityInstance.getGuid();
+        return entityInstance.getUuid();
     }
     
     @GraphQLField
@@ -165,7 +165,7 @@ public abstract class BaseEntityInstanceObject
             commandForm.setEntityAliasTypeName(entityAliasTypeName);
         }
 
-        commandForm.setGuid(id);
+        commandForm.setUuid(id);
 
         var entityAliasType = new GetEntityAliasTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         if(entityInstance != null && entityAliasType != null) {
@@ -212,7 +212,7 @@ public abstract class BaseEntityInstanceObject
         EntityAttributeGroup entityAttributeGroup;
 
         commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
-        commandForm.setGuid(id);
+        commandForm.setUuid(id);
 
         entityAttributeGroup = new GetEntityAttributeGroupCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
 
@@ -239,7 +239,7 @@ public abstract class BaseEntityInstanceObject
             commandForm.setEntityAttributeName(entityAttributeName);
         }
 
-        commandForm.setGuid(id);
+        commandForm.setUuid(id);
 
         var entityAttribute = new GetEntityAttributeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         if(entityInstance != null && entityAttribute != null) {
@@ -284,7 +284,7 @@ public abstract class BaseEntityInstanceObject
         var commandForm = TagFormFactory.getGetTagScopeForm();
 
         commandForm.setTagScopeName(tagScopeName);
-        commandForm.setGuid(id);
+        commandForm.setUuid(id);
 
         var tagScope = new GetTagScopeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         if(entityInstance != null && tagScope != null) {

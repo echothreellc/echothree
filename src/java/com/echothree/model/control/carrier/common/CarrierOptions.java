@@ -18,7 +18,7 @@ package com.echothree.model.control.carrier.common;
 
 public interface CarrierOptions {
     
-    String CarrierIncludeGuid = "CarrierIncludeGuid";
+    String CarrierIncludeUuid = "CarrierIncludeUuid";
     String CarrierIncludeEntityAttributeGroups = "CarrierIncludeEntityAttributeGroups";
     String CarrierIncludeTagScopes = "CarrierIncludeTagScopes";
     

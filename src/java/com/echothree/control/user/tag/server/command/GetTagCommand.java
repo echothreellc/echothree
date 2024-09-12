@@ -56,7 +56,7 @@ public class GetTagCommand
                 new FieldDefinition("TagScopeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("TagName", FieldType.TAG, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Guid", FieldType.GUID, false, null, null)
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 ));
     }
     

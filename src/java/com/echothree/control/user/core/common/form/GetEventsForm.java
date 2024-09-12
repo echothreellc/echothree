@@ -24,7 +24,7 @@ public interface GetEventsForm
     String getCreatedByEntityRef();
     void setCreatedByEntityRef(String createdByEntityRef);
     
-    String getCreatedByGuid();
-    void setCreatedByGuid(String createdByGuid);
+    String getCreatedByUuid();
+    void setCreatedByUuid(String createdByUuid);
 
 }

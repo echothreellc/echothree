@@ -31,7 +31,7 @@ public class LicenseTypeTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeGuid(options.contains(LicenseOptions.LicenseTypeIncludeGuid));
+            setIncludeUuid(options.contains(LicenseOptions.LicenseTypeIncludeUuid));
         }
         
         setIncludeEntityInstance(true);

@@ -58,7 +58,7 @@ public class GetCampaignCommand
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("CampaignName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Guid", FieldType.GUID, false, null, null)
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 ));
     }
     

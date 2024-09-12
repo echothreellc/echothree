@@ -38,7 +38,7 @@ public class TrackTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeGuid(options.contains(TrackOptions.TrackIncludeGuid));
+            setIncludeUuid(options.contains(TrackOptions.TrackIncludeUuid));
         }
         
         setIncludeEntityInstance(true);

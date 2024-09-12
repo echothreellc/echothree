@@ -38,7 +38,7 @@ public class ShippingMethodTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeGuid(options.contains(ShippingOptions.ShippingMethodIncludeGuid));
+            setIncludeUuid(options.contains(ShippingOptions.ShippingMethodIncludeUuid));
             includeComments = options.contains(ShippingOptions.ShippingMethodIncludeComments);
             setIncludeEntityAttributeGroups(options.contains(ShippingOptions.ShippingMethodIncludeEntityAttributeGroups));
         }

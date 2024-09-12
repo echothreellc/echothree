@@ -109,7 +109,7 @@ public class CustomerTransferCache
 
         var options = session.getOptions();
         if(options != null) {
-            setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(CustomerOptions.CustomerIncludeGuid));
+            setIncludeUuid(options.contains(PartyOptions.PartyIncludeUuid) || options.contains(CustomerOptions.CustomerIncludeUuid));
             includeUserLogin = options.contains(PartyOptions.PartyIncludeUserLogin);
             includeRecoveryAnswer = options.contains(PartyOptions.PartyIncludeRecoveryAnswer);
             includePartyAliases = options.contains(PartyOptions.PartyIncludePartyAliases);

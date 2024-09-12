@@ -132,19 +132,19 @@
                         </c:otherwise>
                     </c:choose>
                     <br />
-                    Guid:
+                    Uuid:
                     <c:choose>
-                        <c:when test="${entityInstance.guid == null}">
+                        <c:when test="${entityInstance.uuid == null}">
                             <i><fmt:message key="phrase.notSet" /></i>
-                            <c:url var="generateUrl" value="/action/Core/Event/GenerateGuid">
+                            <c:url var="generateUrl" value="/action/Core/Event/GenerateUuid">
                                 <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                             </c:url>
                             [<a href="${generateUrl}">Generate</a>]
                         </c:when>
                         <c:otherwise>
-                            <c:out value="${entityInstance.guid}" />
-                            <c:url var="generateUrl" value="/action/Core/Event/GenerateGuid">
-                                <c:param name="Guid" value="${entityInstance.guid}" />
+                            <c:out value="${entityInstance.uuid}" />
+                            <c:url var="generateUrl" value="/action/Core/Event/GenerateUuid">
+                                <c:param name="Uuid" value="${entityInstance.uuid}" />
                                 <c:param name="ForceRegeneration" value="true" />
                             </c:url>
                             [<a href="${generateUrl}">Regenerate</a>]

@@ -54,7 +54,7 @@ public class CarrierTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(CarrierOptions.CarrierIncludeGuid));
+            setIncludeUuid(options.contains(PartyOptions.PartyIncludeUuid) || options.contains(CarrierOptions.CarrierIncludeUuid));
             includePartyContactMechanisms = options.contains(PartyOptions.PartyIncludePartyContactMechanisms);
             includePartyDocuments = options.contains(PartyOptions.PartyIncludePartyDocuments);
             includePartyPrinterGroupUses = options.contains(PartyOptions.PartyIncludePartyPrinterGroupUses);

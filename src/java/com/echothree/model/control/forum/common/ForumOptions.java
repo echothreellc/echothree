@@ -22,20 +22,20 @@ public interface ForumOptions {
     String ForumGroupIncludeEntityAttributeGroups = "ForumGroupIncludeEntityAttributeGroups";
     String ForumGroupIncludeTagScopes = "ForumGroupIncludeTagScopes";
     
-    String ForumIncludeGuid = "ForumIncludeGuid";
+    String ForumIncludeUuid = "ForumIncludeUuid";
     String ForumIncludeForumGroups = "ForumIncludeForumGroups";
     String ForumIncludeForumThreads = "ForumIncludeForumThreads";
     String ForumIncludeFutureForumThreads = "ForumIncludeFutureForumThreads";
     String ForumIncludeEntityAttributeGroups = "ForumIncludeEntityAttributeGroups";
     String ForumIncludeTagScopes = "ForumIncludeTagScopes";
     
-    String ForumThreadIncludeGuid = "ForumThreadIncludeGuid";
+    String ForumThreadIncludeUuid = "ForumThreadIncludeUuid";
     String ForumThreadIncludeForumMessages = "ForumThreadIncludeForumMessages";
     String ForumThreadIncludeForumForumThreads = "ForumThreadIncludeForumForumThreads";
     String ForumThreadIncludeEntityAttributeGroups = "ForumThreadIncludeEntityAttributeGroups";
     String ForumThreadIncludeTagScopes = "ForumThreadIncludeTagScopes";
     
-    String ForumMessageIncludeGuid = "ForumMessageIncludeGuid";
+    String ForumMessageIncludeUuid = "ForumMessageIncludeUuid";
     String ForumMessageIncludeForumMessageRoles = "ForumMessageIncludeForumMessageRoles";
     String ForumMessageIncludeForumMessageParts = "ForumMessageIncludeForumMessageParts";
     String ForumMessageIncludeForumMessageAttachments = "ForumMessageIncludeForumMessageAttachments";

@@ -63,7 +63,7 @@ public class CreateUserLoginCommand
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("Username", FieldType.STRING, true, 1L, 80L),
                 new FieldDefinition("Password1", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("Password2", FieldType.STRING, true, 1L, 40L),

@@ -74,7 +74,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     boolean includeEntityAppearance;
     boolean includeEntityVisit;
     boolean includeNames;
-    boolean includeGuid;
+    boolean includeUuid;
     boolean includeEntityAliasTypes;
     boolean includeEntityAttributeGroups;
     boolean includeTagScopes;
@@ -353,19 +353,19 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
-     * Returns the includeGuid.
-     * @return the includeGuid
+     * Returns the includeUuid.
+     * @return the includeUuid
      */
-    protected boolean getIncludeGuid() {
-        return includeGuid;
+    protected boolean getIncludeUuid() {
+        return includeUuid;
     }
 
     /**
-     * Sets the includeGuid.
-     * @param includeGuid the includeGuid to set
+     * Sets the includeUuid.
+     * @param includeUuid the includeUuid to set
      */
-    protected void setIncludeGuid(boolean includeGuid) {
-        this.includeGuid = includeGuid;
+    protected void setIncludeUuid(boolean includeUuid) {
+        this.includeUuid = includeUuid;
     }
 
     protected void setupEntityInstance(final K baseEntity, EntityInstance entityInstance, final V transfer) {
@@ -379,7 +379,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         // converted to a versioned one.
         if(entityInstance != null) {
             transfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, includeEntityAppearance,
-                    includeEntityVisit, includeNames, includeGuid));
+                    includeEntityVisit, includeNames, includeUuid));
 
             if(includeEntityAliasTypes || includeEntityAttributeGroups || includeTagScopes) {
                 if(includeEntityAliasTypes) {

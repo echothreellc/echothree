@@ -18,9 +18,9 @@ package com.echothree.model.control.core.server.logic;
 
 import com.echothree.control.user.core.common.edit.EntityListItemAttributeEdit;
 import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
-import com.echothree.control.user.core.common.spec.EntityAttributeGuid;
+import com.echothree.control.user.core.common.spec.EntityAttributeUuid;
 import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
-import com.echothree.control.user.core.common.spec.EntityListItemGuid;
+import com.echothree.control.user.core.common.spec.EntityListItemUuid;
 import com.echothree.control.user.core.common.spec.EntityListItemUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
@@ -140,10 +140,10 @@ public class EntityAttributeLogic
         return entityAttributeType;
     }
 
-    public EntityAttributeType getEntityAttributeTypeByGuid(final ExecutionErrorAccumulator eea, final String guid, final EntityPermission entityPermission) {
+    public EntityAttributeType getEntityAttributeTypeByUuid(final ExecutionErrorAccumulator eea, final String uuid, final EntityPermission entityPermission) {
         EntityAttributeType entityAttributeType = null;
         
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, guid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, uuid,
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttributeType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -155,12 +155,12 @@ public class EntityAttributeLogic
         return entityAttributeType;
     }
     
-    public EntityAttributeType getEntityAttributeTypeByGuid(final ExecutionErrorAccumulator eea, final String guid) {
-        return getEntityAttributeTypeByGuid(eea, guid, EntityPermission.READ_ONLY);
+    public EntityAttributeType getEntityAttributeTypeByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
+        return getEntityAttributeTypeByUuid(eea, uuid, EntityPermission.READ_ONLY);
     }
     
-    public EntityAttributeType getEntityAttributeTypeByGuidForUpdate(final ExecutionErrorAccumulator eea, final String guid) {
-        return getEntityAttributeTypeByGuid(eea, guid, EntityPermission.READ_WRITE);
+    public EntityAttributeType getEntityAttributeTypeByUuidForUpdate(final ExecutionErrorAccumulator eea, final String uuid) {
+        return getEntityAttributeTypeByUuid(eea, uuid, EntityPermission.READ_WRITE);
     }
     
     public EntityAttributeGroup getEntityAttributeGroupByName(final ExecutionErrorAccumulator eea, final String entityAttributeGroupName) {
@@ -175,10 +175,10 @@ public class EntityAttributeLogic
         return entityAttributeGroup;
     }
 
-    public EntityAttributeGroup getEntityAttributeGroupByGuid(final ExecutionErrorAccumulator eea, final String guid, final EntityPermission entityPermission) {
+    public EntityAttributeGroup getEntityAttributeGroupByUuid(final ExecutionErrorAccumulator eea, final String uuid, final EntityPermission entityPermission) {
         EntityAttributeGroup entityAttributeGroup = null;
         
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, guid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, uuid,
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttributeGroup.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -190,12 +190,12 @@ public class EntityAttributeLogic
         return entityAttributeGroup;
     }
     
-    public EntityAttributeGroup getEntityAttributeGroupByGuid(final ExecutionErrorAccumulator eea, final String guid) {
-        return getEntityAttributeGroupByGuid(eea, guid, EntityPermission.READ_ONLY);
+    public EntityAttributeGroup getEntityAttributeGroupByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
+        return getEntityAttributeGroupByUuid(eea, uuid, EntityPermission.READ_ONLY);
     }
     
-    public EntityAttributeGroup getEntityAttributeGroupByGuidForUpdate(final ExecutionErrorAccumulator eea, final String guid) {
-        return getEntityAttributeGroupByGuid(eea, guid, EntityPermission.READ_WRITE);
+    public EntityAttributeGroup getEntityAttributeGroupByUuidForUpdate(final ExecutionErrorAccumulator eea, final String uuid) {
+        return getEntityAttributeGroupByUuid(eea, uuid, EntityPermission.READ_WRITE);
     }
     
     public EntityAttribute createEntityAttribute(final ExecutionErrorAccumulator eea, final EntityType entityType,
@@ -376,11 +376,11 @@ public class EntityAttributeLogic
         return getEntityAttributeByName(eea, componentVendorName, entityTypeName, entityAttributeName, EntityPermission.READ_WRITE);
     }
     
-    public EntityAttribute getEntityAttributeByGuid(final ExecutionErrorAccumulator eea, final String guid,
+    public EntityAttribute getEntityAttributeByUuid(final ExecutionErrorAccumulator eea, final String uuid,
             final EntityPermission entityPermission) {
         EntityAttribute entityAttribute = null;
         
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, guid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, uuid,
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttribute.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -392,12 +392,12 @@ public class EntityAttributeLogic
         return entityAttribute;
     }
     
-    public EntityAttribute getEntityAttributeByGuid(final ExecutionErrorAccumulator eea, final String guid) {
-        return getEntityAttributeByGuid(eea, guid, EntityPermission.READ_ONLY);
+    public EntityAttribute getEntityAttributeByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
+        return getEntityAttributeByUuid(eea, uuid, EntityPermission.READ_ONLY);
     }
     
-    public EntityAttribute getEntityAttributeByGuidForUpdate(final ExecutionErrorAccumulator eea, final String guid) {
-        return getEntityAttributeByGuid(eea, guid, EntityPermission.READ_WRITE);
+    public EntityAttribute getEntityAttributeByUuidForUpdate(final ExecutionErrorAccumulator eea, final String uuid) {
+        return getEntityAttributeByUuid(eea, uuid, EntityPermission.READ_WRITE);
     }
 
     // For when we need to determine the EntityType from what the user passes in:
@@ -444,23 +444,23 @@ public class EntityAttributeLogic
 
     // For when we can get the EntityType from the EntityInstance:
     public EntityAttribute getEntityAttribute(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance,
-            final EntityAttributeSpec spec, final EntityAttributeGuid guid, final EntityPermission entityPermission,
+            final EntityAttributeSpec spec, final EntityAttributeUuid uuid, final EntityPermission entityPermission,
             final EntityAttributeTypes... entityAttributeTypes) {
         EntityAttribute entityAttribute = null;
         var entityAttributeName = spec.getEntityAttributeName();
-        var entityAttributeGuid = guid.getEntityAttributeGuid();
-        var parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeGuid == null ? 0 : 1);
+        var entityAttributeUuid = uuid.getEntityAttributeUuid();
+        var parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUuid == null ? 0 : 1);
 
         if (parameterCount == 1) {
             entityAttribute = entityAttributeName == null
-                    ? getEntityAttributeByGuid(eea, entityAttributeGuid, entityPermission)
+                    ? getEntityAttributeByUuid(eea, entityAttributeUuid, entityPermission)
                     : getEntityAttributeByName(eea, entityInstance.getEntityType(), entityAttributeName, entityPermission);
         } else {
             handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
         
         // If there are no other errors, and the EntityAttribute was specified by ULID, then verify the EntityType...
-        if((eea == null || !eea.hasExecutionErrors()) && entityAttributeGuid != null) {
+        if((eea == null || !eea.hasExecutionErrors()) && entityAttributeUuid != null) {
             if(!entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
                 var expectedEntityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
                 var suppliedEntityTypeDetail = entityInstance.getEntityType().getLastDetail();
@@ -496,13 +496,13 @@ public class EntityAttributeLogic
     }
     
     public EntityAttribute getEntityAttribute(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance,
-            final EntityAttributeSpec spec, final EntityAttributeGuid guid, final EntityAttributeTypes... entityAttributeTypes) {
-        return getEntityAttribute(eea, entityInstance, spec, guid, EntityPermission.READ_ONLY, entityAttributeTypes);
+            final EntityAttributeSpec spec, final EntityAttributeUuid uuid, final EntityAttributeTypes... entityAttributeTypes) {
+        return getEntityAttribute(eea, entityInstance, spec, uuid, EntityPermission.READ_ONLY, entityAttributeTypes);
     }
     
     public EntityAttribute getEntityAttributeForUpdate(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance,
-            final EntityAttributeSpec spec, final EntityAttributeGuid guid, final EntityAttributeTypes... entityAttributeTypes) {
-        return getEntityAttribute(eea, entityInstance, spec, guid, EntityPermission.READ_WRITE, entityAttributeTypes);
+            final EntityAttributeSpec spec, final EntityAttributeUuid uuid, final EntityAttributeTypes... entityAttributeTypes) {
+        return getEntityAttribute(eea, entityInstance, spec, uuid, EntityPermission.READ_WRITE, entityAttributeTypes);
     }
     
     private List<EntityInstanceResult> getEntityInstanceResultsByEntityAttributeTypeName(EntityAttribute entityAttribute) {
@@ -686,10 +686,10 @@ public class EntityAttributeLogic
                 EntityPermission.READ_WRITE);
     }
         
-    public EntityListItem getEntityListItemByGuid(final ExecutionErrorAccumulator eea, final String guid, final EntityPermission entityPermission) {
+    public EntityListItem getEntityListItemByUuid(final ExecutionErrorAccumulator eea, final String uuid, final EntityPermission entityPermission) {
         EntityListItem entityListItem = null;
         
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, guid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, uuid,
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityListItem.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -701,12 +701,12 @@ public class EntityAttributeLogic
         return entityListItem;
     }
     
-    public EntityListItem getEntityListItemByGuid(final ExecutionErrorAccumulator eea, final String guid) {
-        return getEntityListItemByGuid(eea, guid, EntityPermission.READ_ONLY);
+    public EntityListItem getEntityListItemByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
+        return getEntityListItemByUuid(eea, uuid, EntityPermission.READ_ONLY);
     }
     
-    public EntityListItem getEntityListItemByGuidForUpdate(final ExecutionErrorAccumulator eea, final String guid) {
-        return getEntityListItemByGuid(eea, guid, EntityPermission.READ_WRITE);
+    public EntityListItem getEntityListItemByUuidForUpdate(final ExecutionErrorAccumulator eea, final String uuid) {
+        return getEntityListItemByUuid(eea, uuid, EntityPermission.READ_WRITE);
     }
 
     public EntityListItem getEntityListItemByUniversalSpec(final ExecutionErrorAccumulator eea, final EntityListItemUniversalSpec universalSpec,
@@ -756,18 +756,18 @@ public class EntityAttributeLogic
             final EntityListItemAttributeEdit edit, final EntityPermission entityPermission) {
         EntityListItem entityListItem = null;
         var entityListItemName = edit.getEntityListItemName();
-        var entityListItemGuid = edit.getEntityListItemGuid();
-        var parameterCount = (entityListItemName == null ? 0 : 1) + (entityListItemGuid == null ? 0 : 1);
+        var entityListItemUuid = edit.getEntityListItemUuid();
+        var parameterCount = (entityListItemName == null ? 0 : 1) + (entityListItemUuid == null ? 0 : 1);
 
         if (parameterCount == 1) {
             entityListItem = entityListItemName == null
-                    ? getEntityListItemByGuid(eea, entityListItemGuid, entityPermission)
+                    ? getEntityListItemByUuid(eea, entityListItemUuid, entityPermission)
                     : getEntityListItemByName(eea, entityAttribute, entityListItemName, entityPermission);
         } else {
             handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
         
-        if((eea == null || !eea.hasExecutionErrors()) && entityListItemGuid != null) {
+        if((eea == null || !eea.hasExecutionErrors()) && entityListItemUuid != null) {
             var foundEntityAttribute = entityListItem.getLastDetail().getEntityAttribute();
 
             if(!foundEntityAttribute.equals(entityAttribute)) {
@@ -791,7 +791,7 @@ public class EntityAttributeLogic
     }
     
     public EntityListItem getEntityListItemForUpdate(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityListItemAttributeEdit edit, final EntityListItemGuid guid) {
+            final EntityListItemAttributeEdit edit, final EntityListItemUuid uuid) {
         return getEntityListItem(eea, entityAttribute, edit, EntityPermission.READ_WRITE);
     }
     

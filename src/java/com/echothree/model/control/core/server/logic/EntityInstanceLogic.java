@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.logic;
 
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
-import com.echothree.control.user.core.common.spec.GuidSpec;
+import com.echothree.control.user.core.common.spec.UuidSpec;
 import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EventTypes;
@@ -25,7 +25,7 @@ import com.echothree.model.control.core.common.exception.InvalidComponentVendorE
 import com.echothree.model.control.core.common.exception.InvalidEntityTypeException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownEntityRefException;
-import com.echothree.model.control.core.common.exception.UnknownGuidException;
+import com.echothree.model.control.core.common.exception.UnknownUuidException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
@@ -106,31 +106,31 @@ public class EntityInstanceLogic
         return getEntityInstanceByEntityRef(eea, spec.getEntityRef());
     }
     
-    public EntityInstance getEntityInstanceByGuid(final ExecutionErrorAccumulator eea, final String guid) {
+    public EntityInstance getEntityInstanceByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
         var coreControl = Session.getModelController(CoreControl.class);
-        var entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByGuid(guid));
+        var entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByUuid(uuid));
 
         if(entityInstance == null) {
-            handleExecutionError(UnknownGuidException.class, eea, ExecutionErrors.UnknownGuid.name(), guid);
+            handleExecutionError(UnknownUuidException.class, eea, ExecutionErrors.UnknownUuid.name(), uuid);
         }
 
         return entityInstance;
     }
 
-    public EntityInstance getEntityInstanceByGuid(final ExecutionErrorAccumulator eea, final GuidSpec spec) {
-        return getEntityInstanceByGuid(eea, spec.getGuid());
+    public EntityInstance getEntityInstanceByUuid(final ExecutionErrorAccumulator eea, final UuidSpec spec) {
+        return getEntityInstanceByUuid(eea, spec.getUuid());
     }
     
     public EntityInstance getEntityInstance(final ExecutionErrorAccumulator eea, final String entityRef,
-            final String guid, final String componentVendorName, final String... entityTypeNames) {
-        var parameterCount = countPossibleEntitySpecs(entityRef, guid);
+            final String uuid, final String componentVendorName, final String... entityTypeNames) {
+        var parameterCount = countPossibleEntitySpecs(entityRef, uuid);
         EntityInstance entityInstance = null;
         
         if(parameterCount == 1) {
             if(entityRef != null) {
                 entityInstance = getEntityInstanceByEntityRef(eea, entityRef);
-            } else if(guid != null) {
-                entityInstance = getEntityInstanceByGuid(eea, guid);
+            } else if(uuid != null) {
+                entityInstance = getEntityInstanceByUuid(eea, uuid);
             }
         } else {
             handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
@@ -161,34 +161,34 @@ public class EntityInstanceLogic
     }
     
     public EntityInstance getEntityInstance(final ExecutionErrorAccumulator eea, final EntityRefSpec entityRefSpec,
-            final GuidSpec guidSpec, final String componentVendorName, final String... entityTypeNames) {
-        return getEntityInstance(eea, entityRefSpec.getEntityRef(), guidSpec.getGuid(),
+            final UuidSpec uuidSpec, final String componentVendorName, final String... entityTypeNames) {
+        return getEntityInstance(eea, entityRefSpec.getEntityRef(), uuidSpec.getUuid(),
                 componentVendorName, entityTypeNames);
     }
     
     public EntityInstance getEntityInstance(final ExecutionErrorAccumulator eea, final UniversalEntitySpec universalEntitySpec) {
         return getEntityInstance(eea, universalEntitySpec.getEntityRef(),
-                universalEntitySpec.getGuid(), null);
+                universalEntitySpec.getUuid(), null);
     }
     
     public EntityInstance getEntityInstance(final ExecutionErrorAccumulator eea, final UniversalEntitySpec universalEntitySpec,
             final String componentVendorName, final String... entityTypeNames) {
         return getEntityInstance(eea, universalEntitySpec.getEntityRef(),
-                universalEntitySpec.getGuid(), componentVendorName, entityTypeNames);
+                universalEntitySpec.getUuid(), componentVendorName, entityTypeNames);
     }
     
-    public int countPossibleEntitySpecs(final String entityRef, final String guid) {
-        return (entityRef == null ? 0 : 1) + (guid == null ? 0 : 1);
+    public int countPossibleEntitySpecs(final String entityRef, final String uuid) {
+        return (entityRef == null ? 0 : 1) + (uuid == null ? 0 : 1);
     }
     
-    public int countPossibleEntitySpecs(final EntityRefSpec entityRefSpec, final GuidSpec guidSpec) {
+    public int countPossibleEntitySpecs(final EntityRefSpec entityRefSpec, final UuidSpec uuidSpec) {
         return countPossibleEntitySpecs(entityRefSpec == null ? null : entityRefSpec.getEntityRef(),
-                guidSpec == null ? null : guidSpec.getGuid());
+                uuidSpec == null ? null : uuidSpec.getUuid());
     }
     
     public int countPossibleEntitySpecs(final UniversalEntitySpec universalEntitySpec) {
         return universalEntitySpec == null ? 0 : countPossibleEntitySpecs(universalEntitySpec.getEntityRef(),
-                universalEntitySpec.getGuid());
+                universalEntitySpec.getUuid());
     }
     
     public String getEntityRefFromEntityInstance(EntityInstance entityInstance) {

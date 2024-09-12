@@ -17,8 +17,8 @@
 package com.echothree.control.user.core.common.spec;
 
 public interface EntityAliasSpec
-        extends UniversalEntitySpec, EntityAliasTypeSpec, EntityAliasTypeGuid {
+        extends UniversalEntitySpec, EntityAliasTypeSpec, EntityAliasTypeUuid {
     
-    // Nothing additional beyond UniversalEntitySpec, EntityAliasTypeSpec, EntityAliasTypeGuid
+    // Nothing additional beyond UniversalEntitySpec, EntityAliasTypeSpec, EntityAliasTypeUuid
     
 }

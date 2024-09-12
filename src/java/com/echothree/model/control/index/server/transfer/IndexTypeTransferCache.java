@@ -35,7 +35,7 @@ public class IndexTypeTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeGuid(options.contains(IndexOptions.IndexTypeIncludeGuid));
+            setIncludeUuid(options.contains(IndexOptions.IndexTypeIncludeUuid));
         }
         
         setIncludeEntityInstance(true);

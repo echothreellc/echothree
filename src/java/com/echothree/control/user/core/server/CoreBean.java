@@ -371,8 +371,8 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult generateGuid(UserVisitPK userVisitPK, GenerateGuidForm form) {
-        return new GenerateGuidCommand(userVisitPK, form).run();
+    public CommandResult generateUuid(UserVisitPK userVisitPK, GenerateUuidForm form) {
+        return new GenerateUuidCommand(userVisitPK, form).run();
     }
 
     // -------------------------------------------------------------------------

@@ -58,7 +58,7 @@ public class WarehouseTransferCache
         if(options != null) {
             includeLocationsCount = options.contains(WarehouseOptions.WarehouseIncludeLocationsCount);
             includeLocations = options.contains(WarehouseOptions.WarehouseIncludeLocations);
-            setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(WarehouseOptions.WarehouseIncludeGuid));
+            setIncludeUuid(options.contains(PartyOptions.PartyIncludeUuid) || options.contains(WarehouseOptions.WarehouseIncludeUuid));
             includePartyAliases = options.contains(PartyOptions.PartyIncludePartyAliases);
             includePartyContactMechanisms = options.contains(PartyOptions.PartyIncludePartyContactMechanisms);
             includePartyDocuments = options.contains(PartyOptions.PartyIncludePartyDocuments);

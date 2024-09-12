@@ -57,7 +57,7 @@ public class GetUserLoginCommand
                 new FieldDefinition("Username", FieldType.STRING, false, 1L, 80L),
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Guid", FieldType.GUID, false, null, null)
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 ));
     }
     

@@ -18,14 +18,14 @@ package com.echothree.model.control.track.common;
 
 public interface TrackOptions {
     
-    String TrackIncludeGuid = "TrackIncludeGuid";
+    String TrackIncludeUuid = "TrackIncludeUuid";
     
-    String TrackSourceIncludeGuid = "TrackSourceIncludeGuid";
+    String TrackSourceIncludeUuid = "TrackSourceIncludeUuid";
     
-    String TrackMediumIncludeGuid = "TrackMediumIncludeGuid";
+    String TrackMediumIncludeUuid = "TrackMediumIncludeUuid";
     
-    String TrackTermIncludeGuid = "TrackTermIncludeGuid";
+    String TrackTermIncludeUuid = "TrackTermIncludeUuid";
 
-    String TrackContentIncludeGuid = "TrackContentIncludeGuid";
+    String TrackContentIncludeUuid = "TrackContentIncludeUuid";
     
 }

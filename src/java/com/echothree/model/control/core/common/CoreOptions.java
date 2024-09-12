@@ -37,7 +37,7 @@ public interface CoreOptions {
     String EntityInstanceIncludeEntityAppearance = "EntityInstanceIncludeEntityAppearance";
     String EntityInstanceIncludeEntityVisit = "EntityInstanceIncludeEntityVisit";
     String EntityInstanceIncludeNames = "EntityInstanceIncludeNames";
-    String EntityInstanceIncludeGuidIfAvailable = "EntityInstanceIncludeGuidIfAvailable";
+    String EntityInstanceIncludeUuidIfAvailable = "EntityInstanceIncludeUuidIfAvailable";
 
     String EntityListItemIncludeEntityAttributeGroups = "EntityListItemIncludeEntityAttributeGroups";
     String EntityListItemIncludeTagScopes = "EntityListItemIncludeTagScopes";
@@ -48,7 +48,7 @@ public interface CoreOptions {
     String CacheEntryIncludeBlob = "CacheEntryIncludeBlob";
     String CacheEntryIncludeCacheEntryDependencies = "CacheEntryIncludeCacheEntryDependencies";
 
-    String ApplicationIncludeGuid = "ApplicationIncludeGuid";
+    String ApplicationIncludeUuid = "ApplicationIncludeUuid";
     
     String AppearanceIncludeTextDecorations = "AppearanceIncludeTextDecorations";
     String AppearanceIncludeTextTransformations = "AppearanceIncludeTextTransformations";

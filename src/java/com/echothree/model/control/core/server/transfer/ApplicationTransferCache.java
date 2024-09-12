@@ -34,7 +34,7 @@ public class ApplicationTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeGuid(options.contains(CoreOptions.ApplicationIncludeGuid));
+            setIncludeUuid(options.contains(CoreOptions.ApplicationIncludeUuid));
         }
         
         setIncludeEntityInstance(true);

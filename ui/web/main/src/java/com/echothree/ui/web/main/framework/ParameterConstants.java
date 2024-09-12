@@ -29,9 +29,9 @@ public interface ParameterConstants {
     String ENTITY_ATTRIBUTE_NAME = "EntityAttributeName";
     String ENTITY_LIST_ITEM_NAME = "EntityListItemName";
     String ENTITY_REF = "EntityRef";
-    String GUID = "Guid";
+    String UUID = "Uuid";
     String CREATED_BY_ENTITY_REF = "CreatedByEntityRef";
-    String CREATED_BY_GUID = "CreatedByGuid";
+    String CREATED_BY_UUID = "CreatedByUuid";
     String FORCE_REGENERATION = "ForceRegeneration";
     String ENTITY_REF_ATTRIBUTE = "EntityRefAttribute";
     String ENTITY_TYPE_NAME = "EntityTypeName";

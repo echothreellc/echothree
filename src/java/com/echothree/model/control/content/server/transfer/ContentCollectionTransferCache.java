@@ -42,7 +42,7 @@ public class ContentCollectionTransferCache
             includeContentCatalogs = options.contains(ContentOptions.ContentCollectionIncludeContentCatalogs);
             includeContentForums = options.contains(ContentOptions.ContentCollectionIncludeContentForums);
             includeContentSections = options.contains(ContentOptions.ContentCollectionIncludeContentSections);
-            setIncludeGuid(options.contains(ContentOptions.ContentCollectionIncludeGuid));
+            setIncludeUuid(options.contains(ContentOptions.ContentCollectionIncludeUuid));
             setIncludeEntityAttributeGroups(options.contains(ContentOptions.ContentCollectionIncludeEntityAttributeGroups));
             setIncludeTagScopes(options.contains(ContentOptions.ContentCollectionIncludeTagScopes));
         }

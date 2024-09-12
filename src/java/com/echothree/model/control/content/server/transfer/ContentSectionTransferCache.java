@@ -46,7 +46,7 @@ public class ContentSectionTransferCache
         var options = session.getOptions();
         if(options != null) {
             includeContentPages = options.contains(ContentOptions.ContentSectionIncludeContentPages);
-            setIncludeGuid(options.contains(ContentOptions.ContentSectionIncludeGuid));
+            setIncludeUuid(options.contains(ContentOptions.ContentSectionIncludeUuid));
             setIncludeEntityAttributeGroups(options.contains(ContentOptions.ContentSectionIncludeEntityAttributeGroups));
             setIncludeTagScopes(options.contains(ContentOptions.ContentSectionIncludeTagScopes));
         }

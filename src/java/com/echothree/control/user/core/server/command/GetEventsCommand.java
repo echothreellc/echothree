@@ -55,9 +55,9 @@ public class GetEventsCommand
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("CreatedByEntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("CreatedByGuid", FieldType.GUID, false, null, null)
+                new FieldDefinition("CreatedByUuid", FieldType.UUID, false, null, null)
                 ));
     }
     
@@ -73,18 +73,18 @@ public class GetEventsCommand
     @Override
     protected Collection<Event> getEntities() {
         var entityRef = form.getEntityRef();
-        var guid = form.getGuid();
+        var uuid = form.getUuid();
         var createdByEntityRef = form.getCreatedByEntityRef();
-        var createdByGuid = form.getCreatedByGuid();
-        var parameterCount = (entityRef == null ? 0 : 1) + (guid == null ? 0 : 1)
-                + (createdByEntityRef == null ? 0 : 1) + (createdByGuid == null ? 0 : 1);
+        var createdByUuid = form.getCreatedByUuid();
+        var parameterCount = (entityRef == null ? 0 : 1) + (uuid == null ? 0 : 1)
+                + (createdByEntityRef == null ? 0 : 1) + (createdByUuid == null ? 0 : 1);
         Collection<Event> entities = null;
 
         if(parameterCount == 1) {
             var coreControl = getCoreControl();
 
-            if(entityRef != null || guid != null) {
-                entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, entityRef, guid, null);
+            if(entityRef != null || uuid != null) {
+                entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, entityRef, uuid, null);
 
                 if(!hasExecutionErrors()) {
                     if(session.hasLimit(EventFactory.class)) {
@@ -94,7 +94,7 @@ public class GetEventsCommand
                     entities = coreControl.getEventsByEntityInstance(entityInstance);
                 }
             } else {
-                createdBy = EntityInstanceLogic.getInstance().getEntityInstance(this, createdByEntityRef, createdByGuid, null);
+                createdBy = EntityInstanceLogic.getInstance().getEntityInstance(this, createdByEntityRef, createdByUuid, null);
 
                 if(!hasExecutionErrors()) {
                     if(session.hasLimit(EventFactory.class)) {

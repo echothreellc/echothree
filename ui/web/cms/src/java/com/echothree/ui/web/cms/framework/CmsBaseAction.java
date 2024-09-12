@@ -157,7 +157,7 @@ public abstract class CmsBaseAction<A extends ActionForm>
         
         commandForm.setApplicationName(request.getParameter(ParameterConstants.APPLICATION_NAME));
         commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));
-        commandForm.setGuid(request.getParameter(ParameterConstants.GUID));
+        commandForm.setUuid(request.getParameter(ParameterConstants.UUID));
 
         var commandResult = CoreUtil.getHome().getApplication(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {

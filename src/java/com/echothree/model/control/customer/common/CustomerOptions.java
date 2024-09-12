@@ -18,7 +18,7 @@ package com.echothree.model.control.customer.common;
 
 public interface CustomerOptions {
     
-    String CustomerIncludeGuid = "CustomerIncludeGuid";
+    String CustomerIncludeUuid = "CustomerIncludeUuid";
     String CustomerIncludeCustomerServiceComments = "CustomerIncludeCustomerServiceComments";
     String CustomerIncludeOrderEntryComments      = "CustomerIncludeOrderEntryComments";
     String CustomerIncludeBillingAccounts = "CustomerIncludeBillingAccounts";

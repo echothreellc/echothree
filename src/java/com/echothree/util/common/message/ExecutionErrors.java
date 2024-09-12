@@ -270,7 +270,7 @@ public enum ExecutionErrors {
     UnknownEntityListItemDescription,
     UnknownEntityListItemName,
     UnknownEntityRef,
-    UnknownGuid,
+    UnknownUuid,
     InvalidEntityType,
     UnknownEntityRefAttribute,
     UnknownEntityTypeName,

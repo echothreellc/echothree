@@ -514,7 +514,7 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.Sha1Utils;
 import com.echothree.util.server.string.EntityInstanceUtils;
-import com.echothree.util.server.string.GuidUtils;
+import com.echothree.util.server.string.UuidUtils;
 import com.google.common.base.Splitter;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -2393,7 +2393,7 @@ public class CoreControl
         return getEntityInstance(entityType, entityUniqueId, EntityPermission.READ_WRITE);
     }
 
-    private EntityInstance getEntityInstanceByGuid(String guid, EntityPermission entityPermission) {
+    private EntityInstance getEntityInstanceByUuid(String uuid, EntityPermission entityPermission) {
         EntityInstance entityInstance;
         
         try {
@@ -2402,17 +2402,17 @@ public class CoreControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityinstances " +
-                        "WHERE eni_guid = ?";
+                        "WHERE eni_uuid = ?";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityinstances " +
-                        "WHERE eni_guid = ? " +
+                        "WHERE eni_uuid = ? " +
                         "FOR UPDATE";
             }
 
             var ps = EntityInstanceFactory.getInstance().prepareStatement(query);
             
-            ps.setString(1, guid);
+            ps.setString(1, uuid);
             
             entityInstance = EntityInstanceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
@@ -2422,32 +2422,32 @@ public class CoreControl
         return entityInstance;
     }
     
-    public EntityInstance getEntityInstanceByGuid(String guid) {
-        return getEntityInstanceByGuid(guid, EntityPermission.READ_ONLY);
+    public EntityInstance getEntityInstanceByUuid(String uuid) {
+        return getEntityInstanceByUuid(uuid, EntityPermission.READ_ONLY);
     }
     
-    public EntityInstance getEntityInstanceByGuidForUpdate(String guid) {
-        return getEntityInstanceByGuid(guid, EntityPermission.READ_WRITE);
+    public EntityInstance getEntityInstanceByUuidForUpdate(String uuid) {
+        return getEntityInstanceByUuid(uuid, EntityPermission.READ_WRITE);
     }
     
-    public EntityInstance ensureGuidForEntityInstance(EntityInstance entityInstance, boolean forceRegeneration) {
-        var guid = entityInstance.getGuid();
+    public EntityInstance ensureUuidForEntityInstance(EntityInstance entityInstance, boolean forceRegeneration) {
+        var uuid = entityInstance.getUuid();
         
-        if(guid == null || forceRegeneration) {
+        if(uuid == null || forceRegeneration) {
             // Convert to READ_WRITE if necessary...
             if(entityInstance.getEntityPermission().equals(EntityPermission.READ_ONLY)) {
                 entityInstance = EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityInstance.getPrimaryKey());
             }
             
-            // Keep generating GUIDs until a unique one is found...
+            // Keep generating UUIDs until a unique one is found...
             EntityInstance duplicateEntityInstance;
             do {
-                guid = GuidUtils.getInstance().generateGuid(entityInstance);
-                duplicateEntityInstance = getEntityInstanceByGuid(guid);
+                uuid = UuidUtils.getInstance().generateUuid(entityInstance);
+                duplicateEntityInstance = getEntityInstanceByUuid(uuid);
             } while(duplicateEntityInstance != null);
             
-            // Store it immediately in order to decrease the odds of another thread choosing the same GUID...
-            entityInstance.setGuid(guid);
+            // Store it immediately in order to decrease the odds of another thread choosing the same UUID...
+            entityInstance.setUuid(uuid);
             entityInstance.store();
         }
         
@@ -2455,34 +2455,34 @@ public class CoreControl
     }
     
     public EntityInstanceTransfer getEntityInstanceTransfer(UserVisit userVisit, EntityInstance entityInstance, boolean includeEntityAppearance,
-            boolean includeEntityVisit, boolean includeNames, boolean includeGuid) {
+            boolean includeEntityVisit, boolean includeNames, boolean includeUuid) {
         return getCoreTransferCaches(userVisit).getEntityInstanceTransferCache().getEntityInstanceTransfer(entityInstance, includeEntityAppearance,
-                includeEntityVisit, includeNames, includeGuid);
+                includeEntityVisit, includeNames, includeUuid);
     }
     
     public EntityInstanceTransfer getEntityInstanceTransfer(UserVisit userVisit, BaseEntity baseEntity, boolean includeEntityAppearance,
-            boolean includeEntityVisit, boolean includeNames, boolean includeGuid) {
+            boolean includeEntityVisit, boolean includeNames, boolean includeUuid) {
         return getEntityInstanceTransfer(userVisit, getEntityInstanceByBasePK(baseEntity.getPrimaryKey()), includeEntityAppearance,
-                includeEntityVisit, includeNames, includeGuid);
+                includeEntityVisit, includeNames, includeUuid);
     }
 
     public List<EntityInstanceTransfer> getEntityInstanceTransfers(UserVisit userVisit, Collection<EntityInstance> entityInstances,
-            boolean includeEntityAppearance, boolean includeEntityVisit, boolean includeNames, boolean includeGuid) {
+            boolean includeEntityAppearance, boolean includeEntityVisit, boolean includeNames, boolean includeUuid) {
         var entityInstanceTransfers = new ArrayList<EntityInstanceTransfer>(entityInstances.size());
         var entityInstanceTransferCache = getCoreTransferCaches(userVisit).getEntityInstanceTransferCache();
 
         entityInstances.forEach((entityInstance) ->
                 entityInstanceTransfers.add(entityInstanceTransferCache.getEntityInstanceTransfer(entityInstance,
-                        includeEntityAppearance, includeEntityVisit, includeNames, includeGuid))
+                        includeEntityAppearance, includeEntityVisit, includeNames, includeUuid))
         );
 
         return entityInstanceTransfers;
     }
 
     public List<EntityInstanceTransfer> getEntityInstanceTransfersByEntityType(UserVisit userVisit, EntityType entityType,
-            boolean includeEntityAppearance, boolean includeEntityVisit, boolean includeNames, boolean includeGuid) {
+            boolean includeEntityAppearance, boolean includeEntityVisit, boolean includeNames, boolean includeUuid) {
         return getEntityInstanceTransfers(userVisit, getEntityInstancesByEntityType(entityType), includeEntityAppearance,
-                includeEntityVisit, includeNames, includeGuid);
+                includeEntityVisit, includeNames, includeUuid);
     }
 
     /** Gets an EntityInstance for BasePK, creating it if necessary. Overrides function from BaseModelControl.

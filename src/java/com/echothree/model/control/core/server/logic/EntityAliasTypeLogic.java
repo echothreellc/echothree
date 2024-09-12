@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.logic;
 
 import com.echothree.control.user.core.common.spec.EntityAliasTypeSpec;
-import com.echothree.control.user.core.common.spec.EntityAliasTypeGuid;
+import com.echothree.control.user.core.common.spec.EntityAliasTypeUuid;
 import com.echothree.control.user.core.common.spec.EntityAliasTypeUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -167,11 +167,11 @@ public class EntityAliasTypeLogic
         return getEntityAliasTypeByName(eea, componentVendorName, entityTypeName, entityAliasTypeName, EntityPermission.READ_WRITE);
     }
     
-    public EntityAliasType getEntityAliasTypeByGuid(final ExecutionErrorAccumulator eea, final String guid,
+    public EntityAliasType getEntityAliasTypeByUuid(final ExecutionErrorAccumulator eea, final String uuid,
             final EntityPermission entityPermission) {
         EntityAliasType entityAliasType = null;
         
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, guid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, uuid,
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAliasType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -183,12 +183,12 @@ public class EntityAliasTypeLogic
         return entityAliasType;
     }
     
-    public EntityAliasType getEntityAliasTypeByGuid(final ExecutionErrorAccumulator eea, final String guid) {
-        return getEntityAliasTypeByGuid(eea, guid, EntityPermission.READ_ONLY);
+    public EntityAliasType getEntityAliasTypeByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
+        return getEntityAliasTypeByUuid(eea, uuid, EntityPermission.READ_ONLY);
     }
     
-    public EntityAliasType getEntityAliasTypeByGuidForUpdate(final ExecutionErrorAccumulator eea, final String guid) {
-        return getEntityAliasTypeByGuid(eea, guid, EntityPermission.READ_WRITE);
+    public EntityAliasType getEntityAliasTypeByUuidForUpdate(final ExecutionErrorAccumulator eea, final String uuid) {
+        return getEntityAliasTypeByUuid(eea, uuid, EntityPermission.READ_WRITE);
     }
 
     // For when we need to determine the EntityType from what the user passes in:
@@ -235,22 +235,22 @@ public class EntityAliasTypeLogic
 
     // For when we can get the EntityType from the EntityInstance:
     public EntityAliasType getEntityAliasType(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance,
-            final EntityAliasTypeSpec spec, final EntityAliasTypeGuid guid, final EntityPermission entityPermission) {
+            final EntityAliasTypeSpec spec, final EntityAliasTypeUuid uuid, final EntityPermission entityPermission) {
         EntityAliasType entityAliasType = null;
         var entityAliasTypeName = spec.getEntityAliasTypeName();
-        var entityAliasTypeGuid = guid.getEntityAliasTypeGuid();
-        var parameterCount = (entityAliasTypeName == null ? 0 : 1) + (entityAliasTypeGuid == null ? 0 : 1);
+        var entityAliasTypeUuid = uuid.getEntityAliasTypeUuid();
+        var parameterCount = (entityAliasTypeName == null ? 0 : 1) + (entityAliasTypeUuid == null ? 0 : 1);
 
         if (parameterCount == 1) {
             entityAliasType = entityAliasTypeName == null
-                    ? getEntityAliasTypeByGuid(eea, entityAliasTypeGuid, entityPermission)
+                    ? getEntityAliasTypeByUuid(eea, entityAliasTypeUuid, entityPermission)
                     : getEntityAliasTypeByName(eea, entityInstance.getEntityType(), entityAliasTypeName, entityPermission);
         } else {
             handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
         
         // If there are no other errors, and the EntityAliasType was specified by ULID, then verify the EntityType...
-        if((eea == null || !eea.hasExecutionErrors()) && entityAliasTypeGuid != null) {
+        if((eea == null || !eea.hasExecutionErrors()) && entityAliasTypeUuid != null) {
             if(!entityInstance.getEntityType().equals(entityAliasType.getLastDetail().getEntityType())) {
                 var expectedEntityTypeDetail = entityAliasType.getLastDetail().getEntityType().getLastDetail();
                 var suppliedEntityTypeDetail = entityInstance.getEntityType().getLastDetail();
@@ -267,13 +267,13 @@ public class EntityAliasTypeLogic
     }
     
     public EntityAliasType getEntityAliasType(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance,
-            final EntityAliasTypeSpec spec, final EntityAliasTypeGuid guid) {
-        return getEntityAliasType(eea, entityInstance, spec, guid, EntityPermission.READ_ONLY);
+            final EntityAliasTypeSpec spec, final EntityAliasTypeUuid uuid) {
+        return getEntityAliasType(eea, entityInstance, spec, uuid, EntityPermission.READ_ONLY);
     }
     
     public EntityAliasType getEntityAliasTypeForUpdate(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance,
-            final EntityAliasTypeSpec spec, final EntityAliasTypeGuid guid) {
-        return getEntityAliasType(eea, entityInstance, spec, guid, EntityPermission.READ_WRITE);
+            final EntityAliasTypeSpec spec, final EntityAliasTypeUuid uuid) {
+        return getEntityAliasType(eea, entityInstance, spec, uuid, EntityPermission.READ_WRITE);
     }
     
     public void updateEntityAliasTypeFromValue(final Session session, final EntityAliasTypeDetailValue entityAliasTypeDetailValue,

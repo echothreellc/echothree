@@ -18,8 +18,8 @@ package com.echothree.model.control.index.common;
 
 public interface IndexOptions {
     
-    String IndexTypeIncludeGuid = "IndexTypeIncludeGuid";
+    String IndexTypeIncludeUuid = "IndexTypeIncludeUuid";
     
-    String IndexIncludeGuid = "IndexIncludeGuid";
+    String IndexIncludeUuid = "IndexIncludeUuid";
     
 }

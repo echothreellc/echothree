@@ -17,8 +17,8 @@
 package com.echothree.control.user.core.common.spec;
 
 public interface UniversalEntitySpec
-        extends EntityRefSpec, GuidSpec {
+        extends EntityRefSpec, UuidSpec {
     
-    // Nothing additional beyond EntityRefSpec, GuidSpec
+    // Nothing additional beyond EntityRefSpec, UuidSpec
     
 }

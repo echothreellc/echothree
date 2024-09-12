@@ -31,7 +31,7 @@ public class SearchUseTypeTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeGuid(options.contains(SearchOptions.SearchUseTypeIncludeGuid));
+            setIncludeUuid(options.contains(SearchOptions.SearchUseTypeIncludeUuid));
         }
         
         setIncludeEntityInstance(true);

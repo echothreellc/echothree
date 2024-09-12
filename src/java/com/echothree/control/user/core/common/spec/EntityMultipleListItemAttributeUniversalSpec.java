@@ -17,8 +17,8 @@
 package com.echothree.control.user.core.common.spec;
 
 public interface EntityMultipleListItemAttributeUniversalSpec
-        extends UniversalEntitySpec, EntityAttributeSpec, EntityAttributeGuid {
+        extends UniversalEntitySpec, EntityAttributeSpec, EntityAttributeUuid {
     
-    // Nothing additional beyond UniversalEntitySpec, EntityAttributeSpec, EntityAttributeGuid
+    // Nothing additional beyond UniversalEntitySpec, EntityAttributeSpec, EntityAttributeUuid
     
 }

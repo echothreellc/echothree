@@ -53,7 +53,7 @@ public class ContentCatalogTransferCache
         if(options != null) {
             includeContentCatalogItems = options.contains(ContentOptions.ContentCatalogIncludeContentCatalogItems);
             includeContentCatalogCategories = options.contains(ContentOptions.ContentCatalogIncludeContentCatalogCategories);
-            setIncludeGuid(options.contains(ContentOptions.ContentCatalogIncludeGuid));
+            setIncludeUuid(options.contains(ContentOptions.ContentCatalogIncludeUuid));
             setIncludeEntityAttributeGroups(options.contains(ContentOptions.ContentCatalogIncludeEntityAttributeGroups));
             setIncludeTagScopes(options.contains(ContentOptions.ContentCatalogIncludeTagScopes));
         }

@@ -21,7 +21,7 @@ public interface InventoryOptions {
     String InventoryLocationGroupIncludeCapacities = "InventoryLocationGroupIncludeCapacities";
     String InventoryLocationGroupIncludeVolume     = "InventoryLocationGroupIncludeVolume";
 
-    String LotIncludeGuid = "LotIncludeGuid";
+    String LotIncludeUuid = "LotIncludeUuid";
     String LotIncludeLotAliases = "LotIncludeLotAliases";
     String LotIncludeLotTimes = "LotIncludeLotTimes";
 

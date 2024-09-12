@@ -31,7 +31,7 @@ public class SearchSortDirectionTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeGuid(options.contains(SearchOptions.SearchSortDirectionIncludeGuid));
+            setIncludeUuid(options.contains(SearchOptions.SearchSortDirectionIncludeUuid));
         }
         
         setIncludeEntityInstance(true);

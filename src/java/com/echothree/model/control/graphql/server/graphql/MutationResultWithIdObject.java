@@ -57,8 +57,8 @@ public class MutationResultWithIdObject
         if(entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
 
-            entityInstance = coreControl.ensureGuidForEntityInstance(entityInstance, false);
-            id = entityInstance.getGuid();
+            entityInstance = coreControl.ensureUuidForEntityInstance(entityInstance, false);
+            id = entityInstance.getUuid();
         }
         
         return id;

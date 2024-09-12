@@ -40,7 +40,7 @@ public enum FieldType {
     ENTITY_TYPE_NAME,
     ENTITY_REF,
     FRACTIONAL_PERCENT,
-    GUID,
+    UUID,
     HARMONIZED_TARIFF_SCHEDULE_CODE,
     HOST_NAME,
     ID,

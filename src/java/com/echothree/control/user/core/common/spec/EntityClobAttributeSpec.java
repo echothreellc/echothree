@@ -17,11 +17,11 @@
 package com.echothree.control.user.core.common.spec;
 
 import com.echothree.control.user.party.common.spec.LanguageSpec;
-import com.echothree.control.user.party.common.spec.LanguageGuid;
+import com.echothree.control.user.party.common.spec.LanguageUuid;
 
 public interface EntityClobAttributeSpec
-        extends UniversalEntitySpec, EntityAttributeSpec, EntityAttributeGuid, LanguageSpec, LanguageGuid {
+        extends UniversalEntitySpec, EntityAttributeSpec, EntityAttributeUuid, LanguageSpec, LanguageUuid {
     
-    // Nothing additional beyond UniversalEntitySpec, EntityAttributeSpec, EntityAttributeGuid, LanguageSpec, LanguageGuid
+    // Nothing additional beyond UniversalEntitySpec, EntityAttributeSpec, EntityAttributeUuid, LanguageSpec, LanguageUuid
     
 }

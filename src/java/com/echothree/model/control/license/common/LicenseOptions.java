@@ -18,6 +18,6 @@ package com.echothree.model.control.license.common;
 
 public interface LicenseOptions {
     
-    String LicenseTypeIncludeGuid = "LicenseTypeIncludeGuid";
+    String LicenseTypeIncludeUuid = "LicenseTypeIncludeUuid";
     
 }
