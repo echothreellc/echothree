@@ -165,7 +165,7 @@ public abstract class BaseEntityInstanceObject
             commandForm.setEntityAliasTypeName(entityAliasTypeName);
         }
 
-        commandForm.setUlid(id);
+        commandForm.setGuid(id);
 
         var entityAliasType = new GetEntityAliasTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         if(entityInstance != null && entityAliasType != null) {
@@ -212,7 +212,7 @@ public abstract class BaseEntityInstanceObject
         EntityAttributeGroup entityAttributeGroup;
 
         commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
-        commandForm.setUlid(id);
+        commandForm.setGuid(id);
 
         entityAttributeGroup = new GetEntityAttributeGroupCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
 
@@ -239,7 +239,7 @@ public abstract class BaseEntityInstanceObject
             commandForm.setEntityAttributeName(entityAttributeName);
         }
 
-        commandForm.setUlid(id);
+        commandForm.setGuid(id);
 
         var entityAttribute = new GetEntityAttributeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         if(entityInstance != null && entityAttribute != null) {
@@ -284,7 +284,7 @@ public abstract class BaseEntityInstanceObject
         var commandForm = TagFormFactory.getGetTagScopeForm();
 
         commandForm.setTagScopeName(tagScopeName);
-        commandForm.setUlid(id);
+        commandForm.setGuid(id);
 
         var tagScope = new GetTagScopeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         if(entityInstance != null && tagScope != null) {
