@@ -1057,11 +1057,18 @@ public class DatabaseUtilitiesForJava {
             } else {
                 if(!allColumnsExceptPk.isEmpty())
                     allColumnsExceptPk += ", ";
-                allColumnsExceptPk += column.getDbColumnName();
-                
+                if(type == ColumnType.columnUUID)
+                    allColumnsExceptPk += "BIN_TO_UUID(" + column.getDbColumnName() + ")";
+                else
+                    allColumnsExceptPk += column.getDbColumnName();
+
                 if(!updateColumns.isEmpty())
                     updateColumns += ", ";
-                updateColumns += column.getDbColumnName() + " = ?";
+                updateColumns += column.getDbColumnName();
+                if(type == ColumnType.columnUUID)
+                    updateColumns += " = UUID_TO_BIN(?)";
+                else
+                    updateColumns += " = ?";
             }
             
             if(!questionMarks.isEmpty())
@@ -1349,6 +1356,9 @@ public class DatabaseUtilitiesForJava {
                     case ColumnType.columnCLOB:
                         pw.println("                _ps.setCharacterStream(" + parameterCount + ", new StringReader(" + dbColumnName + "), " + dbColumnName + ".length());");
                         break;
+                    case ColumnType.columnUUID:
+                        pw.println("                _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
+                        break;
                     default:
                         pw.println("<error>");
                         break;
@@ -1563,6 +1573,9 @@ public class DatabaseUtilitiesForJava {
                     case ColumnType.columnCLOB:
                         pw.println("            _ps.setCharacterStream(" + parameterCount + ", new StringReader(" + dbColumnName + "), " + dbColumnName + ".length());");
                         break;
+                    case ColumnType.columnUUID:
+                        pw.println("            _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
+                        break;
                     default:
                         pw.println("<error>");
                         break;
@@ -1765,6 +1778,10 @@ public class DatabaseUtilitiesForJava {
                     case ColumnType.columnCLOB:
                         pw.println("                Clob " + dbColumnName + " = rs.getClob(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName + " == null? null: " + dbColumnName + ".getSubString(1L, (int)" + dbColumnName + ".length())";
+                        break;
+                    case ColumnType.columnUUID:
+                        pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        valueParameters += ", " + dbColumnName;
                         break;
                     default:
                         pw.println("<error>");
@@ -2199,6 +2216,10 @@ public class DatabaseUtilitiesForJava {
                     case ColumnType.columnCLOB:
                         pw.println("                Clob " + dbColumnName + " = rs.getClob(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName + " == null? null: " + dbColumnName + ".getSubString(1L, (int)" + dbColumnName + ".length())";
+                        break;
+                    case ColumnType.columnUUID:
+                        pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        valueParameters += ", " + dbColumnName;
                         break;
                     default:
                         pw.println("<error>");

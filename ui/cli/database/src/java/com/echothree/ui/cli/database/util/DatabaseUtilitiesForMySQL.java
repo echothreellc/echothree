@@ -207,6 +207,9 @@ public class DatabaseUtilitiesForMySQL
 
                 result = checkColumnDefinition(cc, destinationColumn, true);
                 break;
+            case ColumnType.columnUUID:
+                result = cc.getType() == Types.BINARY && cc.getColumnSize() == 16;
+                break;
             default:
                 break;
         }
@@ -304,5 +307,14 @@ public class DatabaseUtilitiesForMySQL
         }
         return result;
     }
-    
+
+    @Override
+    String getUUIDDefinition(String columnName, Column theColumn) {
+        var result = columnName + " BINARY(16)";
+        if(!theColumn.getNullAllowed())
+            result += " NOT NULL";
+
+        return result;
+    }
+
 }
