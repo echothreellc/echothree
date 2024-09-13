@@ -19,7 +19,7 @@ package com.echothree.control.user.contactlist.server.command;
 import com.echothree.control.user.contactlist.common.form.CreateContactListTypeForm;
 import com.echothree.model.control.chain.common.ChainConstants;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

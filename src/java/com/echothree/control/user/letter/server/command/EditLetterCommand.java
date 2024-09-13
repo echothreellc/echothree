@@ -22,7 +22,7 @@ import com.echothree.control.user.letter.common.form.EditLetterForm;
 import com.echothree.control.user.letter.common.result.LetterResultFactory;
 import com.echothree.control.user.letter.common.spec.LetterSpec;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
