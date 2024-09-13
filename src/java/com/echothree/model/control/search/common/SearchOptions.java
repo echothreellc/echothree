@@ -18,20 +18,15 @@ package com.echothree.model.control.search.common;
 
 public interface SearchOptions {
 
-    String SearchUseTypeIncludeKey = "SearchUseTypeIncludeKey";
-    String SearchUseTypeIncludeGuid = "SearchUseTypeIncludeGuid";
+    String SearchUseTypeIncludeUuid = "SearchUseTypeIncludeUuid";
     
-    String SearchResultActionTypeIncludeKey = "SearchResultActionTypeIncludeKey";
-    String SearchResultActionTypeIncludeGuid = "SearchResultActionTypeIncludeGuid";
+    String SearchResultActionTypeIncludeUuid = "SearchResultActionTypeIncludeUuid";
     
-    String SearchCheckSpellingActionTypeIncludeKey = "SearchCheckSpellingActionTypeIncludeKey";
-    String SearchCheckSpellingActionTypeIncludeGuid = "SearchCheckSpellingActionTypeIncludeGuid";
+    String SearchCheckSpellingActionTypeIncludeUuid = "SearchCheckSpellingActionTypeIncludeUuid";
     
-    String SearchDefaultOperatorIncludeKey = "SearchDefaultOperatorIncludeKey";
-    String SearchDefaultOperatorIncludeGuid = "SearchDefaultOperatorIncludeGuid";
+    String SearchDefaultOperatorIncludeUuid = "SearchDefaultOperatorIncludeUuid";
     
-    String SearchSortDirectionIncludeKey = "SearchSortDirectionIncludeKey";
-    String SearchSortDirectionIncludeGuid = "SearchSortDirectionIncludeGuid";
+    String SearchSortDirectionIncludeUuid = "SearchSortDirectionIncludeUuid";
     
     String CustomerResultIncludeCustomer = "CustomerResultIncludeCustomer";
     

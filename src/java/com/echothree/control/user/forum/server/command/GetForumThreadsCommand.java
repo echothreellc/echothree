@@ -46,9 +46,7 @@ public class GetForumThreadsCommand
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ForumName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Key", FieldType.KEY, false, null, null),
-                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
-                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("IncludeFutureForumThreads", FieldType.BOOLEAN, true, null, null)
                 ));
     }
@@ -83,9 +81,9 @@ public class GetForumThreadsCommand
                 }
             }
 
-            // If the Key for the Forum is specified, then bypass the ForumRoleType check.
+            // If the UUID for the Forum is specified, then bypass the ForumRoleType check.
             if(!hasExecutionErrors()) {
-                if(form.getKey() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
+                if(form.getUuid() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
                     var includeFutureForumThreads = Boolean.parseBoolean(form.getIncludeFutureForumThreads());
                     var userVisit = getUserVisit();
 

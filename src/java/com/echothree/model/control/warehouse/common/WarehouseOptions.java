@@ -25,13 +25,11 @@ public interface WarehouseOptions {
 
     String WarehouseIncludeLocationsCount = "WarehouseIncludeLocationsCount";
     String WarehouseIncludeLocations = "WarehouseIncludeLocations";
-    String WarehouseIncludeKey = "WarehouseIncludeKey";
-    String WarehouseIncludeGuid = "WarehouseIncludeGuid";
+    String WarehouseIncludeUuid = "WarehouseIncludeUuid";
     String WarehouseIncludeEntityAttributeGroups = "WarehouseIncludeEntityAttributeGroups";
     String WarehouseIncludeTagScopes = "WarehouseIncludeTagScopes";
 
-    String WarehouseTypeIncludeKey = "WarehouseTypeIncludeKey";
-    String WarehouseTypeIncludeGuid = "WarehouseTypeIncludeGuid";
+    String WarehouseTypeIncludeUuid = "WarehouseTypeIncludeUuid";
     String WarehouseTypeIncludeEntityAttributeGroups = "WarehouseTypeIncludeEntityAttributeGroups";
     String WarehouseTypeIncludeTagScopes = "WarehouseTypeIncludeTagScopes";
 

@@ -31,8 +31,7 @@ public class WarehouseTypeTransferCache
 
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(WarehouseOptions.WarehouseTypeIncludeKey));
-            setIncludeGuid(options.contains(WarehouseOptions.WarehouseTypeIncludeGuid));
+            setIncludeUuid(options.contains(WarehouseOptions.WarehouseTypeIncludeUuid));
             setIncludeEntityAttributeGroups(options.contains(WarehouseOptions.WarehouseTypeIncludeEntityAttributeGroups));
             setIncludeTagScopes(options.contains(WarehouseOptions.WarehouseTypeIncludeTagScopes));
         }

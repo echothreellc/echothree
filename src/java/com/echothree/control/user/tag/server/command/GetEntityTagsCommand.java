@@ -59,9 +59,7 @@ public class GetEntityTagsCommand
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Key", FieldType.KEY, false, null, null),
-                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
-                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("TagScopeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("TagName", FieldType.TAG, false, null, null)
                 ));
@@ -114,7 +112,7 @@ public class GetEntityTagsCommand
             if(taggedEntityInstance != null) {
                 var coreControl = getCoreControl();
 
-                result.setTaggedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, taggedEntityInstance, false, false, false, false, false, false));
+                result.setTaggedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, taggedEntityInstance, false, false, false, false));
             } else {
                 result.setTag(tagControl.getTagTransfer(userVisit, tag));
             }

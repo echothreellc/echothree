@@ -58,7 +58,7 @@ public class WorkEffortTransferCache
         if(workEffortTransfer == null) {
             var workEffortDetail = workEffort.getLastDetail();
             var workEffortName = workEffortDetail.getWorkEffortName();
-            var owningEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, workEffortDetail.getOwningEntityInstance(), false, false, false, false, false, false);
+            var owningEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, workEffortDetail.getOwningEntityInstance(), false, false, false, false);
             var workEffortScope = workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortDetail.getWorkEffortScope());
             var unformattedScheduledTime = workEffortDetail.getScheduledTime();
             var scheduledTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedScheduledTime);

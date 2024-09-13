@@ -46,7 +46,7 @@ public class AssociateReferralTransferCache
             var associatePartyContactMechanism = associateReferralDetail.getAssociatePartyContactMechanism();
             var associatePartyContactMechanismTransfer = associatePartyContactMechanism == null ? null : associateControl.getAssociatePartyContactMechanismTransfer(userVisit, associatePartyContactMechanism);
             var targetEntityInstance = associateReferralDetail.getTargetEntityInstance();
-            var targetEntityInstanceTransfer = targetEntityInstance == null ? null : coreControl.getEntityInstanceTransfer(userVisit, targetEntityInstance, false, false, false, false, false, false);
+            var targetEntityInstanceTransfer = targetEntityInstance == null ? null : coreControl.getEntityInstanceTransfer(userVisit, targetEntityInstance, false, false, false, false);
             var unformattedAssociateReferralTime = associateReferralDetail.getAssociateReferralTime();
             var associateReferralTime = formatTypicalDateTime(unformattedAssociateReferralTime);
 

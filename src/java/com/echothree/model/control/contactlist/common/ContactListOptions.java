@@ -18,8 +18,7 @@ package com.echothree.model.control.contactlist.common;
 
 public interface ContactListOptions {
     
-    String PartyContactListIncludeKey = "PartyContactListIncludeKey";
-    String PartyContactListIncludeGuid = "PartyContactListIncludeGuid";
+    String PartyContactListIncludeUuid = "PartyContactListIncludeUuid";
     String PartyContactListIncludeStatus  = "PartyContactListIncludeStatus";
     String PartyContactListIncludeComments = "PartyContactListIncludeComments";
     

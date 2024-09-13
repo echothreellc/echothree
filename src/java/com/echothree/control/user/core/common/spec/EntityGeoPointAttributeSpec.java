@@ -17,8 +17,8 @@
 package com.echothree.control.user.core.common.spec;
 
 public interface EntityGeoPointAttributeSpec
-        extends UniversalEntitySpec, EntityAttributeSpec, EntityAttributeUlid {
+        extends UniversalEntitySpec, EntityAttributeSpec, EntityAttributeUuid {
     
-    // Nothing additional beyond UniversalEntitySpec, EntityAttributeSpec, EntityAttributeUlid
+    // Nothing additional beyond UniversalEntitySpec, EntityAttributeSpec, EntityAttributeUuid
     
 }

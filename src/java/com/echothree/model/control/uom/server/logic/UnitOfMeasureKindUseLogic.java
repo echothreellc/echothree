@@ -59,29 +59,6 @@ public class UnitOfMeasureKindUseLogic
         return unitOfMeasureKindUseType;
     }
 
-    public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = null;
-        
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHO_THREE.name(), EntityTypes.UnitOfMeasureKindUseType.name());
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var uomControl = Session.getModelController(UomControl.class);
-            
-            unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByEntityInstance(entityInstance, entityPermission);
-        }
-
-        return unitOfMeasureKindUseType;
-    }
-    
-    public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByUlid(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getUnitOfMeasureKindUseTypeByUlid(eea, ulid, EntityPermission.READ_ONLY);
-    }
-    
-    public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByUlidForUpdate(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getUnitOfMeasureKindUseTypeByUlid(eea, ulid, EntityPermission.READ_WRITE);
-    }
-    
     public UnitOfMeasureKindUse getUnitOfMeasureKindUse(final ExecutionErrorAccumulator eea, final UnitOfMeasureKindUseType unitOfMeasureKindUseType,
             final UnitOfMeasureKind unitOfMeasureKind) {
         var uomControl = Session.getModelController(UomControl.class);
@@ -108,29 +85,6 @@ public class UnitOfMeasureKindUseLogic
         return unitOfMeasureKindUse;
     }
 
-    public UnitOfMeasureKindUse getUnitOfMeasureKindUseByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
-        UnitOfMeasureKindUse unitOfMeasureKindUse = null;
-        
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHO_THREE.name(), EntityTypes.UnitOfMeasureKindUse.name());
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var uomControl = Session.getModelController(UomControl.class);
-            
-            unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUseByEntityInstance(entityInstance, entityPermission);
-        }
-
-        return unitOfMeasureKindUse;
-    }
-    
-    public UnitOfMeasureKindUse getUnitOfMeasureKindUseByUlid(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getUnitOfMeasureKindUseByUlid(eea, ulid, EntityPermission.READ_ONLY);
-    }
-    
-    public UnitOfMeasureKindUse getUnitOfMeasureKindUseByUlidForUpdate(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getUnitOfMeasureKindUseByUlid(eea, ulid, EntityPermission.READ_WRITE);
-    }
-    
     private String getUnitOfMeasureKindName(final UnitOfMeasureKindUse unitOfMeasureKindUse) {
         return unitOfMeasureKindUse.getUnitOfMeasureKind().getLastDetail().getUnitOfMeasureKindName();
     }

@@ -41,7 +41,7 @@ public class ForumMessageTransferCache
 
         var options = session.getOptions();
         if(options != null) {
-            setIncludeGuid(options.contains(ForumOptions.ForumMessageIncludeGuid));
+            setIncludeUuid(options.contains(ForumOptions.ForumMessageIncludeUuid));
             includeForumMessageRoles = options.contains(ForumOptions.ForumMessageIncludeForumMessageRoles);
             includeForumMessageParts = options.contains(ForumOptions.ForumMessageIncludeForumMessageParts);
             includeForumMessageAttachments = options.contains(ForumOptions.ForumMessageIncludeForumMessageAttachments);

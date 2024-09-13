@@ -42,8 +42,6 @@ public class EntityLockTransferCache
         super(userVisit);
     }
     
-    DataSource ds = null;
-    
     @SuppressWarnings("Finally")
     public EntityLockTransfer getEntityLockTransfer(BasePK lockTarget) {
         var entityLockTransfer = (EntityLockTransfer)get(lockTarget);
@@ -100,8 +98,8 @@ public class EntityLockTransferCache
             if(lockedByEntityInstanceId != 0) {
                 var lockedByEntityInstancePK = new EntityInstancePK(lockedByEntityInstanceId);
                 var lockedByEntityInstance = EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, lockedByEntityInstancePK);
-                var lockTargetEntityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, lockTargetEntityInstance, false, false, false, false, false, false);
-                var lockedByEntityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, lockedByEntityInstance, false, false, false, false, false, false);
+                var lockTargetEntityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, lockTargetEntityInstance, false, false, false, false);
+                var lockedByEntityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, lockedByEntityInstance, false, false, false, false);
 
                 if(CoreDebugFlags.LogEntityLocks) {
                     getLog().info("--- lockedByEntityInstancePK=" + lockedByEntityInstancePK);

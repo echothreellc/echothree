@@ -53,11 +53,11 @@ public class EntityVisitTransferCache
             put(entityVisit, entityVisitTransfer);
 
             if(includeEntityInstance) {
-                entityVisitTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityVisit.getEntityInstance(), false, false, false, false, false, false));
+                entityVisitTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityVisit.getEntityInstance(), false, false, false, false));
             }
 
             if(includeVisitedEntityInstance) {
-                entityVisitTransfer.setVisitedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityVisit.getVisitedEntityInstance(), false, false, false, false, false, false));
+                entityVisitTransfer.setVisitedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityVisit.getVisitedEntityInstance(), false, false, false, false));
             }
 
             if(includeVisitedTime) {

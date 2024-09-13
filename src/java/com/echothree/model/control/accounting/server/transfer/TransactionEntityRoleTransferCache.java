@@ -40,7 +40,7 @@ public class TransactionEntityRoleTransferCache
         if(transactionEntityRoleTransfer == null) {
             var transaction = accountingControl.getTransactionTransfer(userVisit, transactionEntityRole.getTransaction());
             var transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeTransfer(userVisit, transactionEntityRole.getTransactionEntityRoleType());
-            var entityInstance = coreControl.getEntityInstanceTransfer(userVisit, transactionEntityRole.getEntityInstance(), false, false, false, false, false, false);
+            var entityInstance = coreControl.getEntityInstanceTransfer(userVisit, transactionEntityRole.getEntityInstance(), false, false, false, false);
             
             transactionEntityRoleTransfer = new TransactionEntityRoleTransfer(transaction, transactionEntityRoleType, entityInstance);
             put(transactionEntityRole, transactionEntityRoleTransfer);

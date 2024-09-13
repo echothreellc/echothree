@@ -18,19 +18,14 @@ package com.echothree.model.control.campaign.common;
 
 public interface CampaignOptions {
     
-    String CampaignIncludeKey = "CampaignIncludeKey";
-    String CampaignIncludeGuid = "CampaignIncludeGuid";
+    String CampaignIncludeUuid = "CampaignIncludeUuid";
     
-    String CampaignSourceIncludeKey = "CampaignSourceIncludeKey";
-    String CampaignSourceIncludeGuid = "CampaignSourceIncludeGuid";
+    String CampaignSourceIncludeUuid = "CampaignSourceIncludeUuid";
     
-    String CampaignMediumIncludeKey = "CampaignMediumIncludeKey";
-    String CampaignMediumIncludeGuid = "CampaignMediumIncludeGuid";
+    String CampaignMediumIncludeUuid = "CampaignMediumIncludeUuid";
     
-    String CampaignTermIncludeKey = "CampaignTermIncludeKey";
-    String CampaignTermIncludeGuid = "CampaignTermIncludeGuid";
+    String CampaignTermIncludeUuid = "CampaignTermIncludeUuid";
     
-    String CampaignContentIncludeKey = "CampaignContentIncludeKey";
-    String CampaignContentIncludeGuid = "CampaignContentIncludeGuid";
+    String CampaignContentIncludeUuid = "CampaignContentIncludeUuid";
     
 }

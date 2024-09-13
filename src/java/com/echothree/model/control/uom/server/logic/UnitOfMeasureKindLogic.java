@@ -55,29 +55,6 @@ public class UnitOfMeasureKindLogic
         return unitOfMeasureKind;
     }
 
-    public UnitOfMeasureKind getUnitOfMeasureKindByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
-        UnitOfMeasureKind unitOfMeasureKind = null;
-        
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHO_THREE.name(), EntityTypes.UnitOfMeasureKind.name());
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var uomControl = Session.getModelController(UomControl.class);
-            
-            unitOfMeasureKind = uomControl.getUnitOfMeasureKindByEntityInstance(entityInstance, entityPermission);
-        }
-
-        return unitOfMeasureKind;
-    }
-    
-    public UnitOfMeasureKind getUnitOfMeasureKindByUlid(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getUnitOfMeasureKindByUlid(eea, ulid, EntityPermission.READ_ONLY);
-    }
-    
-    public UnitOfMeasureKind getUnitOfMeasureKindByUlidForUpdate(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getUnitOfMeasureKindByUlid(eea, ulid, EntityPermission.READ_WRITE);
-    }
-    
     public void checkDeleteUnitOfMeasureKind(final ExecutionErrorAccumulator ema, final UnitOfMeasureKind unitOfMeasureKind) {
         var uomControl = Session.getModelController(UomControl.class);
         

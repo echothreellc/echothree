@@ -74,9 +74,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     boolean includeEntityAppearance;
     boolean includeEntityVisit;
     boolean includeNames;
-    boolean includeKey;
-    boolean includeGuid;
-    boolean includeUlid;
+    boolean includeUuid;
     boolean includeEntityAliasTypes;
     boolean includeEntityAttributeGroups;
     boolean includeTagScopes;
@@ -355,45 +353,21 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
-     * Returns the includeKey.
-     * @return the includeKey
+     * Returns the includeUuid.
+     * @return the includeUuid
      */
-    protected boolean getIncludeKey() {
-        return includeKey;
+    protected boolean getIncludeUuid() {
+        return includeUuid;
     }
 
     /**
-     * Sets the includeKey.
-     * @param includeKey the includeKey to set
+     * Sets the includeUuid.
+     * @param includeUuid the includeUuid to set
      */
-    protected void setIncludeKey(boolean includeKey) {
-        this.includeKey = includeKey;
+    protected void setIncludeUuid(boolean includeUuid) {
+        this.includeUuid = includeUuid;
     }
 
-    /**
-     * Returns the includeGuid.
-     * @return the includeGuid
-     */
-    protected boolean getIncludeGuid() {
-        return includeGuid;
-    }
-
-    /**
-     * Sets the includeGuid.
-     * @param includeGuid the includeGuid to set
-     */
-    protected void setIncludeGuid(boolean includeGuid) {
-        this.includeGuid = includeGuid;
-    }
-    
-    /**
-     * Sets the includeUlid.
-     * @param includeUlid the includeUlid to set
-     */
-    protected void setIncludeUlid(boolean includeUlid) {
-        this.includeUlid = includeUlid;
-    }
-    
     protected void setupEntityInstance(final K baseEntity, EntityInstance entityInstance, final V transfer) {
         var coreControl = Session.getModelController(CoreControl.class);
         
@@ -405,7 +379,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         // converted to a versioned one.
         if(entityInstance != null) {
             transfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, includeEntityAppearance,
-                    includeEntityVisit, includeNames, includeKey, includeGuid, includeUlid));
+                    includeEntityVisit, includeNames, includeUuid));
 
             if(includeEntityAliasTypes || includeEntityAttributeGroups || includeTagScopes) {
                 if(includeEntityAliasTypes) {

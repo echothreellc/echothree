@@ -42,8 +42,7 @@ public class PaymentMethodTransferCache
 
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(PaymentOptions.PaymentMethodIncludeKey));
-            setIncludeGuid(options.contains(PaymentOptions.PaymentMethodIncludeGuid));
+            setIncludeUuid(options.contains(PaymentOptions.PaymentMethodIncludeUuid));
             includeComments = options.contains(PaymentOptions.PaymentMethodIncludeComments);
             setIncludeEntityAttributeGroups(options.contains(PaymentOptions.PaymentMethodIncludeEntityAttributeGroups));
         }

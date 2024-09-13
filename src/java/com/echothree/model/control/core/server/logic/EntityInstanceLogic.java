@@ -17,9 +17,7 @@
 package com.echothree.model.control.core.server.logic;
 
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
-import com.echothree.control.user.core.common.spec.GuidSpec;
-import com.echothree.control.user.core.common.spec.KeySpec;
-import com.echothree.control.user.core.common.spec.UlidSpec;
+import com.echothree.control.user.core.common.spec.UuidSpec;
 import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EventTypes;
@@ -27,9 +25,7 @@ import com.echothree.model.control.core.common.exception.InvalidComponentVendorE
 import com.echothree.model.control.core.common.exception.InvalidEntityTypeException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownEntityRefException;
-import com.echothree.model.control.core.common.exception.UnknownGuidException;
-import com.echothree.model.control.core.common.exception.UnknownKeyException;
-import com.echothree.model.control.core.common.exception.UnknownUlidException;
+import com.echothree.model.control.core.common.exception.UnknownUuidException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
@@ -110,65 +106,31 @@ public class EntityInstanceLogic
         return getEntityInstanceByEntityRef(eea, spec.getEntityRef());
     }
     
-    public EntityInstance getEntityInstanceByKey(final ExecutionErrorAccumulator eea, final String key) {
+    public EntityInstance getEntityInstanceByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
         var coreControl = Session.getModelController(CoreControl.class);
-        var entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByKey(key));
+        var entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByUuid(uuid));
 
         if(entityInstance == null) {
-            handleExecutionError(UnknownKeyException.class, eea, ExecutionErrors.UnknownKey.name(), key);
+            handleExecutionError(UnknownUuidException.class, eea, ExecutionErrors.UnknownUuid.name(), uuid);
         }
 
         return entityInstance;
     }
 
-    public EntityInstance getEntityInstanceByKey(final ExecutionErrorAccumulator eea, final KeySpec spec) {
-        return getEntityInstanceByKey(eea, spec.getKey());
+    public EntityInstance getEntityInstanceByUuid(final ExecutionErrorAccumulator eea, final UuidSpec spec) {
+        return getEntityInstanceByUuid(eea, spec.getUuid());
     }
     
-    public EntityInstance getEntityInstanceByGuid(final ExecutionErrorAccumulator eea, final String guid) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByGuid(guid));
-
-        if(entityInstance == null) {
-            handleExecutionError(UnknownGuidException.class, eea, ExecutionErrors.UnknownGuid.name(), guid);
-        }
-
-        return entityInstance;
-    }
-
-    public EntityInstance getEntityInstanceByUlid(final ExecutionErrorAccumulator eea, final String ulid) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByUlid(ulid));
-
-        if(entityInstance == null) {
-            handleExecutionError(UnknownUlidException.class, eea, ExecutionErrors.UnknownUlid.name(), ulid);
-        }
-
-        return entityInstance;
-    }
-
-    public EntityInstance getEntityInstanceByGuid(final ExecutionErrorAccumulator eea, final GuidSpec spec) {
-        return getEntityInstanceByGuid(eea, spec.getGuid());
-    }
-    
-    public EntityInstance getEntityInstanceByUlid(final ExecutionErrorAccumulator eea, final UlidSpec spec) {
-        return getEntityInstanceByUlid(eea, spec.getUlid());
-    }
-    
-    public EntityInstance getEntityInstance(final ExecutionErrorAccumulator eea, final String entityRef, final String key,
-            final String guid, final String ulid, final String componentVendorName, final String... entityTypeNames) {
-        var parameterCount = countPossibleEntitySpecs(entityRef, key, guid, ulid);
+    public EntityInstance getEntityInstance(final ExecutionErrorAccumulator eea, final String entityRef,
+            final String uuid, final String componentVendorName, final String... entityTypeNames) {
+        var parameterCount = countPossibleEntitySpecs(entityRef, uuid);
         EntityInstance entityInstance = null;
         
         if(parameterCount == 1) {
             if(entityRef != null) {
                 entityInstance = getEntityInstanceByEntityRef(eea, entityRef);
-            } else if(key != null) {
-                entityInstance = getEntityInstanceByKey(eea, key);
-            } else if(guid != null) {
-                entityInstance = getEntityInstanceByGuid(eea, guid);
-            } else if(ulid != null) {
-                entityInstance = getEntityInstanceByUlid(eea, ulid);
+            } else if(uuid != null) {
+                entityInstance = getEntityInstanceByUuid(eea, uuid);
             }
         } else {
             handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
@@ -198,37 +160,35 @@ public class EntityInstanceLogic
         return entityInstance;
     }
     
-    public EntityInstance getEntityInstance(final ExecutionErrorAccumulator eea, final EntityRefSpec entityRefSpec, final KeySpec keySpec,
-            final GuidSpec guidSpec, final UlidSpec ulidSpec, final String componentVendorName, final String... entityTypeNames) {
-        return getEntityInstance(eea, entityRefSpec.getEntityRef(), keySpec.getKey(), guidSpec.getGuid(), ulidSpec.getUlid(),
+    public EntityInstance getEntityInstance(final ExecutionErrorAccumulator eea, final EntityRefSpec entityRefSpec,
+            final UuidSpec uuidSpec, final String componentVendorName, final String... entityTypeNames) {
+        return getEntityInstance(eea, entityRefSpec.getEntityRef(), uuidSpec.getUuid(),
                 componentVendorName, entityTypeNames);
     }
     
     public EntityInstance getEntityInstance(final ExecutionErrorAccumulator eea, final UniversalEntitySpec universalEntitySpec) {
-        return getEntityInstance(eea, universalEntitySpec.getEntityRef(), universalEntitySpec.getKey(),
-                universalEntitySpec.getGuid(), universalEntitySpec.getUlid(), null);
+        return getEntityInstance(eea, universalEntitySpec.getEntityRef(),
+                universalEntitySpec.getUuid(), null);
     }
     
     public EntityInstance getEntityInstance(final ExecutionErrorAccumulator eea, final UniversalEntitySpec universalEntitySpec,
             final String componentVendorName, final String... entityTypeNames) {
-        return getEntityInstance(eea, universalEntitySpec.getEntityRef(), universalEntitySpec.getKey(),
-                universalEntitySpec.getGuid(), universalEntitySpec.getUlid(), componentVendorName, entityTypeNames);
+        return getEntityInstance(eea, universalEntitySpec.getEntityRef(),
+                universalEntitySpec.getUuid(), componentVendorName, entityTypeNames);
     }
     
-    public int countPossibleEntitySpecs(final String entityRef, final String key, final String guid, final String ulid) {
-        return (entityRef == null ? 0 : 1) + (key == null ? 0 : 1) + (guid == null ? 0 : 1) + (ulid == null ? 0 : 1);
+    public int countPossibleEntitySpecs(final String entityRef, final String uuid) {
+        return (entityRef == null ? 0 : 1) + (uuid == null ? 0 : 1);
     }
     
-    public int countPossibleEntitySpecs(final EntityRefSpec entityRefSpec, final KeySpec keySpec, final GuidSpec guidSpec,
-            final UlidSpec ulidSpec) {
+    public int countPossibleEntitySpecs(final EntityRefSpec entityRefSpec, final UuidSpec uuidSpec) {
         return countPossibleEntitySpecs(entityRefSpec == null ? null : entityRefSpec.getEntityRef(),
-                keySpec == null ? null : keySpec.getKey(), guidSpec == null ? null : guidSpec.getGuid(),
-                ulidSpec == null ? null : ulidSpec.getUlid());
+                uuidSpec == null ? null : uuidSpec.getUuid());
     }
     
     public int countPossibleEntitySpecs(final UniversalEntitySpec universalEntitySpec) {
         return universalEntitySpec == null ? 0 : countPossibleEntitySpecs(universalEntitySpec.getEntityRef(),
-                universalEntitySpec.getKey(), universalEntitySpec.getGuid(), universalEntitySpec.getUlid());
+                universalEntitySpec.getUuid());
     }
     
     public String getEntityRefFromEntityInstance(EntityInstance entityInstance) {

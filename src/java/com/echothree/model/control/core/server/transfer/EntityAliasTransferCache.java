@@ -39,7 +39,7 @@ public class EntityAliasTransferCache
             var entityInstance = entityAlias.getEntityInstance();
             var entityAliasType = coreControl.getEntityAliasTypeTransfer(userVisit, entityAlias.getEntityAliasType(), entityInstance);
             var alias = entityAlias.getAlias();
-            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityAlias.getEntityInstance(), false, false, false, false, false, false);
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityAlias.getEntityInstance(), false, false, false, false);
             
             entityAliasTransfer = new EntityAliasTransfer(entityAliasType, alias, entityInstanceTransfer);
             put(entityAlias, entityAliasTransfer);

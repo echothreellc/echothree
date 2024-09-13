@@ -48,8 +48,7 @@ public class PartyContactMechanismTransferCache
             includePartyContactMechanismRelationships = options.contains(ContactOptions.PartyContactMechanismIncludePartyContactMechanismRelationships);
             includePartyContactMechanismRelationshipsByFromPartyContactMechanism = options.contains(ContactOptions.PartyContactMechanismIncludePartyContactMechanismRelationshipsByFromPartyContactMechanism);
             includePartyContactMechanismRelationshipsByToPartyContactMechanism = options.contains(ContactOptions.PartyContactMechanismIncludePartyContactMechanismRelationshipsByToPartyContactMechanism);
-            setIncludeKey(options.contains(ContactOptions.PartyContactMechanismIncludeKey));
-            setIncludeGuid(options.contains(ContactOptions.PartyContactMechanismIncludeGuid));
+            setIncludeUuid(options.contains(ContactOptions.PartyContactMechanismIncludeUuid));
         }
         
         setIncludeEntityInstance(true);

@@ -159,7 +159,7 @@ public class EntityTypeTransferCache
             }
             
             if(!filterEntityInstance) {
-                entityTypeTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityType, false, false, false, false, false, false));
+                entityTypeTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityType, false, false, false, false));
             }
             
             setupEntityInstance(entityType, null, entityTypeTransfer);
@@ -193,7 +193,7 @@ public class EntityTypeTransferCache
             }
 
             if(includeEntityInstances) {
-                entityTypeTransfer.setEntityInstances(new ListWrapper<>(coreControl.getEntityInstanceTransfersByEntityType(userVisit, entityType, false, false, false, false, false,false)));
+                entityTypeTransfer.setEntityInstances(new ListWrapper<>(coreControl.getEntityInstanceTransfersByEntityType(userVisit, entityType, false, false, false, false)));
             }
         }
         

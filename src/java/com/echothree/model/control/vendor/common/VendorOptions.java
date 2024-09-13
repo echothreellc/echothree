@@ -18,8 +18,7 @@ package com.echothree.model.control.vendor.common;
 
 public interface VendorOptions {
     
-    String VendorIncludeKey = "VendorIncludeKey";
-    String VendorIncludeGuid = "VendorIncludeGuid";
+    String VendorIncludeUuid = "VendorIncludeUuid";
     String VendorIncludeVendorItems = "VendorIncludeVendorItems";
     String VendorIncludeBillingAccounts = "VendorIncludeBillingAccounts";
     String VendorIncludeInvoicesFrom = "VendorIncludeInvoicesFrom";

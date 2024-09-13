@@ -17,7 +17,7 @@
 package com.echothree.model.control.party.server.logic;
 
 import com.echothree.control.user.party.common.spec.LanguageSpec;
-import com.echothree.control.user.party.common.spec.LanguageUlid;
+import com.echothree.control.user.party.common.spec.LanguageUuid;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
@@ -66,10 +66,10 @@ public class LanguageLogic
         return getLanguageByName(eea, name, EntityPermission.READ_WRITE);
     }
     
-    public Language getLanguageByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
+    public Language getLanguageByUuid(final ExecutionErrorAccumulator eea, final String uuid, final EntityPermission entityPermission) {
         Language projectLanguage = null;
         
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, uuid,
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.Language.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -81,24 +81,24 @@ public class LanguageLogic
         return projectLanguage;
     }
     
-    public Language getLanguageByUlid(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getLanguageByUlid(eea, ulid, EntityPermission.READ_ONLY);
+    public Language getLanguageByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
+        return getLanguageByUuid(eea, uuid, EntityPermission.READ_ONLY);
     }
     
-    public Language getLanguageByUlidForUpdate(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getLanguageByUlid(eea, ulid, EntityPermission.READ_WRITE);
+    public Language getLanguageByUuidForUpdate(final ExecutionErrorAccumulator eea, final String uuid) {
+        return getLanguageByUuid(eea, uuid, EntityPermission.READ_WRITE);
     }
     
-    public Language getLanguage(final ExecutionErrorAccumulator eea, final LanguageSpec spec, final LanguageUlid ulid,
+    public Language getLanguage(final ExecutionErrorAccumulator eea, final LanguageSpec spec, final LanguageUuid uuid,
             final EntityPermission entityPermission) {
         Language language = null;
         var languageIsoName = spec.getLanguageIsoName();
-        var languageUlid = ulid.getLanguageUlid();
-        var parameterCount = (languageIsoName == null ? 0 : 1) + (languageUlid == null ? 0 : 1);
+        var languageUuid = uuid.getLanguageUuid();
+        var parameterCount = (languageIsoName == null ? 0 : 1) + (languageUuid == null ? 0 : 1);
 
         if (parameterCount == 1) {
             language = languageIsoName == null
-                    ? getLanguageByUlid(eea, languageUlid, entityPermission)
+                    ? getLanguageByUuid(eea, languageUuid, entityPermission)
                     : getLanguageByName(eea, languageIsoName, entityPermission);
         } else {
             handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
@@ -107,12 +107,12 @@ public class LanguageLogic
         return language;
     }
     
-    public Language getLanguage(final ExecutionErrorAccumulator eea, final LanguageSpec spec, final LanguageUlid ulid) {
-        return getLanguage(eea, spec, ulid, EntityPermission.READ_ONLY);
+    public Language getLanguage(final ExecutionErrorAccumulator eea, final LanguageSpec spec, final LanguageUuid uuid) {
+        return getLanguage(eea, spec, uuid, EntityPermission.READ_ONLY);
     }
     
-    public Language getLanguageForUpdate(final ExecutionErrorAccumulator eea, final LanguageSpec spec, final LanguageUlid ulid) {
-        return getLanguage(eea, spec, ulid, EntityPermission.READ_WRITE);
+    public Language getLanguageForUpdate(final ExecutionErrorAccumulator eea, final LanguageSpec spec, final LanguageUuid uuid) {
+        return getLanguage(eea, spec, uuid, EntityPermission.READ_WRITE);
     }
     
 }
