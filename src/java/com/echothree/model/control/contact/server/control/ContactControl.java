@@ -56,7 +56,7 @@ import com.echothree.model.control.contact.common.workflow.PostalAddressStatusCo
 import com.echothree.model.control.contact.common.workflow.TelephoneStatusConstants;
 import com.echothree.model.control.contact.common.workflow.WebAddressStatusConstants;
 import com.echothree.model.control.contact.server.transfer.ContactTransferCaches;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.letter.server.control.LetterControl;

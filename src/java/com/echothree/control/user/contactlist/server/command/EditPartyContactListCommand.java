@@ -23,7 +23,7 @@ import com.echothree.control.user.contactlist.common.result.ContactListResultFac
 import com.echothree.control.user.contactlist.common.result.EditPartyContactListResult;
 import com.echothree.control.user.contactlist.common.spec.PartyContactListSpec;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
