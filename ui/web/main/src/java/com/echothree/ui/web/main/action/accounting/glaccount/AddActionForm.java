@@ -58,135 +58,111 @@ public class AddActionForm
     private Boolean isDefault;
     private String description;
     
-    private void setupParentGlAccountChoices() {
+    private void setupParentGlAccountChoices()
+            throws NamingException {
         if(parentGlAccountChoices == null) {
-            try {
-                var form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
-                
-                form.setDefaultGlAccountChoice(parentGlAccountChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
 
-                var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
-                parentGlAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
-                
-                if(parentGlAccountChoice == null)
-                    parentGlAccountChoice = parentGlAccountChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, parentGlAccountChoices remains null, no default
-            }
+            form.setDefaultGlAccountChoice(parentGlAccountChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
+            parentGlAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
+
+            if(parentGlAccountChoice == null)
+                parentGlAccountChoice = parentGlAccountChoices.getDefaultValue();
         }
     }
     
-    private void setupGlAccountTypeChoices() {
+    private void setupGlAccountTypeChoices()
+            throws NamingException {
         if(glAccountTypeChoices == null) {
-            try {
-                var form = AccountingUtil.getHome().getGetGlAccountTypeChoicesForm();
-                
-                form.setDefaultGlAccountTypeChoice(glAccountTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = AccountingUtil.getHome().getGetGlAccountTypeChoicesForm();
 
-                var commandResult = AccountingUtil.getHome().getGlAccountTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getGlAccountTypeChoicesResult = (GetGlAccountTypeChoicesResult)executionResult.getResult();
-                glAccountTypeChoices = getGlAccountTypeChoicesResult.getGlAccountTypeChoices();
-                
-                if(glAccountTypeChoice == null)
-                    glAccountTypeChoice = glAccountTypeChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, glAccountTypeChoices remains null, no default
-            }
+            form.setDefaultGlAccountTypeChoice(glAccountTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = AccountingUtil.getHome().getGlAccountTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getGlAccountTypeChoicesResult = (GetGlAccountTypeChoicesResult)executionResult.getResult();
+            glAccountTypeChoices = getGlAccountTypeChoicesResult.getGlAccountTypeChoices();
+
+            if(glAccountTypeChoice == null)
+                glAccountTypeChoice = glAccountTypeChoices.getDefaultValue();
         }
     }
     
-    private void setupGlAccountClassChoices() {
+    private void setupGlAccountClassChoices()
+            throws NamingException {
         if(glAccountClassChoices == null) {
-            try {
-                var form = AccountingUtil.getHome().getGetGlAccountClassChoicesForm();
-                
-                form.setDefaultGlAccountClassChoice(glAccountClassChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = AccountingUtil.getHome().getGetGlAccountClassChoicesForm();
 
-                var commandResult = AccountingUtil.getHome().getGlAccountClassChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getGlAccountClassChoicesResult = (GetGlAccountClassChoicesResult)executionResult.getResult();
-                glAccountClassChoices = getGlAccountClassChoicesResult.getGlAccountClassChoices();
-                
-                if(glAccountClassChoice == null)
-                    glAccountClassChoice = glAccountClassChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, glAccountClassChoices remains null, no default
-            }
+            form.setDefaultGlAccountClassChoice(glAccountClassChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = AccountingUtil.getHome().getGlAccountClassChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getGlAccountClassChoicesResult = (GetGlAccountClassChoicesResult)executionResult.getResult();
+            glAccountClassChoices = getGlAccountClassChoicesResult.getGlAccountClassChoices();
+
+            if(glAccountClassChoice == null)
+                glAccountClassChoice = glAccountClassChoices.getDefaultValue();
         }
     }
     
-    private void setupGlAccountCategoryChoices() {
+    private void setupGlAccountCategoryChoices()
+            throws NamingException {
         if(glAccountCategoryChoices == null) {
-            try {
-                var form = AccountingUtil.getHome().getGetGlAccountCategoryChoicesForm();
-                
-                form.setDefaultGlAccountCategoryChoice(glAccountCategoryChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = AccountingUtil.getHome().getGetGlAccountCategoryChoicesForm();
 
-                var commandResult = AccountingUtil.getHome().getGlAccountCategoryChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getGlAccountCategoryChoicesResult = (GetGlAccountCategoryChoicesResult)executionResult.getResult();
-                glAccountCategoryChoices = getGlAccountCategoryChoicesResult.getGlAccountCategoryChoices();
-                
-                if(glAccountCategoryChoice == null)
-                    glAccountCategoryChoice = glAccountCategoryChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, glAccountCategoryChoices remains null, no default
-            }
+            form.setDefaultGlAccountCategoryChoice(glAccountCategoryChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = AccountingUtil.getHome().getGlAccountCategoryChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getGlAccountCategoryChoicesResult = (GetGlAccountCategoryChoicesResult)executionResult.getResult();
+            glAccountCategoryChoices = getGlAccountCategoryChoicesResult.getGlAccountCategoryChoices();
+
+            if(glAccountCategoryChoice == null)
+                glAccountCategoryChoice = glAccountCategoryChoices.getDefaultValue();
         }
     }
     
-    private void setupGlResourceTypeChoices() {
+    private void setupGlResourceTypeChoices()
+            throws NamingException {
         if(glResourceTypeChoices == null) {
-            try {
-                var form = AccountingUtil.getHome().getGetGlResourceTypeChoicesForm();
-                
-                form.setDefaultGlResourceTypeChoice(glResourceTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = AccountingUtil.getHome().getGetGlResourceTypeChoicesForm();
 
-                var commandResult = AccountingUtil.getHome().getGlResourceTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getGlResourceTypeChoicesResult = (GetGlResourceTypeChoicesResult)executionResult.getResult();
-                glResourceTypeChoices = getGlResourceTypeChoicesResult.getGlResourceTypeChoices();
-                
-                if(glResourceTypeChoice == null)
-                    glResourceTypeChoice = glResourceTypeChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, glResourceTypeChoices remains null, no default
-            }
+            form.setDefaultGlResourceTypeChoice(glResourceTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = AccountingUtil.getHome().getGlResourceTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getGlResourceTypeChoicesResult = (GetGlResourceTypeChoicesResult)executionResult.getResult();
+            glResourceTypeChoices = getGlResourceTypeChoicesResult.getGlResourceTypeChoices();
+
+            if(glResourceTypeChoice == null)
+                glResourceTypeChoice = glResourceTypeChoices.getDefaultValue();
         }
     }
     
-    private void setupCurrencyChoices() {
+    private void setupCurrencyChoices()
+            throws NamingException {
         if(currencyChoices == null) {
-            try {
-                var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
-                
-                form.setDefaultCurrencyChoice(currencyChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
 
-                var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
-                currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
-                
-                if(currencyChoice == null)
-                    currencyChoice = currencyChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, currencyChoices remains null, no default
-            }
+            form.setDefaultCurrencyChoice(currencyChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+            currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
+
+            if(currencyChoice == null)
+                currencyChoice = currencyChoices.getDefaultValue();
         }
     }
     
@@ -206,7 +182,8 @@ public class AddActionForm
         this.parentGlAccountChoice = parentGlAccountChoice;
     }
     
-    public List<LabelValueBean> getParentGlAccountChoices() {
+    public List<LabelValueBean> getParentGlAccountChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupParentGlAccountChoices();
@@ -224,7 +201,8 @@ public class AddActionForm
         this.glAccountTypeChoice = glAccountTypeChoice;
     }
     
-    public List<LabelValueBean> getGlAccountTypeChoices() {
+    public List<LabelValueBean> getGlAccountTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupGlAccountTypeChoices();
@@ -242,7 +220,8 @@ public class AddActionForm
         this.glAccountClassChoice = glAccountClassChoice;
     }
     
-    public List<LabelValueBean> getGlAccountClassChoices() {
+    public List<LabelValueBean> getGlAccountClassChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupGlAccountClassChoices();
@@ -260,7 +239,8 @@ public class AddActionForm
         this.glAccountCategoryChoice = glAccountCategoryChoice;
     }
     
-    public List<LabelValueBean> getGlAccountCategoryChoices() {
+    public List<LabelValueBean> getGlAccountCategoryChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupGlAccountCategoryChoices();
@@ -278,7 +258,8 @@ public class AddActionForm
         this.glResourceTypeChoice = glResourceTypeChoice;
     }
     
-    public List<LabelValueBean> getGlResourceTypeChoices() {
+    public List<LabelValueBean> getGlResourceTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupGlResourceTypeChoices();
@@ -296,7 +277,8 @@ public class AddActionForm
         this.currencyChoice = currencyChoice;
     }
     
-    public List<LabelValueBean> getCurrencyChoices() {
+    public List<LabelValueBean> getCurrencyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCurrencyChoices();

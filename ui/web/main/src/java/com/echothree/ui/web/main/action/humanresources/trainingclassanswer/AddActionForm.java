@@ -33,7 +33,6 @@ public class AddActionForm
         extends BaseActionForm {
     
     private MimeTypeChoicesBean answerMimeTypeChoices;
-    private MimeTypeChoicesBean correctMimeTypeChoices;
     private MimeTypeChoicesBean selectedMimeTypeChoices;
     
     private String trainingClassName;

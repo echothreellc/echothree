@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.customer.server.control;
 
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.customer.common.choice.CustomerCreditStatusChoicesBean;
 import com.echothree.model.control.customer.common.choice.CustomerStatusChoicesBean;

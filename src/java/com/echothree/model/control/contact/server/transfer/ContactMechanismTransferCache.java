@@ -35,8 +35,7 @@ public class ContactMechanismTransferCache
 
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(ContactOptions.ContactMechanismIncludeKey));
-            setIncludeGuid(options.contains(ContactOptions.ContactMechanismIncludeGuid));
+            setIncludeUuid(options.contains(ContactOptions.ContactMechanismIncludeUuid));
             includeComments = options.contains(ContactOptions.ContactMechanismIncludeComments);
             setIncludeEntityAttributeGroups(options.contains(ContactOptions.ContactMechanismIncludeEntityAttributeGroups));
             setIncludeTagScopes(options.contains(ContactOptions.ContactMechanismIncludeTagScopes));

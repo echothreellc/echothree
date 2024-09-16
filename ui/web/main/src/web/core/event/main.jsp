@@ -132,57 +132,19 @@
                         </c:otherwise>
                     </c:choose>
                     <br />
-                    Key:
+                    Uuid:
                     <c:choose>
-                        <c:when test="${entityInstance.key == null}">
+                        <c:when test="${entityInstance.uuid == null}">
                             <i><fmt:message key="phrase.notSet" /></i>
-                            <c:url var="generateUrl" value="/action/Core/Event/GenerateKey">
+                            <c:url var="generateUrl" value="/action/Core/Event/GenerateUuid">
                                 <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                             </c:url>
                             [<a href="${generateUrl}">Generate</a>]
                         </c:when>
                         <c:otherwise>
-                            <c:out value="${entityInstance.key}" />
-                            <c:url var="generateUrl" value="/action/Core/Event/GenerateKey">
-                                <c:param name="Key" value="${entityInstance.key}" />
-                                <c:param name="ForceRegeneration" value="true" />
-                            </c:url>
-                            [<a href="${generateUrl}">Regenerate</a>]
-                        </c:otherwise>
-                    </c:choose>
-                    <br />
-                    Guid:
-                    <c:choose>
-                        <c:when test="${entityInstance.guid == null}">
-                            <i><fmt:message key="phrase.notSet" /></i>
-                            <c:url var="generateUrl" value="/action/Core/Event/GenerateGuid">
-                                <c:param name="EntityRef" value="${entityInstance.entityRef}" />
-                            </c:url>
-                            [<a href="${generateUrl}">Generate</a>]
-                        </c:when>
-                        <c:otherwise>
-                            <c:out value="${entityInstance.guid}" />
-                            <c:url var="generateUrl" value="/action/Core/Event/GenerateGuid">
-                                <c:param name="Guid" value="${entityInstance.guid}" />
-                                <c:param name="ForceRegeneration" value="true" />
-                            </c:url>
-                            [<a href="${generateUrl}">Regenerate</a>]
-                        </c:otherwise>
-                    </c:choose>
-                    <br />
-                    Ulid:
-                    <c:choose>
-                        <c:when test="${entityInstance.ulid == null}">
-                            <i><fmt:message key="phrase.notSet" /></i>
-                            <c:url var="generateUrl" value="/action/Core/Event/GenerateUlid">
-                                <c:param name="EntityRef" value="${entityInstance.entityRef}" />
-                            </c:url>
-                            [<a href="${generateUrl}">Generate</a>]
-                        </c:when>
-                        <c:otherwise>
-                            <c:out value="${entityInstance.ulid}" />
-                            <c:url var="generateUrl" value="/action/Core/Event/GenerateUlid">
-                                <c:param name="Ulid" value="${entityInstance.ulid}" />
+                            <c:out value="${entityInstance.uuid}" />
+                            <c:url var="generateUrl" value="/action/Core/Event/GenerateUuid">
+                                <c:param name="Uuid" value="${entityInstance.uuid}" />
                                 <c:param name="ForceRegeneration" value="true" />
                             </c:url>
                             [<a href="${generateUrl}">Regenerate</a>]

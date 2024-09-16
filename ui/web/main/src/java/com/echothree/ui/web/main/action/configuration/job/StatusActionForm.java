@@ -36,26 +36,22 @@ public class StatusActionForm
     private String jobName;
     private String jobStatusChoice;
     
-    public void setupJobStatusChoices() {
+    public void setupJobStatusChoices()
+            throws NamingException {
         if(jobStatusChoices == null) {
-            try {
-                var form = JobUtil.getHome().getGetJobStatusChoicesForm();
-                
-                form.setJobName(jobName);
-                form.setDefaultJobStatusChoice(jobStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = JobUtil.getHome().getGetJobStatusChoicesForm();
 
-                var commandResult = JobUtil.getHome().getJobStatusChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getJobStatusChoicesResult = (GetJobStatusChoicesResult)executionResult.getResult();
-                jobStatusChoices = getJobStatusChoicesResult.getJobStatusChoices();
-                
-                if(jobStatusChoice == null)
-                    jobStatusChoice = jobStatusChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, jobStatusChoices remains null, no default
-            }
+            form.setJobName(jobName);
+            form.setDefaultJobStatusChoice(jobStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = JobUtil.getHome().getJobStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getJobStatusChoicesResult = (GetJobStatusChoicesResult)executionResult.getResult();
+            jobStatusChoices = getJobStatusChoicesResult.getJobStatusChoices();
+
+            if(jobStatusChoice == null)
+                jobStatusChoice = jobStatusChoices.getDefaultValue();
         }
     }
     
@@ -75,7 +71,8 @@ public class StatusActionForm
         this.jobStatusChoice = jobStatusChoice;
     }
     
-    public List<LabelValueBean> getJobStatusChoices() {
+    public List<LabelValueBean> getJobStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupJobStatusChoices();

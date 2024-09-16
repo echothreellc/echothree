@@ -58,25 +58,21 @@ public class AddActionForm
     private String sortOrder;
     private String description;
 
-    public void setupPostalAddressFormatChoices() {
+    public void setupPostalAddressFormatChoices()
+            throws NamingException {
         if(postalAddressFormatChoices == null) {
-            try {
-                var form = ContactUtil.getHome().getGetPostalAddressFormatChoicesForm();
+            var form = ContactUtil.getHome().getGetPostalAddressFormatChoicesForm();
 
-                form.setDefaultPostalAddressFormatChoice(postalAddressFormatChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setDefaultPostalAddressFormatChoice(postalAddressFormatChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                var commandResult = ContactUtil.getHome().getPostalAddressFormatChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetPostalAddressFormatChoicesResult)executionResult.getResult();
-                postalAddressFormatChoices = result.getPostalAddressFormatChoices();
+            var commandResult = ContactUtil.getHome().getPostalAddressFormatChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPostalAddressFormatChoicesResult)executionResult.getResult();
+            postalAddressFormatChoices = result.getPostalAddressFormatChoices();
 
-                if(postalAddressFormatChoice == null) {
-                    postalAddressFormatChoice = postalAddressFormatChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, postalAddressFormatChoices remains null, no default
+            if(postalAddressFormatChoice == null) {
+                postalAddressFormatChoice = postalAddressFormatChoices.getDefaultValue();
             }
         }
     }
@@ -249,7 +245,8 @@ public class AddActionForm
         this.postalAddressFormatChoice = postalAddressFormatChoice;
     }
 
-    public List<LabelValueBean> getPostalAddressFormatChoices() {
+    public List<LabelValueBean> getPostalAddressFormatChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupPostalAddressFormatChoices();

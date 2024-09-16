@@ -22,7 +22,7 @@ import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.customer.common.CustomerOptions;
 import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
@@ -109,8 +109,7 @@ public class CustomerTransferCache
 
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(PartyOptions.PartyIncludeKey) || options.contains(CustomerOptions.CustomerIncludeKey));
-            setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(CustomerOptions.CustomerIncludeGuid));
+            setIncludeUuid(options.contains(PartyOptions.PartyIncludeUuid) || options.contains(CustomerOptions.CustomerIncludeUuid));
             includeUserLogin = options.contains(PartyOptions.PartyIncludeUserLogin);
             includeRecoveryAnswer = options.contains(PartyOptions.PartyIncludeRecoveryAnswer);
             includePartyAliases = options.contains(PartyOptions.PartyIncludePartyAliases);

@@ -44,7 +44,7 @@ public class ForumTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeGuid(options.contains(ForumOptions.ForumIncludeGuid));
+            setIncludeUuid(options.contains(ForumOptions.ForumIncludeUuid));
             includeForumGroups = options.contains(ForumOptions.ForumIncludeForumGroups);
             includeForumThreads = options.contains(ForumOptions.ForumIncludeForumThreads);
             includeFutureForumThreads = options.contains(ForumOptions.ForumIncludeFutureForumThreads);

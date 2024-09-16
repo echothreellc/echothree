@@ -33,25 +33,21 @@ public class EditActionForm
     private String originalSecurityRoleGroupName;
     private String parentSecurityRoleGroupChoice;
     
-    private void setupParentSecurityRoleGroupChoices() {
+    private void setupParentSecurityRoleGroupChoices()
+            throws NamingException {
         if(parentSecurityRoleGroupChoices == null) {
-            try {
-                var form = SecurityUtil.getHome().getGetSecurityRoleGroupChoicesForm();
-                
-                form.setDefaultSecurityRoleGroupChoice(parentSecurityRoleGroupChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = SecurityUtil.getHome().getGetSecurityRoleGroupChoicesForm();
 
-                var commandResult = SecurityUtil.getHome().getSecurityRoleGroupChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getSecurityRoleGroupChoicesResult = (GetSecurityRoleGroupChoicesResult)executionResult.getResult();
-                parentSecurityRoleGroupChoices = getSecurityRoleGroupChoicesResult.getSecurityRoleGroupChoices();
-                
-                if(parentSecurityRoleGroupChoice == null) {
-                    parentSecurityRoleGroupChoice = parentSecurityRoleGroupChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, parentSecurityRoleGroupChoices remains null, no default
+            form.setDefaultSecurityRoleGroupChoice(parentSecurityRoleGroupChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = SecurityUtil.getHome().getSecurityRoleGroupChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getSecurityRoleGroupChoicesResult = (GetSecurityRoleGroupChoicesResult)executionResult.getResult();
+            parentSecurityRoleGroupChoices = getSecurityRoleGroupChoicesResult.getSecurityRoleGroupChoices();
+
+            if(parentSecurityRoleGroupChoice == null) {
+                parentSecurityRoleGroupChoice = parentSecurityRoleGroupChoices.getDefaultValue();
             }
         }
     }
@@ -64,7 +60,8 @@ public class EditActionForm
         this.originalSecurityRoleGroupName = originalSecurityRoleGroupName;
     }
     
-    public List<LabelValueBean> getParentSecurityRoleGroupChoices() {
+    public List<LabelValueBean> getParentSecurityRoleGroupChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupParentSecurityRoleGroupChoices();
@@ -75,7 +72,8 @@ public class EditActionForm
         return choices;
     }
     
-    public String getParentSecurityRoleGroupChoice() {
+    public String getParentSecurityRoleGroupChoice()
+            throws NamingException {
         setupParentSecurityRoleGroupChoices();
         return parentSecurityRoleGroupChoice;
     }

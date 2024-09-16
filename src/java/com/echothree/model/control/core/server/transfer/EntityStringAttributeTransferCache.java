@@ -47,7 +47,7 @@ public class EntityStringAttributeTransferCache
         
         if(entityStringAttributeTransfer == null) {
             var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityStringAttribute.getEntityAttribute(), entityInstance) : null;
-            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityStringAttribute.getEntityInstance(), false, false, false, false, false, false);
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityStringAttribute.getEntityInstance(), false, false, false, false);
             var language = partyControl.getLanguageTransfer(userVisit, entityStringAttribute.getLanguage());
             var stringAttribute = includeString ? entityStringAttribute.getStringAttribute() : null;
             

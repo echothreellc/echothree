@@ -73,13 +73,13 @@ public class CommentTransferCache
             
             commentTransfer.setCommentName(commentDetail.getCommentName());
             commentTransfer.setCommentType(commentControl.getCommentTypeTransfer(userVisit, commentType));
-            commentTransfer.setCommentedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, commentDetail.getCommentedEntityInstance(), false, false, false, false, false, false));
-            commentTransfer.setCommentedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, commentDetail.getCommentedByEntityInstance(), false, false, false, false, false, false));
+            commentTransfer.setCommentedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, commentDetail.getCommentedEntityInstance(), false, false, false, false));
+            commentTransfer.setCommentedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, commentDetail.getCommentedByEntityInstance(), false, false, false, false));
             commentTransfer.setLanguage(partyControl.getLanguageTransfer(userVisit, commentDetail.getLanguage()));
             commentTransfer.setDescription(commentDetail.getDescription());
             var mimeType = commentDetail.getMimeType();
             commentTransfer.setMimeType(mimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, mimeType));
-            commentTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false, false));
+            commentTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false));
             
             if(includeString) {
                 var commentString = commentControl.getCommentString(comment);

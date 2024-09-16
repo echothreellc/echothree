@@ -37,29 +37,26 @@ public class AddActionForm
     private String inventoryConditionUseTypeName;
     private Boolean isDefault;
     
-    private void setupInventoryConditionChoices() {
+    private void setupInventoryConditionChoices()
+            throws NamingException {
         if(inventoryConditionChoices == null) {
-            try {
-                var form = InventoryUtil.getHome().getGetInventoryConditionChoicesForm();
-                
-                form.setDefaultInventoryConditionChoice(inventoryConditionChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = InventoryUtil.getHome().getGetInventoryConditionChoicesForm();
 
-                var commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getInventoryConditionChoicesResult = (GetInventoryConditionChoicesResult)executionResult.getResult();
-                inventoryConditionChoices = getInventoryConditionChoicesResult.getInventoryConditionChoices();
-                
-                if(inventoryConditionChoice == null)
-                    inventoryConditionChoice = inventoryConditionChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, inventoryConditionChoices remains null, no default
-            }
+            form.setDefaultInventoryConditionChoice(inventoryConditionChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getInventoryConditionChoicesResult = (GetInventoryConditionChoicesResult)executionResult.getResult();
+            inventoryConditionChoices = getInventoryConditionChoicesResult.getInventoryConditionChoices();
+
+            if(inventoryConditionChoice == null)
+                inventoryConditionChoice = inventoryConditionChoices.getDefaultValue();
         }
     }
     
-    public String getInventoryConditionChoice() {
+    public String getInventoryConditionChoice()
+            throws NamingException {
         setupInventoryConditionChoices();
         return inventoryConditionChoice;
     }
@@ -68,7 +65,8 @@ public class AddActionForm
         this.inventoryConditionChoice = inventoryConditionChoice;
     }
     
-    public List<LabelValueBean> getInventoryConditionChoices() {
+    public List<LabelValueBean> getInventoryConditionChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupInventoryConditionChoices();

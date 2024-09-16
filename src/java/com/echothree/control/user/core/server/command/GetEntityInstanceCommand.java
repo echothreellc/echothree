@@ -51,9 +51,7 @@ public class GetEntityInstanceCommand
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Key", FieldType.KEY, false, null, null),
-                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
-                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
     
@@ -75,7 +73,7 @@ public class GetEntityInstanceCommand
 
         if(entityInstance != null) {
             result.setEntityInstance(getCoreControl().getEntityInstanceTransfer(getUserVisit(), entityInstance,
-                    false, false, false, false, false, false));
+                    false, false, false, false));
         }
 
         return result;

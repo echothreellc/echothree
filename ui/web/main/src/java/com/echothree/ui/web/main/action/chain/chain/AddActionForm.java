@@ -42,26 +42,22 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupChainInstanceSequenceChoices() {
+    private void setupChainInstanceSequenceChoices()
+            throws NamingException {
         if(chainInstanceSequenceChoices == null) {
-            try {
-                var commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
-                
-                commandForm.setSequenceTypeName(SequenceTypes.CHAIN_INSTANCE.name());
-                commandForm.setDefaultSequenceChoice(chainInstanceSequenceChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            var commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
 
-                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSequenceChoicesResult)executionResult.getResult();
-                chainInstanceSequenceChoices = result.getSequenceChoices();
-                
-                if(chainInstanceSequenceChoice == null) {
-                    chainInstanceSequenceChoice = chainInstanceSequenceChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, chainInstanceSequenceChoices remains null, no default
+            commandForm.setSequenceTypeName(SequenceTypes.CHAIN_INSTANCE.name());
+            commandForm.setDefaultSequenceChoice(chainInstanceSequenceChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceChoicesResult)executionResult.getResult();
+            chainInstanceSequenceChoices = result.getSequenceChoices();
+
+            if(chainInstanceSequenceChoice == null) {
+                chainInstanceSequenceChoice = chainInstanceSequenceChoices.getDefaultValue();
             }
         }
     }
@@ -90,7 +86,8 @@ public class AddActionForm
         return chainName;
     }
     
-    public List<LabelValueBean> getChainInstanceSequenceChoices() {
+    public List<LabelValueBean> getChainInstanceSequenceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupChainInstanceSequenceChoices();
@@ -105,7 +102,8 @@ public class AddActionForm
         this.chainInstanceSequenceChoice = chainInstanceSequenceChoice;
     }
     
-    public String getChainInstanceSequenceChoice() {
+    public String getChainInstanceSequenceChoice()
+            throws NamingException {
         setupChainInstanceSequenceChoices();
         
         return chainInstanceSequenceChoice;

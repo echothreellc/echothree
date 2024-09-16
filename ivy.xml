@@ -51,7 +51,7 @@
         <dependency org="javax.websocket" name="javax.websocket-api" rev="1.1" conf="sources->sources" />
         <dependency org="javax.validation" name="validation-api" rev="2.0.1.Final" conf="sources->sources" />
         <dependency org="jdom" name="jdom" rev="1.0" conf="sources->sources" />
-        <dependency org="junit" name="junit" rev="4.12" conf="sources->sources" />
+        <dependency org="junit" name="junit" rev="4.13.2" conf="sources->sources" />
         <dependency org="com.mysql" name="mysql-connector-j" rev="8.4.0" conf="sources->sources" />
         <dependency org="net.sf.ezmorph" name="ezmorph" rev="1.0.6" conf="sources->sources" />
         <dependency org="net.sf.json-lib" name="json-lib" rev="2.4" conf="sources->sources" />
@@ -141,7 +141,7 @@
         <dependency org="javax.validation" name="validation-api" rev="2.0.1.Final" conf="javadoc->javadoc" />
         <dependency org="javax.websocket" name="javax.websocket-api" rev="1.1" conf="javadoc->javadoc" />
         <dependency org="jdom" name="jdom" rev="1.0" conf="javadoc->javadoc" />
-        <dependency org="junit" name="junit" rev="4.12" conf="javadoc->javadoc" />
+        <dependency org="junit" name="junit" rev="4.13.2" conf="javadoc->javadoc" />
         <dependency org="com.mysql" name="mysql-connector-j" rev="8.4.0" conf="javadoc->javadoc" />
         <dependency org="net.sf.ezmorph" name="ezmorph" rev="1.0.6" conf="javadoc->javadoc" />
         <dependency org="net.sf.json-lib" name="json-lib" rev="2.4" conf="javadoc->javadoc" />
@@ -234,7 +234,7 @@
         <dependency org="javax.validation" name="validation-api" rev="2.0.1.Final" conf="binaries->default" />
         <dependency org="javax.websocket" name="javax.websocket-api" rev="1.1" conf="binaries->default" />
         <dependency org="jdom" name="jdom" rev="1.0" conf="binaries->default" />
-        <dependency org="junit" name="junit" rev="4.12" conf="binaries->default" />
+        <dependency org="junit" name="junit" rev="4.13.2" conf="binaries->default" />
         <dependency org="com.mysql" name="mysql-connector-j" rev="8.4.0" conf="binaries->default" />
         <dependency org="net.sf.ezmorph" name="ezmorph" rev="1.0.6" conf="binaries->default" />
         <dependency org="net.sf.json-lib" name="json-lib" rev="2.4" conf="binaries->default">

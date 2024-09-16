@@ -55,47 +55,39 @@ public class ContactPostalAddressAddActionForm
     private Boolean isCommercial;
     private String description;
     
-    private void setupPersonalTitleChoices() {
+    private void setupPersonalTitleChoices()
+            throws NamingException {
         if(personalTitleChoices == null) {
-            try {
-                var commandForm = PartyUtil.getHome().getGetPersonalTitleChoicesForm();
-                
-                commandForm.setDefaultPersonalTitleChoice(personalTitleChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            var commandForm = PartyUtil.getHome().getGetPersonalTitleChoicesForm();
 
-                var commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetPersonalTitleChoicesResult)executionResult.getResult();
-                personalTitleChoices = result.getPersonalTitleChoices();
-                
-                if(personalTitleChoice == null)
-                    personalTitleChoice = personalTitleChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, personalTitleChoices remains null, no default
-            }
+            commandForm.setDefaultPersonalTitleChoice(personalTitleChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPersonalTitleChoicesResult)executionResult.getResult();
+            personalTitleChoices = result.getPersonalTitleChoices();
+
+            if(personalTitleChoice == null)
+                personalTitleChoice = personalTitleChoices.getDefaultValue();
         }
     }
     
-    private void setupNameSuffixChoices() {
+    private void setupNameSuffixChoices()
+            throws NamingException {
         if(nameSuffixChoices == null) {
-            try {
-                var commandForm = PartyUtil.getHome().getGetNameSuffixChoicesForm();
-                
-                commandForm.setDefaultNameSuffixChoice(nameSuffixChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            var commandForm = PartyUtil.getHome().getGetNameSuffixChoicesForm();
 
-                var commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetNameSuffixChoicesResult)executionResult.getResult();
-                nameSuffixChoices = result.getNameSuffixChoices();
-                
-                if(nameSuffixChoice == null)
-                    nameSuffixChoice = nameSuffixChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, nameSuffixChoices remains null, no default
-            }
+            commandForm.setDefaultNameSuffixChoice(nameSuffixChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetNameSuffixChoicesResult)executionResult.getResult();
+            nameSuffixChoices = result.getNameSuffixChoices();
+
+            if(nameSuffixChoice == null)
+                nameSuffixChoice = nameSuffixChoices.getDefaultValue();
         }
     }
     
@@ -115,7 +107,8 @@ public class ContactPostalAddressAddActionForm
         this.allowSolicitation = allowSolicitation;
     }
     
-    public List<LabelValueBean> getPersonalTitleChoices() {
+    public List<LabelValueBean> getPersonalTitleChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPersonalTitleChoices();
@@ -130,7 +123,8 @@ public class ContactPostalAddressAddActionForm
         this.personalTitleChoice = personalTitleChoice;
     }
     
-    public String getPersonalTitleChoice() {
+    public String getPersonalTitleChoice()
+            throws NamingException {
         setupPersonalTitleChoices();
         
         return personalTitleChoice;
@@ -160,7 +154,8 @@ public class ContactPostalAddressAddActionForm
         return lastName;
     }
     
-    public List<LabelValueBean> getNameSuffixChoices() {
+    public List<LabelValueBean> getNameSuffixChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupNameSuffixChoices();
@@ -175,7 +170,8 @@ public class ContactPostalAddressAddActionForm
         this.nameSuffixChoice = nameSuffixChoice;
     }
     
-    public String getNameSuffixChoice() {
+    public String getNameSuffixChoice()
+            throws NamingException {
         setupNameSuffixChoices();
         
         return nameSuffixChoice;

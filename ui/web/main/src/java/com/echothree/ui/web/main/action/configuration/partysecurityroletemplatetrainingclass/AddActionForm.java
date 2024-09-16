@@ -34,25 +34,21 @@ public class AddActionForm
     private String partySecurityRoleTemplateName;
     private String trainingClassChoice;
     
-    public void setupTrainingClassChoices() {
+    public void setupTrainingClassChoices()
+            throws NamingException {
         if(trainingClassChoices == null) {
-            try {
-                var form = TrainingUtil.getHome().getGetTrainingClassChoicesForm();
+            var form = TrainingUtil.getHome().getGetTrainingClassChoicesForm();
 
-                form.setDefaultTrainingClassChoice(trainingClassChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setDefaultTrainingClassChoice(trainingClassChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                var commandResult = TrainingUtil.getHome().getTrainingClassChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetTrainingClassChoicesResult)executionResult.getResult();
-                trainingClassChoices = result.getTrainingClassChoices();
+            var commandResult = TrainingUtil.getHome().getTrainingClassChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTrainingClassChoicesResult)executionResult.getResult();
+            trainingClassChoices = result.getTrainingClassChoices();
 
-                if(trainingClassChoice == null) {
-                    trainingClassChoice = trainingClassChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, trainingClassChoices remains null, no default
+            if(trainingClassChoice == null) {
+                trainingClassChoice = trainingClassChoices.getDefaultValue();
             }
         }
     }
@@ -65,7 +61,8 @@ public class AddActionForm
         return partySecurityRoleTemplateName;
     }
 
-    public List<LabelValueBean> getTrainingClassChoices() {
+    public List<LabelValueBean> getTrainingClassChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupTrainingClassChoices();
@@ -76,7 +73,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getTrainingClassChoice() {
+    public String getTrainingClassChoice()
+            throws NamingException {
         setupTrainingClassChoices();
 
         return trainingClassChoice;

@@ -39,25 +39,21 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupUseTypeChoices() {
+    private void setupUseTypeChoices()
+            throws NamingException {
         if(useTypeChoices == null) {
-            try {
-                var form = OfferUtil.getHome().getGetUseTypeChoicesForm();
-                
-                form.setDefaultUseTypeChoice(useTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = OfferUtil.getHome().getGetUseTypeChoicesForm();
 
-                var commandResult = OfferUtil.getHome().getUseTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetUseTypeChoicesResult)executionResult.getResult();
-                useTypeChoices = result.getUseTypeChoices();
-                
-                if(useTypeChoice == null)
-                    useTypeChoice = useTypeChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, useTypeChoices remains null, no default
-            }
+            form.setDefaultUseTypeChoice(useTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = OfferUtil.getHome().getUseTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetUseTypeChoicesResult)executionResult.getResult();
+            useTypeChoices = result.getUseTypeChoices();
+
+            if(useTypeChoice == null)
+                useTypeChoice = useTypeChoices.getDefaultValue();
         }
     }
     
@@ -69,7 +65,8 @@ public class AddActionForm
         return useName;
     }
     
-    public String getUseTypeChoice() {
+    public String getUseTypeChoice()
+            throws NamingException {
         setupUseTypeChoices();
         
         return useTypeChoice;
@@ -79,7 +76,8 @@ public class AddActionForm
         this.useTypeChoice = useTypeChoice;
     }
     
-    public List<LabelValueBean> getUseTypeChoices() {
+    public List<LabelValueBean> getUseTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupUseTypeChoices();

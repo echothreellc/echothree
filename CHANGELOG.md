@@ -1,5 +1,18 @@
 # Changelog
 
+## 2024-09-15-01
+
+* commons-codec 1.17.1 Upgrade [1341](https://gitlab.echothree.com/echothree/echothree/-/issues/1341)
+* Remove Unnecessary StringBuilders in Database Utility [1342](https://gitlab.echothree.com/echothree/echothree/-/issues/1342)
+* Remove Unnecessary StringBuilders [1343](https://gitlab.echothree.com/echothree/echothree/-/issues/1343)
+* Replace Explicit Types with var [1344](https://gitlab.echothree.com/echothree/echothree/-/issues/1344)
+* Form Utility Code Clean-Up [1345](https://gitlab.echothree.com/echothree/echothree/-/issues/1345)
+* Don't Silently Drop NamingExceptions [1346](https://gitlab.echothree.com/echothree/echothree/-/issues/1346)
+* JUnit 4.13.2 Upgrade [1347](https://gitlab.echothree.com/echothree/echothree/-/issues/1347)
+* Remove Entity Instance's ULID and Key [1348](https://gitlab.echothree.com/echothree/echothree/-/issues/1348)
+* Remove DatabaseUtilitiesForOracle [1350](https://gitlab.echothree.com/echothree/echothree/-/issues/1350)
+* Move ContactListControl Into control Package [1351](https://gitlab.echothree.com/echothree/echothree/-/issues/1351)
+
 ## 2024-09-01-01
 
 * Implement Workflows as an Entity Attribute Type [736](https://gitlab.echothree.com/echothree/echothree/-/issues/736)

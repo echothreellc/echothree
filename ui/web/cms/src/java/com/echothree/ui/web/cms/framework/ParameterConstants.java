@@ -47,7 +47,7 @@ public interface ParameterConstants {
     String FORUM_MESSAGE_RESULT_OFFSET = "ForumMessageResultOffset";
     String FORUM_MESSAGE_TYPE_NAME = "ForumMessageTypeName";
     String FORUM_NAME = "ForumName";
-    String GUID = "Guid";
+    String UUID = "Uuid";
     String INCLUDE_FUTURE_FORUM_THREADS = "IncludeFutureForumThreads";
     String ITEM_DESCRIPTION_TYPE_NAME = "ItemDescriptionTypeName";
     String ITEM_NAME = "ItemName";
@@ -59,7 +59,6 @@ public interface ParameterConstants {
     String ITEM_STATUS_CHOICES = "ItemStatusChoices";
     String ITEM_TYPE_NAME = "ItemTypeName";
     String ITEM_USE_TYPE_NAME = "ItemUseTypeName";
-    String KEY = "Key";
     String LANGUAGE_ISO_NAME = "LanguageIsoName";
     String MODIFIED_SINCE = "ModifiedSince";
     String OPTIONS = "Options";

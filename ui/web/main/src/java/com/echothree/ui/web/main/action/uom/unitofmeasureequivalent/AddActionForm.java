@@ -31,57 +31,48 @@ public class AddActionForm
     
     private UnitOfMeasureTypeChoicesBean fromUnitOfMeasureTypeChoices;
     private UnitOfMeasureTypeChoicesBean toUnitOfMeasureTypeChoices;
-    private UnitOfMeasureTypeChoicesBean depthUnitOfMeasureTypeChoices;
-    
+
     private String unitOfMeasureKindName;
     private String fromUnitOfMeasureTypeChoice;
     private String toUnitOfMeasureTypeChoice;
     private String toQuantity;
     
-    private void setupFromUnitOfMeasureTypeChoices() {
+    private void setupFromUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(fromUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(fromUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                form.setUnitOfMeasureKindName(unitOfMeasureKindName);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                fromUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(fromUnitOfMeasureTypeChoice == null) {
-                    fromUnitOfMeasureTypeChoice = fromUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, locationChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(fromUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setUnitOfMeasureKindName(unitOfMeasureKindName);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            fromUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(fromUnitOfMeasureTypeChoice == null) {
+                fromUnitOfMeasureTypeChoice = fromUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupToUnitOfMeasureTypeChoices() {
+    private void setupToUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(toUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(toUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                form.setUnitOfMeasureKindName(unitOfMeasureKindName);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                toUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(toUnitOfMeasureTypeChoice == null) {
-                    toUnitOfMeasureTypeChoice = toUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, locationChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(toUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setUnitOfMeasureKindName(unitOfMeasureKindName);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            toUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(toUnitOfMeasureTypeChoice == null) {
+                toUnitOfMeasureTypeChoice = toUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
@@ -94,7 +85,8 @@ public class AddActionForm
         return unitOfMeasureKindName;
     }
     
-    public List<LabelValueBean> getFromUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getFromUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupFromUnitOfMeasureTypeChoices();
@@ -105,7 +97,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getFromUnitOfMeasureTypeChoice() {
+    public String getFromUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupFromUnitOfMeasureTypeChoices();
         return fromUnitOfMeasureTypeChoice;
     }
@@ -114,7 +107,8 @@ public class AddActionForm
         this.fromUnitOfMeasureTypeChoice = fromUnitOfMeasureTypeChoice;
     }
     
-    public List<LabelValueBean> getToUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getToUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupToUnitOfMeasureTypeChoices();
@@ -125,7 +119,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getToUnitOfMeasureTypeChoice() {
+    public String getToUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupToUnitOfMeasureTypeChoices();
         return toUnitOfMeasureTypeChoice;
     }

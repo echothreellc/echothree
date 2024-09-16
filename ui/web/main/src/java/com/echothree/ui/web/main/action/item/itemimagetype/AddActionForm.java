@@ -41,26 +41,22 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    public void setupPreferredMimeTypeChoices() {
+    public void setupPreferredMimeTypeChoices()
+            throws NamingException {
         if(preferredMimeTypeChoices == null) {
-            try {
-                var form = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+            var form = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
-                form.setMimeTypeUsageTypeName(MimeTypeUsageTypes.IMAGE.name());
-                form.setDefaultMimeTypeChoice(preferredMimeTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setMimeTypeUsageTypeName(MimeTypeUsageTypes.IMAGE.name());
+            form.setDefaultMimeTypeChoice(preferredMimeTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
-                preferredMimeTypeChoices = result.getMimeTypeChoices();
+            var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            preferredMimeTypeChoices = result.getMimeTypeChoices();
 
-                if(preferredMimeTypeChoice == null) {
-                    preferredMimeTypeChoice = preferredMimeTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, mimeTypeChoices remains null, no default
+            if(preferredMimeTypeChoice == null) {
+                preferredMimeTypeChoice = preferredMimeTypeChoices.getDefaultValue();
             }
         }
     }
@@ -73,7 +69,8 @@ public class AddActionForm
         return itemImageTypeName;
     }
     
-    public List<LabelValueBean> getPreferredMimeTypeChoices() {
+    public List<LabelValueBean> getPreferredMimeTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupPreferredMimeTypeChoices();
@@ -87,7 +84,8 @@ public class AddActionForm
         this.preferredMimeTypeChoice = preferredMimeTypeChoice;
     }
 
-    public String getPreferredMimeTypeChoice() {
+    public String getPreferredMimeTypeChoice()
+            throws NamingException {
         setupPreferredMimeTypeChoices();
         return preferredMimeTypeChoice;
     }

@@ -54,30 +54,27 @@ public class AddActionForm
         return associateProgramName;
     }
     
-    private void setupAssociateSequenceChoices() {
+    private void setupAssociateSequenceChoices()
+            throws NamingException {
         if(associateSequenceChoices == null) {
-            try {
-                var commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
-                
-                commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE.name());
-                commandForm.setDefaultSequenceChoice(associateSequenceChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            var commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
 
-                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSequenceChoicesResult)executionResult.getResult();
-                associateSequenceChoices = result.getSequenceChoices();
-                
-                if(associateSequenceChoice == null)
-                    associateSequenceChoice = associateSequenceChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, associateSequenceChoices remains null, no default
-            }
+            commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE.name());
+            commandForm.setDefaultSequenceChoice(associateSequenceChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceChoicesResult)executionResult.getResult();
+            associateSequenceChoices = result.getSequenceChoices();
+
+            if(associateSequenceChoice == null)
+                associateSequenceChoice = associateSequenceChoices.getDefaultValue();
         }
     }
     
-    public List getAssociateSequenceChoices() {
+    public List<LabelValueBean> getAssociateSequenceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupAssociateSequenceChoices();
@@ -91,35 +88,33 @@ public class AddActionForm
         this.associateSequenceChoice = associateSequenceChoice;
     }
     
-    public String getAssociateSequenceChoice() {
+    public String getAssociateSequenceChoice()
+            throws NamingException {
         setupAssociateSequenceChoices();
         return associateSequenceChoice;
     }
     
-    private void setupAssociatePartyContactMechanismSequenceChoices() {
+    private void setupAssociatePartyContactMechanismSequenceChoices()
+            throws NamingException {
         if(associatePartyContactMechanismSequenceChoices == null) {
-            try {
-                var commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
-                
-                commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.name());
-                commandForm.setDefaultSequenceChoice(associatePartyContactMechanismSequenceChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            var commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
 
-                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSequenceChoicesResult)executionResult.getResult();
-                associatePartyContactMechanismSequenceChoices = result.getSequenceChoices();
-                
-                if(associatePartyContactMechanismSequenceChoice == null)
-                    associatePartyContactMechanismSequenceChoice = associatePartyContactMechanismSequenceChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, associatePartyContactMechanismSequenceChoices remains null, no default
-            }
+            commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.name());
+            commandForm.setDefaultSequenceChoice(associatePartyContactMechanismSequenceChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceChoicesResult)executionResult.getResult();
+            associatePartyContactMechanismSequenceChoices = result.getSequenceChoices();
+
+            if(associatePartyContactMechanismSequenceChoice == null)
+                associatePartyContactMechanismSequenceChoice = associatePartyContactMechanismSequenceChoices.getDefaultValue();
         }
     }
     
-    public List getAssociatePartyContactMechanismSequenceChoices() {
+    public List<LabelValueBean> getAssociatePartyContactMechanismSequenceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupAssociatePartyContactMechanismSequenceChoices();
@@ -133,35 +128,33 @@ public class AddActionForm
         this.associatePartyContactMechanismSequenceChoice = associatePartyContactMechanismSequenceChoice;
     }
     
-    public String getAssociatePartyContactMechanismSequenceChoice() {
+    public String getAssociatePartyContactMechanismSequenceChoice()
+            throws NamingException {
         setupAssociatePartyContactMechanismSequenceChoices();
         return associatePartyContactMechanismSequenceChoice;
     }
     
-    private void setupAssociateReferralSequenceChoices() {
+    private void setupAssociateReferralSequenceChoices()
+            throws NamingException {
         if(associateReferralSequenceChoices == null) {
-            try {
-                var commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
-                
-                commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE_REFERRAL.name());
-                commandForm.setDefaultSequenceChoice(associateReferralSequenceChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            var commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
 
-                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSequenceChoicesResult)executionResult.getResult();
-                associateReferralSequenceChoices = result.getSequenceChoices();
-                
-                if(associateReferralSequenceChoice == null)
-                    associateReferralSequenceChoice = associateReferralSequenceChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, associateReferralSequenceChoices remains null, no default
-            }
+            commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE_REFERRAL.name());
+            commandForm.setDefaultSequenceChoice(associateReferralSequenceChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceChoicesResult)executionResult.getResult();
+            associateReferralSequenceChoices = result.getSequenceChoices();
+
+            if(associateReferralSequenceChoice == null)
+                associateReferralSequenceChoice = associateReferralSequenceChoices.getDefaultValue();
         }
     }
-    
-    public List getAssociateReferralSequenceChoices() {
+
+    public List<LabelValueBean> getAssociateReferralSequenceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupAssociateReferralSequenceChoices();
@@ -175,7 +168,8 @@ public class AddActionForm
         this.associateReferralSequenceChoice = associateReferralSequenceChoice;
     }
     
-    public String getAssociateReferralSequenceChoice() {
+    public String getAssociateReferralSequenceChoice()
+            throws NamingException {
         setupAssociateReferralSequenceChoices();
         return associateReferralSequenceChoice;
     }

@@ -31,12 +31,16 @@ public class AppearanceTest
         var appearancesBody = executeUsingPost("""
                 query {
                     appearances {
-                        appearanceName
+                        edges {
+                            node {
+                                appearanceName
+                            }
+                        }
                     }
                 }
                 """);
 
-        assertThat(getList(appearancesBody, "data.appearances")).size().isEqualTo(0);
+        assertThat(getList(appearancesBody, "data.appearances.edges")).size().isEqualTo(0);
     }
 
     @Test
@@ -71,12 +75,16 @@ public class AppearanceTest
         var appearancesBody = executeUsingPost("""
                 query {
                     appearances {
-                        appearanceName
+                        edges {
+                            node {
+                                appearanceName
+                            }
+                        }
                     }
                 }
                 """);
 
-        assertThat(getList(appearancesBody, "data.appearances")).size().isGreaterThan(0);
+        assertThat(getList(appearancesBody, "data.appearances.edges")).size().isGreaterThan(0);
     }
 
     @Test

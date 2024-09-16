@@ -22,7 +22,6 @@ public interface QueueOptions {
     String QueueTypeIncludeOldestQueuedEntityTime = "QueueTypeIncludeOldestQueuedEntityTime";
     String QueueTypeIncludeQueuedEntities = "QueueTypeIncludeQueuedEntities";
     String QueueTypeIncludeQueuedEntitiesCount = "QueueTypeIncludeQueuedEntitiesCount";
-    String QueueTypeIncludeKey = "QueueTypeIncludeKey";
-    String QueueTypeIncludeGuid = "QueueTypeIncludeGuid";
+    String QueueTypeIncludeUuid = "QueueTypeIncludeUuid";
     
 }

@@ -55,13 +55,9 @@ public class GetEventsCommand
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Key", FieldType.KEY, false, null, null),
-                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
-                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("CreatedByEntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("CreatedByKey", FieldType.KEY, false, null, null),
-                new FieldDefinition("CreatedByGuid", FieldType.GUID, false, null, null),
-                new FieldDefinition("CreatedByUlid", FieldType.ULID, false, null, null)
+                new FieldDefinition("CreatedByUuid", FieldType.UUID, false, null, null)
                 ));
     }
     
@@ -77,22 +73,18 @@ public class GetEventsCommand
     @Override
     protected Collection<Event> getEntities() {
         var entityRef = form.getEntityRef();
-        var key = form.getKey();
-        var guid = form.getGuid();
-        var ulid = form.getUlid();
+        var uuid = form.getUuid();
         var createdByEntityRef = form.getCreatedByEntityRef();
-        var createdByKey = form.getCreatedByKey();
-        var createdByGuid = form.getCreatedByGuid();
-        var createdByUlid = form.getCreatedByUlid();
-        var parameterCount = (entityRef == null ? 0 : 1) + (key == null ? 0 : 1) + (guid == null ? 0 : 1) + (ulid == null ? 0 : 1)
-                + (createdByEntityRef == null ? 0 : 1) + (createdByKey == null ? 0 : 1) + (createdByGuid == null ? 0 : 1) + (createdByUlid == null ? 0 : 1);
+        var createdByUuid = form.getCreatedByUuid();
+        var parameterCount = (entityRef == null ? 0 : 1) + (uuid == null ? 0 : 1)
+                + (createdByEntityRef == null ? 0 : 1) + (createdByUuid == null ? 0 : 1);
         Collection<Event> entities = null;
 
         if(parameterCount == 1) {
             var coreControl = getCoreControl();
 
-            if(entityRef != null || key != null || guid != null || ulid != null) {
-                entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, entityRef, key, guid, ulid, null);
+            if(entityRef != null || uuid != null) {
+                entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, entityRef, uuid, null);
 
                 if(!hasExecutionErrors()) {
                     if(session.hasLimit(EventFactory.class)) {
@@ -102,7 +94,7 @@ public class GetEventsCommand
                     entities = coreControl.getEventsByEntityInstance(entityInstance);
                 }
             } else {
-                createdBy = EntityInstanceLogic.getInstance().getEntityInstance(this, createdByEntityRef, createdByKey, createdByGuid, createdByUlid, null);
+                createdBy = EntityInstanceLogic.getInstance().getEntityInstance(this, createdByEntityRef, createdByUuid, null);
 
                 if(!hasExecutionErrors()) {
                     if(session.hasLimit(EventFactory.class)) {
@@ -130,11 +122,11 @@ public class GetEventsCommand
             result.setEventCount(eventCount);
 
             if(entityInstance != null) {
-                result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false, false));
+                result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false));
             }
 
             if(createdBy != null) {
-                result.setCreatedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, createdBy, false, false, false, false, false, false));
+                result.setCreatedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, createdBy, false, false, false, false));
             }
 
             result.setEvents(coreControl.getEventTransfers(userVisit, entities));

@@ -631,9 +631,7 @@
                         <column name="EntityInstanceId" type="EID" nullAllowed="false" />
                         <column name="EntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
                         <column name="EntityUniqueId" type="Long" nullAllowed="false" />
-                        <column name="Key" type="Key" nullAllowed="true" />
-                        <column name="Guid" type="Guid" nullAllowed="true" />
-                        <column name="Ulid" type="Ulid" nullAllowed="true" />
+                        <column name="Uuid" type="Uuid" nullAllowed="true" />
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
@@ -644,13 +642,7 @@
                             <indexColumn name="EntityUniqueId" />
                         </index>
                         <index type="Unique">
-                            <indexColumn name="Key" />
-                        </index>
-                        <index type="Unique">
-                            <indexColumn name="Guid" />
-                        </index>
-                        <index type="Unique">
-                            <indexColumn name="Ulid" />
+                            <indexColumn name="Uuid" />
                         </index>
                     </indexes>
                 </table>

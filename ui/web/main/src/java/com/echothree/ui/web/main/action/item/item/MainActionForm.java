@@ -65,147 +65,123 @@ public class MainActionForm
     private String searchSortDirectionChoice;
     private Boolean rememberPreferences;
     
-    private void setupItemTypeChoices() {
+    private void setupItemTypeChoices()
+            throws NamingException {
         if(itemTypeChoices == null) {
-            try {
-                var form = ItemUtil.getHome().getGetItemTypeChoicesForm();
-                
-                form.setDefaultItemTypeChoice(itemTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = ItemUtil.getHome().getGetItemTypeChoicesForm();
 
-                var commandResult = ItemUtil.getHome().getItemTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetItemTypeChoicesResult)executionResult.getResult();
-                itemTypeChoices = result.getItemTypeChoices();
-                
-                if(itemTypeChoice == null) {
-                    itemTypeChoice = itemTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, itemTypeChoices remains null, no default
+            form.setDefaultItemTypeChoice(itemTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = ItemUtil.getHome().getItemTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemTypeChoicesResult)executionResult.getResult();
+            itemTypeChoices = result.getItemTypeChoices();
+
+            if(itemTypeChoice == null) {
+                itemTypeChoice = itemTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupItemUseTypeChoices() {
+    private void setupItemUseTypeChoices()
+            throws NamingException {
         if(itemUseTypeChoices == null) {
-            try {
-                var form = ItemUtil.getHome().getGetItemUseTypeChoicesForm();
-                
-                form.setDefaultItemUseTypeChoice(itemUseTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = ItemUtil.getHome().getGetItemUseTypeChoicesForm();
 
-                var commandResult = ItemUtil.getHome().getItemUseTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetItemUseTypeChoicesResult)executionResult.getResult();
-                itemUseTypeChoices = result.getItemUseTypeChoices();
-                
-                if(itemUseTypeChoice == null) {
-                    itemUseTypeChoice = itemUseTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, itemUseTypeChoices remains null, no default
+            form.setDefaultItemUseTypeChoice(itemUseTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = ItemUtil.getHome().getItemUseTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemUseTypeChoicesResult)executionResult.getResult();
+            itemUseTypeChoices = result.getItemUseTypeChoices();
+
+            if(itemUseTypeChoice == null) {
+                itemUseTypeChoice = itemUseTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupItemStatusChoices() {
+    private void setupItemStatusChoices()
+            throws NamingException {
         if(itemStatusChoices == null) {
-            try {
-                var form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
-                
-                form.setWorkflowName(ItemStatusConstants.Workflow_ITEM_STATUS);
-                form.setDefaultWorkflowStepChoice(itemStatusChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
 
-                var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
-                itemStatusChoices = result.getWorkflowStepChoices();
-                
-                if(itemStatusChoice == null) {
-                    itemStatusChoice = ItemStatusConstants.WorkflowStep_ITEM_STATUS_ACTIVE;
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, itemStatusChoices remains null, no default
+            form.setWorkflowName(ItemStatusConstants.Workflow_ITEM_STATUS);
+            form.setDefaultWorkflowStepChoice(itemStatusChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            itemStatusChoices = result.getWorkflowStepChoices();
+
+            if(itemStatusChoice == null) {
+                itemStatusChoice = ItemStatusConstants.WorkflowStep_ITEM_STATUS_ACTIVE;
             }
         }
     }
     
-    private void setupSearchDefaultOperatorChoices() {
+    private void setupSearchDefaultOperatorChoices()
+            throws NamingException {
         if(searchDefaultOperatorChoices == null) {
-            try {
-                var form = SearchUtil.getHome().getGetSearchDefaultOperatorChoicesForm();
-                
-                form.setSearchKindName(SearchKinds.ITEM.name());
-                form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
-                form.setDefaultSearchDefaultOperatorChoice(searchDefaultOperatorChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = SearchUtil.getHome().getGetSearchDefaultOperatorChoicesForm();
 
-                var commandResult = SearchUtil.getHome().getSearchDefaultOperatorChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSearchDefaultOperatorChoicesResult)executionResult.getResult();
-                searchDefaultOperatorChoices = result.getSearchDefaultOperatorChoices();
-                
-                if(searchDefaultOperatorChoice == null) {
-                    searchDefaultOperatorChoice = searchDefaultOperatorChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, searchDefaultOperatorChoices remains null, no default
+            form.setSearchKindName(SearchKinds.ITEM.name());
+            form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
+            form.setDefaultSearchDefaultOperatorChoice(searchDefaultOperatorChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = SearchUtil.getHome().getSearchDefaultOperatorChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchDefaultOperatorChoicesResult)executionResult.getResult();
+            searchDefaultOperatorChoices = result.getSearchDefaultOperatorChoices();
+
+            if(searchDefaultOperatorChoice == null) {
+                searchDefaultOperatorChoice = searchDefaultOperatorChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupSearchSortOrderChoices() {
+    private void setupSearchSortOrderChoices()
+            throws NamingException {
         if(searchSortOrderChoices == null) {
-            try {
-                var form = SearchUtil.getHome().getGetSearchSortOrderChoicesForm();
-                
-                form.setSearchKindName(SearchKinds.ITEM.name());
-                form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
-                form.setDefaultSearchSortOrderChoice(searchSortOrderChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = SearchUtil.getHome().getGetSearchSortOrderChoicesForm();
 
-                var commandResult = SearchUtil.getHome().getSearchSortOrderChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSearchSortOrderChoicesResult)executionResult.getResult();
-                searchSortOrderChoices = result.getSearchSortOrderChoices();
-                
-                if(searchSortOrderChoice == null) {
-                    searchSortOrderChoice = searchSortOrderChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, searchSortOrderChoices remains null, no default
+            form.setSearchKindName(SearchKinds.ITEM.name());
+            form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
+            form.setDefaultSearchSortOrderChoice(searchSortOrderChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = SearchUtil.getHome().getSearchSortOrderChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchSortOrderChoicesResult)executionResult.getResult();
+            searchSortOrderChoices = result.getSearchSortOrderChoices();
+
+            if(searchSortOrderChoice == null) {
+                searchSortOrderChoice = searchSortOrderChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupSearchSortDirectionChoices() {
+    private void setupSearchSortDirectionChoices()
+            throws NamingException {
         if(searchSortDirectionChoices == null) {
-            try {
-                var form = SearchUtil.getHome().getGetSearchSortDirectionChoicesForm();
-                
-                form.setSearchKindName(SearchKinds.ITEM.name());
-                form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
-                form.setDefaultSearchSortDirectionChoice(searchSortDirectionChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = SearchUtil.getHome().getGetSearchSortDirectionChoicesForm();
 
-                var commandResult = SearchUtil.getHome().getSearchSortDirectionChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSearchSortDirectionChoicesResult)executionResult.getResult();
-                searchSortDirectionChoices = result.getSearchSortDirectionChoices();
-                
-                if(searchSortDirectionChoice == null) {
-                    searchSortDirectionChoice = searchSortDirectionChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, searchSortDirectionChoices remains null, no default
+            form.setSearchKindName(SearchKinds.ITEM.name());
+            form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
+            form.setDefaultSearchSortDirectionChoice(searchSortDirectionChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = SearchUtil.getHome().getSearchSortDirectionChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSearchSortDirectionChoicesResult)executionResult.getResult();
+            searchSortDirectionChoices = result.getSearchSortDirectionChoices();
+
+            if(searchSortDirectionChoice == null) {
+                searchSortDirectionChoice = searchSortDirectionChoices.getDefaultValue();
             }
         }
     }
@@ -226,7 +202,8 @@ public class MainActionForm
         this.description = description;
     }
     
-    public String getItemTypeChoice() {
+    public String getItemTypeChoice()
+            throws NamingException {
         setupItemTypeChoices();
         return itemTypeChoice;
     }
@@ -235,7 +212,8 @@ public class MainActionForm
         this.itemTypeChoice = itemTypeChoice;
     }
     
-    public List<LabelValueBean> getItemTypeChoices() {
+    public List<LabelValueBean> getItemTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupItemTypeChoices();
@@ -245,7 +223,8 @@ public class MainActionForm
         return choices;
     }
     
-    public String getItemUseTypeChoice() {
+    public String getItemUseTypeChoice()
+            throws NamingException {
         setupItemUseTypeChoices();
         return itemUseTypeChoice;
     }
@@ -254,7 +233,8 @@ public class MainActionForm
         this.itemUseTypeChoice = itemUseTypeChoice;
     }
     
-    public List<LabelValueBean> getItemUseTypeChoices() {
+    public List<LabelValueBean> getItemUseTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupItemUseTypeChoices();
@@ -264,7 +244,8 @@ public class MainActionForm
         return choices;
     }
     
-    public String getItemStatusChoice() {
+    public String getItemStatusChoice()
+            throws NamingException {
         setupItemStatusChoices();
         return itemStatusChoice;
     }
@@ -273,7 +254,8 @@ public class MainActionForm
         this.itemStatusChoice = itemStatusChoice;
     }
     
-    public List<LabelValueBean> getItemStatusChoices() {
+    public List<LabelValueBean> getItemStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupItemStatusChoices();
@@ -299,7 +281,8 @@ public class MainActionForm
         this.modifiedSince = modifiedSince;
     }
     
-    public String getSearchDefaultOperatorChoice() {
+    public String getSearchDefaultOperatorChoice()
+            throws NamingException {
         setupSearchDefaultOperatorChoices();
         return searchDefaultOperatorChoice;
     }
@@ -308,7 +291,8 @@ public class MainActionForm
         this.searchDefaultOperatorChoice = searchDefaultOperatorChoice;
     }
     
-    public List<LabelValueBean> getSearchDefaultOperatorChoices() {
+    public List<LabelValueBean> getSearchDefaultOperatorChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupSearchDefaultOperatorChoices();
@@ -318,7 +302,8 @@ public class MainActionForm
         return choices;
     }
     
-    public String getSearchSortOrderChoice() {
+    public String getSearchSortOrderChoice()
+            throws NamingException {
         setupSearchSortOrderChoices();
         return searchSortOrderChoice;
     }
@@ -327,7 +312,8 @@ public class MainActionForm
         this.searchSortOrderChoice = searchSortOrderChoice;
     }
     
-    public List<LabelValueBean> getSearchSortOrderChoices() {
+    public List<LabelValueBean> getSearchSortOrderChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupSearchSortOrderChoices();
@@ -337,7 +323,8 @@ public class MainActionForm
         return choices;
     }
     
-    public String getSearchSortDirectionChoice() {
+    public String getSearchSortDirectionChoice()
+            throws NamingException {
         setupSearchSortDirectionChoices();
         return searchSortDirectionChoice;
     }
@@ -346,7 +333,8 @@ public class MainActionForm
         this.searchSortDirectionChoice = searchSortDirectionChoice;
     }
     
-    public List<LabelValueBean> getSearchSortDirectionChoices() {
+    public List<LabelValueBean> getSearchSortDirectionChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupSearchSortDirectionChoices();

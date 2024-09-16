@@ -36,27 +36,23 @@ public class AddActionForm
     private String chainTypeName;
     private String chainChoice;
     
-    public void setupChainChoices() {
+    public void setupChainChoices()
+            throws NamingException {
         if(chainChoices == null) {
-            try {
-                var form = ChainUtil.getHome().getGetChainChoicesForm();
-                
-                form.setChainKindName(chainKindName);
-                form.setChainTypeName(chainTypeName);
-                form.setDefaultChainChoice(chainChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = ChainUtil.getHome().getGetChainChoicesForm();
 
-                var commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetChainChoicesResult)executionResult.getResult();
-                chainChoices = result.getChainChoices();
-                
-                if(chainChoice == null) {
-                    chainChoice = chainChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, chainChoices remains null, no default
+            form.setChainKindName(chainKindName);
+            form.setChainTypeName(chainTypeName);
+            form.setDefaultChainChoice(chainChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetChainChoicesResult)executionResult.getResult();
+            chainChoices = result.getChainChoices();
+
+            if(chainChoice == null) {
+                chainChoice = chainChoices.getDefaultValue();
             }
         }
     }
@@ -85,7 +81,8 @@ public class AddActionForm
         this.chainTypeName = chainTypeName;
     }
     
-    public List<LabelValueBean> getChainChoices() {
+    public List<LabelValueBean> getChainChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupChainChoices();
@@ -100,7 +97,8 @@ public class AddActionForm
         this.chainChoice = chainChoice;
     }
     
-    public String getChainChoice() {
+    public String getChainChoice()
+            throws NamingException {
         setupChainChoices();
         
         return chainChoice;

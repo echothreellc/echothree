@@ -38,8 +38,7 @@ public class CampaignTermTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(CampaignOptions.CampaignTermIncludeKey));
-            setIncludeGuid(options.contains(CampaignOptions.CampaignTermIncludeGuid));
+            setIncludeUuid(options.contains(CampaignOptions.CampaignTermIncludeUuid));
         }
         
         setIncludeEntityInstance(true);

@@ -84,7 +84,7 @@ public class Validator {
         map.put(FieldType.ENTITY_REF, EntityRefFieldType.class);
         map.put(FieldType.ENTITY_TYPE_NAME, EntityTypeNameFieldType.class);
         map.put(FieldType.FRACTIONAL_PERCENT, FractionalPercentFieldType.class);
-        map.put(FieldType.GUID, GuidFieldType.class);
+        map.put(FieldType.UUID, UuidFieldType.class);
         map.put(FieldType.HARMONIZED_TARIFF_SCHEDULE_CODE, HarmonizedTariffScheduleCodeFieldType.class);
         map.put(FieldType.HOST_NAME, HostNameFieldType.class);
         map.put(FieldType.ID, IdFieldType.class);
@@ -113,7 +113,6 @@ public class Validator {
         map.put(FieldType.UNSIGNED_PRICE_UNIT, UnsignedPriceUnitFieldType.class);
         map.put(FieldType.UPPER_LETTER_2, UpperLetter2FieldType.class);
         map.put(FieldType.UPPER_LETTER_3, UpperLetter3FieldType.class);
-        map.put(FieldType.ULID, UlidFieldType.class);
         map.put(FieldType.URL, UrlFieldType.class);
         map.put(FieldType.YEAR, YearFieldType.class);
         

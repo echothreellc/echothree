@@ -35,10 +35,8 @@ public class EntityInstanceTransferCache
     boolean includeEntityAppearance;
     boolean includeEntityVisit;
     boolean includeNames;
-    boolean includeKeyIfAvailable;
-    boolean includeGuidIfAvailable;
-    boolean includeUlidIfAvailable;
-    
+    boolean includeUuidIfAvailable;
+
     TransferProperties transferProperties;
     boolean filterEntityType;
     boolean filterEntityUniqueId;
@@ -55,9 +53,7 @@ public class EntityInstanceTransferCache
             includeEntityAppearance = options.contains(CoreOptions.EntityInstanceIncludeEntityAppearance);
             includeEntityVisit = options.contains(CoreOptions.EntityInstanceIncludeEntityVisit);
             includeNames = options.contains(CoreOptions.EntityInstanceIncludeNames);
-            includeKeyIfAvailable = options.contains(CoreOptions.EntityInstanceIncludeKeyIfAvailable);
-            includeGuidIfAvailable = options.contains(CoreOptions.EntityInstanceIncludeGuidIfAvailable);
-            includeUlidIfAvailable = options.contains(CoreOptions.EntityInstanceIncludeUlidIfAvailable);
+            includeUuidIfAvailable = options.contains(CoreOptions.EntityInstanceIncludeUuidIfAvailable);
         }
         
         transferProperties = session.getTransferProperties();
@@ -75,15 +71,13 @@ public class EntityInstanceTransferCache
     }
 
     public EntityInstanceTransfer getEntityInstanceTransfer(EntityInstance entityInstance, boolean includeEntityAppearance,
-            boolean includeEntityVisit, boolean includeNames, boolean includeKey, boolean includeGuid, boolean includeUlid) {
+            boolean includeEntityVisit, boolean includeNames, boolean includeUuid) {
         var entityInstanceTransfer = get(entityInstance);
         
         if(entityInstanceTransfer == null) {
             var entityTypeTransfer = filterEntityType ? null : coreControl.getEntityTypeTransfer(userVisit, entityInstance.getEntityType());
             var entityUniqueId = filterEntityUniqueId ? null : entityInstance.getEntityUniqueId();
-            String key = null;
-            String guid = null;
-            String ulid = null;
+            String uuid = null;
             var componentVendorTransfer = entityTypeTransfer == null ? null : entityTypeTransfer.getComponentVendor();
             var componentVendorName = componentVendorTransfer == null ? null : componentVendorTransfer.getComponentVendorName();
             var entityTypeName = entityTypeTransfer == null ? null : entityTypeTransfer.getEntityTypeName();
@@ -92,30 +86,12 @@ public class EntityInstanceTransferCache
             var entityTimeTransfer = entityTime == null ? null : coreControl.getEntityTimeTransfer(userVisit, entityTime);
             String description = null;
             
-            if(includeKey || includeKeyIfAvailable) {
-                key = entityInstance.getKey();
+            if(includeUuid || includeUuidIfAvailable) {
+                uuid = entityInstance.getUuid();
                 
-                if(includeKey && key == null) {
-                    entityInstance = coreControl.ensureKeyForEntityInstance(entityInstance, false);
-                    key = entityInstance.getKey();
-                }
-            }
-            
-            if(includeGuid || includeGuidIfAvailable) {
-                guid = entityInstance.getGuid();
-                
-                if(includeGuid && guid == null) {
-                    entityInstance = coreControl.ensureGuidForEntityInstance(entityInstance, false);
-                    guid = entityInstance.getGuid();
-                }
-            }
-            
-            if(includeUlid || includeUlidIfAvailable) {
-                ulid = entityInstance.getUlid();
-                
-                if(includeUlid && ulid == null) {
-                    entityInstance = coreControl.ensureUlidForEntityInstance(entityInstance, false);
-                    ulid = entityInstance.getUlid();
+                if(includeUuid && uuid == null) {
+                    entityInstance = coreControl.ensureUuidForEntityInstance(entityInstance, false);
+                    uuid = entityInstance.getUuid();
                 }
             }
             
@@ -123,7 +99,7 @@ public class EntityInstanceTransferCache
                 description = EntityDescriptionUtils.getInstance().getDescription(userVisit, entityInstance);
             }
             
-            entityInstanceTransfer = new EntityInstanceTransfer(entityTypeTransfer, entityUniqueId, key, guid, ulid, entityRef,
+            entityInstanceTransfer = new EntityInstanceTransfer(entityTypeTransfer, entityUniqueId, uuid, entityRef,
                     entityTimeTransfer, description);
             put(entityInstance, entityInstanceTransfer);
 

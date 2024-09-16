@@ -42,51 +42,44 @@ public class AddActionForm
     private String count;
     private String amount;
     
-    public void setupCurrencyChoices() {
+    public void setupCurrencyChoices()
+            throws NamingException {
         if(currencyChoices == null) {
-            try {
-                var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
-                
-                form.setDefaultCurrencyChoice(currencyChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
 
-                var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
-                currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
-                
-                if(currencyChoice == null)
-                    currencyChoice = currencyChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, currencyChoices remains null, no default
-            }
+            form.setDefaultCurrencyChoice(currencyChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+            currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
+
+            if(currencyChoice == null)
+                currencyChoice = currencyChoices.getDefaultValue();
         }
     }
     
-    public void setupPaymentMethodChoices() {
+    public void setupPaymentMethodChoices()
+            throws NamingException {
         if(paymentMethodChoices == null) {
-            try {
-                var form = PaymentUtil.getHome().getGetPaymentMethodChoicesForm();
-                
-                form.setDefaultPaymentMethodChoice(paymentMethodChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = PaymentUtil.getHome().getGetPaymentMethodChoicesForm();
 
-                var commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getPaymentMethodChoicesResult = (GetPaymentMethodChoicesResult)executionResult.getResult();
-                paymentMethodChoices = getPaymentMethodChoicesResult.getPaymentMethodChoices();
-                
-                if(paymentMethodChoice == null)
-                    paymentMethodChoice = paymentMethodChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, paymentMethodChoices remains null, no default
-            }
+            form.setDefaultPaymentMethodChoice(paymentMethodChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getPaymentMethodChoicesResult = (GetPaymentMethodChoicesResult)executionResult.getResult();
+            paymentMethodChoices = getPaymentMethodChoicesResult.getPaymentMethodChoices();
+
+            if(paymentMethodChoice == null)
+                paymentMethodChoice = paymentMethodChoices.getDefaultValue();
         }
     }
     
-    public List<LabelValueBean> getCurrencyChoices() {
+    public List<LabelValueBean> getCurrencyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCurrencyChoices();
@@ -100,12 +93,14 @@ public class AddActionForm
         this.currencyChoice = currencyChoice;
     }
     
-    public String getCurrencyChoice() {
+    public String getCurrencyChoice()
+            throws NamingException {
         setupCurrencyChoices();
         return currencyChoice;
     }
     
-    public List<LabelValueBean> getPaymentMethodChoices() {
+    public List<LabelValueBean> getPaymentMethodChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPaymentMethodChoices();
@@ -119,7 +114,8 @@ public class AddActionForm
         this.paymentMethodChoice = paymentMethodChoice;
     }
     
-    public String getPaymentMethodChoice() {
+    public String getPaymentMethodChoice()
+            throws NamingException {
         setupPaymentMethodChoices();
         return paymentMethodChoice;
     }

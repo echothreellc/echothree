@@ -56,26 +56,22 @@ public class AddActionForm
         return cancellationKindTransfer.getCancellationSequenceType().getSequenceTypeName();
     }
     
-    public void setupCancellationSequenceChoices() {
+    public void setupCancellationSequenceChoices()
+            throws NamingException {
         if(cancellationSequenceChoices == null) {
-            try {
-                var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
-                
-                form.setSequenceTypeName(getSequenceTypeName());
-                form.setDefaultSequenceChoice(cancellationSequenceChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
 
-                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSequenceChoicesResult)executionResult.getResult();
-                cancellationSequenceChoices = result.getSequenceChoices();
-                
-                if(cancellationSequenceChoice == null)
-                    cancellationSequenceChoice = cancellationSequenceChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, cancellationSequenceChoices remains null, no default
-            }
+            form.setSequenceTypeName(getSequenceTypeName());
+            form.setDefaultSequenceChoice(cancellationSequenceChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceChoicesResult)executionResult.getResult();
+            cancellationSequenceChoices = result.getSequenceChoices();
+
+            if(cancellationSequenceChoice == null)
+                cancellationSequenceChoice = cancellationSequenceChoices.getDefaultValue();
         }
     }
     
@@ -95,7 +91,8 @@ public class AddActionForm
         return cancellationTypeName;
     }
     
-    public List<LabelValueBean> getCancellationSequenceChoices() {
+    public List<LabelValueBean> getCancellationSequenceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCancellationSequenceChoices();
@@ -110,7 +107,8 @@ public class AddActionForm
         this.cancellationSequenceChoice = cancellationSequenceChoice;
     }
     
-    public String getCancellationSequenceChoice() {
+    public String getCancellationSequenceChoice()
+            throws NamingException {
         setupCancellationSequenceChoices();
         
         return cancellationSequenceChoice;

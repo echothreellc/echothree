@@ -19,7 +19,7 @@ package com.echothree.model.control.contactlist.server.logic;
 import com.echothree.model.control.contactlist.common.exception.UnknownContactListContactMechanismPurposeException;
 import com.echothree.model.control.contactlist.common.exception.UnknownContactListNameException;
 import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.common.PartyTypes;

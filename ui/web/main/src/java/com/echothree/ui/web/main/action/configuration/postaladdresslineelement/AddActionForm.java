@@ -42,25 +42,21 @@ public class AddActionForm
     private String suffix;
     private Boolean alwaysIncludeSuffix;
     
-    public void setupPostalAddressElementTypeChoices() {
+    public void setupPostalAddressElementTypeChoices()
+            throws NamingException {
         if(postalAddressElementTypeChoices == null) {
-            try {
-                var form = ContactUtil.getHome().getGetPostalAddressElementTypeChoicesForm();
-                
-                form.setDefaultPostalAddressElementTypeChoice(postalAddressElementTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = ContactUtil.getHome().getGetPostalAddressElementTypeChoicesForm();
 
-                var commandResult = ContactUtil.getHome().getPostalAddressElementTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetPostalAddressElementTypeChoicesResult)executionResult.getResult();
-                postalAddressElementTypeChoices = result.getPostalAddressElementTypeChoices();
-                
-                if(postalAddressElementTypeChoice == null) {
-                    postalAddressElementTypeChoice = postalAddressElementTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, postalAddressElementTypeChoices remains null, no default
+            form.setDefaultPostalAddressElementTypeChoice(postalAddressElementTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = ContactUtil.getHome().getPostalAddressElementTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetPostalAddressElementTypeChoicesResult)executionResult.getResult();
+            postalAddressElementTypeChoices = result.getPostalAddressElementTypeChoices();
+
+            if(postalAddressElementTypeChoice == null) {
+                postalAddressElementTypeChoice = postalAddressElementTypeChoices.getDefaultValue();
             }
         }
     }
@@ -97,7 +93,8 @@ public class AddActionForm
         this.postalAddressElementTypeChoice = postalAddressElementTypeChoice;
     }
     
-    public List<LabelValueBean> getPostalAddressElementTypeChoices() {
+    public List<LabelValueBean> getPostalAddressElementTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPostalAddressElementTypeChoices();

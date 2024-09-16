@@ -47,9 +47,7 @@ public class GetForumThreadCommand
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ForumThreadName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Key", FieldType.KEY, false, null, null),
-                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
-                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 ));
     }
     
@@ -86,7 +84,7 @@ public class GetForumThreadCommand
             if(!hasExecutionErrors()) {
                 if(forumThread.getLastDetail().getPostedTime() <= session.START_TIME
                         || (getParty() == null ? false : getPartyTypeName().equals(PartyTypes.EMPLOYEE.name()))) {
-                    if(form.getKey() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forumThread, getParty(), ForumConstants.ForumRoleType_READER)) {
+                    if(form.getUuid() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forumThread, getParty(), ForumConstants.ForumRoleType_READER)) {
                         result.setForumThread(forumControl.getForumThreadTransfer(getUserVisit(), forumThread));
                         sendEvent(forumThread.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                     } else {

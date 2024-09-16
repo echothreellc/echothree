@@ -34,25 +34,21 @@ public class AddActionForm
     private String partyName;
     private String responsibilityTypeChoice;
     
-    public void setupResponsibilityTypeChoices() {
+    public void setupResponsibilityTypeChoices()
+            throws NamingException {
         if(responsibilityTypeChoices == null) {
-            try {
-                var form = EmployeeUtil.getHome().getGetResponsibilityTypeChoicesForm();
-                
-                form.setDefaultResponsibilityTypeChoice(responsibilityTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = EmployeeUtil.getHome().getGetResponsibilityTypeChoicesForm();
 
-                var commandResult = EmployeeUtil.getHome().getResponsibilityTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetResponsibilityTypeChoicesResult)executionResult.getResult();
-                responsibilityTypeChoices = result.getResponsibilityTypeChoices();
-                
-                if(responsibilityTypeChoice == null)
-                    responsibilityTypeChoice = responsibilityTypeChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, responsibilityTypeChoices remains null, no default
-            }
+            form.setDefaultResponsibilityTypeChoice(responsibilityTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = EmployeeUtil.getHome().getResponsibilityTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetResponsibilityTypeChoicesResult)executionResult.getResult();
+            responsibilityTypeChoices = result.getResponsibilityTypeChoices();
+
+            if(responsibilityTypeChoice == null)
+                responsibilityTypeChoice = responsibilityTypeChoices.getDefaultValue();
         }
     }
     
@@ -72,7 +68,8 @@ public class AddActionForm
         this.responsibilityTypeChoice = responsibilityTypeChoice;
     }
     
-    public List<LabelValueBean> getResponsibilityTypeChoices() {
+    public List<LabelValueBean> getResponsibilityTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupResponsibilityTypeChoices();

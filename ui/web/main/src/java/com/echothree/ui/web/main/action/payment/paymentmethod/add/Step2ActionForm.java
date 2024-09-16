@@ -70,75 +70,63 @@ public class Step2ActionForm
     // CHECK
     private String holdDays;
     
-    private void setupPaymentProcessorChoices() {
+    private void setupPaymentProcessorChoices()
+            throws NamingException {
         if(paymentProcessorChoices == null) {
-            try {
-                var form = PaymentUtil.getHome().getGetPaymentProcessorChoicesForm();
-                
-                form.setDefaultPaymentProcessorChoice(paymentProcessorChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = PaymentUtil.getHome().getGetPaymentProcessorChoicesForm();
 
-                var commandResult = PaymentUtil.getHome().getPaymentProcessorChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getPaymentProcessorChoicesResult = (GetPaymentProcessorChoicesResult)executionResult.getResult();
-                paymentProcessorChoices = getPaymentProcessorChoicesResult.getPaymentProcessorChoices();
-                
-                if(paymentProcessorChoice == null) {
-                    paymentProcessorChoice = paymentProcessorChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, paymentProcessorChoices remains null, no default
+            form.setDefaultPaymentProcessorChoice(paymentProcessorChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = PaymentUtil.getHome().getPaymentProcessorChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getPaymentProcessorChoicesResult = (GetPaymentProcessorChoicesResult)executionResult.getResult();
+            paymentProcessorChoices = getPaymentProcessorChoicesResult.getPaymentProcessorChoices();
+
+            if(paymentProcessorChoice == null) {
+                paymentProcessorChoice = paymentProcessorChoices.getDefaultValue();
             }
         }
     }
     
-    public void setupItemSelectorChoices() {
+    public void setupItemSelectorChoices()
+            throws NamingException {
         if(itemSelectorChoices == null) {
-            try {
-                var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
+            var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
 
-                form.setSelectorKindName(SelectorKinds.ITEM.name());
-                form.setSelectorTypeName(SelectorTypes.PAYMENT_METHOD.name());
-                form.setDefaultSelectorChoice(itemSelectorChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setSelectorKindName(SelectorKinds.ITEM.name());
+            form.setSelectorTypeName(SelectorTypes.PAYMENT_METHOD.name());
+            form.setDefaultSelectorChoice(itemSelectorChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSelectorChoicesResult)executionResult.getResult();
-                itemSelectorChoices = result.getSelectorChoices();
+            var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSelectorChoicesResult)executionResult.getResult();
+            itemSelectorChoices = result.getSelectorChoices();
 
-                if(itemSelectorChoice == null) {
-                    itemSelectorChoice = itemSelectorChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, itemSelectorChoices remains null, no default
+            if(itemSelectorChoice == null) {
+                itemSelectorChoice = itemSelectorChoices.getDefaultValue();
             }
         }
     }
 
-    public void setupSalesOrderItemSelectorChoices() {
+    public void setupSalesOrderItemSelectorChoices()
+            throws NamingException {
         if(salesOrderItemSelectorChoices == null) {
-            try {
-                var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
+            var form = SelectorUtil.getHome().getGetSelectorChoicesForm();
 
-                form.setSelectorKindName(SelectorKinds.SALES_ORDER_ITEM.name());
-                form.setSelectorTypeName(SelectorTypes.PAYMENT_METHOD.name());
-                form.setDefaultSelectorChoice(salesOrderItemSelectorChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setSelectorKindName(SelectorKinds.SALES_ORDER_ITEM.name());
+            form.setSelectorTypeName(SelectorTypes.PAYMENT_METHOD.name());
+            form.setDefaultSelectorChoice(salesOrderItemSelectorChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSelectorChoicesResult)executionResult.getResult();
-                salesOrderItemSelectorChoices = result.getSelectorChoices();
+            var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSelectorChoicesResult)executionResult.getResult();
+            salesOrderItemSelectorChoices = result.getSelectorChoices();
 
-                if(salesOrderItemSelectorChoice == null) {
-                    salesOrderItemSelectorChoice = salesOrderItemSelectorChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, salesOrderItemSelectorChoices remains null, no default
+            if(salesOrderItemSelectorChoice == null) {
+                salesOrderItemSelectorChoice = salesOrderItemSelectorChoices.getDefaultValue();
             }
         }
     }
@@ -167,7 +155,8 @@ public class Step2ActionForm
         this.paymentProcessorChoice = paymentProcessorChoice;
     }
     
-    public List<LabelValueBean> getPaymentProcessorChoices() {
+    public List<LabelValueBean> getPaymentProcessorChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPaymentProcessorChoices();
@@ -182,13 +171,15 @@ public class Step2ActionForm
         this.itemSelectorChoice = itemSelectorChoice;
     }
 
-    public String getItemSelectorChoice() {
+    public String getItemSelectorChoice()
+            throws NamingException {
         setupItemSelectorChoices();
 
         return itemSelectorChoice;
     }
 
-    public List<LabelValueBean> getItemSelectorChoices() {
+    public List<LabelValueBean> getItemSelectorChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupItemSelectorChoices();
@@ -203,13 +194,15 @@ public class Step2ActionForm
         this.salesOrderItemSelectorChoice = salesOrderItemSelectorChoice;
     }
 
-    public String getSalesOrderItemSelectorChoice() {
+    public String getSalesOrderItemSelectorChoice()
+            throws NamingException {
         setupSalesOrderItemSelectorChoices();
 
         return salesOrderItemSelectorChoice;
     }
 
-    public List<LabelValueBean> getSalesOrderItemSelectorChoices() {
+    public List<LabelValueBean> getSalesOrderItemSelectorChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupSalesOrderItemSelectorChoices();

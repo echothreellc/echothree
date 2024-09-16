@@ -66,7 +66,7 @@ public class MainAction
         var salesOrderBatchResults = result.getSalesOrderBatchResults();
         var iter = salesOrderBatchResults.iterator();
         if(iter.hasNext()) {
-            batchName = (iter.next()).getBatchName();
+            batchName = iter.next().getBatchName();
         }
         
         return batchName;

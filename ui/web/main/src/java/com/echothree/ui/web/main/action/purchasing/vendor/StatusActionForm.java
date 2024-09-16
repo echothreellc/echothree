@@ -35,26 +35,22 @@ public class StatusActionForm
     private String vendorName;
     private String vendorStatusChoice;
     
-    public void setupVendorStatusChoices() {
+    public void setupVendorStatusChoices()
+            throws NamingException {
         if(vendorStatusChoices == null) {
-            try {
-                var form = PartyUtil.getHome().getGetVendorStatusChoicesForm();
-                
-                form.setVendorName(vendorName);
-                form.setDefaultVendorStatusChoice(vendorStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = PartyUtil.getHome().getGetVendorStatusChoicesForm();
 
-                var commandResult = PartyUtil.getHome().getVendorStatusChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetVendorStatusChoicesResult)executionResult.getResult();
-                vendorStatusChoices = result.getVendorStatusChoices();
-                
-                if(vendorStatusChoice == null) {
-                    vendorStatusChoice = vendorStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, vendorStatusChoices remains null, no default
+            form.setVendorName(vendorName);
+            form.setDefaultVendorStatusChoice(vendorStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = PartyUtil.getHome().getVendorStatusChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetVendorStatusChoicesResult)executionResult.getResult();
+            vendorStatusChoices = result.getVendorStatusChoices();
+
+            if(vendorStatusChoice == null) {
+                vendorStatusChoice = vendorStatusChoices.getDefaultValue();
             }
         }
     }
@@ -83,7 +79,8 @@ public class StatusActionForm
         this.vendorStatusChoice = vendorStatusChoice;
     }
     
-    public List<LabelValueBean> getVendorStatusChoices() {
+    public List<LabelValueBean> getVendorStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupVendorStatusChoices();

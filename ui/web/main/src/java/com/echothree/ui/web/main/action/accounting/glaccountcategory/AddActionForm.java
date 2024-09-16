@@ -39,25 +39,21 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupParentGlAccountCategoryChoices() {
+    private void setupParentGlAccountCategoryChoices()
+            throws NamingException {
         if(parentGlAccountCategoryChoices == null) {
-            try {
-                var form = AccountingUtil.getHome().getGetGlAccountCategoryChoicesForm();
-                
-                form.setDefaultGlAccountCategoryChoice(parentGlAccountCategoryChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = AccountingUtil.getHome().getGetGlAccountCategoryChoicesForm();
 
-                var commandResult = AccountingUtil.getHome().getGlAccountCategoryChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getGlAccountCategoryChoicesResult = (GetGlAccountCategoryChoicesResult)executionResult.getResult();
-                parentGlAccountCategoryChoices = getGlAccountCategoryChoicesResult.getGlAccountCategoryChoices();
-                
-                if(parentGlAccountCategoryChoice == null)
-                    parentGlAccountCategoryChoice = parentGlAccountCategoryChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, parentGlAccountCategoryChoices remains null, no default
-            }
+            form.setDefaultGlAccountCategoryChoice(parentGlAccountCategoryChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = AccountingUtil.getHome().getGlAccountCategoryChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getGlAccountCategoryChoicesResult = (GetGlAccountCategoryChoicesResult)executionResult.getResult();
+            parentGlAccountCategoryChoices = getGlAccountCategoryChoicesResult.getGlAccountCategoryChoices();
+
+            if(parentGlAccountCategoryChoice == null)
+                parentGlAccountCategoryChoice = parentGlAccountCategoryChoices.getDefaultValue();
         }
     }
     
@@ -77,7 +73,8 @@ public class AddActionForm
         this.parentGlAccountCategoryChoice = parentGlAccountCategoryChoice;
     }
     
-    public List<LabelValueBean> getParentGlAccountCategoryChoices() {
+    public List<LabelValueBean> getParentGlAccountCategoryChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupParentGlAccountCategoryChoices();

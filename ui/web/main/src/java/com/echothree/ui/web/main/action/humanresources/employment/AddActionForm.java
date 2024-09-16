@@ -46,71 +46,59 @@ public class AddActionForm
     private String terminationTypeChoice;
     private String terminationReasonChoice;
     
-    public void setupCompanyChoices() {
+    public void setupCompanyChoices()
+            throws NamingException {
         if(companyChoices == null) {
-            try {
-                var form = PartyUtil.getHome().getGetCompanyChoicesForm();
+            var form = PartyUtil.getHome().getGetCompanyChoicesForm();
 
-                form.setDefaultCompanyChoice(companyChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setDefaultCompanyChoice(companyChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetCompanyChoicesResult)executionResult.getResult();
-                companyChoices = result.getCompanyChoices();
+            var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCompanyChoicesResult)executionResult.getResult();
+            companyChoices = result.getCompanyChoices();
 
-                if(companyChoice == null) {
-                    companyChoice = companyChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, companyChoices remains null, no default
+            if(companyChoice == null) {
+                companyChoice = companyChoices.getDefaultValue();
             }
         }
     }
 
-    public void setupTerminationTypeChoices() {
+    public void setupTerminationTypeChoices()
+            throws NamingException {
         if(terminationTypeChoices == null) {
-            try {
-                var form = EmployeeUtil.getHome().getGetTerminationTypeChoicesForm();
+            var form = EmployeeUtil.getHome().getGetTerminationTypeChoicesForm();
 
-                form.setDefaultTerminationTypeChoice(terminationTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setDefaultTerminationTypeChoice(terminationTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                var commandResult = EmployeeUtil.getHome().getTerminationTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetTerminationTypeChoicesResult)executionResult.getResult();
-                terminationTypeChoices = result.getTerminationTypeChoices();
+            var commandResult = EmployeeUtil.getHome().getTerminationTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTerminationTypeChoicesResult)executionResult.getResult();
+            terminationTypeChoices = result.getTerminationTypeChoices();
 
-                if(terminationTypeChoice == null) {
-                    terminationTypeChoice = terminationTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, terminationTypeChoices remains null, no default
+            if(terminationTypeChoice == null) {
+                terminationTypeChoice = terminationTypeChoices.getDefaultValue();
             }
         }
     }
 
-    public void setupTerminationReasonChoices() {
+    public void setupTerminationReasonChoices()
+            throws NamingException {
         if(terminationReasonChoices == null) {
-            try {
-                var form = EmployeeUtil.getHome().getGetTerminationReasonChoicesForm();
+            var form = EmployeeUtil.getHome().getGetTerminationReasonChoicesForm();
 
-                form.setDefaultTerminationReasonChoice(terminationReasonChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setDefaultTerminationReasonChoice(terminationReasonChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                var commandResult = EmployeeUtil.getHome().getTerminationReasonChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetTerminationReasonChoicesResult)executionResult.getResult();
-                terminationReasonChoices = result.getTerminationReasonChoices();
+            var commandResult = EmployeeUtil.getHome().getTerminationReasonChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTerminationReasonChoicesResult)executionResult.getResult();
+            terminationReasonChoices = result.getTerminationReasonChoices();
 
-                if(terminationReasonChoice == null) {
-                    terminationReasonChoice = terminationReasonChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, terminationReasonChoices remains null, no default
+            if(terminationReasonChoice == null) {
+                terminationReasonChoice = terminationReasonChoices.getDefaultValue();
             }
         }
     }
@@ -131,7 +119,8 @@ public class AddActionForm
         this.employmentName = employmentName;
     }
 
-    public String getCompanyChoice() {
+    public String getCompanyChoice()
+            throws NamingException {
         setupCompanyChoices();
 
         return companyChoice;
@@ -141,7 +130,8 @@ public class AddActionForm
         this.companyChoice = companyChoice;
     }
 
-    public List<LabelValueBean> getCompanyChoices() {
+    public List<LabelValueBean> getCompanyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupCompanyChoices();
@@ -168,7 +158,8 @@ public class AddActionForm
         this.endTime = endTime;
     }
 
-    public String getTerminationTypeChoice() {
+    public String getTerminationTypeChoice()
+            throws NamingException {
         setupTerminationTypeChoices();
 
         return terminationTypeChoice;
@@ -178,7 +169,8 @@ public class AddActionForm
         this.terminationTypeChoice = terminationTypeChoice;
     }
 
-    public List<LabelValueBean> getTerminationTypeChoices() {
+    public List<LabelValueBean> getTerminationTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupTerminationTypeChoices();
@@ -189,7 +181,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getTerminationReasonChoice() {
+    public String getTerminationReasonChoice()
+            throws NamingException {
         setupTerminationReasonChoices();
 
         return terminationReasonChoice;
@@ -199,7 +192,8 @@ public class AddActionForm
         this.terminationReasonChoice = terminationReasonChoice;
     }
 
-    public List<LabelValueBean> getTerminationReasonChoices() {
+    public List<LabelValueBean> getTerminationReasonChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupTerminationReasonChoices();

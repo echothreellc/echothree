@@ -49,49 +49,41 @@ public class AddActionForm
     private String percent;
     private String description;
     
-    private void setupContactMechanismPurposeChoices() {
+    private void setupContactMechanismPurposeChoices()
+            throws NamingException {
         if(contactMechanismPurposeChoices == null) {
-            try {
-                var form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
-                
-                form.setContactMechanismTypeName(ContactMechanismTypes.POSTAL_ADDRESS.name());
-                form.setDefaultContactMechanismPurposeChoice(contactMechanismPurposeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
 
-                var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
-                contactMechanismPurposeChoices = getContactMechanismPurposeChoicesResult.getContactMechanismPurposeChoices();
-                
-                if(contactMechanismPurposeChoice == null) {
-                    contactMechanismPurposeChoice = contactMechanismPurposeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, contactMechanismPurposeChoices remains null, no default
+            form.setContactMechanismTypeName(ContactMechanismTypes.POSTAL_ADDRESS.name());
+            form.setDefaultContactMechanismPurposeChoice(contactMechanismPurposeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
+            contactMechanismPurposeChoices = getContactMechanismPurposeChoicesResult.getContactMechanismPurposeChoices();
+
+            if(contactMechanismPurposeChoice == null) {
+                contactMechanismPurposeChoice = contactMechanismPurposeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupGlAccountChoices() {
+    private void setupGlAccountChoices()
+            throws NamingException {
         if(glAccountChoices == null) {
-            try {
-                var form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
-                
-                form.setDefaultGlAccountChoice(glAccountChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
 
-                var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
-                glAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
-                
-                if(glAccountChoice == null) {
-                    glAccountChoice = glAccountChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, glAccountChoices remains null, no default
+            form.setDefaultGlAccountChoice(glAccountChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
+            glAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
+
+            if(glAccountChoice == null) {
+                glAccountChoice = glAccountChoices.getDefaultValue();
             }
         }
     }
@@ -104,7 +96,8 @@ public class AddActionForm
         this.taxName = taxName;
     }
     
-    public String getContactMechanismPurposeChoice() {
+    public String getContactMechanismPurposeChoice()
+            throws NamingException {
         setupContactMechanismPurposeChoices();
         
         return contactMechanismPurposeChoice;
@@ -114,7 +107,8 @@ public class AddActionForm
         this.contactMechanismPurposeChoice = contactMechanismPurposeChoice;
     }
     
-    public List<LabelValueBean> getContactMechanismPurposeChoices() {
+    public List<LabelValueBean> getContactMechanismPurposeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupContactMechanismPurposeChoices();
@@ -124,7 +118,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getGlAccountChoice() {
+    public String getGlAccountChoice()
+            throws NamingException {
         setupGlAccountChoices();
         
         return glAccountChoice;
@@ -134,7 +129,8 @@ public class AddActionForm
         this.glAccountChoice = glAccountChoice;
     }
     
-    public List<LabelValueBean> getGlAccountChoices() {
+    public List<LabelValueBean> getGlAccountChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupGlAccountChoices();

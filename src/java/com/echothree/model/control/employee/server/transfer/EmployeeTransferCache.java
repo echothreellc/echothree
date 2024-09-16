@@ -17,7 +17,7 @@ package com.echothree.model.control.employee.server.transfer;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.employee.common.EmployeeOptions;
@@ -82,8 +82,7 @@ public class EmployeeTransferCache
 
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(PartyOptions.PartyIncludeKey) || options.contains(EmployeeOptions.EmployeeIncludeKey));
-            setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(EmployeeOptions.EmployeeIncludeGuid));
+            setIncludeUuid(options.contains(PartyOptions.PartyIncludeUuid) || options.contains(EmployeeOptions.EmployeeIncludeUuid));
             includeUserLogin = options.contains(PartyOptions.PartyIncludeUserLogin);
             includeRecoveryAnswer = options.contains(PartyOptions.PartyIncludeRecoveryAnswer);
             includePartyAliases = options.contains(PartyOptions.PartyIncludePartyAliases);

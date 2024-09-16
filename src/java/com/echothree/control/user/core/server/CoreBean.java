@@ -371,20 +371,10 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult generateKey(UserVisitPK userVisitPK, GenerateKeyForm form) {
-        return new GenerateKeyCommand(userVisitPK, form).run();
+    public CommandResult generateUuid(UserVisitPK userVisitPK, GenerateUuidForm form) {
+        return new GenerateUuidCommand(userVisitPK, form).run();
     }
-    
-    @Override
-    public CommandResult generateGuid(UserVisitPK userVisitPK, GenerateGuidForm form) {
-        return new GenerateGuidCommand(userVisitPK, form).run();
-    }
-    
-    @Override
-    public CommandResult generateUlid(UserVisitPK userVisitPK, GenerateUlidForm form) {
-        return new GenerateUlidCommand(userVisitPK, form).run();
-    }
-    
+
     // -------------------------------------------------------------------------
     //   Event Types
     // -------------------------------------------------------------------------

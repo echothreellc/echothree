@@ -19,7 +19,7 @@ package com.echothree.model.control.contactlist.server.transfer;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.contactlist.common.ContactListOptions;
 import com.echothree.model.control.contactlist.common.transfer.PartyContactListTransfer;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
@@ -43,8 +43,7 @@ public class PartyContactListTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(ContactListOptions.PartyContactListIncludeKey));
-            setIncludeGuid(options.contains(ContactListOptions.PartyContactListIncludeGuid));
+            setIncludeUuid(options.contains(ContactListOptions.PartyContactListIncludeUuid));
             includeStatus = options.contains(ContactListOptions.PartyContactListIncludeStatus);
             includeComments = options.contains(ContactListOptions.PartyContactListIncludeComments);
         }

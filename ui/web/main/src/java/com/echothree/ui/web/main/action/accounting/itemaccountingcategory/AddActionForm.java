@@ -39,25 +39,21 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupParentItemAccountingCategoryChoices() {
+    private void setupParentItemAccountingCategoryChoices()
+            throws NamingException {
         if(parentItemAccountingCategoryChoices == null) {
-            try {
-                var form = AccountingUtil.getHome().getGetItemAccountingCategoryChoicesForm();
-                
-                form.setDefaultItemAccountingCategoryChoice(parentItemAccountingCategoryChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = AccountingUtil.getHome().getGetItemAccountingCategoryChoicesForm();
 
-                var commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getItemAccountingCategoryChoicesResult = (GetItemAccountingCategoryChoicesResult)executionResult.getResult();
-                parentItemAccountingCategoryChoices = getItemAccountingCategoryChoicesResult.getItemAccountingCategoryChoices();
-                
-                if(parentItemAccountingCategoryChoice == null)
-                    parentItemAccountingCategoryChoice = parentItemAccountingCategoryChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, parentItemAccountingCategoryChoices remains null, no default
-            }
+            form.setDefaultItemAccountingCategoryChoice(parentItemAccountingCategoryChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getItemAccountingCategoryChoicesResult = (GetItemAccountingCategoryChoicesResult)executionResult.getResult();
+            parentItemAccountingCategoryChoices = getItemAccountingCategoryChoicesResult.getItemAccountingCategoryChoices();
+
+            if(parentItemAccountingCategoryChoice == null)
+                parentItemAccountingCategoryChoice = parentItemAccountingCategoryChoices.getDefaultValue();
         }
     }
     
@@ -77,7 +73,8 @@ public class AddActionForm
         this.parentItemAccountingCategoryChoice = parentItemAccountingCategoryChoice;
     }
     
-    public List<LabelValueBean> getParentItemAccountingCategoryChoices() {
+    public List<LabelValueBean> getParentItemAccountingCategoryChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupParentItemAccountingCategoryChoices();

@@ -38,25 +38,21 @@ public class AddActionForm
     private Boolean isDefault;
     private String sortOrder;
     
-    private void setupCustomerTypeChoices() {
+    private void setupCustomerTypeChoices()
+            throws NamingException {
         if(customerTypeChoices == null) {
-            try {
-                var form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
-                
-                form.setDefaultCustomerTypeChoice(customerTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
 
-                var commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetCustomerTypeChoicesResult)executionResult.getResult();
-                customerTypeChoices = result.getCustomerTypeChoices();
-                
-                if(customerTypeChoice == null)
-                    customerTypeChoice = customerTypeChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, customerTypeChoices remains null, no default
-            }
+            form.setDefaultCustomerTypeChoice(customerTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCustomerTypeChoicesResult)executionResult.getResult();
+            customerTypeChoices = result.getCustomerTypeChoices();
+
+            if(customerTypeChoice == null)
+                customerTypeChoice = customerTypeChoices.getDefaultValue();
         }
     }
     
@@ -76,7 +72,8 @@ public class AddActionForm
         this.customerTypeChoice = customerTypeChoice;
     }
     
-    public List<LabelValueBean> getCustomerTypeChoices() {
+    public List<LabelValueBean> getCustomerTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCustomerTypeChoices();

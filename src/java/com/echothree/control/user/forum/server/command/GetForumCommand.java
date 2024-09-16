@@ -27,10 +27,10 @@ import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -46,9 +46,7 @@ public class GetForumCommand
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ForumName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                new FieldDefinition("Key", FieldType.KEY, false, null, null),
-                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
-                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 ));
     }
     
@@ -82,9 +80,9 @@ public class GetForumCommand
                 }
             }
 
-            // If the Key for the Forum is specified, then bypass the ForumRoleType check.
+            // If the UUID for the Forum is specified, then bypass the ForumRoleType check.
             if(!hasExecutionErrors()) {
-                if(form.getKey() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
+                if(form.getUuid() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
                     result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));
                     sendEvent(forum.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 }

@@ -66,36 +66,14 @@ public class EntityInstanceObject
     }
 
     @GraphQLField
-    @GraphQLDescription("key")
+    @GraphQLDescription("uuid")
     @GraphQLNonNull
-    public String getKey() {
+    public String getUuid() {
         var coreControl = Session.getModelController(CoreControl.class);
 
-        entityInstance = coreControl.ensureKeyForEntityInstance(entityInstance, false);
+        entityInstance = coreControl.ensureUuidForEntityInstance(entityInstance, false);
 
-        return entityInstance.getKey();
-    }
-    
-    @GraphQLField
-    @GraphQLDescription("guid")
-    @GraphQLNonNull
-    public String getGuid() {
-        var coreControl = Session.getModelController(CoreControl.class);
-
-        entityInstance = coreControl.ensureGuidForEntityInstance(entityInstance, false);
-
-        return entityInstance.getGuid();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("ulid")
-    @GraphQLNonNull
-    public String getUlid() {
-        var coreControl = Session.getModelController(CoreControl.class);
-
-        entityInstance = coreControl.ensureUlidForEntityInstance(entityInstance, false);
-
-        return entityInstance.getUlid();
+        return entityInstance.getUuid();
     }
 
     @GraphQLField

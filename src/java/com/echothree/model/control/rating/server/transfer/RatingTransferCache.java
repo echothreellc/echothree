@@ -46,9 +46,9 @@ public class RatingTransferCache
             
             ratingTransfer.setRatingName(ratingDetail.getRatingName());
             ratingTransfer.setRatingTypeListItem(ratingControl.getRatingTypeListItemTransfer(userVisit, ratingDetail.getRatingTypeListItem()));
-            ratingTransfer.setRatedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, ratingDetail.getRatedEntityInstance(), false, false, false, false, false, false));
-            ratingTransfer.setRatedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, ratingDetail.getRatedByEntityInstance(), false, false, false, false, false, false));
-            ratingTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, coreControl.getEntityInstanceByBasePK(rating.getPrimaryKey()), false, false, false, false, false, false));
+            ratingTransfer.setRatedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, ratingDetail.getRatedEntityInstance(), false, false, false, false));
+            ratingTransfer.setRatedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, ratingDetail.getRatedByEntityInstance(), false, false, false, false));
+            ratingTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, coreControl.getEntityInstanceByBasePK(rating.getPrimaryKey()), false, false, false, false));
             
         }
         

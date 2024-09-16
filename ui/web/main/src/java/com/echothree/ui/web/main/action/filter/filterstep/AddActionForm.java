@@ -32,7 +32,6 @@ import org.apache.struts.util.LabelValueBean;
 public class AddActionForm
         extends BaseActionForm {
     
-    private FilterAdjustmentChoicesBean initialFilterAdjustmentChoices;
     private SelectorChoicesBean filterItemSelectorChoices;
     
     private String filterKindName;

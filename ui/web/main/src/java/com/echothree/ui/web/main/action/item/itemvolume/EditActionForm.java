@@ -43,74 +43,62 @@ public class EditActionForm
     private String depth;
     private String depthUnitOfMeasureTypeChoice;
     
-    private void setupHeightUnitOfMeasureTypeChoices() {
+    private void setupHeightUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(heightUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(heightUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_VOLUME);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                heightUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(heightUnitOfMeasureTypeChoice == null) {
-                    heightUnitOfMeasureTypeChoice = heightUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(heightUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_VOLUME);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            heightUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(heightUnitOfMeasureTypeChoice == null) {
+                heightUnitOfMeasureTypeChoice = heightUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupWidthUnitOfMeasureTypeChoices() {
+    private void setupWidthUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(widthUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(widthUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_VOLUME);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                widthUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(widthUnitOfMeasureTypeChoice == null) {
-                    widthUnitOfMeasureTypeChoice = widthUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(widthUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_VOLUME);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            widthUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(widthUnitOfMeasureTypeChoice == null) {
+                widthUnitOfMeasureTypeChoice = widthUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupDepthUnitOfMeasureTypeChoices() {
+    private void setupDepthUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(depthUnitOfMeasureTypeChoices == null) {
-            try {
-                var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(depthUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_VOLUME);
+            var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                depthUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(depthUnitOfMeasureTypeChoice == null) {
-                    depthUnitOfMeasureTypeChoice = depthUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            form.setDefaultUnitOfMeasureTypeChoice(depthUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_VOLUME);
+
+            var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            depthUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(depthUnitOfMeasureTypeChoice == null) {
+                depthUnitOfMeasureTypeChoice = depthUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
@@ -139,7 +127,8 @@ public class EditActionForm
         this.height = height;
     }
     
-    public List<LabelValueBean> getHeightUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getHeightUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupHeightUnitOfMeasureTypeChoices();
@@ -150,7 +139,8 @@ public class EditActionForm
         return choices;
     }
     
-    public String getHeightUnitOfMeasureTypeChoice() {
+    public String getHeightUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupHeightUnitOfMeasureTypeChoices();
         return heightUnitOfMeasureTypeChoice;
     }
@@ -167,7 +157,8 @@ public class EditActionForm
         this.width = width;
     }
     
-    public List<LabelValueBean> getWidthUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getWidthUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupWidthUnitOfMeasureTypeChoices();
@@ -178,7 +169,8 @@ public class EditActionForm
         return choices;
     }
     
-    public String getWidthUnitOfMeasureTypeChoice() {
+    public String getWidthUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupWidthUnitOfMeasureTypeChoices();
         return widthUnitOfMeasureTypeChoice;
     }
@@ -195,7 +187,8 @@ public class EditActionForm
         this.depth = depth;
     }
     
-    public List<LabelValueBean> getDepthUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getDepthUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupDepthUnitOfMeasureTypeChoices();
@@ -206,7 +199,8 @@ public class EditActionForm
         return choices;
     }
     
-    public String getDepthUnitOfMeasureTypeChoice() {
+    public String getDepthUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupDepthUnitOfMeasureTypeChoices();
         return depthUnitOfMeasureTypeChoice;
     }

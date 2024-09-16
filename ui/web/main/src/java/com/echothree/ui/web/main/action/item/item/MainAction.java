@@ -66,7 +66,7 @@ public class MainAction
         var itemResults = result.getItemResults();
         var iter = itemResults.iterator();
         if(iter.hasNext()) {
-            itemName = (iter.next()).getItemName();
+            itemName = iter.next().getItemName();
         }
         
         return itemName;

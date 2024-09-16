@@ -42,7 +42,7 @@ public class ForumThreadTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeGuid(options.contains(ForumOptions.ForumThreadIncludeGuid));
+            setIncludeUuid(options.contains(ForumOptions.ForumThreadIncludeUuid));
             includeForumMessages = options.contains(ForumOptions.ForumThreadIncludeForumMessages);
             includeForumForumThreads = options.contains(ForumOptions.ForumThreadIncludeForumForumThreads);
             setIncludeEntityAttributeGroups(options.contains(ForumOptions.ForumThreadIncludeEntityAttributeGroups));

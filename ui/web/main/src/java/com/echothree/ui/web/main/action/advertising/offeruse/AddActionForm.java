@@ -40,48 +40,40 @@ public class AddActionForm
     private String useChoice;
     private String salesOrderSequenceChoice;
     
-    public void setupUseChoices() {
+    public void setupUseChoices()
+            throws NamingException {
         if(useChoices == null) {
-            try {
-                var form = OfferUtil.getHome().getGetUseChoicesForm();
-                
-                form.setDefaultUseChoice(useChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = OfferUtil.getHome().getGetUseChoicesForm();
 
-                var commandResult = OfferUtil.getHome().getUseChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetUseChoicesResult)executionResult.getResult();
-                useChoices = result.getUseChoices();
-                
-                if(useChoice == null)
-                    useChoice = useChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, useChoices remains null, no default
-            }
+            form.setDefaultUseChoice(useChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = OfferUtil.getHome().getUseChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetUseChoicesResult)executionResult.getResult();
+            useChoices = result.getUseChoices();
+
+            if(useChoice == null)
+                useChoice = useChoices.getDefaultValue();
         }
     }
     
-    public void setupSalesOrderSequenceChoices() {
+    public void setupSalesOrderSequenceChoices()
+            throws NamingException {
         if(salesOrderSequenceChoices == null) {
-            try {
-                var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
-                
-                form.setSequenceTypeName(SequenceTypes.SALES_ORDER.name());
-                form.setDefaultSequenceChoice(salesOrderSequenceChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = SequenceUtil.getHome().getGetSequenceChoicesForm();
 
-                var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (GetSequenceChoicesResult)executionResult.getResult();
-                salesOrderSequenceChoices = result.getSequenceChoices();
-                
-                if(salesOrderSequenceChoice == null)
-                    salesOrderSequenceChoice = salesOrderSequenceChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, salesOrderSequenceChoices remains null, no default
-            }
+            form.setSequenceTypeName(SequenceTypes.SALES_ORDER.name());
+            form.setDefaultSequenceChoice(salesOrderSequenceChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetSequenceChoicesResult)executionResult.getResult();
+            salesOrderSequenceChoices = result.getSequenceChoices();
+
+            if(salesOrderSequenceChoice == null)
+                salesOrderSequenceChoice = salesOrderSequenceChoices.getDefaultValue();
         }
     }
     
@@ -93,7 +85,8 @@ public class AddActionForm
         this.offerName = offerName;
     }
     
-    public List<LabelValueBean> getUseChoices() {
+    public List<LabelValueBean> getUseChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupUseChoices();
@@ -107,12 +100,14 @@ public class AddActionForm
         this.useChoice = useChoice;
     }
     
-    public String getUseChoice() {
+    public String getUseChoice()
+            throws NamingException {
         setupUseChoices();
         return useChoice;
     }
     
-    public List<LabelValueBean> getSalesOrderSequenceChoices() {
+    public List<LabelValueBean> getSalesOrderSequenceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupSalesOrderSequenceChoices();
@@ -126,7 +121,8 @@ public class AddActionForm
         this.salesOrderSequenceChoice = salesOrderSequenceChoice;
     }
     
-    public String getSalesOrderSequenceChoice() {
+    public String getSalesOrderSequenceChoice()
+            throws NamingException {
         setupSalesOrderSequenceChoices();
         return salesOrderSequenceChoice;
     }

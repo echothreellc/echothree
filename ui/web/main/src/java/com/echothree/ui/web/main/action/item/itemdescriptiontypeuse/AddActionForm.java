@@ -34,25 +34,21 @@ public class AddActionForm
     private String itemDescriptionTypeName;
     private String itemDescriptionTypeUseTypeChoice;
     
-    public void setupItemDescriptionTypeUseTypeChoices() {
+    public void setupItemDescriptionTypeUseTypeChoices()
+            throws NamingException {
         if(itemDescriptionTypeUseTypeChoices == null) {
-            try {
-                var form = ItemUtil.getHome().getGetItemDescriptionTypeUseTypeChoicesForm();
+            var form = ItemUtil.getHome().getGetItemDescriptionTypeUseTypeChoicesForm();
 
-                form.setDefaultItemDescriptionTypeUseTypeChoice(itemDescriptionTypeUseTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setDefaultItemDescriptionTypeUseTypeChoice(itemDescriptionTypeUseTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                var commandResult = ItemUtil.getHome().getItemDescriptionTypeUseTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getItemDescriptionTypeUseTypeChoicesResult = (GetItemDescriptionTypeUseTypeChoicesResult)executionResult.getResult();
-                itemDescriptionTypeUseTypeChoices = getItemDescriptionTypeUseTypeChoicesResult.getItemDescriptionTypeUseTypeChoices();
+            var commandResult = ItemUtil.getHome().getItemDescriptionTypeUseTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getItemDescriptionTypeUseTypeChoicesResult = (GetItemDescriptionTypeUseTypeChoicesResult)executionResult.getResult();
+            itemDescriptionTypeUseTypeChoices = getItemDescriptionTypeUseTypeChoicesResult.getItemDescriptionTypeUseTypeChoices();
 
-                if(itemDescriptionTypeUseTypeChoice == null) {
-                    itemDescriptionTypeUseTypeChoice = itemDescriptionTypeUseTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, itemDescriptionTypeUseTypeChoices remains null, no default
+            if(itemDescriptionTypeUseTypeChoice == null) {
+                itemDescriptionTypeUseTypeChoice = itemDescriptionTypeUseTypeChoices.getDefaultValue();
             }
         }
     }
@@ -65,7 +61,8 @@ public class AddActionForm
         return itemDescriptionTypeName;
     }
     
-    public String getItemDescriptionTypeUseTypeChoice() {
+    public String getItemDescriptionTypeUseTypeChoice()
+            throws NamingException {
         setupItemDescriptionTypeUseTypeChoices();
 
         return itemDescriptionTypeUseTypeChoice;
@@ -75,7 +72,8 @@ public class AddActionForm
         this.itemDescriptionTypeUseTypeChoice = itemDescriptionTypeUseTypeChoice;
     }
 
-    public List<LabelValueBean> getItemDescriptionTypeUseTypeChoices() {
+    public List<LabelValueBean> getItemDescriptionTypeUseTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupItemDescriptionTypeUseTypeChoices();

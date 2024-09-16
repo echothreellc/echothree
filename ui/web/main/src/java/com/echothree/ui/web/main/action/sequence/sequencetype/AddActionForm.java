@@ -46,47 +46,39 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    public void setupSequenceEncoderTypeChoices() {
+    public void setupSequenceEncoderTypeChoices()
+            throws NamingException {
         if(sequenceEncoderTypeChoices == null) {
-            try {
-                var form = SequenceUtil.getHome().getGetSequenceEncoderTypeChoicesForm();
-                
-                form.setDefaultSequenceEncoderTypeChoice(sequenceEncoderTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = SequenceUtil.getHome().getGetSequenceEncoderTypeChoicesForm();
 
-                var commandResult = SequenceUtil.getHome().getSequenceEncoderTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getSequenceEncoderTypeChoicesResult = (GetSequenceEncoderTypeChoicesResult)executionResult.getResult();
-                sequenceEncoderTypeChoices = getSequenceEncoderTypeChoicesResult.getSequenceEncoderTypeChoices();
-                
-                if(sequenceEncoderTypeChoice == null)
-                    sequenceEncoderTypeChoice = sequenceEncoderTypeChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, sequenceEncoderTypeChoices remains null, no default
-            }
+            form.setDefaultSequenceEncoderTypeChoice(sequenceEncoderTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = SequenceUtil.getHome().getSequenceEncoderTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getSequenceEncoderTypeChoicesResult = (GetSequenceEncoderTypeChoicesResult)executionResult.getResult();
+            sequenceEncoderTypeChoices = getSequenceEncoderTypeChoicesResult.getSequenceEncoderTypeChoices();
+
+            if(sequenceEncoderTypeChoice == null)
+                sequenceEncoderTypeChoice = sequenceEncoderTypeChoices.getDefaultValue();
         }
     }
     
-    public void setupSequenceChecksumTypeChoices() {
+    public void setupSequenceChecksumTypeChoices()
+            throws NamingException {
         if(sequenceChecksumTypeChoices == null) {
-            try {
-                var form = SequenceUtil.getHome().getGetSequenceChecksumTypeChoicesForm();
-                
-                form.setDefaultSequenceChecksumTypeChoice(sequenceChecksumTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            var form = SequenceUtil.getHome().getGetSequenceChecksumTypeChoicesForm();
 
-                var commandResult = SequenceUtil.getHome().getSequenceChecksumTypeChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getSequenceChecksumTypeChoicesResult = (GetSequenceChecksumTypeChoicesResult)executionResult.getResult();
-                sequenceChecksumTypeChoices = getSequenceChecksumTypeChoicesResult.getSequenceChecksumTypeChoices();
-                
-                if(sequenceChecksumTypeChoice == null)
-                    sequenceChecksumTypeChoice = sequenceChecksumTypeChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, sequenceChecksumTypeChoices remains null, no default
-            }
+            form.setDefaultSequenceChecksumTypeChoice(sequenceChecksumTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = SequenceUtil.getHome().getSequenceChecksumTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getSequenceChecksumTypeChoicesResult = (GetSequenceChecksumTypeChoicesResult)executionResult.getResult();
+            sequenceChecksumTypeChoices = getSequenceChecksumTypeChoicesResult.getSequenceChecksumTypeChoices();
+
+            if(sequenceChecksumTypeChoice == null)
+                sequenceChecksumTypeChoice = sequenceChecksumTypeChoices.getDefaultValue();
         }
     }
     
@@ -122,7 +114,8 @@ public class AddActionForm
         this.sequenceEncoderTypeChoice = sequenceEncoderTypeChoice;
     }
     
-    public List<LabelValueBean> getSequenceEncoderTypeChoices() {
+    public List<LabelValueBean> getSequenceEncoderTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupSequenceEncoderTypeChoices();
@@ -140,7 +133,8 @@ public class AddActionForm
         this.sequenceChecksumTypeChoice = sequenceChecksumTypeChoice;
     }
     
-    public List<LabelValueBean> getSequenceChecksumTypeChoices() {
+    public List<LabelValueBean> getSequenceChecksumTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupSequenceChecksumTypeChoices();

@@ -26,8 +26,6 @@ import org.apache.struts.action.ActionMapping;
 public class EditActionForm
         extends BaseActionForm {
 
-    private ApplicationEditorChoicesBean applicationEditorChoices;
-
     private String partyName;
     private String componentVendorName;
     private String entityTypeName;

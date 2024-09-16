@@ -17,7 +17,7 @@
 package com.echothree.control.user.core.common.spec;
 
 public interface EntityCollectionAttributeSpec
-        extends UniversalEntitySpec, EntityAttributeSpec, EntityAttributeUlid {
+        extends UniversalEntitySpec, EntityAttributeSpec, EntityAttributeUuid {
     
     String getEntityRefAttribute();
     void setEntityRefAttribute(String entityRefAttribute);

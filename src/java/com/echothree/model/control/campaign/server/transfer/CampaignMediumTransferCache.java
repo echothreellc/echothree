@@ -38,8 +38,7 @@ public class CampaignMediumTransferCache
         
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(CampaignOptions.CampaignMediumIncludeKey));
-            setIncludeGuid(options.contains(CampaignOptions.CampaignMediumIncludeGuid));
+            setIncludeUuid(options.contains(CampaignOptions.CampaignMediumIncludeUuid));
         }
         
         setIncludeEntityInstance(true);

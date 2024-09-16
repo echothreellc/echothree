@@ -191,12 +191,8 @@ public interface CoreService
 
     CommandResult removeEntityInstance(UserVisitPK userVisitPK, RemoveEntityInstanceForm form);
 
-    CommandResult generateKey(UserVisitPK userVisitPK, GenerateKeyForm form);
-    
-    CommandResult generateGuid(UserVisitPK userVisitPK, GenerateGuidForm form);
-    
-    CommandResult generateUlid(UserVisitPK userVisitPK, GenerateUlidForm form);
-    
+    CommandResult generateUuid(UserVisitPK userVisitPK, GenerateUuidForm form);
+
     // -------------------------------------------------------------------------
     //   Event Types
     // -------------------------------------------------------------------------

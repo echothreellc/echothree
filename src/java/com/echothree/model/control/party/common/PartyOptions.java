@@ -23,8 +23,7 @@ public interface PartyOptions {
     String PartyTypeIncludePasswordStringPolicy = "PartyTypeIncludePasswordStringPolicy";
     String PartyTypeIncludePartyAliasTypes = "PartyTypeIncludePartyAliasTypes";
     
-    String PartyIncludeKey = "PartyIncludeKey";
-    String PartyIncludeGuid = "PartyIncludeGuid";
+    String PartyIncludeUuid = "PartyIncludeUuid";
     String PartyIncludeDescription = "PartyIncludeDescription";
     String PartyIncludePartyCarriers = "PartyIncludePartyCarriers";
     String PartyIncludePartyCarrierAccounts = "PartyIncludePartyCarrierAccounts";
@@ -49,25 +48,21 @@ public interface PartyOptions {
 
     String PartyAliasTypeIncludeEntityAttributeGroups = "PartyAliasTypeIncludeEntityAttributeGroups";
     String PartyAliasTypeIncludeTagScopes = "PartyAliasTypeIncludeTagScopes";
-    String PartyAliasTypeIncludeKey = "PartyAliasTypeIncludeKey";
-    String PartyAliasTypeIncludeGuid = "PartyAliasTypeIncludeGuid";
+    String PartyAliasTypeIncludeUuid = "PartyAliasTypeIncludeUuid";
     
     String CompanyIncludeEntityAttributeGroups = "CompanyIncludeEntityAttributeGroups";
     String CompanyIncludeTagScopes = "CompanyIncludeTagScopes";
-    String CompanyIncludeKey = "CompanyIncludeKey";
-    String CompanyIncludeGuid = "CompanyIncludeGuid";
+    String CompanyIncludeUuid = "CompanyIncludeUuid";
     String CompanyIncludeBillingAccounts = "CompanyIncludeBillingAccounts";
     String CompanyIncludeInvoicesFrom = "CompanyIncludeInvoicesFrom";
     String CompanyIncludeInvoicesTo = "CompanyIncludeInvoicesTo";
     
     String DivisionIncludeEntityAttributeGroups = "DivisionIncludeEntityAttributeGroups";
     String DivisionIncludeTagScopes = "DivisionIncludeTagScopes";
-    String DivisionIncludeKey = "DivisionIncludeKey";
-    String DivisionIncludeGuid = "DivisionIncludeGuid";
+    String DivisionIncludeUuid = "DivisionIncludeUuid";
     
     String DepartmentIncludeEntityAttributeGroups = "DepartmentIncludeEntityAttributeGroups";
     String DepartmentIncludeTagScopes = "DepartmentIncludeTagScopes";
-    String DepartmentIncludeKey = "DepartmentIncludeKey";
-    String DepartmentIncludeGuid = "DepartmentIncludeGuid";
+    String DepartmentIncludeUuid = "DepartmentIncludeUuid";
     
 }

@@ -39,25 +39,21 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupParentItemPurchasingCategoryChoices() {
+    private void setupParentItemPurchasingCategoryChoices()
+            throws NamingException {
         if(parentItemPurchasingCategoryChoices == null) {
-            try {
-                var form = VendorUtil.getHome().getGetItemPurchasingCategoryChoicesForm();
-                
-                form.setDefaultItemPurchasingCategoryChoice(parentItemPurchasingCategoryChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            var form = VendorUtil.getHome().getGetItemPurchasingCategoryChoicesForm();
 
-                var commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, form);
-                var executionResult = commandResult.getExecutionResult();
-                var getItemPurchasingCategoryChoicesResult = (GetItemPurchasingCategoryChoicesResult)executionResult.getResult();
-                parentItemPurchasingCategoryChoices = getItemPurchasingCategoryChoicesResult.getItemPurchasingCategoryChoices();
-                
-                if(parentItemPurchasingCategoryChoice == null)
-                    parentItemPurchasingCategoryChoice = parentItemPurchasingCategoryChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, parentItemPurchasingCategoryChoices remains null, no default
-            }
+            form.setDefaultItemPurchasingCategoryChoice(parentItemPurchasingCategoryChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getItemPurchasingCategoryChoicesResult = (GetItemPurchasingCategoryChoicesResult)executionResult.getResult();
+            parentItemPurchasingCategoryChoices = getItemPurchasingCategoryChoicesResult.getItemPurchasingCategoryChoices();
+
+            if(parentItemPurchasingCategoryChoice == null)
+                parentItemPurchasingCategoryChoice = parentItemPurchasingCategoryChoices.getDefaultValue();
         }
     }
     
@@ -77,7 +73,8 @@ public class AddActionForm
         this.parentItemPurchasingCategoryChoice = parentItemPurchasingCategoryChoice;
     }
     
-    public List<LabelValueBean> getParentItemPurchasingCategoryChoices() {
+    public List<LabelValueBean> getParentItemPurchasingCategoryChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupParentItemPurchasingCategoryChoices();
