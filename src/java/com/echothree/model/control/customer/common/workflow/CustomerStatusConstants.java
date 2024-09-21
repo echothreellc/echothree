@@ -19,13 +19,12 @@ package com.echothree.model.control.customer.common.workflow;
 public interface CustomerStatusConstants {
     
     String Workflow_CUSTOMER_STATUS = "CUSTOMER_STATUS";
+
+    String WorkflowStep_VISITOR = "VISITOR";
+    String WorkflowStep_SHOPPER = "SHOPPER";
+
+    String WorkflowEntrance_NEW_VISITOR = "NEW_VISITOR";
     
-    String WorkflowStep_ACTIVE = "ACTIVE";
-    String WorkflowStep_INACTIVE = "INACTIVE";
-    
-    String WorkflowEntrance_NEW_ACTIVE = "NEW_ACTIVE";
-    
-    String WorkflowDestination_ACTIVE_TO_INACTIVE = "ACTIVE_TO_INACTIVE";
-    String WorkflowDestination_INACTIVE_TO_ACTIVE = "INACTIVE_TO_ACTIVE";
-    
+    String WorkflowDestination_VISITOR_TO_SHOPPER = "VISITOR_TO_SHOPPER";
+
 }
