@@ -231,22 +231,91 @@
         </workflow>
         <workflow workflowName="CUSTOMER_STATUS" securityRoleGroupName="CustomerStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Customer Status" />
-            <workflowStep workflowStepName="VISITOR" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+            <workflowStep workflowStepName="POPULATION" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="10">
+                <workflowStepDescription languageIsoName="en" description="Population" />
+            </workflowStep>
+            <workflowStep workflowStepName="PROSPECT" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="20">
+                <workflowStepDescription languageIsoName="en" description="Prospect" />
+            </workflowStep>
+            <workflowStep workflowStepName="VISITOR" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="30">
                 <workflowStepDescription languageIsoName="en" description="Visitor" />
             </workflowStep>
-            <workflowStep workflowStepName="SHOPPER" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+            <workflowStep workflowStepName="SHOPPER" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="40">
                 <workflowStepDescription languageIsoName="en" description="Shopper" />
             </workflowStep>
-            <workflowDestination workflowStepName="VISITOR" workflowDestinationName="VISITOR_TO_SHOPPER" isDefault="true" sortOrder="0">
-                <workflowDestinationDescription languageIsoName="en" description="Customer is a Shopper" />
-                <workflowDestinationStep destinationWorkflowStepName="SHOPPER" />
+            <workflowStep workflowStepName="CUSTOMER" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="50">
+                <workflowStepDescription languageIsoName="en" description="Customer" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="60">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowStep workflowStepName="EX_CUSTOMER" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="70">
+                <workflowStepDescription languageIsoName="en" description="Ex-Customer" />
+            </workflowStep>
+            <workflowDestination workflowStepName="POPULATION" workflowDestinationName="POPULATION_TO_PROSPECT" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Population Becomes Prospect" />
+                <workflowDestinationStep destinationWorkflowStepName="PROSPECT" />
                 <workflowDestinationPartyType partyTypeName="EMPLOYEE">
-                    <workflowDestinationSecurityRole securityRoleName="Inactive" />
+                    <workflowDestinationSecurityRole securityRoleName="PopulationToProspect" />
                 </workflowDestinationPartyType>
             </workflowDestination>
+            <workflowDestination workflowStepName="PROSPECT" workflowDestinationName="PROSPECT_TO_VISITOR" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Prospect Becomes Visitor" />
+                <workflowDestinationStep destinationWorkflowStepName="VISITOR" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="ProspectToVisitor" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="VISITOR" workflowDestinationName="VISITOR_TO_SHOPPER" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Visitor Becomes Shopper" />
+                <workflowDestinationStep destinationWorkflowStepName="SHOPPER" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="VisitorToShopper" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="SHOPPER" workflowDestinationName="SHOPPER_TO_CUSTOMER" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Shopper Becomes Customer" />
+                <workflowDestinationStep destinationWorkflowStepName="CUSTOMER" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="ShopperToCustomer" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="CUSTOMER" workflowDestinationName="CUSTOMER_TO_INACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Customer Becomes Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="CustomerToInactive" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="CUSTOMER" workflowDestinationName="CUSTOMER_TO_EX_CUSTOMER" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Customer Becomes Ex-Customer" />
+                <workflowDestinationStep destinationWorkflowStepName="EX_CUSTOMER" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="CustomerToExCustomer" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_EX_CUSTOMER" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Inactive Becomes Ex-Customer" />
+                <workflowDestinationStep destinationWorkflowStepName="EX_CUSTOMER" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="InactiveToExCustomer" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_POPULATION" isDefault="false" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Population" />
+                <workflowEntranceStep entranceWorkflowStepName="POPULATION" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_PROSPECT" isDefault="false" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Prospect" />
+                <workflowEntranceStep entranceWorkflowStepName="PROSPECT" />
+            </workflowEntrance>
             <workflowEntrance workflowEntranceName="NEW_VISITOR" isDefault="true" sortOrder="0">
                 <workflowEntranceDescription languageIsoName="en" description="New Visitor" />
                 <workflowEntranceStep entranceWorkflowStepName="VISITOR" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_SHOPPER" isDefault="false" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Shopper" />
+                <workflowEntranceStep entranceWorkflowStepName="SHOPPER" />
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Party" />
         </workflow>
