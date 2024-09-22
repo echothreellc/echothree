@@ -45,9 +45,9 @@ public class HtsUnitedStatesParser
         super.execute(userVisitPK, geoService, itemService, country);
         
         var importCodes = readCodes("/harmonized-tariff-schedule/us/impaes.txt");
-        logger.info(importCodes.size() + " import codes");
+        logger.info("{} import codes", importCodes.size());
         var exportCodes = readCodes("/harmonized-tariff-schedule/us/expaes.txt");
-        logger.info(exportCodes.size() + " export codes");
+        logger.info("{} export codes", exportCodes.size());
         
         determineAndApplyChanges(importCodes, exportCodes);
     }

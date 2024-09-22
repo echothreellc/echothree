@@ -61,7 +61,7 @@ public class WorkflowHandler
             spec.set(getAttrsMap(attrs));
 
             var commandAction = getCommandAction(spec);
-            getLogger().debug("Found: " + commandAction);
+            getLogger().debug("Found: {}", commandAction);
             if(commandAction == null || commandAction.equals("create")) {
                 var attrsMap = getAttrsMap(attrs);
 
@@ -76,7 +76,7 @@ public class WorkflowHandler
 
                         createForm.set(spec.get());
 
-                        getLogger().debug("Creating: " + spec.getWorkflowName());
+                        getLogger().debug("Creating: {}", spec.getWorkflowName());
                         commandResult = workflowService.createWorkflowDescription(initialDataParser.getUserVisit(), createForm);
 
                         if(commandResult.hasErrors()) {
@@ -89,7 +89,7 @@ public class WorkflowHandler
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditWorkflowDescriptionResult)executionResult.getResult();
 
-                    getLogger().debug("Checking for modifications: " + spec.getWorkflowName());
+                    getLogger().debug("Checking for modifications: {}", spec.getWorkflowName());
                     if(result != null) {
                         updateEditFormValues(editForm, attrsMap, result);
 

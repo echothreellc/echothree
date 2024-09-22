@@ -74,7 +74,7 @@ public class ComponentVendorHandler
                 spec.set(getAttrsMap(attrs));
 
                 var commandAction = getCommandAction(spec);
-                getLogger().debug("Found: " + commandAction);
+                getLogger().debug("Found: {}", commandAction);
                 if(commandAction == null || commandAction.equals("create")) {
                     var attrsMap = getAttrsMap(attrs);
 
@@ -89,7 +89,7 @@ public class ComponentVendorHandler
 
                             createForm.set(spec.get());
 
-                            getLogger().debug("Creating: " + spec.getEntityTypeName());
+                            getLogger().debug("Creating: {}", spec.getEntityTypeName());
                             commandResult = coreService.createEntityType(initialDataParser.getUserVisit(), createForm);
 
                             if(commandResult.hasErrors()) {
@@ -102,7 +102,7 @@ public class ComponentVendorHandler
                         var executionResult = commandResult.getExecutionResult();
                         var result = (EditEntityTypeResult)executionResult.getResult();
 
-                        getLogger().debug("Checking for modifications: " + spec.getEntityTypeName());
+                        getLogger().debug("Checking for modifications: {}", spec.getEntityTypeName());
                         if(result != null) {
                             updateEditFormValues(editForm, attrsMap, result);
 
