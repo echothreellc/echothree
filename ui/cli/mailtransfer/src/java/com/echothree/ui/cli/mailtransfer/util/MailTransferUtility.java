@@ -133,7 +133,7 @@ public class MailTransferUtility {
                 if(pop3Client.getState() == POP3.TRANSACTION_STATE) {
                     var pop3MessageInfos = pop3Client.listMessages();
 
-                    logger.info("message count: " + pop3MessageInfos.length);
+                    logger.info("message count: {}", pop3MessageInfos.length);
                     
                     if(pop3MessageInfos.length > 0) {
                         var successfulMessages = 0;
@@ -145,7 +145,7 @@ public class MailTransferUtility {
                             var bufferedReader = new BufferedReader(reader);
                             var stringBuilder = new StringBuilder();
 
-                            logger.info("message " + pop3MessageInfo.number + ", size = " + pop3MessageInfo.size);
+                            logger.info("message {}, size = {}", pop3MessageInfo.number, pop3MessageInfo.size);
                             
                             for(var line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()) {
                                 stringBuilder.append(line);
@@ -171,10 +171,10 @@ public class MailTransferUtility {
                     
                     pop3Client.logout();
                 } else {
-                    logger.error("login to " + username + "@" + serverName + " failed");
+                    logger.error("login to {}@{} failed", username, serverName);
                 }
             } else {
-                logger.error("connection to " + serverName + " failed");
+                logger.error("connection to {} failed", serverName);
             }
         } catch(SocketException se) {
             logger.error("An Exception occurred:", se);

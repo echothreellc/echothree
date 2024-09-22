@@ -92,7 +92,7 @@ public abstract class BaseHandler {
                 var xmlValue = attrsMap.get(key);
 
                 if(!currentValue.equals(xmlValue)) {
-                    getLogger().debug("Updating key: \"" + key + "\" from value \"" + currentValue + "\"" + "\" to value \"" + xmlValue + "\"");
+                    getLogger().debug("Updating key: \"{}\" from value \"{}\"\" to value \"{}\"", key, currentValue, xmlValue);
                     edit.set(key, xmlValue);
                     changed = true;
                 }
@@ -138,6 +138,10 @@ public abstract class BaseHandler {
         }
         
         return attrsMap;
+    }
+
+    protected String getCommandAction(final BaseSpec spec) {
+        return (String)spec.get("CommandAction");
     }
     
 }

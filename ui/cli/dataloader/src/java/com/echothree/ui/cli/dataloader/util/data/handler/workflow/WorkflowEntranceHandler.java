@@ -19,8 +19,13 @@ package com.echothree.ui.cli.dataloader.util.data.handler.workflow;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.WorkflowService;
 import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
+import com.echothree.control.user.workflow.common.result.EditWorkflowEntranceDescriptionResult;
+import com.echothree.control.user.workflow.common.result.EditWorkflowStepDescriptionResult;
+import com.echothree.control.user.workflow.common.spec.WorkflowSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -49,45 +54,92 @@ public class WorkflowEntranceHandler
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
-        if(localName.equals("workflowEntranceDescription")) {
-            var commandForm = WorkflowFormFactory.getCreateWorkflowEntranceDescriptionForm();
-            
-            commandForm.setWorkflowName(workflowName);
-            commandForm.setWorkflowEntranceName(workflowEntranceName);
-            commandForm.set(getAttrsMap(attrs));
-            
-            workflowService.createWorkflowEntranceDescription(initialDataParser.getUserVisit(), commandForm);
-        } else if(localName.equals("workflowEntranceSelector")) {
-            var commandForm = WorkflowFormFactory.getCreateWorkflowEntranceSelectorForm();
-            
-            commandForm.setWorkflowName(workflowName);
-            commandForm.setWorkflowEntranceName(workflowEntranceName);
-            commandForm.set(getAttrsMap(attrs));
-            
-            workflowService.createWorkflowEntranceSelector(initialDataParser.getUserVisit(), commandForm);
-        } else if(localName.equals("workflowEntrancePartyType")) {
-            var commandForm = WorkflowFormFactory.getCreateWorkflowEntrancePartyTypeForm();
-            
-            commandForm.setWorkflowName(workflowName);
-            commandForm.setWorkflowEntranceName(workflowEntranceName);
-            commandForm.set(getAttrsMap(attrs));
-            
-            workflowService.createWorkflowEntrancePartyType(initialDataParser.getUserVisit(), commandForm);
-            
-            initialDataParser.pushHandler(new WorkflowEntrancePartyTypeHandler(initialDataParser, this, workflowName,
-                    workflowEntranceName, commandForm.getPartyTypeName()));
-        } else if(localName.equals("workflowEntranceStep")) {
-            var commandForm = WorkflowFormFactory.getCreateWorkflowEntranceStepForm();
-            
-            commandForm.setWorkflowName(workflowName);
-            commandForm.setWorkflowEntranceName(workflowEntranceName);
-            commandForm.set(getAttrsMap(attrs));
-            
-            if(commandForm.getEntranceWorkflowName() == null) {
-                commandForm.setEntranceWorkflowName(workflowName);
+        switch(localName) {
+            case "workflowEntranceDescription" -> {
+                var spec = WorkflowSpecFactory.getWorkflowEntranceDescriptionSpec();
+                var editForm = WorkflowFormFactory.getEditWorkflowEntranceDescriptionForm();
+
+                spec.setWorkflowName(workflowName);
+                spec.setWorkflowEntranceName(workflowEntranceName);
+                spec.set(getAttrsMap(attrs));
+
+                var commandAction = getCommandAction(spec);
+                getLogger().debug("Found: {}", commandAction);
+                if(commandAction == null || commandAction.equals("create")) {
+                    var attrsMap = getAttrsMap(attrs);
+
+                    editForm.setSpec(spec);
+                    editForm.setEditMode(EditMode.LOCK);
+
+                    var commandResult = workflowService.editWorkflowEntranceDescription(initialDataParser.getUserVisit(), editForm);
+
+                    if(commandResult.hasErrors()) {
+                        if(commandResult.containsExecutionError(ExecutionErrors.UnknownWorkflowEntranceDescription.name())) {
+                            var createForm = WorkflowFormFactory.getCreateWorkflowEntranceDescriptionForm();
+
+                            spec.setWorkflowName(workflowName);
+                            spec.setWorkflowEntranceName(workflowEntranceName);
+                            createForm.set(spec.get());
+
+                            getLogger().debug("Creating: {}", spec.getWorkflowName());
+                            commandResult = workflowService.createWorkflowEntranceDescription(initialDataParser.getUserVisit(), createForm);
+
+                            if(commandResult.hasErrors()) {
+                                getLogger().error(commandResult.toString());
+                            }
+                        } else {
+                            getLogger().error(commandResult.toString());
+                        }
+                    } else {
+                        var executionResult = commandResult.getExecutionResult();
+                        var result = (EditWorkflowEntranceDescriptionResult)executionResult.getResult();
+
+                        getLogger().debug("Checking for modifications: {}", spec.getWorkflowName());
+                        if(result != null) {
+                            updateEditFormValues(editForm, attrsMap, result);
+
+                            commandResult = workflowService.editWorkflowEntranceDescription(initialDataParser.getUserVisit(), editForm);
+                            if(commandResult.hasErrors()) {
+                                getLogger().error(commandResult.toString());
+                            }
+                        }
+                    }
+                }
             }
-            
-            workflowService.createWorkflowEntranceStep(initialDataParser.getUserVisit(), commandForm);
+            case "workflowEntranceSelector" -> {
+                var commandForm = WorkflowFormFactory.getCreateWorkflowEntranceSelectorForm();
+
+                commandForm.setWorkflowName(workflowName);
+                commandForm.setWorkflowEntranceName(workflowEntranceName);
+                commandForm.set(getAttrsMap(attrs));
+
+                workflowService.createWorkflowEntranceSelector(initialDataParser.getUserVisit(), commandForm);
+            }
+            case "workflowEntrancePartyType" -> {
+                var commandForm = WorkflowFormFactory.getCreateWorkflowEntrancePartyTypeForm();
+
+                commandForm.setWorkflowName(workflowName);
+                commandForm.setWorkflowEntranceName(workflowEntranceName);
+                commandForm.set(getAttrsMap(attrs));
+
+                workflowService.createWorkflowEntrancePartyType(initialDataParser.getUserVisit(), commandForm);
+
+                initialDataParser.pushHandler(new WorkflowEntrancePartyTypeHandler(initialDataParser, this, workflowName,
+                        workflowEntranceName, commandForm.getPartyTypeName()));
+            }
+            case "workflowEntranceStep" -> {
+                var commandForm = WorkflowFormFactory.getCreateWorkflowEntranceStepForm();
+
+                commandForm.setWorkflowName(workflowName);
+                commandForm.setWorkflowEntranceName(workflowEntranceName);
+                commandForm.set(getAttrsMap(attrs));
+
+                if(commandForm.getEntranceWorkflowName() == null) {
+                    commandForm.setEntranceWorkflowName(workflowName);
+                }
+
+                workflowService.createWorkflowEntranceStep(initialDataParser.getUserVisit(), commandForm);
+            }
         }
     }
     

@@ -387,11 +387,26 @@
             <securityRole securityRoleName="Choices" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Customer Status Choices" />
             </securityRole>
-            <securityRole securityRoleName="Active" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Active Customer" />
+            <securityRole securityRoleName="PopulationToProspect" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Population to Prospect" />
             </securityRole>
-            <securityRole securityRoleName="Inactive" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Inactive Customer" />
+            <securityRole securityRoleName="ProspectToVisitor" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Prospect to Visitor" />
+            </securityRole>
+            <securityRole securityRoleName="VisitorToShopper" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Visitor to Shopper" />
+            </securityRole>
+            <securityRole securityRoleName="ShopperToCustomer" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Shopper to Customer" />
+            </securityRole>
+            <securityRole securityRoleName="CustomerToInactive" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Customer to Inactive" />
+            </securityRole>
+            <securityRole securityRoleName="CustomerToExCustomer" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Customer to ExCustomer" />
+            </securityRole>
+            <securityRole securityRoleName="InactiveToExCustomer" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inactive to ExCustomer" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="CustomerType" parentSecurityRoleGroupName="CustomerComponent" isDefault="false" sortOrder="1">
@@ -7817,8 +7832,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Customer" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Customer" securityRoleName="UserLogin" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CustomerStatus" securityRoleName="Choices" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="CustomerStatus" securityRoleName="Active" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="CustomerStatus" securityRoleName="Inactive" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="CustomerStatus" securityRoleName="PopulationToProspect" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="CustomerStatus" securityRoleName="ProspectToVisitor" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="CustomerStatus" securityRoleName="VisitorToShopper" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="CustomerStatus" securityRoleName="ShopperToCustomer" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="CustomerStatus" securityRoleName="CustomerToInactive" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="CustomerStatus" securityRoleName="CustomerToExCustomer" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="CustomerStatus" securityRoleName="InactiveToExCustomer" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CustomerType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CustomerType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CustomerType" securityRoleName="Delete" />
