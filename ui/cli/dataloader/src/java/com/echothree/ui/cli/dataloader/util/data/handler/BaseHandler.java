@@ -139,5 +139,9 @@ public abstract class BaseHandler {
         
         return attrsMap;
     }
+
+    protected String getCommandAction(final BaseSpec spec) {
+        return (String)spec.get("CommandAction");
+    }
     
 }

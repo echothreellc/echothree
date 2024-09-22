@@ -60,7 +60,7 @@ public class WorkflowHandler
             spec.setWorkflowName(workflowName);
             spec.set(getAttrsMap(attrs));
 
-            var commandAction = (String)spec.get("CommandAction");
+            var commandAction = getCommandAction(spec);
             getLogger().debug("Found: " + commandAction);
             if(commandAction == null || commandAction.equals("create")) {
                 var attrsMap = getAttrsMap(attrs);
