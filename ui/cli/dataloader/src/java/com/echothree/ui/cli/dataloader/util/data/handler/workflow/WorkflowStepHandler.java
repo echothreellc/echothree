@@ -16,11 +16,15 @@
 
 package com.echothree.ui.cli.dataloader.util.data.handler.workflow;
 
-import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.WorkflowService;
+import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
+import com.echothree.control.user.workflow.common.result.EditWorkflowStepDescriptionResult;
+import com.echothree.control.user.workflow.common.spec.WorkflowSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -50,13 +54,55 @@ public class WorkflowStepHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("workflowStepDescription")) {
-            var commandForm = WorkflowFormFactory.getCreateWorkflowStepDescriptionForm();
-            
-            commandForm.setWorkflowName(workflowName);
-            commandForm.setWorkflowStepName(workflowStepName);
-            commandForm.set(getAttrsMap(attrs));
-            
-            workflowService.createWorkflowStepDescription(initialDataParser.getUserVisit(), commandForm);
+            var spec = WorkflowSpecFactory.getWorkflowStepDescriptionSpec();
+            var editForm = WorkflowFormFactory.getEditWorkflowStepDescriptionForm();
+
+            spec.setWorkflowName(workflowName);
+            spec.setWorkflowStepName(workflowStepName);
+            spec.set(getAttrsMap(attrs));
+
+            var commandAction = getCommandAction(spec);
+            getLogger().debug("Found: {}", commandAction);
+            if(commandAction == null || commandAction.equals("create")) {
+                var attrsMap = getAttrsMap(attrs);
+
+                editForm.setSpec(spec);
+                editForm.setEditMode(EditMode.LOCK);
+
+                var commandResult = workflowService.editWorkflowStepDescription(initialDataParser.getUserVisit(), editForm);
+
+                if(commandResult.hasErrors()) {
+                    if(commandResult.containsExecutionError(ExecutionErrors.UnknownWorkflowStepDescription.name())) {
+                        var createForm = WorkflowFormFactory.getCreateWorkflowStepDescriptionForm();
+
+                        spec.setWorkflowName(workflowName);
+                        spec.setWorkflowStepName(workflowStepName);
+                        createForm.set(spec.get());
+
+                        getLogger().debug("Creating: {}", spec.getWorkflowName());
+                        commandResult = workflowService.createWorkflowStepDescription(initialDataParser.getUserVisit(), createForm);
+
+                        if(commandResult.hasErrors()) {
+                            getLogger().error(commandResult.toString());
+                        }
+                    } else {
+                        getLogger().error(commandResult.toString());
+                    }
+                } else {
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditWorkflowStepDescriptionResult)executionResult.getResult();
+
+                    getLogger().debug("Checking for modifications: {}", spec.getWorkflowName());
+                    if(result != null) {
+                        updateEditFormValues(editForm, attrsMap, result);
+
+                        commandResult = workflowService.editWorkflowStepDescription(initialDataParser.getUserVisit(), editForm);
+                        if(commandResult.hasErrors()) {
+                            getLogger().error(commandResult.toString());
+                        }
+                    }
+                }
+            }
         }
     }
     

@@ -103,7 +103,7 @@ public class CustomerLogic
         return customer;
     }
 
-    public void setCustomerStatus(final Session session, ExecutionErrorAccumulator eea, Party party, String customerStatusChoice, PartyPK modifiedBy) {
+    public void setCustomerStatus(final Session session, final ExecutionErrorAccumulator eea, final Party party, final String customerStatusChoice, final PartyPK modifiedBy) {
         var coreControl = Session.getModelController(CoreControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, CustomerStatusConstants.Workflow_CUSTOMER_STATUS);
@@ -117,15 +117,12 @@ public class CustomerLogic
             var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             Long triggerTime = null;
 
-            if(currentWorkflowStepName.equals(CustomerStatusConstants.WorkflowStep_ACTIVE)) {
-                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, CustomerStatusConstants.Workflow_CUSTOMER_STATUS, CustomerStatusConstants.WorkflowStep_INACTIVE)) {
-                    UserKeyLogic.getInstance().clearUserKeysByParty(party);
-                    UserSessionLogic.getInstance().deleteUserSessionsByParty(party);
-                }
-            } else if(currentWorkflowStepName.equals(CustomerStatusConstants.WorkflowStep_INACTIVE)) {
-                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, CustomerStatusConstants.Workflow_CUSTOMER_STATUS, CustomerStatusConstants.WorkflowStep_ACTIVE)) {
+            if(currentWorkflowStepName.equals(CustomerStatusConstants.WorkflowStep_VISITOR)) {
+                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, CustomerStatusConstants.Workflow_CUSTOMER_STATUS, CustomerStatusConstants.WorkflowStep_SHOPPER)) {
                     // Nothing at this time.
                 }
+            } else if(currentWorkflowStepName.equals(CustomerStatusConstants.WorkflowStep_SHOPPER)) {
+                // Nothing at this time.
             }
 
             if(eea == null || !eea.hasExecutionErrors()) {

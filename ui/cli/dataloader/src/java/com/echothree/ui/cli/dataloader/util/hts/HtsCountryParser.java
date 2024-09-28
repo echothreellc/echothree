@@ -52,7 +52,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class HtsCountryParser<H extends Object> {
+public abstract class HtsCountryParser<H> {
     
     protected UserVisitPK userVisitPK;
     protected GeoService geoService;
@@ -111,25 +111,25 @@ public abstract class HtsCountryParser<H extends Object> {
         Map<String, H> uniqueCodes = new HashMap<>();
         uniqueCodes.putAll(importCodes);
         uniqueCodes.putAll(exportCodes);
-        logger.info(uniqueCodes.size() + " unique code" + (uniqueCodes.size() == 1 ? "" : "s"));
+        logger.info("{} unique code{}", uniqueCodes.size(), uniqueCodes.size() == 1 ? "" : "s");
         
         existingCodes = convertHtsListToMap(getHarmonizedTariffScheduleCodes(countryName));
-        logger.info(existingCodes.size() + " existing code" + (existingCodes.size() == 1 ? "" : "s"));
+        logger.info("{} existing code{}", existingCodes.size(), existingCodes.size() == 1 ? "" : "s");
         
         Set<String> codesToCreate = new HashSet<>();
         codesToCreate.addAll(uniqueCodes.keySet());
         codesToCreate.removeAll(existingCodes.keySet());
-        logger.info(codesToCreate.size() + " code" + (codesToCreate.size() == 1 ? "" : "s") + " to create");
+        logger.info("{} code{} to create", codesToCreate.size(), codesToCreate.size() == 1 ? "" : "s");
         
         Set<String> codesToDelete = new HashSet<>();
         codesToDelete.addAll(existingCodes.keySet());
         codesToDelete.removeAll(uniqueCodes.keySet());
-        logger.info(codesToDelete.size() + " code" + (codesToDelete.size() == 1 ? "" : "s") + " to delete");
+        logger.info("{} code{} to delete", codesToDelete.size(), codesToDelete.size() == 1 ? "" : "s");
         
         Set<String> codesToCheck = new HashSet<>();
         codesToCheck.addAll(uniqueCodes.keySet());
         codesToCheck.retainAll(existingCodes.keySet());
-        logger.info(codesToCheck.size() + " code" + (codesToCheck.size() == 1 ? "" : "s") + " to check");
+        logger.info("{} code{} to check", codesToCheck.size(), codesToCheck.size() == 1 ? "" : "s");
         
         createCodes(codesToCreate, importCodes, exportCodes, uniqueCodes);
         deleteCodes(codesToDelete);
@@ -256,10 +256,10 @@ public abstract class HtsCountryParser<H extends Object> {
                     commandResult = itemService.editHarmonizedTariffScheduleCodeTranslation(userVisitPK, editCodeTranslationForm);
 
                     if(commandResult.hasErrors()) {
-                        logger.error("  editHarmonizedTariffScheduleCodeTranslation update failed for " + code + ": " + commandResult);
+                        logger.error("  editHarmonizedTariffScheduleCodeTranslation update failed for {}: {}", code, commandResult);
                     }
                 } else {
-                    logger.error("  editHarmonizedTariffScheduleCodeTranslation lock failed for " + code + ": " + commandResult);
+                    logger.error("  editHarmonizedTariffScheduleCodeTranslation lock failed for {}: {}", code, commandResult);
                 }
             }
         }
@@ -365,10 +365,10 @@ public abstract class HtsCountryParser<H extends Object> {
                 commandResult = itemService.editHarmonizedTariffScheduleCode(userVisitPK, editCodeForm);
 
                 if(commandResult.hasErrors()) {
-                    logger.error("  editHarmonizedTariffScheduleCode update failed for " + code + ": " + commandResult);
+                    logger.error("  editHarmonizedTariffScheduleCode update failed for {}: {}", code, commandResult);
                 }
             } else {
-                logger.error("  editHarmonizedTariffScheduleCode lock failed for " + code + ": " + commandResult);
+                logger.error("  editHarmonizedTariffScheduleCode lock failed for {}: {}", code, commandResult);
             }
         }
         
