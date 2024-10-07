@@ -4020,17 +4020,13 @@ public interface GraphQlMutations {
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultObject deleteEntityInstance(final DataFetchingEnvironment env,
-            @GraphQLName("id") @GraphQLID final String id,
-            @GraphQLName("entityRef") final String entityRef,
-            @GraphQLName("uuid") final String uuid) {
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id) {
         var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityInstanceForm();
 
             commandForm.setUuid(id);
-            commandForm.setEntityRef(entityRef);
-            commandForm.setUuid(uuid);
 
             var commandResult = CoreUtil.getHome().deleteEntityInstance(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
@@ -4044,17 +4040,13 @@ public interface GraphQlMutations {
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultObject removeEntityInstance(final DataFetchingEnvironment env,
-            @GraphQLName("id") @GraphQLID final String id,
-            @GraphQLName("entityRef") final String entityRef,
-            @GraphQLName("uuid") final String uuid) {
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id) {
         var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getRemoveEntityInstanceForm();
 
             commandForm.setUuid(id);
-            commandForm.setEntityRef(entityRef);
-            commandForm.setUuid(uuid);
 
             var commandResult = CoreUtil.getHome().removeEntityInstance(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
@@ -4068,9 +4060,7 @@ public interface GraphQlMutations {
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultObject sendEvent(final DataFetchingEnvironment env,
-            @GraphQLName("id") @GraphQLID final String id,
-            @GraphQLName("entityRef") final String entityRef,
-            @GraphQLName("uuid") final String uuid,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("eventTypeName") @GraphQLNonNull final String eventTypeName) {
         var mutationResultObject = new MutationResultObject();
 
@@ -4078,8 +4068,6 @@ public interface GraphQlMutations {
             var commandForm = CoreUtil.getHome().getSendEventForm();
 
             commandForm.setUuid(id);
-            commandForm.setEntityRef(entityRef);
-            commandForm.setUuid(uuid);
             commandForm.setEventTypeName(eventTypeName);
 
             var commandResult = CoreUtil.getHome().sendEvent(BaseGraphQl.getUserVisitPK(env), commandForm);
@@ -10449,7 +10437,7 @@ public interface GraphQlMutations {
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultObject unlockEntity(final DataFetchingEnvironment env,
-            @GraphQLName("id") @GraphQLNonNull final String id) {
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id) {
         var mutationResultObject = new MutationResultObject();
 
         try {
@@ -10468,7 +10456,7 @@ public interface GraphQlMutations {
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultObject lockEntity(final DataFetchingEnvironment env,
-            @GraphQLName("id") @GraphQLNonNull final String id) {
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id) {
         var mutationResultObject = new MutationResultObject();
 
         try {
