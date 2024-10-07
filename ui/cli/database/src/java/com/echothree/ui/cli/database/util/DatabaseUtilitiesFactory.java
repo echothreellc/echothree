@@ -107,4 +107,9 @@ public final class DatabaseUtilitiesFactory {
         return new DatabaseUtilitiesForJava(verbose, theDatabase);
     }
 
+    public DatabaseUtilitiesForJooq getJooqUtilities(boolean verbose, Database theDatabase)
+            throws Exception {
+        return new DatabaseUtilitiesForJooq(verbose, theDatabase);
+    }
+
 }
