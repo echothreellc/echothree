@@ -30,8 +30,6 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class DeleteEntityEntityAttributeCommand
@@ -46,12 +44,12 @@ public class DeleteEntityEntityAttributeCommand
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
         ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of DeleteEntityEntityAttributeCommand */
