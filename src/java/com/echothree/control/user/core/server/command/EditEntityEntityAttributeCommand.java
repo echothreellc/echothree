@@ -110,7 +110,7 @@ public class EditEntityEntityAttributeCommand
                                 entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    var entityInstanceAttribute = EntityAttributeLogic.getInstance().getEntityEntityAttribute(this, edit);
+                    var entityInstanceAttribute = EntityAttributeLogic.getInstance().getEntityInstanceAttribute(this, edit);
 
                     if(!hasExecutionErrors()) {
                         if(coreControl.countEntityAttributeEntityTypesByEntityAttribute(entityAttribute) > 0) {

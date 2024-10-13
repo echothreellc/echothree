@@ -14,14 +14,17 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.common.edit;
+package com.echothree.control.user.core.common.spec;
 
-import com.echothree.control.user.core.common.spec.EntityInstanceAttributeSpec;
-import com.echothree.util.common.form.BaseEdit;
+import com.echothree.util.common.form.BaseSpec;
 
-public interface EntityEntityAttributeEdit
-        extends BaseEdit, EntityInstanceAttributeSpec {
+public interface EntityInstanceAttributeSpec
+        extends BaseSpec {
+    
+    String getEntityRefAttribute();
+    void setEntityRefAttribute(String entityRefAttribute);
 
-    // Nothing additional beyond BaseEdit, EntityInstanceAttributeSpec
+    String getUuidAttribute();
+    void setUuidAttribute(String uuidAttribute);
 
 }

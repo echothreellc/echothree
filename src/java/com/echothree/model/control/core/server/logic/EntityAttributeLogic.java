@@ -16,16 +16,15 @@
 
 package com.echothree.model.control.core.server.logic;
 
-import com.echothree.control.user.core.common.edit.EntityEntityAttributeEdit;
 import com.echothree.control.user.core.common.edit.EntityListItemAttributeEdit;
 import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeUuid;
 import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityInstanceAttributeSpec;
 import com.echothree.control.user.core.common.spec.EntityListItemUuid;
 import com.echothree.control.user.core.common.spec.EntityListItemUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import static com.echothree.model.control.core.common.EntityAttributeTypes.*;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeNameException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityBooleanAttributeException;
@@ -506,11 +505,10 @@ public class EntityAttributeLogic
         return getEntityAttribute(eea, entityInstance, spec, uuid, EntityPermission.READ_WRITE, entityAttributeTypes);
     }
 
-    // For when we can get the EntityType from the EntityInstance:
-    public EntityInstance getEntityEntityAttribute(final ExecutionErrorAccumulator eea,
-            final EntityEntityAttributeEdit entityEntityAttributeEdit) {
-        var entityRef = entityEntityAttributeEdit.getEntityRefAttribute();
-        var uuid = entityEntityAttributeEdit.getUuidAttribute();
+    public EntityInstance getEntityInstanceAttribute(final ExecutionErrorAccumulator eea,
+            final EntityInstanceAttributeSpec entityInstanceAttributeSpec) {
+        var entityRef = entityInstanceAttributeSpec.getEntityRefAttribute();
+        var uuid = entityInstanceAttributeSpec.getUuidAttribute();
 
         return EntityInstanceLogic.getInstance().getEntityInstance(eea, entityRef, uuid, null);
     }
