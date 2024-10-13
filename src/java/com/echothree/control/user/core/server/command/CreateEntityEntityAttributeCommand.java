@@ -29,8 +29,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class CreateEntityEntityAttributeCommand
@@ -45,13 +43,14 @@ public class CreateEntityEntityAttributeCommand
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
         ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null),
-                new FieldDefinition("EntityRefAttribute", FieldType.ENTITY_REF, true, null, null)
-                ));
+                new FieldDefinition("EntityRefAttribute", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("UuidAttribute", FieldType.UUID, false, null, null)
+        );
     }
     
     /** Creates a new instance of CreateEntityEntityAttributeCommand */
@@ -72,8 +71,7 @@ public class CreateEntityEntityAttributeCommand
                 var entityEntityAttribute = coreControl.getEntityEntityAttribute(entityAttribute, entityInstance);
 
                 if(entityEntityAttribute == null) {
-                    var entityRefAttribute = form.getEntityRefAttribute();
-                    var entityInstanceAttribute = coreControl.getEntityInstanceByEntityRef(entityRefAttribute);
+                    var entityInstanceAttribute = EntityAttributeLogic.getInstance().getEntityInstanceAttribute(this, form);
 
                     if(entityInstanceAttribute != null) {
                         if(coreControl.countEntityAttributeEntityTypesByEntityAttribute(entityAttribute) > 0) {
@@ -95,8 +93,6 @@ public class CreateEntityEntityAttributeCommand
                         if(!hasExecutionErrors()) {
                             coreControl.createEntityEntityAttribute(entityAttribute, entityInstance, entityInstanceAttribute, getPartyPK());
                         }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownEntityRefAttribute.name(), entityRefAttribute);
                     }
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateEntityEntityAttribute.name(),

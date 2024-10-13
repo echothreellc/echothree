@@ -96,7 +96,7 @@ public class Step2Action
         var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             setupEntityAttributeTransfer(request, componentVendorName, entityTypeName, entityAttributeName);
-            setEntityTypeTransfers(request, componentVendorName);
+            setEntityTypeTransfers(request, allowedComponentVendorName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(2);
             

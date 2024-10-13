@@ -20,11 +20,11 @@ import com.echothree.control.user.core.common.edit.EntityListItemAttributeEdit;
 import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeUuid;
 import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityInstanceAttributeSpec;
 import com.echothree.control.user.core.common.spec.EntityListItemUuid;
 import com.echothree.control.user.core.common.spec.EntityListItemUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import static com.echothree.model.control.core.common.EntityAttributeTypes.*;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeNameException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityBooleanAttributeException;
@@ -458,7 +458,7 @@ public class EntityAttributeLogic
         } else {
             handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
         // If there are no other errors, and the EntityAttribute was specified by ULID, then verify the EntityType...
         if((eea == null || !eea.hasExecutionErrors()) && entityAttributeUuid != null) {
             if(!entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
@@ -472,39 +472,47 @@ public class EntityAttributeLogic
                         suppliedEntityTypeDetail.getEntityTypeName());
             }
         }
-        
+
         // If there are no other errors, and there are one of more entityAttributeTypes specified, then verify the EntityAttributeType...
         if((eea == null || !eea.hasExecutionErrors()) && entityAttributeTypes.length > 0) {
             var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
             var found = false;
-            
+
             for(var entityAttributeType : entityAttributeTypes) {
                 if(entityAttributeTypeName.equals(entityAttributeType.name())) {
                     found = true;
                     break;
                 }
             }
-            
+
             if(!found) {
                 handleExecutionError(MismatchedEntityAttributeTypeException.class, eea, ExecutionErrors.MismatchedEntityAttributeType.name(),
                         entityAttributeTypeName);
                 entityAttribute = null;
             }
         }
-        
+
         return entityAttribute;
     }
-    
+
     public EntityAttribute getEntityAttribute(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance,
             final EntityAttributeSpec spec, final EntityAttributeUuid uuid, final EntityAttributeTypes... entityAttributeTypes) {
         return getEntityAttribute(eea, entityInstance, spec, uuid, EntityPermission.READ_ONLY, entityAttributeTypes);
     }
-    
+
     public EntityAttribute getEntityAttributeForUpdate(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance,
             final EntityAttributeSpec spec, final EntityAttributeUuid uuid, final EntityAttributeTypes... entityAttributeTypes) {
         return getEntityAttribute(eea, entityInstance, spec, uuid, EntityPermission.READ_WRITE, entityAttributeTypes);
     }
-    
+
+    public EntityInstance getEntityInstanceAttribute(final ExecutionErrorAccumulator eea,
+            final EntityInstanceAttributeSpec entityInstanceAttributeSpec) {
+        var entityRef = entityInstanceAttributeSpec.getEntityRefAttribute();
+        var uuid = entityInstanceAttributeSpec.getUuidAttribute();
+
+        return EntityInstanceLogic.getInstance().getEntityInstance(eea, entityRef, uuid, null);
+    }
+
     private List<EntityInstanceResult> getEntityInstanceResultsByEntityAttributeTypeName(EntityAttribute entityAttribute) {
         List<EntityInstanceResult> entityInstanceResults = null;
         var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
