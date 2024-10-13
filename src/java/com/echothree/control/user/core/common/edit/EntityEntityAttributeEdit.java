@@ -20,8 +20,11 @@ import com.echothree.util.common.form.BaseEdit;
 
 public interface EntityEntityAttributeEdit
         extends BaseEdit {
-    
+
     String getEntityRefAttribute();
     void setEntityRefAttribute(String entityRefAttribute);
-    
+
+    String getUuidAttribute();
+    void setUuidAttribute(String uuidAttribute);
+
 }

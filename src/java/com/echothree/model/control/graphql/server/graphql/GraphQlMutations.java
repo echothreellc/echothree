@@ -6071,7 +6071,7 @@ public interface GraphQlMutations {
     static MutationResultObject createEntityEntityAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
-            @GraphQLName("entityRefAttribute") @GraphQLNonNull final String entityRefAttribute) {
+            @GraphQLName("idAttribute") @GraphQLNonNull final String idAttribute) {
         var mutationResultObject = new MutationResultObject();
 
         try {
@@ -6079,7 +6079,7 @@ public interface GraphQlMutations {
 
             commandForm.setUuid(id);
             commandForm.setEntityAttributeUuid(entityAttributeId);
-            commandForm.setEntityRefAttribute(entityRefAttribute);
+            commandForm.setUuidAttribute(idAttribute);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityEntityAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -6094,7 +6094,7 @@ public interface GraphQlMutations {
     static MutationResultObject editEntityEntityAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
-            @GraphQLName("entityRefAttribute") @GraphQLNonNull final String entityRefAttribute) {
+            @GraphQLName("idAttribute") @GraphQLNonNull @GraphQLID final String idAttribute) {
         var mutationResultObject = new MutationResultObject();
 
         try {
@@ -6116,8 +6116,10 @@ public interface GraphQlMutations {
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                if(arguments.containsKey("entityRefAttribute"))
-                    edit.setEntityRefAttribute(entityRefAttribute);
+                if(arguments.containsKey("idAttribute")) {
+                    edit.setEntityRefAttribute(null);
+                    edit.setUuidAttribute(idAttribute);
+                }
 
                 commandForm.setEdit(edit);
                 commandForm.setEditMode(EditMode.UPDATE);
