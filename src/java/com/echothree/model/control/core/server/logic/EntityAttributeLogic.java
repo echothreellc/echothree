@@ -512,7 +512,7 @@ public class EntityAttributeLogic
         var entityRef = entityEntityAttributeEdit.getEntityRefAttribute();
         var uuid = entityEntityAttributeEdit.getUuidAttribute();
 
-        return EntityInstanceLogic.getInstance().getEntityInstance(eea, entityRef, uuid, (String)null);
+        return EntityInstanceLogic.getInstance().getEntityInstance(eea, entityRef, uuid, null);
     }
 
     private List<EntityInstanceResult> getEntityInstanceResultsByEntityAttributeTypeName(EntityAttribute entityAttribute) {
