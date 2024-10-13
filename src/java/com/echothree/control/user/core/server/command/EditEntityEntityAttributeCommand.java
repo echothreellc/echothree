@@ -112,30 +112,48 @@ public class EditEntityEntityAttributeCommand
                 } else if(editMode.equals(EditMode.UPDATE)) {
                     var entityInstanceAttribute = EntityAttributeLogic.getInstance().getEntityEntityAttribute(this, edit);
 
-                    if(entityInstanceAttribute != null) {
-                        entityEntityAttribute = coreControl.getEntityEntityAttributeForUpdate(entityAttribute, entityInstance);
+                    if(!hasExecutionErrors()) {
+                        if(coreControl.countEntityAttributeEntityTypesByEntityAttribute(entityAttribute) > 0) {
+                            var allowedEntityType = entityInstanceAttribute.getEntityType();
 
-                        if(entityEntityAttribute != null) {
-                            if(lockEntityForUpdate(basePK)) {
-                                try {
-                                    var entityEntityAttributeValue = coreControl.getEntityEntityAttributeValueForUpdate(entityEntityAttribute);
+                            if(!coreControl.entityAttributeEntityTypeExists(entityAttribute, allowedEntityType)) {
+                                var entityAttributeDetail = entityAttribute.getLastDetail();
+                                var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
+                                var allowedEntityTypeDetail = allowedEntityType.getLastDetail();
 
-                                    entityEntityAttributeValue.setEntityInstanceAttributePK(entityInstanceAttribute.getPrimaryKey());
+                                addExecutionError(ExecutionErrors.UnknownEntityAttributeEntityType.name(),
+                                        entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                                        entityTypeDetail.getEntityTypeName(), entityAttributeDetail.getEntityAttributeName(),
+                                        allowedEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                                        allowedEntityTypeDetail.getEntityTypeName());
+                            }
+                        }
 
-                                    coreControl.updateEntityEntityAttributeFromValue(entityEntityAttributeValue, getPartyPK());
-                                } finally {
-                                    unlockEntity(basePK);
-                                    basePK = null;
+                        if(!hasExecutionErrors()) {
+                            entityEntityAttribute = coreControl.getEntityEntityAttributeForUpdate(entityAttribute, entityInstance);
+
+                            if(!hasExecutionErrors()) {
+                                if(lockEntityForUpdate(basePK)) {
+                                    try {
+                                        var entityEntityAttributeValue = coreControl.getEntityEntityAttributeValueForUpdate(entityEntityAttribute);
+
+                                        entityEntityAttributeValue.setEntityInstanceAttributePK(entityInstanceAttribute.getPrimaryKey());
+
+                                        coreControl.updateEntityEntityAttributeFromValue(entityEntityAttributeValue, getPartyPK());
+                                    } finally {
+                                        unlockEntity(basePK);
+                                        basePK = null;
+                                    }
+                                } else {
+                                    addExecutionError(ExecutionErrors.EntityLockStale.name());
                                 }
                             } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+                                var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
 
-                            addExecutionError(ExecutionErrors.UnknownEntityEntityAttribute.name(), basePK.getEntityRef(),
-                                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                                    entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
+                                addExecutionError(ExecutionErrors.UnknownEntityEntityAttribute.name(), basePK.getEntityRef(),
+                                        entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                                        entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
+                            }
                         }
                     }
                 }
