@@ -14,10 +14,10 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.graphql.server.graphql.util;
+package com.echothree.control.user.graphql.server.schema.util;
 
-import com.echothree.control.user.graphql.server.graphql.GraphQlMutations;
-import com.echothree.control.user.graphql.server.graphql.GraphQlQueries;
+import com.echothree.control.user.graphql.server.schema.GraphQlMutations;
+import com.echothree.control.user.graphql.server.schema.GraphQlQueries;
 import com.echothree.model.control.graphql.server.graphql.count.RelayWithCounting;
 import graphql.annotations.AnnotationsSchemaCreator;
 import graphql.annotations.processor.GraphQLAnnotations;

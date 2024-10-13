@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.graphql.server.graphql;
+package com.echothree.control.user.graphql.server.schema;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.common.result.CreateGlAccountResult;
