@@ -16,42 +16,61 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.graphql.server.graphql.HistoryInterface;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.data.core.common.EntityNameAttributeConstants;
 import com.echothree.model.data.core.server.entity.EntityNameAttribute;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
 
 @GraphQLDescription("entity name attribute object")
 @GraphQLName("EntityNameAttribute")
 public class EntityNameAttributeObject
-        implements BaseGraphQl, AttributeInterface {
-    
-    private final EntityNameAttribute entityNameAttribute; // Always Present
-    
+        extends BaseEntityNameAttributeObject
+        implements AttributeInterface, HistoryInterface<EntityNameAttributeHistoryObject> {
+
     public EntityNameAttributeObject(EntityNameAttribute entityNameAttribute) {
-        this.entityNameAttribute = entityNameAttribute;
+        super(entityNameAttribute);
     }
 
+    @Override
     @GraphQLField
-    @GraphQLDescription("entity attribute")
-    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityNameAttribute.getEntityAttribute(), entityNameAttribute.getEntityInstance()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("entity instance")
-    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityNameAttribute.getEntityInstance()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("name attribute")
+    @GraphQLDescription("history")
     @GraphQLNonNull
-    public String getNameAttribute() {
-        return entityNameAttribute.getNameAttribute();
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityNameAttributeHistoryObject> getHistory(final DataFetchingEnvironment env) {
+        if(true) { // TODO: Security Check
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttribute = entityNameAttribute.getEntityAttribute();
+            var entityInstance = entityNameAttribute.getEntityInstance();
+            var totalCount = coreControl.countEntityNameAttributeHistory(entityAttribute, entityInstance);
+
+            try(var objectLimiter = new ObjectLimiter(env, EntityNameAttributeConstants.COMPONENT_VENDOR_NAME, EntityNameAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityNameAttributeHistory(entityAttribute, entityInstance);
+                var entityObjects = new ArrayList<EntityNameAttributeHistoryObject>(entities.size());
+
+                for(var entity : entities) {
+                    var entityObject = new EntityNameAttributeHistoryObject(entity);
+
+                    entityObjects.add(entityObject);
+                }
+
+                return new CountedObjects<>(objectLimiter, entityObjects);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }
