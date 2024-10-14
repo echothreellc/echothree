@@ -16,40 +16,61 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.graphql.server.graphql.HistoryInterface;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.data.core.common.EntityListItemAttributeConstants;
 import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
 
 @GraphQLDescription("entity list item attribute object")
 @GraphQLName("EntityListItemAttribute")
 public class EntityListItemAttributeObject
-        implements BaseGraphQl, AttributeInterface {
-    
-    private final EntityListItemAttribute entityListItemAttribute; // Always Present
-    
+        extends BaseEntityListItemAttributeObject
+        implements AttributeInterface, HistoryInterface<EntityListItemAttributeHistoryObject> {
+
     public EntityListItemAttributeObject(EntityListItemAttribute entityListItemAttribute) {
-        this.entityListItemAttribute = entityListItemAttribute;
+        super(entityListItemAttribute);
     }
 
+    @Override
     @GraphQLField
-    @GraphQLDescription("entity attribute")
-    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityListItemAttribute.getEntityAttribute(), entityListItemAttribute.getEntityInstance()) : null;
+    @GraphQLDescription("history")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityListItemAttributeHistoryObject> getHistory(final DataFetchingEnvironment env) {
+        if(true) { // TODO: Security Check
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttribute = entityListItemAttribute.getEntityAttribute();
+            var entityInstance = entityListItemAttribute.getEntityInstance();
+            var totalCount = coreControl.countEntityListItemAttributeHistory(entityAttribute, entityInstance);
+
+            try(var objectLimiter = new ObjectLimiter(env, EntityListItemAttributeConstants.COMPONENT_VENDOR_NAME, EntityListItemAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityListItemAttributeHistory(entityAttribute, entityInstance);
+                var entityObjects = new ArrayList<EntityListItemAttributeHistoryObject>(entities.size());
+
+                for(var entity : entities) {
+                    var entityObject = new EntityListItemAttributeHistoryObject(entity);
+
+                    entityObjects.add(entityObject);
+                }
+
+                return new CountedObjects<>(objectLimiter, entityObjects);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
-    @GraphQLField
-    @GraphQLDescription("entity instance")
-    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityListItemAttribute.getEntityInstance()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("entity list item")
-    public EntityListItemObject getEntityListItem(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasEntityListItemAccess(env) ? new EntityListItemObject(entityListItemAttribute.getEntityListItem()) : null;
-    }
-    
 }
