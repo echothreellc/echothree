@@ -16,49 +16,61 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.graphql.server.graphql.HistoryInterface;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.data.core.common.EntityIntegerAttributeConstants;
 import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
 
 @GraphQLDescription("entity integer attribute object")
 @GraphQLName("EntityIntegerAttribute")
 public class EntityIntegerAttributeObject
-        implements BaseGraphQl, AttributeInterface {
-    
-    private final EntityIntegerAttribute entityIntegerAttribute; // Always Present
-    
+        extends BaseEntityIntegerAttributeObject
+        implements AttributeInterface, HistoryInterface<EntityIntegerAttributeHistoryObject> {
+
     public EntityIntegerAttributeObject(EntityIntegerAttribute entityIntegerAttribute) {
-        this.entityIntegerAttribute = entityIntegerAttribute;
+        super(entityIntegerAttribute);
     }
 
+    @Override
     @GraphQLField
-    @GraphQLDescription("entity attribute")
-    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityIntegerAttribute.getEntityAttribute(), entityIntegerAttribute.getEntityInstance()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("entity instance")
-    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityIntegerAttribute.getEntityInstance()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("unformatted integer attribute")
+    @GraphQLDescription("history")
     @GraphQLNonNull
-    public Integer getUnformattedIntegerAttribute() {
-        return entityIntegerAttribute.getIntegerAttribute();
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityIntegerAttributeHistoryObject> getHistory(final DataFetchingEnvironment env) {
+        if(true) { // TODO: Security Check
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttribute = entityIntegerAttribute.getEntityAttribute();
+            var entityInstance = entityIntegerAttribute.getEntityInstance();
+            var totalCount = coreControl.countEntityIntegerAttributeHistory(entityAttribute, entityInstance);
+
+            try(var objectLimiter = new ObjectLimiter(env, EntityIntegerAttributeConstants.COMPONENT_VENDOR_NAME, EntityIntegerAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityIntegerAttributeHistory(entityAttribute, entityInstance);
+                var entityObjects = new ArrayList<EntityIntegerAttributeHistoryObject>(entities.size());
+
+                for(var entity : entities) {
+                    var entityObject = new EntityIntegerAttributeHistoryObject(entity);
+
+                    entityObjects.add(entityObject);
+                }
+
+                return new CountedObjects<>(objectLimiter, entityObjects);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
-    
-    @GraphQLField
-    @GraphQLDescription("integer attribute")
-    @GraphQLNonNull
-    public String getIntegerAttribute() {
-        return entityIntegerAttribute.getIntegerAttribute().toString(); // TODO
-    }
-    
+
 }
