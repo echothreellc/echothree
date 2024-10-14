@@ -11644,7 +11644,34 @@ public class CoreControl
         
         return entityNameAttribute;
     }
-    
+
+    public long countEntityNameAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitynameattributes
+                    WHERE enna_ena_entityattributeid = ? AND enna_eni_entityinstanceid = ?
+                    """, entityAttribute, entityInstance);
+    }
+
+    private static final Map<EntityPermission, String> getEntityNameAttributeHistoryQueries;
+
+    static {
+        var queryMap = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entitynameattributes
+                WHERE enna_ena_entityattributeid = ? AND enna_eni_entityinstanceid = ?
+                ORDER BY enna_thrutime
+                _LIMIT_
+                """);
+        getEntityNameAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public List<EntityNameAttribute> getEntityNameAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return EntityNameAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityNameAttributeHistoryQueries,
+                entityAttribute, entityInstance);
+    }
+
     private EntityNameAttribute getEntityNameAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         EntityNameAttribute entityNameAttribute;
