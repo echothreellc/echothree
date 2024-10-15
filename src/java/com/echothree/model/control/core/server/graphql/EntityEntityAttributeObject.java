@@ -16,40 +16,61 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.graphql.server.graphql.HistoryInterface;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.data.core.common.EntityEntityAttributeConstants;
 import com.echothree.model.data.core.server.entity.EntityEntityAttribute;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
 
 @GraphQLDescription("entity entity attribute object")
 @GraphQLName("EntityEntityAttribute")
 public class EntityEntityAttributeObject
-        implements BaseGraphQl, AttributeInterface {
-    
-    private final EntityEntityAttribute entityEntityAttribute; // Always Present
-    
+        extends BaseEntityEntityAttributeObject
+        implements AttributeInterface, HistoryInterface<EntityEntityAttributeHistoryObject> {
+
     public EntityEntityAttributeObject(EntityEntityAttribute entityEntityAttribute) {
-        this.entityEntityAttribute = entityEntityAttribute;
+        super(entityEntityAttribute);
     }
 
+    @Override
     @GraphQLField
-    @GraphQLDescription("entity attribute")
-    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityEntityAttribute.getEntityAttribute(), entityEntityAttribute.getEntityInstance()) : null;
-    }
+    @GraphQLDescription("history")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityEntityAttributeHistoryObject> getHistory(final DataFetchingEnvironment env) {
+        if(true) { // TODO: Security Check
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttribute = entityEntityAttribute.getEntityAttribute();
+            var entityInstance = entityEntityAttribute.getEntityInstance();
+            var totalCount = coreControl.countEntityEntityAttributeHistory(entityAttribute, entityInstance);
 
-    @GraphQLField
-    @GraphQLDescription("entity instance")
-    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityEntityAttribute.getEntityInstance()) : null;
-    }
+            try(var objectLimiter = new ObjectLimiter(env, EntityEntityAttributeConstants.COMPONENT_VENDOR_NAME, EntityEntityAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityEntityAttributeHistory(entityAttribute, entityInstance);
+                var entityObjects = new ArrayList<EntityEntityAttributeHistoryObject>(entities.size());
 
-    @GraphQLField
-    @GraphQLDescription("entity instance attribute")
-    public EntityInstanceObject getEntityInstanceAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityEntityAttribute.getEntityInstanceAttribute()) : null;
+                for(var entity : entities) {
+                    var entityObject = new EntityEntityAttributeHistoryObject(entity);
+
+                    entityObjects.add(entityObject);
+                }
+
+                return new CountedObjects<>(objectLimiter, entityObjects);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }
