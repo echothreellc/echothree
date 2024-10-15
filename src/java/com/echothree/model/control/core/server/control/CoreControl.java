@@ -12069,7 +12069,34 @@ public class CoreControl
         
         return entityGeoPointAttribute;
     }
-    
+
+    public long countEntityGeoPointAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitygeopointattributes
+                    WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_eni_entityinstanceid = ?
+                    """, entityAttribute, entityInstance);
+    }
+
+    private static final Map<EntityPermission, String> getEntityGeoPointAttributeHistoryQueries;
+
+    static {
+        var queryMap = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entitygeopointattributes
+                WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_eni_entityinstanceid = ?
+                ORDER BY engeopnta_thrutime
+                _LIMIT_
+                """);
+        getEntityGeoPointAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public List<EntityGeoPointAttribute> getEntityGeoPointAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return EntityGeoPointAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityGeoPointAttributeHistoryQueries,
+                entityAttribute, entityInstance);
+    }
+
     private EntityGeoPointAttribute getEntityGeoPointAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         EntityGeoPointAttribute entityGeoPointAttribute;
