@@ -16,56 +16,61 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
-import com.echothree.model.control.party.server.graphql.LanguageObject;
-import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
+import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.graphql.server.graphql.HistoryInterface;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.data.core.common.EntityClobAttributeConstants;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
 
 @GraphQLDescription("entity clob attribute object")
 @GraphQLName("EntityClobAttribute")
 public class EntityClobAttributeObject
-        implements BaseGraphQl, AttributeInterface {
-    
-    private final EntityClobAttribute entityClobAttribute; // Always Present
-    
+        extends BaseEntityClobAttributeObject
+        implements AttributeInterface, HistoryInterface<EntityClobAttributeHistoryObject> {
+
     public EntityClobAttributeObject(EntityClobAttribute entityClobAttribute) {
-        this.entityClobAttribute = entityClobAttribute;
+        super(entityClobAttribute);
     }
 
+    @Override
     @GraphQLField
-    @GraphQLDescription("entity attribute")
-    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityClobAttribute.getEntityAttribute(), entityClobAttribute.getEntityInstance()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("entity instance")
-    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityClobAttribute.getEntityInstance()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("language")
-    public LanguageObject getLanguage(final DataFetchingEnvironment env) {
-        return PartySecurityUtils.getHasLanguageAccess(env) ? new LanguageObject(entityClobAttribute.getLanguage()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("clob attribute")
+    @GraphQLDescription("history")
     @GraphQLNonNull
-    public String getClobAttribute() {
-        return entityClobAttribute.getClobAttribute();
-    }
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityClobAttributeHistoryObject> getHistory(final DataFetchingEnvironment env) {
+        if(true) { // TODO: Security Check
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttribute = entityClobAttribute.getEntityAttribute();
+            var entityInstance = entityClobAttribute.getEntityInstance();
+            var totalCount = coreControl.countEntityClobAttributeHistory(entityAttribute, entityInstance);
 
-    @GraphQLField
-    @GraphQLDescription("mime type")
-    public MimeTypeObject getMimeType(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasMimeTypeAccess(env) ? new MimeTypeObject(entityClobAttribute.getMimeType()) : null;
+            try(var objectLimiter = new ObjectLimiter(env, EntityClobAttributeConstants.COMPONENT_VENDOR_NAME, EntityClobAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityClobAttributeHistory(entityAttribute, entityInstance);
+                var entityObjects = new ArrayList<EntityClobAttributeHistoryObject>(entities.size());
+
+                for(var entity : entities) {
+                    var entityObject = new EntityClobAttributeHistoryObject(entity);
+
+                    entityObjects.add(entityObject);
+                }
+
+                return new CountedObjects<>(objectLimiter, entityObjects);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }

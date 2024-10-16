@@ -12628,7 +12628,34 @@ public class CoreControl
         
         return entityClobAttribute;
     }
-    
+
+    public long countEntityClobAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entityclobattributes
+                    WHERE enca_ena_entityattributeid = ? AND enca_eni_entityinstanceid = ?
+                    """, entityAttribute, entityInstance);
+    }
+
+    private static final Map<EntityPermission, String> getEntityClobAttributeHistoryQueries;
+
+    static {
+        var queryMap = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entityclobattributes
+                WHERE enca_ena_entityattributeid = ? AND enca_eni_entityinstanceid = ?
+                ORDER BY enca_thrutime
+                _LIMIT_
+                """);
+        getEntityClobAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public List<EntityClobAttribute> getEntityClobAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return EntityClobAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityClobAttributeHistoryQueries,
+                entityAttribute, entityInstance);
+    }
+
     private EntityClobAttribute getEntityClobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, EntityPermission entityPermission) {
         EntityClobAttribute entityClobAttribute;
