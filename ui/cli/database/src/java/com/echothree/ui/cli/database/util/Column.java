@@ -108,6 +108,7 @@ public class Column {
                     throw new Exception("Foreign Key missing one or more of destinationTable, destinationColumn or onParentDelete");
                 }
             }
+            case "UUID" -> this.type = ColumnType.columnUUID;
             default -> {
                 var types = Splitter.on(':').splitToList(type).toArray(new String[0]);
 
@@ -271,6 +272,9 @@ public class Column {
                     }
                 }
                 break;
+                case ColumnType.columnUUID:
+                    javaType = "String";
+                    break;
             }
         }
         return javaType;
@@ -308,6 +312,9 @@ public class Column {
                     break;
                 case ColumnType.columnForeignKey:
                     javaSqlType = "BIGINT";
+                    break;
+                case ColumnType.columnUUID:
+                    javaSqlType = "BINARY";
                     break;
             }
         }
