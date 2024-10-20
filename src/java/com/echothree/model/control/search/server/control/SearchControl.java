@@ -53,6 +53,7 @@ import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.model.data.search.common.pk.PartySearchTypePreferencePK;
 import com.echothree.model.data.search.common.pk.SearchCheckSpellingActionTypePK;
 import com.echothree.model.data.search.common.pk.SearchDefaultOperatorPK;
+import com.echothree.model.data.search.common.pk.SearchKindPK;
 import com.echothree.model.data.search.common.pk.SearchResultActionTypePK;
 import com.echothree.model.data.search.common.pk.SearchSortDirectionPK;
 import com.echothree.model.data.search.common.pk.SearchUseTypePK;
@@ -2473,6 +2474,29 @@ public class SearchControl
         return searchKind;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchKind */
+    public SearchKind getSearchKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SearchKindPK(entityInstance.getEntityUniqueId());
+
+        return SearchKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public SearchKind getSearchKindByEntityInstance(EntityInstance entityInstance) {
+        return getSearchKindByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SearchKind getSearchKindByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSearchKindByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countSearchKinds() {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM searchkinds, searchkinddetails
+                    WHERE srchk_activedetailid = srchkdt_searchkinddetailid
+                    """);
+    }
+
     private static final Map<EntityPermission, String> getSearchKindByNameQueries;
 
     static {
@@ -2490,7 +2514,7 @@ public class SearchControl
         getSearchKindByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchKind getSearchKindByName(String searchKindName, EntityPermission entityPermission) {
+    public SearchKind getSearchKindByName(String searchKindName, EntityPermission entityPermission) {
         return SearchKindFactory.getInstance().getEntityFromQuery(entityPermission, getSearchKindByNameQueries,
                 searchKindName);
     }
@@ -2528,7 +2552,7 @@ public class SearchControl
         getDefaultSearchKindQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchKind getDefaultSearchKind(EntityPermission entityPermission) {
+    public SearchKind getDefaultSearchKind(EntityPermission entityPermission) {
         return SearchKindFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultSearchKindQueries);
     }
 
@@ -2613,8 +2637,7 @@ public class SearchControl
         return getSearchTransferCaches(userVisit).getSearchKindTransferCache().getSearchKindTransfer(searchKind);
     }
 
-    public List<SearchKindTransfer> getSearchKindTransfers(UserVisit userVisit) {
-        var searchKinds = getSearchKinds();
+    public List<SearchKindTransfer> getSearchKindTransfers(UserVisit userVisit, Collection<SearchKind> searchKinds) {
         List<SearchKindTransfer> searchKindTransfers = new ArrayList<>(searchKinds.size());
         var searchKindTransferCache = getSearchTransferCaches(userVisit).getSearchKindTransferCache();
 
@@ -2623,6 +2646,10 @@ public class SearchControl
         );
 
         return searchKindTransfers;
+    }
+
+    public List<SearchKindTransfer> getSearchKindTransfers(UserVisit userVisit) {
+        return getSearchKindTransfers(userVisit, getSearchKinds());
     }
 
     private void updateSearchKindFromValue(SearchKindDetailValue searchKindDetailValue, boolean checkDefault, BasePK updatedBy) {

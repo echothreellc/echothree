@@ -20,8 +20,8 @@ import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObje
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.search.server.entity.SearchSortDirection;
-import com.echothree.model.data.search.server.entity.SearchSortDirectionDetail;
+import com.echothree.model.data.search.server.entity.SearchKind;
+import com.echothree.model.data.search.server.entity.SearchKindDetail;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -29,48 +29,48 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("search sort direction object")
-@GraphQLName("SearchSortDirection")
-public class SearchSortDirectionObject
+@GraphQLDescription("search kind object")
+@GraphQLName("SearchKind")
+public class SearchKindObject
         extends BaseEntityInstanceObject {
 
-    private final SearchSortDirection searchSortDirection; // Always Present
+    private final SearchKind searchKind; // Always Present
 
-    public SearchSortDirectionObject(SearchSortDirection searchSortDirection) {
-        super(searchSortDirection.getPrimaryKey());
+    public SearchKindObject(SearchKind searchKind) {
+        super(searchKind.getPrimaryKey());
         
-        this.searchSortDirection = searchSortDirection;
+        this.searchKind = searchKind;
     }
 
-    private SearchSortDirectionDetail searchSortDirectionDetail; // Optional, use getSearchSortDirectionDetail()
+    private SearchKindDetail searchKindDetail; // Optional, use getSearchKindDetail()
     
-    private SearchSortDirectionDetail getSearchSortDirectionDetail() {
-        if(searchSortDirectionDetail == null) {
-            searchSortDirectionDetail = searchSortDirection.getLastDetail();
+    private SearchKindDetail getSearchKindDetail() {
+        if(searchKindDetail == null) {
+            searchKindDetail = searchKind.getLastDetail();
         }
         
-        return searchSortDirectionDetail;
+        return searchKindDetail;
     }
     
     @GraphQLField
-    @GraphQLDescription("search sort direction name")
+    @GraphQLDescription("search kind name")
     @GraphQLNonNull
-    public String getSearchSortDirectionName() {
-        return getSearchSortDirectionDetail().getSearchSortDirectionName();
+    public String getSearchKindName() {
+        return getSearchKindDetail().getSearchKindName();
     }
     
     @GraphQLField
     @GraphQLDescription("is default")
     @GraphQLNonNull
     public boolean getIsDefault() {
-        return getSearchSortDirectionDetail().getIsDefault();
+        return getSearchKindDetail().getIsDefault();
     }
     
     @GraphQLField
     @GraphQLDescription("sort order")
     @GraphQLNonNull
     public int getSortOrder() {
-        return getSearchSortDirectionDetail().getSortOrder();
+        return getSearchKindDetail().getSortOrder();
     }
     
     @GraphQLField
@@ -80,7 +80,7 @@ public class SearchSortDirectionObject
         var searchControl = Session.getModelController(SearchControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return searchControl.getBestSearchSortDirectionDescription(searchSortDirection, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        return searchControl.getBestSearchKindDescription(searchKind, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

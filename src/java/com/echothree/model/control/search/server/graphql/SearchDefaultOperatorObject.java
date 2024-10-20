@@ -53,7 +53,7 @@ public class SearchDefaultOperatorObject
     }
     
     @GraphQLField
-    @GraphQLDescription("search use type name")
+    @GraphQLDescription("search default operator name")
     @GraphQLNonNull
     public String getSearchDefaultOperatorName() {
         return getSearchDefaultOperatorDetail().getSearchDefaultOperatorName();
