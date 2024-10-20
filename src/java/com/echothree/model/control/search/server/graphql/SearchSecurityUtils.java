@@ -18,6 +18,8 @@ package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.server.command.GetSearchCheckSpellingActionTypeCommand;
 import com.echothree.control.user.search.server.command.GetSearchCheckSpellingActionTypesCommand;
+import com.echothree.control.user.search.server.command.GetSearchUseTypeCommand;
+import com.echothree.control.user.search.server.command.GetSearchUseTypesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -29,6 +31,14 @@ public interface SearchSecurityUtils {
 
     static boolean getHasSearchCheckSpellingActionTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchCheckSpellingActionTypeCommand.class);
+    }
+
+    static boolean getHasSearchUseTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchUseTypesCommand.class);
+    }
+
+    static boolean getHasSearchUseTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchUseTypeCommand.class);
     }
 
 }

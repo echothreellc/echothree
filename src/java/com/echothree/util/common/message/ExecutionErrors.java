@@ -2295,5 +2295,6 @@ public enum ExecutionErrors {
     DuplicateEntityWorkflowAttribute,
     UnknownEntityWorkflowAttribute,
     DuplicateWorkflowUsageInEntityAttribute,
+    UnknownDefaultSearchUseType,
 
 }
