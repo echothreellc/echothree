@@ -16,12 +16,11 @@
 
 package com.echothree.control.user.search.common.form;
 
-import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
-import com.echothree.control.user.search.common.spec.SearchSortDirectionSpec;
+import com.echothree.control.user.search.common.spec.SearchSortDirectionUniversalSpec;
 
 public interface GetSearchSortDirectionForm
-        extends SearchSortDirectionSpec, UniversalEntitySpec {
+        extends SearchSortDirectionUniversalSpec {
     
-    // Nothing additional beyond SearchSortDirectionSpec, UniversalEntitySpec
+    // Nothing additional beyond SearchSortDirectionUniversalSpec
     
 }

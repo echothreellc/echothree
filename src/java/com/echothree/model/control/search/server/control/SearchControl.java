@@ -2002,11 +2002,26 @@ public class SearchControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchSortDirection */
-    public SearchSortDirection getSearchSortDirectionByEntityInstance(EntityInstance entityInstance) {
+    public SearchSortDirection getSearchSortDirectionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SearchSortDirectionPK(entityInstance.getEntityUniqueId());
-        var searchSortDirection = SearchSortDirectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return searchSortDirection;
+        return SearchSortDirectionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public SearchSortDirection getSearchSortDirectionByEntityInstance(EntityInstance entityInstance) {
+        return getSearchSortDirectionByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SearchSortDirection getSearchSortDirectionByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSearchSortDirectionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countSearchSortDirections() {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM searchusetypes, searchusetypedetails
+                    WHERE srchutyp_activedetailid = srchutypdt_searchusetypedetailid
+                    """);
     }
 
     private static final Map<EntityPermission, String> getSearchSortDirectionByNameQueries;
@@ -2028,7 +2043,7 @@ public class SearchControl
         getSearchSortDirectionByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchSortDirection getSearchSortDirectionByName(String searchSortDirectionName, EntityPermission entityPermission) {
+    public SearchSortDirection getSearchSortDirectionByName(String searchSortDirectionName, EntityPermission entityPermission) {
         return SearchSortDirectionFactory.getInstance().getEntityFromQuery(entityPermission, getSearchSortDirectionByNameQueries, searchSortDirectionName);
     }
 
@@ -2067,7 +2082,7 @@ public class SearchControl
         getDefaultSearchSortDirectionQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchSortDirection getDefaultSearchSortDirection(EntityPermission entityPermission) {
+    public SearchSortDirection getDefaultSearchSortDirection(EntityPermission entityPermission) {
         return SearchSortDirectionFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultSearchSortDirectionQueries);
     }
 
@@ -2118,8 +2133,7 @@ public class SearchControl
         return getSearchTransferCaches(userVisit).getSearchSortDirectionTransferCache().getSearchSortDirectionTransfer(searchSortDirection);
     }
 
-    public List<SearchSortDirectionTransfer> getSearchSortDirectionTransfers(UserVisit userVisit) {
-        var searchSortDirections = getSearchSortDirections();
+    public List<SearchSortDirectionTransfer> getSearchSortDirectionTransfers(UserVisit userVisit, Collection<SearchSortDirection> searchSortDirections) {
         List<SearchSortDirectionTransfer> searchSortDirectionTransfers = new ArrayList<>(searchSortDirections.size());
         var searchSortDirectionTransferCache = getSearchTransferCaches(userVisit).getSearchSortDirectionTransferCache();
 
@@ -2128,6 +2142,10 @@ public class SearchControl
         );
 
         return searchSortDirectionTransfers;
+    }
+
+    public List<SearchSortDirectionTransfer> getSearchSortDirectionTransfers(UserVisit userVisit) {
+        return getSearchSortDirectionTransfers(userVisit, getSearchSortDirections());
     }
 
     public SearchSortDirectionChoicesBean getSearchSortDirectionChoices(String defaultSearchSortDirectionChoice, Language language, boolean allowNullChoice) {
