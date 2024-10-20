@@ -14,19 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.search.common.result;
+package com.echothree.control.user.search.common.spec;
 
-import com.echothree.model.control.search.common.transfer.SearchDefaultOperatorTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetSearchDefaultOperatorsResult
-        extends BaseResult {
+public interface SearchDefaultOperatorUniversalSpec
+        extends SearchDefaultOperatorSpec, UniversalEntitySpec {
 
-    Long getSearchDefaultOperatorCount();
-    void setSearchDefaultOperatorCount(Long searchDefaultOperatorCount);
-
-    List<SearchDefaultOperatorTransfer> getSearchDefaultOperators();
-    void setSearchDefaultOperators(List<SearchDefaultOperatorTransfer> searchDefaultOperators);
+    // Nothing additional beyond SearchDefaultOperatorSpec, UniversalEntitySpec
     
 }

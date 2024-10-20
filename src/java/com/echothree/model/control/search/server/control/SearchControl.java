@@ -1567,11 +1567,26 @@ public class SearchControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchDefaultOperator */
-    public SearchDefaultOperator getSearchDefaultOperatorByEntityInstance(EntityInstance entityInstance) {
+    public SearchDefaultOperator getSearchDefaultOperatorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SearchDefaultOperatorPK(entityInstance.getEntityUniqueId());
-        var searchDefaultOperator = SearchDefaultOperatorFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return searchDefaultOperator;
+        return SearchDefaultOperatorFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public SearchDefaultOperator getSearchDefaultOperatorByEntityInstance(EntityInstance entityInstance) {
+        return getSearchDefaultOperatorByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SearchDefaultOperator getSearchDefaultOperatorByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSearchDefaultOperatorByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countSearchDefaultOperators() {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM searchdefaultoperators, searchdefaultoperatordetails
+                    WHERE srchdefop_activedetailid = srchdefopdt_searchdefaultoperatordetailid
+                    """);
     }
 
     private static final Map<EntityPermission, String> getSearchDefaultOperatorByNameQueries;
@@ -1593,7 +1608,7 @@ public class SearchControl
         getSearchDefaultOperatorByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchDefaultOperator getSearchDefaultOperatorByName(String searchDefaultOperatorName, EntityPermission entityPermission) {
+    public SearchDefaultOperator getSearchDefaultOperatorByName(String searchDefaultOperatorName, EntityPermission entityPermission) {
         return SearchDefaultOperatorFactory.getInstance().getEntityFromQuery(entityPermission, getSearchDefaultOperatorByNameQueries, searchDefaultOperatorName);
     }
 
@@ -1632,7 +1647,7 @@ public class SearchControl
         getDefaultSearchDefaultOperatorQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchDefaultOperator getDefaultSearchDefaultOperator(EntityPermission entityPermission) {
+    public SearchDefaultOperator getDefaultSearchDefaultOperator(EntityPermission entityPermission) {
         return SearchDefaultOperatorFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultSearchDefaultOperatorQueries);
     }
 
@@ -1683,8 +1698,7 @@ public class SearchControl
         return getSearchTransferCaches(userVisit).getSearchDefaultOperatorTransferCache().getSearchDefaultOperatorTransfer(searchDefaultOperator);
     }
 
-    public List<SearchDefaultOperatorTransfer> getSearchDefaultOperatorTransfers(UserVisit userVisit) {
-        var searchDefaultOperators = getSearchDefaultOperators();
+    public List<SearchDefaultOperatorTransfer> getSearchDefaultOperatorTransfers(UserVisit userVisit, Collection<SearchDefaultOperator> searchDefaultOperators) {
         List<SearchDefaultOperatorTransfer> searchDefaultOperatorTransfers = new ArrayList<>(searchDefaultOperators.size());
         var searchDefaultOperatorTransferCache = getSearchTransferCaches(userVisit).getSearchDefaultOperatorTransferCache();
 
@@ -1693,6 +1707,10 @@ public class SearchControl
         );
 
         return searchDefaultOperatorTransfers;
+    }
+
+    public List<SearchDefaultOperatorTransfer> getSearchDefaultOperatorTransfers(UserVisit userVisit) {
+        return getSearchDefaultOperatorTransfers(userVisit, getSearchDefaultOperators());
     }
 
     public SearchDefaultOperatorChoicesBean getSearchDefaultOperatorChoices(String defaultSearchDefaultOperatorChoice, Language language, boolean allowNullChoice) {
