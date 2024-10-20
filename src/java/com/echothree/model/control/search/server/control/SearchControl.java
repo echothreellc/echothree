@@ -208,11 +208,26 @@ public class SearchControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchUseType */
-    public SearchUseType getSearchUseTypeByEntityInstance(EntityInstance entityInstance) {
+    public SearchUseType getSearchUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SearchUseTypePK(entityInstance.getEntityUniqueId());
-        var searchUseType = SearchUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return searchUseType;
+        return SearchUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public SearchUseType getSearchUseTypeByEntityInstance(EntityInstance entityInstance) {
+        return getSearchUseTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SearchUseType getSearchUseTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSearchUseTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countSearchUseTypes() {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM searchusetypes, searchusetypedetails
+                    WHERE srchutyp_activedetailid = srchutypdt_searchusetypedetailid
+                    """);
     }
 
     private static final Map<EntityPermission, String> getSearchUseTypeByNameQueries;
@@ -234,7 +249,7 @@ public class SearchControl
         getSearchUseTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchUseType getSearchUseTypeByName(String searchUseTypeName, EntityPermission entityPermission) {
+    public SearchUseType getSearchUseTypeByName(String searchUseTypeName, EntityPermission entityPermission) {
         return SearchUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getSearchUseTypeByNameQueries, searchUseTypeName);
     }
 
@@ -273,7 +288,7 @@ public class SearchControl
         getDefaultSearchUseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchUseType getDefaultSearchUseType(EntityPermission entityPermission) {
+    public SearchUseType getDefaultSearchUseType(EntityPermission entityPermission) {
         return SearchUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultSearchUseTypeQueries);
     }
 
@@ -324,8 +339,7 @@ public class SearchControl
         return getSearchTransferCaches(userVisit).getSearchUseTypeTransferCache().getSearchUseTypeTransfer(searchUseType);
     }
 
-    public List<SearchUseTypeTransfer> getSearchUseTypeTransfers(UserVisit userVisit) {
-        var searchUseTypes = getSearchUseTypes();
+    public List<SearchUseTypeTransfer> getSearchUseTypeTransfers(UserVisit userVisit, Collection<SearchUseType> searchUseTypes) {
         List<SearchUseTypeTransfer> searchUseTypeTransfers = new ArrayList<>(searchUseTypes.size());
         var searchUseTypeTransferCache = getSearchTransferCaches(userVisit).getSearchUseTypeTransferCache();
 
@@ -334,6 +348,10 @@ public class SearchControl
         );
 
         return searchUseTypeTransfers;
+    }
+
+    public List<SearchUseTypeTransfer> getSearchUseTypeTransfers(UserVisit userVisit) {
+        return getSearchUseTypeTransfers(userVisit, getSearchUseTypes());
     }
 
     public SearchUseTypeChoicesBean getSearchUseTypeChoices(String defaultSearchUseTypeChoice, Language language, boolean allowNullChoice) {
