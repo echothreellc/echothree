@@ -20,8 +20,8 @@ import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObje
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
-import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionTypeDetail;
+import com.echothree.model.data.search.server.entity.SearchUseType;
+import com.echothree.model.data.search.server.entity.SearchUseTypeDetail;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -29,48 +29,48 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("search check spelling action type object")
-@GraphQLName("SearchCheckSpellingActionType")
-public class SearchCheckSpellingActionTypeObject
+@GraphQLDescription("search use type object")
+@GraphQLName("SearchUseType")
+public class SearchUseTypeObject
         extends BaseEntityInstanceObject {
 
-    private final SearchCheckSpellingActionType searchCheckSpellingActionType; // Always Present
+    private final SearchUseType searchUseType; // Always Present
 
-    public SearchCheckSpellingActionTypeObject(SearchCheckSpellingActionType searchCheckSpellingActionType) {
-        super(searchCheckSpellingActionType.getPrimaryKey());
+    public SearchUseTypeObject(SearchUseType searchUseType) {
+        super(searchUseType.getPrimaryKey());
         
-        this.searchCheckSpellingActionType = searchCheckSpellingActionType;
+        this.searchUseType = searchUseType;
     }
 
-    private SearchCheckSpellingActionTypeDetail searchCheckSpellingActionTypeDetail; // Optional, use getSearchCheckSpellingActionTypeDetail()
+    private SearchUseTypeDetail searchUseTypeDetail; // Optional, use getSearchUseTypeDetail()
     
-    private SearchCheckSpellingActionTypeDetail getSearchCheckSpellingActionTypeDetail() {
-        if(searchCheckSpellingActionTypeDetail == null) {
-            searchCheckSpellingActionTypeDetail = searchCheckSpellingActionType.getLastDetail();
+    private SearchUseTypeDetail getSearchUseTypeDetail() {
+        if(searchUseTypeDetail == null) {
+            searchUseTypeDetail = searchUseType.getLastDetail();
         }
         
-        return searchCheckSpellingActionTypeDetail;
+        return searchUseTypeDetail;
     }
     
     @GraphQLField
-    @GraphQLDescription("search check spelling action type name")
+    @GraphQLDescription("search use type name")
     @GraphQLNonNull
-    public String getSearchCheckSpellingActionTypeName() {
-        return getSearchCheckSpellingActionTypeDetail().getSearchCheckSpellingActionTypeName();
+    public String getSearchUseTypeName() {
+        return getSearchUseTypeDetail().getSearchUseTypeName();
     }
     
     @GraphQLField
     @GraphQLDescription("is default")
     @GraphQLNonNull
     public boolean getIsDefault() {
-        return getSearchCheckSpellingActionTypeDetail().getIsDefault();
+        return getSearchUseTypeDetail().getIsDefault();
     }
     
     @GraphQLField
     @GraphQLDescription("sort order")
     @GraphQLNonNull
     public int getSortOrder() {
-        return getSearchCheckSpellingActionTypeDetail().getSortOrder();
+        return getSearchUseTypeDetail().getSortOrder();
     }
     
     @GraphQLField
@@ -80,7 +80,7 @@ public class SearchCheckSpellingActionTypeObject
         var searchControl = Session.getModelController(SearchControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return searchControl.getBestSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        return searchControl.getBestSearchUseTypeDescription(searchUseType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }
