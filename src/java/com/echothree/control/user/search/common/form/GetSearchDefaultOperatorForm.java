@@ -16,12 +16,11 @@
 
 package com.echothree.control.user.search.common.form;
 
-import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
-import com.echothree.control.user.search.common.spec.SearchDefaultOperatorSpec;
+import com.echothree.control.user.search.common.spec.SearchDefaultOperatorUniversalSpec;
 
 public interface GetSearchDefaultOperatorForm
-        extends SearchDefaultOperatorSpec, UniversalEntitySpec {
+        extends SearchDefaultOperatorUniversalSpec {
     
-    // Nothing additional beyond SearchDefaultOperatorSpec, UniversalEntitySpec
+    // Nothing additional beyond SearchDefaultOperatorUniversalSpec
     
 }
