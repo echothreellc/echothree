@@ -21,62 +21,68 @@ import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
+import com.echothree.model.control.search.server.logic.SearchKindLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetSearchKindCommand
-        extends BaseSimpleCommand<GetSearchKindForm> {
-    
+        extends BaseSingleEntityCommand<SearchKind, GetSearchKindForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
-    static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SearchKind.name(), SecurityRoles.Review.name())
-                    )))
-                )));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("SearchKindName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.SearchKind.name(), SecurityRoles.Review.name())
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("SearchKindName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
+        );
     }
-    
+
     /** Creates a new instance of GetSearchKindCommand */
     public GetSearchKindCommand(UserVisitPK userVisitPK, GetSearchKindForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected SearchKind getEntity() {
+        var searchKind = SearchKindLogic.getInstance().getSearchKindByUniversalSpec(this, form, true);
+
+        if(searchKind != null) {
+            sendEvent(searchKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return searchKind;
+    }
+
+    @Override
+    protected BaseResult getResult(SearchKind searchKind) {
         var searchControl = Session.getModelController(SearchControl.class);
         var result = SearchResultFactory.getGetSearchKindResult();
-        var searchKindName = form.getSearchKindName();
-        var searchKind = searchControl.getSearchKindByName(searchKindName);
-        
+
         if(searchKind != null) {
             result.setSearchKind(searchControl.getSearchKindTransfer(getUserVisit(), searchKind));
-            
-            sendEvent(searchKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), searchKindName);
         }
-        
+
         return result;
     }
-    
+
 }
