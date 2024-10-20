@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.search.common.form;
 
-import com.echothree.control.user.search.common.spec.SearchKindSpec;
+import com.echothree.control.user.search.common.spec.SearchKindUniversalSpec;
 
 public interface GetSearchKindForm
-        extends SearchKindSpec {
+        extends SearchKindUniversalSpec {
     
-    // Nothing additional beyond SearchKindSpec
+    // Nothing additional beyond SearchKindUniversalSpec
     
 }
