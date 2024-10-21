@@ -14,23 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.search.common.result;
+package com.echothree.control.user.search.common.spec;
 
-import com.echothree.model.control.search.common.transfer.SearchKindTransfer;
-import com.echothree.model.control.search.common.transfer.SearchSortOrderTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetSearchSortOrdersResult
-        extends BaseResult {
-    
-    SearchKindTransfer getSearchKind();
-    void setSearchKind(SearchKindTransfer searchKind);
+public interface SearchSortOrderUniversalSpec
+        extends SearchSortOrderSpec, UniversalEntitySpec {
 
-    Long getSearchSortOrderCount();
-    void setSearchSortOrderCount(Long searchSortOrderCount);
-
-    List<SearchSortOrderTransfer> getSearchSortOrders();
-    void setSearchSortOrders(List<SearchSortOrderTransfer> searchSortOrders);
+    // Nothing additional beyond SearchSortOrderSpec, UniversalEntitySpec
     
 }
