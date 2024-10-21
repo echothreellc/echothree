@@ -20,8 +20,12 @@ import com.echothree.control.user.search.server.command.GetSearchCheckSpellingAc
 import com.echothree.control.user.search.server.command.GetSearchCheckSpellingActionTypesCommand;
 import com.echothree.control.user.search.server.command.GetSearchDefaultOperatorCommand;
 import com.echothree.control.user.search.server.command.GetSearchDefaultOperatorsCommand;
+import com.echothree.control.user.search.server.command.GetSearchKindCommand;
+import com.echothree.control.user.search.server.command.GetSearchKindsCommand;
 import com.echothree.control.user.search.server.command.GetSearchSortDirectionCommand;
 import com.echothree.control.user.search.server.command.GetSearchSortDirectionsCommand;
+import com.echothree.control.user.search.server.command.GetSearchTypeCommand;
+import com.echothree.control.user.search.server.command.GetSearchTypesCommand;
 import com.echothree.control.user.search.server.command.GetSearchUseTypeCommand;
 import com.echothree.control.user.search.server.command.GetSearchUseTypesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
@@ -35,6 +39,22 @@ public interface SearchSecurityUtils {
 
     static boolean getHasSearchCheckSpellingActionTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchCheckSpellingActionTypeCommand.class);
+    }
+
+    static boolean getHasSearchKindsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchKindsCommand.class);
+    }
+
+    static boolean getHasSearchKindAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchKindCommand.class);
+    }
+
+    static boolean getHasSearchTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchTypesCommand.class);
+    }
+
+    static boolean getHasSearchTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchTypeCommand.class);
     }
 
     static boolean getHasSearchUseTypesAccess(final DataFetchingEnvironment env) {

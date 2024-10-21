@@ -17,9 +17,15 @@
 package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.search.common.SearchTypeConstants;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchKindDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +33,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("search kind object")
 @GraphQLName("SearchKind")
@@ -82,5 +91,25 @@ public class SearchKindObject
 
         return searchControl.getBestSearchKindDescription(searchKind, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("search types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<SearchTypeObject> getSearchTypes(final DataFetchingEnvironment env) {
+        if(SearchSecurityUtils.getHasSearchTypesAccess(env)) {
+            var searchControl = Session.getModelController(SearchControl.class);
+            var totalCount = searchControl.countSearchTypesBySearchKind(searchKind);
+
+            try(var objectLimiter = new ObjectLimiter(env, SearchTypeConstants.COMPONENT_VENDOR_NAME, SearchTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = searchControl.getSearchTypes(searchKind);
+                var searchTypes = entities.stream().map(SearchTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, searchTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
 }
