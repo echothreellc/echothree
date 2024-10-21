@@ -56,6 +56,7 @@ import com.echothree.model.data.search.common.pk.SearchDefaultOperatorPK;
 import com.echothree.model.data.search.common.pk.SearchKindPK;
 import com.echothree.model.data.search.common.pk.SearchResultActionTypePK;
 import com.echothree.model.data.search.common.pk.SearchSortDirectionPK;
+import com.echothree.model.data.search.common.pk.SearchTypePK;
 import com.echothree.model.data.search.common.pk.SearchUseTypePK;
 import com.echothree.model.data.search.server.entity.CachedExecutedSearch;
 import com.echothree.model.data.search.server.entity.CachedExecutedSearchResult;
@@ -2922,6 +2923,29 @@ public class SearchControl
         return searchType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchType */
+    public SearchType getSearchTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SearchTypePK(entityInstance.getEntityUniqueId());
+
+        return SearchTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public SearchType getSearchTypeByEntityInstance(EntityInstance entityInstance) {
+        return getSearchTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SearchType getSearchTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSearchTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countSearchTypesBySearchKind(SearchKind searchKind) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM searchtypes, searchtypedetails
+                        WHERE srchtyp_activedetailid = srchtypdt_searchtypedetailid AND srchtypdt_srchk_searchkindid = ?
+                        """, searchKind);
+    }
+
     private static final Map<EntityPermission, String> getSearchTypesQueries;
 
     static {
@@ -2973,7 +2997,7 @@ public class SearchControl
         getDefaultSearchTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchType getDefaultSearchType(SearchKind searchKind, EntityPermission entityPermission) {
+    public SearchType getDefaultSearchType(SearchKind searchKind, EntityPermission entityPermission) {
         return SearchTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultSearchTypeQueries,
                 searchKind);
     }
@@ -3009,7 +3033,7 @@ public class SearchControl
         getSearchTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchType getSearchTypeByName(SearchKind searchKind, String searchTypeName, EntityPermission entityPermission) {
+    public SearchType getSearchTypeByName(SearchKind searchKind, String searchTypeName, EntityPermission entityPermission) {
         return SearchTypeFactory.getInstance().getEntityFromQuery(entityPermission, getSearchTypeByNameQueries,
                 searchKind, searchTypeName);
     }
@@ -3068,9 +3092,8 @@ public class SearchControl
         return getSearchTransferCaches(userVisit).getSearchTypeTransferCache().getSearchTypeTransfer(searchType);
     }
 
-    public List<SearchTypeTransfer> getSearchTypeTransfersBySearchKind(UserVisit userVisit, SearchKind searchKind) {
-        var searchTypes = getSearchTypes(searchKind);
-        List<SearchTypeTransfer> searchTypeTransfers = new ArrayList<>(searchTypes.size());
+    public List<SearchTypeTransfer> getSearchTypeTransfers(UserVisit userVisit, Collection<SearchType> searchTypes) {
+        var searchTypeTransfers = new ArrayList<SearchTypeTransfer>(searchTypes.size());
         var searchTypeTransferCache = getSearchTransferCaches(userVisit).getSearchTypeTransferCache();
 
         searchTypes.forEach((searchType) ->
@@ -3078,6 +3101,10 @@ public class SearchControl
         );
 
         return searchTypeTransfers;
+    }
+
+    public List<SearchTypeTransfer> getSearchTypeTransfersBySearchKind(UserVisit userVisit, SearchKind searchKind) {
+        return getSearchTypeTransfers(userVisit, getSearchTypes(searchKind));
     }
 
     private void updateSearchTypeFromValue(SearchTypeDetailValue searchTypeDetailValue, boolean checkDefault,

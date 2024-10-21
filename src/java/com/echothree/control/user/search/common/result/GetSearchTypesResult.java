@@ -26,7 +26,10 @@ public interface GetSearchTypesResult
     
     SearchKindTransfer getSearchKind();
     void setSearchKind(SearchKindTransfer searchKind);
-    
+
+    Long getSearchTypeCount();
+    void setSearchTypeCount(Long searchTypeCount);
+
     List<SearchTypeTransfer> getSearchTypes();
     void setSearchTypes(List<SearchTypeTransfer> searchTypes);
     
