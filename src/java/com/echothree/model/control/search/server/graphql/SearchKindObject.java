@@ -25,6 +25,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.search.common.SearchSortOrderConstants;
 import com.echothree.model.data.search.common.SearchTypeConstants;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchKindDetail;
@@ -106,6 +107,26 @@ public class SearchKindObject
                 var searchTypes = entities.stream().map(SearchTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, searchTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("search sort orders")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<SearchSortOrderObject> getSearchSortOrders(final DataFetchingEnvironment env) {
+        if(SearchSecurityUtils.getHasSearchSortOrdersAccess(env)) {
+            var searchControl = Session.getModelController(SearchControl.class);
+            var totalCount = searchControl.countSearchSortOrdersBySearchKind(searchKind);
+
+            try(var objectLimiter = new ObjectLimiter(env, SearchSortOrderConstants.COMPONENT_VENDOR_NAME, SearchSortOrderConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = searchControl.getSearchSortOrders(searchKind);
+                var searchSortOrders = entities.stream().map(SearchSortOrderObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, searchSortOrders);
             }
         } else {
             return Connections.emptyConnection();

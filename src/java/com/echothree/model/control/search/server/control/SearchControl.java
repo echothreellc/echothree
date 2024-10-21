@@ -56,6 +56,7 @@ import com.echothree.model.data.search.common.pk.SearchDefaultOperatorPK;
 import com.echothree.model.data.search.common.pk.SearchKindPK;
 import com.echothree.model.data.search.common.pk.SearchResultActionTypePK;
 import com.echothree.model.data.search.common.pk.SearchSortDirectionPK;
+import com.echothree.model.data.search.common.pk.SearchSortOrderPK;
 import com.echothree.model.data.search.common.pk.SearchTypePK;
 import com.echothree.model.data.search.common.pk.SearchUseTypePK;
 import com.echothree.model.data.search.server.entity.CachedExecutedSearch;
@@ -3378,6 +3379,29 @@ public class SearchControl
         return searchSortOrder;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchSortOrder */
+    public SearchSortOrder getSearchSortOrderByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SearchSortOrderPK(entityInstance.getEntityUniqueId());
+
+        return SearchSortOrderFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public SearchSortOrder getSearchSortOrderByEntityInstance(EntityInstance entityInstance) {
+        return getSearchSortOrderByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SearchSortOrder getSearchSortOrderByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSearchSortOrderByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countSearchSortOrdersBySearchKind(SearchKind searchKind) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM searchsortorders, searchsortorderdetails
+                        WHERE srchsrtord_activedetailid = srchsrtorddt_searchsortorderdetailid AND srchsrtorddt_srchk_searchkindid = ?
+                        """, searchKind);
+    }
+
     private static final Map<EntityPermission, String> getSearchSortOrdersQueries;
 
     static {
@@ -3429,7 +3453,7 @@ public class SearchControl
         getDefaultSearchSortOrderQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchSortOrder getDefaultSearchSortOrder(SearchKind searchKind, EntityPermission entityPermission) {
+    public SearchSortOrder getDefaultSearchSortOrder(SearchKind searchKind, EntityPermission entityPermission) {
         return SearchSortOrderFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultSearchSortOrderQueries,
                 searchKind);
     }
@@ -3465,7 +3489,7 @@ public class SearchControl
         getSearchSortOrderByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchSortOrder getSearchSortOrderByName(SearchKind searchKind, String searchSortOrderName, EntityPermission entityPermission) {
+    public SearchSortOrder getSearchSortOrderByName(SearchKind searchKind, String searchSortOrderName, EntityPermission entityPermission) {
         return SearchSortOrderFactory.getInstance().getEntityFromQuery(entityPermission, getSearchSortOrderByNameQueries,
                 searchKind, searchSortOrderName);
     }
@@ -3524,8 +3548,7 @@ public class SearchControl
         return getSearchTransferCaches(userVisit).getSearchSortOrderTransferCache().getSearchSortOrderTransfer(searchSortOrder);
     }
 
-    public List<SearchSortOrderTransfer> getSearchSortOrderTransfersBySearchKind(UserVisit userVisit, SearchKind searchKind) {
-        var searchSortOrders = getSearchSortOrders(searchKind);
+    public List<SearchSortOrderTransfer> getSearchSortOrderTransfers(UserVisit userVisit, Collection<SearchSortOrder> searchSortOrders) {
         List<SearchSortOrderTransfer> searchSortOrderTransfers = new ArrayList<>(searchSortOrders.size());
         var searchSortOrderTransferCache = getSearchTransferCaches(userVisit).getSearchSortOrderTransferCache();
 
@@ -3534,6 +3557,10 @@ public class SearchControl
         );
 
         return searchSortOrderTransfers;
+    }
+
+    public List<SearchSortOrderTransfer> getSearchSortOrderTransfersBySearchKind(UserVisit userVisit, SearchKind searchKind) {
+        return getSearchSortOrderTransfers(userVisit, getSearchSortOrders(searchKind));
     }
 
     private void updateSearchSortOrderFromValue(SearchSortOrderDetailValue searchSortOrderDetailValue, boolean checkDefault,

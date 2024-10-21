@@ -24,6 +24,8 @@ import com.echothree.control.user.search.server.command.GetSearchKindCommand;
 import com.echothree.control.user.search.server.command.GetSearchKindsCommand;
 import com.echothree.control.user.search.server.command.GetSearchSortDirectionCommand;
 import com.echothree.control.user.search.server.command.GetSearchSortDirectionsCommand;
+import com.echothree.control.user.search.server.command.GetSearchSortOrderCommand;
+import com.echothree.control.user.search.server.command.GetSearchSortOrdersCommand;
 import com.echothree.control.user.search.server.command.GetSearchTypeCommand;
 import com.echothree.control.user.search.server.command.GetSearchTypesCommand;
 import com.echothree.control.user.search.server.command.GetSearchUseTypeCommand;
@@ -55,6 +57,14 @@ public interface SearchSecurityUtils {
 
     static boolean getHasSearchTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchTypeCommand.class);
+    }
+
+    static boolean getHasSearchSortOrdersAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchSortOrdersCommand.class);
+    }
+
+    static boolean getHasSearchSortOrderAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchSortOrderCommand.class);
     }
 
     static boolean getHasSearchUseTypesAccess(final DataFetchingEnvironment env) {

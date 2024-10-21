@@ -266,6 +266,8 @@ import com.echothree.control.user.search.server.command.GetSearchResultActionTyp
 import com.echothree.control.user.search.server.command.GetSearchResultActionTypesCommand;
 import com.echothree.control.user.search.server.command.GetSearchSortDirectionCommand;
 import com.echothree.control.user.search.server.command.GetSearchSortDirectionsCommand;
+import com.echothree.control.user.search.server.command.GetSearchSortOrderCommand;
+import com.echothree.control.user.search.server.command.GetSearchSortOrdersCommand;
 import com.echothree.control.user.search.server.command.GetSearchTypeCommand;
 import com.echothree.control.user.search.server.command.GetSearchTypesCommand;
 import com.echothree.control.user.search.server.command.GetSearchUseTypeCommand;
@@ -517,6 +519,7 @@ import com.echothree.model.control.search.server.graphql.SearchDefaultOperatorOb
 import com.echothree.model.control.search.server.graphql.SearchKindObject;
 import com.echothree.model.control.search.server.graphql.SearchResultActionTypeObject;
 import com.echothree.model.control.search.server.graphql.SearchSortDirectionObject;
+import com.echothree.model.control.search.server.graphql.SearchSortOrderObject;
 import com.echothree.model.control.search.server.graphql.SearchTypeObject;
 import com.echothree.model.control.search.server.graphql.SearchUseTypeObject;
 import com.echothree.model.control.search.server.graphql.VendorResultsObject;
@@ -752,6 +755,7 @@ import com.echothree.model.data.search.common.SearchDefaultOperatorConstants;
 import com.echothree.model.data.search.common.SearchKindConstants;
 import com.echothree.model.data.search.common.SearchResultActionTypeConstants;
 import com.echothree.model.data.search.common.SearchSortDirectionConstants;
+import com.echothree.model.data.search.common.SearchSortOrderConstants;
 import com.echothree.model.data.search.common.SearchTypeConstants;
 import com.echothree.model.data.search.common.SearchUseTypeConstants;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
@@ -759,6 +763,7 @@ import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchResultActionType;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
+import com.echothree.model.data.search.server.entity.SearchSortOrder;
 import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.model.data.security.common.SecurityRoleConstants;
@@ -955,6 +960,65 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, searchTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("searchSortOrder")
+    static SearchSortOrderObject searchSortOrder(final DataFetchingEnvironment env,
+            @GraphQLName("searchKindName") final String searchKindName,
+            @GraphQLName("searchSortOrderName") final String searchSortOrderName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        SearchSortOrder searchSortOrder;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetSearchSortOrderForm();
+
+            commandForm.setSearchKindName(searchKindName);
+            commandForm.setSearchSortOrderName(searchSortOrderName);
+            commandForm.setUuid(id);
+
+            searchSortOrder = new GetSearchSortOrderCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return searchSortOrder == null ? null : new SearchSortOrderObject(searchSortOrder);
+    }
+
+    @GraphQLField
+    @GraphQLName("searchSortOrders")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<SearchSortOrderObject> searchSortOrders(final DataFetchingEnvironment env,
+            @GraphQLName("searchKindName") @GraphQLNonNull final String searchKindName) {
+        CountingPaginatedData<SearchSortOrderObject> data;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetSearchSortOrdersForm();
+            var command = new GetSearchSortOrdersCommand(getUserVisitPK(env), commandForm);
+
+            commandForm.setSearchKindName(searchKindName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SearchSortOrderConstants.COMPONENT_VENDOR_NAME, SearchSortOrderConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var searchSortOrders = entities.stream()
+                            .map(SearchSortOrderObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, searchSortOrders);
                 }
             }
         } catch (NamingException ex) {

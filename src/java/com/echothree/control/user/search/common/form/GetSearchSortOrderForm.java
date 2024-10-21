@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.search.common.form;
 
-import com.echothree.control.user.search.common.spec.SearchSortOrderSpec;
+import com.echothree.control.user.search.common.spec.SearchSortOrderUniversalSpec;
 
 public interface GetSearchSortOrderForm
-        extends SearchSortOrderSpec {
+        extends SearchSortOrderUniversalSpec {
     
-    // Nothing additional beyond SearchSortOrderSpec
+    // Nothing additional beyond SearchSortOrderUniversalSpec
     
 }
