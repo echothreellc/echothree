@@ -17,7 +17,10 @@
 package com.echothree.model.control.content.server.control;
 
 import com.echothree.model.control.content.common.transfer.ContentCategoryResultTransfer;
+import com.echothree.model.control.content.server.graphql.ContentCategoryObject;
 import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.server.control.SearchControl;
+import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
 import com.echothree.model.data.content.common.pk.ContentCategoryPK;
 import com.echothree.model.data.content.server.factory.ContentCategoryFactory;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
@@ -84,4 +87,23 @@ public class ContentCategoryControl
         return contentCategoryResultTransfers;
     }
 
+
+    public List<ContentCategoryObject> getContentCategoryObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
+        var contentControl = Session.getModelController(ContentControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
+        var contentCategoryObjects = new ArrayList<ContentCategoryObject>();
+
+        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+            while(rs.next()) {
+                var contentCategory = contentControl.getContentCategoryByPK(new ContentCategoryPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+
+                contentCategoryObjects.add(new ContentCategoryObject(contentCategory));
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return contentCategoryObjects;
+    }
+    
 }

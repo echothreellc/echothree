@@ -253,6 +253,7 @@ import com.echothree.control.user.returnpolicy.server.command.GetReturnPoliciesC
 import com.echothree.control.user.returnpolicy.server.command.GetReturnPolicyCommand;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.CheckItemSpellingResult;
+import com.echothree.control.user.search.server.command.GetContentCategoryResultsCommand;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
 import com.echothree.control.user.search.server.command.GetEmployeeResultsCommand;
 import com.echothree.control.user.search.server.command.GetItemResultsCommand;
@@ -511,6 +512,7 @@ import com.echothree.model.control.returnpolicy.server.graphql.ReturnKindObject;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.graphql.CheckItemSpellingObject;
+import com.echothree.model.control.search.server.graphql.ContentCategoryResultsObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.search.server.graphql.EmployeeResultsObject;
 import com.echothree.model.control.search.server.graphql.ItemResultsObject;
@@ -5982,6 +5984,27 @@ public interface GraphQlQueries {
         }
 
         return warehouseResultsObject;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCategoryResults")
+    static ContentCategoryResultsObject contentCategoryResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        ContentCategoryResultsObject contentCategoryResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetContentCategoryResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetContentCategoryResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                contentCategoryResultsObject = new ContentCategoryResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return contentCategoryResultsObject;
     }
 
     @GraphQLField
