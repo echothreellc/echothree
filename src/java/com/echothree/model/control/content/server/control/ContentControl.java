@@ -4166,7 +4166,11 @@ public class ContentControl
     public void updateContentCategoryFromValue(ContentCategoryDetailValue contentCategoryDetailValue, BasePK updatedBy) {
         updateContentCategoryFromValue(contentCategoryDetailValue, true, updatedBy);
     }
-    
+
+    public ContentCategory getContentCategoryByPK(ContentCategoryPK contentCategoryPK) {
+        return ContentCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, contentCategoryPK);
+    }
+
     private void deleteContentCategory(ContentCategory contentCategory, BasePK deletedBy, boolean recursive) {
         if(recursive) {
             getContentCategoriesByParentContentCategoryForUpdate(contentCategory).stream().forEach((childContentCategory) -> {

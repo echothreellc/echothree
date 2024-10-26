@@ -55,8 +55,8 @@ public class ComponentVendorsHandler
 
             spec.set(getAttrsMap(attrs));
 
-            var commandAction = (String)spec.get("CommandAction");
-            getLogger().debug("Found: " + commandAction);
+            var commandAction = getCommandAction(spec);
+            getLogger().debug("Found: {}", commandAction);
             if(commandAction == null || commandAction.equals("create")) {
                 var attrsMap = getAttrsMap(attrs);
 
@@ -71,7 +71,7 @@ public class ComponentVendorsHandler
 
                         createForm.set(spec.get());
 
-                        getLogger().debug("Creating: " + spec.getComponentVendorName());
+                        getLogger().debug("Creating: {}", spec.getComponentVendorName());
                         commandResult = coreService.createComponentVendor(initialDataParser.getUserVisit(), createForm);
 
                         if(commandResult.hasErrors()) {
@@ -84,7 +84,7 @@ public class ComponentVendorsHandler
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditComponentVendorResult)executionResult.getResult();
 
-                    getLogger().debug("Checking for modifications: " + spec.getComponentVendorName());
+                    getLogger().debug("Checking for modifications: {}", spec.getComponentVendorName());
                     if(result != null) {
                         updateEditFormValues(editForm, attrsMap, result);
 

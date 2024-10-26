@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetSearchKindsResult
         extends BaseResult {
-    
+
+    Long getSearchKindCount();
+    void setSearchKindCount(Long searchKindCount);
+
     List<SearchKindTransfer> getSearchKinds();
     void setSearchKinds(List<SearchKindTransfer> searchKinds);
     

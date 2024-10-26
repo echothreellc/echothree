@@ -53,7 +53,7 @@ public class SearchResultActionTypeObject
     }
 
     @GraphQLField
-    @GraphQLDescription("item alias type name")
+    @GraphQLDescription("search result action type name")
     @GraphQLNonNull
     public String getSearchResultActionTypeName() {
         return getSearchResultActionTypeDetail().getSearchResultActionTypeName();

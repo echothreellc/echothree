@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetSearchSortDirectionsResult
         extends BaseResult {
-    
+
+    Long getSearchSortDirectionCount();
+    void setSearchSortDirectionCount(Long searchSortDirectionCount);
+
     List<SearchSortDirectionTransfer> getSearchSortDirections();
     void setSearchSortDirections(List<SearchSortDirectionTransfer> searchSortDirections);
     

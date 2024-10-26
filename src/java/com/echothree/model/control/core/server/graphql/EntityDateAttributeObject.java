@@ -16,43 +16,61 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.graphql.server.graphql.DateObject;
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.graphql.server.graphql.HistoryInterface;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.data.core.common.EntityDateAttributeConstants;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
 
 @GraphQLDescription("entity date attribute object")
 @GraphQLName("EntityDateAttribute")
 public class EntityDateAttributeObject
-        implements BaseGraphQl, AttributeInterface {
-    
-    private final EntityDateAttribute entityDateAttribute; // Always Present
-    
+        extends BaseEntityDateAttributeObject
+        implements AttributeInterface, HistoryInterface<EntityDateAttributeHistoryObject> {
+
     public EntityDateAttributeObject(EntityDateAttribute entityDateAttribute) {
-        this.entityDateAttribute = entityDateAttribute;
+        super(entityDateAttribute);
     }
 
+    @Override
     @GraphQLField
-    @GraphQLDescription("entity attribute")
-    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityDateAttribute.getEntityAttribute(), entityDateAttribute.getEntityInstance()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("entity instance")
-    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityDateAttribute.getEntityInstance()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("date attribute")
+    @GraphQLDescription("history")
     @GraphQLNonNull
-    public DateObject getDateAttribute(final DataFetchingEnvironment env) {
-        return new DateObject(entityDateAttribute.getDateAttribute());
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityDateAttributeHistoryObject> getHistory(final DataFetchingEnvironment env) {
+        if(true) { // TODO: Security Check
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttribute = entityDateAttribute.getEntityAttribute();
+            var entityInstance = entityDateAttribute.getEntityInstance();
+            var totalCount = coreControl.countEntityDateAttributeHistory(entityAttribute, entityInstance);
+
+            try(var objectLimiter = new ObjectLimiter(env, EntityDateAttributeConstants.COMPONENT_VENDOR_NAME, EntityDateAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityDateAttributeHistory(entityAttribute, entityInstance);
+                var entityObjects = new ArrayList<EntityDateAttributeHistoryObject>(entities.size());
+
+                for(var entity : entities) {
+                    var entityObject = new EntityDateAttributeHistoryObject(entity);
+
+                    entityObjects.add(entityObject);
+                }
+
+                return new CountedObjects<>(objectLimiter, entityObjects);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }

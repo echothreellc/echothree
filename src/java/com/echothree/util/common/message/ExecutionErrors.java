@@ -272,7 +272,6 @@ public enum ExecutionErrors {
     UnknownEntityRef,
     UnknownUuid,
     InvalidEntityType,
-    UnknownEntityRefAttribute,
     UnknownEntityTypeName,
     UnknownEntranceWorkflowName,
     UnknownEntranceWorkflowStepName,
@@ -2296,5 +2295,8 @@ public enum ExecutionErrors {
     DuplicateEntityWorkflowAttribute,
     UnknownEntityWorkflowAttribute,
     DuplicateWorkflowUsageInEntityAttribute,
+    UnknownDefaultSearchUseType,
+    UnknownDefaultSearchKind,
+    UnknownDefaultSearchType,
 
 }

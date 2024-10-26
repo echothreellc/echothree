@@ -171,7 +171,7 @@ public abstract class DatabaseUtilities {
     
     /** Return a String which represents any additional text that needs to be
      * included after the CREATE TABLE command, for example, the table type in
-     * MySQL or the tablespace parameters for Oracle
+     * MySQL
      * @return Text to use as part of the SQL query for this table
      * @param tableName The table name that this SQL is for
      */

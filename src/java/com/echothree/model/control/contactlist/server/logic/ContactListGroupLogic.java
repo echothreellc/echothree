@@ -17,7 +17,7 @@
 package com.echothree.model.control.contactlist.server.logic;
 
 import com.echothree.model.control.contactlist.common.exception.UnknownContactListGroupNameException;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;

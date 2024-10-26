@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.core.common.edit;
 
+import com.echothree.control.user.core.common.spec.EntityInstanceAttributeSpec;
 import com.echothree.util.common.form.BaseEdit;
 
 public interface EntityEntityAttributeEdit
-        extends BaseEdit {
-    
-    String getEntityRefAttribute();
-    void setEntityRefAttribute(String entityRefAttribute);
-    
+        extends BaseEdit, EntityInstanceAttributeSpec {
+
+    // Nothing additional beyond BaseEdit, EntityInstanceAttributeSpec
+
 }

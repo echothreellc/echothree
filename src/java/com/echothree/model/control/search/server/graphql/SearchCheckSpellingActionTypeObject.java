@@ -53,7 +53,7 @@ public class SearchCheckSpellingActionTypeObject
     }
     
     @GraphQLField
-    @GraphQLDescription("searchCheckSpellingActionType name")
+    @GraphQLDescription("search check spelling action type name")
     @GraphQLNonNull
     public String getSearchCheckSpellingActionTypeName() {
         return getSearchCheckSpellingActionTypeDetail().getSearchCheckSpellingActionTypeName();

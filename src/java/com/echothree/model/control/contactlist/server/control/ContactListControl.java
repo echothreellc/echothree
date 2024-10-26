@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.contactlist.server;
+package com.echothree.model.control.contactlist.server.control;
 
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.common.choice.ContactListChoicesBean;

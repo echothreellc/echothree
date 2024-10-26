@@ -14,12 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database.util;
+package com.echothree.control.user.search.common.spec;
 
-public class DatabaseUtilitiesForOracle {
-    
-    /** Creates a new instance of DatabaseUtilitiesForOracle */
-    public DatabaseUtilitiesForOracle() {
-    }
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
+
+public interface SearchSortOrderUniversalSpec
+        extends SearchSortOrderSpec, UniversalEntitySpec {
+
+    // Nothing additional beyond SearchSortOrderSpec, UniversalEntitySpec
     
 }

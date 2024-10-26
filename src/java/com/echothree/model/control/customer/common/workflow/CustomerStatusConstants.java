@@ -19,13 +19,26 @@ package com.echothree.model.control.customer.common.workflow;
 public interface CustomerStatusConstants {
     
     String Workflow_CUSTOMER_STATUS = "CUSTOMER_STATUS";
-    
-    String WorkflowStep_ACTIVE = "ACTIVE";
+
+    String WorkflowStep_POPULATION = "POPULATION";
+    String WorkflowStep_PROSPECT = "PROSPECT";
+    String WorkflowStep_VISITOR = "VISITOR";
+    String WorkflowStep_SHOPPER = "SHOPPER";
+    String WorkflowStep_CUSTOMER = "CUSTOMER";
     String WorkflowStep_INACTIVE = "INACTIVE";
-    
-    String WorkflowEntrance_NEW_ACTIVE = "NEW_ACTIVE";
-    
-    String WorkflowDestination_ACTIVE_TO_INACTIVE = "ACTIVE_TO_INACTIVE";
-    String WorkflowDestination_INACTIVE_TO_ACTIVE = "INACTIVE_TO_ACTIVE";
-    
+    String WorkflowStep_EX_CUSTOMER= "EX_CUSTOMER";
+
+    String WorkflowEntrance_NEW_POPULATION = "NEW_POPULATION";
+    String WorkflowEntrance_NEW_PROSPECT = "NEW_PROSPECT";
+    String WorkflowEntrance_NEW_VISITOR = "NEW_VISITOR";
+    String WorkflowEntrance_NEW_SHOPPER = "NEW_SHOPPER";
+
+    String WorkflowDestination_POPULATION_TO_PROSPECT = "POPULATION_TO_PROSPECT";
+    String WorkflowDestination_PROSPECT_TO_VISITOR = "PROSPECT_TO_VISITOR";
+    String WorkflowDestination_VISITOR_TO_SHOPPER = "VISITOR_TO_SHOPPER";
+    String WorkflowDestination_SHOPPER_TO_CUSTOMER = "SHOPPER_TO_CUSTOMER";
+    String WorkflowDestination_CUSTOMER_TO_INACTIVE = "CUSTOMER_TO_INACTIVE";
+    String WorkflowDestination_CUSTOMER_TO_EX_CUSTOMER = "CUSTOMER_TO_EX_CUSTOMER";
+    String WorkflowDestination_INACTIVE_TO_EX_CUSTOMER = "INACTIVE_TO_EX_CUSTOMER";
+
 }

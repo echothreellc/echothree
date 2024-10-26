@@ -63,7 +63,7 @@ public class DataLoader {
         if(doFile) {
             var filename = line.getOptionValue("f");
 
-            logger.info("Loading data from \"" + filename + "\" into database...");
+            logger.info("Loading data from \"{}\" into database...", filename);
             new InitialDataParser(filename).execute();
             logger.info("   ...done.");
         }

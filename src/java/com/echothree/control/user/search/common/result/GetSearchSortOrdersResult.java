@@ -26,7 +26,10 @@ public interface GetSearchSortOrdersResult
     
     SearchKindTransfer getSearchKind();
     void setSearchKind(SearchKindTransfer searchKind);
-    
+
+    Long getSearchSortOrderCount();
+    void setSearchSortOrderCount(Long searchSortOrderCount);
+
     List<SearchSortOrderTransfer> getSearchSortOrders();
     void setSearchSortOrders(List<SearchSortOrderTransfer> searchSortOrders);
     
