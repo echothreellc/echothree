@@ -10752,7 +10752,34 @@ public class CoreControl
         
         return entityDateAttribute;
     }
-    
+
+    public long countEntityDateAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitydateattributes
+                    WHERE enda_ena_entityattributeid = ? AND enda_eni_entityinstanceid = ?
+                    """, entityAttribute, entityInstance);
+    }
+
+    private static final Map<EntityPermission, String> getEntityDateAttributeHistoryQueries;
+
+    static {
+        var queryMap = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entitydateattributes
+                WHERE enda_ena_entityattributeid = ? AND enda_eni_entityinstanceid = ?
+                ORDER BY enda_thrutime
+                _LIMIT_
+                """);
+        getEntityDateAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public List<EntityDateAttribute> getEntityDateAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return EntityDateAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityDateAttributeHistoryQueries,
+                entityAttribute, entityInstance);
+    }
+
     private EntityDateAttribute getEntityDateAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, EntityPermission entityPermission) {
         EntityDateAttribute entityDateAttribute;
         
@@ -10906,7 +10933,34 @@ public class CoreControl
         
         return entityIntegerAttribute;
     }
-    
+
+    public long countEntityIntegerAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entityintegerattributes
+                    WHERE enia_ena_entityattributeid = ? AND enia_eni_entityinstanceid = ?
+                    """, entityAttribute, entityInstance);
+    }
+
+    private static final Map<EntityPermission, String> getEntityIntegerAttributeHistoryQueries;
+
+    static {
+        var queryMap = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entityintegerattributes
+                WHERE enia_ena_entityattributeid = ? AND enia_eni_entityinstanceid = ?
+                ORDER BY enia_thrutime
+                _LIMIT_
+                """);
+        getEntityIntegerAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public List<EntityIntegerAttribute> getEntityIntegerAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return EntityIntegerAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityIntegerAttributeHistoryQueries,
+                entityAttribute, entityInstance);
+    }
+
     private EntityIntegerAttribute getEntityIntegerAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         EntityIntegerAttribute entityIntegerAttribute;
@@ -11060,7 +11114,34 @@ public class CoreControl
         
         return entityListItemAttribute;
     }
-    
+
+    public long countEntityListItemAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitylistitemattributes
+                    WHERE ela_ena_entityattributeid = ? AND ela_eni_entityinstanceid = ?
+                    """, entityAttribute, entityInstance);
+    }
+
+    private static final Map<EntityPermission, String> getEntityListItemAttributeHistoryQueries;
+
+    static {
+        var queryMap = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entitylistitemattributes
+                WHERE ela_ena_entityattributeid = ? AND ela_eni_entityinstanceid = ?
+                ORDER BY ela_thrutime
+                _LIMIT_
+                """);
+        getEntityListItemAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public List<EntityListItemAttribute> getEntityListItemAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return EntityListItemAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityListItemAttributeHistoryQueries,
+                entityAttribute, entityInstance);
+    }
+
     private EntityListItemAttribute getEntityListItemAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         EntityListItemAttribute entityListItemAttribute;
@@ -11234,7 +11315,34 @@ public class CoreControl
         
         return entityLongAttribute;
     }
-    
+
+    public long countEntityLongAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitylongattributes
+                    WHERE enla_ena_entityattributeid = ? AND enla_eni_entityinstanceid = ?
+                    """, entityAttribute, entityInstance);
+    }
+
+    private static final Map<EntityPermission, String> getEntityLongAttributeHistoryQueries;
+
+    static {
+        var queryMap = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entitylongattributes
+                WHERE enla_ena_entityattributeid = ? AND enla_eni_entityinstanceid = ?
+                ORDER BY enla_thrutime
+                _LIMIT_
+                """);
+        getEntityLongAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public List<EntityLongAttribute> getEntityLongAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return EntityLongAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityLongAttributeHistoryQueries,
+                entityAttribute, entityInstance);
+    }
+
     private EntityLongAttribute getEntityLongAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         EntityLongAttribute entityLongAttribute;
@@ -11590,7 +11698,34 @@ public class CoreControl
         
         return entityNameAttribute;
     }
-    
+
+    public long countEntityNameAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitynameattributes
+                    WHERE enna_ena_entityattributeid = ? AND enna_eni_entityinstanceid = ?
+                    """, entityAttribute, entityInstance);
+    }
+
+    private static final Map<EntityPermission, String> getEntityNameAttributeHistoryQueries;
+
+    static {
+        var queryMap = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entitynameattributes
+                WHERE enna_ena_entityattributeid = ? AND enna_eni_entityinstanceid = ?
+                ORDER BY enna_thrutime
+                _LIMIT_
+                """);
+        getEntityNameAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public List<EntityNameAttribute> getEntityNameAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return EntityNameAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityNameAttributeHistoryQueries,
+                entityAttribute, entityInstance);
+    }
+
     private EntityNameAttribute getEntityNameAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         EntityNameAttribute entityNameAttribute;
@@ -11961,7 +12096,34 @@ public class CoreControl
         
         return entityGeoPointAttribute;
     }
-    
+
+    public long countEntityGeoPointAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitygeopointattributes
+                    WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_eni_entityinstanceid = ?
+                    """, entityAttribute, entityInstance);
+    }
+
+    private static final Map<EntityPermission, String> getEntityGeoPointAttributeHistoryQueries;
+
+    static {
+        var queryMap = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entitygeopointattributes
+                WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_eni_entityinstanceid = ?
+                ORDER BY engeopnta_thrutime
+                _LIMIT_
+                """);
+        getEntityGeoPointAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public List<EntityGeoPointAttribute> getEntityGeoPointAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return EntityGeoPointAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityGeoPointAttributeHistoryQueries,
+                entityAttribute, entityInstance);
+    }
+
     private EntityGeoPointAttribute getEntityGeoPointAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         EntityGeoPointAttribute entityGeoPointAttribute;
@@ -12116,7 +12278,34 @@ public class CoreControl
         
         return entityTimeAttribute;
     }
-    
+
+    public long countEntityTimeAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitytimeattributes
+                    WHERE enta_ena_entityattributeid = ? AND enta_eni_entityinstanceid = ?
+                    """, entityAttribute, entityInstance);
+    }
+
+    private static final Map<EntityPermission, String> getEntityTimeAttributeHistoryQueries;
+
+    static {
+        var queryMap = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entitytimeattributes
+                WHERE enta_ena_entityattributeid = ? AND enta_eni_entityinstanceid = ?
+                ORDER BY enta_thrutime
+                _LIMIT_
+                """);
+        getEntityTimeAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public List<EntityTimeAttribute> getEntityTimeAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return EntityTimeAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityTimeAttributeHistoryQueries,
+                entityAttribute, entityInstance);
+    }
+
     private EntityTimeAttribute getEntityTimeAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, EntityPermission entityPermission) {
         EntityTimeAttribute entityTimeAttribute;
         
@@ -12439,7 +12628,34 @@ public class CoreControl
         
         return entityClobAttribute;
     }
-    
+
+    public long countEntityClobAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entityclobattributes
+                    WHERE enca_ena_entityattributeid = ? AND enca_eni_entityinstanceid = ?
+                    """, entityAttribute, entityInstance);
+    }
+
+    private static final Map<EntityPermission, String> getEntityClobAttributeHistoryQueries;
+
+    static {
+        var queryMap = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entityclobattributes
+                WHERE enca_ena_entityattributeid = ? AND enca_eni_entityinstanceid = ?
+                ORDER BY enca_thrutime
+                _LIMIT_
+                """);
+        getEntityClobAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public List<EntityClobAttribute> getEntityClobAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return EntityClobAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityClobAttributeHistoryQueries,
+                entityAttribute, entityInstance);
+    }
+
     private EntityClobAttribute getEntityClobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, EntityPermission entityPermission) {
         EntityClobAttribute entityClobAttribute;
@@ -12784,7 +13000,34 @@ public class CoreControl
         
         return entityEntityAttribute;
     }
-    
+
+    public long countEntityEntityAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entityentityattributes
+                    WHERE eea_ena_entityattributeid = ? AND eea_eni_entityinstanceid = ?
+                    """, entityAttribute, entityInstance);
+    }
+
+    private static final Map<EntityPermission, String> getEntityEntityAttributeHistoryQueries;
+
+    static {
+        var queryMap = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entityentityattributes
+                WHERE eea_ena_entityattributeid = ? AND eea_eni_entityinstanceid = ?
+                ORDER BY eea_thrutime
+                _LIMIT_
+                """);
+        getEntityEntityAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public List<EntityEntityAttribute> getEntityEntityAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return EntityEntityAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityEntityAttributeHistoryQueries,
+                entityAttribute, entityInstance);
+    }
+
     private EntityEntityAttribute getEntityEntityAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, EntityPermission entityPermission) {
         EntityEntityAttribute entityEntityAttribute;
         

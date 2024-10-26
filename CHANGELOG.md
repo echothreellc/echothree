@@ -1,5 +1,23 @@
 # Changelog
 
+## 2024-10-13-01
+
+* Apache Lucene 9.12.0 Upgrade [1356](https://gitlab.echothree.com/echothree/echothree/-/issues/1356)
+* id Parameters Overwritten By Unnecessary setUuid(...) Calls [1357](https://gitlab.echothree.com/echothree/echothree/-/issues/1357)
+* Allow Entity Instance Attributes to Be Specified by UUID [1358](https://gitlab.echothree.com/echothree/echothree/-/issues/1358)
+* Move GraphQL Schema Support to Control Package [1359](https://gitlab.echothree.com/echothree/echothree/-/issues/1359)
+* GraphQL History for Entity Integer Attributes [1365](https://gitlab.echothree.com/echothree/echothree/-/issues/1365)
+* GraphQL History for Entity Long Attributes [1367](https://gitlab.echothree.com/echothree/echothree/-/issues/1367)
+* GraphQL History for Entity Name Attributes [1368](https://gitlab.echothree.com/echothree/echothree/-/issues/1368)
+
+## 2024-09-29-01
+
+* Update Customer Status Workflow to Customer Lifecycle from ARTS [1334](https://gitlab.echothree.com/echothree/echothree/-/issues/1334)
+* jOOQ 3.19.12 Upgrade [1352](https://gitlab.echothree.com/echothree/echothree/-/issues/1352)
+* Guava 33.3.1-jre Upgrade [1353](https://gitlab.echothree.com/echothree/echothree/-/issues/1353)
+* jOOQ 3.19.13 Upgrade [1354](https://gitlab.echothree.com/echothree/echothree/-/issues/1354)
+* Error Prone 2.32.0 Upgrade [1355](https://gitlab.echothree.com/echothree/echothree/-/issues/1355)
+
 ## 2024-09-15-01
 
 * commons-codec 1.17.1 Upgrade [1341](https://gitlab.echothree.com/echothree/echothree/-/issues/1341)

@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetSearchDefaultOperatorsResult
         extends BaseResult {
-    
+
+    Long getSearchDefaultOperatorCount();
+    void setSearchDefaultOperatorCount(Long searchDefaultOperatorCount);
+
     List<SearchDefaultOperatorTransfer> getSearchDefaultOperators();
     void setSearchDefaultOperators(List<SearchDefaultOperatorTransfer> searchDefaultOperators);
     

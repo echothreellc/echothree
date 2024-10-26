@@ -96,9 +96,9 @@ public abstract class BaseResultsObject<F extends BaseGetResultsForm>
                         final var userVisitSearchFacet = UserVisitSearchFacetLogic.getInstance().getUserVisitSearchFacetObject(null, userVisitSearch, entityAttribute);
 
                         // Only add it to the list of facets if it contains results.
-                        if(userVisitSearchFacet != null && ((userVisitSearchFacet.getEntityListItems() != null && userVisitSearchFacet.getEntityListItems().size() > 0)
-                                || (userVisitSearchFacet.getEntityIntegerRanges() != null && userVisitSearchFacet.getEntityIntegerRanges().size() > 0)
-                                || (userVisitSearchFacet.getEntityLongRanges() != null && userVisitSearchFacet.getEntityLongRanges().size() > 0))) {
+                        if(userVisitSearchFacet != null && ((userVisitSearchFacet.getEntityListItems() != null && !userVisitSearchFacet.getEntityListItems().isEmpty())
+                                || (userVisitSearchFacet.getEntityIntegerRanges() != null && !userVisitSearchFacet.getEntityIntegerRanges().isEmpty())
+                                || (userVisitSearchFacet.getEntityLongRanges() != null && !userVisitSearchFacet.getEntityLongRanges().isEmpty()))) {
                             userVisitSearchFacetObject.add(userVisitSearchFacet);
                         }
                     }
