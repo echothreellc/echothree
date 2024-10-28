@@ -1,5 +1,24 @@
 # Changelog
 
+## 2024-10-27-01
+
+* Add Search Default Operator Object and Queries [201](https://gitlab.echothree.com/echothree/echothree/-/issues/201)
+* Add Search Sort Direction Object and Queries [202](https://gitlab.echothree.com/echothree/echothree/-/issues/202)
+* Add Search Kinds Object and Queries [203](https://gitlab.echothree.com/echothree/echothree/-/issues/203)
+* Add Search Sort Order Object and Queries [204](https://gitlab.echothree.com/echothree/echothree/-/issues/204)
+* Add Search Type Object and Queries [206](https://gitlab.echothree.com/echothree/echothree/-/issues/206)
+* Add Search Use Type Object and Queries [207](https://gitlab.echothree.com/echothree/echothree/-/issues/207)
+* Add Content Category Search Mutation [210](https://gitlab.echothree.com/echothree/echothree/-/issues/210)
+* GraphQL History for Entity CLOB Attributes [1361](https://gitlab.echothree.com/echothree/echothree/-/issues/1361)
+* GraphQL History for Entity Date Attributes [1362](https://gitlab.echothree.com/echothree/echothree/-/issues/1362)
+* GraphQL History for Entity Entity Attributes [1363](https://gitlab.echothree.com/echothree/echothree/-/issues/1363)
+* GraphQL History for Entity Geopoint Attributes [1364](https://gitlab.echothree.com/echothree/echothree/-/issues/1364)
+* GraphQL History for Entity List Item Attributes [1366](https://gitlab.echothree.com/echothree/echothree/-/issues/1366)
+* GraphQL History for Entity Time Attributes [1369](https://gitlab.echothree.com/echothree/echothree/-/issues/1369)
+* Add Content Category Results Object and Queries [1370](https://gitlab.echothree.com/echothree/echothree/-/issues/1370)
+* jOOQ 3.19.14 Upgrade [1371](https://gitlab.echothree.com/echothree/echothree/-/issues/1371)
+* Correct UserVisitGroup Getters/Setters Naming [1383](https://gitlab.echothree.com/echothree/echothree/-/issues/1383)
+
 ## 2024-10-13-01
 
 * Apache Lucene 9.12.0 Upgrade [1356](https://gitlab.echothree.com/echothree/echothree/-/issues/1356)
