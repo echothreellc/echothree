@@ -4485,7 +4485,33 @@ public class CoreControl
                 entityAliasType, Session.MAX_TIME);
     }
 
+    public long countEntityAliasHistory(EntityInstance entityInstance, EntityAliasType entityAliasType) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entityaliases
+                    WHERE enial_eni_entityinstanceid = ? AND enial_eniat_entityaliastypeid = ?
+                    """, entityInstance, entityAliasType);
+    }
 
+    private static final Map<EntityPermission, String> getEntityAliasHistoryQueries;
+
+    static {
+        var queryMap = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entityaliases
+                WHERE enial_eni_entityinstanceid = ? AND enial_eniat_entityaliastypeid = ?
+                ORDER BY enial_thrutime
+                _LIMIT_
+                """);
+        getEntityAliasHistoryQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public List<EntityAlias> getEntityAliasHistory(EntityInstance entityInstance, EntityAliasType entityAliasType) {
+        return EntityAliasFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityAliasHistoryQueries,
+                entityInstance, entityAliasType);
+    }
+    
     private EntityAlias getEntityAlias(EntityInstance entityInstance, EntityAliasType entityAliasType,
             EntityPermission entityPermission) {
         EntityAlias entityAlias;
