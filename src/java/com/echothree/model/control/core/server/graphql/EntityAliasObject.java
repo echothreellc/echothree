@@ -16,44 +16,61 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.graphql.server.graphql.BaseObject;
+import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.graphql.server.graphql.HistoryInterface;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.data.core.common.EntityAliasConstants;
 import com.echothree.model.data.core.server.entity.EntityAlias;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
+import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
 
 @GraphQLDescription("entity alias object")
 @GraphQLName("EntityAlias")
 public class EntityAliasObject
-        extends BaseObject {
-
-    private final EntityAlias entityAlias; // Always Present
+        extends BaseEntityAliasObject
+        implements AttributeInterface, HistoryInterface<EntityAliasHistoryObject> {
 
     public EntityAliasObject(EntityAlias entityAlias) {
-        this.entityAlias = entityAlias;
+        super(entityAlias);
     }
 
+    @Override
     @GraphQLField
-    @GraphQLDescription("entity instance")
+    @GraphQLDescription("history")
     @GraphQLNonNull
-    public EntityInstanceObject getEntityInstance() {
-        return new EntityInstanceObject(entityAlias.getEntityInstance());
-    }
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityAliasHistoryObject> getHistory(final DataFetchingEnvironment env) {
+        if(true) { // TODO: Security Check
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityInstance = entityAlias.getEntityInstance();
+            var entityAliasType = entityAlias.getEntityAliasType();
+            var totalCount = coreControl.countEntityAliasHistory(entityInstance, entityAliasType);
 
-    @GraphQLField
-    @GraphQLDescription("entity alias type")
-    @GraphQLNonNull
-    public EntityAliasTypeObject getEntityAliasType() {
-        return new EntityAliasTypeObject(entityAlias.getEntityAliasType(), entityAlias.getEntityInstance());
-    }
+            try(var objectLimiter = new ObjectLimiter(env, EntityAliasConstants.COMPONENT_VENDOR_NAME, EntityAliasConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityAliasHistory(entityInstance, entityAliasType);
+                var entityObjects = new ArrayList<EntityAliasHistoryObject>(entities.size());
 
-    @GraphQLField
-    @GraphQLDescription("alias")
-    @GraphQLNonNull
-    public String getAlias() {
-        return entityAlias.getAlias();
-    }
+                for(var entity : entities) {
+                    var entityObject = new EntityAliasHistoryObject(entity);
 
+                    entityObjects.add(entityObject);
+                }
+
+                return new CountedObjects<>(objectLimiter, entityObjects);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
 
 }
