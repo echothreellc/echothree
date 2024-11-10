@@ -17,16 +17,34 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.ClearEntityTypeResultsForm;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.common.SearchKinds;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import java.util.List;
 
 public class ClearEntityTypeResultsCommand
         extends BaseClearResultsCommand<ClearEntityTypeResultsForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.EntityType.name(), SecurityRoles.Search.name())
+                ))
+        ));
+    }
+
     /** Creates a new instance of ClearEntityTypeResultsCommand */
     public ClearEntityTypeResultsCommand(UserVisitPK userVisitPK, ClearEntityTypeResultsForm form) {
-        super(userVisitPK, form, null);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
     }
     
     @Override
