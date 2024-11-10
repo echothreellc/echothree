@@ -256,6 +256,7 @@ import com.echothree.control.user.search.common.result.CheckItemSpellingResult;
 import com.echothree.control.user.search.server.command.GetContentCategoryResultsCommand;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
 import com.echothree.control.user.search.server.command.GetEmployeeResultsCommand;
+import com.echothree.control.user.search.server.command.GetEntityTypeResultsCommand;
 import com.echothree.control.user.search.server.command.GetItemResultsCommand;
 import com.echothree.control.user.search.server.command.GetSearchCheckSpellingActionTypeCommand;
 import com.echothree.control.user.search.server.command.GetSearchCheckSpellingActionTypesCommand;
@@ -515,6 +516,7 @@ import com.echothree.model.control.search.server.graphql.CheckItemSpellingObject
 import com.echothree.model.control.search.server.graphql.ContentCategoryResultsObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.search.server.graphql.EmployeeResultsObject;
+import com.echothree.model.control.search.server.graphql.EntityTypeResultsObject;
 import com.echothree.model.control.search.server.graphql.ItemResultsObject;
 import com.echothree.model.control.search.server.graphql.SearchCheckSpellingActionTypeObject;
 import com.echothree.model.control.search.server.graphql.SearchDefaultOperatorObject;
@@ -5852,6 +5854,27 @@ public interface GraphQlQueries {
         }
 
         return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("entityTypeResults")
+    static EntityTypeResultsObject entityTypeResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        EntityTypeResultsObject entityTypeResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetEntityTypeResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetEntityTypeResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                entityTypeResultsObject = new EntityTypeResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return entityTypeResultsObject;
     }
 
     @GraphQLField

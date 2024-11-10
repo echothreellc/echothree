@@ -19,34 +19,46 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.GetEntityTypeResultsForm;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetEntityTypeResultsCommand
         extends BaseSimpleCommand<GetEntityTypeResultsForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.EntityType.name(), SecurityRoles.Search.name())
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
 
     /** Creates a new instance of GetEntityTypeResultsCommand */
     public GetEntityTypeResultsCommand(UserVisitPK userVisitPK, GetEntityTypeResultsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

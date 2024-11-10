@@ -963,7 +963,11 @@ public class CoreControl
             sendEvent(entityTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
-    
+
+    public EntityType getEntityTypeByPK(EntityTypePK entityTypePK) {
+        return EntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, entityTypePK);
+    }
+
     public void deleteEntityType(EntityType entityType, BasePK deletedBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var batchControl = Session.getModelController(BatchControl.class);
