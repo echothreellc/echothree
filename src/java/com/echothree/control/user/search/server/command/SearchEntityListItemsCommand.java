@@ -19,15 +19,15 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.SearchEntityListItemsForm;
 import com.echothree.control.user.search.common.result.SearchEntityListItemsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
+import com.echothree.model.control.core.server.search.EntityListItemSearchEvaluator;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
-import com.echothree.model.control.core.server.search.EntityListItemSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
 import java.util.Arrays;
@@ -36,7 +36,8 @@ import java.util.List;
 
 public class SearchEntityListItemsCommand
         extends BaseSearchCommand<SearchEntityListItemsForm, SearchEntityListItemsResult> {
-    
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {

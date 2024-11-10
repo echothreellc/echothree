@@ -23,10 +23,10 @@ import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -35,7 +35,8 @@ import java.util.List;
 
 public class GetEntityListItemResultsCommand
         extends BaseSimpleCommand<GetEntityListItemResultsForm> {
-    
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
