@@ -23,7 +23,9 @@ import com.echothree.util.common.command.BaseResult;
 
 public class ClearEntityListItemResultsCommand
         extends BaseClearResultsCommand<ClearEntityListItemResultsForm> {
-    
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
+
     /** Creates a new instance of ClearEntityListItemResultsCommand */
     public ClearEntityListItemResultsCommand(UserVisitPK userVisitPK, ClearEntityListItemResultsForm form) {
         super(userVisitPK, form, null);
