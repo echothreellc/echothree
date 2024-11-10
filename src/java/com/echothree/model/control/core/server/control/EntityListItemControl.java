@@ -17,8 +17,10 @@
 package com.echothree.model.control.core.server.control;
 
 import com.echothree.model.control.core.common.transfer.EntityListItemResultTransfer;
+import com.echothree.model.control.core.server.graphql.EntityListItemObject;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
+import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
 import com.echothree.model.data.core.common.pk.EntityListItemPK;
 import com.echothree.model.data.core.server.factory.EntityListItemFactory;
 import com.echothree.model.data.search.common.CachedExecutedSearchResultConstants;
@@ -128,6 +130,24 @@ public class EntityListItemControl
         }
 
         return entityListItemResultTransfers;
+    }
+
+    public List<EntityListItemObject> getEntityListItemObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
+        var coreControl = Session.getModelController(CoreControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
+        var entityListItemObjects = new ArrayList<EntityListItemObject>();
+
+        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+            while(rs.next()) {
+                var entityListItem = coreControl.getEntityListItemByPK(new EntityListItemPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+
+                entityListItemObjects.add(new EntityListItemObject(entityListItem));
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityListItemObjects;
     }
 
 }

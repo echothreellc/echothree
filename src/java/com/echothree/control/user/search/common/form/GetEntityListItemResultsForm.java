@@ -16,12 +16,9 @@
 
 package com.echothree.control.user.search.common.form;
 
-import com.echothree.util.common.form.BaseForm;
-
 public interface GetEntityListItemResultsForm
-        extends BaseForm {
+        extends BaseGetResultsForm {
     
-    String getSearchTypeName();
-    void setSearchTypeName(String searchTypeName);
+    // Nothing additional beyond BaseGetResultsForm
     
 }
