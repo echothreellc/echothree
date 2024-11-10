@@ -19,13 +19,11 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.BaseClearResultsForm;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class BaseClearResultsCommand<F extends BaseClearResultsForm>
@@ -34,9 +32,9 @@ public abstract class BaseClearResultsCommand<F extends BaseClearResultsForm>
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
 
     /** Creates a new instance of BaseClearResultsCommand */

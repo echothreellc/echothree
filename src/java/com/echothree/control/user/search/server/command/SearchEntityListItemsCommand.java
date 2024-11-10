@@ -30,8 +30,6 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class SearchEntityListItemsCommand
@@ -41,7 +39,7 @@ public class SearchEntityListItemsCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("SearchDefaultOperatorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("SearchSortDirectionName", FieldType.ENTITY_NAME, false, null, null),
@@ -53,7 +51,7 @@ public class SearchEntityListItemsCommand
                 new FieldDefinition("Fields", FieldType.STRING, false, null, null),
                 new FieldDefinition("RememberPreferences", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("SearchUseTypeName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+        );
     }
 
     /** Creates a new instance of SearchEntityListItemsCommand */
