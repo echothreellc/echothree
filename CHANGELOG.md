@@ -1,5 +1,14 @@
 # Changelog
 
+## 2024-11-10-01
+
+* GraphQL History for Entity Aliases [1380](https://gitlab.echothree.com/echothree/echothree/-/issues/1380)
+* jOOQ 3.19.15 Upgrade [1384](https://gitlab.echothree.com/echothree/echothree/-/issues/1384)
+* Add Entity Type Search Mutation [1385](https://gitlab.echothree.com/echothree/echothree/-/issues/1385)
+* Add Entity Type Results Object and Queries [1386](https://gitlab.echothree.com/echothree/echothree/-/issues/1386)
+* Add Entity List Item Search Mutation [1387](https://gitlab.echothree.com/echothree/echothree/-/issues/1387)
+* Add Entity List Item Results Object and Queries [1388](https://gitlab.echothree.com/echothree/echothree/-/issues/1388)
+
 ## 2024-10-27-01
 
 * Add Search Default Operator Object and Queries [201](https://gitlab.echothree.com/echothree/echothree/-/issues/201)
