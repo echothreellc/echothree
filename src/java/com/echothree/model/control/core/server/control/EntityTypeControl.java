@@ -16,8 +16,14 @@
 
 package com.echothree.model.control.core.server.control;
 
+import com.echothree.model.control.content.server.control.ContentControl;
+import com.echothree.model.control.content.server.graphql.ContentCategoryObject;
 import com.echothree.model.control.core.common.transfer.EntityTypeResultTransfer;
+import com.echothree.model.control.core.server.graphql.EntityTypeObject;
 import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.server.control.SearchControl;
+import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
+import com.echothree.model.data.content.common.pk.ContentCategoryPK;
 import com.echothree.model.data.core.common.pk.EntityTypePK;
 import com.echothree.model.data.core.server.factory.EntityTypeFactory;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
@@ -79,6 +85,24 @@ public class EntityTypeControl
         }
 
         return entityTypeResultTransfers;
+    }
+
+    public List<EntityTypeObject> getEntityTypeObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
+        var coreControl = Session.getModelController(CoreControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
+        var entityTypeObjects = new ArrayList<EntityTypeObject>();
+
+        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+            while(rs.next()) {
+                var entityType = coreControl.getEntityTypeByPK(new EntityTypePK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+
+                entityTypeObjects.add(new EntityTypeObject(entityType));
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityTypeObjects;
     }
 
 }

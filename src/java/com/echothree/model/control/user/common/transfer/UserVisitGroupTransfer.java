@@ -32,19 +32,19 @@ public class UserVisitGroupTransfer
         this.userVisitGroupStatus = userVisitGroupStatus;
     }
     
-    public String getuserVisitGroupName() {
+    public String getUserVisitGroupName() {
         return userVisitGroupName;
     }
     
-    public void setuserVisitGroupName(String userVisitGroupName) {
+    public void setUserVisitGroupName(String userVisitGroupName) {
         this.userVisitGroupName = userVisitGroupName;
     }
     
-    public WorkflowEntityStatusTransfer getuserVisitGroupStatus() {
+    public WorkflowEntityStatusTransfer getUserVisitGroupStatus() {
         return userVisitGroupStatus;
     }
     
-    public void setuserVisitGroupStatus(WorkflowEntityStatusTransfer userVisitGroupStatus) {
+    public void setUserVisitGroupStatus(WorkflowEntityStatusTransfer userVisitGroupStatus) {
         this.userVisitGroupStatus = userVisitGroupStatus;
     }
     

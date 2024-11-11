@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.search.server.graphql;
 
-import com.echothree.control.user.search.common.form.GetContentCategoryResultsForm;
-import com.echothree.model.control.content.server.control.ContentCategoryControl;
-import com.echothree.model.control.content.server.graphql.ContentCategoryObject;
+import com.echothree.control.user.search.common.form.GetEntityListItemResultsForm;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.server.control.EntityListItemControl;
+import com.echothree.model.control.core.server.graphql.EntityListItemObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -36,20 +36,20 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("content category results object")
-@GraphQLName("ContentCategoryResults")
-public class ContentCategoryResultsObject
-        extends BaseResultsObject<GetContentCategoryResultsForm> {
+@GraphQLDescription("entity list item results object")
+@GraphQLName("EntityListItemResults")
+public class EntityListItemResultsObject
+        extends BaseResultsObject<GetEntityListItemResultsForm> {
 
-    public ContentCategoryResultsObject(GetContentCategoryResultsForm form) {
-        super(ComponentVendors.ECHO_THREE.name(), EntityTypes.ContentCategory.name(), SearchKinds.CONTENT_CATEGORY.name(), form);
+    public EntityListItemResultsObject(GetEntityListItemResultsForm form) {
+        super(ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityListItem.name(), SearchKinds.ENTITY_LIST_ITEM.name(), form);
     }
 
     @GraphQLField
-    @GraphQLDescription("content categories")
+    @GraphQLDescription("entity list items")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public CountingPaginatedData<ContentCategoryObject> getContentCategories(final DataFetchingEnvironment env) {
+    public CountingPaginatedData<EntityListItemObject> getContentCategories(final DataFetchingEnvironment env) {
         var userVisitSearch = getUserVisitSearch(env);
 
         if(userVisitSearch == null) {
@@ -58,8 +58,8 @@ public class ContentCategoryResultsObject
             var totalCount = getTotalCount(env);
 
             try(var objectLimiter = new ObjectLimiter(env, SearchResultConstants.COMPONENT_VENDOR_NAME, SearchResultConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var contentCategoryControl = Session.getModelController(ContentCategoryControl.class);
-                var contentCategories = contentCategoryControl.getContentCategoryObjectsFromUserVisitSearch(userVisitSearch);
+                var entityListItemControl = Session.getModelController(EntityListItemControl.class);
+                var contentCategories = entityListItemControl.getEntityListItemObjectsFromUserVisitSearch(userVisitSearch);
 
                 return new CountedObjects<>(objectLimiter, contentCategories);
             }

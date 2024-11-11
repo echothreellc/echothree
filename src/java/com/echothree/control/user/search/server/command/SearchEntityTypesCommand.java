@@ -19,15 +19,21 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.SearchEntityTypesForm;
 import com.echothree.control.user.search.common.result.SearchEntityTypesResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
+import com.echothree.model.control.core.server.search.EntityTypeSearchEvaluator;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
-import com.echothree.model.control.core.server.search.EntityTypeSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
 import java.util.Arrays;
@@ -36,10 +42,18 @@ import java.util.List;
 
 public class SearchEntityTypesCommand
         extends BaseSearchCommand<SearchEntityTypesForm, SearchEntityTypesResult> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.EntityType.name(), SecurityRoles.Search.name())
+                ))
+        ));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("SearchDefaultOperatorName", FieldType.ENTITY_NAME, false, null, null),
@@ -57,7 +71,7 @@ public class SearchEntityTypesCommand
 
     /** Creates a new instance of SearchEntityTypesCommand */
     public SearchEntityTypesCommand(UserVisitPK userVisitPK, SearchEntityTypesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
