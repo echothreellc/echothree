@@ -20,6 +20,7 @@ import com.echothree.control.user.index.common.form.UpdateIndexesForm;
 import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.contact.server.indexer.ContactMechanismIndexer;
 import com.echothree.model.control.content.server.indexer.ContentCategoryIndexer;
+import com.echothree.model.control.core.server.indexer.ComponentVendorIndexer;
 import com.echothree.model.control.core.server.indexer.EntityListItemIndexer;
 import com.echothree.model.control.core.server.indexer.EntityTypeIndexer;
 import com.echothree.model.control.customer.server.indexer.CustomerIndexer;
@@ -138,6 +139,8 @@ public class UpdateIndexesCommand
                     baseIndexer = new SecurityRoleIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.HARMONIZED_TARIFF_SCHEDULE_CODE.name())) {
                     baseIndexer = new HarmonizedTariffScheduleCodeIndexer(this, index);
+                } else if(indexTypeName.equals(IndexTypes.COMPONENT_VENDOR.name())) {
+                    baseIndexer = new ComponentVendorIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_TYPE.name())) {
                     baseIndexer = new EntityTypeIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.CONTACT_MECHANISM.name())) {
