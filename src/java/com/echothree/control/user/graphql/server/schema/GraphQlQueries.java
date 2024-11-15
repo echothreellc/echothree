@@ -253,6 +253,7 @@ import com.echothree.control.user.returnpolicy.server.command.GetReturnPoliciesC
 import com.echothree.control.user.returnpolicy.server.command.GetReturnPolicyCommand;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.CheckItemSpellingResult;
+import com.echothree.control.user.search.server.command.GetComponentVendorResultsCommand;
 import com.echothree.control.user.search.server.command.GetContentCategoryResultsCommand;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
 import com.echothree.control.user.search.server.command.GetEmployeeResultsCommand;
@@ -514,6 +515,7 @@ import com.echothree.model.control.returnpolicy.server.graphql.ReturnKindObject;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.graphql.CheckItemSpellingObject;
+import com.echothree.model.control.search.server.graphql.ComponentVendorResultsObject;
 import com.echothree.model.control.search.server.graphql.ContentCategoryResultsObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.search.server.graphql.EmployeeResultsObject;
@@ -5856,6 +5858,27 @@ public interface GraphQlQueries {
         }
 
         return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("componentVendorResults")
+    static ComponentVendorResultsObject componentVendorResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        ComponentVendorResultsObject componentVendorResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetComponentVendorResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetComponentVendorResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                componentVendorResultsObject = new ComponentVendorResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return componentVendorResultsObject;
     }
 
     @GraphQLField
