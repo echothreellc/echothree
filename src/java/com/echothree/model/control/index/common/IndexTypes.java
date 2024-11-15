@@ -24,6 +24,7 @@ public enum IndexTypes {
     CUSTOMER,
     FORUM_MESSAGE,
     EMPLOYEE,
+    ENTITY_ALIAS_TYPE,
     ENTITY_ATTRIBUTE,
     ENTITY_LIST_ITEM,
     ENTITY_TYPE,
