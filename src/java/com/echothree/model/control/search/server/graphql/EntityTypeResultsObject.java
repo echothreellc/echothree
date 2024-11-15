@@ -59,9 +59,9 @@ public class EntityTypeResultsObject
 
             try(var objectLimiter = new ObjectLimiter(env, SearchResultConstants.COMPONENT_VENDOR_NAME, SearchResultConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entityTypeControl = Session.getModelController(EntityTypeControl.class);
-                var contentCategories = entityTypeControl.getEntityTypeObjectsFromUserVisitSearch(userVisitSearch);
+                var entityTypes = entityTypeControl.getEntityTypeObjectsFromUserVisitSearch(userVisitSearch);
 
-                return new CountedObjects<>(objectLimiter, contentCategories);
+                return new CountedObjects<>(objectLimiter, entityTypes);
             }
         }
     }
