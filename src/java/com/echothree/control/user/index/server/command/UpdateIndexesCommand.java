@@ -21,6 +21,7 @@ import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.contact.server.indexer.ContactMechanismIndexer;
 import com.echothree.model.control.content.server.indexer.ContentCategoryIndexer;
 import com.echothree.model.control.core.server.indexer.ComponentVendorIndexer;
+import com.echothree.model.control.core.server.indexer.EntityAttributeIndexer;
 import com.echothree.model.control.core.server.indexer.EntityListItemIndexer;
 import com.echothree.model.control.core.server.indexer.EntityTypeIndexer;
 import com.echothree.model.control.customer.server.indexer.CustomerIndexer;
@@ -129,6 +130,12 @@ public class UpdateIndexesCommand
                     baseIndexer = new ItemIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.FORUM_MESSAGE.name())) {
                     baseIndexer = new ForumMessageIndexer(this, index);
+                } else if(indexTypeName.equals(IndexTypes.COMPONENT_VENDOR.name())) {
+                    baseIndexer = new ComponentVendorIndexer(this, index);
+                } else if(indexTypeName.equals(IndexTypes.ENTITY_TYPE.name())) {
+                    baseIndexer = new EntityTypeIndexer(this, index);
+                } else if(indexTypeName.equals(IndexTypes.ENTITY_ATTRIBUTE.name())) {
+                    baseIndexer = new EntityAttributeIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_LIST_ITEM.name())) {
                     baseIndexer = new EntityListItemIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.CONTENT_CATEGORY.name())) {
@@ -139,10 +146,6 @@ public class UpdateIndexesCommand
                     baseIndexer = new SecurityRoleIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.HARMONIZED_TARIFF_SCHEDULE_CODE.name())) {
                     baseIndexer = new HarmonizedTariffScheduleCodeIndexer(this, index);
-                } else if(indexTypeName.equals(IndexTypes.COMPONENT_VENDOR.name())) {
-                    baseIndexer = new ComponentVendorIndexer(this, index);
-                } else if(indexTypeName.equals(IndexTypes.ENTITY_TYPE.name())) {
-                    baseIndexer = new EntityTypeIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.CONTACT_MECHANISM.name())) {
                     baseIndexer = new ContactMechanismIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.OFFER.name())) {
