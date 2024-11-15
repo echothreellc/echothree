@@ -40,6 +40,12 @@
                 <indexFieldDescription languageIsoName="en" description="Description" />
             </indexField>
         </indexType>
+        <indexType indexTypeName="ENTITY_ATTRIBUTE" componentVendorName="ECHO_THREE" entityTypeName="EntityAttribute" isDefault="false" sortOrder="1">
+            <indexTypeDescription languageIsoName="en" description="Entity Attribute" />
+            <indexField indexFieldName="description" languageIsoName="en" isDefault="true" sortOrder="1">
+                <indexFieldDescription languageIsoName="en" description="Description" />
+            </indexField>
+        </indexType>
         <indexType indexTypeName="ENTITY_LIST_ITEM" componentVendorName="ECHO_THREE" entityTypeName="EntityListItem" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Entity List Item" />
             <indexField indexFieldName="description" languageIsoName="en" isDefault="true" sortOrder="1">
@@ -212,6 +218,34 @@
         <index indexName="ENTITY_TYPE_ZH" indexTypeName="ENTITY_TYPE" languageIsoName="zh" directory="/usr/local/jboss/share/indexes/entityType/zh"
                isDefault="false" sortOrder="1">
             <indexDescription languageIsoName="en" description="Entity Type (Chinese)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_EN" indexTypeName="ENTITY_ATTRIBUTE" languageIsoName="en" directory="/usr/local/jboss/share/indexes/entityAttribute/en"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute (English)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_DE" indexTypeName="ENTITY_ATTRIBUTE" languageIsoName="de" directory="/usr/local/jboss/share/indexes/entityAttribute/de"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute (German)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_ES" indexTypeName="ENTITY_ATTRIBUTE" languageIsoName="es" directory="/usr/local/jboss/share/indexes/entityAttribute/es"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute (Spanish)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_FR" indexTypeName="ENTITY_ATTRIBUTE" languageIsoName="fr" directory="/usr/local/jboss/share/indexes/entityAttribute/fr"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute (French)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_JA" indexTypeName="ENTITY_ATTRIBUTE" languageIsoName="ja" directory="/usr/local/jboss/share/indexes/entityAttribute/ja"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute (Japanese)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_KO" indexTypeName="ENTITY_ATTRIBUTE" languageIsoName="ko" directory="/usr/local/jboss/share/indexes/entityAttribute/ko"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute (Korean)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_ZH" indexTypeName="ENTITY_ATTRIBUTE" languageIsoName="zh" directory="/usr/local/jboss/share/indexes/entityAttribute/zh"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute (Chinese)" />
         </index>
         <index indexName="ENTITY_LIST_ITEM_EN" indexTypeName="ENTITY_LIST_ITEM" languageIsoName="en" directory="/usr/local/jboss/share/indexes/entityListItem/en"
                isDefault="false" sortOrder="1">
