@@ -49,6 +49,7 @@ public enum IndexFields {
     deletedTime,
     description,
     emailAddress,
+    entityAliasTypeName,
     entityAttributeName,
     entityAttributeTypeName,
     entityInstanceId,
