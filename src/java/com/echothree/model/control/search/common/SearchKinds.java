@@ -18,6 +18,7 @@ package com.echothree.model.control.search.common;
 
 public enum SearchKinds {
 
+    COMPONENT_VENDOR,
     CONTACT_MECHANISM,
     CONTENT_CATEGORY,
     CUSTOMER,

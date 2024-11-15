@@ -41,7 +41,11 @@ public interface SearchOptions {
     String SalesOrderBatchResultIncludeSalesOrderBatch = "SalesOrderBatchResultIncludeSalesOrderBatch";
     
     String VendorResultIncludeVendor = "VendorResultIncludeVendor";
-    
+
+    String ComponentVendorResultIncludeComponentVendor = "ComponentVendorResultIncludeComponentVendor";
+
+    String EntityTypeResultIncludeEntityType = "EntityTypeResultIncludeEntityType";
+
     String EntityListItemResultIncludeEntityListItem = "ItemResultIncludeEntityListItem";
     
     String ContentCategoryResultIncludeContentCategory = "ContentCategoryResultIncludeContentCategory";
@@ -51,8 +55,6 @@ public interface SearchOptions {
     String SecurityRoleResultIncludeSecurityRole = "SecurityRoleResultIncludeSecurityRole";
     
     String HarmonizedTariffScheduleCodeResultIncludeHarmonizedTariffScheduleCode = "HarmonizedTariffScheduleCodeResultIncludeHarmonizedTariffScheduleCode";
-    
-    String EntityTypeResultIncludeEntityType = "EntityTypeResultIncludeEntityType";
     
     String ContactMechanismResultIncludeContactMechanism = "ContactMechanismResultIncludeContactMechanism";
     

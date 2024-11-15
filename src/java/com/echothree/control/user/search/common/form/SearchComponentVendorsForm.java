@@ -14,36 +14,12 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.search.common;
+package com.echothree.control.user.search.common.form;
 
-public enum SearchSortOrders {
-
-    COMPONENT_VENDOR_NAME,
-    CONTACT_MECHANISM_NAME,
-    CONTENT_CATEGORY_NAME,
-    CREATED_TIME,
-    CUSTOMER_NAME,
-    DEFAULT_DESCRIPTION,
-    DELETED_TIME,
-    DESCRIPTION,
-    ENTITY_TYPE_NAME,
-    FIRST_NAME,
-    HARMONIZED_TARIFF_SCHEDULE_CODE_NAME,
-    ITEM_NAME,
-    LAST_NAME,
-    LEAVE_NAME,
-    ENTITY_LIST_ITEM_NAME,
-    MODIFIED_TIME,
-    OFFER_NAME,
-    POSTED_TIME,
-    SALES_ORDER_NAME,
-    SALES_ORDER_BATCH_NAME,
-    SECURITY_ROLE_GROUP_NAME,
-    SECURITY_ROLE_NAME,
-    SCORE,
-    TITLE,
-    USE_NAME,
-    USE_TYPE_NAME,
-    VENDOR_NAME,
+public interface SearchComponentVendorsForm
+        extends BaseSearchForm {
+    
+    String getQ();
+    void setQ(String q);
     
 }
