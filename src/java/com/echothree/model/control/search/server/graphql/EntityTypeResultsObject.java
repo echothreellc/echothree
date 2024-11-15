@@ -49,7 +49,7 @@ public class EntityTypeResultsObject
     @GraphQLDescription("entity types")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public CountingPaginatedData<EntityTypeObject> getContentCategories(final DataFetchingEnvironment env) {
+    public CountingPaginatedData<EntityTypeObject> getEntityTypes(final DataFetchingEnvironment env) {
         var userVisitSearch = getUserVisitSearch(env);
 
         if(userVisitSearch == null) {
