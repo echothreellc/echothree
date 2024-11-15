@@ -691,7 +691,11 @@ public class CoreControl
             sendEvent(componentVendorPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
-    
+
+    public ComponentVendor getComponentVendorByPK(ComponentVendorPK pk) {
+        return ComponentVendorFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
     public void deleteComponentVendor(ComponentVendor componentVendor, BasePK deletedBy) {
         deleteEntityTypesByComponentVendor(componentVendor, deletedBy);
         

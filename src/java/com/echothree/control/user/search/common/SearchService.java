@@ -398,6 +398,34 @@ public interface SearchService
     CommandResult clearSalesOrderResults(UserVisitPK userVisitPK, ClearSalesOrderResultsForm form);
 
     // -------------------------------------------------------------------------
+    //   Component Vendor Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchComponentVendors(UserVisitPK userVisitPK, SearchComponentVendorsForm form);
+
+    CommandResult getComponentVendorResults(UserVisitPK userVisitPK, GetComponentVendorResultsForm form);
+
+    CommandResult countComponentVendorResults(UserVisitPK userVisitPK, CountComponentVendorResultsForm form);
+
+    CommandResult clearComponentVendorResults(UserVisitPK userVisitPK, ClearComponentVendorResultsForm form);
+
+    // -------------------------------------------------------------------------
+    //   Entity Type Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchEntityTypes(UserVisitPK userVisitPK, SearchEntityTypesForm form);
+
+    CommandResult getEntityTypeResults(UserVisitPK userVisitPK, GetEntityTypeResultsForm form);
+
+    CommandResult getEntityTypeResultsFacet(UserVisitPK userVisitPK, GetEntityTypeResultsFacetForm form);
+
+    CommandResult getEntityTypeResultsFacets(UserVisitPK userVisitPK, GetEntityTypeResultsFacetsForm form);
+
+    CommandResult countEntityTypeResults(UserVisitPK userVisitPK, CountEntityTypeResultsForm form);
+
+    CommandResult clearEntityTypeResults(UserVisitPK userVisitPK, ClearEntityTypeResultsForm form);
+
+    // -------------------------------------------------------------------------
     //   Entity List Item Search
     // -------------------------------------------------------------------------
 
@@ -472,22 +500,6 @@ public interface SearchService
     CommandResult countHarmonizedTariffScheduleCodeResults(UserVisitPK userVisitPK, CountHarmonizedTariffScheduleCodeResultsForm form);
     
     CommandResult clearHarmonizedTariffScheduleCodeResults(UserVisitPK userVisitPK, ClearHarmonizedTariffScheduleCodeResultsForm form);
-    
-    // -------------------------------------------------------------------------
-    //   Entity Type Search
-    // -------------------------------------------------------------------------
-
-    CommandResult searchEntityTypes(UserVisitPK userVisitPK, SearchEntityTypesForm form);
-    
-    CommandResult getEntityTypeResults(UserVisitPK userVisitPK, GetEntityTypeResultsForm form);
-    
-    CommandResult getEntityTypeResultsFacet(UserVisitPK userVisitPK, GetEntityTypeResultsFacetForm form);
-    
-    CommandResult getEntityTypeResultsFacets(UserVisitPK userVisitPK, GetEntityTypeResultsFacetsForm form);
-    
-    CommandResult countEntityTypeResults(UserVisitPK userVisitPK, CountEntityTypeResultsForm form);
-    
-    CommandResult clearEntityTypeResults(UserVisitPK userVisitPK, ClearEntityTypeResultsForm form);
     
     // -------------------------------------------------------------------------
     //   Contact Mechanism Search
