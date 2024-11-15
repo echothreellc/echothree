@@ -872,6 +872,30 @@ public class SearchBean
     }
 
     // -------------------------------------------------------------------------
+    //   Entity Attribute Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchEntityAttributes(UserVisitPK userVisitPK, SearchEntityAttributesForm form) {
+        return new SearchEntityAttributesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEntityAttributeResults(UserVisitPK userVisitPK, GetEntityAttributeResultsForm form) {
+        return new GetEntityAttributeResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countEntityAttributeResults(UserVisitPK userVisitPK, CountEntityAttributeResultsForm form) {
+        return new CountEntityAttributeResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearEntityAttributeResults(UserVisitPK userVisitPK, ClearEntityAttributeResultsForm form) {
+        return new ClearEntityAttributeResultsCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
     //   Entity List Item Search
     // -------------------------------------------------------------------------
 
@@ -879,22 +903,22 @@ public class SearchBean
     public CommandResult searchEntityListItems(UserVisitPK userVisitPK, SearchEntityListItemsForm form) {
         return new SearchEntityListItemsCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult getEntityListItemResults(UserVisitPK userVisitPK, GetEntityListItemResultsForm form) {
         return new GetEntityListItemResultsCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult countEntityListItemResults(UserVisitPK userVisitPK, CountEntityListItemResultsForm form) {
         return new CountEntityListItemResultsCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult clearEntityListItemResults(UserVisitPK userVisitPK, ClearEntityListItemResultsForm form) {
         return new ClearEntityListItemResultsCommand(userVisitPK, form).run();
     }
-    
+
     // -------------------------------------------------------------------------
     //   Content Category Search
     // -------------------------------------------------------------------------

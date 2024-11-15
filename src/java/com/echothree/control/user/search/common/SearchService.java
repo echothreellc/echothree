@@ -426,17 +426,29 @@ public interface SearchService
     CommandResult clearEntityTypeResults(UserVisitPK userVisitPK, ClearEntityTypeResultsForm form);
 
     // -------------------------------------------------------------------------
+    //   Entity Attribute Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchEntityAttributes(UserVisitPK userVisitPK, SearchEntityAttributesForm form);
+
+    CommandResult getEntityAttributeResults(UserVisitPK userVisitPK, GetEntityAttributeResultsForm form);
+
+    CommandResult countEntityAttributeResults(UserVisitPK userVisitPK, CountEntityAttributeResultsForm form);
+
+    CommandResult clearEntityAttributeResults(UserVisitPK userVisitPK, ClearEntityAttributeResultsForm form);
+
+    // -------------------------------------------------------------------------
     //   Entity List Item Search
     // -------------------------------------------------------------------------
 
     CommandResult searchEntityListItems(UserVisitPK userVisitPK, SearchEntityListItemsForm form);
-    
+
     CommandResult getEntityListItemResults(UserVisitPK userVisitPK, GetEntityListItemResultsForm form);
-    
+
     CommandResult countEntityListItemResults(UserVisitPK userVisitPK, CountEntityListItemResultsForm form);
-    
+
     CommandResult clearEntityListItemResults(UserVisitPK userVisitPK, ClearEntityListItemResultsForm form);
-    
+
     // -------------------------------------------------------------------------
     //   Content Category Search
     // -------------------------------------------------------------------------
