@@ -214,8 +214,8 @@
         </searchKind>
         <searchKind searchKindName="COMPONENT_VENDOR" isDefault="false" sortOrder="1">
             <searchKindDescription languageIsoName="en" description="Component Vendor" />
-            <searchType searchTypeName="CUSTOMER" isDefault="true" sortOrder="1">
-                <searchTypeDescription languageIsoName="en" description="Customer" />
+            <searchType searchTypeName="EMPLOYEE" isDefault="true" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Employee" />
             </searchType>
             <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
                 <searchSortOrderDescription languageIsoName="en" description="Score" />
@@ -258,6 +258,9 @@
             <searchKindDescription languageIsoName="en" description="Entity List Item" />
             <searchType searchTypeName="CUSTOMER" isDefault="true" sortOrder="1">
                 <searchTypeDescription languageIsoName="en" description="Customer" />
+            </searchType>
+            <searchType searchTypeName="EMPLOYEE" isDefault="true" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Employee" />
             </searchType>
             <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
                 <searchSortOrderDescription languageIsoName="en" description="Score" />
