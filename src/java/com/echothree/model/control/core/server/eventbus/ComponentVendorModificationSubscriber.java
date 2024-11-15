@@ -18,7 +18,7 @@ package com.echothree.model.control.core.server.eventbus;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.data.core.common.AppearanceConstants;
+import com.echothree.model.data.core.common.ComponentVendorConstants;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.util.server.persistence.PersistenceUtils;
@@ -26,27 +26,27 @@ import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
 
 @SentEventSubscriber
-public class AppearanceModificationSubscriber
+public class ComponentVendorModificationSubscriber
         extends BaseEventSubscriber {
 
     @Subscribe
     public void receiveSentEvent(SentEvent se) {
-        decodeEventAndApply(se, touchEntityInstancesIfAppearance);
+        decodeEventAndApply(se, touchEntityTypesIfComponentVendor);
     }
 
     private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
-            touchEntityInstancesIfAppearance = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
-        if(AppearanceConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
-                && AppearanceConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
+            touchEntityTypesIfComponentVendor = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
+        if(ComponentVendorConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
+                && ComponentVendorConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var appearance = coreControl.getAppearanceByEntityInstance(entityInstance);
-            var entityAppearances = coreControl.getEntityAppearancesByAppearance(appearance);
+            var componentVendor = coreControl.getComponentVendorByEntityInstance(entityInstance);
+            var entityTypes = coreControl.getEntityTypesByComponentVendor(componentVendor);
             var createdBy = PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy());
 
-            for(var entityAppearance : entityAppearances) {
-                coreControl.sendEvent(entityAppearance.getEntityInstance(), EventTypes.TOUCH,
-                        entityInstance, eventType,
+            for(var entityType : entityTypes) {
+                coreControl.sendEvent(entityType.getPrimaryKey(), EventTypes.TOUCH,
+                        componentVendor.getPrimaryKey(), eventType,
                         createdBy);
             }
         }

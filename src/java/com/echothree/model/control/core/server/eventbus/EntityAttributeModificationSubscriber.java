@@ -16,9 +16,10 @@
 
 package com.echothree.model.control.core.server.eventbus;
 
+import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.data.core.common.AppearanceConstants;
+import com.echothree.model.data.core.common.EntityAttributeConstants;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.util.server.persistence.PersistenceUtils;
@@ -26,28 +27,37 @@ import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
 
 @SentEventSubscriber
-public class AppearanceModificationSubscriber
+public class EntityAttributeModificationSubscriber
         extends BaseEventSubscriber {
 
     @Subscribe
     public void receiveSentEvent(SentEvent se) {
-        decodeEventAndApply(se, touchEntityInstancesIfAppearance);
+        decodeEventAndApply(se, touchEntityListItemsIfEntityAttribute);
     }
 
     private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
-            touchEntityInstancesIfAppearance = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
-        if(AppearanceConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
-                && AppearanceConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
+            touchEntityListItemsIfEntityAttribute = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
+        if(EntityAttributeConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
+                && EntityAttributeConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var appearance = coreControl.getAppearanceByEntityInstance(entityInstance);
-            var entityAppearances = coreControl.getEntityAppearancesByAppearance(appearance);
-            var createdBy = PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy());
+            var entityAttribute = coreControl.getEntityAttributeByEntityInstance(entityInstance);
+            var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+            var entityAttributeType = EntityAttributeTypes.valueOf(entityAttributeTypeName);
 
-            for(var entityAppearance : entityAppearances) {
-                coreControl.sendEvent(entityAppearance.getEntityInstance(), EventTypes.TOUCH,
-                        entityInstance, eventType,
-                        createdBy);
+            switch(entityAttributeType) {
+                // Only these two types can have associated Entity List Items
+                case LISTITEM, MULTIPLELISTITEM -> {
+                    var entityListItems = coreControl.getEntityListItems(entityAttribute);
+                    var createdBy = PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy());
+
+                    for(var entityListItem : entityListItems) {
+                        coreControl.sendEvent(entityListItem.getPrimaryKey(), EventTypes.TOUCH,
+                                entityAttribute.getPrimaryKey(), eventType,
+                                createdBy);
+                    }
+                }
+                default -> {}
             }
         }
     };
