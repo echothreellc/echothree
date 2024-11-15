@@ -59,9 +59,9 @@ public class ComponentVendorResultsObject
 
             try(var objectLimiter = new ObjectLimiter(env, SearchResultConstants.COMPONENT_VENDOR_NAME, SearchResultConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var componentVendorControl = Session.getModelController(ComponentVendorControl.class);
-                var contentCategories = componentVendorControl.getComponentVendorObjectsFromUserVisitSearch(userVisitSearch);
+                var componentVendors = componentVendorControl.getComponentVendorObjectsFromUserVisitSearch(userVisitSearch);
 
-                return new CountedObjects<>(objectLimiter, contentCategories);
+                return new CountedObjects<>(objectLimiter, componentVendors);
             }
         }
     }
