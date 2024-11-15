@@ -34,14 +34,17 @@
                 <indexFieldDescription languageIsoName="en" description="Description" />
             </indexField>
         </indexType>
+        <indexType indexTypeName="ENTITY_TYPE" componentVendorName="ECHO_THREE" entityTypeName="EntityType" isDefault="false" sortOrder="1">
+            <indexTypeDescription languageIsoName="en" description="Entity Type" />
+            <indexField indexFieldName="description" languageIsoName="en" isDefault="true" sortOrder="1">
+                <indexFieldDescription languageIsoName="en" description="Description" />
+            </indexField>
+        </indexType>
         <indexType indexTypeName="ENTITY_LIST_ITEM" componentVendorName="ECHO_THREE" entityTypeName="EntityListItem" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Entity List Item" />
             <indexField indexFieldName="description" languageIsoName="en" isDefault="true" sortOrder="1">
                 <indexFieldDescription languageIsoName="en" description="Description" />
             </indexField>
-        </indexType>
-        <indexType indexTypeName="ENTITY_TYPE" componentVendorName="ECHO_THREE" entityTypeName="EntityType" isDefault="false" sortOrder="1">
-            <indexTypeDescription languageIsoName="en" description="Entity Type" />
         </indexType>
         <indexType indexTypeName="FORUM_MESSAGE" componentVendorName="ECHO_THREE" entityTypeName="ForumMessage" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Forum Message" />
