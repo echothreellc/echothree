@@ -49,7 +49,7 @@ public class EntityListItemResultsObject
     @GraphQLDescription("entity list items")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public CountingPaginatedData<EntityListItemObject> getContentCategories(final DataFetchingEnvironment env) {
+    public CountingPaginatedData<EntityListItemObject> getEntityListItems(final DataFetchingEnvironment env) {
         var userVisitSearch = getUserVisitSearch(env);
 
         if(userVisitSearch == null) {
