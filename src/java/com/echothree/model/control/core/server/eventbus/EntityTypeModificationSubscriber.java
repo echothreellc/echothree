@@ -30,7 +30,7 @@ public class EntityTypeModificationSubscriber
         extends BaseEventSubscriber {
 
     @Subscribe
-    public void receiveSentEvent(SentEvent se) {
+    public void receiveSentEventforEntityAttributes(SentEvent se) {
         decodeEventAndApply(se, touchEntityAttributesIfEntityType);
     }
 
@@ -46,6 +46,29 @@ public class EntityTypeModificationSubscriber
 
             for(var entityAttribute : entityAttributes) {
                 coreControl.sendEvent(entityAttribute.getPrimaryKey(), EventTypes.TOUCH,
+                        entityType.getPrimaryKey(), eventType,
+                        createdBy);
+            }
+        }
+    };
+
+    @Subscribe
+    public void receiveSentEventForEntityAliases(SentEvent se) {
+        decodeEventAndApply(se, touchEntityAliasTypesIfEntityType);
+    }
+
+    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+            touchEntityAliasTypesIfEntityType = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
+        if(EntityTypeConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
+                && EntityTypeConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
+                && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityType = coreControl.getEntityTypeByEntityInstance(entityInstance);
+            var entityAliasTypes = coreControl.getEntityAliasTypesByEntityType(entityType);
+            var createdBy = PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy());
+
+            for(var entityAliasType : entityAliasTypes) {
+                coreControl.sendEvent(entityAliasType.getPrimaryKey(), EventTypes.TOUCH,
                         entityType.getPrimaryKey(), eventType,
                         createdBy);
             }
