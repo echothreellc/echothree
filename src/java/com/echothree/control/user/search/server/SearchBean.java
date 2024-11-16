@@ -872,6 +872,30 @@ public class SearchBean
     }
 
     // -------------------------------------------------------------------------
+    //   Entity Alias Type Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchEntityAliasTypes(UserVisitPK userVisitPK, SearchEntityAliasTypesForm form) {
+        return new SearchEntityAliasTypesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEntityAliasTypeResults(UserVisitPK userVisitPK, GetEntityAliasTypeResultsForm form) {
+        return new GetEntityAliasTypeResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countEntityAliasTypeResults(UserVisitPK userVisitPK, CountEntityAliasTypeResultsForm form) {
+        return new CountEntityAliasTypeResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearEntityAliasTypeResults(UserVisitPK userVisitPK, ClearEntityAliasTypeResultsForm form) {
+        return new ClearEntityAliasTypeResultsCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
     //   Entity Attribute Search
     // -------------------------------------------------------------------------
 

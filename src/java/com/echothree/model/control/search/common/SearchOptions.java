@@ -46,6 +46,8 @@ public interface SearchOptions {
 
     String EntityTypeResultIncludeEntityType = "EntityTypeResultIncludeEntityType";
 
+    String EntityAliasTypeResultIncludeEntityAliasType = "EntityAliasTypeResultIncludeEntityAliasType";
+
     String EntityAttributeResultIncludeEntityAttribute = "EntityAttributeResultIncludeEntityAttribute";
 
     String EntityListItemResultIncludeEntityListItem = "ItemResultIncludeEntityListItem";
