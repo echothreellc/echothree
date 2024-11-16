@@ -426,6 +426,18 @@ public interface SearchService
     CommandResult clearEntityTypeResults(UserVisitPK userVisitPK, ClearEntityTypeResultsForm form);
 
     // -------------------------------------------------------------------------
+    //   Entity Alias Type Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchEntityAliasTypes(UserVisitPK userVisitPK, SearchEntityAliasTypesForm form);
+
+    CommandResult getEntityAliasTypeResults(UserVisitPK userVisitPK, GetEntityAliasTypeResultsForm form);
+
+    CommandResult countEntityAliasTypeResults(UserVisitPK userVisitPK, CountEntityAliasTypeResultsForm form);
+
+    CommandResult clearEntityAliasTypeResults(UserVisitPK userVisitPK, ClearEntityAliasTypeResultsForm form);
+
+    // -------------------------------------------------------------------------
     //   Entity Attribute Search
     // -------------------------------------------------------------------------
 
