@@ -22,6 +22,7 @@ import com.echothree.model.control.contact.server.indexer.ContactMechanismIndexe
 import com.echothree.model.control.content.server.indexer.ContentCategoryIndexer;
 import com.echothree.model.control.core.server.indexer.ComponentVendorIndexer;
 import com.echothree.model.control.core.server.indexer.EntityAliasTypeIndexer;
+import com.echothree.model.control.core.server.indexer.EntityAttributeGroupIndexer;
 import com.echothree.model.control.core.server.indexer.EntityAttributeIndexer;
 import com.echothree.model.control.core.server.indexer.EntityListItemIndexer;
 import com.echothree.model.control.core.server.indexer.EntityTypeIndexer;
@@ -137,6 +138,8 @@ public class UpdateIndexesCommand
                     baseIndexer = new EntityTypeIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_ALIAS_TYPE.name())) {
                     baseIndexer = new EntityAliasTypeIndexer(this, index);
+                } else if(indexTypeName.equals(IndexTypes.ENTITY_ATTRIBUTE_GROUP.name())) {
+                    baseIndexer = new EntityAttributeGroupIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_ATTRIBUTE.name())) {
                     baseIndexer = new EntityAttributeIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_LIST_ITEM.name())) {
