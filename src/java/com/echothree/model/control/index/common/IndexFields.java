@@ -50,6 +50,7 @@ public enum IndexFields {
     description,
     emailAddress,
     entityAliasTypeName,
+    entityAttributeGroupName,
     entityAttributeName,
     entityAttributeTypeName,
     entityInstanceId,
