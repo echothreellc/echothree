@@ -5046,7 +5046,11 @@ public class CoreControl
     public void updateEntityAttributeGroupFromValue(EntityAttributeGroupDetailValue entityAttributeGroupDetailValue, BasePK updatedBy) {
         updateEntityAttributeGroupFromValue(entityAttributeGroupDetailValue, true, updatedBy);
     }
-    
+
+    public EntityAttributeGroup getEntityAttributeGroupByPK(EntityAttributeGroupPK pk) {
+        return EntityAttributeGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
     public void deleteEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup, BasePK deletedBy) {
         deleteEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup, deletedBy);
         deleteEntityAttributeGroupDescriptionsByEntityAttributeGroup(entityAttributeGroup, deletedBy);

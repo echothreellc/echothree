@@ -896,6 +896,30 @@ public class SearchBean
     }
 
     // -------------------------------------------------------------------------
+    //   Entity Attribute Group Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchEntityAttributeGroups(UserVisitPK userVisitPK, SearchEntityAttributeGroupsForm form) {
+        return new SearchEntityAttributeGroupsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEntityAttributeGroupResults(UserVisitPK userVisitPK, GetEntityAttributeGroupResultsForm form) {
+        return new GetEntityAttributeGroupResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countEntityAttributeGroupResults(UserVisitPK userVisitPK, CountEntityAttributeGroupResultsForm form) {
+        return new CountEntityAttributeGroupResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearEntityAttributeGroupResults(UserVisitPK userVisitPK, ClearEntityAttributeGroupResultsForm form) {
+        return new ClearEntityAttributeGroupResultsCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
     //   Entity Attribute Search
     // -------------------------------------------------------------------------
 

@@ -3636,6 +3636,9 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Entity Attribute Group Description" />
             </securityRole>
+            <securityRole securityRoleName="Search" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Attribute Group Search" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="PartyType" parentSecurityRoleGroupName="PartyComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="PartyType" />
@@ -7911,6 +7914,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeGroup" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeGroup" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeGroup" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeGroup" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Event" securityRoleName="Send" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Event" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterKind" securityRoleName="Create" />
