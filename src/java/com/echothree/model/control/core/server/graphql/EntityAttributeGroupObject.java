@@ -25,6 +25,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.common.EntityAttributeConstants;
+import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroupDetail;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -100,28 +101,37 @@ public class EntityAttributeGroupObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<EntityAttributeObject> getEntityAttributes(final DataFetchingEnvironment env) {
-        if(entityInstance != null) {
-//            if(CoreSecurityUtils.getHasEntityAttributesAccess(env)) {
-                var coreControl = Session.getModelController(CoreControl.class);
-                var entityType = entityInstance.getEntityType();
-                var totalCount = coreControl.countEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup,
-                        entityType);
+//      if(CoreSecurityUtils.getHasEntityAttributesAccess(env)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityType = entityInstance == null ? null : entityInstance.getEntityType();
 
-                try(var objectLimiter = new ObjectLimiter(env, EntityAttributeConstants.COMPONENT_VENDOR_NAME, EntityAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                    var entities = coreControl.getEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup,
-                            entityType);
-                    var entityAttributes = new ArrayList<EntityAttributeObject>(entities.size());
+            long totalCount;
+            if(entityType == null) {
+                totalCount = coreControl.countEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
+            } else {
+                totalCount = coreControl.countEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup, entityType);
+            }
 
-                    entities.forEach((entity) -> entityAttributes.add(new EntityAttributeObject(entity, entityInstance)));
+            try(var objectLimiter = new ObjectLimiter(env, EntityAttributeConstants.COMPONENT_VENDOR_NAME, EntityAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                Collection<EntityAttribute> entities;
+                if(entityType == null) {
+                    var entityAttributeGroupEntityAttributes = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
 
-                    return new CountedObjects<>(objectLimiter, entityAttributes);
+                    entities = new ArrayList<>(entityAttributeGroupEntityAttributes.size());
+                    entityAttributeGroupEntityAttributes.forEach(eagea -> entities.add(eagea.getEntityAttribute()));
+                } else {
+                    entities = coreControl.getEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup, entityType);
                 }
-//            } else {
-//                return Connections.emptyConnection();
-//            }
-        } else {
-            return null;
-        }
+
+                var entityAttributes = new ArrayList<EntityAttributeObject>(entities.size());
+
+                entities.forEach((entity) -> entityAttributes.add(new EntityAttributeObject(entity, entityInstance)));
+
+                return new CountedObjects<>(objectLimiter, entityAttributes);
+            }
+//      } else {
+//          return Connections.emptyConnection();
+//      }
     }
 
     @GraphQLField
