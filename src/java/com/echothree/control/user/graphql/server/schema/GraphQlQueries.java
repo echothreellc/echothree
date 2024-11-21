@@ -258,6 +258,7 @@ import com.echothree.control.user.search.server.command.GetContentCategoryResult
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
 import com.echothree.control.user.search.server.command.GetEmployeeResultsCommand;
 import com.echothree.control.user.search.server.command.GetEntityAliasTypeResultsCommand;
+import com.echothree.control.user.search.server.command.GetEntityAttributeGroupResultsCommand;
 import com.echothree.control.user.search.server.command.GetEntityAttributeResultsCommand;
 import com.echothree.control.user.search.server.command.GetEntityListItemResultsCommand;
 import com.echothree.control.user.search.server.command.GetEntityTypeResultsCommand;
@@ -522,6 +523,7 @@ import com.echothree.model.control.search.server.graphql.ContentCategoryResultsO
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.search.server.graphql.EmployeeResultsObject;
 import com.echothree.model.control.search.server.graphql.EntityAliasTypeResultsObject;
+import com.echothree.model.control.search.server.graphql.EntityAttributeGroupResultsObject;
 import com.echothree.model.control.search.server.graphql.EntityAttributeResultsObject;
 import com.echothree.model.control.search.server.graphql.EntityListItemResultsObject;
 import com.echothree.model.control.search.server.graphql.EntityTypeResultsObject;
@@ -5925,6 +5927,27 @@ public interface GraphQlQueries {
         }
 
         return entityAliasTypeResultsObject;
+    }
+
+    @GraphQLField
+    @GraphQLName("entityAttributeGroupResults")
+    static EntityAttributeGroupResultsObject entityAttributeGroupResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        EntityAttributeGroupResultsObject entityAttributeGroupResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetEntityAttributeGroupResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetEntityAttributeGroupResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                entityAttributeGroupResultsObject = new EntityAttributeGroupResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return entityAttributeGroupResultsObject;
     }
 
     @GraphQLField
