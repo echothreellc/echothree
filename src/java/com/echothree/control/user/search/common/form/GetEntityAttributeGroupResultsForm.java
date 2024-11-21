@@ -14,32 +14,11 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.search.common;
+package com.echothree.control.user.search.common.form;
 
-public enum SearchKinds {
-
-    COMPONENT_VENDOR,
-    CONTACT_MECHANISM,
-    CONTENT_CATEGORY,
-    CUSTOMER,
-    EMPLOYEE,
-    ENTITY_ALIAS_TYPE,
-    ENTITY_ATTRIBUTE,
-    ENTITY_ATTRIBUTE_GROUP,
-    ENTITY_LIST_ITEM,
-    ENTITY_TYPE,
-    FORUM_MESSAGE,
-    HARMONIZED_TARIFF_SCHEDULE_CODE,
-    ITEM,
-    LEAVE,
-    OFFER,
-    SALES_ORDER,
-    SALES_ORDER_BATCH,
-    SECURITY_ROLE,
-    SECURITY_ROLE_GROUP,
-    USE,
-    USE_TYPE,
-    VENDOR,
-    WAREHOUSE,
-
+public interface GetEntityAttributeGroupResultsForm
+        extends BaseGetResultsForm {
+    
+    // Nothing additional beyond BaseGetResultsForm
+    
 }

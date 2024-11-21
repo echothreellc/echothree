@@ -48,6 +48,8 @@ public interface SearchOptions {
 
     String EntityAliasTypeResultIncludeEntityAliasType = "EntityAliasTypeResultIncludeEntityAliasType";
 
+    String EntityAttributeGroupResultIncludeEntityAttributeGroup = "EntityAttributeGroupResultIncludeEntityAttributeGroup";
+
     String EntityAttributeResultIncludeEntityAttribute = "EntityAttributeResultIncludeEntityAttribute";
 
     String EntityListItemResultIncludeEntityListItem = "ItemResultIncludeEntityListItem";
