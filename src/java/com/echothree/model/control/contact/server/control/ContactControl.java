@@ -2254,7 +2254,16 @@ public class ContactControl
         
         return partyContactMechanism;
     }
-    
+
+    public long countPartyContactMechanismsByParty(Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partycontactmechanisms
+                        JOIN partycontactmechanismdetails ON pcm_activedetailid = pcmdt_partycontactmechanismdetailid
+                        WHERE pcmdt_par_partyid = ?
+                        """, party);
+    }
+
     private PartyContactMechanism getDefaultPartyContactMechanism(Party party, EntityPermission entityPermission) {
         PartyContactMechanism partyContactMechanism;
         
