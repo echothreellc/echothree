@@ -1150,6 +1150,9 @@
             <entityType entityTypeName="PartyContactMechanismAlias" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Party Contact Mechanism Alias" />
             </entityType>
+            <entityType entityTypeName="ContactMechanismPurpose" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Mechanism Purpose" />
+            </entityType>
             <entityType entityTypeName="PartyContactMechanismPurpose" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Party Contact Mechanism Purpose" />
             </entityType>
