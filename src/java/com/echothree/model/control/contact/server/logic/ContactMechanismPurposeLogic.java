@@ -16,8 +16,13 @@
 
 package com.echothree.model.control.contact.server.logic;
 
+import com.echothree.control.user.contact.common.spec.ContactMechanismPurposeUniversalSpec;
 import com.echothree.model.control.contact.common.exception.UnknownContactMechanismPurposeNameException;
 import com.echothree.model.control.contact.server.control.ContactControl;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
@@ -38,7 +43,7 @@ public class ContactMechanismPurposeLogic
     public static ContactMechanismPurposeLogic getInstance() {
         return ContactMechanismPurposeLogicHolder.instance;
     }
-    
+
     public ContactMechanismPurpose getContactMechanismPurposeByName(final ExecutionErrorAccumulator eea, final String contactMechanismPurposeName) {
         var contactControl = Session.getModelController(ContactControl.class);
         var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
@@ -49,5 +54,33 @@ public class ContactMechanismPurposeLogic
 
         return contactMechanismPurpose;
     }
-    
+
+    public ContactMechanismPurpose getContactMechanismPurposeByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final ContactMechanismPurposeUniversalSpec universalSpec) {
+        ContactMechanismPurpose contactMechanismPurpose = null;
+        var contactControl = Session.getModelController(ContactControl.class);
+        var contactMechanismPurposeName = universalSpec.getContactMechanismPurposeName();
+        var parameterCount = (contactMechanismPurposeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 1:
+                if(contactMechanismPurposeName == null) {
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.ContactMechanismPurpose.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        contactMechanismPurpose = contactControl.getContactMechanismPurposeByEntityInstance(entityInstance);
+                    }
+                } else {
+                    contactMechanismPurpose = getContactMechanismPurposeByName(eea, contactMechanismPurposeName);
+                }
+                break;
+            default:
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                break;
+        }
+
+        return contactMechanismPurpose;
+    }
+
 }
