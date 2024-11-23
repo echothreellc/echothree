@@ -66,9 +66,11 @@ public interface ContactService
     // --------------------------------------------------------------------------------
     
     CommandResult createContactMechanismPurpose(UserVisitPK userVisitPK, CreateContactMechanismPurposeForm form);
-    
+
+    CommandResult getContactMechanismPurpose(UserVisitPK userVisitPK, GetContactMechanismPurposeForm form);
+
     CommandResult getContactMechanismPurposes(UserVisitPK userVisitPK, GetContactMechanismPurposesForm form);
-    
+
     CommandResult getContactMechanismPurposeChoices(UserVisitPK userVisitPK, GetContactMechanismPurposeChoicesForm form);
     
     // --------------------------------------------------------------------------------

@@ -101,12 +101,17 @@ public class ContactBean
     public CommandResult createContactMechanismPurpose(UserVisitPK userVisitPK, CreateContactMechanismPurposeForm form) {
         return new CreateContactMechanismPurposeCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getContactMechanismPurpose(UserVisitPK userVisitPK, GetContactMechanismPurposeForm form) {
+        return new GetContactMechanismPurposeCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult getContactMechanismPurposes(UserVisitPK userVisitPK, GetContactMechanismPurposesForm form) {
         return new GetContactMechanismPurposesCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult getContactMechanismPurposeChoices(UserVisitPK userVisitPK, GetContactMechanismPurposeChoicesForm form) {
         return new GetContactMechanismPurposeChoicesCommand(userVisitPK, form).run();
