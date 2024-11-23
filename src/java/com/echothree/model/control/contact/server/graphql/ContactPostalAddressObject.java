@@ -20,6 +20,8 @@ import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.geo.server.graphql.GeoCodeObject;
 import com.echothree.model.control.geo.server.graphql.GeoSecurityUtils;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.party.server.graphql.NameSuffixObject;
+import com.echothree.model.control.party.server.graphql.PersonalTitleObject;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.contact.server.entity.ContactPostalAddress;
 import com.echothree.model.data.geo.server.entity.GeoCode;
@@ -42,6 +44,14 @@ public class ContactPostalAddressObject
     }
 
     @GraphQLField
+    @GraphQLDescription("personal title")
+    public PersonalTitleObject getPersonalTitle() {
+        var personalTitle = contactPostalAddress.getPersonalTitle();
+
+        return personalTitle == null ? null : new PersonalTitleObject(personalTitle);
+    }
+
+    @GraphQLField
     @GraphQLDescription("first name")
     public String getFirstName() {
         return contactPostalAddress.getFirstName();
@@ -57,6 +67,14 @@ public class ContactPostalAddressObject
     @GraphQLDescription("last name")
     public String getLastName() {
         return contactPostalAddress.getLastName();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("name suffix")
+    public NameSuffixObject getNameSuffix() {
+        var nameSuffix = contactPostalAddress.getNameSuffix();
+
+        return nameSuffix == null ? null : new NameSuffixObject(nameSuffix);
     }
 
     @GraphQLField
