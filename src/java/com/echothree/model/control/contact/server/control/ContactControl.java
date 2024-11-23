@@ -65,6 +65,7 @@ import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPK;
+import com.echothree.model.data.contact.common.pk.ContactMechanismPurposePK;
 import com.echothree.model.data.contact.server.entity.ContactEmailAddress;
 import com.echothree.model.data.contact.server.entity.ContactInet4Address;
 import com.echothree.model.data.contact.server.entity.ContactInet6Address;
@@ -139,7 +140,10 @@ import com.echothree.model.data.contact.server.value.PostalAddressFormatDetailVa
 import com.echothree.model.data.contact.server.value.PostalAddressLineDetailValue;
 import com.echothree.model.data.contact.server.value.PostalAddressLineElementValue;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
+import com.echothree.model.data.core.common.pk.AppearancePK;
+import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.factory.AppearanceFactory;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
@@ -787,7 +791,30 @@ public class ContactControl
         return ContactMechanismPurposeFactory.getInstance().create(contactMechanismPurposeName, contactMechanismType,
                 eventSubscriber, isDefault, sortOrder);
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactMechanismPurpose */
+    public ContactMechanismPurpose getContactMechanismPurposeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContactMechanismPurposePK(entityInstance.getEntityUniqueId());
+        var contactMechanismPurpose = ContactMechanismPurposeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
+        return contactMechanismPurpose;
+    }
+
+    public ContactMechanismPurpose getContactMechanismPurposeByEntityInstance(EntityInstance entityInstance) {
+        return getContactMechanismPurposeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContactMechanismPurpose getContactMechanismPurposeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContactMechanismPurposeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countContactMechanismPurposes() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM contactmechanismpurposes
+                """);
+    }
+
     public ContactMechanismPurpose getContactMechanismPurposeByName(String contactMechanismPurposeName) {
         ContactMechanismPurpose contactMechanismPurpose;
         
@@ -2963,7 +2990,16 @@ public class ContactControl
         
         return partyContactMechanismPurpose;
     }
-    
+
+    public long countPartyContactMechanismPurposesByPartyContactMechanism(PartyContactMechanism partyContactMechanism) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partycontactmechanismpurposes
+                        JOIN partycontactmechanismpurposedetails ON pcmp_activedetailid = pcmpdt_partycontactmechanismpurposedetailid
+                        WHERE pcmpdt_cmpr_contactmechanismpurposeid = ?
+                        """, partyContactMechanism);
+    }
+
     private PartyContactMechanismPurpose getDefaultPartyContactMechanismPurpose(PartyPK partyPK, ContactMechanismPurpose contactMechanismPurpose, EntityPermission entityPermission) {
         PartyContactMechanismPurpose partyContactMechanismPurpose;
         
