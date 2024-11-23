@@ -16,16 +16,26 @@
 
 package com.echothree.model.control.contact.server.graphql;
 
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.party.server.graphql.PartyObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
+import com.echothree.model.data.contact.common.PartyContactMechanismPurposeConstants;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismDetail;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("partyContactMechanism object")
 @GraphQLName("PartyContactMechanism")
@@ -85,5 +95,25 @@ public class PartyContactMechanismObject
     public int getSortOrder() {
         return getPartyContactMechanismDetail().getSortOrder();
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("party contact mechanism purposes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<PartyContactMechanismPurposeObject> getPartyContactMechanismPurposes(final DataFetchingEnvironment env) {
+//        if(ContactSecurityUtils.getHasPartyContactMechanismPurposesAccess(env, party)) {
+        var contactControl = Session.getModelController(ContactControl.class);
+        var totalCount = contactControl.countPartyContactMechanismPurposesByPartyContactMechanism(partyContactMechanism);
+
+        try(var objectLimiter = new ObjectLimiter(env, PartyContactMechanismPurposeConstants.COMPONENT_VENDOR_NAME, PartyContactMechanismPurposeConstants.ENTITY_TYPE_NAME, totalCount)) {
+            var entities = contactControl.getPartyContactMechanismPurposesByPartyContactMechanism(partyContactMechanism);
+            var partyContactMechanismPurposees = entities.stream().map(PartyContactMechanismPurposeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+            return new CountedObjects<>(objectLimiter, partyContactMechanismPurposees);
+        }
+//        } else {
+//            return Connections.emptyConnection();
+//        }
+    }
+
 }
