@@ -447,14 +447,14 @@
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Credit Memo" />
             <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
-                <sequenceDescription languageIsoName="en" description="Default Lot" />
+                <sequenceDescription languageIsoName="en" description="Default Credit Memo" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="DEBIT_MEMO" prefix="DB" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Debit Memo" />
             <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
-                <sequenceDescription languageIsoName="en" description="Default Lot" />
+                <sequenceDescription languageIsoName="en" description="Default Debit Memo" />
             </sequence>
         </sequenceType>
     </sequenceTypes>
