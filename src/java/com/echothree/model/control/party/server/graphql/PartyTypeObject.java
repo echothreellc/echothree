@@ -58,9 +58,13 @@ public class PartyTypeObject
     public String getPartyTypeName() {
         return partyType.getPartyTypeName();
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("parent party type")
     public PartyTypeObject getParentPartyType() {
-        return new PartyTypeObject(partyType.getParentPartyType());
+        var parentPartyType = partyType.getParentPartyType();
+
+        return parentPartyType == null ? null : new PartyTypeObject(parentPartyType);
     }
     
     @GraphQLField

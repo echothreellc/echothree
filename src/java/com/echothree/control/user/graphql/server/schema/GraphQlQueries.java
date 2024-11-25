@@ -253,9 +253,15 @@ import com.echothree.control.user.returnpolicy.server.command.GetReturnPoliciesC
 import com.echothree.control.user.returnpolicy.server.command.GetReturnPolicyCommand;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.CheckItemSpellingResult;
+import com.echothree.control.user.search.server.command.GetComponentVendorResultsCommand;
 import com.echothree.control.user.search.server.command.GetContentCategoryResultsCommand;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
 import com.echothree.control.user.search.server.command.GetEmployeeResultsCommand;
+import com.echothree.control.user.search.server.command.GetEntityAliasTypeResultsCommand;
+import com.echothree.control.user.search.server.command.GetEntityAttributeGroupResultsCommand;
+import com.echothree.control.user.search.server.command.GetEntityAttributeResultsCommand;
+import com.echothree.control.user.search.server.command.GetEntityListItemResultsCommand;
+import com.echothree.control.user.search.server.command.GetEntityTypeResultsCommand;
 import com.echothree.control.user.search.server.command.GetItemResultsCommand;
 import com.echothree.control.user.search.server.command.GetSearchCheckSpellingActionTypeCommand;
 import com.echothree.control.user.search.server.command.GetSearchCheckSpellingActionTypesCommand;
@@ -512,9 +518,15 @@ import com.echothree.model.control.returnpolicy.server.graphql.ReturnKindObject;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.graphql.CheckItemSpellingObject;
+import com.echothree.model.control.search.server.graphql.ComponentVendorResultsObject;
 import com.echothree.model.control.search.server.graphql.ContentCategoryResultsObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.search.server.graphql.EmployeeResultsObject;
+import com.echothree.model.control.search.server.graphql.EntityAliasTypeResultsObject;
+import com.echothree.model.control.search.server.graphql.EntityAttributeGroupResultsObject;
+import com.echothree.model.control.search.server.graphql.EntityAttributeResultsObject;
+import com.echothree.model.control.search.server.graphql.EntityListItemResultsObject;
+import com.echothree.model.control.search.server.graphql.EntityTypeResultsObject;
 import com.echothree.model.control.search.server.graphql.ItemResultsObject;
 import com.echothree.model.control.search.server.graphql.SearchCheckSpellingActionTypeObject;
 import com.echothree.model.control.search.server.graphql.SearchDefaultOperatorObject;
@@ -5852,6 +5864,132 @@ public interface GraphQlQueries {
         }
 
         return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("componentVendorResults")
+    static ComponentVendorResultsObject componentVendorResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        ComponentVendorResultsObject componentVendorResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetComponentVendorResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetComponentVendorResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                componentVendorResultsObject = new ComponentVendorResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return componentVendorResultsObject;
+    }
+
+    @GraphQLField
+    @GraphQLName("entityTypeResults")
+    static EntityTypeResultsObject entityTypeResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        EntityTypeResultsObject entityTypeResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetEntityTypeResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetEntityTypeResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                entityTypeResultsObject = new EntityTypeResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return entityTypeResultsObject;
+    }
+
+    @GraphQLField
+    @GraphQLName("entityAliasTypeResults")
+    static EntityAliasTypeResultsObject entityAliasTypeResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        EntityAliasTypeResultsObject entityAliasTypeResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetEntityAliasTypeResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetEntityAliasTypeResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                entityAliasTypeResultsObject = new EntityAliasTypeResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return entityAliasTypeResultsObject;
+    }
+
+    @GraphQLField
+    @GraphQLName("entityAttributeGroupResults")
+    static EntityAttributeGroupResultsObject entityAttributeGroupResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        EntityAttributeGroupResultsObject entityAttributeGroupResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetEntityAttributeGroupResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetEntityAttributeGroupResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                entityAttributeGroupResultsObject = new EntityAttributeGroupResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return entityAttributeGroupResultsObject;
+    }
+
+    @GraphQLField
+    @GraphQLName("entityAttributeResults")
+    static EntityAttributeResultsObject entityAttributeResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        EntityAttributeResultsObject entityAttributeResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetEntityAttributeResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetEntityAttributeResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                entityAttributeResultsObject = new EntityAttributeResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return entityAttributeResultsObject;
+    }
+
+    @GraphQLField
+    @GraphQLName("entityListItemResults")
+    static EntityListItemResultsObject entityListItemResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        EntityListItemResultsObject entityListItemResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetEntityListItemResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetEntityListItemResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                entityListItemResultsObject = new EntityListItemResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return entityListItemResultsObject;
     }
 
     @GraphQLField

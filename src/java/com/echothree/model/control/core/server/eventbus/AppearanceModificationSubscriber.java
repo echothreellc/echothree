@@ -31,11 +31,11 @@ public class AppearanceModificationSubscriber
 
     @Subscribe
     public void receiveSentEvent(SentEvent se) {
-        decodeEventAndApply(se, touchEntityInstanceIfAppearance);
+        decodeEventAndApply(se, touchEntityInstancesIfAppearance);
     }
 
     private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
-            touchEntityInstanceIfAppearance = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
+            touchEntityInstancesIfAppearance = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
         if(AppearanceConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && AppearanceConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {

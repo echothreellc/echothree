@@ -18,11 +18,15 @@ package com.echothree.model.control.index.common;
 
 public enum IndexTypes {
 
+    COMPONENT_VENDOR,
     CONTACT_MECHANISM,
     CONTENT_CATEGORY,
     CUSTOMER,
     FORUM_MESSAGE,
     EMPLOYEE,
+    ENTITY_ALIAS_TYPE,
+    ENTITY_ATTRIBUTE,
+    ENTITY_ATTRIBUTE_GROUP,
     ENTITY_LIST_ITEM,
     ENTITY_TYPE,
     HARMONIZED_TARIFF_SCHEDULE_CODE,

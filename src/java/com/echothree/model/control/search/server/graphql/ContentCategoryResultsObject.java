@@ -46,7 +46,7 @@ public class ContentCategoryResultsObject
     }
 
     @GraphQLField
-    @GraphQLDescription("contentCategories")
+    @GraphQLDescription("content categories")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ContentCategoryObject> getContentCategories(final DataFetchingEnvironment env) {
