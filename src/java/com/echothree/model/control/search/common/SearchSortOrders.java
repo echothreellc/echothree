@@ -18,6 +18,7 @@ package com.echothree.model.control.search.common;
 
 public enum SearchSortOrders {
 
+    COMPONENT_VENDOR_NAME,
     CONTACT_MECHANISM_NAME,
     CONTENT_CATEGORY_NAME,
     CREATED_TIME,
@@ -25,6 +26,9 @@ public enum SearchSortOrders {
     DEFAULT_DESCRIPTION,
     DELETED_TIME,
     DESCRIPTION,
+    ENTITY_ALIAS_TYPE_NAME,
+    ENTITY_ATTRIBUTE_GROUP_NAME,
+    ENTITY_ATTRIBUTE_NAME,
     ENTITY_TYPE_NAME,
     FIRST_NAME,
     HARMONIZED_TARIFF_SCHEDULE_CODE_NAME,

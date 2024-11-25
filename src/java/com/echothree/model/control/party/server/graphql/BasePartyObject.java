@@ -16,23 +16,33 @@
 
 package com.echothree.model.control.party.server.graphql;
 
+import com.echothree.control.user.contact.common.form.ContactFormFactory;
+import com.echothree.control.user.contact.server.command.GetContactMechanismPurposeCommand;
+import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
+import com.echothree.model.control.contact.server.control.ContactControl;
+import com.echothree.model.control.contact.server.graphql.PartyContactMechanismObject;
+import com.echothree.model.control.contact.server.graphql.PartyContactMechanismPurposeObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import static com.echothree.model.control.graphql.server.util.BaseGraphQl.getUserVisitPK;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.contact.common.PartyContactMechanismConstants;
 import com.echothree.model.data.party.common.PartyAliasConstants;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyDetail;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
+import graphql.annotations.annotationTypes.GraphQLID;
+import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
@@ -151,6 +161,45 @@ public abstract class BasePartyObject
             }
         } else {
             return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("party contact mechanisms")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<PartyContactMechanismObject> getPartyContactMechanisms(final DataFetchingEnvironment env) {
+//        if(ContactSecurityUtils.getHasPartyContactMechanismsAccess(env, party)) {
+            var contactControl = Session.getModelController(ContactControl.class);
+            var totalCount = contactControl.countPartyContactMechanismsByParty(party);
+
+            try(var objectLimiter = new ObjectLimiter(env, PartyContactMechanismConstants.COMPONENT_VENDOR_NAME, PartyContactMechanismConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = contactControl.getPartyContactMechanismsByParty(party);
+                var partyContactMechanismes = entities.stream().map(PartyContactMechanismObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, partyContactMechanismes);
+            }
+//        } else {
+//            return Connections.emptyConnection();
+//        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("party contact mechanism purpose")
+    public PartyContactMechanismPurposeObject getPartyContactMechanismPurpose(final DataFetchingEnvironment env,
+            @GraphQLName("contactMechanismPurposeName") @GraphQLNonNull final String contactMechanismPurposeName) {
+        var commandForm = ContactFormFactory.getGetContactMechanismPurposeForm();
+
+        commandForm.setContactMechanismPurposeName(contactMechanismPurposeName);
+
+        var contactMechanismPurpose = new GetContactMechanismPurposeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        if(contactMechanismPurpose != null) {
+            var contactControl = Session.getModelController(ContactControl.class);
+            var partyContactMechanismPurpose = contactControl.getDefaultPartyContactMechanismPurpose(party, contactMechanismPurpose);
+
+            return partyContactMechanismPurpose == null ? null : new PartyContactMechanismPurposeObject(partyContactMechanismPurpose);
+        } else {
+            return null;
         }
     }
 

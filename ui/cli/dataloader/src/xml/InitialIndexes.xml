@@ -28,14 +28,41 @@
         <indexType indexTypeName="EMPLOYEE" componentVendorName="ECHO_THREE" entityTypeName="Party" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Employee" />
         </indexType>
-        <indexType indexTypeName="ENTITY_LIST_ITEM" componentVendorName="ECHO_THREE" entityTypeName="EntityListItem" isDefault="false" sortOrder="1">
-            <indexTypeDescription languageIsoName="en" description="Entity List Item" />
+        <indexType indexTypeName="COMPONENT_VENDOR" componentVendorName="ECHO_THREE" entityTypeName="ComponentVendor" isDefault="false" sortOrder="1">
+            <indexTypeDescription languageIsoName="en" description="Component Vendor" />
             <indexField indexFieldName="description" languageIsoName="en" isDefault="true" sortOrder="1">
                 <indexFieldDescription languageIsoName="en" description="Description" />
             </indexField>
         </indexType>
         <indexType indexTypeName="ENTITY_TYPE" componentVendorName="ECHO_THREE" entityTypeName="EntityType" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Entity Type" />
+            <indexField indexFieldName="description" languageIsoName="en" isDefault="true" sortOrder="1">
+                <indexFieldDescription languageIsoName="en" description="Description" />
+            </indexField>
+        </indexType>
+        <indexType indexTypeName="ENTITY_ALIAS_TYPE" componentVendorName="ECHO_THREE" entityTypeName="EntityAliasType" isDefault="false" sortOrder="1">
+            <indexTypeDescription languageIsoName="en" description="Entity Alias Type" />
+            <indexField indexFieldName="description" languageIsoName="en" isDefault="true" sortOrder="1">
+                <indexFieldDescription languageIsoName="en" description="Description" />
+            </indexField>
+        </indexType>
+        <indexType indexTypeName="ENTITY_ATTRIBUTE_GROUP" componentVendorName="ECHO_THREE" entityTypeName="EntityAttributeGroup" isDefault="false" sortOrder="1">
+            <indexTypeDescription languageIsoName="en" description="Entity Attribute Group" />
+            <indexField indexFieldName="description" languageIsoName="en" isDefault="true" sortOrder="1">
+                <indexFieldDescription languageIsoName="en" description="Description" />
+            </indexField>
+        </indexType>
+        <indexType indexTypeName="ENTITY_ATTRIBUTE" componentVendorName="ECHO_THREE" entityTypeName="EntityAttribute" isDefault="false" sortOrder="1">
+            <indexTypeDescription languageIsoName="en" description="Entity Attribute" />
+            <indexField indexFieldName="description" languageIsoName="en" isDefault="true" sortOrder="1">
+                <indexFieldDescription languageIsoName="en" description="Description" />
+            </indexField>
+        </indexType>
+        <indexType indexTypeName="ENTITY_LIST_ITEM" componentVendorName="ECHO_THREE" entityTypeName="EntityListItem" isDefault="false" sortOrder="1">
+            <indexTypeDescription languageIsoName="en" description="Entity List Item" />
+            <indexField indexFieldName="description" languageIsoName="en" isDefault="true" sortOrder="1">
+                <indexFieldDescription languageIsoName="en" description="Description" />
+            </indexField>
         </indexType>
         <indexType indexTypeName="FORUM_MESSAGE" componentVendorName="ECHO_THREE" entityTypeName="ForumMessage" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Forum Message" />
@@ -148,33 +175,33 @@
                isDefault="false" sortOrder="1">
             <indexDescription languageIsoName="en" description="Customer" />
         </index>
-        <index indexName="ENTITY_LIST_ITEM_EN" indexTypeName="ENTITY_LIST_ITEM" languageIsoName="en" directory="/usr/local/jboss/share/indexes/entityListItem/en"
+        <index indexName="COMPONENT_VENDOR_EN" indexTypeName="COMPONENT_VENDOR" languageIsoName="en" directory="/usr/local/jboss/share/indexes/componentVendor/en"
                isDefault="false" sortOrder="1">
-            <indexDescription languageIsoName="en" description="Entity List Item (English)" />
+            <indexDescription languageIsoName="en" description="Component Vendor (English)" />
         </index>
-        <index indexName="ENTITY_LIST_ITEM_DE" indexTypeName="ENTITY_LIST_ITEM" languageIsoName="de" directory="/usr/local/jboss/share/indexes/entityListItem/de"
+        <index indexName="COMPONENT_VENDOR_DE" indexTypeName="COMPONENT_VENDOR" languageIsoName="de" directory="/usr/local/jboss/share/indexes/componentVendor/de"
                isDefault="false" sortOrder="1">
-            <indexDescription languageIsoName="en" description="Entity List Item (German)" />
+            <indexDescription languageIsoName="en" description="Component Vendor (German)" />
         </index>
-        <index indexName="ENTITY_LIST_ITEM_ES" indexTypeName="ENTITY_LIST_ITEM" languageIsoName="es" directory="/usr/local/jboss/share/indexes/entityListItem/es"
+        <index indexName="COMPONENT_VENDOR_ES" indexTypeName="COMPONENT_VENDOR" languageIsoName="es" directory="/usr/local/jboss/share/indexes/componentVendor/es"
                isDefault="false" sortOrder="1">
-            <indexDescription languageIsoName="en" description="Entity List Item (Spanish)" />
+            <indexDescription languageIsoName="en" description="Component Vendor (Spanish)" />
         </index>
-        <index indexName="ENTITY_LIST_ITEM_FR" indexTypeName="ENTITY_LIST_ITEM" languageIsoName="fr" directory="/usr/local/jboss/share/indexes/entityListItem/fr"
+        <index indexName="COMPONENT_VENDOR_FR" indexTypeName="COMPONENT_VENDOR" languageIsoName="fr" directory="/usr/local/jboss/share/indexes/componentVendor/fr"
                isDefault="false" sortOrder="1">
-            <indexDescription languageIsoName="en" description="Entity List Item (French)" />
+            <indexDescription languageIsoName="en" description="Component Vendor (French)" />
         </index>
-        <index indexName="ENTITY_LIST_ITEM_JA" indexTypeName="ENTITY_LIST_ITEM" languageIsoName="ja" directory="/usr/local/jboss/share/indexes/entityListItem/ja"
+        <index indexName="COMPONENT_VENDOR_JA" indexTypeName="COMPONENT_VENDOR" languageIsoName="ja" directory="/usr/local/jboss/share/indexes/componentVendor/ja"
                isDefault="false" sortOrder="1">
-            <indexDescription languageIsoName="en" description="Entity List Item (Japanese)" />
+            <indexDescription languageIsoName="en" description="Component Vendor (Japanese)" />
         </index>
-        <index indexName="ENTITY_LIST_ITEM_KO" indexTypeName="ENTITY_LIST_ITEM" languageIsoName="ko" directory="/usr/local/jboss/share/indexes/entityListItem/ko"
+        <index indexName="COMPONENT_VENDOR_KO" indexTypeName="COMPONENT_VENDOR" languageIsoName="ko" directory="/usr/local/jboss/share/indexes/componentVendor/ko"
                isDefault="false" sortOrder="1">
-            <indexDescription languageIsoName="en" description="Entity List Item (Korean)" />
+            <indexDescription languageIsoName="en" description="Component Vendor (Korean)" />
         </index>
-        <index indexName="ENTITY_LIST_ITEM_ZH" indexTypeName="ENTITY_LIST_ITEM" languageIsoName="zh" directory="/usr/local/jboss/share/indexes/entityListItem/zh"
+        <index indexName="COMPONENT_VENDOR_ZH" indexTypeName="COMPONENT_VENDOR" languageIsoName="zh" directory="/usr/local/jboss/share/indexes/componentVendor/zh"
                isDefault="false" sortOrder="1">
-            <indexDescription languageIsoName="en" description="Entity List Item (Chinese)" />
+            <indexDescription languageIsoName="en" description="Component Vendor (Chinese)" />
         </index>
         <index indexName="ENTITY_TYPE_EN" indexTypeName="ENTITY_TYPE" languageIsoName="en" directory="/usr/local/jboss/share/indexes/entityType/en"
                isDefault="false" sortOrder="1">
@@ -203,6 +230,118 @@
         <index indexName="ENTITY_TYPE_ZH" indexTypeName="ENTITY_TYPE" languageIsoName="zh" directory="/usr/local/jboss/share/indexes/entityType/zh"
                isDefault="false" sortOrder="1">
             <indexDescription languageIsoName="en" description="Entity Type (Chinese)" />
+        </index>
+        <index indexName="ENTITY_ALIAS_TYPE_EN" indexTypeName="ENTITY_ALIAS_TYPE" languageIsoName="en" directory="/usr/local/jboss/share/indexes/entityAliasType/en"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Alias Type (English)" />
+        </index>
+        <index indexName="ENTITY_ALIAS_TYPE_DE" indexTypeName="ENTITY_ALIAS_TYPE" languageIsoName="de" directory="/usr/local/jboss/share/indexes/entityAliasType/de"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Alias Type (German)" />
+        </index>
+        <index indexName="ENTITY_ALIAS_TYPE_ES" indexTypeName="ENTITY_ALIAS_TYPE" languageIsoName="es" directory="/usr/local/jboss/share/indexes/entityAliasType/es"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Alias Type (Spanish)" />
+        </index>
+        <index indexName="ENTITY_ALIAS_TYPE_FR" indexTypeName="ENTITY_ALIAS_TYPE" languageIsoName="fr" directory="/usr/local/jboss/share/indexes/entityAliasType/fr"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Alias Type (French)" />
+        </index>
+        <index indexName="ENTITY_ALIAS_TYPE_JA" indexTypeName="ENTITY_ALIAS_TYPE" languageIsoName="ja" directory="/usr/local/jboss/share/indexes/entityAliasType/ja"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Alias Type (Japanese)" />
+        </index>
+        <index indexName="ENTITY_ALIAS_TYPE_KO" indexTypeName="ENTITY_ALIAS_TYPE" languageIsoName="ko" directory="/usr/local/jboss/share/indexes/entityAliasType/ko"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Alias Type (Korean)" />
+        </index>
+        <index indexName="ENTITY_ALIAS_TYPE_ZH" indexTypeName="ENTITY_ALIAS_TYPE" languageIsoName="zh" directory="/usr/local/jboss/share/indexes/entityAliasType/zh"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Alias Type (Chinese)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_GROUP_EN" indexTypeName="ENTITY_ATTRIBUTE_GROUP" languageIsoName="en" directory="/usr/local/jboss/share/indexes/entityAttributeGroup/en"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute Group (English)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_GROUP_DE" indexTypeName="ENTITY_ATTRIBUTE_GROUP" languageIsoName="de" directory="/usr/local/jboss/share/indexes/entityAttributeGroup/de"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute Group (German)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_GROUP_ES" indexTypeName="ENTITY_ATTRIBUTE_GROUP" languageIsoName="es" directory="/usr/local/jboss/share/indexes/entityAttributeGroup/es"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute Group (Spanish)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_GROUP_FR" indexTypeName="ENTITY_ATTRIBUTE_GROUP" languageIsoName="fr" directory="/usr/local/jboss/share/indexes/entityAttributeGroup/fr"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute Group (French)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_GROUP_JA" indexTypeName="ENTITY_ATTRIBUTE_GROUP" languageIsoName="ja" directory="/usr/local/jboss/share/indexes/entityAttributeGroup/ja"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute Group (Japanese)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_GROUP_KO" indexTypeName="ENTITY_ATTRIBUTE_GROUP" languageIsoName="ko" directory="/usr/local/jboss/share/indexes/entityAttributeGroup/ko"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute Group (Korean)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_GROUP_ZH" indexTypeName="ENTITY_ATTRIBUTE_GROUP" languageIsoName="zh" directory="/usr/local/jboss/share/indexes/entityAttributeGroup/zh"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute Group (Chinese)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_EN" indexTypeName="ENTITY_ATTRIBUTE" languageIsoName="en" directory="/usr/local/jboss/share/indexes/entityAttribute/en"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute (English)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_DE" indexTypeName="ENTITY_ATTRIBUTE" languageIsoName="de" directory="/usr/local/jboss/share/indexes/entityAttribute/de"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute (German)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_ES" indexTypeName="ENTITY_ATTRIBUTE" languageIsoName="es" directory="/usr/local/jboss/share/indexes/entityAttribute/es"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute (Spanish)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_FR" indexTypeName="ENTITY_ATTRIBUTE" languageIsoName="fr" directory="/usr/local/jboss/share/indexes/entityAttribute/fr"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute (French)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_JA" indexTypeName="ENTITY_ATTRIBUTE" languageIsoName="ja" directory="/usr/local/jboss/share/indexes/entityAttribute/ja"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute (Japanese)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_KO" indexTypeName="ENTITY_ATTRIBUTE" languageIsoName="ko" directory="/usr/local/jboss/share/indexes/entityAttribute/ko"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute (Korean)" />
+        </index>
+        <index indexName="ENTITY_ATTRIBUTE_ZH" indexTypeName="ENTITY_ATTRIBUTE" languageIsoName="zh" directory="/usr/local/jboss/share/indexes/entityAttribute/zh"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity Attribute (Chinese)" />
+        </index>
+        <index indexName="ENTITY_LIST_ITEM_EN" indexTypeName="ENTITY_LIST_ITEM" languageIsoName="en" directory="/usr/local/jboss/share/indexes/entityListItem/en"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity List Item (English)" />
+        </index>
+        <index indexName="ENTITY_LIST_ITEM_DE" indexTypeName="ENTITY_LIST_ITEM" languageIsoName="de" directory="/usr/local/jboss/share/indexes/entityListItem/de"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity List Item (German)" />
+        </index>
+        <index indexName="ENTITY_LIST_ITEM_ES" indexTypeName="ENTITY_LIST_ITEM" languageIsoName="es" directory="/usr/local/jboss/share/indexes/entityListItem/es"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity List Item (Spanish)" />
+        </index>
+        <index indexName="ENTITY_LIST_ITEM_FR" indexTypeName="ENTITY_LIST_ITEM" languageIsoName="fr" directory="/usr/local/jboss/share/indexes/entityListItem/fr"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity List Item (French)" />
+        </index>
+        <index indexName="ENTITY_LIST_ITEM_JA" indexTypeName="ENTITY_LIST_ITEM" languageIsoName="ja" directory="/usr/local/jboss/share/indexes/entityListItem/ja"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity List Item (Japanese)" />
+        </index>
+        <index indexName="ENTITY_LIST_ITEM_KO" indexTypeName="ENTITY_LIST_ITEM" languageIsoName="ko" directory="/usr/local/jboss/share/indexes/entityListItem/ko"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity List Item (Korean)" />
+        </index>
+        <index indexName="ENTITY_LIST_ITEM_ZH" indexTypeName="ENTITY_LIST_ITEM" languageIsoName="zh" directory="/usr/local/jboss/share/indexes/entityListItem/zh"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Entity List Item (Chinese)" />
         </index>
         <index indexName="HARMONIZED_TARIFF_SCHEDULE_CODE_EN" indexTypeName="HARMONIZED_TARIFF_SCHEDULE_CODE" languageIsoName="en" directory="/usr/local/jboss/share/indexes/harmonizedTariffScheduleCode/en"
                isDefault="false" sortOrder="1">

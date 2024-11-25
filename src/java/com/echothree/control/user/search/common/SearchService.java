@@ -398,17 +398,81 @@ public interface SearchService
     CommandResult clearSalesOrderResults(UserVisitPK userVisitPK, ClearSalesOrderResultsForm form);
 
     // -------------------------------------------------------------------------
+    //   Component Vendor Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchComponentVendors(UserVisitPK userVisitPK, SearchComponentVendorsForm form);
+
+    CommandResult getComponentVendorResults(UserVisitPK userVisitPK, GetComponentVendorResultsForm form);
+
+    CommandResult countComponentVendorResults(UserVisitPK userVisitPK, CountComponentVendorResultsForm form);
+
+    CommandResult clearComponentVendorResults(UserVisitPK userVisitPK, ClearComponentVendorResultsForm form);
+
+    // -------------------------------------------------------------------------
+    //   Entity Type Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchEntityTypes(UserVisitPK userVisitPK, SearchEntityTypesForm form);
+
+    CommandResult getEntityTypeResults(UserVisitPK userVisitPK, GetEntityTypeResultsForm form);
+
+    CommandResult getEntityTypeResultsFacet(UserVisitPK userVisitPK, GetEntityTypeResultsFacetForm form);
+
+    CommandResult getEntityTypeResultsFacets(UserVisitPK userVisitPK, GetEntityTypeResultsFacetsForm form);
+
+    CommandResult countEntityTypeResults(UserVisitPK userVisitPK, CountEntityTypeResultsForm form);
+
+    CommandResult clearEntityTypeResults(UserVisitPK userVisitPK, ClearEntityTypeResultsForm form);
+
+    // -------------------------------------------------------------------------
+    //   Entity Alias Type Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchEntityAliasTypes(UserVisitPK userVisitPK, SearchEntityAliasTypesForm form);
+
+    CommandResult getEntityAliasTypeResults(UserVisitPK userVisitPK, GetEntityAliasTypeResultsForm form);
+
+    CommandResult countEntityAliasTypeResults(UserVisitPK userVisitPK, CountEntityAliasTypeResultsForm form);
+
+    CommandResult clearEntityAliasTypeResults(UserVisitPK userVisitPK, ClearEntityAliasTypeResultsForm form);
+
+    // -------------------------------------------------------------------------
+    //   Entity Attribute Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchEntityAttributes(UserVisitPK userVisitPK, SearchEntityAttributesForm form);
+
+    CommandResult getEntityAttributeResults(UserVisitPK userVisitPK, GetEntityAttributeResultsForm form);
+
+    CommandResult countEntityAttributeResults(UserVisitPK userVisitPK, CountEntityAttributeResultsForm form);
+
+    CommandResult clearEntityAttributeResults(UserVisitPK userVisitPK, ClearEntityAttributeResultsForm form);
+
+    // -------------------------------------------------------------------------
+    //   Entity Attribute Group Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchEntityAttributeGroups(UserVisitPK userVisitPK, SearchEntityAttributeGroupsForm form);
+
+    CommandResult getEntityAttributeGroupResults(UserVisitPK userVisitPK, GetEntityAttributeGroupResultsForm form);
+
+    CommandResult countEntityAttributeGroupResults(UserVisitPK userVisitPK, CountEntityAttributeGroupResultsForm form);
+
+    CommandResult clearEntityAttributeGroupResults(UserVisitPK userVisitPK, ClearEntityAttributeGroupResultsForm form);
+
+    // -------------------------------------------------------------------------
     //   Entity List Item Search
     // -------------------------------------------------------------------------
 
     CommandResult searchEntityListItems(UserVisitPK userVisitPK, SearchEntityListItemsForm form);
-    
+
     CommandResult getEntityListItemResults(UserVisitPK userVisitPK, GetEntityListItemResultsForm form);
-    
+
     CommandResult countEntityListItemResults(UserVisitPK userVisitPK, CountEntityListItemResultsForm form);
-    
+
     CommandResult clearEntityListItemResults(UserVisitPK userVisitPK, ClearEntityListItemResultsForm form);
-    
+
     // -------------------------------------------------------------------------
     //   Content Category Search
     // -------------------------------------------------------------------------
@@ -472,22 +536,6 @@ public interface SearchService
     CommandResult countHarmonizedTariffScheduleCodeResults(UserVisitPK userVisitPK, CountHarmonizedTariffScheduleCodeResultsForm form);
     
     CommandResult clearHarmonizedTariffScheduleCodeResults(UserVisitPK userVisitPK, ClearHarmonizedTariffScheduleCodeResultsForm form);
-    
-    // -------------------------------------------------------------------------
-    //   Entity Type Search
-    // -------------------------------------------------------------------------
-
-    CommandResult searchEntityTypes(UserVisitPK userVisitPK, SearchEntityTypesForm form);
-    
-    CommandResult getEntityTypeResults(UserVisitPK userVisitPK, GetEntityTypeResultsForm form);
-    
-    CommandResult getEntityTypeResultsFacet(UserVisitPK userVisitPK, GetEntityTypeResultsFacetForm form);
-    
-    CommandResult getEntityTypeResultsFacets(UserVisitPK userVisitPK, GetEntityTypeResultsFacetsForm form);
-    
-    CommandResult countEntityTypeResults(UserVisitPK userVisitPK, CountEntityTypeResultsForm form);
-    
-    CommandResult clearEntityTypeResults(UserVisitPK userVisitPK, ClearEntityTypeResultsForm form);
     
     // -------------------------------------------------------------------------
     //   Contact Mechanism Search

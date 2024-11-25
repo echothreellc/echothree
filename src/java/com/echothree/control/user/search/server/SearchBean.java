@@ -814,6 +814,136 @@ public class SearchBean
     }
 
     // -------------------------------------------------------------------------
+    //   Component Vendor Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchComponentVendors(UserVisitPK userVisitPK, SearchComponentVendorsForm form) {
+        return new SearchComponentVendorsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getComponentVendorResults(UserVisitPK userVisitPK, GetComponentVendorResultsForm form) {
+        return new GetComponentVendorResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countComponentVendorResults(UserVisitPK userVisitPK, CountComponentVendorResultsForm form) {
+        return new CountComponentVendorResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearComponentVendorResults(UserVisitPK userVisitPK, ClearComponentVendorResultsForm form) {
+        return new ClearComponentVendorResultsCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
+    //   Entity Type Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchEntityTypes(UserVisitPK userVisitPK, SearchEntityTypesForm form) {
+        return new SearchEntityTypesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEntityTypeResults(UserVisitPK userVisitPK, GetEntityTypeResultsForm form) {
+        return new GetEntityTypeResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEntityTypeResultsFacet(UserVisitPK userVisitPK, GetEntityTypeResultsFacetForm form) {
+        return new GetEntityTypeResultsFacetCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEntityTypeResultsFacets(UserVisitPK userVisitPK, GetEntityTypeResultsFacetsForm form) {
+        return new GetEntityTypeResultsFacetsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countEntityTypeResults(UserVisitPK userVisitPK, CountEntityTypeResultsForm form) {
+        return new CountEntityTypeResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearEntityTypeResults(UserVisitPK userVisitPK, ClearEntityTypeResultsForm form) {
+        return new ClearEntityTypeResultsCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
+    //   Entity Alias Type Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchEntityAliasTypes(UserVisitPK userVisitPK, SearchEntityAliasTypesForm form) {
+        return new SearchEntityAliasTypesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEntityAliasTypeResults(UserVisitPK userVisitPK, GetEntityAliasTypeResultsForm form) {
+        return new GetEntityAliasTypeResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countEntityAliasTypeResults(UserVisitPK userVisitPK, CountEntityAliasTypeResultsForm form) {
+        return new CountEntityAliasTypeResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearEntityAliasTypeResults(UserVisitPK userVisitPK, ClearEntityAliasTypeResultsForm form) {
+        return new ClearEntityAliasTypeResultsCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
+    //   Entity Attribute Group Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchEntityAttributeGroups(UserVisitPK userVisitPK, SearchEntityAttributeGroupsForm form) {
+        return new SearchEntityAttributeGroupsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEntityAttributeGroupResults(UserVisitPK userVisitPK, GetEntityAttributeGroupResultsForm form) {
+        return new GetEntityAttributeGroupResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countEntityAttributeGroupResults(UserVisitPK userVisitPK, CountEntityAttributeGroupResultsForm form) {
+        return new CountEntityAttributeGroupResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearEntityAttributeGroupResults(UserVisitPK userVisitPK, ClearEntityAttributeGroupResultsForm form) {
+        return new ClearEntityAttributeGroupResultsCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
+    //   Entity Attribute Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchEntityAttributes(UserVisitPK userVisitPK, SearchEntityAttributesForm form) {
+        return new SearchEntityAttributesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEntityAttributeResults(UserVisitPK userVisitPK, GetEntityAttributeResultsForm form) {
+        return new GetEntityAttributeResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countEntityAttributeResults(UserVisitPK userVisitPK, CountEntityAttributeResultsForm form) {
+        return new CountEntityAttributeResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearEntityAttributeResults(UserVisitPK userVisitPK, ClearEntityAttributeResultsForm form) {
+        return new ClearEntityAttributeResultsCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
     //   Entity List Item Search
     // -------------------------------------------------------------------------
 
@@ -821,22 +951,22 @@ public class SearchBean
     public CommandResult searchEntityListItems(UserVisitPK userVisitPK, SearchEntityListItemsForm form) {
         return new SearchEntityListItemsCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult getEntityListItemResults(UserVisitPK userVisitPK, GetEntityListItemResultsForm form) {
         return new GetEntityListItemResultsCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult countEntityListItemResults(UserVisitPK userVisitPK, CountEntityListItemResultsForm form) {
         return new CountEntityListItemResultsCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult clearEntityListItemResults(UserVisitPK userVisitPK, ClearEntityListItemResultsForm form) {
         return new ClearEntityListItemResultsCommand(userVisitPK, form).run();
     }
-    
+
     // -------------------------------------------------------------------------
     //   Content Category Search
     // -------------------------------------------------------------------------
@@ -971,40 +1101,6 @@ public class SearchBean
     @Override
     public CommandResult clearHarmonizedTariffScheduleCodeResults(UserVisitPK userVisitPK, ClearHarmonizedTariffScheduleCodeResultsForm form) {
         return new ClearHarmonizedTariffScheduleCodeResultsCommand(userVisitPK, form).run();
-    }
-    
-    // -------------------------------------------------------------------------
-    //   Entity Type Search
-    // -------------------------------------------------------------------------
-
-    @Override
-    public CommandResult searchEntityTypes(UserVisitPK userVisitPK, SearchEntityTypesForm form) {
-        return new SearchEntityTypesCommand(userVisitPK, form).run();
-    }
-    
-    @Override
-    public CommandResult getEntityTypeResults(UserVisitPK userVisitPK, GetEntityTypeResultsForm form) {
-        return new GetEntityTypeResultsCommand(userVisitPK, form).run();
-    }
-    
-    @Override
-    public CommandResult getEntityTypeResultsFacet(UserVisitPK userVisitPK, GetEntityTypeResultsFacetForm form) {
-        return new GetEntityTypeResultsFacetCommand(userVisitPK, form).run();
-    }
-    
-    @Override
-    public CommandResult getEntityTypeResultsFacets(UserVisitPK userVisitPK, GetEntityTypeResultsFacetsForm form) {
-        return new GetEntityTypeResultsFacetsCommand(userVisitPK, form).run();
-    }
-    
-    @Override
-    public CommandResult countEntityTypeResults(UserVisitPK userVisitPK, CountEntityTypeResultsForm form) {
-        return new CountEntityTypeResultsCommand(userVisitPK, form).run();
-    }
-    
-    @Override
-    public CommandResult clearEntityTypeResults(UserVisitPK userVisitPK, ClearEntityTypeResultsForm form) {
-        return new ClearEntityTypeResultsCommand(userVisitPK, form).run();
     }
     
     // -------------------------------------------------------------------------

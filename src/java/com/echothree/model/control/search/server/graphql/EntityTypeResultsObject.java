@@ -49,7 +49,7 @@ public class EntityTypeResultsObject
     @GraphQLDescription("entity types")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public CountingPaginatedData<EntityTypeObject> getContentCategories(final DataFetchingEnvironment env) {
+    public CountingPaginatedData<EntityTypeObject> getEntityTypes(final DataFetchingEnvironment env) {
         var userVisitSearch = getUserVisitSearch(env);
 
         if(userVisitSearch == null) {
@@ -59,9 +59,9 @@ public class EntityTypeResultsObject
 
             try(var objectLimiter = new ObjectLimiter(env, SearchResultConstants.COMPONENT_VENDOR_NAME, SearchResultConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entityTypeControl = Session.getModelController(EntityTypeControl.class);
-                var contentCategories = entityTypeControl.getEntityTypeObjectsFromUserVisitSearch(userVisitSearch);
+                var entityTypes = entityTypeControl.getEntityTypeObjectsFromUserVisitSearch(userVisitSearch);
 
-                return new CountedObjects<>(objectLimiter, contentCategories);
+                return new CountedObjects<>(objectLimiter, entityTypes);
             }
         }
     }

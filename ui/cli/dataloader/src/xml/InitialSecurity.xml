@@ -3636,6 +3636,9 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Entity Attribute Group Description" />
             </securityRole>
+            <securityRole securityRoleName="Search" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Attribute Group Search" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="PartyType" parentSecurityRoleGroupName="PartyComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="PartyType" />
@@ -5292,6 +5295,9 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Entity Alias Type Description" />
             </securityRole>
+            <securityRole securityRoleName="Search" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Alias Type Search" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="EntityAlias" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Entity Alias" />
@@ -5345,6 +5351,9 @@
             </securityRole>
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Entity Attribute Description" />
+            </securityRole>
+            <securityRole securityRoleName="Search" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Attribute Search" />
             </securityRole>
             <securityRole securityRoleName="EntityAttributeEntityAttributeGroup" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Entity Attribute Entity Attribute Group" />
@@ -7905,6 +7914,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeGroup" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeGroup" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeGroup" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeGroup" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Event" securityRoleName="Send" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Event" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterKind" securityRoleName="Create" />
@@ -9170,6 +9180,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAliasType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAliasType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAliasType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAliasType" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAlias" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAlias" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAlias" securityRoleName="Delete" />
@@ -9185,6 +9196,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttribute" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttribute" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttribute" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttribute" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttribute" securityRoleName="EntityAttributeEntityAttributeGroup" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeEntityType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeEntityType" securityRoleName="Delete" />

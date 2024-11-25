@@ -649,6 +649,21 @@
             <entityType entityTypeName="EntityTag" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Tag" />
             </entityType>
+            <entityType entityTypeName="ContactMechanismType" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Mechanism Type" />
+            </entityType>
+            <entityType entityTypeName="ContactMechanismTypeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Mechanism Type Description" />
+            </entityType>
+            <entityType entityTypeName="ContactMechanism" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Mechanism" />
+            </entityType>
+            <entityType entityTypeName="ContactMechanismAliasType" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Mechanism Alias Type" />
+            </entityType>
+            <entityType entityTypeName="ContactMechanismAliasTypeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Mechanism Alias Type Description" />
+            </entityType>
             <entityType entityTypeName="ContactMechanismAlias" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Contact Mechanism Alias" />
             </entityType>
@@ -1134,6 +1149,9 @@
             </entityType>
             <entityType entityTypeName="PartyContactMechanismAlias" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Party Contact Mechanism Alias" />
+            </entityType>
+            <entityType entityTypeName="ContactMechanismPurpose" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Mechanism Purpose" />
             </entityType>
             <entityType entityTypeName="PartyContactMechanismPurpose" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Party Contact Mechanism Purpose" />
@@ -2130,12 +2148,6 @@
             </entityType>
             <entityType entityTypeName="PicklistTime" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Picklist Time" />
-            </entityType>
-            <entityType entityTypeName="ContactMechanismAliasType" keepAllHistory="false" isExtensible="true" sortOrder="1">
-                <entityTypeDescription languageIsoName="en" description="Contact Mechanism Alias Type" />
-            </entityType>
-            <entityType entityTypeName="ContactMechanismAliasTypeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
-                <entityTypeDescription languageIsoName="en" description="Contact Mechanism Alias Type Description" />
             </entityType>
             <entityType entityTypeName="LotAliasType" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Lot Alias Type" />

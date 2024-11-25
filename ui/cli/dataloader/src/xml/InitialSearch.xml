@@ -212,10 +212,118 @@
                 <searchSortOrderDescription languageIsoName="en" description="Leave Name" />
             </searchSortOrder>
         </searchKind>
+        <searchKind searchKindName="COMPONENT_VENDOR" isDefault="false" sortOrder="1">
+            <searchKindDescription languageIsoName="en" description="Component Vendor" />
+            <searchType searchTypeName="EMPLOYEE" isDefault="true" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Employee" />
+            </searchType>
+            <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
+                <searchSortOrderDescription languageIsoName="en" description="Score" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="DESCRIPTION" isDefault="false" sortOrder="2">
+                <searchSortOrderDescription languageIsoName="en" description="Default Description" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="COMPONENT_VENDOR_NAME" isDefault="false" sortOrder="3">
+                <searchSortOrderDescription languageIsoName="en" description="Component Vendor Name" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="CREATED_TIME" isDefault="false" sortOrder="4">
+                <searchSortOrderDescription languageIsoName="en" description="Created Time" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="MODIFIED_TIME" isDefault="false" sortOrder="5">
+                <searchSortOrderDescription languageIsoName="en" description="Modified Time" />
+            </searchSortOrder>
+        </searchKind>
+        <searchKind searchKindName="ENTITY_TYPE" isDefault="false" sortOrder="1">
+            <searchKindDescription languageIsoName="en" description="Entity Type" />
+            <searchType searchTypeName="EMPLOYEE" isDefault="true" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Employee" />
+            </searchType>
+            <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
+                <searchSortOrderDescription languageIsoName="en" description="Score" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="DESCRIPTION" isDefault="false" sortOrder="2">
+                <searchSortOrderDescription languageIsoName="en" description="Default Description" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="ENTITY_TYPE_NAME" isDefault="false" sortOrder="3">
+                <searchSortOrderDescription languageIsoName="en" description="Entity Type Name" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="CREATED_TIME" isDefault="false" sortOrder="4">
+                <searchSortOrderDescription languageIsoName="en" description="Created Time" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="MODIFIED_TIME" isDefault="false" sortOrder="5">
+                <searchSortOrderDescription languageIsoName="en" description="Modified Time" />
+            </searchSortOrder>
+        </searchKind>
+        <searchKind searchKindName="ENTITY_ALIAS_TYPE" isDefault="false" sortOrder="1">
+            <searchKindDescription languageIsoName="en" description="Entity Alias Type" />
+            <searchType searchTypeName="EMPLOYEE" isDefault="true" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Employee" />
+            </searchType>
+            <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
+                <searchSortOrderDescription languageIsoName="en" description="Score" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="DESCRIPTION" isDefault="false" sortOrder="2">
+                <searchSortOrderDescription languageIsoName="en" description="Default Description" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="ENTITY_ALIAS_TYPE_NAME" isDefault="false" sortOrder="3">
+                <searchSortOrderDescription languageIsoName="en" description="Entity Alias Type Name" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="CREATED_TIME" isDefault="false" sortOrder="4">
+                <searchSortOrderDescription languageIsoName="en" description="Created Time" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="MODIFIED_TIME" isDefault="false" sortOrder="5">
+                <searchSortOrderDescription languageIsoName="en" description="Modified Time" />
+            </searchSortOrder>
+        </searchKind>
+        <searchKind searchKindName="ENTITY_ATTRIBUTE_GROUP" isDefault="false" sortOrder="1">
+            <searchKindDescription languageIsoName="en" description="Entity Attribute Group" />
+            <searchType searchTypeName="EMPLOYEE" isDefault="true" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Employee" />
+            </searchType>
+            <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
+                <searchSortOrderDescription languageIsoName="en" description="Score" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="DESCRIPTION" isDefault="false" sortOrder="2">
+                <searchSortOrderDescription languageIsoName="en" description="Default Description" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="ENTITY_ATTRIBUTE_GROUP_NAME" isDefault="false" sortOrder="3">
+                <searchSortOrderDescription languageIsoName="en" description="Entity Attribute Group Name" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="CREATED_TIME" isDefault="false" sortOrder="4">
+                <searchSortOrderDescription languageIsoName="en" description="Created Time" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="MODIFIED_TIME" isDefault="false" sortOrder="5">
+                <searchSortOrderDescription languageIsoName="en" description="Modified Time" />
+            </searchSortOrder>
+        </searchKind>
+        <searchKind searchKindName="ENTITY_ATTRIBUTE" isDefault="false" sortOrder="1">
+            <searchKindDescription languageIsoName="en" description="Entity Attribute" />
+            <searchType searchTypeName="EMPLOYEE" isDefault="true" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Employee" />
+            </searchType>
+            <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
+                <searchSortOrderDescription languageIsoName="en" description="Score" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="DESCRIPTION" isDefault="false" sortOrder="2">
+                <searchSortOrderDescription languageIsoName="en" description="Default Description" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="ENTITY_ATTRIBUTE_NAME" isDefault="false" sortOrder="3">
+                <searchSortOrderDescription languageIsoName="en" description="Entity Attribute Name" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="CREATED_TIME" isDefault="false" sortOrder="4">
+                <searchSortOrderDescription languageIsoName="en" description="Created Time" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="MODIFIED_TIME" isDefault="false" sortOrder="5">
+                <searchSortOrderDescription languageIsoName="en" description="Modified Time" />
+            </searchSortOrder>
+        </searchKind>
         <searchKind searchKindName="ENTITY_LIST_ITEM" isDefault="false" sortOrder="1">
             <searchKindDescription languageIsoName="en" description="Entity List Item" />
             <searchType searchTypeName="CUSTOMER" isDefault="true" sortOrder="1">
                 <searchTypeDescription languageIsoName="en" description="Customer" />
+            </searchType>
+            <searchType searchTypeName="EMPLOYEE" isDefault="true" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Employee" />
             </searchType>
             <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
                 <searchSortOrderDescription languageIsoName="en" description="Score" />
@@ -309,27 +417,6 @@
             </searchSortOrder>
             <searchSortOrder searchSortOrderName="HARMONIZED_TARIFF_SCHEDULE_CODE_NAME" isDefault="false" sortOrder="3">
                 <searchSortOrderDescription languageIsoName="en" description="Harmonized Tariff Schedule Code Name" />
-            </searchSortOrder>
-            <searchSortOrder searchSortOrderName="CREATED_TIME" isDefault="false" sortOrder="4">
-                <searchSortOrderDescription languageIsoName="en" description="Created Time" />
-            </searchSortOrder>
-            <searchSortOrder searchSortOrderName="MODIFIED_TIME" isDefault="false" sortOrder="5">
-                <searchSortOrderDescription languageIsoName="en" description="Modified Time" />
-            </searchSortOrder>
-        </searchKind>
-        <searchKind searchKindName="ENTITY_TYPE" isDefault="false" sortOrder="1">
-            <searchKindDescription languageIsoName="en" description="Entity Type" />
-            <searchType searchTypeName="EMPLOYEE" isDefault="true" sortOrder="1">
-                <searchTypeDescription languageIsoName="en" description="Employee" />
-            </searchType>
-            <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
-                <searchSortOrderDescription languageIsoName="en" description="Score" />
-            </searchSortOrder>
-            <searchSortOrder searchSortOrderName="DESCRIPTION" isDefault="false" sortOrder="2">
-                <searchSortOrderDescription languageIsoName="en" description="Default Description" />
-            </searchSortOrder>
-            <searchSortOrder searchSortOrderName="ENTITY_TYPE_NAME" isDefault="false" sortOrder="3">
-                <searchSortOrderDescription languageIsoName="en" description="Entity Type Name" />
             </searchSortOrder>
             <searchSortOrder searchSortOrderName="CREATED_TIME" isDefault="false" sortOrder="4">
                 <searchSortOrderDescription languageIsoName="en" description="Created Time" />
