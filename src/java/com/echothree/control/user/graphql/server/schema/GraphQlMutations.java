@@ -140,6 +140,8 @@ import com.echothree.control.user.payment.common.result.EditPaymentProcessorActi
 import com.echothree.control.user.payment.common.result.EditPaymentProcessorResult;
 import com.echothree.control.user.payment.common.result.EditPaymentProcessorResultCodeResult;
 import com.echothree.control.user.payment.common.result.EditPaymentProcessorTypeResult;
+import com.echothree.control.user.sales.common.SalesUtil;
+import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.CreateSearchResultActionTypeResult;
 import com.echothree.control.user.search.common.result.EditSearchResultActionTypeResult;
@@ -12422,6 +12424,58 @@ public interface GraphQlMutations {
             commandForm.setSecurityRoleName(securityRoleName);
 
             mutationResultObject.setCommandResult(WorkflowUtil.getHome().deleteWorkflowDestinationSecurityRole(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createSalesOrder(final DataFetchingEnvironment env,
+            @GraphQLName("batchName") final String batchName,
+            @GraphQLName("sourceName") final String sourceName,
+            @GraphQLName("currencyIsoName") final String currencyIsoName,
+            @GraphQLName("termName") final String termName,
+            @GraphQLName("billToPartyName") final String billToPartyName,
+            @GraphQLName("orderPriorityName") final String orderPriorityName,
+            @GraphQLName("holdUntilComplete") final String holdUntilComplete,
+            @GraphQLName("allowBackorders") final String allowBackorders,
+            @GraphQLName("allowSubstitutions") final String allowSubstitutions,
+            @GraphQLName("allowCombiningShipments") final String allowCombiningShipments,
+            @GraphQLName("reference") final String reference,
+            @GraphQLName("freeOnBoardName") final String freeOnBoardName,
+            @GraphQLName("taxable") final String taxable,
+            @GraphQLName("workflowEntranceName") final String workflowEntranceName) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = SalesUtil.getHome().getCreateSalesOrderForm();
+
+            commandForm.setBatchName(batchName);
+            commandForm.setSourceName(sourceName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+            commandForm.setTermName(termName);
+            commandForm.setBillToPartyName(billToPartyName);
+            commandForm.setOrderPriorityName(orderPriorityName);
+            commandForm.setHoldUntilComplete(holdUntilComplete);
+            commandForm.setAllowBackorders(allowBackorders);
+            commandForm.setAllowSubstitutions(allowSubstitutions);
+            commandForm.setAllowCombiningShipments(allowCombiningShipments);
+            commandForm.setReference(reference);
+            commandForm.setFreeOnBoardName(freeOnBoardName);
+            commandForm.setTaxable(taxable);
+            commandForm.setWorkflowEntranceName(workflowEntranceName);
+
+            var commandResult = SalesUtil.getHome().createSalesOrder(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateSalesOrderResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
