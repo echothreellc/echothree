@@ -141,6 +141,7 @@ import com.echothree.control.user.payment.common.result.EditPaymentProcessorResu
 import com.echothree.control.user.payment.common.result.EditPaymentProcessorResultCodeResult;
 import com.echothree.control.user.payment.common.result.EditPaymentProcessorTypeResult;
 import com.echothree.control.user.sales.common.SalesUtil;
+import com.echothree.control.user.sales.common.result.CreateSalesOrderLineResult;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.CreateSearchResultActionTypeResult;
@@ -12473,6 +12474,54 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateSalesOrderResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createSalesOrderLine(final DataFetchingEnvironment env,
+            @GraphQLName("orderName") final String orderName,
+            @GraphQLName("orderLineSequence") final String orderLineSequence,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("inventoryConditionName") final String inventoryConditionName,
+            @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
+            @GraphQLName("quantity") @GraphQLNonNull final String quantity,
+            @GraphQLName("unitAmount") final String unitAmount,
+            @GraphQLName("taxable") final String taxable,
+            @GraphQLName("description") final String description,
+            @GraphQLName("cancellationPolicyName") final String cancellationPolicyName,
+            @GraphQLName("returnPolicyName") final String returnPolicyName,
+            @GraphQLName("sourceName") final String sourceName) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = SalesUtil.getHome().getCreateSalesOrderLineForm();
+
+            commandForm.setOrderName(orderName);
+            commandForm.setOrderLineSequence(orderLineSequence);
+            commandForm.setItemName(itemName);
+            commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            commandForm.setQuantity(quantity);
+            commandForm.setUnitAmount(unitAmount);
+            commandForm.setTaxable(taxable);
+            commandForm.setDescription(description);
+            commandForm.setCancellationPolicyName(cancellationPolicyName);
+            commandForm.setReturnPolicyName(returnPolicyName);
+            commandForm.setSourceName(sourceName);
+
+            var commandResult = SalesUtil.getHome().createSalesOrderLine(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateSalesOrderLineResult)commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
