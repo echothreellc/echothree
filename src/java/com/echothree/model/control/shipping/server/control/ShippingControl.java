@@ -23,7 +23,6 @@ import com.echothree.model.control.shipping.common.choice.ShippingMethodChoicesB
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodCarrierServiceTransfer;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodDescriptionTransfer;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
-import com.echothree.model.control.shipping.server.transfer.ShippingTransferCaches;
 import com.echothree.model.data.carrier.server.entity.CarrierService;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
@@ -43,7 +42,6 @@ import com.echothree.model.data.shipping.server.value.ShippingMethodDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -51,25 +49,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShippingControl
-        extends BaseModelControl {
+        extends BaseShippingControl {
     
     /** Creates a new instance of ShippingControl */
     public ShippingControl() {
         super();
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Shipping Transfer Caches
-    // --------------------------------------------------------------------------------
-    
-    private ShippingTransferCaches shippingTransferCaches;
-    
-    public ShippingTransferCaches getShippingTransferCaches(UserVisit userVisit) {
-        if(shippingTransferCaches == null) {
-            shippingTransferCaches = new ShippingTransferCaches(userVisit, this);
-        }
-        
-        return shippingTransferCaches;
     }
     
     // --------------------------------------------------------------------------------

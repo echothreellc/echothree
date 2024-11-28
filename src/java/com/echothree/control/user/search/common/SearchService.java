@@ -614,6 +614,18 @@ public interface SearchService
     CommandResult clearUseTypeResults(UserVisitPK userVisitPK, ClearUseTypeResultsForm form);
 
     // -------------------------------------------------------------------------
+    //   Shipping Method Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchShippingMethods(UserVisitPK userVisitPK, SearchShippingMethodsForm form);
+
+    CommandResult getShippingMethodResults(UserVisitPK userVisitPK, GetShippingMethodResultsForm form);
+
+    CommandResult countShippingMethodResults(UserVisitPK userVisitPK, CountShippingMethodResultsForm form);
+
+    CommandResult clearShippingMethodResults(UserVisitPK userVisitPK, ClearShippingMethodResultsForm form);
+
+    // -------------------------------------------------------------------------
     //   Warehouse Search
     // -------------------------------------------------------------------------
 

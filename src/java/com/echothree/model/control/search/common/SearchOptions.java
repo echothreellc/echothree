@@ -74,4 +74,6 @@ public interface SearchOptions {
 
     String WarehouseResultIncludeWarehouse = "WarehouseResultIncludeWarehouse";
 
+    String ShippingMethodResultIncludeShippingMethod = "ShippingMethodResultIncludeShippingMethod";
+
 }
