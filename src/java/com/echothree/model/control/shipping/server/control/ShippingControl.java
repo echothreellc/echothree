@@ -319,7 +319,7 @@ public class ShippingControl
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodDescription.getPrimaryKey(),
-                null, createdBy);
+                EventTypes.CREATE, createdBy);
         
         return shippingMethodDescription;
     }
@@ -459,7 +459,7 @@ public class ShippingControl
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodDescription.getPrimaryKey(),
-                    null, updatedBy);
+                    EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -467,7 +467,7 @@ public class ShippingControl
         shippingMethodDescription.setThruTime(session.START_TIME_LONG);
         
         sendEvent(shippingMethodDescription.getShippingMethodPK(), EventTypes.MODIFY,
-                shippingMethodDescription.getPrimaryKey(), null, deletedBy);
+                shippingMethodDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteShippingMethodDescriptionsByShippingMethod(ShippingMethod shippingMethod, BasePK deletedBy) {
@@ -488,7 +488,7 @@ public class ShippingControl
                 shippingMethod, carrierService, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodCarrierService.getPrimaryKey(),
-                null, createdBy);
+                EventTypes.CREATE, createdBy);
         
         return shippingMethodCarrierService;
     }
@@ -652,7 +652,7 @@ public class ShippingControl
         shippingMethodCarrierService.setThruTime(session.START_TIME_LONG);
         
         sendEvent(shippingMethodCarrierService.getShippingMethod().getPrimaryKey(), EventTypes.MODIFY,
-                shippingMethodCarrierService.getPrimaryKey(), null, deletedBy);
+                shippingMethodCarrierService.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteShippingMethodCarrierServices(List<ShippingMethodCarrierService> shippingMethodCarrierServices, BasePK deletedBy) {
