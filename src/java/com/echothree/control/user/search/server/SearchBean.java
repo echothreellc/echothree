@@ -968,6 +968,30 @@ public class SearchBean
     }
 
     // -------------------------------------------------------------------------
+    //   Content Catalog Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchContentCatalogs(UserVisitPK userVisitPK, SearchContentCatalogsForm form) {
+        return new SearchContentCatalogsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getContentCatalogResults(UserVisitPK userVisitPK, GetContentCatalogResultsForm form) {
+        return new GetContentCatalogResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countContentCatalogResults(UserVisitPK userVisitPK, CountContentCatalogResultsForm form) {
+        return new CountContentCatalogResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearContentCatalogResults(UserVisitPK userVisitPK, ClearContentCatalogResultsForm form) {
+        return new ClearContentCatalogResultsCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
     //   Content Category Search
     // -------------------------------------------------------------------------
 

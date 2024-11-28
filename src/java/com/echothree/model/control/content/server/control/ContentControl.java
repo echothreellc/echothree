@@ -2949,7 +2949,11 @@ public class ContentControl
     public void updateContentCatalogFromValue(ContentCatalogDetailValue contentCatalogDetailValue, BasePK updatedBy) {
         updateContentCatalogFromValue(contentCatalogDetailValue, true, updatedBy);
     }
-    
+
+    public ContentCatalog getContentCatalogByPK(ContentCatalogPK contentCatalogPK) {
+        return ContentCatalogFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, contentCatalogPK);
+    }
+
     public void deleteContentCatalog(ContentCatalog contentCatalog, BasePK deletedBy) {
         // ContentLogic not used since everything is being deleted from the ContentCatalog anyway.
         // Items are deleted separately to avoid duplicate keye errors due to the pricing for the same item
