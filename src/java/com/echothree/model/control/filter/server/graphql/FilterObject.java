@@ -19,6 +19,8 @@ package com.echothree.model.control.filter.server.graphql;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.selector.server.graphql.SelectorObject;
+import com.echothree.model.control.selector.server.graphql.SelectorSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterDetail;
@@ -73,21 +75,21 @@ public class FilterObject
         return FilterSecurityUtils.getHasFilterAdjustmentAccess(env) ? new FilterAdjustmentObject(getFilterDetail().getInitialFilterAdjustment()) : null;
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("filter item selector")
-//    public SelectorObject getFilterItemSelector(final DataFetchingEnvironment env) {
-//        SelectorObject result;
-//
-//        if(SelectorSecurityUtils.getHasSelectorAccess(env)) {
-//            var selector = getFilterDetail().getFilterItemSelector();
-//
-//            result = selector == null ? null : new SelectorObject(selector);
-//        } else {
-//            result = null;
-//        }
-//
-//        return result;
-//    }
+    @GraphQLField
+    @GraphQLDescription("filter item selector")
+    public SelectorObject getFilterItemSelector(final DataFetchingEnvironment env) {
+        SelectorObject result;
+
+        if(SelectorSecurityUtils.getHasSelectorAccess(env)) {
+            var selector = getFilterDetail().getFilterItemSelector();
+
+            result = selector == null ? null : new SelectorObject(selector);
+        } else {
+            result = null;
+        }
+
+        return result;
+    }
 
     @GraphQLField
     @GraphQLDescription("is default")
