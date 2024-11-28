@@ -19,6 +19,9 @@
         <indexType indexTypeName="CONTACT_MECHANISM" componentVendorName="ECHO_THREE" entityTypeName="ContactMechanism" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Contact Mechanism" />
         </indexType>
+        <indexType indexTypeName="CONTENT_CATALOG" componentVendorName="ECHO_THREE" entityTypeName="ContentCatalog" isDefault="false" sortOrder="1">
+            <indexTypeDescription languageIsoName="en" description="Content Catalog" />
+        </indexType>
         <indexType indexTypeName="CONTENT_CATEGORY" componentVendorName="ECHO_THREE" entityTypeName="ContentCategory" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Content Category" />
         </indexType>
@@ -142,6 +145,34 @@
         <index indexName="EMPLOYEE" indexTypeName="EMPLOYEE" directory="/usr/local/jboss/share/indexes/employee"
                isDefault="false" sortOrder="1">
             <indexDescription languageIsoName="en" description="Customer" />
+        </index>
+        <index indexName="CONTENT_CATALOG_EN" indexTypeName="CONTENT_CATALOG" languageIsoName="en" directory="/usr/local/jboss/share/indexes/contentCatalog/en"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Content Catalog (English)" />
+        </index>
+        <index indexName="CONTENT_CATALOG_DE" indexTypeName="CONTENT_CATALOG" languageIsoName="de" directory="/usr/local/jboss/share/indexes/contentCatalog/de"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Content Catalog (German)" />
+        </index>
+        <index indexName="CONTENT_CATALOG_ES" indexTypeName="CONTENT_CATALOG" languageIsoName="es" directory="/usr/local/jboss/share/indexes/contentCatalog/es"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Content Catalog (Spanish)" />
+        </index>
+        <index indexName="CONTENT_CATALOG_FR" indexTypeName="CONTENT_CATALOG" languageIsoName="fr" directory="/usr/local/jboss/share/indexes/contentCatalog/fr"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Content Catalog (French)" />
+        </index>
+        <index indexName="CONTENT_CATALOG_JA" indexTypeName="CONTENT_CATALOG" languageIsoName="ja" directory="/usr/local/jboss/share/indexes/contentCatalog/ja"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Content Catalog (Japanese)" />
+        </index>
+        <index indexName="CONTENT_CATALOG_KO" indexTypeName="CONTENT_CATALOG" languageIsoName="ko" directory="/usr/local/jboss/share/indexes/contentCatalog/ko"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Content Catalog (Korean)" />
+        </index>
+        <index indexName="CONTENT_CATALOG_ZH" indexTypeName="CONTENT_CATALOG" languageIsoName="zh" directory="/usr/local/jboss/share/indexes/contentCatalog/zh"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Content Catalog (Chinese)" />
         </index>
         <index indexName="CONTENT_CATEGORY_EN" indexTypeName="CONTENT_CATEGORY" languageIsoName="en" directory="/usr/local/jboss/share/indexes/contentCategory/en"
                isDefault="false" sortOrder="1">

@@ -19,6 +19,7 @@ package com.echothree.control.user.index.server.command;
 import com.echothree.control.user.index.common.form.UpdateIndexesForm;
 import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.contact.server.indexer.ContactMechanismIndexer;
+import com.echothree.model.control.content.server.indexer.ContentCatalogIndexer;
 import com.echothree.model.control.content.server.indexer.ContentCategoryIndexer;
 import com.echothree.model.control.core.server.indexer.ComponentVendorIndexer;
 import com.echothree.model.control.core.server.indexer.EntityAliasTypeIndexer;
@@ -144,6 +145,8 @@ public class UpdateIndexesCommand
                     baseIndexer = new EntityAttributeIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_LIST_ITEM.name())) {
                     baseIndexer = new EntityListItemIndexer(this, index);
+                } else if(indexTypeName.equals(IndexTypes.CONTENT_CATALOG.name())) {
+                    baseIndexer = new ContentCatalogIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.CONTENT_CATEGORY.name())) {
                     baseIndexer = new ContentCategoryIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.SECURITY_ROLE_GROUP.name())) {
