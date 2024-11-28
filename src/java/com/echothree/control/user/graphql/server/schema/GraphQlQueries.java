@@ -280,6 +280,7 @@ import com.echothree.control.user.search.server.command.GetSearchTypeCommand;
 import com.echothree.control.user.search.server.command.GetSearchTypesCommand;
 import com.echothree.control.user.search.server.command.GetSearchUseTypeCommand;
 import com.echothree.control.user.search.server.command.GetSearchUseTypesCommand;
+import com.echothree.control.user.search.server.command.GetShippingMethodResultsCommand;
 import com.echothree.control.user.search.server.command.GetVendorResultsCommand;
 import com.echothree.control.user.search.server.command.GetWarehouseResultsCommand;
 import com.echothree.control.user.security.common.SecurityUtil;
@@ -538,6 +539,7 @@ import com.echothree.model.control.search.server.graphql.SearchSortDirectionObje
 import com.echothree.model.control.search.server.graphql.SearchSortOrderObject;
 import com.echothree.model.control.search.server.graphql.SearchTypeObject;
 import com.echothree.model.control.search.server.graphql.SearchUseTypeObject;
+import com.echothree.model.control.search.server.graphql.ShippingMethodResultsObject;
 import com.echothree.model.control.search.server.graphql.VendorResultsObject;
 import com.echothree.model.control.search.server.graphql.WarehouseResultsObject;
 import com.echothree.model.control.security.server.graphql.SecurityRoleGroupObject;
@@ -6103,6 +6105,27 @@ public interface GraphQlQueries {
         }
 
         return vendorResultsObject;
+    }
+
+    @GraphQLField
+    @GraphQLName("shippingMethodResults")
+    static ShippingMethodResultsObject shippingMethodResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        ShippingMethodResultsObject shippingMethodResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetShippingMethodResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetShippingMethodResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                shippingMethodResultsObject = new ShippingMethodResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return shippingMethodResultsObject;
     }
 
     @GraphQLField
