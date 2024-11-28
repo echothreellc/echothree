@@ -35,6 +35,7 @@ public enum IndexTypes {
     OFFER,
     SECURITY_ROLE,
     SECURITY_ROLE_GROUP,
+    SHIPPING_METHOD,
     USE,
     USE_TYPE,
     VENDOR,
