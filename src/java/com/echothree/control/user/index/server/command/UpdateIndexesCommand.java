@@ -45,6 +45,7 @@ import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.server.indexer.SecurityRoleGroupIndexer;
 import com.echothree.model.control.security.server.indexer.SecurityRoleIndexer;
+import com.echothree.model.control.shipping.server.indexer.ShippingMethodIndexer;
 import com.echothree.model.control.vendor.server.indexer.VendorIndexer;
 import com.echothree.model.control.warehouse.server.indexer.WarehouseIndexer;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -163,6 +164,8 @@ public class UpdateIndexesCommand
                     baseIndexer = new UseIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.USE_TYPE.name())) {
                     baseIndexer = new UseTypeIndexer(this, index);
+                } else if(indexTypeName.equals(IndexTypes.SHIPPING_METHOD.name())) {
+                    baseIndexer = new ShippingMethodIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.WAREHOUSE.name())) {
                     baseIndexer = new WarehouseIndexer(this, index);
                 }

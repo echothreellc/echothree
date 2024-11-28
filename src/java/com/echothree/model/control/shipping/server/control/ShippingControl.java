@@ -25,9 +25,11 @@ import com.echothree.model.control.shipping.common.transfer.ShippingMethodDescri
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
 import com.echothree.model.control.shipping.server.transfer.ShippingTransferCaches;
 import com.echothree.model.data.carrier.server.entity.CarrierService;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
+import com.echothree.model.data.shipping.common.pk.ShippingMethodPK;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodCarrierService;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodDescription;
@@ -92,7 +94,30 @@ public class ShippingControl
         
         return shippingMethod;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ShippingMethod */
+    public ShippingMethod getShippingMethodByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ShippingMethodPK(entityInstance.getEntityUniqueId());
+
+        return ShippingMethodFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ShippingMethod getShippingMethodByEntityInstance(EntityInstance entityInstance) {
+        return getShippingMethodByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ShippingMethod getShippingMethodByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getShippingMethodByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countShippingMethods() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM shippingmethods
+                        JOIN shippingmethoddetails ON shm_activedetailid = shmdt_shippingmethoddetailid
+                        """);
+    }
+
     private List<ShippingMethod> getShippingMethods(EntityPermission entityPermission) {
         String query = null;
         
@@ -278,7 +303,11 @@ public class ShippingControl
             sendEvent(shippingMethodPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
-    
+
+    public ShippingMethod getShippingMethodByPK(ShippingMethodPK pk) {
+        return ShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
     public void deleteShippingMethod(ShippingMethod shippingMethod, BasePK deletedBy) {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var shipmentControl = Session.getModelController(ShipmentControl.class);
