@@ -16,43 +16,38 @@
 
 package com.echothree.model.control.shipping.server.transfer;
 
-import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class ShippingTransferCaches
         extends BaseTransferCaches {
     
-    protected ShippingControl shippingControl;
-    
     ShippingMethodDescriptionTransferCache shippingMethodDescriptionTransferCache;
     ShippingMethodTransferCache shippingMethodTransferCache;
     ShippingMethodCarrierServiceTransferCache shippingMethodCarrierServiceTransferCache;
     
     /** Creates a new instance of ShippingTransferCaches */
-    public ShippingTransferCaches(UserVisit userVisit, ShippingControl shippingControl) {
+    public ShippingTransferCaches(UserVisit userVisit) {
         super(userVisit);
-        
-        this.shippingControl = shippingControl;
     }
     
     public ShippingMethodDescriptionTransferCache getShippingMethodDescriptionTransferCache() {
         if(shippingMethodDescriptionTransferCache == null)
-            shippingMethodDescriptionTransferCache = new ShippingMethodDescriptionTransferCache(userVisit, shippingControl);
+            shippingMethodDescriptionTransferCache = new ShippingMethodDescriptionTransferCache(userVisit);
         
         return shippingMethodDescriptionTransferCache;
     }
     
     public ShippingMethodTransferCache getShippingMethodTransferCache() {
         if(shippingMethodTransferCache == null)
-            shippingMethodTransferCache = new ShippingMethodTransferCache(userVisit, shippingControl);
+            shippingMethodTransferCache = new ShippingMethodTransferCache(userVisit);
         
         return shippingMethodTransferCache;
     }
     
     public ShippingMethodCarrierServiceTransferCache getShippingMethodCarrierServiceTransferCache() {
         if(shippingMethodCarrierServiceTransferCache == null)
-            shippingMethodCarrierServiceTransferCache = new ShippingMethodCarrierServiceTransferCache(userVisit, shippingControl);
+            shippingMethodCarrierServiceTransferCache = new ShippingMethodCarrierServiceTransferCache(userVisit);
         
         return shippingMethodCarrierServiceTransferCache;
     }
