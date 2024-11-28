@@ -1264,6 +1264,30 @@ public class SearchBean
     }
 
     // -------------------------------------------------------------------------
+    //   Shipping Method Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchShippingMethods(UserVisitPK userVisitPK, SearchShippingMethodsForm form) {
+        return new SearchShippingMethodsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getShippingMethodResults(UserVisitPK userVisitPK, GetShippingMethodResultsForm form) {
+        return new GetShippingMethodResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countShippingMethodResults(UserVisitPK userVisitPK, CountShippingMethodResultsForm form) {
+        return new CountShippingMethodResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearShippingMethodResults(UserVisitPK userVisitPK, ClearShippingMethodResultsForm form) {
+        return new ClearShippingMethodResultsCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
     //   Warehouse Search
     // -------------------------------------------------------------------------
 

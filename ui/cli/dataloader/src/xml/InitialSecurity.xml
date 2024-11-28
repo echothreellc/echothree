@@ -2055,6 +2055,9 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Shipping Method Description" />
             </securityRole>
+            <securityRole securityRoleName="Search" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Shipping Method Search" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="ShippingMethodCarrierService" parentSecurityRoleGroupName="ShippingComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Shipping Method Carrier Service" />
@@ -8437,6 +8440,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="ShippingMethod" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShippingMethod" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShippingMethod" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ShippingMethod" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShippingMethodCarrierService" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShippingMethodCarrierService" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShippingMethodCarrierService" securityRoleName="List" />
