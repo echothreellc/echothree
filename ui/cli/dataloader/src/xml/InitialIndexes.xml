@@ -19,6 +19,9 @@
         <indexType indexTypeName="CONTACT_MECHANISM" componentVendorName="ECHO_THREE" entityTypeName="ContactMechanism" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Contact Mechanism" />
         </indexType>
+        <indexType indexTypeName="CONTENT_CATALOG" componentVendorName="ECHO_THREE" entityTypeName="ContentCatalog" isDefault="false" sortOrder="1">
+            <indexTypeDescription languageIsoName="en" description="Content Catalog" />
+        </indexType>
         <indexType indexTypeName="CONTENT_CATEGORY" componentVendorName="ECHO_THREE" entityTypeName="ContentCategory" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Content Category" />
         </indexType>
