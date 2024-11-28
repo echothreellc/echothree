@@ -109,6 +109,12 @@
         <indexType indexTypeName="SOURCE" componentVendorName="ECHO_THREE" entityTypeName="Source" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Source" />
         </indexType>
+        <indexType indexTypeName="SHIPPING_METHOD" componentVendorName="ECHO_THREE" entityTypeName="ShippingMethod" isDefault="false" sortOrder="1">
+            <indexTypeDescription languageIsoName="en" description="Shipping Method" />
+            <indexField indexFieldName="description" languageIsoName="en" isDefault="true" sortOrder="1">
+                <indexFieldDescription languageIsoName="en" description="Description" />
+            </indexField>
+        </indexType>
         <indexType indexTypeName="WAREHOUSE" componentVendorName="ECHO_THREE" entityTypeName="Party" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Warehouse" />
         </indexType>
@@ -601,6 +607,34 @@
         <index indexName="USE_TYPE_ZH" indexTypeName="USE_TYPE" languageIsoName="zh" directory="/usr/local/jboss/share/indexes/useType/zh"
                isDefault="false" sortOrder="1">
             <indexDescription languageIsoName="en" description="Use Type (Chinese)" />
+        </index>
+        <index indexName="SHIPPING_METHOD_EN" indexTypeName="SHIPPING_METHOD" languageIsoName="en" directory="/usr/local/jboss/share/indexes/shippingMethod/en"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Shipping Method (English)" />
+        </index>
+        <index indexName="SHIPPING_METHOD_DE" indexTypeName="SHIPPING_METHOD" languageIsoName="de" directory="/usr/local/jboss/share/indexes/shippingMethod/de"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Shipping Method (German)" />
+        </index>
+        <index indexName="SHIPPING_METHOD_ES" indexTypeName="SHIPPING_METHOD" languageIsoName="es" directory="/usr/local/jboss/share/indexes/shippingMethod/es"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Shipping Method (Spanish)" />
+        </index>
+        <index indexName="SHIPPING_METHOD_FR" indexTypeName="SHIPPING_METHOD" languageIsoName="fr" directory="/usr/local/jboss/share/indexes/shippingMethod/fr"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Shipping Method (French)" />
+        </index>
+        <index indexName="SHIPPING_METHOD_JA" indexTypeName="SHIPPING_METHOD" languageIsoName="ja" directory="/usr/local/jboss/share/indexes/shippingMethod/ja"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Shipping Method (Japanese)" />
+        </index>
+        <index indexName="SHIPPING_METHOD_KO" indexTypeName="SHIPPING_METHOD" languageIsoName="ko" directory="/usr/local/jboss/share/indexes/shippingMethod/ko"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Shipping Method (Korean)" />
+        </index>
+        <index indexName="SHIPPING_METHOD_ZH" indexTypeName="SHIPPING_METHOD" languageIsoName="zh" directory="/usr/local/jboss/share/indexes/shippingMethod/zh"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Shipping Method (Chinese)" />
         </index>
         <index indexName="WAREHOUSE" indexTypeName="WAREHOUSE" directory="/usr/local/jboss/share/indexes/warehouse"
                isDefault="false" sortOrder="1">
