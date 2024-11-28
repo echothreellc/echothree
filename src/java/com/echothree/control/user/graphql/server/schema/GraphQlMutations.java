@@ -157,6 +157,7 @@ import com.echothree.control.user.search.common.result.SearchEntityAttributesRes
 import com.echothree.control.user.search.common.result.SearchEntityListItemsResult;
 import com.echothree.control.user.search.common.result.SearchEntityTypesResult;
 import com.echothree.control.user.search.common.result.SearchItemsResult;
+import com.echothree.control.user.search.common.result.SearchShippingMethodsResult;
 import com.echothree.control.user.search.common.result.SearchVendorsResult;
 import com.echothree.control.user.search.common.result.SearchWarehousesResult;
 import com.echothree.control.user.security.common.SecurityUtil;
@@ -225,6 +226,7 @@ import com.echothree.model.control.search.server.graphql.SearchEntityAttributesR
 import com.echothree.model.control.search.server.graphql.SearchEntityListItemsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchEntityTypesResultObject;
 import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;
+import com.echothree.model.control.search.server.graphql.SearchShippingMethodsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchWarehousesResultObject;
 import com.echothree.util.common.command.EditMode;
@@ -7075,6 +7077,67 @@ public interface GraphQlMutations {
             commandForm.setSearchTypeName(searchTypeName);
 
             var commandResult = SearchUtil.getHome().clearVendorResults(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static SearchShippingMethodsResultObject searchShippingMethods(final DataFetchingEnvironment env,
+            @GraphQLName("languageIsoName") final String languageIsoName,
+            @GraphQLName("searchDefaultOperatorName") final String searchDefaultOperatorName,
+            @GraphQLName("searchSortDirectionName") final String searchSortDirectionName,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName,
+            @GraphQLName("searchSortOrderName") final String searchSortOrderName,
+            @GraphQLName("q") final String q,
+            @GraphQLName("createdSince") final String createdSince,
+            @GraphQLName("modifiedSince") final String modifiedSince,
+            @GraphQLName("fields") final String fields,
+            @GraphQLName("rememberPreferences") final String rememberPreferences,
+            @GraphQLName("searchUseTypeName") final String searchUseTypeName) {
+        var mutationResultObject = new SearchShippingMethodsResultObject();
+
+        try {
+            var commandForm = SearchUtil.getHome().getSearchShippingMethodsForm();
+
+            commandForm.setLanguageIsoName(languageIsoName);
+            commandForm.setSearchDefaultOperatorName(searchDefaultOperatorName);
+            commandForm.setSearchSortDirectionName(searchSortDirectionName);
+            commandForm.setSearchTypeName(searchTypeName);
+            commandForm.setSearchSortOrderName(searchSortOrderName);
+            commandForm.setQ(q);
+            commandForm.setCreatedSince(createdSince);
+            commandForm.setModifiedSince(modifiedSince);
+            commandForm.setFields(fields);
+            commandForm.setRememberPreferences(rememberPreferences);
+            commandForm.setSearchUseTypeName(searchUseTypeName);
+
+            var commandResult = SearchUtil.getHome().searchShippingMethods(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchShippingMethodsResult)commandResult.getExecutionResult().getResult());
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject clearShippingMethodResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = SearchUtil.getHome().getClearShippingMethodResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            var commandResult = SearchUtil.getHome().clearShippingMethodResults(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
