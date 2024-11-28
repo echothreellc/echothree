@@ -71,7 +71,7 @@ public class SearchForumMessagesCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchForumMessagesResult();
         var searchLogic = SearchLogic.getInstance();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.FORUM_MESSAGE.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.FORUM_MESSAGE.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();
