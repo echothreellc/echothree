@@ -29,7 +29,7 @@ import java.util.List;
 @GraphQLName("CommandResult")
 public class CommandResultObject {
     
-    private CommandResult commandResult; // Always Present
+    private final CommandResult commandResult; // Always Present
     
     public CommandResultObject(CommandResult commandResult) {
         this.commandResult = commandResult;
