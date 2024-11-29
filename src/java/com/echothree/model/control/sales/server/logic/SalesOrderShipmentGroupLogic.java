@@ -18,20 +18,23 @@ package com.echothree.model.control.sales.server.logic;
 
 import com.echothree.model.control.customer.common.exception.UnknownCustomerTypeShippingMethodException;
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.order.server.logic.OrderLogic;
+import com.echothree.model.control.order.server.control.OrderShipmentGroupControl;
+import com.echothree.model.control.order.server.logic.OrderShipmentGroupLogic;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderShipmentGroup;
+import com.echothree.model.data.order.server.value.OrderShipmentGroupDetailValue;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 
 public class SalesOrderShipmentGroupLogic
-        extends OrderLogic {
+        extends OrderShipmentGroupLogic {
 
     private SalesOrderShipmentGroupLogic() {
         super();
@@ -93,6 +96,13 @@ public class SalesOrderShipmentGroupLogic
         }
 
         return orderShipmentGroup;
+    }
+
+    public void updateSalesOrderShipmentGroupFromValue(final ExecutionErrorAccumulator eea, final OrderShipmentGroupDetailValue orderShipmentGroupDetailValue,
+            final BasePK updatedBy) {
+        var orderShipmentGroupControl = Session.getModelController(OrderShipmentGroupControl.class);
+
+        orderShipmentGroupControl.updateOrderShipmentGroupFromValue(orderShipmentGroupDetailValue, updatedBy);
     }
 
 }

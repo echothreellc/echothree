@@ -42,7 +42,7 @@ import com.echothree.util.server.validation.ParameterUtils;
 public class OrderPriorityLogic
         extends BaseLogic {
 
-    private OrderPriorityLogic() {
+    protected OrderPriorityLogic() {
         super();
     }
 
