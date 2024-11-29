@@ -148,7 +148,7 @@ public class SalesOrderLineLogic
                 // Check to see if an orderShipmentGroup was supplied. If it wasn't, try to get a default one for this order and itemDeliveryType.
                 // If a default doesn't exist, then create one.
                 if(orderShipmentGroup == null) {
-                    orderShipmentGroup = salesOrderLogic.getDefaultOrderShipmentGroup(order, itemDeliveryType);
+                    orderShipmentGroup = SalesOrderShipmentGroupLogic.getInstance().getDefaultOrderShipmentGroup(order, itemDeliveryType);
 
                     if(orderShipmentGroup == null) {
                         var holdUntilComplete = order.getLastDetail().getHoldUntilComplete();
