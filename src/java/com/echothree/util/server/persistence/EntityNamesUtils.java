@@ -62,6 +62,7 @@ import com.echothree.util.common.persistence.EntityNames;
 import com.echothree.util.common.persistence.Names;
 import com.echothree.util.common.persistence.Targets;
 import com.echothree.util.common.transfer.MapWrapper;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.translator.ComponentVendorTranslator;
 import com.echothree.util.server.persistence.translator.EntityInstanceAndNames;
 import com.echothree.util.server.persistence.translator.EntityInstanceTranslator;
@@ -327,7 +328,8 @@ public class EntityNamesUtils {
     }
 
     // Entry point from the Identify UC. Permissions have NOT been checked at this point.
-    public EntityInstanceAndNames getEntityNames(final Party requestingParty, final String value, final boolean includeEntityInstance) {
+    public EntityInstanceAndNames getEntityNames(final ExecutionErrorAccumulator eea, final Party requestingParty,
+            final String value, final boolean includeEntityInstance) {
         EntityInstanceAndNames result = null;
         var sequenceType = SequenceGeneratorLogic.getInstance().identifySequenceType(value);
 
@@ -336,31 +338,31 @@ public class EntityNamesUtils {
             var hasAccess = false;
 
             if(sequenceTypeName.equals(SequenceTypes.PURCHASE_INVOICE.name())
-                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(eea, requestingParty,
                     SecurityRoleGroups.PurchaseInvoice.name(), SecurityRoles.Search.name())) {
                 hasAccess = true;
             } else if(sequenceTypeName.equals(SequenceTypes.SALES_INVOICE.name())
-                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(eea, requestingParty,
                     SecurityRoleGroups.SalesOrder.name(), SecurityRoles.Search.name())) {
                 hasAccess = true;
             } else if(sequenceTypeName.equals(SequenceTypes.PURCHASE_ORDER.name())
-                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(eea, requestingParty,
                     SecurityRoleGroups.PurchaseOrder.name(), SecurityRoles.Search.name())) {
                 hasAccess = true;
             } else if(sequenceTypeName.equals(SequenceTypes.SALES_ORDER.name())
-                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(eea, requestingParty,
                     SecurityRoleGroups.SalesOrder.name(), SecurityRoles.Search.name())) {
                 hasAccess = true;
             } else if(sequenceTypeName.equals(SequenceTypes.WISHLIST.name())
-                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(eea, requestingParty,
                     SecurityRoleGroups.Wishlist.name(), SecurityRoles.Search.name())) {
                 hasAccess = true;
             } else if(sequenceTypeName.equals(SequenceTypes.CUSTOMER.name())
-                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(eea, requestingParty,
                     SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
                 hasAccess = true;
             } else if(sequenceTypeName.equals(SequenceTypes.EMPLOYEE.name())
-                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(eea, requestingParty,
                     SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())) {
                 hasAccess = true;
             }
