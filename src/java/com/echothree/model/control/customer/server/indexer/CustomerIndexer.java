@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.customer.server.indexer;
 
-import com.echothree.model.control.customer.server.analysis.CustomerAnalyzer;
+import com.echothree.model.control.customer.server.analyzer.CustomerAnalyzer;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.indexer.FieldTypes;

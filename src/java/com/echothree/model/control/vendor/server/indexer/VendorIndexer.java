@@ -20,7 +20,7 @@ import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.indexer.PartyIndexer;
-import com.echothree.model.control.vendor.server.analysis.VendorAnalyzer;
+import com.echothree.model.control.vendor.server.analyzer.VendorAnalyzer;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.party.server.entity.Party;

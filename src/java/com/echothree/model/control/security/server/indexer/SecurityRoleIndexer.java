@@ -19,7 +19,7 @@ package com.echothree.model.control.security.server.indexer;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.index.server.analysis.SecurityRoleAnalyzer;
+import com.echothree.model.control.security.server.analyzer.SecurityRoleAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.control.security.server.control.SecurityControl;

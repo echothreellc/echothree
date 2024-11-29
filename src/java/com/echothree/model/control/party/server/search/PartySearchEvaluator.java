@@ -19,7 +19,7 @@ package com.echothree.model.control.party.server.search;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.index.server.analysis.PartyAnalyzer;
+import com.echothree.model.control.party.server.analyzer.PartyAnalyzer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;

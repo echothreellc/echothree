@@ -22,7 +22,7 @@ import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.index.server.analysis.ContactMechanismAnalyzer;
+import com.echothree.model.control.contact.server.analyzer.ContactMechanismAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;

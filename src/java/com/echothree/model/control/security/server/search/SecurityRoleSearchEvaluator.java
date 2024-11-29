@@ -22,7 +22,7 @@ import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.IndexTypes;
-import com.echothree.model.control.index.server.analysis.SecurityRoleAnalyzer;
+import com.echothree.model.control.security.server.analyzer.SecurityRoleAnalyzer;
 import com.echothree.model.control.search.common.SearchSortOrders;
 import com.echothree.model.control.search.common.SearchSortDirections;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;

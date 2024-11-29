@@ -19,7 +19,7 @@ package com.echothree.model.control.item.server.search;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.index.common.IndexTypes;
-import com.echothree.model.control.index.server.analysis.ItemAnalyzer;
+import com.echothree.model.control.item.server.analyzer.ItemAnalyzer;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
 import com.echothree.model.control.search.server.search.BaseSpellCheckEvaluator;
 import com.echothree.model.data.party.server.entity.Language;
