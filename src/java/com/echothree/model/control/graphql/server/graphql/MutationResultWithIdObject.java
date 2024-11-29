@@ -25,7 +25,7 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 
 @GraphQLDescription("mutation result with id object")
-@GraphQLName("MutationResultWithIdO")
+@GraphQLName("MutationResultWithId")
 public class MutationResultWithIdObject
         extends MutationResultObject {
     
