@@ -19,7 +19,7 @@ package com.echothree.model.control.offer.server.indexer;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.index.server.analysis.OfferAnalyzer;
+import com.echothree.model.control.offer.server.analyzer.OfferAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.control.offer.server.control.OfferControl;

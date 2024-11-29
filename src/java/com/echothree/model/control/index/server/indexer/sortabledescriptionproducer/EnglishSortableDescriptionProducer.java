@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.index.server.indexer.sortabledescriptionproducer;
 
-import com.echothree.model.control.index.server.analysis.WhitespaceLowerCaseAnalyzer;
+import com.echothree.model.control.index.server.analyzer.WhitespaceLowerCaseAnalyzer;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
