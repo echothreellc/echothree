@@ -67,6 +67,7 @@ import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.server.message.DummyExecutionErrorAccumulator;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 
@@ -148,7 +149,9 @@ public class SalesOrderLineLogic
                 // Check to see if an orderShipmentGroup was supplied. If it wasn't, try to get a default one for this order and itemDeliveryType.
                 // If a default doesn't exist, then create one.
                 if(orderShipmentGroup == null) {
-                    orderShipmentGroup = salesOrderLogic.getDefaultOrderShipmentGroup(order, itemDeliveryType);
+                    var dummyExecutionErrorAccumulator = new DummyExecutionErrorAccumulator(); // No Execution Errors, don't throw Exceptions
+                    orderShipmentGroup = SalesOrderShipmentGroupLogic.getInstance().getDefaultOrderShipmentGroup(dummyExecutionErrorAccumulator,
+                            order, itemDeliveryType);
 
                     if(orderShipmentGroup == null) {
                         var holdUntilComplete = order.getLastDetail().getHoldUntilComplete();

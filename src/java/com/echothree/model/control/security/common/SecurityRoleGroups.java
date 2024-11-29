@@ -295,6 +295,7 @@ public enum SecurityRoleGroups {
     SalesOrderBatchStatus,
     SalesOrderLine,
     SalesOrderPaymentPreference,
+    SalesOrderShipmentGroup,
     Scale,
     ScaleType,
     ScaleUseType,

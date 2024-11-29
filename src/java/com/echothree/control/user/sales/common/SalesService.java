@@ -78,6 +78,12 @@ public interface SalesService
     CommandResult deleteSalesOrderTime(UserVisitPK userVisitPK, DeleteSalesOrderTimeForm form);
 
     // -------------------------------------------------------------------------
+    //   Sales Order Shipment Groups
+    // -------------------------------------------------------------------------
+
+    public CommandResult editSalesOrderShipmentGroup(UserVisitPK userVisitPK, EditSalesOrderShipmentGroupForm form);
+
+    // -------------------------------------------------------------------------
     //   Sales Order Lines
     // -------------------------------------------------------------------------
     

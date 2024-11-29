@@ -136,12 +136,21 @@ public class SalesBean
     // -------------------------------------------------------------------------
     //   Sales Order Lines
     // -------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult createSalesOrderLine(UserVisitPK userVisitPK, CreateSalesOrderLineForm form) {
         return new CreateSalesOrderLineCommand(userVisitPK, form).run();
     }
-    
+
+    // -------------------------------------------------------------------------
+    //   Sales Order Shipment Groups
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult editSalesOrderShipmentGroup(UserVisitPK userVisitPK, EditSalesOrderShipmentGroupForm form) {
+        return new EditSalesOrderShipmentGroupCommand(userVisitPK, form).run();
+    }
+
     // -------------------------------------------------------------------------
     //   Sales Order Line Times
     // -------------------------------------------------------------------------
