@@ -64,7 +64,7 @@ public class SearchOffersCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchOffersResult();
         var searchLogic = SearchLogic.getInstance();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.OFFER.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.OFFER.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();

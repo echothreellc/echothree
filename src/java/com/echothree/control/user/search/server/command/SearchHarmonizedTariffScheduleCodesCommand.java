@@ -64,7 +64,7 @@ public class SearchHarmonizedTariffScheduleCodesCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchHarmonizedTariffScheduleCodesResult();
         var searchLogic = SearchLogic.getInstance();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.HARMONIZED_TARIFF_SCHEDULE_CODE.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.HARMONIZED_TARIFF_SCHEDULE_CODE.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();

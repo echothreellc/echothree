@@ -66,7 +66,7 @@ public class SearchSalesOrdersCommand
     protected BaseResult execute() {
         var searchLogic = SearchLogic.getInstance();
         var result = SearchResultFactory.getSearchSalesOrdersResult();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.SALES_ORDER.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.SALES_ORDER.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();

@@ -64,7 +64,7 @@ public class SearchContactMechanismsCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchContactMechanismsResult();
         var searchLogic = SearchLogic.getInstance();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.CONTACT_MECHANISM.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.CONTACT_MECHANISM.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();

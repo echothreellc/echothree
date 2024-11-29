@@ -78,7 +78,7 @@ public class SearchEntityTypesCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchEntityTypesResult();
         var searchLogic = SearchLogic.getInstance();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.ENTITY_TYPE.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ENTITY_TYPE.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();

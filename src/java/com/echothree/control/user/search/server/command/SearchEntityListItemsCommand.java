@@ -63,7 +63,7 @@ public class SearchEntityListItemsCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchEntityListItemsResult();
         var searchLogic = SearchLogic.getInstance();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.ENTITY_LIST_ITEM.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ENTITY_LIST_ITEM.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();

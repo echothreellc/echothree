@@ -64,7 +64,7 @@ public class SearchSecurityRoleGroupsCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchSecurityRoleGroupsResult();
         var searchLogic = SearchLogic.getInstance();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.SECURITY_ROLE_GROUP.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.SECURITY_ROLE_GROUP.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();

@@ -68,7 +68,7 @@ public class SearchSalesOrderBatchesCommand
     protected BaseResult execute() {
         var searchLogic = SearchLogic.getInstance();
         var result = SearchResultFactory.getSearchSalesOrderBatchesResult();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.SALES_ORDER_BATCH.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.SALES_ORDER_BATCH.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();

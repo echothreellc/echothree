@@ -76,7 +76,7 @@ public class SearchEntityAliasTypesCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchEntityAliasTypesResult();
         var searchLogic = SearchLogic.getInstance();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.ENTITY_ALIAS_TYPE.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ENTITY_ALIAS_TYPE.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();

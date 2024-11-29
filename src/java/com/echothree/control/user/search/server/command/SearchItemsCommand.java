@@ -81,7 +81,7 @@ public class SearchItemsCommand
         
         if(parameterCount < 2) {
             var searchLogic = SearchLogic.getInstance();
-            var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.ITEM.name());
+            var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ITEM.name());
 
             if(!hasExecutionErrors()) {
                 var searchTypeName = form.getSearchTypeName();

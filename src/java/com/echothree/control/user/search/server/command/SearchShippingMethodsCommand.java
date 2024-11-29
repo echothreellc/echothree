@@ -76,7 +76,7 @@ public class SearchShippingMethodsCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchShippingMethodsResult();
         var searchLogic = SearchLogic.getInstance();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.SHIPPING_METHOD.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.SHIPPING_METHOD.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();
