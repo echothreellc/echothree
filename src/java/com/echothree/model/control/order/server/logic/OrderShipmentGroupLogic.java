@@ -16,7 +16,10 @@
 
 package com.echothree.model.control.order.server.logic;
 
+import com.echothree.model.control.customer.common.exception.UnknownCustomerTypeNameException;
 import com.echothree.model.control.order.common.exception.DuplicateOrderShipmentGroupSequenceException;
+import com.echothree.model.control.order.common.exception.UnknownDefaultOrderShipmentGroupException;
+import com.echothree.model.control.order.common.exception.UnknownOrderShipmentGroupException;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderShipmentGroupControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
@@ -28,6 +31,7 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 
 public class OrderShipmentGroupLogic
@@ -79,10 +83,48 @@ public class OrderShipmentGroupLogic
         return orderShipmentGroup;
     }
 
-    public OrderShipmentGroup getDefaultOrderShipmentGroup(final Order order, final ItemDeliveryType itemDeliveryType) {
+    public OrderShipmentGroup getDefaultOrderShipmentGroup(final ExecutionErrorAccumulator eea, final Order order,
+            final ItemDeliveryType itemDeliveryType, final EntityPermission entityPermission) {
         var orderShipmentGroupControl = Session.getModelController(OrderShipmentGroupControl.class);
+        var orderShipmentGroup = orderShipmentGroupControl.getDefaultOrderShipmentGroup(order, itemDeliveryType, entityPermission);
 
-        return orderShipmentGroupControl.getDefaultOrderShipmentGroup(order, itemDeliveryType);
+        if(orderShipmentGroup == null) {
+            handleExecutionError(UnknownDefaultOrderShipmentGroupException.class, eea, ExecutionErrors.UnknownDefaultOrderShipmentGroup.name(),
+                    order.getLastDetail().getOrderName(), itemDeliveryType.getItemDeliveryTypeName());
+        }
+
+        return orderShipmentGroup;
+    }
+
+    public OrderShipmentGroup getDefaultOrderShipmentGroup(final ExecutionErrorAccumulator eea, final Order order,
+            final ItemDeliveryType itemDeliveryType) {
+        return getDefaultOrderShipmentGroup(eea, order, itemDeliveryType, EntityPermission.READ_ONLY);
+    }
+
+    public OrderShipmentGroup getDefaultOrderShipmentGroupForUpdate(final ExecutionErrorAccumulator eea, final Order order,
+            final ItemDeliveryType itemDeliveryType) {
+        return getDefaultOrderShipmentGroup(eea, order, itemDeliveryType, EntityPermission.READ_WRITE);
+    }
+
+    public OrderShipmentGroup getOrderShipmentGroupBySequence(final ExecutionErrorAccumulator eea, final Order order,
+            final Integer orderShipmentGroupSequence, final EntityPermission entityPermission) {
+        var orderShipmentGroupControl = Session.getModelController(OrderShipmentGroupControl.class);
+        var orderShipmentGroup = orderShipmentGroupControl.getOrderShipmentGroupBySequence(order, orderShipmentGroupSequence);
+
+        if(orderShipmentGroup == null) {
+            handleExecutionError(UnknownOrderShipmentGroupException.class, eea, ExecutionErrors.UnknownOrderShipmentGroup.name(),
+                    order.getLastDetail().getOrderName(), orderShipmentGroupSequence);
+        }
+
+        return orderShipmentGroup;
+    }
+
+    public OrderShipmentGroup getOrderShipmentGroup(final ExecutionErrorAccumulator eea, final Order order, final Integer orderShipmentGroupSequence) {
+        return getOrderShipmentGroupBySequence(eea, order, orderShipmentGroupSequence, EntityPermission.READ_ONLY);
+    }
+
+    public OrderShipmentGroup getOrderShipmentGroupForUpdate(final ExecutionErrorAccumulator eea, final Order order, final Integer orderShipmentGroupSequence) {
+        return getOrderShipmentGroupBySequence(eea, order, orderShipmentGroupSequence, EntityPermission.READ_WRITE);
     }
 
 }

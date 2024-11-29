@@ -143,6 +143,7 @@ import com.echothree.control.user.payment.common.result.EditPaymentProcessorType
 import com.echothree.control.user.sales.common.SalesUtil;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderLineResult;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
+import com.echothree.control.user.sales.common.result.EditSalesOrderShipmentGroupResult;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.CreateSearchResultActionTypeResult;
 import com.echothree.control.user.search.common.result.EditSearchResultActionTypeResult;
@@ -12603,6 +12604,64 @@ public interface GraphQlMutations {
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editSalesOrderShipmentGroup(final DataFetchingEnvironment env,
+            @GraphQLName("orderName") final String orderName,
+            @GraphQLName("orderShipmentGroupSequence") final String orderShipmentGroupSequence,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("contactMechanismName") final String contactMechanismName,
+            @GraphQLName("shippingMethodName") final String shippingMethodName,
+            @GraphQLName("holdUntilComplete") final String holdUntilComplete) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = SalesUtil.getHome().getSalesOrderShipmentGroupSpec();
+
+            spec.setOrderName(orderName);
+            spec.setOrderShipmentGroupSequence(orderShipmentGroupSequence);
+
+            var commandForm = SalesUtil.getHome().getEditSalesOrderShipmentGroupForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = SalesUtil.getHome().editSalesOrderShipmentGroup(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditSalesOrderShipmentGroupResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getOrderShipmentGroup().getEntityInstance());
+
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("partyName"))
+                    edit.setPartyName(partyName);
+                if(arguments.containsKey("contactMechanismName"))
+                    edit.setContactMechanismName(contactMechanismName);
+                if(arguments.containsKey("shippingMethodName"))
+                    edit.setShippingMethodName(shippingMethodName);
+                if(arguments.containsKey("holdUntilComplete"))
+                    edit.setHoldUntilComplete(holdUntilComplete);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = SalesUtil.getHome().editSalesOrderShipmentGroup(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

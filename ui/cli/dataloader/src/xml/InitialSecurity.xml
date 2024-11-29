@@ -1797,6 +1797,9 @@
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Sales Order Create" />
             </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Sales Order Edit" />
+            </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Sales Order List" />
             </securityRole>
@@ -1822,10 +1825,31 @@
                 <securityRoleDescription languageIsoName="en" description="Sales Order Payment Preference List" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="SalesOrderShipmentGroup" parentSecurityRoleGroupName="SaleComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Sales Order Shipment Group" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Sales Order Shipment Group Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Sales Order Shipment Group Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Sales Order Shipment Group Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Sales Order Shipment Group List" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="SalesOrderLine" parentSecurityRoleGroupName="SaleComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Sales Order Line" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Sales Order Line Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Sales Order Line Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Sales Order Line Delete" />
             </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Sales Order Line List" />
@@ -8261,11 +8285,18 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrder" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrder" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrder" securityRoleName="Search" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrder" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderStatus" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderStatus" securityRoleName="Entry" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderPaymentPreference" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderPaymentPreference" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderShipmentGroup" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderShipmentGroup" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderShipmentGroup" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderShipmentGroup" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderLine" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderLine" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderLine" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderLine" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseOrder" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseOrder" securityRoleName="List" />

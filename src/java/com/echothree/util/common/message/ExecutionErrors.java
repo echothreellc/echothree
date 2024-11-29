@@ -2298,5 +2298,7 @@ public enum ExecutionErrors {
     UnknownDefaultSearchUseType,
     UnknownDefaultSearchKind,
     UnknownDefaultSearchType,
+    UnknownOrderShipmentGroup,
+    UnknownDefaultOrderShipmentGroup,
 
 }
