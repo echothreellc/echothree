@@ -64,7 +64,7 @@ public class SearchContentCatalogsCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchContentCatalogsResult();
         var searchLogic = SearchLogic.getInstance();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.CONTENT_CATALOG.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.CONTENT_CATALOG.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();

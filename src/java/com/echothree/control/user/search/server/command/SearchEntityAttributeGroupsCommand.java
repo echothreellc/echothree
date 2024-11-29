@@ -76,7 +76,7 @@ public class SearchEntityAttributeGroupsCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchEntityAttributeGroupsResult();
         var searchLogic = SearchLogic.getInstance();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.ENTITY_ATTRIBUTE_GROUP.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ENTITY_ATTRIBUTE_GROUP.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();

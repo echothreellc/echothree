@@ -54,7 +54,7 @@ public class CheckItemSpellingCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getCheckItemSpellingResult();
         var searchLogic = SearchLogic.getInstance();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.ITEM.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ITEM.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();

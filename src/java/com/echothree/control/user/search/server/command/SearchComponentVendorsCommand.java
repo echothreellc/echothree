@@ -76,7 +76,7 @@ public class SearchComponentVendorsCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchComponentVendorsResult();
         var searchLogic = SearchLogic.getInstance();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.COMPONENT_VENDOR.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.COMPONENT_VENDOR.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();
