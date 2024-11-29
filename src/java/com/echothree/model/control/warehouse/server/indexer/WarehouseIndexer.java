@@ -20,7 +20,7 @@ import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.indexer.PartyIndexer;
-import com.echothree.model.control.warehouse.server.analysis.WarehouseAnalyzer;
+import com.echothree.model.control.warehouse.server.analyzer.WarehouseAnalyzer;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.party.server.entity.Party;

@@ -20,7 +20,7 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.index.server.analysis.ContentCatalogAnalyzer;
+import com.echothree.model.control.content.server.analyzer.ContentCatalogAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.data.content.server.entity.ContentCatalog;

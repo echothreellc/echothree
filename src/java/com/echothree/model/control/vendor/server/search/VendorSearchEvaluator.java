@@ -21,7 +21,7 @@ import com.echothree.model.control.index.common.Indexes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.search.PartySearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
-import com.echothree.model.control.vendor.server.analysis.VendorAnalyzer;
+import com.echothree.model.control.vendor.server.analyzer.VendorAnalyzer;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;

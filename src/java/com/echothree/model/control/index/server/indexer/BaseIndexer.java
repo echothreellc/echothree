@@ -22,7 +22,7 @@ import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.IndexSubfields;
 import com.echothree.model.control.index.common.exception.IndexIOErrorException;
-import com.echothree.model.control.index.server.analysis.BasicAnalyzer;
+import com.echothree.model.control.index.server.analyzer.BasicAnalyzer;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
