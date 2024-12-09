@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.shipping.common.form;
 
-import com.echothree.control.user.shipping.common.spec.ShippingMethodSpec;
+import com.echothree.control.user.shipping.common.spec.ShippingMethodUniversalSpec;
 
 public interface GetShippingMethodForm
-        extends ShippingMethodSpec {
+        extends ShippingMethodUniversalSpec {
     
-    // Nothing additional beyond ShippingMethodSpec
+    // Nothing additional beyond ShippingMethodUniversalSpec
     
 }

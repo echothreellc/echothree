@@ -14,19 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.shipping.common.result;
+package com.echothree.control.user.shipping.common.spec;
 
-import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetShippingMethodsResult
-        extends BaseResult {
-
-    Long getShippingMethodCount();
-    void setShippingMethodCount(Long shippingMethodsCount);
-
-    List<ShippingMethodTransfer> getShippingMethods();
-    void setShippingMethods(List<ShippingMethodTransfer> shippingMethods);
+public interface ShippingMethodUniversalSpec
+        extends ShippingMethodSpec, UniversalEntitySpec {
+    
+    // Nothing additional beyond ShippingMethodSpec, UniversalEntitySpec
     
 }
