@@ -1,5 +1,26 @@
 # Changelog
 
+## 2024-12-08-01
+
+* Add Indexing of Content Catalogs [1372](https://gitlab.echothree.com/echothree/echothree/-/issues/1372)
+* Add Searching of Content Catalogs [1374](https://gitlab.echothree.com/echothree/echothree/-/issues/1374)
+* Add Content Catalog Search Mutation [1376](https://gitlab.echothree.com/echothree/echothree/-/issues/1376)
+* Add Content Catalog Results Object and Queries [1378](https://gitlab.echothree.com/echothree/echothree/-/issues/1378)
+* Add createSalesOrder Mutation [1423](https://gitlab.echothree.com/echothree/echothree/-/issues/1423)
+* Add createSalesOrderLine Mutation [1424](https://gitlab.echothree.com/echothree/echothree/-/issues/1424)
+* Add Indexing of Shipping Methods [1429](https://gitlab.echothree.com/echothree/echothree/-/issues/1429)
+* Add Searching of Shipping Methods [1430](https://gitlab.echothree.com/echothree/echothree/-/issues/1430)
+* Add Shipping Methods Search Mutation [1431](https://gitlab.echothree.com/echothree/echothree/-/issues/1431)
+* Add Shipping Methods Results Object and Queries [1432](https://gitlab.echothree.com/echothree/echothree/-/issues/1432)
+* Add Shipping Method Object [1433](https://gitlab.echothree.com/echothree/echothree/-/issues/1433)
+* Add filterItemSelector Field to Filter Object [1434](https://gitlab.echothree.com/echothree/echothree/-/issues/1434)
+* Correct Usage of sendEvent(...) in ShippingControl [1435](https://gitlab.echothree.com/echothree/echothree/-/issues/1435)
+* Correct Improper Error Handling When Calling getSearchKindByName(...) [1436](https://gitlab.echothree.com/echothree/echothree/-/issues/1436)
+* Move Analyzers to Component Packages [1437](https://gitlab.echothree.com/echothree/echothree/-/issues/1437)
+* Add Editing of Sales Order Shipment Groups [1438](https://gitlab.echothree.com/echothree/echothree/-/issues/1438)
+* Add Shipping Method Queries [1442](https://gitlab.echothree.com/echothree/echothree/-/issues/1442)
+* Add Customer Type Shipping Method Object [1443](https://gitlab.echothree.com/echothree/echothree/-/issues/1443)
+
 ## 2024-11-24-01
 
 * Add Component Vendors Results Object and Queries [1389](https://gitlab.echothree.com/echothree/echothree/-/issues/1389)
