@@ -46,6 +46,7 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ShippingControl
@@ -250,19 +251,22 @@ public class ShippingControl
     public ShippingMethodTransfer getShippingMethodTransfer(UserVisit userVisit, ShippingMethod shippingMethod) {
         return getShippingTransferCaches(userVisit).getShippingMethodTransferCache().getShippingMethodTransfer(shippingMethod);
     }
-    
-    public List<ShippingMethodTransfer> getShippingMethodTransfers(UserVisit userVisit) {
-        var carrierPartyPriorities = getShippingMethods();
-        List<ShippingMethodTransfer> shippingMethodTransfers = new ArrayList<>(carrierPartyPriorities.size());
+
+    public List<ShippingMethodTransfer> getShippingMethodTransfers(UserVisit userVisit, Collection<ShippingMethod> entities) {
+        List<ShippingMethodTransfer> shippingMethodTransfers = new ArrayList<>(entities.size());
         var shippingMethodTransferCache = getShippingTransferCaches(userVisit).getShippingMethodTransferCache();
-        
-        carrierPartyPriorities.forEach((shippingMethod) ->
+
+        entities.forEach((shippingMethod) ->
                 shippingMethodTransfers.add(shippingMethodTransferCache.getShippingMethodTransfer(shippingMethod))
         );
-        
+
         return shippingMethodTransfers;
     }
-    
+
+    public List<ShippingMethodTransfer> getShippingMethodTransfers(UserVisit userVisit) {
+        return getShippingMethodTransfers(userVisit, getShippingMethods());
+    }
+
     public void updateShippingMethodFromValue(ShippingMethodDetailValue shippingMethodDetailValue, BasePK updatedBy) {
         if(shippingMethodDetailValue.hasBeenModified()) {
             var shippingMethod = ShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,

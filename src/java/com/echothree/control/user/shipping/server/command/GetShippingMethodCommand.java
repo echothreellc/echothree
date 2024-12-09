@@ -18,62 +18,71 @@ package com.echothree.control.user.shipping.server.command;
 
 import com.echothree.control.user.shipping.common.form.GetShippingMethodForm;
 import com.echothree.control.user.shipping.common.result.ShippingResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
+import com.echothree.model.control.shipping.server.logic.ShippingMethodLogic;
+import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetShippingMethodCommand
-        extends BaseSimpleCommand<GetShippingMethodForm> {
-    
+        extends BaseSingleEntityCommand<ShippingMethod, GetShippingMethodForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
-    static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.ShippingMethod.name(), SecurityRoles.Review.name())
-                        )))
-                )));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ShippingMethodName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.ShippingMethod.name(), SecurityRoles.Review.name())
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ShippingMethodName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
+        );
     }
-    
+
     /** Creates a new instance of GetShippingMethodCommand */
     public GetShippingMethodCommand(UserVisitPK userVisitPK, GetShippingMethodForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected ShippingMethod getEntity() {
+        var shippingMethod = ShippingMethodLogic.getInstance().getShippingMethodByUniversalSpec(this, form);
+
+        if(shippingMethod != null) {
+            sendEvent(shippingMethod.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return shippingMethod;
+    }
+
+    @Override
+    protected BaseResult getResult(ShippingMethod shippingMethod) {
         var shippingControl = Session.getModelController(ShippingControl.class);
         var result = ShippingResultFactory.getGetShippingMethodResult();
-        var shippingMethodName = form.getShippingMethodName();
-        var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
-        
+
         if(shippingMethod != null) {
             result.setShippingMethod(shippingControl.getShippingMethodTransfer(getUserVisit(), shippingMethod));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownShippingMethodName.name(), shippingMethodName);
         }
-        
+
         return result;
     }
-    
+
 }

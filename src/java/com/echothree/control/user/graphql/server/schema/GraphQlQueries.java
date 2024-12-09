@@ -307,6 +307,9 @@ import com.echothree.control.user.sequence.server.command.GetSequencesCommand;
 import com.echothree.control.user.shipment.common.ShipmentUtil;
 import com.echothree.control.user.shipment.server.command.GetFreeOnBoardCommand;
 import com.echothree.control.user.shipment.server.command.GetFreeOnBoardsCommand;
+import com.echothree.control.user.shipping.common.ShippingUtil;
+import com.echothree.control.user.shipping.server.command.GetShippingMethodCommand;
+import com.echothree.control.user.shipping.server.command.GetShippingMethodsCommand;
 import com.echothree.control.user.tag.common.TagUtil;
 import com.echothree.control.user.tag.server.command.GetEntityTagCommand;
 import com.echothree.control.user.tag.server.command.GetEntityTagsCommand;
@@ -552,6 +555,8 @@ import com.echothree.model.control.sequence.server.graphql.SequenceEncoderTypeOb
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
 import com.echothree.model.control.shipment.server.graphql.FreeOnBoardObject;
+import com.echothree.model.control.shipping.server.control.ShippingControl;
+import com.echothree.model.control.shipping.server.graphql.ShippingMethodObject;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.tag.server.graphql.EntityTagObject;
 import com.echothree.model.control.tag.server.graphql.TagObject;
@@ -800,6 +805,8 @@ import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
 import com.echothree.model.data.sequence.server.entity.SequenceEncoderType;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
+import com.echothree.model.data.shipping.common.ShippingMethodConstants;
+import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.tag.common.TagScopeConstants;
 import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.tag.server.entity.Tag;
@@ -10177,6 +10184,57 @@ public interface GraphQlQueries {
         }
 
         return geoCode == null ? null : new GeoCodeObject(geoCode);
+    }
+
+    @GraphQLField
+    @GraphQLName("shippingMethod")
+    static ShippingMethodObject shippingMethod(final DataFetchingEnvironment env,
+            @GraphQLName("shippingMethodName") final String shippingMethodName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ShippingMethod shippingMethod;
+
+        try {
+            var commandForm = ShippingUtil.getHome().getGetShippingMethodForm();
+
+            commandForm.setShippingMethodName(shippingMethodName);
+            commandForm.setUuid(id);
+
+            shippingMethod = new GetShippingMethodCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return shippingMethod == null ? null : new ShippingMethodObject(shippingMethod);
+    }
+
+    @GraphQLField
+    @GraphQLName("shippingMethods")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ShippingMethodObject> shippingMethods(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ShippingMethodObject> data;
+
+        try {
+            var shippingControl = Session.getModelController(ShippingControl.class);
+            var totalCount = shippingControl.countShippingMethods();
+
+            try(var objectLimiter = new ObjectLimiter(env, ShippingMethodConstants.COMPONENT_VENDOR_NAME, ShippingMethodConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = ShippingUtil.getHome().getGetShippingMethodsForm();
+                var entities = new GetShippingMethodsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var shippingMethods = entities.stream().map(ShippingMethodObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, shippingMethods);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
 }
