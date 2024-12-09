@@ -1328,7 +1328,8 @@ public class CustomerControl
                 "FROM customertypeshippingmethods, shippingmethods, shippingmethoddetails " +
                 "WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_thrutime = ? " +
                 "AND cutyshm_shm_shippingmethodid = shm_shippingmethodid AND shm_activedetailid = shmdt_shippingmethoddetailid " +
-                "ORDER BY shmdt_sortorder, shmdt_shippingmethodname");
+                "ORDER BY shmdt_sortorder, shmdt_shippingmethodname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM customertypeshippingmethods " +
@@ -1360,7 +1361,8 @@ public class CustomerControl
                 "FROM customertypeshippingmethods, customertypes, customertypedetails " +
                 "WHERE cutyshm_shm_shippingmethodid = ? AND cutyshm_thrutime = ? " +
                 "AND cutyshm_cuty_customertypeid = cuty_customertypeid AND cuty_activedetailid = cutydt_customertypedetailid " +
-                "ORDER BY cutydt_sortorder, cutydt_customertypename");
+                "ORDER BY cutydt_sortorder, cutydt_customertypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM customertypeshippingmethods " +
