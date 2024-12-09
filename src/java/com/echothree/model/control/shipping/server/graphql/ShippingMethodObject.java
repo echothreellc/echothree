@@ -31,7 +31,7 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("shippingMethod object")
+@GraphQLDescription("shipping method object")
 @GraphQLName("ShippingMethod")
 public class ShippingMethodObject
         extends BaseEntityInstanceObject {
@@ -109,5 +109,5 @@ public class ShippingMethodObject
 
         return shippingControl.getBestShippingMethodDescription(shippingMethod, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
-    
+
 }
