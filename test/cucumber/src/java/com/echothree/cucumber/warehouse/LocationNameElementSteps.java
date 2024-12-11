@@ -189,7 +189,7 @@ public class LocationNameElementSteps implements En {
                     if(createLocationNameElementForm != null) {
                         createLocationNameElementForm.setLocationTypeName(locationTypeName);
                     } else if(deleteLocationNameElementForm != null) {
-                        locationNameElementSpec.setLocationTypeName(locationTypeName);
+                        deleteLocationNameElementForm.setLocationTypeName(locationTypeName);
                     } else {
                         locationNameElementSpec.setLocationTypeName(locationTypeName);
                     }
