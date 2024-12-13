@@ -22,8 +22,8 @@ import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.message.ExecutionWarnings;
-import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.message.Messages;
+import com.echothree.util.common.string.StringUtils;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -63,33 +63,37 @@ public class LoginAction
         String forwardKey = null;
         
         if(wasPost(request)) {
-            var commandForm = AuthenticationUtil.getHome().getEmployeeLoginForm();
-            
-            commandForm.setUsername(actionForm.getUsername());
-            commandForm.setPassword(actionForm.getPassword());
-            commandForm.setCompanyName(actionForm.getCompanyChoice());
-            commandForm.setRemoteInet4Address(request.getRemoteAddr());
+            if(isTokenValid(request, true)) {
+                var commandForm = AuthenticationUtil.getHome().getEmployeeLoginForm();
 
-            var commandResult = AuthenticationUtil.getHome().employeeLogin(getUserVisitPK(request), commandForm);
-            
-            if(commandResult.hasErrors() || commandResult.hasWarnings()) {
-                setCommandResultAttribute(request, commandResult);
-                    
-                if(commandResult.hasErrors()) {
-                    forwardKey = ForwardConstants.FORM;
-                } else if(commandResult.hasWarnings()) {
-                    var executionResult = commandResult.getExecutionResult();
-                    var executionWarnings = executionResult.getExecutionWarnings();
+                commandForm.setUsername(actionForm.getUsername());
+                commandForm.setPassword(actionForm.getPassword());
+                commandForm.setCompanyName(actionForm.getCompanyChoice());
+                commandForm.setRemoteInet4Address(request.getRemoteAddr());
 
-                    if(executionWarnings.containsKey(Messages.EXECUTION_WARNING, ExecutionWarnings.PasswordExpired.name())
-                            || executionWarnings.containsKey(Messages.EXECUTION_WARNING, ExecutionWarnings.PasswordExpiration.name())) {
-                        forwardKey = ForwardConstants.WARNING;
-                    } else if(executionWarnings.containsKey(Messages.EXECUTION_WARNING, ExecutionWarnings.ForcePasswordChange.name())) {
-                        forwardKey = ForwardConstants.FORCE;
+                var commandResult = AuthenticationUtil.getHome().employeeLogin(getUserVisitPK(request), commandForm);
+
+                if(commandResult.hasErrors() || commandResult.hasWarnings()) {
+                    setCommandResultAttribute(request, commandResult);
+
+                    if(commandResult.hasErrors()) {
+                        forwardKey = ForwardConstants.FORM;
+                    } else if(commandResult.hasWarnings()) {
+                        var executionResult = commandResult.getExecutionResult();
+                        var executionWarnings = executionResult.getExecutionWarnings();
+
+                        if(executionWarnings.containsKey(Messages.EXECUTION_WARNING, ExecutionWarnings.PasswordExpired.name())
+                                || executionWarnings.containsKey(Messages.EXECUTION_WARNING, ExecutionWarnings.PasswordExpiration.name())) {
+                            forwardKey = ForwardConstants.WARNING;
+                        } else if(executionWarnings.containsKey(Messages.EXECUTION_WARNING, ExecutionWarnings.ForcePasswordChange.name())) {
+                            forwardKey = ForwardConstants.FORCE;
+                        }
                     }
+                } else {
+                    forwardKey = ForwardConstants.PORTAL;
                 }
             } else {
-                forwardKey = ForwardConstants.PORTAL;
+                forwardKey = ForwardConstants.FORM;
             }
         } else {
             var commandResult = AuthenticationUtil.getHome().getEmployeeLoginDefaults(getUserVisitPK(request), null);
@@ -100,7 +104,7 @@ public class LoginAction
             actionForm.setUsername(commandForm.getUsername());
             actionForm.setCompanyChoice(commandForm.getCompanyName());
             actionForm.setReturnUrl(request.getParameter(ParameterConstants.RETURN_URL));
-            
+
             forwardKey = ForwardConstants.FORM;
         }
         
