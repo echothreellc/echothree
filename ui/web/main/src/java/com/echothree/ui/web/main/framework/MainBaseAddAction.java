@@ -51,15 +51,19 @@ public abstract class MainBaseAddAction<A extends ActionForm>
         setupParameters(actionForm, request);
 
         if(wasPost(request)) {
-            if(wasCanceled(request)) {
-                forwardKey = getCancelForward(actionForm);
-            } else {
-                var commandResult = doAdd(actionForm, request);
+            if(isTokenValid(request, true)) {
+                if(wasCanceled(request)) {
+                    forwardKey = getCancelForward(actionForm);
+                } else {
+                    var commandResult = doAdd(actionForm, request);
 
-                if(commandResult.hasErrors()) {
-                    setCommandResultAttribute(request, commandResult);
-                    forwardKey = getFormForward(actionForm);
+                    if(commandResult.hasErrors()) {
+                        setCommandResultAttribute(request, commandResult);
+                        forwardKey = getFormForward(actionForm);
+                    }
                 }
+            } else {
+                forwardKey = getFormForward(actionForm);
             }
         } else {
             setupDefaults(actionForm);

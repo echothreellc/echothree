@@ -117,18 +117,22 @@ public abstract class MainBaseEditAction<A extends ActionForm, S extends BaseSpe
         commandForm.setSpec(spec);
 
         if(wasPost(request)) {
-            var wasCanceled = wasCanceled(request);
-            
-            if(wasCanceled) {
-                commandForm.setEditMode(EditMode.ABANDON);
-            } else {
-                var edit = getEdit(request, actionForm);
+            if(isTokenValid(request, true)) {
+                var wasCanceled = wasCanceled(request);
 
-                commandForm.setEdit(edit);
-                commandForm.setEditMode(EditMode.UPDATE);
+                if(wasCanceled) {
+                    commandForm.setEditMode(EditMode.ABANDON);
+                } else {
+                    var edit = getEdit(request, actionForm);
+
+                    commandForm.setEdit(edit);
+                    commandForm.setEditMode(EditMode.UPDATE);
+                }
+
+                forwardKey = handleUpdateOrAbandonResult(actionForm, request, wasCanceled, doEdit(request, commandForm));
+            } else {
+                forwardKey = getFormForward(actionForm);
             }
-            
-            forwardKey = handleUpdateOrAbandonResult(actionForm, request, wasCanceled, doEdit(request, commandForm));
         } else {
             commandForm.setEditMode(EditMode.LOCK);
 
