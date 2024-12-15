@@ -53,13 +53,13 @@ public class UserVisitObject
                 new UserVisitGroupObject(userVisit.getUserVisitGroup()) : null;
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("user key")
-//    public UserKeyObject getUserKey() {
-//        UserKey userKey = userVisit.getUserKey();
-//
-//        return userKey == null ? null : new UserKeyObject(userKey);
-//    }
+    @GraphQLField
+    @GraphQLDescription("user key")
+    public UserKeyObject getUserKey() {
+        var userKey = userVisit.getUserKey();
+
+        return userKey == null ? null : new UserKeyObject(userKey);
+    }
 
     @GraphQLField
     @GraphQLDescription("preferred language")
