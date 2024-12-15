@@ -360,6 +360,9 @@
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="User Visit Group List" />
             </securityRole>
+            <securityRole securityRoleName="Review" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="User Visit Group Review" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="CustomerComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Customer Component" />
@@ -7862,6 +7865,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Configuration" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EventGroup" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="UserVisitGroup" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UserVisitGroup" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Customer" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Customer" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Customer" securityRoleName="Search" />
