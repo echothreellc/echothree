@@ -44,14 +44,15 @@ public class UserVisitObject
         this.userVisit = userVisit;
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("user visit group")
-//    public UserVisitGroupObject getUserVisitGroup() {
-//        UserVisitGroup userVisitGroup = userVisit.getUserVisitGroup();
-//
-//        return userVisitGroup == null ? null : new UserVisitGroupObject(userVisitGroup);
-//    }
-//
+    @GraphQLField
+    @GraphQLDescription("user visit group")
+    public UserVisitGroupObject getUserVisitGroup(final DataFetchingEnvironment env) {
+        var userVisitGroup = userVisit.getUserVisitGroup();
+
+        return userVisitGroup != null && UserSecurityUtils.getHasUserVisitGroupAccess(env) ?
+                new UserVisitGroupObject(userVisit.getUserVisitGroup()) : null;
+    }
+
 //    @GraphQLField
 //    @GraphQLDescription("user key")
 //    public UserKeyObject getUserKey() {

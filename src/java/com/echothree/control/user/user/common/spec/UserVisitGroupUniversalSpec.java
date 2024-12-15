@@ -14,19 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.user.common.result;
+package com.echothree.control.user.user.common.spec;
 
-import com.echothree.model.control.user.common.transfer.UserVisitGroupTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetUserVisitGroupsResult
-        extends BaseResult {
-
-    Long getUserVisitGroupCount();
-    void setUserVisitGroupCount(Long userVisitGroupCount);
-
-    List<UserVisitGroupTransfer> getUserVisitGroups();
-    void setUserVisitGroups(List<UserVisitGroupTransfer> userVisitGroups);
+public interface UserVisitGroupUniversalSpec
+        extends UserVisitGroupSpec, UniversalEntitySpec {
+    
+    // Nothing additional beyond UserVisitGroupSpec, UniversalEntitySpec
     
 }

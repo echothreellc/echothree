@@ -357,6 +357,7 @@ public enum SecurityRoleGroups {
     UnitOfMeasureTypeWeight,
     Use,
     UseNameElement,
+    UserVisitGroup,
     UseType,
     Vendor,
     VendorAlias,
