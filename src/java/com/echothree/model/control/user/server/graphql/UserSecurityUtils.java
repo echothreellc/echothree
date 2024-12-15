@@ -14,19 +14,21 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.user.common.result;
+package com.echothree.model.control.user.server.graphql;
 
-import com.echothree.model.control.user.common.transfer.UserVisitGroupTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.user.server.command.GetUserVisitGroupCommand;
+import com.echothree.control.user.user.server.command.GetUserVisitGroupsCommand;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import graphql.schema.DataFetchingEnvironment;
 
-public interface GetUserVisitGroupsResult
-        extends BaseResult {
+public interface UserSecurityUtils {
 
-    Long getUserVisitGroupCount();
-    void setUserVisitGroupCount(Long userVisitGroupCount);
+    static boolean getHasUserVisitGroupAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetUserVisitGroupCommand.class);
+    }
 
-    List<UserVisitGroupTransfer> getUserVisitGroups();
-    void setUserVisitGroups(List<UserVisitGroupTransfer> userVisitGroups);
-    
+    static boolean getHasUserVisitGroupsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetUserVisitGroupsCommand.class);
+    }
+
 }

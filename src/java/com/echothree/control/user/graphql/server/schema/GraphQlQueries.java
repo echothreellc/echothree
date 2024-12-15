@@ -337,6 +337,8 @@ import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.control.user.user.server.command.GetRecoveryQuestionCommand;
 import com.echothree.control.user.user.server.command.GetRecoveryQuestionsCommand;
 import com.echothree.control.user.user.server.command.GetUserLoginCommand;
+import com.echothree.control.user.user.server.command.GetUserVisitGroupCommand;
+import com.echothree.control.user.user.server.command.GetUserVisitGroupsCommand;
 import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoriesCommand;
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoryCommand;
@@ -570,9 +572,11 @@ import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseTypeObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.graphql.RecoveryQuestionObject;
 import com.echothree.model.control.user.server.graphql.UserLoginObject;
 import com.echothree.model.control.user.server.graphql.UserSessionObject;
+import com.echothree.model.control.user.server.graphql.UserVisitGroupObject;
 import com.echothree.model.control.user.server.graphql.UserVisitObject;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.graphql.ItemPurchasingCategoryObject;
@@ -821,8 +825,10 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
+import com.echothree.model.data.user.common.UserVisitGroupConstants;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.entity.UserLogin;
+import com.echothree.model.data.user.server.entity.UserVisitGroup;
 import com.echothree.model.data.vendor.common.ItemPurchasingCategoryConstants;
 import com.echothree.model.data.vendor.common.VendorConstants;
 import com.echothree.model.data.vendor.common.VendorTypeConstants;
@@ -6543,6 +6549,57 @@ public interface GraphQlQueries {
         var userSession = BaseGraphQl.getUserSession(env);
 
         return userSession == null ? null : new UserSessionObject(userSession);
+    }
+
+    @GraphQLField
+    @GraphQLName("userVisitGroup")
+    static UserVisitGroupObject userVisitGroup(final DataFetchingEnvironment env,
+            @GraphQLName("userVisitGroupName") final String userVisitGroupName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        UserVisitGroup userVisitGroup;
+
+        try {
+            var commandForm = UserUtil.getHome().getGetUserVisitGroupForm();
+
+            commandForm.setUserVisitGroupName(userVisitGroupName);
+            commandForm.setUuid(id);
+
+            userVisitGroup = new GetUserVisitGroupCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return userVisitGroup == null ? null : new UserVisitGroupObject(userVisitGroup);
+    }
+
+    @GraphQLField
+    @GraphQLName("userVisitGroups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<UserVisitGroupObject> userVisitGroups(final DataFetchingEnvironment env) {
+        CountingPaginatedData<UserVisitGroupObject> data;
+
+        try {
+            var userControl = Session.getModelController(UserControl.class);
+            var totalCount = userControl.countUserVisitGroups();
+
+            try(var objectLimiter = new ObjectLimiter(env, UserVisitGroupConstants.COMPONENT_VENDOR_NAME, UserVisitGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = UserUtil.getHome().getGetUserVisitGroupsForm();
+                var entities = new GetUserVisitGroupsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var userVisitGroups = entities.stream().map(UserVisitGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, userVisitGroups);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField
