@@ -18,7 +18,7 @@ package com.echothree.control.user.graphql.server.command;
 
 import com.echothree.control.user.graphql.common.form.ExecuteGraphQlForm;
 import com.echothree.control.user.graphql.common.result.GraphQlResultFactory;
-import com.echothree.control.user.graphql.server.schema.GraphQlDocumentCache;
+import com.echothree.control.user.graphql.server.cache.GraphQlDocumentCache;
 import com.echothree.control.user.graphql.server.schema.util.GraphQlSchemaUtils;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.GraphQlExecutionContext;
