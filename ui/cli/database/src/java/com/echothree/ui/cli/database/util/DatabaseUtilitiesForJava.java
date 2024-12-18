@@ -427,9 +427,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("        if(!hasIdentity())");
         pw.println("            return false;");
         pw.println("        ");
-        pw.println("        if(other instanceof  " + valueClass + ") {");
-        pw.println("            " + valueClass + " that = (" + valueClass + ")other;");
-        pw.println("            ");
+        pw.println("        if(other instanceof  " + valueClass + " that) {");
         pw.println("            if(!that.hasIdentity())");
         pw.println("                return false;");
         pw.println("            ");
@@ -438,7 +436,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("            ");
         pw.println("            boolean objectsEqual = thisEntityId.equals(thatEntityId);");
         pw.println("            if(objectsEqual)");
-        pw.println("                objectsEqual = objectsEqual && isIdentical(that);");
+        pw.println("                objectsEqual = isIdentical(that);");
         pw.println("            ");
         pw.println("            return objectsEqual;");
         pw.println("        } else {");
