@@ -18,9 +18,10 @@ package com.echothree.control.user.graphql.server.command;
 
 import com.echothree.control.user.graphql.common.form.ExecuteGraphQlForm;
 import com.echothree.control.user.graphql.common.result.GraphQlResultFactory;
+import com.echothree.control.user.graphql.server.schema.GraphQlDocumentCache;
+import com.echothree.control.user.graphql.server.schema.util.GraphQlSchemaUtils;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.GraphQlExecutionContext;
-import com.echothree.control.user.graphql.server.schema.util.GraphQlSchemaUtils;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -95,6 +96,7 @@ public class ExecuteGraphQlCommand
             var graphQL = GraphQL
                     .newGraphQL(readOnly? GraphQlSchemaUtils.getInstance().getReadOnlySchema() : GraphQlSchemaUtils.getInstance().getSchema())
                     .queryExecutionStrategy(new EnhancedExecutionStrategy())
+                    .preparsedDocumentProvider(GraphQlDocumentCache.getInstance())
                     .build();
 
             Map<String, Object> parsedVariables = null;
