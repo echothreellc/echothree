@@ -337,6 +337,7 @@
             <fileset dir="${dir.home}/build/lib">
                 <include name="avro.jar" />
                 <include name="antlr4-runtime.jar" />
+                <include name="caffeine.jar" />
                 <include name="classgraph.jar" />
                 <include name="commons-codec.jar" />
                 <include name="graphql-java.jar" />

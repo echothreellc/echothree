@@ -211,6 +211,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/avro-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/avro-tools-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/java-uuid-generator-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/caffeine-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/build/lib-sources/activation-sources.jar!/" />
@@ -296,6 +297,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/avro-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/avro-tools-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/java-uuid-generator-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/caffeine-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
