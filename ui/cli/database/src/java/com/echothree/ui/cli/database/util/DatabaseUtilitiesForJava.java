@@ -812,9 +812,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("        if(this == other)");
         pw.println("            return true;");
         pw.println("        ");
-        pw.println("        if(other instanceof " + entityClass + ") {");
-        pw.println("            " + entityClass + " that = (" + entityClass + ")other;");
-        pw.println("            ");
+        pw.println("        if(other instanceof " + entityClass + " that) {");
         pw.println("            " + valueClass + " thatValue = that.get" + valueClass + "();");
         pw.println("            return _value.equals(thatValue);");
         pw.println("        } else {");
