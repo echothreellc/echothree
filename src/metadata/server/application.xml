@@ -141,6 +141,10 @@
     </module>
 
     <module>
+        <ejb>caffeine.jar</ejb>
+    </module>
+
+    <module>
         <ejb>echothree-server.jar</ejb>
     </module>
     
