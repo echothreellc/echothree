@@ -35,8 +35,6 @@ import graphql.ExecutionResult;
 import graphql.GraphQL;
 import graphql.GraphQLException;
 import graphql.annotations.strategies.EnhancedExecutionStrategy;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +45,7 @@ public class ExecuteGraphQlCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ReadOnly", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Query", FieldType.STRING, false, 1L, null),
                 new FieldDefinition("Variables", FieldType.STRING, false, 1L, null),
@@ -57,7 +55,7 @@ public class ExecuteGraphQlCommand
                 // to other UCs that will validate it as an IPv4 address and format as necessary
                 // for use.
                 new FieldDefinition("RemoteInet4Address", FieldType.STRING, false, 1L, null)
-                ));
+        );
     }
     
     /** Creates a new instance of ExecuteGraphQlCommand */
@@ -72,9 +70,9 @@ public class ExecuteGraphQlCommand
     public String toJson(ExecutionResult executionResult)  {
         // Contents of the GraphQL Response are specified here:
         // http://graphql.org/learn/serving-over-http/
-        Map<String, Object> executionResultMap = new LinkedHashMap<>();
+        var executionResultMap = new LinkedHashMap<String, Object>();
         
-        if (executionResult.getErrors().size() > 0) {
+        if(!executionResult.getErrors().isEmpty()) {
             executionResultMap.put("errors", executionResult.getErrors());
         }
         executionResultMap.put("data", executionResult.getData());
