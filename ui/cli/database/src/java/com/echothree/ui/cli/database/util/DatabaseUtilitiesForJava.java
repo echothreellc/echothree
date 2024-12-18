@@ -451,8 +451,7 @@ public class DatabaseUtilitiesForJava {
         var valueClass = theTable.getValueClass();
         
         pw.println("    public boolean isIdentical(Object other) {");
-        pw.println("        if(other instanceof " + valueClass + ") {");
-        pw.println("            " + valueClass + " that = (" + valueClass + ")other;");
+        pw.println("        if(other instanceof " + valueClass + " that) {");
         pw.println("            boolean objectsEqual = true;");
         pw.println("            ");
         
