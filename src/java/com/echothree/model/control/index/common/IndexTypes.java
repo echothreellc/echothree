@@ -20,6 +20,7 @@ public enum IndexTypes {
 
     COMPONENT_VENDOR,
     CONTACT_MECHANISM,
+    CONTENT_CATALOG,
     CONTENT_CATEGORY,
     CUSTOMER,
     FORUM_MESSAGE,
@@ -34,6 +35,7 @@ public enum IndexTypes {
     OFFER,
     SECURITY_ROLE,
     SECURITY_ROLE_GROUP,
+    SHIPPING_METHOD,
     USE,
     USE_TYPE,
     VENDOR,

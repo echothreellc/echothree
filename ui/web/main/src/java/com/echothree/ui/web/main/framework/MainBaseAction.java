@@ -157,6 +157,10 @@ public abstract class MainBaseAction<A extends ActionForm>
             
             try {
                 actionForward = executeAction(mapping, (A)form, request, response);
+
+                if(actionForward != null && getFormForward((A)form).equals(actionForward.getName())) {
+                    saveToken(request);
+                }
             } catch (NamingException ne) {
                 forwardKey = ForwardConstants.ERROR_500;
             }

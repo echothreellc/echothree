@@ -53,7 +53,9 @@ public interface SearchOptions {
     String EntityAttributeResultIncludeEntityAttribute = "EntityAttributeResultIncludeEntityAttribute";
 
     String EntityListItemResultIncludeEntityListItem = "ItemResultIncludeEntityListItem";
-    
+
+    String ContentCatalogResultIncludeContentCatalog = "ContentCatalogResultIncludeContentCatalog";
+
     String ContentCategoryResultIncludeContentCategory = "ContentCategoryResultIncludeContentCategory";
     
     String SecurityRoleGroupResultIncludeSecurityRoleGroup = "SecurityRoleGroupResultIncludeSecurityRoleGroup";
@@ -71,5 +73,7 @@ public interface SearchOptions {
     String UseTypeResultIncludeUseType = "UseTypeResultIncludeUseType";
 
     String WarehouseResultIncludeWarehouse = "WarehouseResultIncludeWarehouse";
+
+    String ShippingMethodResultIncludeShippingMethod = "ShippingMethodResultIncludeShippingMethod";
 
 }

@@ -341,10 +341,37 @@
                 <searchSortOrderDescription languageIsoName="en" description="Modified Time" />
             </searchSortOrder>
         </searchKind>
+        <searchKind searchKindName="CONTENT_CATALOG" isDefault="false" sortOrder="1">
+            <searchKindDescription languageIsoName="en" description="Content Catalog" />
+            <searchType searchTypeName="CUSTOMER" isDefault="true" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Customer" />
+            </searchType>
+            <searchType searchTypeName="EMPLOYEE" isDefault="true" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Employee" />
+            </searchType>
+            <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
+                <searchSortOrderDescription languageIsoName="en" description="Score" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="DESCRIPTION" isDefault="false" sortOrder="2">
+                <searchSortOrderDescription languageIsoName="en" description="Description" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="CONTENT_CATALOG_NAME" isDefault="false" sortOrder="3">
+                <searchSortOrderDescription languageIsoName="en" description="Content Catalog Name" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="CREATED_TIME" isDefault="false" sortOrder="4">
+                <searchSortOrderDescription languageIsoName="en" description="Created Time" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="MODIFIED_TIME" isDefault="false" sortOrder="5">
+                <searchSortOrderDescription languageIsoName="en" description="Modified Time" />
+            </searchSortOrder>
+        </searchKind>
         <searchKind searchKindName="CONTENT_CATEGORY" isDefault="false" sortOrder="1">
             <searchKindDescription languageIsoName="en" description="Content Category" />
             <searchType searchTypeName="CUSTOMER" isDefault="true" sortOrder="1">
                 <searchTypeDescription languageIsoName="en" description="Customer" />
+            </searchType>
+            <searchType searchTypeName="EMPLOYEE" isDefault="true" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Employee" />
             </searchType>
             <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
                 <searchSortOrderDescription languageIsoName="en" description="Score" />
@@ -498,6 +525,27 @@
             </searchSortOrder>
             <searchSortOrder searchSortOrderName="USE_TYPE_NAME" isDefault="false" sortOrder="3">
                 <searchSortOrderDescription languageIsoName="en" description="Use Type Name" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="CREATED_TIME" isDefault="false" sortOrder="4">
+                <searchSortOrderDescription languageIsoName="en" description="Created Time" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="MODIFIED_TIME" isDefault="false" sortOrder="5">
+                <searchSortOrderDescription languageIsoName="en" description="Modified Time" />
+            </searchSortOrder>
+        </searchKind>
+        <searchKind searchKindName="SHIPPING_METHOD" isDefault="false" sortOrder="1">
+            <searchKindDescription languageIsoName="en" description="Shipping Method Group" />
+            <searchType searchTypeName="EMPLOYEE" isDefault="true" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Employee" />
+            </searchType>
+            <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
+                <searchSortOrderDescription languageIsoName="en" description="Score" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="DESCRIPTION" isDefault="false" sortOrder="2">
+                <searchSortOrderDescription languageIsoName="en" description="Default Description" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="SHIPPING_METHOD_NAME" isDefault="false" sortOrder="3">
+                <searchSortOrderDescription languageIsoName="en" description="Shipping Method Name" />
             </searchSortOrder>
             <searchSortOrder searchSortOrderName="CREATED_TIME" isDefault="false" sortOrder="4">
                 <searchSortOrderDescription languageIsoName="en" description="Created Time" />

@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetUserVisitGroupsResult
         extends BaseResult {
-    
+
+    Long getUserVisitGroupCount();
+    void setUserVisitGroupCount(Long userVisitGroupCount);
+
     List<UserVisitGroupTransfer> getUserVisitGroups();
     void setUserVisitGroups(List<UserVisitGroupTransfer> userVisitGroups);
     

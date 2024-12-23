@@ -19,6 +19,7 @@ package com.echothree.control.user.index.server.command;
 import com.echothree.control.user.index.common.form.UpdateIndexesForm;
 import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.contact.server.indexer.ContactMechanismIndexer;
+import com.echothree.model.control.content.server.indexer.ContentCatalogIndexer;
 import com.echothree.model.control.content.server.indexer.ContentCategoryIndexer;
 import com.echothree.model.control.core.server.indexer.ComponentVendorIndexer;
 import com.echothree.model.control.core.server.indexer.EntityAliasTypeIndexer;
@@ -44,6 +45,7 @@ import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.server.indexer.SecurityRoleGroupIndexer;
 import com.echothree.model.control.security.server.indexer.SecurityRoleIndexer;
+import com.echothree.model.control.shipping.server.indexer.ShippingMethodIndexer;
 import com.echothree.model.control.vendor.server.indexer.VendorIndexer;
 import com.echothree.model.control.warehouse.server.indexer.WarehouseIndexer;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -144,6 +146,8 @@ public class UpdateIndexesCommand
                     baseIndexer = new EntityAttributeIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_LIST_ITEM.name())) {
                     baseIndexer = new EntityListItemIndexer(this, index);
+                } else if(indexTypeName.equals(IndexTypes.CONTENT_CATALOG.name())) {
+                    baseIndexer = new ContentCatalogIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.CONTENT_CATEGORY.name())) {
                     baseIndexer = new ContentCategoryIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.SECURITY_ROLE_GROUP.name())) {
@@ -160,6 +164,8 @@ public class UpdateIndexesCommand
                     baseIndexer = new UseIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.USE_TYPE.name())) {
                     baseIndexer = new UseTypeIndexer(this, index);
+                } else if(indexTypeName.equals(IndexTypes.SHIPPING_METHOD.name())) {
+                    baseIndexer = new ShippingMethodIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.WAREHOUSE.name())) {
                     baseIndexer = new WarehouseIndexer(this, index);
                 }

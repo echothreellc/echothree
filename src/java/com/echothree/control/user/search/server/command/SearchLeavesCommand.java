@@ -81,7 +81,7 @@ public class SearchLeavesCommand
     protected BaseResult execute() {
         var searchLogic = SearchLogic.getInstance();
         var result = SearchResultFactory.getSearchLeavesResult();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.LEAVE.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.LEAVE.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();

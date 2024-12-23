@@ -968,6 +968,30 @@ public class SearchBean
     }
 
     // -------------------------------------------------------------------------
+    //   Content Catalog Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchContentCatalogs(UserVisitPK userVisitPK, SearchContentCatalogsForm form) {
+        return new SearchContentCatalogsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getContentCatalogResults(UserVisitPK userVisitPK, GetContentCatalogResultsForm form) {
+        return new GetContentCatalogResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countContentCatalogResults(UserVisitPK userVisitPK, CountContentCatalogResultsForm form) {
+        return new CountContentCatalogResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearContentCatalogResults(UserVisitPK userVisitPK, ClearContentCatalogResultsForm form) {
+        return new ClearContentCatalogResultsCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
     //   Content Category Search
     // -------------------------------------------------------------------------
 
@@ -1237,6 +1261,30 @@ public class SearchBean
     @Override
     public CommandResult clearUseTypeResults(UserVisitPK userVisitPK, ClearUseTypeResultsForm form) {
         return new ClearUseTypeResultsCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
+    //   Shipping Method Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchShippingMethods(UserVisitPK userVisitPK, SearchShippingMethodsForm form) {
+        return new SearchShippingMethodsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getShippingMethodResults(UserVisitPK userVisitPK, GetShippingMethodResultsForm form) {
+        return new GetShippingMethodResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countShippingMethodResults(UserVisitPK userVisitPK, CountShippingMethodResultsForm form) {
+        return new CountShippingMethodResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearShippingMethodResults(UserVisitPK userVisitPK, ClearShippingMethodResultsForm form) {
+        return new ClearShippingMethodResultsCommand(userVisitPK, form).run();
     }
 
     // -------------------------------------------------------------------------

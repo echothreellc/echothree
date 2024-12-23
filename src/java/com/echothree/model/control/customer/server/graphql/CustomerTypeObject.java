@@ -22,7 +22,11 @@ import com.echothree.model.control.cancellationpolicy.server.graphql.Cancellatio
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicySecurityUtils;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.inventory.server.graphql.AllocationPriorityObject;
 import com.echothree.model.control.inventory.server.graphql.InventorySecurityUtils;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
@@ -38,6 +42,7 @@ import com.echothree.model.control.term.server.graphql.TermSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntranceObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
+import com.echothree.model.data.customer.common.CustomerTypeShippingMethodConstants;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.entity.CustomerTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -45,7 +50,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("customer type object")
 @GraphQLName("CustomerType")
@@ -240,6 +248,26 @@ public class CustomerTypeObject
         var userControl = Session.getModelController(UserControl.class);
 
         return customerControl.getBestCustomerTypeDescription(customerType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("customer type shipping methods")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<CustomerTypeShippingMethodObject> getCustomerTypeShippingMethods(final DataFetchingEnvironment env) {
+//        if(CustomerSecurityUtils.getHasCustomerTypeShippingMethodsAccess(env)) {
+        var customerControl = Session.getModelController(CustomerControl.class);
+            var totalCount = customerControl.countCustomerTypeShippingMethodsByCustomerType(customerType);
+
+            try(var objectLimiter = new ObjectLimiter(env, CustomerTypeShippingMethodConstants.COMPONENT_VENDOR_NAME, CustomerTypeShippingMethodConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = customerControl.getCustomerTypeShippingMethodsByCustomerType(customerType);
+                var objects = entities.stream().map(CustomerTypeShippingMethodObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, objects);
+            }
+//        } else {
+//            return Connections.emptyConnection();
+//        }
     }
 
 }

@@ -99,7 +99,7 @@ public class IdentifyCommand
     }
     
     private void checkSequenceTypes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(party, target, true);
+        var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(this, party, target, true);
         
         if(entityInstanceAndNames != null) {
             entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
@@ -107,7 +107,7 @@ public class IdentifyCommand
     }
     
     private void checkItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Item.name(), SecurityRoles.Search.name())) {
             var itemControl = Session.getModelController(ItemControl.class);
             var item = itemControl.getItemByNameThenAlias(target);
@@ -122,7 +122,7 @@ public class IdentifyCommand
     }
 
     private void checkCompanies(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Company.name(), SecurityRoles.Search.name())) {
             var partyControl = Session.getModelController(PartyControl.class);
             var partyCompany = partyControl.getPartyCompanyByName(target);
@@ -137,7 +137,7 @@ public class IdentifyCommand
     }
 
     private void checkDivisions(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Division.name(), SecurityRoles.Search.name())) {
             var partyControl = Session.getModelController(PartyControl.class);
             var partyDivisions = partyControl.getDivisionsByName(target);
@@ -149,7 +149,7 @@ public class IdentifyCommand
     }
 
     private void checkDepartments(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Department.name(), SecurityRoles.Search.name())) {
             var partyControl = Session.getModelController(PartyControl.class);
             var partyDepartments = partyControl.getDepartmentsByName(target);
@@ -161,7 +161,7 @@ public class IdentifyCommand
     }
 
     private void checkWarehouses(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Warehouse.name(), SecurityRoles.Search.name())) {
             var warehouseControl = Session.getModelController(WarehouseControl.class);
             var warehouse = warehouseControl.getWarehouseByName(target);
@@ -176,7 +176,7 @@ public class IdentifyCommand
     }
 
     private void checkLocations(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Location.name(), SecurityRoles.Search.name())) {
             var warehouseControl = Session.getModelController(WarehouseControl.class);
             var locations = warehouseControl.getLocationsByName(target);
@@ -188,7 +188,7 @@ public class IdentifyCommand
     }
 
     private void checkVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
             var vendorControl = Session.getModelController(VendorControl.class);
             var vendor = vendorControl.getVendorByName(target);
@@ -203,7 +203,7 @@ public class IdentifyCommand
     }
 
     private void checkVendorItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.VendorItem.name(), SecurityRoles.Search.name())) {
             var vendorControl = Session.getModelController(VendorControl.class);
             var vendorItems = vendorControl.getVendorItemsByVendorItemName(target);
@@ -215,7 +215,7 @@ public class IdentifyCommand
     }
 
     private void checkComponentVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.ComponentVendor.name(), SecurityRoles.Search.name())) {
             var componentVendor = getCoreControl().getComponentVendorByName(target);
 
@@ -229,7 +229,7 @@ public class IdentifyCommand
     }
 
     private void checkEntityTypes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.EntityType.name(), SecurityRoles.Search.name())) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityTypes = coreControl.getEntityTypesByName(target);
@@ -268,19 +268,25 @@ public class IdentifyCommand
 
     private void searchCustomers(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target,
             final NameResult nameResult) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
-            var userVisit = getUserVisit();
             var searchLogic = SearchLogic.getInstance();
-            var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.CUSTOMER.name());
-            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchTypes.IDENTIFY.name());
+            var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.CUSTOMER.name());
 
-            // First attempt using a first and/or last name isolated from target.
-            executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
-                    nameResult.getFirstName(), nameResult.getMiddleName(), nameResult.getLastName(), null);
-            // Then attempt searching for target using it as a query string.
-            executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
-                    null, null, null, target);
+            if(!hasExecutionErrors()) {
+                var searchType = searchLogic.getSearchTypeByName(this, searchKind, SearchTypes.IDENTIFY.name());
+
+                if(!hasExecutionErrors()) {
+                    var userVisit = getUserVisit();
+
+                    // First attempt using a first and/or last name isolated from target.
+                    executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                            nameResult.getFirstName(), nameResult.getMiddleName(), nameResult.getLastName(), null);
+                    // Then attempt searching for target using it as a query string.
+                    executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                            null, null, null, target);
+                }
+            }
         }
     }
 
@@ -312,19 +318,25 @@ public class IdentifyCommand
 
     private void searchVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target,
             final NameResult nameResult) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
-            var userVisit = getUserVisit();
             var searchLogic = SearchLogic.getInstance();
-            var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.VENDOR.name());
-            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchTypes.IDENTIFY.name());
+            var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.VENDOR.name());
 
-            // First attempt using a first and/or last name isolated from target.
-            executeVendorSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
-                    nameResult.getFirstName(), nameResult.getMiddleName(), nameResult.getLastName(), null);
-            // Then attempt searching for target using it as a query string.
-            executeVendorSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
-                    null, null, null, target);
+            if(!hasExecutionErrors()) {
+                var searchType = searchLogic.getSearchTypeByName(this, searchKind, SearchTypes.IDENTIFY.name());
+
+                if(!hasExecutionErrors()) {
+                    var userVisit = getUserVisit();
+
+                    // First attempt using a first and/or last name isolated from target.
+                    executeVendorSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                            nameResult.getFirstName(), nameResult.getMiddleName(), nameResult.getLastName(), null);
+                    // Then attempt searching for target using it as a query string.
+                    executeVendorSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                            null, null, null, target);
+                }
+            }
         }
     }
 
@@ -348,16 +360,22 @@ public class IdentifyCommand
     }
 
     private void searchWarehouses(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Warehouse.name(), SecurityRoles.Search.name())) {
-            var userVisit = getUserVisit();
             var searchLogic = SearchLogic.getInstance();
-            var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.WAREHOUSE.name());
-            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchTypes.IDENTIFY.name());
+            var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.WAREHOUSE.name());
 
-            // Attempt searching for target using it as a query string.
-            executeWarehouseSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
-                    target);
+            if(!hasExecutionErrors()) {
+                var searchType = searchLogic.getSearchTypeByName(this, searchKind, SearchTypes.IDENTIFY.name());
+
+                if(!hasExecutionErrors()) {
+                    var userVisit = getUserVisit();
+
+                    // Attempt searching for target using it as a query string.
+                    executeWarehouseSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                            target);
+                }
+            }
         }
     }
 
@@ -383,14 +401,20 @@ public class IdentifyCommand
     }
 
     private void searchItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Item.name(), SecurityRoles.Search.name())) {
-            var userVisit = getUserVisit();
             var searchLogic = SearchLogic.getInstance();
-            var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.ITEM.name());
-            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchTypes.IDENTIFY.name());
+            var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ITEM.name());
 
-            executeItemSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, target);
+            if(!hasExecutionErrors()) {
+                var searchType = searchLogic.getSearchTypeByName(this, searchKind, SearchTypes.IDENTIFY.name());
+
+                if(!hasExecutionErrors()) {
+                    var userVisit = getUserVisit();
+
+                    executeItemSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, target);
+                }
+            }
         }
     }
 
@@ -416,23 +440,51 @@ public class IdentifyCommand
         var party = getParty();
         
         // Compile a list of all possible EntityInstances that the target may refer to.
-        checkSequenceTypes(party, entityInstances, target);
-        checkItems(party, entityInstances, target);
-        checkCompanies(party, entityInstances, target);
-        checkDivisions(party, entityInstances, target);
-        checkDepartments(party, entityInstances, target);
-        checkWarehouses(party, entityInstances, target);
-        checkLocations(party, entityInstances, target);
-        checkVendors(party, entityInstances, target);
-        checkVendorItems(party, entityInstances, target);
-        checkComponentVendors(party, entityInstances, target);
-        checkEntityTypes(party, entityInstances, target);
+        checkSequenceTypes(party, entityInstances, target); // uses EEA
+        if(!hasExecutionErrors()) {
+            checkItems(party, entityInstances, target); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
+            checkCompanies(party, entityInstances, target); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
+            checkDivisions(party, entityInstances, target); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
+            checkDepartments(party, entityInstances, target); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
+            checkWarehouses(party, entityInstances, target); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
+            checkLocations(party, entityInstances, target); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
+            checkVendors(party, entityInstances, target); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
+            checkVendorItems(party, entityInstances, target); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
+            checkComponentVendors(party, entityInstances, target); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
+            checkEntityTypes(party, entityInstances, target); // uses EEA
+        }
 
         var nameResult = new NameCleaner().getCleansedName(target);
-        searchCustomers(party, entityInstances, target, nameResult);
-        searchVendors(party, entityInstances, target, nameResult);
-        searchWarehouses(party, entityInstances, target);
-        searchItems(party, entityInstances, target);
+        if(!hasExecutionErrors()) {
+            searchCustomers(party, entityInstances, target, nameResult); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
+            searchVendors(party, entityInstances, target, nameResult); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
+            searchWarehouses(party, entityInstances, target); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
+            searchItems(party, entityInstances, target); // uses EEA
+        }
 
         result.setEntityInstances(entityInstances);
         

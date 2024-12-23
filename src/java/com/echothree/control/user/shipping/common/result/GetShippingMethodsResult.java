@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetShippingMethodsResult
         extends BaseResult {
-    
+
+    Long getShippingMethodCount();
+    void setShippingMethodCount(Long shippingMethodsCount);
+
     List<ShippingMethodTransfer> getShippingMethods();
     void setShippingMethods(List<ShippingMethodTransfer> shippingMethods);
     

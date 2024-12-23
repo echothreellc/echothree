@@ -64,7 +64,7 @@ public class SearchUseTypesCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchUseTypesResult();
         var searchLogic = SearchLogic.getInstance();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.USE_TYPE.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.USE_TYPE.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();

@@ -1,5 +1,71 @@
 # Changelog
 
+## 2024-12-22-01
+
+* Add User Visit Group Object and Queries [1381](https://gitlab.echothree.com/echothree/echothree/-/issues/1381)
+* Add User Key Object and Queries [1382](https://gitlab.echothree.com/echothree/echothree/-/issues/1382)
+* jOOQ 3.19.16 Upgrade [1444](https://gitlab.echothree.com/echothree/echothree/-/issues/1444)
+* Error Prone 2.36.0 Upgrade [1445](https://gitlab.echothree.com/echothree/echothree/-/issues/1445)
+* Add CSRF Protection to Base Actions [1446](https://gitlab.echothree.com/echothree/echothree/-/issues/1446)
+* Apache Lucene 9.12.1 Upgrade [1447](https://gitlab.echothree.com/echothree/echothree/-/issues/1447)
+* ICU4J 76.1 Upgrade [1448](https://gitlab.echothree.com/echothree/echothree/-/issues/1448)
+* Add Caffeine as a PreparsedDocumentProvider [1450](https://gitlab.echothree.com/echothree/echothree/-/issues/1450)
+* Correct Value Object Warnings From Error Prone [1451](https://gitlab.echothree.com/echothree/echothree/-/issues/1451)
+* Correct Entity Object Warnings From Error Prone [1452](https://gitlab.echothree.com/echothree/echothree/-/issues/1452)
+
+## 2024-12-08-01
+
+* Add Indexing of Content Catalogs [1372](https://gitlab.echothree.com/echothree/echothree/-/issues/1372)
+* Add Searching of Content Catalogs [1374](https://gitlab.echothree.com/echothree/echothree/-/issues/1374)
+* Add Content Catalog Search Mutation [1376](https://gitlab.echothree.com/echothree/echothree/-/issues/1376)
+* Add Content Catalog Results Object and Queries [1378](https://gitlab.echothree.com/echothree/echothree/-/issues/1378)
+* Add createSalesOrder Mutation [1423](https://gitlab.echothree.com/echothree/echothree/-/issues/1423)
+* Add createSalesOrderLine Mutation [1424](https://gitlab.echothree.com/echothree/echothree/-/issues/1424)
+* Add Indexing of Shipping Methods [1429](https://gitlab.echothree.com/echothree/echothree/-/issues/1429)
+* Add Searching of Shipping Methods [1430](https://gitlab.echothree.com/echothree/echothree/-/issues/1430)
+* Add Shipping Methods Search Mutation [1431](https://gitlab.echothree.com/echothree/echothree/-/issues/1431)
+* Add Shipping Methods Results Object and Queries [1432](https://gitlab.echothree.com/echothree/echothree/-/issues/1432)
+* Add Shipping Method Object [1433](https://gitlab.echothree.com/echothree/echothree/-/issues/1433)
+* Add filterItemSelector Field to Filter Object [1434](https://gitlab.echothree.com/echothree/echothree/-/issues/1434)
+* Correct Usage of sendEvent(...) in ShippingControl [1435](https://gitlab.echothree.com/echothree/echothree/-/issues/1435)
+* Correct Improper Error Handling When Calling getSearchKindByName(...) [1436](https://gitlab.echothree.com/echothree/echothree/-/issues/1436)
+* Move Analyzers to Component Packages [1437](https://gitlab.echothree.com/echothree/echothree/-/issues/1437)
+* Add Editing of Sales Order Shipment Groups [1438](https://gitlab.echothree.com/echothree/echothree/-/issues/1438)
+* Add Shipping Method Queries [1442](https://gitlab.echothree.com/echothree/echothree/-/issues/1442)
+* Add Customer Type Shipping Method Object [1443](https://gitlab.echothree.com/echothree/echothree/-/issues/1443)
+
+## 2024-11-24-01
+
+* Add Component Vendors Results Object and Queries [1389](https://gitlab.echothree.com/echothree/echothree/-/issues/1389)
+* Add Indexing of Component Vendors [1390](https://gitlab.echothree.com/echothree/echothree/-/issues/1390)
+* Add Searching of Component Vendors [1391](https://gitlab.echothree.com/echothree/echothree/-/issues/1391)
+* Add Component Vendors Search Mutations [1392](https://gitlab.echothree.com/echothree/echothree/-/issues/1392)
+* Add Indexing of Entity Attributes [1393](https://gitlab.echothree.com/echothree/echothree/-/issues/1393)
+* Add Searching of Entity Attributes [1394](https://gitlab.echothree.com/echothree/echothree/-/issues/1394)
+* Add Entity Attributes Search Mutation [1395](https://gitlab.echothree.com/echothree/echothree/-/issues/1395)
+* Add Entity Attributes Results Object and Queries [1396](https://gitlab.echothree.com/echothree/echothree/-/issues/1396)
+* Add Indexing of Entity Alias Types [1397](https://gitlab.echothree.com/echothree/echothree/-/issues/1397)
+* Add Searching of Entity Alias Types [1398](https://gitlab.echothree.com/echothree/echothree/-/issues/1398)
+* Add Entity Alias Type Search Mutation [1399](https://gitlab.echothree.com/echothree/echothree/-/issues/1399)
+* Add Entity Alias Type Search Results Object and Queries [1400](https://gitlab.echothree.com/echothree/echothree/-/issues/1400)
+* Updating Entity Type Doesn't Update Entity Alias Type Index [1401](https://gitlab.echothree.com/echothree/echothree/-/issues/1401)
+* Add Indexing of Entity Attribute Groups [1402](https://gitlab.echothree.com/echothree/echothree/-/issues/1402)
+* Add Searching of Entity Attribute Groups [1403](https://gitlab.echothree.com/echothree/echothree/-/issues/1403)
+* Add Entity Attribute Group Search Mutation [1404](https://gitlab.echothree.com/echothree/echothree/-/issues/1404)
+* Add Entity Attribute Group Results Object and Queries [1405](https://gitlab.echothree.com/echothree/echothree/-/issues/1405)
+* entityAttributes Field in EntityAttributeGroup Object Null Without Entity Instance [1406](https://gitlab.echothree.com/echothree/echothree/-/issues/1406)
+* Add Contact Mechanism Type Object [1407](https://gitlab.echothree.com/echothree/echothree/-/issues/1407)
+* Add Contact Mechanism Object [1409](https://gitlab.echothree.com/echothree/echothree/-/issues/1409)
+* Add Party Contact Mechanism Object [1411](https://gitlab.echothree.com/echothree/echothree/-/issues/1411)
+* Add partyContactMechanisms Field to Base Party Object [1413](https://gitlab.echothree.com/echothree/echothree/-/issues/1413)
+* Add Contact Mechanism Purpose Object [1414](https://gitlab.echothree.com/echothree/echothree/-/issues/1414)
+* Add Party Contact Mechanism Purpose Object [1416](https://gitlab.echothree.com/echothree/echothree/-/issues/1416)
+* Add partyContactMechanismPurposes Field to PartyContactMechanism Object [1418](https://gitlab.echothree.com/echothree/echothree/-/issues/1418)
+* Add partyContactMechanismPurpose Field to Base Party Object [1419](https://gitlab.echothree.com/echothree/echothree/-/issues/1419)
+* parentPartyType Field in Party Type Object Missing Annotations [1420](https://gitlab.echothree.com/echothree/echothree/-/issues/1420)
+* Add Contact Postal Address Object [1421](https://gitlab.echothree.com/echothree/echothree/-/issues/1421)
+* Incorrect Credit and Debit Memo Sequence Descriptions [1422](https://gitlab.echothree.com/echothree/echothree/-/issues/1422)
+
 ## 2024-11-10-01
 
 * GraphQL History for Entity Aliases [1380](https://gitlab.echothree.com/echothree/echothree/-/issues/1380)

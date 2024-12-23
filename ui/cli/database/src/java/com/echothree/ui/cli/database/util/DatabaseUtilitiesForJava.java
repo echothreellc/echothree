@@ -391,25 +391,17 @@ public class DatabaseUtilitiesForJava {
         pw.println("    @Override");
         pw.println("    public String toString() {");
         pw.println("        if(_stringValue == null) {");
-        pw.println("            StringBuilder stringValue = new StringBuilder(\"{\");");
-        pw.println("            ");
-        pw.println("            stringValue.append(\"entityId=\").append(getEntityId());");
-        
-        if(columns.size() > 1) {
-            pw.println("            ");
-            
-            columns.forEach((column) -> {
-                var columnType = column.getType();
-                if (columnType != ColumnType.columnEID && columnType != ColumnType.columnBLOB) {
-                    pw.println("            stringValue.append(\", " + column.getVariableName() + "=\").append(" + column.getGetFunctionName() + "());");
-                }
-            });
-        }
-        
-        pw.println("            ");
-        pw.println("            stringValue.append('}');");
-        pw.println("            ");
-        pw.println("            _stringValue = stringValue.toString();");
+        pw.println("            _stringValue = \"{\" + ");
+        pw.println("                    \"entityId=\" + getEntityId() +");
+
+        columns.forEach((column) -> {
+            var columnType = column.getType();
+            if (columnType != ColumnType.columnEID && columnType != ColumnType.columnBLOB) {
+                pw.println("                    \", " + column.getVariableName() + "=\" + " + column.getGetFunctionName() + "() +");
+            }
+        });
+
+        pw.println("                    \"}\";");
         pw.println("        }");
         pw.println("        return _stringValue;");
         pw.println("    }");
@@ -427,9 +419,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("        if(!hasIdentity())");
         pw.println("            return false;");
         pw.println("        ");
-        pw.println("        if(other instanceof  " + valueClass + ") {");
-        pw.println("            " + valueClass + " that = (" + valueClass + ")other;");
-        pw.println("            ");
+        pw.println("        if(other instanceof  " + valueClass + " that) {");
         pw.println("            if(!that.hasIdentity())");
         pw.println("                return false;");
         pw.println("            ");
@@ -438,7 +428,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("            ");
         pw.println("            boolean objectsEqual = thisEntityId.equals(thatEntityId);");
         pw.println("            if(objectsEqual)");
-        pw.println("                objectsEqual = objectsEqual && isIdentical(that);");
+        pw.println("                objectsEqual = isIdentical(that);");
         pw.println("            ");
         pw.println("            return objectsEqual;");
         pw.println("        } else {");
@@ -453,8 +443,7 @@ public class DatabaseUtilitiesForJava {
         var valueClass = theTable.getValueClass();
         
         pw.println("    public boolean isIdentical(Object other) {");
-        pw.println("        if(other instanceof " + valueClass + ") {");
-        pw.println("            " + valueClass + " that = (" + valueClass + ")other;");
+        pw.println("        if(other instanceof " + valueClass + " that) {");
         pw.println("            boolean objectsEqual = true;");
         pw.println("            ");
         
@@ -812,9 +801,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("        if(this == other)");
         pw.println("            return true;");
         pw.println("        ");
-        pw.println("        if(other instanceof " + entityClass + ") {");
-        pw.println("            " + entityClass + " that = (" + entityClass + ")other;");
-        pw.println("            ");
+        pw.println("        if(other instanceof " + entityClass + " that) {");
         pw.println("            " + valueClass + " thatValue = that.get" + valueClass + "();");
         pw.println("            return _value.equals(thatValue);");
         pw.println("        } else {");

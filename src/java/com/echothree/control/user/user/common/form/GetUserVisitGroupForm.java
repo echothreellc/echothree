@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.user.common.form;
 
-import com.echothree.control.user.user.common.spec.UserVisitGroupSpec;
+import com.echothree.control.user.user.common.spec.UserVisitGroupUniversalSpec;
 
 public interface GetUserVisitGroupForm
-        extends UserVisitGroupSpec {
+        extends UserVisitGroupUniversalSpec {
     
-    // Nothing additional beyond UserVisitGroupSpec
+    // Nothing additional beyond UserVisitGroupUniversalSpec
     
 }

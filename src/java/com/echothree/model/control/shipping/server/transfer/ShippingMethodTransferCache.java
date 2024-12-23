@@ -29,12 +29,13 @@ public class ShippingMethodTransferCache
         extends BaseShippingTransferCache<ShippingMethod, ShippingMethodTransfer> {
     
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
-    
+    ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
+
     boolean includeComments;
     
     /** Creates a new instance of ShippingMethodTransferCache */
-    public ShippingMethodTransferCache(UserVisit userVisit, ShippingControl shippingControl) {
-        super(userVisit, shippingControl);
+    public ShippingMethodTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {

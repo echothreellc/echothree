@@ -254,6 +254,7 @@ import com.echothree.control.user.returnpolicy.server.command.GetReturnPolicyCom
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.CheckItemSpellingResult;
 import com.echothree.control.user.search.server.command.GetComponentVendorResultsCommand;
+import com.echothree.control.user.search.server.command.GetContentCatalogResultsCommand;
 import com.echothree.control.user.search.server.command.GetContentCategoryResultsCommand;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
 import com.echothree.control.user.search.server.command.GetEmployeeResultsCommand;
@@ -279,6 +280,7 @@ import com.echothree.control.user.search.server.command.GetSearchTypeCommand;
 import com.echothree.control.user.search.server.command.GetSearchTypesCommand;
 import com.echothree.control.user.search.server.command.GetSearchUseTypeCommand;
 import com.echothree.control.user.search.server.command.GetSearchUseTypesCommand;
+import com.echothree.control.user.search.server.command.GetShippingMethodResultsCommand;
 import com.echothree.control.user.search.server.command.GetVendorResultsCommand;
 import com.echothree.control.user.search.server.command.GetWarehouseResultsCommand;
 import com.echothree.control.user.security.common.SecurityUtil;
@@ -305,6 +307,9 @@ import com.echothree.control.user.sequence.server.command.GetSequencesCommand;
 import com.echothree.control.user.shipment.common.ShipmentUtil;
 import com.echothree.control.user.shipment.server.command.GetFreeOnBoardCommand;
 import com.echothree.control.user.shipment.server.command.GetFreeOnBoardsCommand;
+import com.echothree.control.user.shipping.common.ShippingUtil;
+import com.echothree.control.user.shipping.server.command.GetShippingMethodCommand;
+import com.echothree.control.user.shipping.server.command.GetShippingMethodsCommand;
 import com.echothree.control.user.tag.common.TagUtil;
 import com.echothree.control.user.tag.server.command.GetEntityTagCommand;
 import com.echothree.control.user.tag.server.command.GetEntityTagsCommand;
@@ -332,6 +337,8 @@ import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.control.user.user.server.command.GetRecoveryQuestionCommand;
 import com.echothree.control.user.user.server.command.GetRecoveryQuestionsCommand;
 import com.echothree.control.user.user.server.command.GetUserLoginCommand;
+import com.echothree.control.user.user.server.command.GetUserVisitGroupCommand;
+import com.echothree.control.user.user.server.command.GetUserVisitGroupsCommand;
 import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoriesCommand;
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoryCommand;
@@ -519,6 +526,7 @@ import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObjec
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.graphql.CheckItemSpellingObject;
 import com.echothree.model.control.search.server.graphql.ComponentVendorResultsObject;
+import com.echothree.model.control.search.server.graphql.ContentCatalogResultsObject;
 import com.echothree.model.control.search.server.graphql.ContentCategoryResultsObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.search.server.graphql.EmployeeResultsObject;
@@ -536,6 +544,7 @@ import com.echothree.model.control.search.server.graphql.SearchSortDirectionObje
 import com.echothree.model.control.search.server.graphql.SearchSortOrderObject;
 import com.echothree.model.control.search.server.graphql.SearchTypeObject;
 import com.echothree.model.control.search.server.graphql.SearchUseTypeObject;
+import com.echothree.model.control.search.server.graphql.ShippingMethodResultsObject;
 import com.echothree.model.control.search.server.graphql.VendorResultsObject;
 import com.echothree.model.control.search.server.graphql.WarehouseResultsObject;
 import com.echothree.model.control.security.server.graphql.SecurityRoleGroupObject;
@@ -548,6 +557,8 @@ import com.echothree.model.control.sequence.server.graphql.SequenceEncoderTypeOb
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
 import com.echothree.model.control.shipment.server.graphql.FreeOnBoardObject;
+import com.echothree.model.control.shipping.server.control.ShippingControl;
+import com.echothree.model.control.shipping.server.graphql.ShippingMethodObject;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.tag.server.graphql.EntityTagObject;
 import com.echothree.model.control.tag.server.graphql.TagObject;
@@ -561,9 +572,11 @@ import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseTypeObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.graphql.RecoveryQuestionObject;
 import com.echothree.model.control.user.server.graphql.UserLoginObject;
 import com.echothree.model.control.user.server.graphql.UserSessionObject;
+import com.echothree.model.control.user.server.graphql.UserVisitGroupObject;
 import com.echothree.model.control.user.server.graphql.UserVisitObject;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.graphql.ItemPurchasingCategoryObject;
@@ -796,6 +809,8 @@ import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
 import com.echothree.model.data.sequence.server.entity.SequenceEncoderType;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
+import com.echothree.model.data.shipping.common.ShippingMethodConstants;
+import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.tag.common.TagScopeConstants;
 import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.tag.server.entity.Tag;
@@ -810,8 +825,10 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
+import com.echothree.model.data.user.common.UserVisitGroupConstants;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.entity.UserLogin;
+import com.echothree.model.data.user.server.entity.UserVisitGroup;
 import com.echothree.model.data.vendor.common.ItemPurchasingCategoryConstants;
 import com.echothree.model.data.vendor.common.VendorConstants;
 import com.echothree.model.data.vendor.common.VendorTypeConstants;
@@ -6104,6 +6121,27 @@ public interface GraphQlQueries {
     }
 
     @GraphQLField
+    @GraphQLName("shippingMethodResults")
+    static ShippingMethodResultsObject shippingMethodResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        ShippingMethodResultsObject shippingMethodResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetShippingMethodResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetShippingMethodResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                shippingMethodResultsObject = new ShippingMethodResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return shippingMethodResultsObject;
+    }
+
+    @GraphQLField
     @GraphQLName("warehouseResults")
     static WarehouseResultsObject warehouseResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
@@ -6122,6 +6160,27 @@ public interface GraphQlQueries {
         }
 
         return warehouseResultsObject;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCatalogResults")
+    static ContentCatalogResultsObject contentCatalogResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        ContentCatalogResultsObject contentCatalogResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetContentCatalogResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetContentCatalogResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                contentCatalogResultsObject = new ContentCatalogResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return contentCatalogResultsObject;
     }
 
     @GraphQLField
@@ -6490,6 +6549,57 @@ public interface GraphQlQueries {
         var userSession = BaseGraphQl.getUserSession(env);
 
         return userSession == null ? null : new UserSessionObject(userSession);
+    }
+
+    @GraphQLField
+    @GraphQLName("userVisitGroup")
+    static UserVisitGroupObject userVisitGroup(final DataFetchingEnvironment env,
+            @GraphQLName("userVisitGroupName") final String userVisitGroupName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        UserVisitGroup userVisitGroup;
+
+        try {
+            var commandForm = UserUtil.getHome().getGetUserVisitGroupForm();
+
+            commandForm.setUserVisitGroupName(userVisitGroupName);
+            commandForm.setUuid(id);
+
+            userVisitGroup = new GetUserVisitGroupCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return userVisitGroup == null ? null : new UserVisitGroupObject(userVisitGroup);
+    }
+
+    @GraphQLField
+    @GraphQLName("userVisitGroups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<UserVisitGroupObject> userVisitGroups(final DataFetchingEnvironment env) {
+        CountingPaginatedData<UserVisitGroupObject> data;
+
+        try {
+            var userControl = Session.getModelController(UserControl.class);
+            var totalCount = userControl.countUserVisitGroups();
+
+            try(var objectLimiter = new ObjectLimiter(env, UserVisitGroupConstants.COMPONENT_VENDOR_NAME, UserVisitGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = UserUtil.getHome().getGetUserVisitGroupsForm();
+                var entities = new GetUserVisitGroupsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var userVisitGroups = entities.stream().map(UserVisitGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, userVisitGroups);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField
@@ -10131,6 +10241,57 @@ public interface GraphQlQueries {
         }
 
         return geoCode == null ? null : new GeoCodeObject(geoCode);
+    }
+
+    @GraphQLField
+    @GraphQLName("shippingMethod")
+    static ShippingMethodObject shippingMethod(final DataFetchingEnvironment env,
+            @GraphQLName("shippingMethodName") final String shippingMethodName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ShippingMethod shippingMethod;
+
+        try {
+            var commandForm = ShippingUtil.getHome().getGetShippingMethodForm();
+
+            commandForm.setShippingMethodName(shippingMethodName);
+            commandForm.setUuid(id);
+
+            shippingMethod = new GetShippingMethodCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return shippingMethod == null ? null : new ShippingMethodObject(shippingMethod);
+    }
+
+    @GraphQLField
+    @GraphQLName("shippingMethods")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ShippingMethodObject> shippingMethods(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ShippingMethodObject> data;
+
+        try {
+            var shippingControl = Session.getModelController(ShippingControl.class);
+            var totalCount = shippingControl.countShippingMethods();
+
+            try(var objectLimiter = new ObjectLimiter(env, ShippingMethodConstants.COMPONENT_VENDOR_NAME, ShippingMethodConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = ShippingUtil.getHome().getGetShippingMethodsForm();
+                var entities = new GetShippingMethodsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var shippingMethods = entities.stream().map(ShippingMethodObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, shippingMethods);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
 }

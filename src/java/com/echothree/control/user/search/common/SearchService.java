@@ -474,21 +474,33 @@ public interface SearchService
     CommandResult clearEntityListItemResults(UserVisitPK userVisitPK, ClearEntityListItemResultsForm form);
 
     // -------------------------------------------------------------------------
+    //   Content Catalog Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchContentCatalogs(UserVisitPK userVisitPK, SearchContentCatalogsForm form);
+
+    CommandResult getContentCatalogResults(UserVisitPK userVisitPK, GetContentCatalogResultsForm form);
+
+    CommandResult countContentCatalogResults(UserVisitPK userVisitPK, CountContentCatalogResultsForm form);
+
+    CommandResult clearContentCatalogResults(UserVisitPK userVisitPK, ClearContentCatalogResultsForm form);
+
+    // -------------------------------------------------------------------------
     //   Content Category Search
     // -------------------------------------------------------------------------
 
     CommandResult searchContentCategories(UserVisitPK userVisitPK, SearchContentCategoriesForm form);
-    
+
     CommandResult getContentCategoryResults(UserVisitPK userVisitPK, GetContentCategoryResultsForm form);
-    
+
     CommandResult getContentCategoryResultsFacet(UserVisitPK userVisitPK, GetContentCategoryResultsFacetForm form);
-    
+
     CommandResult getContentCategoryResultsFacets(UserVisitPK userVisitPK, GetContentCategoryResultsFacetsForm form);
-    
+
     CommandResult countContentCategoryResults(UserVisitPK userVisitPK, CountContentCategoryResultsForm form);
-    
+
     CommandResult clearContentCategoryResults(UserVisitPK userVisitPK, ClearContentCategoryResultsForm form);
-    
+
     // -------------------------------------------------------------------------
     //   Security Role Group Search
     // -------------------------------------------------------------------------
@@ -600,6 +612,18 @@ public interface SearchService
     CommandResult countUseTypeResults(UserVisitPK userVisitPK, CountUseTypeResultsForm form);
     
     CommandResult clearUseTypeResults(UserVisitPK userVisitPK, ClearUseTypeResultsForm form);
+
+    // -------------------------------------------------------------------------
+    //   Shipping Method Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchShippingMethods(UserVisitPK userVisitPK, SearchShippingMethodsForm form);
+
+    CommandResult getShippingMethodResults(UserVisitPK userVisitPK, GetShippingMethodResultsForm form);
+
+    CommandResult countShippingMethodResults(UserVisitPK userVisitPK, CountShippingMethodResultsForm form);
+
+    CommandResult clearShippingMethodResults(UserVisitPK userVisitPK, ClearShippingMethodResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Warehouse Search

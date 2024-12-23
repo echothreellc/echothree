@@ -17,7 +17,7 @@
 package com.echothree.model.control.party.server.indexer;
 
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.index.server.analysis.PartyAnalyzer;
+import com.echothree.model.control.party.server.analyzer.PartyAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.control.party.server.control.PartyControl;

@@ -115,6 +115,10 @@ public abstract class CmsBaseAction<A extends ActionForm>
 
                 try {
                     actionForward = executeAction(mapping, (A)form, request, response);
+
+                    if(actionForward != null && ForwardConstants.FORM.equals(actionForward.getName())) {
+                        saveToken(request);
+                    }
                 } catch (NamingException ne) {
                     forwardKey = ForwardConstants.ERROR_500;
                 }
