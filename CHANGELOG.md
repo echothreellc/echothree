@@ -1,5 +1,18 @@
 # Changelog
 
+## 2024-12-22-01
+
+* Add User Visit Group Object and Queries [1381](https://gitlab.echothree.com/echothree/echothree/-/issues/1381)
+* Add User Key Object and Queries [1382](https://gitlab.echothree.com/echothree/echothree/-/issues/1382)
+* jOOQ 3.19.16 Upgrade [1444](https://gitlab.echothree.com/echothree/echothree/-/issues/1444)
+* Error Prone 2.36.0 Upgrade [1445](https://gitlab.echothree.com/echothree/echothree/-/issues/1445)
+* Add CSRF Protection to Base Actions [1446](https://gitlab.echothree.com/echothree/echothree/-/issues/1446)
+* Apache Lucene 9.12.1 Upgrade [1447](https://gitlab.echothree.com/echothree/echothree/-/issues/1447)
+* ICU4J 76.1 Upgrade [1448](https://gitlab.echothree.com/echothree/echothree/-/issues/1448)
+* Add Caffeine as a PreparsedDocumentProvider [1450](https://gitlab.echothree.com/echothree/echothree/-/issues/1450)
+* Correct Value Object Warnings From Error Prone [1451](https://gitlab.echothree.com/echothree/echothree/-/issues/1451)
+* Correct Entity Object Warnings From Error Prone [1452](https://gitlab.echothree.com/echothree/echothree/-/issues/1452)
+
 ## 2024-12-08-01
 
 * Add Indexing of Content Catalogs [1372](https://gitlab.echothree.com/echothree/echothree/-/issues/1372)
