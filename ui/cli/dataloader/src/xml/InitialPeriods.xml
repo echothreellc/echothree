@@ -37,5 +37,6 @@
         <fiscalYear year="2022" />
         <fiscalYear year="2023" />
         <fiscalYear year="2024" />
+        <fiscalYear year="2025" />
     </periodKinds>
 </initialData>
