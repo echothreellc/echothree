@@ -144,6 +144,9 @@ public class ContentCatalogItemIndexer
         document.add(new Field(IndexFields.allowCouponDiscounts.name(), itemDetail.getAllowCouponDiscounts().toString(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new Field(IndexFields.allowAssociatePayments.name(), itemDetail.getAllowAssociatePayments().toString(), FieldTypes.NOT_STORED_TOKENIZED));
 
+        document.add(new Field(IndexFields.unitOfMeasureKindName.name(), itemDetail.getUnitOfMeasureKind().getLastDetail().getUnitOfMeasureKindName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new Field(IndexFields.itemPriceTypeName.name(), itemDetail.getItemPriceType().getItemPriceTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
+
         itemDescriptionTypes.forEach((itemDescriptionType) -> {
             var itemDescription = itemControl.getBestItemDescription(itemDescriptionType, item, language);
             if (itemDescription != null) {

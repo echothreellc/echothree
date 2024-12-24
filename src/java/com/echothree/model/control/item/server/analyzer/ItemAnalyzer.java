@@ -92,7 +92,9 @@ public class ItemAnalyzer
         fieldAnalyzers.put(IndexFields.allowClubDiscounts.name(), new WhitespaceLowerCaseAnalyzer());
         fieldAnalyzers.put(IndexFields.allowCouponDiscounts.name(), new WhitespaceLowerCaseAnalyzer());
         fieldAnalyzers.put(IndexFields.allowAssociatePayments.name(), new WhitespaceLowerCaseAnalyzer());
-        
+        fieldAnalyzers.put(IndexFields.unitOfMeasureKindName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.itemPriceTypeName.name(), new WhitespaceLowerCaseAnalyzer());
+
         return getItemDescriptionAnalyzers(getItemAliasTypeAnalyzers(fieldAnalyzers));
     }
     

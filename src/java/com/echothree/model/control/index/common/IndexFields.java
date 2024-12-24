@@ -75,6 +75,7 @@ public enum IndexFields {
     itemInventoryTypeName,
     itemName,
     itemNameAndAliases,
+    itemPriceTypeName,
     itemPurchasingCategoryName,
     itemTypeName,
     itemUseTypeName,
