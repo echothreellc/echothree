@@ -27,6 +27,7 @@ import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.control.index.server.indexer.IndexerDebugFlags;
 import com.echothree.model.control.index.server.indexer.sortabledescriptionproducer.SortableDescriptionProducer;
 import com.echothree.model.control.index.server.indexer.sortabledescriptionproducer.SortableDescriptionProducerFactory;
+import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.server.analyzer.ItemAnalyzer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
@@ -219,6 +220,22 @@ public class ContentCatalogItemIndexer
                 contentCategoryNamesBuilder.append(contentCategoryItem.getContentCategory().getLastDetail().getContentCategoryName());
             });
             document.add(new Field(IndexFields.contentCategoryNames.name(), contentCategoryNamesBuilder.toString(), FieldTypes.NOT_STORED_TOKENIZED));
+        }
+
+        var itemPriceType = ItemPriceTypes.valueOf(contentCatalogItem.getItem().getLastDetail().getItemPriceType().getItemPriceTypeName());
+        switch(itemPriceType) {
+            case FIXED -> {
+                var fixedItemPrice = contentControl.getContentCatalogItemFixedPrice(contentCatalogItem);
+
+                document.add(new LongPoint(IndexFields.unitPrice.name(), fixedItemPrice.getUnitPrice()));
+            }
+            case VARIABLE -> {
+                var variableItemPrice = contentControl.getContentCatalogItemVariablePrice(contentCatalogItem);
+
+                document.add(new LongPoint(IndexFields.minimumUnitPrice.name(), variableItemPrice.getMinimumUnitPrice()));
+                document.add(new LongPoint(IndexFields.maximumUnitPrice.name(), variableItemPrice.getMaximumUnitPrice()));
+                document.add(new LongPoint(IndexFields.unitPriceIncrement.name(), variableItemPrice.getUnitPriceIncrement()));
+            }
         }
     }
 
