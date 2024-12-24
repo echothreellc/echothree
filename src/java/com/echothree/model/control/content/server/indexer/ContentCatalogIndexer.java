@@ -57,14 +57,15 @@ public class ContentCatalogIndexer
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final ContentCatalog contentCatalog) {
         var contentCatalogDetail = contentCatalog.getLastDetail();
+        var contentCollectionDetail = contentCatalogDetail.getContentCollection().getLastDetail();
         var description = contentControl.getBestContentCatalogDescription(contentCatalog, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, contentCatalog.getPrimaryKey());
 
-        document.add(new Field(IndexFields.contentCollectionName.name(), contentCatalogDetail.getContentCollection().getLastDetail().getContentCollectionName(),
+        document.add(new Field(IndexFields.contentCollectionName.name(), contentCollectionDetail.getContentCollectionName(),
                 FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new SortedDocValuesField(IndexFields.contentCollectionName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
-                new BytesRef(contentCatalogDetail.getContentCollection().getLastDetail().getContentCollectionName())));
+                new BytesRef(contentCollectionDetail.getContentCollectionName())));
         document.add(new Field(IndexFields.contentCatalogName.name(), contentCatalogDetail.getContentCatalogName(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new SortedDocValuesField(IndexFields.contentCatalogName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(contentCatalogDetail.getContentCatalogName())));

@@ -230,11 +230,19 @@ public class BasicAnalyzer
         return fieldAnalyzers;
     }
 
-    private Map<String, Analyzer> getFieldAnalyzers(final ExecutionErrorAccumulator eea, final EntityType entityType,
+    protected Map<String, Analyzer> getFieldAnalyzers(final ExecutionErrorAccumulator eea, final EntityType entityType,
             final List<EntityAttribute> entityAttributes, final List<TagScope> tagScopes) {
-        return getEntityTypeAnalyzers(getAppearanceFieldAnalyzers(getWorkflowFieldAnalyzers(entityType,
-                getTagScopeFieldAnalyzers(tagScopes, getEntityAliasesFieldAnalyzers(entityAliasTypes,
-                        getEntityAttributeFieldAnalyzers(entityAttributes, new HashMap<>()))))));
+        return getEntityTypeAnalyzers(
+                getAppearanceFieldAnalyzers(
+                        getWorkflowFieldAnalyzers(entityType,
+                                getTagScopeFieldAnalyzers(tagScopes,
+                                        getEntityAliasesFieldAnalyzers(entityAliasTypes,
+                                                getEntityAttributeFieldAnalyzers(entityAttributes, new HashMap<>())
+                                        )
+                                )
+                        )
+                )
+        );
     }
     
 }

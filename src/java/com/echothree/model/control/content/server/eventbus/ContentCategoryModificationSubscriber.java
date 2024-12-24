@@ -23,7 +23,7 @@ import com.echothree.model.control.core.server.eventbus.BaseEventSubscriber;
 import com.echothree.model.control.core.server.eventbus.Function5Arity;
 import com.echothree.model.control.core.server.eventbus.SentEvent;
 import com.echothree.model.control.core.server.eventbus.SentEventSubscriber;
-import com.echothree.model.data.content.common.ContentCategoryConstants;
+import com.echothree.model.data.content.common.ContentCatalogConstants;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.util.server.persistence.PersistenceUtils;
@@ -36,24 +36,22 @@ public class ContentCategoryModificationSubscriber
 
     @Subscribe
     public void receiveSentEvent(SentEvent se) {
-        decodeEventAndApply(se, touchContentCatalogItemsIfContentCategory);
+        decodeEventAndApply(se, touchContentCategoriesIfContentCatalog);
     }
 
     private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
-            touchContentCatalogItemsIfContentCategory = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
-        if(ContentCategoryConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
-                && ContentCategoryConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
+            touchContentCategoriesIfContentCatalog = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
+        if(ContentCatalogConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
+                && ContentCatalogConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var contentControl = Session.getModelController(ContentControl.class);
-            var contentCategory = contentControl.getContentCategoryByEntityInstance(entityInstance);
-            var contentCategoryItems = contentControl.getContentCategoryItemsByContentCategory(contentCategory);
+            var contentCatalog = contentControl.getContentCatalogByEntityInstance(entityInstance);
+            var contentCategories = contentControl.getContentCategories(contentCatalog);
 
-            for(var contentCategoryItem : contentCategoryItems) {
-                var contentCatalogItem = contentCategoryItem.getContentCatalogItem();
-
-                coreControl.sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.TOUCH,
-                        contentCategory.getPrimaryKey(), eventType,
+            for(var contentCategory : contentCategories) {
+                coreControl.sendEvent(contentCategory.getPrimaryKey(), EventTypes.TOUCH,
+                        contentCatalog.getPrimaryKey(), eventType,
                         PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
             }
         }

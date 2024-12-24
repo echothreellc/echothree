@@ -14,44 +14,44 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.content.server.eventbus;
+package com.echothree.model.control.uom.server.eventbus;
 
-import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.eventbus.BaseEventSubscriber;
 import com.echothree.model.control.core.server.eventbus.Function5Arity;
 import com.echothree.model.control.core.server.eventbus.SentEvent;
 import com.echothree.model.control.core.server.eventbus.SentEventSubscriber;
-import com.echothree.model.data.content.common.ContentCollectionConstants;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
+import com.echothree.model.data.uom.common.UnitOfMeasureKindConstants;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
 
 @SentEventSubscriber
-public class ContentCollectionModificationSubscriber
+public class UnitOfMeasureTypeModificationSubscriber
         extends BaseEventSubscriber {
 
     @Subscribe
-    public void receiveSentEvent(SentEvent se) {
-        decodeEventAndApply(se, touchContentCatalogsIfContentCollection);
+    public void receiveSentEventForUnitOfMeasureKinds(SentEvent se) {
+        decodeEventAndApply(se, touchUnitOfMeasureTypesIfUnitOfMeasureKind);
     }
 
     private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
-            touchContentCatalogsIfContentCollection = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
-        if(ContentCollectionConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
-                && ContentCollectionConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
+            touchUnitOfMeasureTypesIfUnitOfMeasureKind = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
+        if(UnitOfMeasureKindConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
+                && UnitOfMeasureKindConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var contentControl = Session.getModelController(ContentControl.class);
-            var contentCollection = contentControl.getContentCollectionByEntityInstance(entityInstance);
-            var contentCatalogs = contentControl.getContentCatalogs(contentCollection);
+            var uomControl = Session.getModelController(UomControl.class);
+            var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByEntityInstance(entityInstance);
+            var unitOfMeasureTypes = uomControl.getUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
 
-            for(var contentCatalog : contentCatalogs) {
-                coreControl.sendEvent(contentCatalog.getPrimaryKey(), EventTypes.TOUCH,
-                        contentCollection.getPrimaryKey(), eventType,
+            for(var unitOfMeasureType : unitOfMeasureTypes) {
+                coreControl.sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.TOUCH,
+                        unitOfMeasureKind.getPrimaryKey(), eventType,
                         PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
             }
         }

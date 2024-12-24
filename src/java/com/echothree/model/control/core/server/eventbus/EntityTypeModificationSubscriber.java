@@ -30,7 +30,7 @@ public class EntityTypeModificationSubscriber
         extends BaseEventSubscriber {
 
     @Subscribe
-    public void receiveSentEventforEntityAttributes(SentEvent se) {
+    public void receiveSentEventForEntityAttributes(SentEvent se) {
         decodeEventAndApply(se, touchEntityAttributesIfEntityType);
     }
 

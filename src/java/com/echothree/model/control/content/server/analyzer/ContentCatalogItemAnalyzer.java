@@ -14,9 +14,12 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.item.server.analyzer;
+package com.echothree.model.control.content.server.analyzer;
 
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
@@ -27,32 +30,35 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.lucene.analysis.Analyzer;
 
-public class ItemAnalyzer
+public class ContentCatalogItemAnalyzer
         extends BasicAnalyzer {
-    
-    public ItemAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType, final List<EntityAliasType> entityAliasTypes, final List<EntityAttribute> entityAttributes,
-            final List<TagScope> tagScopes) {
+
+    public ContentCatalogItemAnalyzer(final ExecutionErrorAccumulator eea, final Language language,
+            final EntityType entityType, final List<EntityAliasType> entityAliasTypes,
+            final List<EntityAttribute> entityAttributes, final List<TagScope> tagScopes) {
         super(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
 
-    public ItemAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType) {
+    public ContentCatalogItemAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType) {
         super(eea, language, entityType);
     }
     
     protected Map<String, Analyzer> getItemAliasTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         var itemControl = Session.getModelController(ItemControl.class);
         
-        itemControl.getItemAliasTypes().stream().forEach((itemAliasType) -> {
-            fieldAnalyzers.put(itemAliasType.getLastDetail().getItemAliasTypeName(), new WhitespaceLowerCaseAnalyzer());
-        });
+        itemControl.getItemAliasTypes().forEach(itemAliasType ->
+                fieldAnalyzers.put(itemAliasType.getLastDetail().getItemAliasTypeName(), new WhitespaceLowerCaseAnalyzer())
+        );
         
         return fieldAnalyzers;
     }
@@ -65,7 +71,7 @@ public class ItemAnalyzer
     protected Map<String, Analyzer> getItemDescriptionAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         var itemControl = Session.getModelController(ItemControl.class);
         
-        itemControl.getItemDescriptionTypes().stream().map((itemDescriptionType) -> itemDescriptionType.getLastDetail()).forEach((itemDescriptionTypeDetail) -> {
+        itemControl.getItemDescriptionTypes().stream().map(ItemDescriptionType::getLastDetail).forEach((itemDescriptionTypeDetail) -> {
             var mimeTypeUsageType = itemDescriptionTypeDetail.getMimeTypeUsageType();
             if (mimeTypeUsageType == null || mimeTypeUsageType.getMimeTypeUsageTypeName().equals(MimeTypeUsageTypes.TEXT.name())) {
                 fieldAnalyzers.put(itemDescriptionTypeDetail.getItemDescriptionTypeName() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.dictionary.name(),
@@ -79,7 +85,8 @@ public class ItemAnalyzer
     @Override
     protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         super.getEntityTypeAnalyzers(fieldAnalyzers);
-        
+
+        // Items
         fieldAnalyzers.put(IndexFields.aliases.name(), new WhitespaceLowerCaseAnalyzer());
         fieldAnalyzers.put(IndexFields.itemName.name(), new WhitespaceLowerCaseAnalyzer());
         fieldAnalyzers.put(IndexFields.itemNameAndAliases.name(), new WhitespaceLowerCaseAnalyzer());
@@ -95,7 +102,39 @@ public class ItemAnalyzer
         fieldAnalyzers.put(IndexFields.unitOfMeasureKindName.name(), new WhitespaceLowerCaseAnalyzer());
         fieldAnalyzers.put(IndexFields.itemPriceTypeName.name(), new WhitespaceLowerCaseAnalyzer());
 
+        // Content Catalogs
+        fieldAnalyzers.put(IndexFields.contentCollectionName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.contentCatalogName.name(), new WhitespaceLowerCaseAnalyzer());
+
+        // Content Category Items
+        fieldAnalyzers.put(IndexFields.inventoryConditionName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.unitOfMeasureKindName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.unitOfMeasureTypeName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.currencyIsoName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.contentCategoryNames.name(), new WhitespaceLowerCaseAnalyzer());
+
         return getItemDescriptionAnalyzers(getItemAliasTypeAnalyzers(fieldAnalyzers));
     }
-    
+
+    @Override
+    protected Map<String, Analyzer> getFieldAnalyzers(final ExecutionErrorAccumulator eea, final EntityType entityType,
+            final List<EntityAttribute> entityAttributes, final List<TagScope> tagScopes) {
+        var fieldAnalyzers = new HashMap<String, Analyzer>();
+
+        // Items
+        fieldAnalyzers.putAll(super.getFieldAnalyzers(eea, EntityTypeLogic.getInstance().getEntityTypeByName(eea,
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.Item.name()), entityAttributes, tagScopes));
+
+        // Content Catalogs
+        fieldAnalyzers.putAll(super.getFieldAnalyzers(eea, EntityTypeLogic.getInstance().getEntityTypeByName(eea,
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.ContentCatalog.name()), entityAttributes, tagScopes));
+
+        // Content Category Items
+        fieldAnalyzers.putAll(super.getFieldAnalyzers(eea, entityType, entityAttributes, tagScopes));
+
+        return fieldAnalyzers;
+
+
+    }
+
 }
