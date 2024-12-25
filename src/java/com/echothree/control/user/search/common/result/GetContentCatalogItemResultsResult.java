@@ -14,35 +14,19 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.search.common;
+package com.echothree.control.user.search.common.result;
 
-public enum SearchKinds {
+import com.echothree.model.control.content.common.transfer.ContentCatalogItemResultTransfer;
+import com.echothree.util.common.command.BaseResult;
+import java.util.List;
 
-    COMPONENT_VENDOR,
-    CONTACT_MECHANISM,
-    CONTENT_CATALOG,
-    CONTENT_CATALOG_ITEM,
-    CONTENT_CATEGORY,
-    CUSTOMER,
-    EMPLOYEE,
-    ENTITY_ALIAS_TYPE,
-    ENTITY_ATTRIBUTE,
-    ENTITY_ATTRIBUTE_GROUP,
-    ENTITY_LIST_ITEM,
-    ENTITY_TYPE,
-    FORUM_MESSAGE,
-    HARMONIZED_TARIFF_SCHEDULE_CODE,
-    ITEM,
-    LEAVE,
-    OFFER,
-    SALES_ORDER,
-    SALES_ORDER_BATCH,
-    SECURITY_ROLE,
-    SECURITY_ROLE_GROUP,
-    SHIPPING_METHOD,
-    USE,
-    USE_TYPE,
-    VENDOR,
-    WAREHOUSE,
+public interface GetContentCatalogItemResultsResult
+        extends BaseResult {
+    
+    Long getContentCatalogItemResultCount();
+    void setContentCatalogItemResultCount(Long contentCatalogItemResultCount);
 
+    List<ContentCatalogItemResultTransfer> getContentCatalogItemResults();
+    void setContentCatalogItemResults(List<ContentCatalogItemResultTransfer> contentCatalogItemResults);
+    
 }

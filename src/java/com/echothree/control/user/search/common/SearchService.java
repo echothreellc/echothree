@@ -486,6 +486,22 @@ public interface SearchService
     CommandResult clearContentCatalogResults(UserVisitPK userVisitPK, ClearContentCatalogResultsForm form);
 
     // -------------------------------------------------------------------------
+    //   Content Catalog Item Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchContentCatalogItems(UserVisitPK userVisitPK, SearchContentCatalogItemsForm form);
+
+    CommandResult getContentCatalogItemResults(UserVisitPK userVisitPK, GetContentCatalogItemResultsForm form);
+
+    CommandResult getContentCatalogItemResultsFacet(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetForm form);
+
+    CommandResult getContentCatalogItemResultsFacets(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetsForm form);
+
+    CommandResult countContentCatalogItemResults(UserVisitPK userVisitPK, CountContentCatalogItemResultsForm form);
+
+    CommandResult clearContentCatalogItemResults(UserVisitPK userVisitPK, ClearContentCatalogItemResultsForm form);
+
+    // -------------------------------------------------------------------------
     //   Content Category Search
     // -------------------------------------------------------------------------
 

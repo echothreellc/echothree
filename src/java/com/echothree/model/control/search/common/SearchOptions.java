@@ -56,6 +56,8 @@ public interface SearchOptions {
 
     String ContentCatalogResultIncludeContentCatalog = "ContentCatalogResultIncludeContentCatalog";
 
+    String ContentCatalogItemResultIncludeContentCatalogItem = "ContentCatalogItemResultIncludeContentCatalogItem";
+
     String ContentCategoryResultIncludeContentCategory = "ContentCategoryResultIncludeContentCategory";
     
     String SecurityRoleGroupResultIncludeSecurityRoleGroup = "SecurityRoleGroupResultIncludeSecurityRoleGroup";
