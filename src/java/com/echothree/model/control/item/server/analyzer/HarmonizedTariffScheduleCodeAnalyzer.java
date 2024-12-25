@@ -42,8 +42,8 @@ public class HarmonizedTariffScheduleCodeAnalyzer
     }
     
     @Override
-    protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
-        super.getEntityTypeAnalyzers(fieldAnalyzers);
+    protected Map<String, Analyzer> getEntityTypeFieldAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
+        super.getEntityTypeFieldAnalyzers(fieldAnalyzers);
         
         fieldAnalyzers.put(IndexFields.countryGeoCodeName.name(), new WhitespaceLowerCaseAnalyzer());
         fieldAnalyzers.put(IndexFields.harmonizedTariffScheduleCodeName.name(), new WhitespaceLowerCaseAnalyzer());

@@ -84,8 +84,8 @@ public class ContentCatalogItemAnalyzer
     }
     
     @Override
-    protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
-        super.getEntityTypeAnalyzers(fieldAnalyzers);
+    protected Map<String, Analyzer> getEntityTypeFieldAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
+        super.getEntityTypeFieldAnalyzers(fieldAnalyzers);
 
         // Items
         fieldAnalyzers.put(IndexFields.aliases.name(), new WhitespaceLowerCaseAnalyzer());

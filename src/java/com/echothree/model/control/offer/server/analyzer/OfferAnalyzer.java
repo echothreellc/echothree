@@ -42,8 +42,8 @@ public class OfferAnalyzer
     }
     
     @Override
-    protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
-        super.getEntityTypeAnalyzers(fieldAnalyzers);
+    protected Map<String, Analyzer> getEntityTypeFieldAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
+        super.getEntityTypeFieldAnalyzers(fieldAnalyzers);
         
         fieldAnalyzers.put(IndexFields.offerName.name(), new WhitespaceLowerCaseAnalyzer());
         

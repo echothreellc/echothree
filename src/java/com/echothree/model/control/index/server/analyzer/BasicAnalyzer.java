@@ -225,7 +225,7 @@ public class BasicAnalyzer
         return fieldAnalyzers;
     }
 
-    protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
+    protected Map<String, Analyzer> getEntityTypeFieldAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         // No additional Analyzers by default.
         
         return fieldAnalyzers;
@@ -233,7 +233,7 @@ public class BasicAnalyzer
 
     protected Map<String, Analyzer> getFieldAnalyzers(final ExecutionErrorAccumulator eea, final EntityType entityType,
             final List<EntityAttribute> entityAttributes, final List<TagScope> tagScopes) {
-        return getEntityTypeAnalyzers(
+        return getEntityTypeFieldAnalyzers(
                 getAppearanceFieldAnalyzers(
                         getWorkflowFieldAnalyzers(entityType,
                                 getTagScopeFieldAnalyzers(tagScopes,
