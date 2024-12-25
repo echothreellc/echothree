@@ -33,6 +33,7 @@ import com.echothree.util.server.persistence.Session;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
@@ -244,5 +245,29 @@ public class BasicAnalyzer
                 )
         );
     }
-    
+
+    public Set<String> getDateFields() {
+        return null;
+    }
+
+    public Set<String> getDateTimeFields() {
+        return null;
+    }
+
+    public Set<String> getIntFields() {
+        return null;
+    }
+
+    public Set<String> getLongFields() {
+        return null;
+    }
+
+    public Set<String> getFloatFields() {
+        return null;
+    }
+
+    public Set<String> getDoubleFields() {
+        return null;
+    }
+
 }

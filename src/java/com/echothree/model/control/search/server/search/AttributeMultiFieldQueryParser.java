@@ -32,10 +32,12 @@ public class AttributeMultiFieldQueryParser
     protected AttributeQueryParserUtils attributeQueryParserUtils;
 
     public AttributeMultiFieldQueryParser(final ExecutionErrorAccumulator eea, final Set<String> dateFields, final Set<String> dateTimeFields,
+            final Set<String> intFields, final Set<String> longFields, final Set<String> floatFields, final Set<String> doubleFields,
             final EntityType entityType, final UserVisit userVisit, final String[] fields, final Analyzer analyzer) {
         super(fields, analyzer);
 
-        attributeQueryParserUtils = new AttributeQueryParserUtils(eea, dateFields, dateTimeFields, entityType, userVisit);
+        attributeQueryParserUtils = new AttributeQueryParserUtils(eea, dateFields, dateTimeFields, intFields, longFields,
+                floatFields, doubleFields, entityType, userVisit);
     }
 
     @Override

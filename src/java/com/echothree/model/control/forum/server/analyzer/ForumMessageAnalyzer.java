@@ -27,6 +27,7 @@ import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.apache.lucene.analysis.Analyzer;
 
 public class ForumMessageAnalyzer
@@ -51,5 +52,12 @@ public class ForumMessageAnalyzer
         
         return fieldAnalyzers;
     }
-    
+
+    @Override
+    public Set<String> getDateTimeFields() {
+        return Set.of(
+                IndexFields.postedTime.name()
+        );
+    }
+
 }

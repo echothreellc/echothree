@@ -38,6 +38,7 @@ import com.echothree.util.server.persistence.Session;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.apache.lucene.analysis.Analyzer;
 
 public class ContentCatalogItemAnalyzer
@@ -135,6 +136,16 @@ public class ContentCatalogItemAnalyzer
         return fieldAnalyzers;
 
 
+    }
+
+    @Override
+    public Set<String> getLongFields() {
+        return Set.of(
+                IndexFields.unitPrice.name(),
+                IndexFields.minimumUnitPrice.name(),
+                IndexFields.maximumUnitPrice.name(),
+                IndexFields.unitPriceIncrement.name()
+        );
     }
 
 }

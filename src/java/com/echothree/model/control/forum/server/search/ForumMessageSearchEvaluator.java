@@ -19,14 +19,15 @@ package com.echothree.model.control.forum.server.search;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.forum.common.ForumConstants;
+import com.echothree.model.control.forum.server.analyzer.ForumMessageAnalyzer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.IndexTypes;
-import com.echothree.model.control.forum.server.analyzer.ForumMessageAnalyzer;
-import com.echothree.model.control.search.common.SearchSortOrders;
+import com.echothree.model.control.index.server.analyzer.BasicAnalyzer;
 import com.echothree.model.control.search.common.SearchSortDirections;
+import com.echothree.model.control.search.common.SearchSortOrders;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
@@ -41,10 +42,6 @@ import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.search.SortField;
 
 public class ForumMessageSearchEvaluator
@@ -160,25 +157,10 @@ public class ForumMessageSearchEvaluator
     }
     
     @Override
-    public Analyzer getAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
+    public BasicAnalyzer getAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
         return new ForumMessageAnalyzer(eea, language, entityType);
     }
     
-    private static Set<String> dateTimeFields;
-    
-    static {
-        Set<String> set = new HashSet<>(1);
-
-        set.add(IndexFields.postedTime.name());
-        
-        dateTimeFields = Collections.unmodifiableSet(set);
-    }
-    
-    @Override
-    protected Set<String> getDateTimeFields() {
-        return dateTimeFields;
-    }
-
     @Override
     protected EntityInstancePKHolder executeSearch(final ExecutionErrorAccumulator eea) {
         var resultSet = super.executeSearch(eea);

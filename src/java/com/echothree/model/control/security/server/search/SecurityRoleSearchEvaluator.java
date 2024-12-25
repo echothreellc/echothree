@@ -22,6 +22,7 @@ import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.IndexTypes;
+import com.echothree.model.control.index.server.analyzer.BasicAnalyzer;
 import com.echothree.model.control.security.server.analyzer.SecurityRoleAnalyzer;
 import com.echothree.model.control.search.common.SearchSortOrders;
 import com.echothree.model.control.search.common.SearchSortDirections;
@@ -35,7 +36,6 @@ import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.search.SortField;
 
 public class SecurityRoleSearchEvaluator
@@ -77,7 +77,7 @@ public class SecurityRoleSearchEvaluator
     }
     
     @Override
-    public Analyzer getAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
+    public BasicAnalyzer getAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
         return new SecurityRoleAnalyzer(eea, language, entityType);
     }
     
