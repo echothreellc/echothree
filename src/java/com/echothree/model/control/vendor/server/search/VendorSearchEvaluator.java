@@ -18,6 +18,7 @@ package com.echothree.model.control.vendor.server.search;
 
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.Indexes;
+import com.echothree.model.control.index.server.analyzer.BasicAnalyzer;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.search.PartySearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
@@ -32,7 +33,6 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
-import org.apache.lucene.analysis.Analyzer;
 
 public class VendorSearchEvaluator
         extends PartySearchEvaluator {
@@ -55,7 +55,7 @@ public class VendorSearchEvaluator
     }
 
     @Override
-    public Analyzer getAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
+    public BasicAnalyzer getAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
         return new VendorAnalyzer(eea, language, entityType, partyType, entityNameIndexField);
     }
 
