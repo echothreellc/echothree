@@ -42,8 +42,8 @@ public class EntityAliasTypeAnalyzer
     }
     
     @Override
-    protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
-        super.getEntityTypeAnalyzers(fieldAnalyzers);
+    protected Map<String, Analyzer> getEntityTypeFieldAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
+        super.getEntityTypeFieldAnalyzers(fieldAnalyzers);
 
         fieldAnalyzers.put(IndexFields.componentVendorName.name(), new WhitespaceLowerCaseAnalyzer());
         fieldAnalyzers.put(IndexFields.entityTypeName.name(), new WhitespaceLowerCaseAnalyzer());

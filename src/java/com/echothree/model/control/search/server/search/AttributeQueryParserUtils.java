@@ -56,6 +56,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
+import org.apache.lucene.document.DoublePoint;
+import org.apache.lucene.document.FloatPoint;
 import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.index.Term;
@@ -69,8 +71,12 @@ public class AttributeQueryParserUtils
         extends BaseLogic {
 
     final protected ExecutionErrorAccumulator eea;
-    final protected Set<String> dateFields;
-    final protected Set<String> dateTimeFields;
+    final protected Set<String> dateFields = new HashSet<>();
+    final protected Set<String> dateTimeFields = new HashSet<>();
+    final protected Set<String> intFields = new HashSet<>();
+    final protected Set<String> longFields = new HashSet<>();
+    final protected Set<String> floatFields = new HashSet<>();
+    final protected Set<String> doubleFields = new HashSet<>();
     final protected EntityType entityType;
     final protected UserVisit userVisit;
     
@@ -79,21 +85,36 @@ public class AttributeQueryParserUtils
     protected Map<String, EntityAttribute> entityAttributes;
 
     public AttributeQueryParserUtils(final ExecutionErrorAccumulator eea, final Set<String> dateFields, final Set<String> dateTimeFields,
+            final Set<String> intFields, final Set<String> longFields, final Set<String> floatFields, final Set<String> doubleFields,
             final EntityType entityType, final UserVisit userVisit) {
         this.eea = eea;
         this.entityType = entityType;
         this.userVisit = userVisit;
         
-        this.dateFields = new HashSet<>();
         if(dateFields != null) {
             this.dateFields.addAll(dateFields);
         }
-        
-        this.dateTimeFields = new HashSet<>();
+
         if(dateTimeFields != null) {
             this.dateTimeFields.addAll(dateTimeFields);
         }
-        
+
+        if(intFields != null) {
+            this.intFields.addAll(intFields);
+        }
+
+        if(longFields != null) {
+            this.longFields.addAll(longFields);
+        }
+
+        if(floatFields != null) {
+            this.floatFields.addAll(floatFields);
+        }
+
+        if(doubleFields != null) {
+            this.doubleFields.addAll(doubleFields);
+        }
+
         this.dateTimeFields.add(IndexFields.createdTime.name());
         this.dateTimeFields.add(IndexFields.modifiedTime.name());
         this.dateTimeFields.add(IndexFields.deletedTime.name());
@@ -250,10 +271,10 @@ public class AttributeQueryParserUtils
         
         return value;
     }
-    
+
     protected Long longValueOf(final String fieldValue) {
         Long result = null;
-        
+
         if(fieldValue.equalsIgnoreCase("MAX_VALUE")) {
             result = Long.MAX_VALUE;
         } else if(fieldValue.equalsIgnoreCase("MIN_VALUE")) {
@@ -265,10 +286,46 @@ public class AttributeQueryParserUtils
                 handleExecutionError(InvalidFormatException.class, eea, ExecutionErrors.InvalidFormat.name(), fieldValue);
             }
         }
-        
+
         return result;
     }
-    
+
+    protected Float floatValueOf(final String fieldValue) {
+        Float result = null;
+
+        if(fieldValue.equalsIgnoreCase("MAX_VALUE")) {
+            result = Float.MAX_VALUE;
+        } else if(fieldValue.equalsIgnoreCase("MIN_VALUE")) {
+            result = Float.MIN_VALUE;
+        } else {
+            try {
+                result = Float.valueOf(fieldValue);
+            } catch(NumberFormatException nfe) {
+                handleExecutionError(InvalidFormatException.class, eea, ExecutionErrors.InvalidFormat.name(), fieldValue);
+            }
+        }
+
+        return result;
+    }
+
+    protected Double doubleValueOf(final String fieldValue) {
+        Double result = null;
+
+        if(fieldValue.equalsIgnoreCase("MAX_VALUE")) {
+            result = Double.MAX_VALUE;
+        } else if(fieldValue.equalsIgnoreCase("MIN_VALUE")) {
+            result = Double.MIN_VALUE;
+        } else {
+            try {
+                result = Double.valueOf(fieldValue);
+            } catch(NumberFormatException nfe) {
+                handleExecutionError(InvalidFormatException.class, eea, ExecutionErrors.InvalidFormat.name(), fieldValue);
+            }
+        }
+
+        return result;
+    }
+
     protected Integer latitudeValueOf(final String fieldValue) {
         return intValueOf(DecimalUtils.getInstance().parse("-", ".", 6, fieldValue), -90000000, 90000000);
     }
@@ -422,6 +479,30 @@ public class AttributeQueryParserUtils
                 if(!eea.hasExecutionErrors()) {
                     query = LongPoint.newSetQuery(field, val);
                 }
+            } else if(intFields.contains(field)) {
+                var val = intValueOf(term.text());
+
+                if(!eea.hasExecutionErrors()) {
+                    query = IntPoint.newSetQuery(field, val);
+                }
+            } else if(longFields.contains(field)) {
+                var val = longValueOf(term.text());
+
+                if(!eea.hasExecutionErrors()) {
+                    query = LongPoint.newSetQuery(field, val);
+                }
+            } else if(floatFields.contains(field)) {
+                var val = floatValueOf(term.text());
+
+                if(!eea.hasExecutionErrors()) {
+                    query = FloatPoint.newSetQuery(field, val);
+                }
+            } else if(doubleFields.contains(field)) {
+                var val = doubleValueOf(term.text());
+
+                if(!eea.hasExecutionErrors()) {
+                    query = DoublePoint.newSetQuery(field, val);
+                }
             } else {
                 var entityAttribute = getEntityAttribute(field);
 
@@ -541,6 +622,27 @@ public class AttributeQueryParserUtils
 
                     if(!eea.hasExecutionErrors()) {
                         query = LongPoint.newRangeQuery(field, startInclusive? valMin: Math.addExact(valMin, 1) , endInclusive? valMax: Math.addExact(valMax, -1));
+                    }
+                } if(intFields.contains(field)) {
+                    var valMin = intValueOf(min);
+                    var valMax = intValueOf(max);
+
+                    if(!eea.hasExecutionErrors()) {
+                        query = IntPoint.newRangeQuery(field, startInclusive? valMin: Math.addExact(valMin, 1) , endInclusive? valMax: Math.addExact(valMax, -1));
+                    }
+                } else if(longFields.contains(field)) {
+                    var valMin = longValueOf(min);
+                    var valMax = longValueOf(max);
+
+                    if(!eea.hasExecutionErrors()) {
+                        query = LongPoint.newRangeQuery(field, startInclusive? valMin: Math.addExact(valMin, 1) , endInclusive? valMax: Math.addExact(valMax, -1));
+                    }
+                }  else if(floatFields.contains(field)) {
+                    var valMin = floatValueOf(min);
+                    var valMax = floatValueOf(max);
+
+                    if(!eea.hasExecutionErrors()) {
+                        query = FloatPoint.newRangeQuery(field, startInclusive? valMin: FloatPoint.nextDown(valMin) , endInclusive? valMax: FloatPoint.nextUp(valMax));
                     }
                 } else {
                     var entityAttribute = getEntityAttribute(field);

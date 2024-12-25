@@ -38,6 +38,7 @@ import com.echothree.util.server.persistence.Session;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.apache.lucene.analysis.Analyzer;
 
 public class ContentCatalogItemAnalyzer
@@ -83,8 +84,8 @@ public class ContentCatalogItemAnalyzer
     }
     
     @Override
-    protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
-        super.getEntityTypeAnalyzers(fieldAnalyzers);
+    protected Map<String, Analyzer> getEntityTypeFieldAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
+        super.getEntityTypeFieldAnalyzers(fieldAnalyzers);
 
         // Items
         fieldAnalyzers.put(IndexFields.aliases.name(), new WhitespaceLowerCaseAnalyzer());
@@ -135,6 +136,16 @@ public class ContentCatalogItemAnalyzer
         return fieldAnalyzers;
 
 
+    }
+
+    @Override
+    public Set<String> getLongFields() {
+        return Set.of(
+                IndexFields.unitPrice.name(),
+                IndexFields.minimumUnitPrice.name(),
+                IndexFields.maximumUnitPrice.name(),
+                IndexFields.unitPriceIncrement.name()
+        );
     }
 
 }
