@@ -14,19 +14,24 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.item.server.indexer;
+package com.echothree.model.control.content.server.indexer;
 
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.item.server.analyzer.ItemAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.control.index.server.indexer.IndexerDebugFlags;
 import com.echothree.model.control.index.server.indexer.sortabledescriptionproducer.SortableDescriptionProducer;
 import com.echothree.model.control.index.server.indexer.sortabledescriptionproducer.SortableDescriptionProducerFactory;
+import com.echothree.model.control.item.common.ItemPriceTypes;
+import com.echothree.model.control.item.server.analyzer.ItemAnalyzer;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.data.content.server.entity.ContentCatalog;
+import com.echothree.model.data.content.server.entity.ContentCatalogItem;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.item.server.entity.Item;
@@ -41,16 +46,17 @@ import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.document.SortedDocValuesField;
 import org.apache.lucene.util.BytesRef;
 
-public class ItemIndexer
-        extends BaseIndexer<Item> {
-    
+public class ContentCatalogItemIndexer
+        extends BaseIndexer<ContentCatalogItem> {
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
     ItemControl itemControl = Session.getModelController(ItemControl.class);
-    
+
     List<ItemDescriptionType> itemDescriptionTypes;
     SortableDescriptionProducer sortableDescriptionProducer;
 
     /** Creates a new instance of ItemIndexer */
-    public ItemIndexer(final ExecutionErrorAccumulator eea, final Index index) {
+    public ContentCatalogItemIndexer(final ExecutionErrorAccumulator eea, final Index index) {
         super(eea, index);
         
         itemDescriptionTypes = itemControl.getItemDescriptionTypesByIncludeInIndex();
@@ -63,12 +69,11 @@ public class ItemIndexer
     }
     
     @Override
-    protected Item getEntity(final EntityInstance entityInstance) {
-        return itemControl.getItemByEntityInstance(entityInstance);
+    protected ContentCatalogItem getEntity(final EntityInstance entityInstance) {
+        return contentControl.getContentCatalogItemByEntityInstance(entityInstance);
     }
 
-    @Override
-    protected Document convertToDocument(final EntityInstance entityInstance, final Item item) {
+    private void addItemToDocument(final Item item, final Document document) {
         var itemDetail = item.getLastDetail();
         var itemAliases = itemControl.getItemAliasesByItem(item);
         var itemDeliveryType = itemDetail.getItemDeliveryType();
@@ -81,8 +86,6 @@ public class ItemIndexer
         var purchaseOrderStartTime = itemDetail.getPurchaseOrderStartTime();
         var purchaseOrderEndTime = itemDetail.getPurchaseOrderEndTime();
 
-        var document = newDocumentWithEntityInstanceFields(entityInstance, item.getPrimaryKey());
-
         document.add(new Field(IndexFields.itemName.name(), itemDetail.getItemName(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new SortedDocValuesField(IndexFields.itemName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(itemDetail.getItemName())));
@@ -94,11 +97,11 @@ public class ItemIndexer
         if(itemDeliveryType != null) {
             document.add(new Field(IndexFields.itemDeliveryTypeName.name(), itemDeliveryType.getItemDeliveryTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
         }
-        
+
         if(itemInventoryType != null) {
             document.add(new Field(IndexFields.itemInventoryTypeName.name(), itemInventoryType.getItemInventoryTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
         }
-        
+
         itemAliases.stream().map((itemAlias) -> {
             document.add(new Field(IndexFields.aliases.name(), itemAlias.getAlias(), FieldTypes.NOT_STORED_TOKENIZED));
             return itemAlias;
@@ -108,21 +111,21 @@ public class ItemIndexer
         }).forEach((itemAlias) -> {
             document.add(new Field(itemAlias.getItemAliasType().getLastDetail().getItemAliasTypeName(), itemAlias.getAlias(), FieldTypes.NOT_STORED_TOKENIZED));
         });
-        
+
         document.add(new Field(IndexFields.itemCategoryName.name(), itemDetail.getItemCategory().getLastDetail().getItemCategoryName(), FieldTypes.NOT_STORED_TOKENIZED));
-        
+
         if(itemAccountingCategory != null) {
             document.add(new Field(IndexFields.itemAccountingCategoryName.name(), itemDetail.getItemAccountingCategory().getLastDetail().getItemAccountingCategoryName(), FieldTypes.NOT_STORED_TOKENIZED));
         }
-        
+
         if(itemPurchasingCategory != null) {
             document.add(new Field(IndexFields.itemPurchasingCategoryName.name(), itemDetail.getItemPurchasingCategory().getLastDetail().getItemPurchasingCategoryName(), FieldTypes.NOT_STORED_TOKENIZED));
         }
-        
+
         if(inventorySerialized != null) {
             document.add(new Field(IndexFields.inventorySerialized.name(), itemDetail.getInventorySerialized().toString(), FieldTypes.NOT_STORED_TOKENIZED));
         }
-        
+
         document.add(new Field(IndexFields.shippingChargeExempt.name(), itemDetail.getShippingChargeExempt().toString(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new LongPoint(IndexFields.shippingStartTime.name(), itemDetail.getShippingStartTime()));
         if(shippingEndTime != null) {
@@ -155,7 +158,7 @@ public class ItemIndexer
                 if(mimeTypeUsageType == null) {
                     var itemStringDescription = itemControl.getItemStringDescription(itemDescription);
                     var stringDescription = itemStringDescription.getStringDescription();
-                    
+
                     document.add(new Field(itemDescriptionTypeName, stringDescription, FieldTypes.NOT_STORED_TOKENIZED));
                     document.add(new Field(itemDescriptionTypeName + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.dictionary.name(),
                             stringDescription, FieldTypes.NOT_STORED_TOKENIZED));
@@ -182,6 +185,71 @@ public class ItemIndexer
                 }
             }
         });
+    }
+
+    private void addContentCatalogToDocument(final ContentCatalog contentCatalog, final Document document) {
+        var contentCatalogDetail = contentCatalog.getLastDetail();
+        var contentCollectionDetail = contentCatalogDetail.getContentCollection().getLastDetail();
+
+        document.add(new Field(IndexFields.contentCollectionName.name(), contentCollectionDetail.getContentCollectionName(),
+                FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new SortedDocValuesField(IndexFields.contentCollectionName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
+                new BytesRef(contentCollectionDetail.getContentCollectionName())));
+        document.add(new Field(IndexFields.contentCatalogName.name(), contentCatalogDetail.getContentCatalogName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new SortedDocValuesField(IndexFields.contentCatalogName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
+                new BytesRef(contentCatalogDetail.getContentCatalogName())));
+    }
+
+    private void addContentCatalogItemToDocument(final ContentCatalogItem contentCatalogItem, final Document document) {
+        var contentControl = Session.getModelController(ContentControl.class);
+        var unitOfMeasureTypeDetail = contentCatalogItem.getUnitOfMeasureType().getLastDetail();
+
+        document.add(new Field(IndexFields.inventoryConditionName.name(), contentCatalogItem.getInventoryCondition().getLastDetail().getInventoryConditionName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new Field(IndexFields.unitOfMeasureKindName.name(), unitOfMeasureTypeDetail.getUnitOfMeasureKind().getLastDetail().getUnitOfMeasureKindName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new Field(IndexFields.unitOfMeasureTypeName.name(), unitOfMeasureTypeDetail.getUnitOfMeasureTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new Field(IndexFields.currencyIsoName.name(), contentCatalogItem.getCurrency().getCurrencyIsoName(), FieldTypes.NOT_STORED_TOKENIZED));
+
+        var contentCategoryItems = contentControl.getContentCategoryItemsByContentCatalogItem(contentCatalogItem);
+        var contentCategoryNamesBuilder = new StringBuilder();
+        if(!contentCategoryItems.isEmpty()) {
+            contentCategoryItems.forEach((contentCategoryItem) -> {
+                if(!contentCategoryNamesBuilder.isEmpty()) {
+                    contentCategoryNamesBuilder.append(' ');
+                }
+
+                contentCategoryNamesBuilder.append(contentCategoryItem.getContentCategory().getLastDetail().getContentCategoryName());
+            });
+            document.add(new Field(IndexFields.contentCategoryNames.name(), contentCategoryNamesBuilder.toString(), FieldTypes.NOT_STORED_TOKENIZED));
+        }
+
+        var itemPriceType = ItemPriceTypes.valueOf(contentCatalogItem.getItem().getLastDetail().getItemPriceType().getItemPriceTypeName());
+        switch(itemPriceType) {
+            case FIXED -> {
+                var fixedItemPrice = contentControl.getContentCatalogItemFixedPrice(contentCatalogItem);
+
+                document.add(new LongPoint(IndexFields.unitPrice.name(), fixedItemPrice.getUnitPrice()));
+            }
+            case VARIABLE -> {
+                var variableItemPrice = contentControl.getContentCatalogItemVariablePrice(contentCatalogItem);
+
+                document.add(new LongPoint(IndexFields.minimumUnitPrice.name(), variableItemPrice.getMinimumUnitPrice()));
+                document.add(new LongPoint(IndexFields.maximumUnitPrice.name(), variableItemPrice.getMaximumUnitPrice()));
+                document.add(new LongPoint(IndexFields.unitPriceIncrement.name(), variableItemPrice.getUnitPriceIncrement()));
+            }
+        }
+    }
+
+    @Override
+    protected Document convertToDocument(final EntityInstance entityInstance, final ContentCatalogItem contentCatalogItem) {
+        var coreControl = Session.getModelController(CoreControl.class);
+        var document = newDocumentWithEntityInstanceFields(entityInstance, contentCatalogItem.getPrimaryKey());
+
+        addEntityInstanceFieldsToDocument(document, coreControl.getEntityInstanceByBasePK(contentCatalogItem.getItemPK()));
+        addEntityInstanceFieldsToDocument(document, coreControl.getEntityInstanceByBasePK(contentCatalogItem.getContentCatalogPK()));
+
+        addItemToDocument(contentCatalogItem.getItem(), document);
+        addContentCatalogToDocument(contentCatalogItem.getContentCatalog(), document);
+        addContentCatalogItemToDocument(contentCatalogItem, document);
 
         return document;
     }
