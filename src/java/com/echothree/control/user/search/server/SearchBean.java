@@ -992,6 +992,40 @@ public class SearchBean
     }
 
     // -------------------------------------------------------------------------
+    //   Content Catalog Item Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchContentCatalogItems(UserVisitPK userVisitPK, SearchContentCatalogItemsForm form) {
+        return new SearchContentCatalogItemsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getContentCatalogItemResults(UserVisitPK userVisitPK, GetContentCatalogItemResultsForm form) {
+        return new GetContentCatalogItemResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getContentCatalogItemResultsFacet(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetForm form) {
+        return new GetContentCatalogItemResultsFacetCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getContentCatalogItemResultsFacets(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetsForm form) {
+        return new GetContentCatalogItemResultsFacetsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countContentCatalogItemResults(UserVisitPK userVisitPK, CountContentCatalogItemResultsForm form) {
+        return new CountContentCatalogItemResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearContentCatalogItemResults(UserVisitPK userVisitPK, ClearContentCatalogItemResultsForm form) {
+        return new ClearContentCatalogItemResultsCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
     //   Content Category Search
     // -------------------------------------------------------------------------
 
@@ -999,32 +1033,32 @@ public class SearchBean
     public CommandResult searchContentCategories(UserVisitPK userVisitPK, SearchContentCategoriesForm form) {
         return new SearchContentCategoriesCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult getContentCategoryResults(UserVisitPK userVisitPK, GetContentCategoryResultsForm form) {
         return new GetContentCategoryResultsCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult getContentCategoryResultsFacet(UserVisitPK userVisitPK, GetContentCategoryResultsFacetForm form) {
         return new GetContentCategoryResultsFacetCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult getContentCategoryResultsFacets(UserVisitPK userVisitPK, GetContentCategoryResultsFacetsForm form) {
         return new GetContentCategoryResultsFacetsCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult countContentCategoryResults(UserVisitPK userVisitPK, CountContentCategoryResultsForm form) {
         return new CountContentCategoryResultsCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult clearContentCategoryResults(UserVisitPK userVisitPK, ClearContentCategoryResultsForm form) {
         return new ClearContentCategoryResultsCommand(userVisitPK, form).run();
     }
-    
+
     // -------------------------------------------------------------------------
     //   Security Role Group Search
     // -------------------------------------------------------------------------

@@ -3487,7 +3487,11 @@ public class ContentControl
     public List<ContentCatalogItemTransfer> getContentCatalogItemTransfers(UserVisit userVisit, ContentCatalog contentCatalog) {
         return getContentCatalogItemTransfers(userVisit, getContentCatalogItemsByContentCatalog(contentCatalog));
     }
-    
+
+    public ContentCatalogItem getContentCatalogItemByPK(ContentCatalogItemPK contentCatalogItemPK) {
+        return ContentCatalogItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, contentCatalogItemPK);
+    }
+
     public void deleteContentCatalogItem(ContentCatalogItem contentCatalogItem, BasePK deletedBy) {
         var item = contentCatalogItem.getItem();
         var itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
