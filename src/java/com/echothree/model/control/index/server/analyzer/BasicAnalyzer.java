@@ -118,15 +118,11 @@ public class BasicAnalyzer
     }
 
     @Override
-    protected TokenStreamComponents wrapComponents(String fieldName, TokenStreamComponents components) {
-        return components;
-    }
-
-    @Override
     public String toString() {
         return "BasicAnalyzer(" + cachedFieldAnalyzers + ", default=" + defaultAnalyzer + ")";
     }
 
+    @SuppressWarnings("resource") // This is taken care of in our close() method.
     private Analyzer getDefaultAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
         Analyzer selectedAnalyzer = null;
         
@@ -192,30 +188,28 @@ public class BasicAnalyzer
     }
 
     private Map<String, Analyzer> getTagScopeFieldAnalyzers(final List<TagScope> tagScopes, final Map<String, Analyzer> fieldAnalyzers) {
-        tagScopes.stream().map((tagScope) -> tagScope.getLastDetail().getTagScopeName()).map((fieldName) -> {
+        tagScopes.forEach(tagScope -> {
+            var tagScopeName = tagScope.getLastDetail().getTagScopeName();
             if(IndexerDebugFlags.LogBaseAnalyzer) {
-                log.info("--- fieldName = " + fieldName);
+                log.info("--- fieldName = " + tagScopeName);
             }
-            return fieldName;
-        }).forEach((fieldName) -> {
-            fieldAnalyzers.put(fieldName, new WhitespaceLowerCaseAnalyzer());
+            fieldAnalyzers.put(tagScopeName, new WhitespaceLowerCaseAnalyzer());
         });
-        
+
         return fieldAnalyzers;
     }
 
     private Map<String, Analyzer> getWorkflowFieldAnalyzers(final EntityType entityType, final Map<String, Analyzer> fieldAnalyzers) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
 
-        workflowControl.getWorkflowsByEntityType(entityType).stream().map((workflow) -> workflow.getLastDetail().getWorkflowName()).map((fieldName) -> {
+        workflowControl.getWorkflowsByEntityType(entityType).forEach(workflow -> {
+            var workflowName = workflow.getLastDetail().getWorkflowName();
             if(IndexerDebugFlags.LogBaseAnalyzer) {
-                log.info("--- fieldName = " + fieldName);
+                log.info("--- fieldName = " + workflowName);
             }
-            return fieldName;
-        }).forEach((fieldName) -> {
-            fieldAnalyzers.put(fieldName, new WhitespaceLowerCaseAnalyzer());
+            fieldAnalyzers.put(workflowName, new WhitespaceLowerCaseAnalyzer());
         });
-        
+
         return fieldAnalyzers;
     }
 
