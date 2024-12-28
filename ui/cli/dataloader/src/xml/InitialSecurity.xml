@@ -5071,6 +5071,12 @@
                 <securityRoleDescription languageIsoName="en" description="Period Type Description" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="FiscalPeriod" parentSecurityRoleGroupName="PeriodComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Fiscal Period" />
+            <securityRole securityRoleName="Create" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Fiscal Period Create" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="FiscalPeriodStatus" parentSecurityRoleGroupName="PeriodComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Fiscal Period Status" />
             <securityRole securityRoleName="Choices" isDefault="true" sortOrder="1">
@@ -9150,6 +9156,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PeriodType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PeriodType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PeriodType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FiscalPeriod" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FiscalPeriodStatus" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FiscalPeriodStatus" securityRoleName="OpenToClosed" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FiscalPeriodStatus" securityRoleName="ClosedToOpen" />

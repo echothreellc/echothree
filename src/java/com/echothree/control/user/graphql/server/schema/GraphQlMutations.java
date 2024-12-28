@@ -140,6 +140,8 @@ import com.echothree.control.user.payment.common.result.EditPaymentProcessorActi
 import com.echothree.control.user.payment.common.result.EditPaymentProcessorResult;
 import com.echothree.control.user.payment.common.result.EditPaymentProcessorResultCodeResult;
 import com.echothree.control.user.payment.common.result.EditPaymentProcessorTypeResult;
+import com.echothree.control.user.period.common.PeriodUtil;
+import com.echothree.control.user.period.common.result.CreateFiscalYearResult;
 import com.echothree.control.user.sales.common.SalesUtil;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderLineResult;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
@@ -12770,6 +12772,32 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 mutationResultObject.setCreateSalesOrderLineResult((CreateSalesOrderLineResult)commandResult.getExecutionResult().getResult());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createFiscalYear(final DataFetchingEnvironment env,
+            @GraphQLName("year") @GraphQLNonNull final String year) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = PeriodUtil.getHome().getCreateFiscalYearForm();
+
+            commandForm.setYear(year);
+
+            var commandResult = PeriodUtil.getHome().createFiscalYear(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateFiscalYearResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
