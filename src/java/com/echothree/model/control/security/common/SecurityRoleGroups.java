@@ -129,6 +129,7 @@ public enum SecurityRoleGroups {
     FilterKind,
     FilterType,
     FiscalPeriodStatus,
+    FiscalPeriod,
     FontStyle,
     FontWeight,
     Forum,
