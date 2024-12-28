@@ -12806,4 +12806,26 @@ public interface GraphQlMutations {
         return mutationResultObject;
     }
 
+    @GraphQLField
+    @GraphQLRelayMutation
+    @GraphQLName("setFiscalYearStatus")
+    static MutationResultObject setFiscalYearStatus(final DataFetchingEnvironment env,
+            @GraphQLName("periodName") @GraphQLNonNull final String periodName,
+            @GraphQLName("fiscalPeriodStatusChoice") @GraphQLNonNull final String fiscalPeriodStatusChoice) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = PeriodUtil.getHome().getSetFiscalPeriodStatusForm();
+
+            commandForm.setPeriodName(periodName);
+            commandForm.setFiscalPeriodStatusChoice(fiscalPeriodStatusChoice);
+
+            mutationResultObject.setCommandResult(PeriodUtil.getHome().setFiscalPeriodStatus(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
 }
