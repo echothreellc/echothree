@@ -1388,12 +1388,30 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="EntityBooleanDefaults" nameSingular="EntityBooleanDefault" columnPrefix="enbldef">
+                    <columns>
+                        <column name="EntityBooleanDefaultId" type="EID" nullAllowed="false" />
+                        <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
+                        <column name="BooleanAttribute" type="Boolean" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityBooleanDefaultId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="EntityBooleanAttributes" nameSingular="EntityBooleanAttribute" columnPrefix="enbla">
                     <columns>
                         <column name="EntityBooleanAttributeId" type="EID" nullAllowed="false" />
                         <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
                         <column name="EntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
-                        <column name="BooleanAttribute" type="Boolean" nullAllowed="false" />                        
+                        <column name="BooleanAttribute" type="Boolean" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>

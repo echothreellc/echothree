@@ -148,6 +148,9 @@
             <entityType entityTypeName="EntityLongRangeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Long Range Description" />
             </entityType>
+            <entityType entityTypeName="EntityBooleanDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Boolean Default" />
+            </entityType>
             <entityType entityTypeName="EntityBooleanAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Boolean Attribute" />
             </entityType>

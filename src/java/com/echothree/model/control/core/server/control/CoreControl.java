@@ -85,6 +85,7 @@ import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityAttributeTypeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityBlobAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityBooleanAttributeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityBooleanDefaultTransfer;
 import com.echothree.model.control.core.common.transfer.EntityClobAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityCollectionAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityDateAttributeTransfer;
@@ -226,6 +227,7 @@ import com.echothree.model.data.core.server.entity.EntityAttributeTypeDescriptio
 import com.echothree.model.data.core.server.entity.EntityAttributeWorkflow;
 import com.echothree.model.data.core.server.entity.EntityBlobAttribute;
 import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
+import com.echothree.model.data.core.server.entity.EntityBooleanDefault;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
 import com.echothree.model.data.core.server.entity.EntityCollectionAttribute;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
@@ -346,6 +348,7 @@ import com.echothree.model.data.core.server.factory.EntityAttributeTypeFactory;
 import com.echothree.model.data.core.server.factory.EntityAttributeWorkflowFactory;
 import com.echothree.model.data.core.server.factory.EntityBlobAttributeFactory;
 import com.echothree.model.data.core.server.factory.EntityBooleanAttributeFactory;
+import com.echothree.model.data.core.server.factory.EntityBooleanDefaultFactory;
 import com.echothree.model.data.core.server.factory.EntityClobAttributeFactory;
 import com.echothree.model.data.core.server.factory.EntityCollectionAttributeFactory;
 import com.echothree.model.data.core.server.factory.EntityDateAttributeFactory;
@@ -457,6 +460,7 @@ import com.echothree.model.data.core.server.value.EntityAttributeStringValue;
 import com.echothree.model.data.core.server.value.EntityAttributeWorkflowValue;
 import com.echothree.model.data.core.server.value.EntityBlobAttributeValue;
 import com.echothree.model.data.core.server.value.EntityBooleanAttributeValue;
+import com.echothree.model.data.core.server.value.EntityBooleanDefaultValue;
 import com.echothree.model.data.core.server.value.EntityClobAttributeValue;
 import com.echothree.model.data.core.server.value.EntityDateAttributeValue;
 import com.echothree.model.data.core.server.value.EntityEntityAttributeValue;
@@ -2304,15 +2308,33 @@ public class CoreControl
     public void deleteCommandMessageTranslationsByCommandMessage(CommandMessage commandMessage, BasePK deletedBy) {
         deleteCommandMessageTranslations(getCommandMessageTranslationsByCommandMessageForUpdate(commandMessage), deletedBy);
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Entity Instances
     // --------------------------------------------------------------------------------
-    
+
     public EntityInstance createEntityInstance(EntityType entityType, Long entityUniqueId) {
         return EntityInstanceFactory.getInstance().create(entityType, entityUniqueId, null);
     }
-    
+
+    public EntityInstance createEntityAttributeDefaults(EntityInstance entityInstance, BasePK createdBy) {
+        var entityAttributes = getEntityAttributesByEntityType(entityInstance.getEntityType());
+
+        entityAttributes.forEach(entityAttribute -> {
+            var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+
+            if(entityAttributeTypeName.equals(EntityAttributeTypes.BOOLEAN.name())) {
+                var entityBooleanDefault = getEntityBooleanDefault(entityAttribute);
+
+                if(entityBooleanDefault != null) {
+                    createEntityBooleanAttribute(entityAttribute, entityInstance, entityBooleanDefault.getBooleanAttribute(), createdBy);
+                }
+            }
+        });
+
+        return entityInstance;
+    }
+
     public boolean verifyEntityInstance(final EntityInstance entityInstance, final String componentVendorName, final String entityTypeName) {
         var result = true;
         var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
@@ -5570,7 +5592,10 @@ public class CoreControl
         var entityAttributeType = EntityAttributeTypes.valueOf(entityAttributeTypeName);
 
         switch(entityAttributeType) {
-            case BOOLEAN -> deleteEntityBooleanAttributesByEntityAttribute(entityAttribute, deletedBy);
+            case BOOLEAN -> {
+                deleteEntityBooleanDefaultByEntityAttribute(entityAttribute, deletedBy);
+                deleteEntityBooleanAttributesByEntityAttribute(entityAttribute, deletedBy);
+            }
             case NAME -> deleteEntityNameAttributesByEntityAttribute(entityAttribute, deletedBy);
             case INTEGER, LONG -> {
                 deleteEntityAttributeNumericByEntityAttribute(entityAttribute, deletedBy);
@@ -9262,7 +9287,7 @@ public class CoreControl
         return getProtocols(EntityPermission.READ_WRITE);
     }
 
-   public ProtocolTransfer getProtocolTransfer(UserVisit userVisit, Protocol protocol) {
+    public ProtocolTransfer getProtocolTransfer(UserVisit userVisit, Protocol protocol) {
         return getCoreTransferCaches(userVisit).getProtocolTransferCache().getProtocolTransfer(protocol);
     }
 
@@ -9721,7 +9746,7 @@ public class CoreControl
         return getServicesByProtocol(protocol, EntityPermission.READ_WRITE);
     }
 
-   public ServiceTransfer getServiceTransfer(UserVisit userVisit, Service service) {
+    public ServiceTransfer getServiceTransfer(UserVisit userVisit, Service service) {
         return getCoreTransferCaches(userVisit).getServiceTransferCache().getServiceTransfer(service);
     }
 
@@ -10152,7 +10177,7 @@ public class CoreControl
         return getServers(EntityPermission.READ_WRITE);
     }
 
-   public ServerTransfer getServerTransfer(UserVisit userVisit, Server server) {
+    public ServerTransfer getServerTransfer(UserVisit userVisit, Server server) {
         return getCoreTransferCaches(userVisit).getServerTransferCache().getServerTransfer(server);
     }
 
@@ -10593,6 +10618,136 @@ public class CoreControl
 
     public void deleteServerServicesByService(Service service, BasePK deletedBy) {
         deleteServerServices(getServerServicesByServiceForUpdate(service), deletedBy);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Entity Boolean Defaults
+    // --------------------------------------------------------------------------------
+
+    public EntityBooleanDefault createEntityBooleanDefault(EntityAttribute entityAttribute, Boolean booleanAttribute,
+            BasePK createdBy) {
+        var entityBooleanDefault = EntityBooleanDefaultFactory.getInstance().create(entityAttribute,
+                booleanAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityBooleanDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return entityBooleanDefault;
+    }
+
+    public long countEntityBooleanDefaultHistory(EntityAttribute entityAttribute) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitybooleandefaults
+                    WHERE enbldef_ena_entityattributeid = ?
+                    """, entityAttribute);
+    }
+
+    private static final Map<EntityPermission, String> getEntityBooleanDefaultHistoryQueries;
+
+    static {
+        getEntityBooleanDefaultHistoryQueries = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entitybooleandefaults
+                WHERE enbldef_ena_entityattributeid = ?
+                ORDER BY enbldef_thrutime
+                _LIMIT_
+                """);
+    }
+
+    public List<EntityBooleanDefault> getEntityBooleanDefaultHistory(EntityAttribute entityAttribute) {
+        return EntityBooleanDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityBooleanDefaultHistoryQueries,
+                entityAttribute);
+    }
+
+    private EntityBooleanDefault getEntityBooleanDefault(EntityAttribute entityAttribute, EntityPermission entityPermission) {
+        EntityBooleanDefault entityBooleanDefault;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entitybooleandefaults " +
+                        "WHERE enbldef_ena_entityattributeid = ? AND enbldef_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entitybooleandefaults " +
+                        "WHERE enbldef_ena_entityattributeid = ? AND enbldef_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = EntityBooleanDefaultFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            entityBooleanDefault = EntityBooleanDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityBooleanDefault;
+    }
+
+    public EntityBooleanDefault getEntityBooleanDefault(EntityAttribute entityAttribute) {
+        return getEntityBooleanDefault(entityAttribute, EntityPermission.READ_ONLY);
+    }
+
+    public EntityBooleanDefault getEntityBooleanDefaultForUpdate(EntityAttribute entityAttribute) {
+        return getEntityBooleanDefault(entityAttribute, EntityPermission.READ_WRITE);
+    }
+
+    public EntityBooleanDefaultValue getEntityBooleanDefaultValueForUpdate(EntityBooleanDefault entityBooleanDefault) {
+        return entityBooleanDefault == null? null: entityBooleanDefault.getEntityBooleanDefaultValue().clone();
+    }
+
+    public EntityBooleanDefaultValue getEntityBooleanDefaultValueForUpdate(EntityAttribute entityAttribute) {
+        return getEntityBooleanDefaultValueForUpdate(getEntityBooleanDefaultForUpdate(entityAttribute));
+    }
+
+    public EntityBooleanDefaultTransfer getEntityBooleanDefaultTransfer(UserVisit userVisit, EntityBooleanDefault entityBooleanDefault) {
+        return getCoreTransferCaches(userVisit).getEntityBooleanDefaultTransferCache().getEntityBooleanDefaultTransfer(entityBooleanDefault);
+    }
+
+    public void updateEntityBooleanDefaultFromValue(EntityBooleanDefaultValue entityBooleanDefaultValue, BasePK updatedBy) {
+        if(entityBooleanDefaultValue.hasBeenModified()) {
+            var entityBooleanDefault = EntityBooleanDefaultFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityBooleanDefaultValue);
+            var entityAttribute = entityBooleanDefault.getEntityAttribute();
+
+            if(entityAttribute.getLastDetail().getTrackRevisions()) {
+                entityBooleanDefault.setThruTime(session.START_TIME_LONG);
+                entityBooleanDefault.store();
+            } else {
+                entityBooleanDefault.remove();
+            }
+
+            entityBooleanDefault = EntityBooleanDefaultFactory.getInstance().create(entityAttribute,
+                    entityBooleanDefaultValue.getBooleanAttribute(), session.START_TIME_LONG,
+                    Session.MAX_TIME_LONG);
+
+            sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityBooleanDefault.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+        }
+    }
+
+    public void deleteEntityBooleanDefault(EntityBooleanDefault entityBooleanDefault, BasePK deletedBy) {
+        var entityAttribute = entityBooleanDefault.getEntityAttribute();
+
+        if(entityAttribute.getLastDetail().getTrackRevisions()) {
+            entityBooleanDefault.setThruTime(session.START_TIME_LONG);
+        } else {
+            entityBooleanDefault.remove();
+        }
+
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityBooleanDefault.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+    }
+
+    public void deleteEntityBooleanDefaultByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
+        var entityBooleanDefault = getEntityBooleanDefaultForUpdate(entityAttribute);
+
+        if(entityBooleanDefault != null) {
+            deleteEntityBooleanDefault(entityBooleanDefault, deletedBy);
+        }
     }
 
     // --------------------------------------------------------------------------------
@@ -14173,10 +14328,12 @@ public class CoreControl
         var shouldQueueEntityInstanceToIndexing = false;
         var shouldUpdateVisitedTime = false;
         var shouldQueueEventToSubscribers = false;
+        var shouldCreateEntityAttributeDefaults = false;
         Integer maximumHistory = null;
 
         switch(eventTypeEnum) {
             case CREATE -> {
+                shouldCreateEntityAttributeDefaults = true;
                 shouldQueueEntityInstanceToIndexing = true;
                 shouldQueueEventToSubscribers = true;
             }
@@ -14238,7 +14395,7 @@ public class CoreControl
 
             event = createEvent(eventGroup, eventTime, entityInstance, eventType, relatedEntityInstance, relatedEventType,
                     createdByEntityInstance);
-            
+
             if(shouldQueueEventToSubscribers) {
                 createQueuedEvent(event);
             }
@@ -14251,13 +14408,17 @@ public class CoreControl
 
             SentEventEventBus.eventBus.post(new SentEvent(event));
         }
-        
+
         if(shouldClearCache) {
             removeCacheEntriesByEntityInstance(entityInstance);
         }
 
         if(shouldQueueEntityInstanceToIndexing) {
             queueEntityInstanceToIndexing(entityInstance);
+        }
+
+        if(shouldCreateEntityAttributeDefaults) {
+            createEntityAttributeDefaults(entityInstance, createdByBasePK);
         }
 
         return event;
@@ -14577,7 +14738,7 @@ public class CoreControl
         return getApplications(EntityPermission.READ_WRITE);
     }
 
-   public ApplicationTransfer getApplicationTransfer(UserVisit userVisit, Application application) {
+    public ApplicationTransfer getApplicationTransfer(UserVisit userVisit, Application application) {
         return getCoreTransferCaches(userVisit).getApplicationTransferCache().getApplicationTransfer(application);
     }
 
@@ -15004,7 +15165,7 @@ public class CoreControl
         return getEditors(EntityPermission.READ_WRITE);
     }
 
-   public EditorTransfer getEditorTransfer(UserVisit userVisit, Editor editor) {
+    public EditorTransfer getEditorTransfer(UserVisit userVisit, Editor editor) {
         return getCoreTransferCaches(userVisit).getEditorTransferCache().getEditorTransfer(editor);
     }
 
@@ -15473,7 +15634,7 @@ public class CoreControl
         return getApplicationEditorsByEditor(editor, EntityPermission.READ_WRITE);
     }
 
-   public ApplicationEditorTransfer getApplicationEditorTransfer(UserVisit userVisit, ApplicationEditor applicationEditor) {
+    public ApplicationEditorTransfer getApplicationEditorTransfer(UserVisit userVisit, ApplicationEditor applicationEditor) {
         return getCoreTransferCaches(userVisit).getApplicationEditorTransferCache().getApplicationEditorTransfer(applicationEditor);
     }
 
@@ -15808,7 +15969,7 @@ public class CoreControl
         return getApplicationEditorUsesByDefaultApplicationEditor(defaultApplicationEditor, EntityPermission.READ_WRITE);
     }
 
-   public ApplicationEditorUseTransfer getApplicationEditorUseTransfer(UserVisit userVisit, ApplicationEditorUse applicationEditorUse) {
+    public ApplicationEditorUseTransfer getApplicationEditorUseTransfer(UserVisit userVisit, ApplicationEditorUse applicationEditorUse) {
         return getCoreTransferCaches(userVisit).getApplicationEditorUseTransferCache().getApplicationEditorUseTransfer(applicationEditorUse);
     }
 
@@ -16282,7 +16443,7 @@ public class CoreControl
         return getPartyApplicationEditorUsesByApplicationEditor(applicationEditor, EntityPermission.READ_WRITE);
     }
 
-   public PartyApplicationEditorUseTransfer getPartyApplicationEditorUseTransfer(UserVisit userVisit, PartyApplicationEditorUse partyApplicationEditorUse) {
+    public PartyApplicationEditorUseTransfer getPartyApplicationEditorUseTransfer(UserVisit userVisit, PartyApplicationEditorUse partyApplicationEditorUse) {
         return getCoreTransferCaches(userVisit).getPartyApplicationEditorUseTransferCache().getPartyApplicationEditorUseTransfer(partyApplicationEditorUse);
     }
 
@@ -16523,7 +16684,7 @@ public class CoreControl
         return getColors(EntityPermission.READ_WRITE);
     }
 
-   public ColorTransfer getColorTransfer(UserVisit userVisit, Color color) {
+    public ColorTransfer getColorTransfer(UserVisit userVisit, Color color) {
         return getCoreTransferCaches(userVisit).getColorTransferCache().getColorTransfer(color);
     }
 
@@ -16977,7 +17138,7 @@ public class CoreControl
         return getFontStyles(EntityPermission.READ_WRITE);
     }
 
-   public FontStyleTransfer getFontStyleTransfer(UserVisit userVisit, FontStyle fontStyle) {
+    public FontStyleTransfer getFontStyleTransfer(UserVisit userVisit, FontStyle fontStyle) {
         return getCoreTransferCaches(userVisit).getFontStyleTransferCache().getFontStyleTransfer(fontStyle);
     }
 
@@ -17428,7 +17589,7 @@ public class CoreControl
         return getFontWeights(EntityPermission.READ_WRITE);
     }
 
-   public FontWeightTransfer getFontWeightTransfer(UserVisit userVisit, FontWeight fontWeight) {
+    public FontWeightTransfer getFontWeightTransfer(UserVisit userVisit, FontWeight fontWeight) {
         return getCoreTransferCaches(userVisit).getFontWeightTransferCache().getFontWeightTransfer(fontWeight);
     }
 
@@ -17879,7 +18040,7 @@ public class CoreControl
         return getTextDecorations(EntityPermission.READ_WRITE);
     }
 
-   public TextDecorationTransfer getTextDecorationTransfer(UserVisit userVisit, TextDecoration textDecoration) {
+    public TextDecorationTransfer getTextDecorationTransfer(UserVisit userVisit, TextDecoration textDecoration) {
         return getCoreTransferCaches(userVisit).getTextDecorationTransferCache().getTextDecorationTransfer(textDecoration);
     }
 
@@ -18330,7 +18491,7 @@ public class CoreControl
         return getTextTransformations(EntityPermission.READ_WRITE);
     }
 
-   public TextTransformationTransfer getTextTransformationTransfer(UserVisit userVisit, TextTransformation textTransformation) {
+    public TextTransformationTransfer getTextTransformationTransfer(UserVisit userVisit, TextTransformation textTransformation) {
         return getCoreTransferCaches(userVisit).getTextTransformationTransferCache().getTextTransformationTransfer(textTransformation);
     }
 
@@ -18911,7 +19072,7 @@ public class CoreControl
         return getAppearancesByFontWeight(fontWeight, EntityPermission.READ_WRITE);
     }
 
-   public AppearanceTransfer getAppearanceTransfer(UserVisit userVisit, Appearance appearance) {
+    public AppearanceTransfer getAppearanceTransfer(UserVisit userVisit, Appearance appearance) {
         return getCoreTransferCaches(userVisit).getAppearanceTransferCache().getAppearanceTransfer(appearance);
     }
 
