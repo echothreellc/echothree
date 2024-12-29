@@ -629,6 +629,7 @@ import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.model.data.cancellationpolicy.common.CancellationKindConstants;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
+import com.echothree.model.data.content.common.ContentCollectionConstants;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
 import com.echothree.model.data.content.server.entity.ContentCategory;
@@ -4913,31 +4914,36 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentCollections")
-    static Collection<ContentCollectionObject> contentCollections(final DataFetchingEnvironment env) {
-        Collection<ContentCollection> contentCollections;
-        Collection<ContentCollectionObject> contentCollectionObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentCollectionObject> contentCollections(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ContentCollectionObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentCollectionsForm();
+            var command = new GetContentCollectionsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            contentCollections = new GetContentCollectionsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentCollectionConstants.COMPONENT_VENDOR_NAME, ContentCollectionConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentCollections = entities.stream()
+                            .map(ContentCollectionObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentCollections);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentCollections == null) {
-            contentCollectionObjects = emptyList();
-        } else {
-            contentCollectionObjects = new ArrayList<>(contentCollections.size());
-
-            contentCollections.stream()
-                    .map(ContentCollectionObject::new)
-                    .forEachOrdered(contentCollectionObjects::add);
-        }
-
-        return contentCollectionObjects;
+        return data;
     }
-
+    
     @GraphQLField
     @GraphQLName("contentSection")
     static ContentSectionObject contentSection(final DataFetchingEnvironment env,
