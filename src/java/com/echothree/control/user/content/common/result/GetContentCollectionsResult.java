@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetContentCollectionsResult
         extends BaseResult {
-    
+
+    Long getContentCollectionCount();
+    void setContentCollectionCount(Long contentCollectionCount);
+
     List<ContentCollectionTransfer> getContentCollections();
     void setContentCollections(List<ContentCollectionTransfer> contentCollections);
     

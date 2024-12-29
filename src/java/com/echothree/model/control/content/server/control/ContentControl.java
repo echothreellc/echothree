@@ -966,6 +966,23 @@ public class ContentControl
         return contentCollection;
     }
 
+    public long countContentCollections() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentcollections, contentcollectiondetails
+                        WHERE cntc_activedetailid = cntcdt_contentcollectiondetailid
+                        """);
+    }
+
+    public long countContentCollectionsByDefaultOfferUse(OfferUse defaultOfferUse) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentcollections, contentcollectiondetails
+                        WHERE cntc_activedetailid = cntcdt_contentcollectiondetailid
+                        AND cntcdt_defaultofferuseid = ?
+                        """, defaultOfferUse);
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentCollection */
     public ContentCollection getContentCollectionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentCollectionPK(entityInstance.getEntityUniqueId());
@@ -981,14 +998,6 @@ public class ContentControl
         return getContentCollectionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    public long countContentCollectionsByDefaultOfferUse(OfferUse defaultOfferUse) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM contentcollections, contentcollectiondetails " +
-                        "WHERE cntc_activedetailid = cntcdt_contentcollectiondetailid " +
-                        "AND cntcdt_defaultofferuseid = ?", defaultOfferUse);
-    }
-
     public List<ContentCollection> getContentCollections() {
         List<ContentCollection> contentCollections;
         
@@ -997,7 +1006,8 @@ public class ContentControl
                     "SELECT _ALL_ " +
                     "FROM contentcollections, contentcollectiondetails " +
                     "WHERE cntc_contentcollectionid = cntcdt_cntc_contentcollectionid AND cntcdt_thrutime = ? " +
-                    "ORDER BY cntcdt_contentcollectionname");
+                    "ORDER BY cntcdt_contentcollectionname " +
+                    "_LIMIT_");
             
             ps.setLong(1, Session.MAX_TIME);
             
