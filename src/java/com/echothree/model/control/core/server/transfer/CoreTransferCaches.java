@@ -60,6 +60,7 @@ public class CoreTransferCaches
     protected ServerServiceTransferCache serverServiceTransferCache;
     protected MimeTypeFileExtensionTransferCache mimeTypeFileExtensionTransferCache;
     protected EntityBlobAttributeTransferCache entityBlobAttributeTransferCache;
+    protected EntityBooleanDefaultTransferCache entityBooleanDefaultTransferCache;
     protected EntityBooleanAttributeTransferCache entityBooleanAttributeTransferCache;
     protected EntityClobAttributeTransferCache entityClobAttributeTransferCache;
     protected EntityDateAttributeTransferCache entityDateAttributeTransferCache;
@@ -378,14 +379,21 @@ public class CoreTransferCaches
         
         return entityBlobAttributeTransferCache;
     }
-    
+
+    public EntityBooleanDefaultTransferCache getEntityBooleanDefaultTransferCache() {
+        if(entityBooleanDefaultTransferCache == null)
+            entityBooleanDefaultTransferCache = new EntityBooleanDefaultTransferCache(userVisit);
+
+        return entityBooleanDefaultTransferCache;
+    }
+
     public EntityBooleanAttributeTransferCache getEntityBooleanAttributeTransferCache() {
         if(entityBooleanAttributeTransferCache == null)
             entityBooleanAttributeTransferCache = new EntityBooleanAttributeTransferCache(userVisit);
-        
+
         return entityBooleanAttributeTransferCache;
     }
-    
+
     public EntityClobAttributeTransferCache getEntityClobAttributeTransferCache() {
         if(entityClobAttributeTransferCache == null)
             entityClobAttributeTransferCache = new EntityClobAttributeTransferCache(userVisit);

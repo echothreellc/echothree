@@ -387,7 +387,7 @@ public class EntityAttributeObject
 
         return coreControl.getBestEntityAttributeDescription(entityAttribute, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
-    
+
     @GraphQLField
     @GraphQLDescription("attribute")
     public AttributeInterface getAttribute(final DataFetchingEnvironment env) {
@@ -469,6 +469,24 @@ public class EntityAttributeObject
         }
 
         return attributeInterface;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("default")
+    public DefaultInterface getDefault(final DataFetchingEnvironment env) {
+        var coreControl = Session.getModelController(CoreControl.class);
+        DefaultInterface defaultInterface = null;
+
+        switch(getEntityAttributeTypeEnum()) {
+            case BOOLEAN -> {
+                var entityBooleanDefault = coreControl.getEntityBooleanDefault(entityAttribute);
+
+                defaultInterface = entityBooleanDefault == null ? null : new EntityBooleanDefaultObject(entityBooleanDefault);
+            }
+            default -> {} // Leave defaultInterface null
+        }
+
+        return defaultInterface;
     }
 
     @GraphQLField

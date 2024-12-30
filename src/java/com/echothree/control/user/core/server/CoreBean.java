@@ -1348,24 +1348,43 @@ public class CoreBean
     }
 
     // --------------------------------------------------------------------------------
+    //   Entity Boolean Defaults
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityBooleanDefault(UserVisitPK userVisitPK, CreateEntityBooleanDefaultForm form) {
+        return new CreateEntityBooleanDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityBooleanDefault(UserVisitPK userVisitPK, EditEntityBooleanDefaultForm form) {
+        return new EditEntityBooleanDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityBooleanDefault(UserVisitPK userVisitPK, DeleteEntityBooleanDefaultForm form) {
+        return new DeleteEntityBooleanDefaultCommand(userVisitPK, form).run();
+    }
+
+    // --------------------------------------------------------------------------------
     //   Entity Boolean Attributes
     // --------------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult createEntityBooleanAttribute(UserVisitPK userVisitPK, CreateEntityBooleanAttributeForm form) {
         return new CreateEntityBooleanAttributeCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult editEntityBooleanAttribute(UserVisitPK userVisitPK, EditEntityBooleanAttributeForm form) {
         return new EditEntityBooleanAttributeCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult deleteEntityBooleanAttribute(UserVisitPK userVisitPK, DeleteEntityBooleanAttributeForm form) {
         return new DeleteEntityBooleanAttributeCommand(userVisitPK, form).run();
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Entity Integer Attributes
     // --------------------------------------------------------------------------------

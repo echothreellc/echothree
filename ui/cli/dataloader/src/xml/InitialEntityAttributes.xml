@@ -46,8 +46,9 @@
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_BOOLEAN" entityAttributeTypeName="BOOLEAN" trackRevisions="true"
-                                 checkContentWebAddress="false" sortOrder="1">
+                                 sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example Boolean" />
+                    <entityBooleanDefault booleanAttribute="true" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_STRING" entityAttributeTypeName="STRING" trackRevisions="true"
