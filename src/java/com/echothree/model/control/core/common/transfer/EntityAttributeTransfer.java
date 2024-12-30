@@ -27,11 +27,11 @@ public class EntityAttributeTransfer
     private EntityTypeTransfer entityType;
     private String entityAttributeName;
     private EntityAttributeTypeTransfer entityAttributeType;
-    private boolean trackRevisions;
+    private Boolean trackRevisions;
     private Integer sortOrder;
     private String description;
     
-    private boolean checkContentWebAddress;
+    private Boolean checkContentWebAddress;
     private String validationPattern;
     private Integer upperRangeIntegerValue;
     private Integer upperLimitIntegerValue;
@@ -43,7 +43,9 @@ public class EntityAttributeTransfer
     private Long lowerRangeLongValue;
     private UnitOfMeasureTypeTransfer unitOfMeasureType;
     private SequenceTransfer entityListItemSequence;
-    
+
+    private EntityBooleanDefaultTransfer entityBooleanDefault;
+
     private EntityBooleanAttributeTransfer entityBooleanAttribute;
     private EntityNameAttributeTransfer entityNameAttribute;
     private EntityIntegerAttributeTransfer entityIntegerAttribute;
@@ -66,7 +68,7 @@ public class EntityAttributeTransfer
 
     /** Creates a new instance of EntityAttributeTransfer */
     public EntityAttributeTransfer(EntityTypeTransfer entityType, EntityAttributeTypeTransfer entityAttributeType,
-            String entityAttributeName, boolean trackRevisions, Integer sortOrder, String description) {
+            String entityAttributeName, Boolean trackRevisions, Integer sortOrder, String description) {
         this.entityType = entityType;
         this.entityAttributeName = entityAttributeName;
         this.entityAttributeType = entityAttributeType;
@@ -175,7 +177,7 @@ public class EntityAttributeTransfer
      * Returns the checkContentWebAddress.
      * @return the checkContentWebAddress
      */
-    public boolean isCheckContentWebAddress() {
+    public Boolean getCheckContentWebAddress() {
         return checkContentWebAddress;
     }
 
@@ -183,7 +185,7 @@ public class EntityAttributeTransfer
      * Sets the checkContentWebAddress.
      * @param checkContentWebAddress the checkContentWebAddress to set
      */
-    public void setCheckContentWebAddress(boolean checkContentWebAddress) {
+    public void setCheckContentWebAddress(Boolean checkContentWebAddress) {
         this.checkContentWebAddress = checkContentWebAddress;
     }
 
@@ -361,6 +363,22 @@ public class EntityAttributeTransfer
      */
     public void setEntityListItemSequence(SequenceTransfer entityListItemSequence) {
         this.entityListItemSequence = entityListItemSequence;
+    }
+
+    /**
+     * Returns the entityBooleanDefault.
+     * @return the entityBooleanDefault
+     */
+    public EntityBooleanDefaultTransfer getEntityBooleanDefault() {
+        return entityBooleanDefault;
+    }
+
+    /**
+     * Sets the entityBooleanDefault.
+     * @param entityBooleanDefault the entityBooleanDefault to set
+     */
+    public void setEntityBooleanDefault(EntityBooleanDefaultTransfer entityBooleanDefault) {
+        this.entityBooleanDefault = entityBooleanDefault;
     }
 
     /**
