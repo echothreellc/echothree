@@ -674,15 +674,25 @@ public interface CoreService
     CommandResult deleteServerService(UserVisitPK userVisitPK, DeleteServerServiceForm form);
 
     // --------------------------------------------------------------------------------
+    //   Entity Boolean Defaults
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityBooleanDefault(UserVisitPK userVisitPK, CreateEntityBooleanDefaultForm form);
+
+    CommandResult editEntityBooleanDefault(UserVisitPK userVisitPK, EditEntityBooleanDefaultForm form);
+
+    CommandResult deleteEntityBooleanDefault(UserVisitPK userVisitPK, DeleteEntityBooleanDefaultForm form);
+
+    // --------------------------------------------------------------------------------
     //   Entity Boolean Attributes
     // --------------------------------------------------------------------------------
-    
+
     CommandResult createEntityBooleanAttribute(UserVisitPK userVisitPK, CreateEntityBooleanAttributeForm form);
-    
+
     CommandResult editEntityBooleanAttribute(UserVisitPK userVisitPK, EditEntityBooleanAttributeForm form);
-    
+
     CommandResult deleteEntityBooleanAttribute(UserVisitPK userVisitPK, DeleteEntityBooleanAttributeForm form);
-    
+
     // --------------------------------------------------------------------------------
     //   Entity Integer Attributes
     // --------------------------------------------------------------------------------

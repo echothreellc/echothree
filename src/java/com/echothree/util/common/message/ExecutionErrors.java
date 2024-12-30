@@ -48,6 +48,8 @@ public enum ExecutionErrors {
     DuplicateEntityAttributeDescription,
     DuplicateEntityAttributeName,
     DuplicateEntityBooleanAttribute,
+    DuplicateEntityBooleanDefault,
+    UnknownEntityBooleanDefault,
     DuplicateEntityIntegerAttribute,
     DuplicateEntityGeoPointAttribute,
     MissingRequiredElevation,

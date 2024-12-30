@@ -28,6 +28,7 @@ import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeNameException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityBooleanAttributeException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityBooleanDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityClobAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityDateAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityIntegerAttributeException;
@@ -50,6 +51,7 @@ import com.echothree.model.control.core.common.exception.MismatchedEntityTypeExc
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeGroupNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeTypeNameException;
+import com.echothree.model.control.core.common.exception.UnknownEntityBooleanDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemNameException;
 import com.echothree.model.control.core.common.exception.UpperRangeExceededException;
 import com.echothree.model.control.core.server.control.CoreControl;
@@ -83,6 +85,7 @@ import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
+import com.echothree.model.data.core.server.entity.EntityBooleanDefault;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -860,16 +863,70 @@ public class EntityAttributeLogic
                     suppliedEntityTypeDetail.getEntityTypeName());
         }
     }
-    
+
+    private void checkEntityType(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final EntityAttributeTypes entityAttributeType) {
+        var entityAttributeTypeName = entityAttributeType.name();
+
+        if(!entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName().equals(entityAttributeTypeName)) {
+            var expectedEntityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
+
+            handleExecutionError(MismatchedEntityAttributeTypeException.class, eea, ExecutionErrors.MismatchedEntityAttributeType.name(),
+                    expectedEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                    expectedEntityTypeDetail.getEntityTypeName(),
+                    entityAttributeTypeName);
+        }
+    }
+
+    public EntityBooleanDefault createEntityBooleanDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final Boolean booleanAttribute, final BasePK createdBy) {
+        EntityBooleanDefault entityBooleanDefault = null;
+
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.BOOLEAN);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityBooleanDefault = coreControl.getEntityBooleanDefault(entityAttribute);
+
+            if(entityBooleanDefault == null) {
+                coreControl.createEntityBooleanDefault(entityAttribute, booleanAttribute, createdBy);
+            } else {
+                handleExecutionError(DuplicateEntityBooleanDefaultException.class, eea, ExecutionErrors.DuplicateEntityBooleanDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            }
+        }
+
+        return entityBooleanDefault;
+    }
+
+    public void deleteEntityBooleanDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.BOOLEAN);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            var entityBooleanDefault = coreControl.getEntityBooleanDefaultForUpdate(entityAttribute);
+
+            if(entityBooleanDefault == null) {
+                handleExecutionError(UnknownEntityBooleanDefaultException.class, eea, ExecutionErrors.UnknownEntityBooleanDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            } else {
+                coreControl.deleteEntityBooleanDefault(entityBooleanDefault, deletedBy);
+            }
+        }
+    }
+
     public EntityBooleanAttribute createEntityBooleanAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
             final EntityInstance entityInstance, final Boolean booleanAttribute, final BasePK createdBy) {
         EntityBooleanAttribute entityBooleanAttribute = null;
-        
+
         checkEntityType(eea, entityAttribute, entityInstance);
-        
+
         if(eea == null || !eea.hasExecutionErrors()) {
             var coreControl = Session.getModelController(CoreControl.class);
-            
+
             entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance);
 
             if(entityBooleanAttribute == null) {
@@ -883,7 +940,7 @@ public class EntityAttributeLogic
 
         return entityBooleanAttribute;
     }
-    
+
     public EntityIntegerAttribute createEntityIntegerAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
             final EntityInstance entityInstance, final Integer integerAttribute, final BasePK createdBy) {
         EntityIntegerAttribute entityIntegerAttribute = null;

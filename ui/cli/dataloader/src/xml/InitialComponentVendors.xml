@@ -148,6 +148,9 @@
             <entityType entityTypeName="EntityLongRangeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Long Range Description" />
             </entityType>
+            <entityType entityTypeName="EntityBooleanDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Boolean Default" />
+            </entityType>
             <entityType entityTypeName="EntityBooleanAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Boolean Attribute" />
             </entityType>
@@ -1024,8 +1027,8 @@
             <entityType entityTypeName="InvoiceLine" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Invoice Line" />
             </entityType>
-            <entityType entityTypeName="InvoiceLineItems" keepAllHistory="false" isExtensible="false" sortOrder="1">
-                <entityTypeDescription languageIsoName="en" description="Invoice Line Items" />
+            <entityType entityTypeName="InvoiceLineItem" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice Line Item" />
             </entityType>
             <entityType entityTypeName="InvoiceLineGlAccount" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Invoice Line Gl Account" />
