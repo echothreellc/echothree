@@ -186,6 +186,18 @@
             <commandMessage commandMessageKey="NoValueAllowed">
                 <commandMessageTranslation languageIsoName="en" translation="No value is allowed in this field and it must be left empty." />
             </commandMessage>
+            <commandMessage commandMessageKey="UnknownEntityRef">
+                <commandMessageTranslation languageIsoName="en" translation="The Entity Instance for EntityRef {0} was not found." />
+            </commandMessage>
+            <commandMessage commandMessageKey="DeletedEntityRef">
+                <commandMessageTranslation languageIsoName="en" translation="The Entity Instance for EntityRef {0} was deleted." />
+            </commandMessage>
+            <commandMessage commandMessageKey="UnknownUuid">
+                <commandMessageTranslation languageIsoName="en" translation="The Entity Instance for UUID {0} was not found." />
+            </commandMessage>
+            <commandMessage commandMessageKey="DeletedUuid">
+                <commandMessageTranslation languageIsoName="en" translation="The Entity Instance for UUID {0} was deleted." />
+            </commandMessage>
         </commandMessageType>
     </commandMessageTypes>
 </initialData>

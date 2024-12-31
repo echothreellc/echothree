@@ -17,10 +17,12 @@
 package com.echothree.model.control.core.server.logic;
 
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
-import com.echothree.control.user.core.common.spec.UuidSpec;
 import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
+import com.echothree.control.user.core.common.spec.UuidSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.common.exception.DeletedEntityRefException;
+import com.echothree.model.control.core.common.exception.DeletedUuidException;
 import com.echothree.model.control.core.common.exception.InvalidComponentVendorException;
 import com.echothree.model.control.core.common.exception.InvalidEntityTypeException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
@@ -73,31 +75,38 @@ public class EntityInstanceLogic
         return entityInstance;
     }
 
-    private EntityInstance checkEntityTimeForDeletion(CoreControl coreControl, EntityInstance entityInstance) {
-        // If the EntityInstance is null, then it is already going to indicate it has been deleted, otherwise...
-        if(entityInstance != null) {
-            var entityTime = coreControl.getEntityTime(entityInstance);
+    private boolean checkEntityTimeForDeletion(CoreControl coreControl, EntityInstance entityInstance) {
+        boolean wasDeleted = false;
+        var entityTime = coreControl.getEntityTime(entityInstance);
 
-            // If the EntityTime is null, then we're not going to find a DeletedTime, which means it must exist...
-            if(entityTime != null) {
-                // Check the DeletedTime...
-                if(entityTime.getDeletedTime() != null) {
-                    // It's been deleted.
-                    entityInstance = null;
-                }
+        // If the EntityTime is null, then we're not going to find a DeletedTime, which means it must exist...
+        // do not mark it as having been deleted.
+        if(entityTime != null) {
+            // Check the DeletedTime...
+            if(entityTime.getDeletedTime() != null) {
+                // It's been deleted.
+                wasDeleted = true;
             }
         }
-        
-        return entityInstance;
+
+        return wasDeleted;
     }
     
     public EntityInstance getEntityInstanceByEntityRef(final ExecutionErrorAccumulator eea, final String entityRef) {
         var coreControl = Session.getModelController(CoreControl.class);
-        var entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByEntityRef(entityRef));
-        
+        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+
         if(entityInstance == null) {
             handleExecutionError(UnknownEntityRefException.class, eea, ExecutionErrors.UnknownEntityRef.name(), entityRef);
+        } else {
+            var wasDeleted = checkEntityTimeForDeletion(coreControl, entityInstance);
+
+            if(wasDeleted) {
+                entityInstance = null;
+                handleExecutionError(DeletedEntityRefException.class, eea, ExecutionErrors.DeletedEntityRef.name(), entityRef);
+            }
         }
+
 
         return entityInstance;
     }
@@ -108,10 +117,17 @@ public class EntityInstanceLogic
     
     public EntityInstance getEntityInstanceByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
         var coreControl = Session.getModelController(CoreControl.class);
-        var entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByUuid(uuid));
+        var entityInstance = coreControl.getEntityInstanceByUuid(uuid);
 
         if(entityInstance == null) {
             handleExecutionError(UnknownUuidException.class, eea, ExecutionErrors.UnknownUuid.name(), uuid);
+        } else {
+            var wasDeleted = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByUuid(uuid));
+
+            if(wasDeleted) {
+                entityInstance = null;
+                handleExecutionError(DeletedUuidException.class, eea, ExecutionErrors.DeletedUuid.name(), uuid);
+            }
         }
 
         return entityInstance;
