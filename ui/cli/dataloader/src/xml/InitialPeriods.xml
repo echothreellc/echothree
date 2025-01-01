@@ -18,13 +18,16 @@
     <periodKinds>
         <periodKind periodKindName="FISCAL" workflowName="FISCAL_PERIOD_STATUS" workflowEntranceName="NEW_FISCAL_PERIOD" isDefault="true" sortOrder="1">
             <periodKindDescription languageIsoName="en" description="Fiscal" />
-            <periodType periodTypeName="YEAR" isDefault="true" sortOrder="1">
+            <periodType periodTypeName="PERPETUAL" isDefault="true" sortOrder="1">
+                <periodTypeDescription languageIsoName="en" description="Perpetual" />
+            </periodType>
+            <periodType periodTypeName="YEAR" parentPeriodTypeName="YEAR" isDefault="false" sortOrder="2">
                 <periodTypeDescription languageIsoName="en" description="Year" />
             </periodType>
-            <periodType periodTypeName="QUARTER" parentPeriodTypeName="YEAR" isDefault="false" sortOrder="2">
+            <periodType periodTypeName="QUARTER" parentPeriodTypeName="YEAR" isDefault="false" sortOrder="3">
                 <periodTypeDescription languageIsoName="en" description="Quarter" />
             </periodType>
-            <periodType periodTypeName="MONTH" parentPeriodTypeName="QUARTER" isDefault="false" sortOrder="3">
+            <periodType periodTypeName="MONTH" parentPeriodTypeName="QUARTER" isDefault="false" sortOrder="4">
                 <periodTypeDescription languageIsoName="en" description="Month" />
             </periodType>
         </periodKind>
