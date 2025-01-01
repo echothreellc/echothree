@@ -114,7 +114,8 @@ public class FiscalPeriodLogic {
         }
     }
     
-    private Period createYear(final ExecutionErrorAccumulator eea, final int year, final ZoneId zone, final PartyPK createdBy) {
+    private Period createYear(final ExecutionErrorAccumulator eea, final Period perpetualPeriod, final int year,
+            final ZoneId zone, final PartyPK createdBy) {
         var periodControl = Session.getModelController(PeriodControl.class);
         var periodName = String.valueOf(year);
         var periodKind = periodControl.getPeriodKindByName(PeriodConstants.PeriodKind_FISCAL);
@@ -125,7 +126,7 @@ public class FiscalPeriodLogic {
             var yearStart = ZonedDateTime.of(year, 1, 1, 0, 0, 0, 0, zone);
             var yearEnd = yearStart.plusYears(1).minusNanos(1);
 
-            yearPeriod = PeriodLogic.getInstance().createPeriod(periodKind, periodName, null, periodType,
+            yearPeriod = PeriodLogic.getInstance().createPeriod(periodKind, periodName, perpetualPeriod, periodType,
                     yearStart.toInstant().toEpochMilli(), yearEnd.toInstant().toEpochMilli(), createdBy);
 
             var periodKindDescriptions = periodControl.getPeriodKindDescriptionsByPeriodKind(periodKind);
@@ -151,6 +152,22 @@ public class FiscalPeriodLogic {
         
         return yearPeriod;
     }
+
+    public Period ensurePerpetual(final ExecutionErrorAccumulator eea, final PartyPK createdBy) {
+        var periodControl = Session.getModelController(PeriodControl.class);
+        var periodKind = periodControl.getPeriodKindByName(PeriodConstants.PeriodKind_FISCAL);
+        var perpetualPeriod = periodControl.getPeriodByName(periodKind, PeriodConstants.Period_PERPETUAL);
+
+        if(perpetualPeriod == null) {
+            var periodType = periodControl.getPeriodTypeByName(periodKind, PeriodConstants.PeriodType_PERPETUAL);
+
+            perpetualPeriod = PeriodLogic.getInstance().createPeriod(periodKind, PeriodConstants.Period_PERPETUAL, null,
+                    periodType, 0L, Long.MAX_VALUE, createdBy);
+
+        }
+
+        return perpetualPeriod;
+    }
     
     public Period createFiscalYear(final ExecutionErrorAccumulator eea, final Integer year, final PartyPK createdBy) {
         var partyControl = Session.getModelController(PartyControl.class);
@@ -158,10 +175,11 @@ public class FiscalPeriodLogic {
         Period fiscalYear = null;
         
         if(defaultPartyCompany != null) {
+            var perpetualPeriod = ensurePerpetual(eea, createdBy);
             var javaTimeZoneName = partyControl.getPreferredTimeZone(defaultPartyCompany.getParty()).getLastDetail().getJavaTimeZoneName();
             var zone = ZoneId.of(javaTimeZoneName);
             
-            fiscalYear = createYear(eea, year, zone, createdBy);
+            fiscalYear = createYear(eea, perpetualPeriod, year, zone, createdBy);
         } else {
             eea.addExecutionError(ExecutionErrors.MissingDefaultCompany.name());
         }
