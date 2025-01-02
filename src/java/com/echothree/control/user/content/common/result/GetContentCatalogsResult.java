@@ -26,7 +26,10 @@ public interface GetContentCatalogsResult
     
     ContentCollectionTransfer getContentCollection();
     void setContentCollection(ContentCollectionTransfer contentCollection);
-    
+
+    Long getContentCatalogCount();
+    void setContentCatalogCount(Long contentCatalogCount);
+
     List<ContentCatalogTransfer> getContentCatalogs();
     void setContentCatalogs(List<ContentCatalogTransfer> contentCatalogs);
     
