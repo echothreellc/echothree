@@ -27,8 +27,8 @@ import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.content.common.ContentCatalogConstants;
 import com.echothree.model.data.content.common.ContentCatalogItemConstants;
+import com.echothree.model.data.content.common.ContentCategoryConstants;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
 import com.echothree.util.server.persistence.Session;
@@ -39,7 +39,6 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @GraphQLDescription("content catalog object")
@@ -111,27 +110,23 @@ public class ContentCatalogObject
     }
     
     @GraphQLField
-    @GraphQLDescription("content categories count")
-    public Long getContentCategoriesCount(final DataFetchingEnvironment env) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        
-        return ContentSecurityUtils.getHasContentCategoriesAccess(env) ? contentControl.countContentCategoriesByContentCatalog(contentCatalog) : null;
-    }
-    
-    @GraphQLField
     @GraphQLDescription("content categories")
-    public List<ContentCategoryObject> getContentCategories(final DataFetchingEnvironment env) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        var entities = ContentSecurityUtils.getHasContentCategoriesAccess(env) ? contentControl.getContentCategories(contentCatalog) : null;
-        List<ContentCategoryObject> contentCategories = entities == null ? null : new ArrayList<>(entities.size());
-        
-        if(entities != null) {
-            entities.forEach((entity) -> {
-                contentCategories.add(new ContentCategoryObject(entity));
-            });
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ContentCategoryObject> getContentCategories(final DataFetchingEnvironment env) {
+        if(ContentSecurityUtils.getHasContentCategoriesAccess(env)) {
+            var contentControl = Session.getModelController(ContentControl.class);
+            var totalCount = contentControl.countContentCategoriesByContentCatalog(contentCatalog);
+
+            try(var objectLimiter = new ObjectLimiter(env, ContentCategoryConstants.COMPONENT_VENDOR_NAME, ContentCategoryConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = contentControl.getContentCategories(contentCatalog);
+                var contentCategories = entities.stream().map(ContentCategoryObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, contentCategories);
+            }
+        } else {
+            return Connections.emptyConnection();
         }
-        
-        return contentCategories;
     }
 
     @GraphQLField
