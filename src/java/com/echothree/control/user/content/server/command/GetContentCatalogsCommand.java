@@ -86,11 +86,9 @@ public class GetContentCatalogsCommand
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
 
-        var partyPK = getPartyPK();
-
         if(!hasExecutionErrors()) {
             AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, getUserVisitForUpdate(),
-                    contentCollection.getPrimaryKey(), partyPK);
+                    contentCollection.getPrimaryKey(), getPartyPK());
         }
     }
 
