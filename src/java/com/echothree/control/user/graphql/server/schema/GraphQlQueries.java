@@ -630,6 +630,7 @@ import com.echothree.model.data.cancellationpolicy.common.CancellationKindConsta
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.content.common.ContentCatalogConstants;
+import com.echothree.model.data.content.common.ContentCatalogItemConstants;
 import com.echothree.model.data.content.common.ContentCollectionConstants;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
@@ -5258,18 +5259,20 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentCatalogItems")
-    static Collection<ContentCatalogItemObject> contentCatalogItems(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentCatalogItemObject> contentCatalogItems(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("contentCatalogName") final String contentCatalogName,
             @GraphQLName("associateProgramName") final String associateProgramName,
             @GraphQLName("associateName") final String associateName,
             @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
-        Collection<ContentCatalogItem> contentCatalogItems;
-        Collection<ContentCatalogItemObject> contentCatalogItemObjects;
+        CountingPaginatedData<ContentCatalogItemObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentCatalogItemsForm();
+            var command = new GetContentCatalogItemsCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -5278,22 +5281,26 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCatalogItems = new GetContentCatalogItemsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentCatalogItemConstants.COMPONENT_VENDOR_NAME, ContentCatalogItemConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentCatalogItems = entities.stream()
+                            .map(ContentCatalogItemObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentCatalogItems);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentCatalogItems == null) {
-            contentCatalogItemObjects = emptyList();
-        } else {
-            contentCatalogItemObjects = new ArrayList<>(contentCatalogItems.size());
-
-            contentCatalogItems.stream()
-                    .map(ContentCatalogItemObject::new)
-                    .forEachOrdered(contentCatalogItemObjects::add);
-        }
-
-        return contentCatalogItemObjects;
+        return data;
     }
 
     @GraphQLField
