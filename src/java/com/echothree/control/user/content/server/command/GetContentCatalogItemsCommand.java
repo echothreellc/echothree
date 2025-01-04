@@ -124,10 +124,8 @@ public class GetContentCatalogItemsCommand
         }
 
         if(!hasExecutionErrors()) {
-            var partyPK = getPartyPK();
-            var userVisit = getUserVisitForUpdate();
-
-            AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, userVisit, contentCatalog.getPrimaryKey(), partyPK);
+            AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, getUserVisitForUpdate(),
+                    contentCatalog.getPrimaryKey(), getPartyPK());
 
         }
     }
@@ -162,7 +160,7 @@ public class GetContentCatalogItemsCommand
             var userVisit = getUserVisit();
 
             if(session.hasLimit(ContentCatalogItemFactory.class)) {
-                result.setContentCatalogItemCount(contentControl.countContentCatalogItemsByContentCatalog(contentCatalog));
+                result.setContentCatalogItemCount(getTotalEntities());
             }
 
             result.setContentCatalog(contentControl.getContentCatalogTransfer(userVisit, contentCatalog));
