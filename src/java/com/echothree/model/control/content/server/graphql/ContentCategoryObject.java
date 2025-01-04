@@ -21,6 +21,8 @@ import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObje
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.offer.server.graphql.OfferUseObject;
+import com.echothree.model.control.selector.server.graphql.SelectorObject;
+import com.echothree.model.control.selector.server.graphql.SelectorSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCategoryDetail;
@@ -72,21 +74,32 @@ public class ContentCategoryObject
     @GraphQLField
     @GraphQLDescription("parent content category")
     public ContentCategoryObject getParentContentCategory(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getHasContentCategoryAccess(env) ? new ContentCategoryObject(getContentCategoryDetail().getParentContentCategory()) : null;
+        var parentContentCategory = getContentCategoryDetail().getParentContentCategory();
+
+        return parentContentCategory == null ? null :
+                ContentSecurityUtils.getHasContentCategoryAccess(env) ?
+                        new ContentCategoryObject(parentContentCategory) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("default offer use")
     public OfferUseObject getDefaultOfferUse(final DataFetchingEnvironment env) {
-        return OfferSecurityUtils.getHasOfferUseAccess(env) ?
-                new OfferUseObject(getContentCategoryDetail().getDefaultOfferUse()) : null;
+        var defaultOfferUse = getContentCategoryDetail().getDefaultOfferUse();
+
+        return defaultOfferUse == null ? null :
+                OfferSecurityUtils.getHasOfferUseAccess(env) ?
+                        new OfferUseObject(defaultOfferUse) : null;
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("content category item selector")
-//    public SelectorObject getContentCategoryItemSelector(final DataFetchingEnvironment env) {
-//        return SelectorSecurityUtils.getHasSelectorAccess(env) ? new SelectorObject(getContentCategoryDetail().getContentCategoryItemSelector()) : null;
-//    }
+    @GraphQLField
+    @GraphQLDescription("content category item selector")
+    public SelectorObject getContentCategoryItemSelector(final DataFetchingEnvironment env) {
+        var contentCategoryItemSelector = getContentCategoryDetail().getContentCategoryItemSelector();
+
+        return contentCategoryItemSelector == null ? null :
+                SelectorSecurityUtils.getHasSelectorAccess(env) ?
+                        new SelectorObject(contentCategoryItemSelector) : null;
+    }
 
     @GraphQLField
     @GraphQLDescription("is default")
