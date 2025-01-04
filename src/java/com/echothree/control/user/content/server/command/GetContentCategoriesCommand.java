@@ -175,7 +175,7 @@ public class GetContentCategoriesCommand
                 }
             } else {
                 if(session.hasLimit(ContentCategoryFactory.class)) {
-                    result.setContentCategoryCount(contentControl.countContentCategoriesByParentContentCategory(parentContentCategory));
+                    result.setContentCategoryCount(getTotalEntities());
                 }
 
                 result.setParentContentCategory(contentControl.getContentCategoryTransfer(userVisit, parentContentCategory));
