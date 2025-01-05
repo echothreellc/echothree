@@ -634,6 +634,7 @@ import com.echothree.model.data.content.common.ContentCatalogItemConstants;
 import com.echothree.model.data.content.common.ContentCategoryConstants;
 import com.echothree.model.data.content.common.ContentCategoryItemConstants;
 import com.echothree.model.data.content.common.ContentCollectionConstants;
+import com.echothree.model.data.content.common.ContentPageAreaTypeConstants;
 import com.echothree.model.data.content.common.ContentPageConstants;
 import com.echothree.model.data.content.common.ContentSectionConstants;
 import com.echothree.model.data.content.common.ContentWebAddressConstants;
@@ -4829,29 +4830,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentPageAreaTypes")
-    static Collection<ContentPageAreaTypeObject> contentPageAreaTypes(final DataFetchingEnvironment env) {
-        Collection<ContentPageAreaType> contentPageAreaTypes;
-        Collection<ContentPageAreaTypeObject> contentPageAreaTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentPageAreaTypeObject> contentPageAreaTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ContentPageAreaTypeObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentPageAreaTypesForm();
+            var command = new GetContentPageAreaTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            contentPageAreaTypes = new GetContentPageAreaTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentPageAreaTypeConstants.COMPONENT_VENDOR_NAME, ContentPageAreaTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentPageAreaTypes = entities.stream()
+                            .map(ContentPageAreaTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentPageAreaTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentPageAreaTypes == null) {
-            contentPageAreaTypeObjects = emptyList();
-        } else {
-            contentPageAreaTypeObjects = new ArrayList<>(contentPageAreaTypes.size());
-
-            contentPageAreaTypes.stream()
-                    .map(ContentPageAreaTypeObject::new)
-                    .forEachOrdered(contentPageAreaTypeObjects::add);
-        }
-
-        return contentPageAreaTypeObjects;
+        return data;
     }
 
     @GraphQLField

@@ -207,7 +207,14 @@ public class ContentControl
 
         return contentPageAreaType;
     }
-    
+
+    public long countContentPageAreaTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentpageareatypes
+                        """);
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentPageAreaType */
     public ContentPageAreaType getContentPageAreaTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentPageAreaTypePK(entityInstance.getEntityUniqueId());
@@ -261,7 +268,8 @@ public class ContentControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM contentpageareatypes " +
-                "ORDER BY cntpat_contentpageareatypename");
+                "ORDER BY cntpat_contentpageareatypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM contentpageareatypes " +
