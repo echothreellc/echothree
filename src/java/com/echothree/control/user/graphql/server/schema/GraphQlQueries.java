@@ -636,6 +636,7 @@ import com.echothree.model.data.content.common.ContentCategoryItemConstants;
 import com.echothree.model.data.content.common.ContentCollectionConstants;
 import com.echothree.model.data.content.common.ContentPageConstants;
 import com.echothree.model.data.content.common.ContentSectionConstants;
+import com.echothree.model.data.content.common.ContentWebAddressConstants;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
 import com.echothree.model.data.content.server.entity.ContentCategory;
@@ -4874,29 +4875,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentWebAddresses")
-    static Collection<ContentWebAddressObject> contentWebAddresses(final DataFetchingEnvironment env) {
-        Collection<ContentWebAddress> contentWebAddresses;
-        Collection<ContentWebAddressObject> contentWebAddressObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentWebAddressObject> contentWebAddresses(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ContentWebAddressObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentWebAddressesForm();
+            var command = new GetContentWebAddressesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            contentWebAddresses = new GetContentWebAddressesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentWebAddressConstants.COMPONENT_VENDOR_NAME, ContentWebAddressConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentWebAddresses = entities.stream()
+                            .map(ContentWebAddressObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentWebAddresses);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentWebAddresses == null) {
-            contentWebAddressObjects = emptyList();
-        } else {
-            contentWebAddressObjects = new ArrayList<>(contentWebAddresses.size());
-
-            contentWebAddresses.stream()
-                    .map(ContentWebAddressObject::new)
-                    .forEachOrdered(contentWebAddressObjects::add);
-        }
-
-        return contentWebAddressObjects;
+        return data;
     }
 
     @GraphQLField

@@ -58,6 +58,7 @@ import com.echothree.model.data.content.common.pk.ContentCategoryPK;
 import com.echothree.model.data.content.common.pk.ContentCollectionPK;
 import com.echothree.model.data.content.common.pk.ContentPageAreaTypePK;
 import com.echothree.model.data.content.common.pk.ContentPageLayoutPK;
+import com.echothree.model.data.content.common.pk.ContentWebAddressPK;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogDescription;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
@@ -5010,10 +5011,11 @@ public class ContentControl
     //   Content Web Addresses
     // --------------------------------------------------------------------------------
     
-    public ContentWebAddress createContentWebAddress(String contentWebAddressName, ContentCollection contentCollection, BasePK createdBy) {
+    public ContentWebAddress createContentWebAddress(String contentWebAddressName, ContentCollection contentCollection,
+            BasePK createdBy) {
         var contentWebAddress = ContentWebAddressFactory.getInstance().create();
-        var contentWebAddressDetail = ContentWebAddressDetailFactory.getInstance().create(contentWebAddress, contentWebAddressName, contentCollection, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var contentWebAddressDetail = ContentWebAddressDetailFactory.getInstance().create(contentWebAddress,
+                contentWebAddressName, contentCollection, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
         contentWebAddress = ContentWebAddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentWebAddress.getPrimaryKey());
@@ -5027,11 +5029,43 @@ public class ContentControl
     }
     
     public boolean validContentWebAddressName(String contentWebAddressName) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM contentwebaddresses, contentwebaddressdetails " +
-                "WHERE cntwa_activedetailid = cntwadt_contentwebaddressdetailid AND cntwadt_contentwebaddressname = ?",
-                contentWebAddressName) == 1;
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentwebaddresses, contentwebaddressdetails
+                        WHERE cntwa_activedetailid = cntwadt_contentwebaddressdetailid AND cntwadt_contentwebaddressname = ?
+                        """, contentWebAddressName) == 1;
+    }
+
+    public long countContentWebAddresses() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentwebaddresses, contentwebaddressdetails
+                        WHERE cntwa_activedetailid = cntwadt_contentwebaddressdetailid
+                        """);
+    }
+
+    public long countContentWebAddressesByContentCollection(ContentCollection contentCollection) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentwebaddresses, contentwebaddressdetails
+                        WHERE cntwa_activedetailid = cntwadt_contentwebaddressdetailid
+                        AND cntwadt_cntc_contentcollectionid = ?
+                        """, contentCollection);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentWebAddress */
+    public ContentWebAddress getContentWebAddressByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContentWebAddressPK(entityInstance.getEntityUniqueId());
+
+        return ContentWebAddressFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContentWebAddress getContentWebAddressByEntityInstance(EntityInstance entityInstance) {
+        return getContentWebAddressByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContentWebAddress getContentWebAddressByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContentWebAddressByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     private List<ContentWebAddress> getContentWebAddresses(EntityPermission entityPermission) {
