@@ -28,11 +28,13 @@ import com.echothree.control.user.content.common.result.CreateContentCatalogResu
 import com.echothree.control.user.content.common.result.CreateContentCategoryResult;
 import com.echothree.control.user.content.common.result.CreateContentCollectionResult;
 import com.echothree.control.user.content.common.result.CreateContentPageLayoutResult;
+import com.echothree.control.user.content.common.result.CreateContentWebAddressResult;
 import com.echothree.control.user.content.common.result.EditContentCatalogResult;
 import com.echothree.control.user.content.common.result.EditContentCategoryItemResult;
 import com.echothree.control.user.content.common.result.EditContentCategoryResult;
 import com.echothree.control.user.content.common.result.EditContentCollectionResult;
 import com.echothree.control.user.content.common.result.EditContentPageLayoutResult;
+import com.echothree.control.user.content.common.result.EditContentWebAddressResult;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.result.CreateComponentVendorResult;
 import com.echothree.control.user.core.common.result.CreateEntityAliasTypeResult;
@@ -350,6 +352,106 @@ public interface GraphQlMutations {
                 commandForm.setEditMode(EditMode.UPDATE);
 
                 commandResult = ContentUtil.getHome().editContentCollection(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createContentWebAddress(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") @GraphQLNonNull final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = ContentUtil.getHome().getCreateContentWebAddressForm();
+
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setDescription(description);
+
+            var commandResult = ContentUtil.getHome().createContentWebAddress(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateContentWebAddressResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteContentWebAddress(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") @GraphQLNonNull final String contentWebAddressName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = ContentUtil.getHome().getDeleteContentWebAddressForm();
+
+            commandForm.setContentWebAddressName(contentWebAddressName);
+
+            var commandResult = ContentUtil.getHome().deleteContentWebAddress(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editContentWebAddress(final DataFetchingEnvironment env,
+            @GraphQLName("originalContentWebAddressName") @GraphQLNonNull final String originalContentWebAddressName,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = ContentUtil.getHome().getContentWebAddressSpec();
+
+            spec.setContentWebAddressName(originalContentWebAddressName);
+
+            var commandForm = ContentUtil.getHome().getEditContentWebAddressForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = ContentUtil.getHome().editContentWebAddress(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditContentWebAddressResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getContentWebAddress().getEntityInstance());
+
+                if(arguments.containsKey("contentWebAddressName"))
+                    edit.setContentWebAddressName(contentWebAddressName);
+                if(arguments.containsKey("contentCollectionName"))
+                    edit.setContentCollectionName(contentCollectionName);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = ContentUtil.getHome().editContentWebAddress(BaseGraphQl.getUserVisitPK(env), commandForm);
             }
 
             mutationResultObject.setCommandResult(commandResult);

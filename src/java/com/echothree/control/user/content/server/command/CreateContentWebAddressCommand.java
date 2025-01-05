@@ -17,15 +17,16 @@
 package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentWebAddressForm;
+import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -63,6 +64,7 @@ public class CreateContentWebAddressCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ContentResultFactory.getCreateContentWebAddressResult();
         var contentControl = Session.getModelController(ContentControl.class);
         var contentWebAddressName = form.getContentWebAddressName();
         var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
@@ -88,8 +90,14 @@ public class CreateContentWebAddressCommand
         } else {
             addExecutionError(ExecutionErrors.DuplicateContentWebAddressName.name(), contentWebAddressName);
         }
-        
-        return null;
+
+
+        if(contentWebAddress != null) {
+            result.setContentWebAddressName(contentWebAddress.getLastDetail().getContentWebAddressName());
+            result.setEntityRef(contentWebAddress.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }
