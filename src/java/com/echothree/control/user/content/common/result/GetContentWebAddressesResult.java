@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetContentWebAddressesResult
         extends BaseResult {
-    
+
+    Long getContentWebAddressCount();
+    void setContentWebAddressCount(Long contentWebAddressCount);
+
     List<ContentWebAddressTransfer> getContentWebAddresses();
     void setContentWebAddresses(List<ContentWebAddressTransfer> contentWebAddresses);
     
