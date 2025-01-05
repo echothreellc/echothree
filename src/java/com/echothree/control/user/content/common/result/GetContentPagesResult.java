@@ -26,7 +26,10 @@ public interface GetContentPagesResult
     
     ContentSectionTransfer getContentSection();
     void setContentSection(ContentSectionTransfer contentSection);
-    
+
+    Long getContentPageCount();
+    void setContentPageCount(Long contentPageCount);
+
     List<ContentPageTransfer> getContentPages();
     void setContentPages(List<ContentPageTransfer> contentPages);
     

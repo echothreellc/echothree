@@ -22,6 +22,7 @@ import com.echothree.model.control.associate.server.logic.AssociateReferralLogic
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentSection;
+import com.echothree.model.data.content.server.factory.ContentSectionFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -149,7 +150,10 @@ public class GetContentSectionsCommand
                 result.setParentContentSection(contentControl.getContentSectionTransfer(userVisit, parentContentSection));
             }
 
-            result.setContentSectionCount(getTotalEntities());
+            if(session.hasLimit(ContentSectionFactory.class)) {
+                result.setContentSectionCount(getTotalEntities());
+            }
+
             result.setContentSections(contentControl.getContentSectionTransfers(userVisit, entities));
         }
                         
