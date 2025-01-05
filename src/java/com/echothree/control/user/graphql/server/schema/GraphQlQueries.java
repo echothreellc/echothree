@@ -636,6 +636,7 @@ import com.echothree.model.data.content.common.ContentCategoryItemConstants;
 import com.echothree.model.data.content.common.ContentCollectionConstants;
 import com.echothree.model.data.content.common.ContentPageAreaTypeConstants;
 import com.echothree.model.data.content.common.ContentPageConstants;
+import com.echothree.model.data.content.common.ContentPageLayoutConstants;
 import com.echothree.model.data.content.common.ContentSectionConstants;
 import com.echothree.model.data.content.common.ContentWebAddressConstants;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
@@ -4723,29 +4724,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentPageLayouts")
-    static Collection<ContentPageLayoutObject> contentPageLayouts(final DataFetchingEnvironment env) {
-        Collection<ContentPageLayout> contentPageLayouts;
-        Collection<ContentPageLayoutObject> contentPageLayoutObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentPageLayoutObject> contentPageLayouts(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ContentPageLayoutObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentPageLayoutsForm();
+            var command = new GetContentPageLayoutsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            contentPageLayouts = new GetContentPageLayoutsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentPageLayoutConstants.COMPONENT_VENDOR_NAME, ContentPageLayoutConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentPageLayouts = entities.stream()
+                            .map(ContentPageLayoutObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentPageLayouts);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentPageLayouts == null) {
-            contentPageLayoutObjects = emptyList();
-        } else {
-            contentPageLayoutObjects = new ArrayList<>(contentPageLayouts.size());
-
-            contentPageLayouts.stream()
-                    .map(ContentPageLayoutObject::new)
-                    .forEachOrdered(contentPageLayoutObjects::add);
-        }
-
-        return contentPageLayoutObjects;
+        return data;
     }
 
     @GraphQLField
