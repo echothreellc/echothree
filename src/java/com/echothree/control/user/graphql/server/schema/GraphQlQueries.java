@@ -636,6 +636,7 @@ import com.echothree.model.data.content.common.ContentCategoryItemConstants;
 import com.echothree.model.data.content.common.ContentCollectionConstants;
 import com.echothree.model.data.content.common.ContentPageAreaTypeConstants;
 import com.echothree.model.data.content.common.ContentPageConstants;
+import com.echothree.model.data.content.common.ContentPageLayoutAreaConstants;
 import com.echothree.model.data.content.common.ContentPageLayoutConstants;
 import com.echothree.model.data.content.common.ContentSectionConstants;
 import com.echothree.model.data.content.common.ContentWebAddressConstants;
@@ -4781,36 +4782,42 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentPageLayoutAreas")
-    static Collection<ContentPageLayoutAreaObject> contentPageLayoutAreas(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentPageLayoutAreaObject> contentPageLayoutAreas(final DataFetchingEnvironment env,
             @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
             @GraphQLName("contentSectionName") @GraphQLNonNull final String contentSectionName,
             @GraphQLName("contentPageName") @GraphQLNonNull final String contentPageName) {
-        Collection<ContentPageLayoutArea> contentPageLayoutAreas;
-        Collection<ContentPageLayoutAreaObject> contentPageLayoutAreaObjects;
+        CountingPaginatedData<ContentPageLayoutAreaObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentPageLayoutAreasForm();
+            var command = new GetContentPageLayoutAreasCommand(getUserVisitPK(env), commandForm);
+
 
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentSectionName(contentSectionName);
             commandForm.setContentPageName(contentPageName);
 
-            contentPageLayoutAreas = new GetContentPageLayoutAreasCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentPageLayoutAreaConstants.COMPONENT_VENDOR_NAME, ContentPageLayoutAreaConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentPageLayoutAreas = entities.stream()
+                            .map(ContentPageLayoutAreaObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentPageLayoutAreas);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentPageLayoutAreas == null) {
-            contentPageLayoutAreaObjects = emptyList();
-        } else {
-            contentPageLayoutAreaObjects = new ArrayList<>(contentPageLayoutAreas.size());
-
-            contentPageLayoutAreas.stream()
-                    .map(ContentPageLayoutAreaObject::new)
-                    .forEachOrdered(contentPageLayoutAreaObjects::add);
-        }
-
-        return contentPageLayoutAreaObjects;
+        return data;
     }
 
     @GraphQLField

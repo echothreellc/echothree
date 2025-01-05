@@ -26,7 +26,10 @@ import com.echothree.control.user.content.server.command.GetContentCategoryItemC
 import com.echothree.control.user.content.server.command.GetContentCategoryItemsCommand;
 import com.echothree.control.user.content.server.command.GetContentCollectionCommand;
 import com.echothree.control.user.content.server.command.GetContentPageCommand;
+import com.echothree.control.user.content.server.command.GetContentPageLayoutAreaCommand;
+import com.echothree.control.user.content.server.command.GetContentPageLayoutAreasCommand;
 import com.echothree.control.user.content.server.command.GetContentPageLayoutCommand;
+import com.echothree.control.user.content.server.command.GetContentPageLayoutsCommand;
 import com.echothree.control.user.content.server.command.GetContentPagesCommand;
 import com.echothree.control.user.content.server.command.GetContentSectionCommand;
 import com.echothree.control.user.content.server.command.GetContentSectionsCommand;
@@ -78,17 +81,29 @@ public interface ContentSecurityUtils {
     static boolean getHasContentSectionAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetContentSectionCommand.class);
     }
-    
+
+    static boolean getHasContentPageLayoutsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetContentPageLayoutsCommand.class);
+    }
+
     static boolean getHasContentPageLayoutAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetContentPageLayoutCommand.class);
     }
-    
+
+    static boolean getHasContentPageLayoutAreasAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetContentPageLayoutAreasCommand.class);
+    }
+
+    static boolean getHasContentPageLayoutAreaAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetContentPageLayoutAreaCommand.class);
+    }
+
     static boolean getHasContentPagesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetContentPagesCommand.class);
     }
-    
+
     static boolean getHasContentPageAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetContentPageCommand.class);
     }
-    
+
 }
