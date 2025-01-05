@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetContentPageLayoutsResult
         extends BaseResult {
-    
+
+    Long getContentPageLayoutCount();
+    void setContentPageLayoutCount(Long contentPageLayoutCount);
+
     List<ContentPageLayoutTransfer> getContentPageLayouts();
     void setContentPageLayouts(List<ContentPageLayoutTransfer> contentPageLayouts);
     

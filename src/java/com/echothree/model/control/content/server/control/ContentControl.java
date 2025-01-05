@@ -423,7 +423,15 @@ public class ContentControl
         
         return contentPageLayout;
     }
-    
+
+    public long countContentPageLayouts() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentpagelayouts
+                        JOIN contentpagelayoutdetails ON cntpl_activedetailid = cntpldt_contentpagelayoutdetailid
+                        """);
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentPageLayout */
     public ContentPageLayout getContentPageLayoutByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentPageLayoutPK(entityInstance.getEntityUniqueId());
@@ -520,7 +528,8 @@ public class ContentControl
                 "SELECT _ALL_ " +
                 "FROM contentpagelayouts, contentpagelayoutdetails " +
                 "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_thrutime = ? " +
-                "ORDER BY cntpldt_sortorder, cntpldt_contentpagelayoutname");
+                "ORDER BY cntpldt_sortorder, cntpldt_contentpagelayoutname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM contentpagelayouts, contentpagelayoutdetails " +
