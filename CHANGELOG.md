@@ -1,5 +1,36 @@
 # Changelog
 
+## 2025-01-05-01
+
+* Add Content Web Address Mutations [622](https://gitlab.echothree.com/echothree/echothree/-/issues/622)
+* Convert GetContentWebAddresses UC to Use BasePaginatedMultipleEntitiesCommand [1186](https://gitlab.echothree.com/echothree/echothree/-/issues/1186)
+* Convert GetContentCollections UC to Use BasePaginatedMultipleEntitiesCommand [1187](https://gitlab.echothree.com/echothree/echothree/-/issues/1187)
+* Convert GetContentPageLayouts UC to Use BasePaginatedMultipleEntitiesCommand [1188](https://gitlab.echothree.com/echothree/echothree/-/issues/1188)
+* Convert GetContentPages UC to Use BasePaginatedMultipleEntitiesCommand [1189](https://gitlab.echothree.com/echothree/echothree/-/issues/1189)
+* Convert GetContentCategoryItems UC to Use BasePaginatedMultipleEntitiesCommand [1190](https://gitlab.echothree.com/echothree/echothree/-/issues/1190)
+* Convert GetContentCatalogs UC to Use BasePaginatedMultipleEntitiesCommand [1191](https://gitlab.echothree.com/echothree/echothree/-/issues/1191)
+* Convert GetContentCategories UC to Use BasePaginatedMultipleEntitiesCommand [1192](https://gitlab.echothree.com/echothree/echothree/-/issues/1192)
+* Convert GetContentPageLayoutAreas UC to Use BasePaginatedMultipleEntitiesCommand [1193](https://gitlab.echothree.com/echothree/echothree/-/issues/1193)
+* Convert GetContentSections UC to Use BasePaginatedMultipleEntitiesCommand [1195](https://gitlab.echothree.com/echothree/echothree/-/issues/1195)
+* Convert GetContentCatalogItems UC to Use BasePaginatedMultipleEntitiesCommand [1196](https://gitlab.echothree.com/echothree/echothree/-/issues/1196)
+* Convert GetContentPageAreas UC to Use BasePaginatedMultipleEntitiesCommand [1197](https://gitlab.echothree.com/echothree/echothree/-/issues/1197)
+* Convert GetContentPageAreaTypes UC to Use BasePaginatedMultipleEntitiesCommand [1198](https://gitlab.echothree.com/echothree/echothree/-/issues/1198)
+* Add Indexing of Content Catalog Items [1373](https://gitlab.echothree.com/echothree/echothree/-/issues/1373)
+* Add Searching of Content Catalog Items [1375](https://gitlab.echothree.com/echothree/echothree/-/issues/1375)
+* Add Content Catalog Items Search Mutation [1377](https://gitlab.echothree.com/echothree/echothree/-/issues/1377)
+* Add Content Catalog Items Results Object and Queries [1379](https://gitlab.echothree.com/echothree/echothree/-/issues/1379)
+* 2025 Copyright Update [1449](https://gitlab.echothree.com/echothree/echothree/-/issues/1449)
+* Add 2025 Fiscal Year [1453](https://gitlab.echothree.com/echothree/echothree/-/issues/1453)
+* Extend AttributeQueryParserUtils to Support Long, Integer, Float, and Double Fields [1454](https://gitlab.echothree.com/echothree/echothree/-/issues/1454)
+* Guava 33.4.0-jre Upgrade [1455](https://gitlab.echothree.com/echothree/echothree/-/issues/1455)
+* Add Default Value for Boolean Attributes [1456](https://gitlab.echothree.com/echothree/echothree/-/issues/1456)
+* Add Create Fiscal Year Mutation [1470](https://gitlab.echothree.com/echothree/echothree/-/issues/1470)
+* Add Set Fiscal Period Status Mutation [1471](https://gitlab.echothree.com/echothree/echothree/-/issues/1471)
+* Optionally Include Entity Boolean Default TO in Entity Attribute TO [1473](https://gitlab.echothree.com/echothree/echothree/-/issues/1473)
+* Differentiate Between Unknown and Deleted EntityRefs and UUIDs [1474](https://gitlab.echothree.com/echothree/echothree/-/issues/1474)
+* Add Perpetual Fiscal Period [1475](https://gitlab.echothree.com/echothree/echothree/-/issues/1475)
+* Apache Ivy 2.5.3 Upgrade [1476](https://gitlab.echothree.com/echothree/echothree/-/issues/1476)
+
 ## 2024-12-22-01
 
 * Add User Visit Group Object and Queries [1381](https://gitlab.echothree.com/echothree/echothree/-/issues/1381)
