@@ -17,12 +17,19 @@
 package com.echothree.control.user.content.common.result;
 
 import com.echothree.model.control.content.common.transfer.ContentPageAreaTransfer;
+import com.echothree.model.control.content.common.transfer.ContentPageTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetContentPageAreasResult
         extends BaseResult {
-    
+
+    ContentPageTransfer getContentPage();
+    void setContentPage(ContentPageTransfer contentPage);
+
+    Long getContentPageAreaCount();
+    void setContentPageAreaCount(Long contentPageAreaCount);
+
     List<ContentPageAreaTransfer> getContentPageAreas();
     void setContentPageAreas(List<ContentPageAreaTransfer> contentPageAreas);
     
