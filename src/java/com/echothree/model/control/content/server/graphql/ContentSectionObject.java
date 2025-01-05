@@ -70,7 +70,11 @@ public class ContentSectionObject
     @GraphQLField
     @GraphQLDescription("parent content section")
     public ContentSectionObject getParentContentSection(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getHasContentSectionAccess(env) ? new ContentSectionObject(getContentSectionDetail().getParentContentSection()) : null;
+        var parentContentSection = getContentSectionDetail().getParentContentSection();
+
+        return parentContentSection == null ? null :
+                ContentSecurityUtils.getHasContentSectionAccess(env) ?
+                        new ContentSectionObject(parentContentSection) : null;
     }
 
     @GraphQLField

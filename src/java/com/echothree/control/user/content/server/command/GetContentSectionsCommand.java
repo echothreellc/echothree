@@ -23,11 +23,11 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collection;
@@ -35,7 +35,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetContentSectionsCommand
-        extends BaseMultipleEntitiesCommand<ContentSection, GetContentSectionsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ContentSection, GetContentSectionsForm> {
     
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -55,16 +55,15 @@ public class GetContentSectionsCommand
     public GetContentSectionsCommand(UserVisitPK userVisitPK, GetContentSectionsForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
-    private ContentSection parentContentSection;
+
     private ContentCollection contentCollection;
-    
+    private ContentSection parentContentSection;
+
     @Override
-    protected Collection<ContentSection> getEntities() {
+    protected void handleForm() {
         var contentWebAddressName = form.getContentWebAddressName();
         var contentCollectionName = form.getContentCollectionName();
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
-        Collection<ContentSection> contentSections = null;
 
         if(parameterCount == 1) {
             var contentControl = Session.getModelController(ContentControl.class);
@@ -87,26 +86,50 @@ public class GetContentSectionsCommand
 
             if(!hasExecutionErrors()) {
                 var parentContentSectionName = form.getParentContentSectionName();
-                var partyPK = getPartyPK();
 
-                parentContentSection = parentContentSectionName == null ? null : contentControl.getContentSectionByName(contentCollection, parentContentSectionName);
-                
-                if(parentContentSectionName == null || parentContentSection != null) {
-                    AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, getUserVisitForUpdate(), contentCollection.getPrimaryKey(), partyPK);
-
-                    if(!hasExecutionErrors()) {
-                        if(parentContentSection == null) {
-                            contentSections = contentControl.getContentSections(contentCollection);
-                        } else {
-                            contentSections = contentControl.getContentSectionsByParentContentSection(parentContentSection);
-                        }
-                    }
+                if(parentContentSectionName == null) {
+                    parentContentSection = null;
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownParentContentSectionName.name(), contentCollection.getLastDetail().getContentCollectionName(), parentContentSectionName);
+                    parentContentSection = contentControl.getContentSectionByName(contentCollection, parentContentSectionName);
+
+                    if(parentContentSection == null) {
+                        addExecutionError(ExecutionErrors.UnknownParentContentSectionName.name(),
+                                contentCollection.getLastDetail().getContentCollectionName(), parentContentSectionName);
+                    }
                 }
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        if(!hasExecutionErrors()) {
+            AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, getUserVisitForUpdate(),
+                    contentCollection.getPrimaryKey(), getPartyPK());
+        }
+    }
+    
+    @Override
+    protected Long getTotalEntities() {
+        var contentControl = Session.getModelController(ContentControl.class);
+
+        return hasExecutionErrors() ? null :
+                parentContentSection == null ?
+                        contentControl.countContentSectionsByContentCollection(contentCollection) :
+                        contentControl.countContentSectionsByParentContentSection(parentContentSection);
+    }
+    
+    @Override
+    protected Collection<ContentSection> getEntities() {
+        Collection<ContentSection> contentSections = null;
+
+        if(!hasExecutionErrors()) {
+            var contentControl = Session.getModelController(ContentControl.class);
+
+            if(parentContentSection == null) {
+                contentSections = contentControl.getContentSections(contentCollection);
+            } else {
+                contentSections = contentControl.getContentSectionsByParentContentSection(parentContentSection);
+            }
         }
 
         return contentSections;
@@ -121,11 +144,13 @@ public class GetContentSectionsCommand
             var userVisit = getUserVisit();
 
             result.setContentCollection(contentControl.getContentCollectionTransfer(userVisit, contentCollection));
-            result.setContentSections(contentControl.getContentSectionTransfers(userVisit, entities));
 
             if(parentContentSection != null) {
                 result.setParentContentSection(contentControl.getContentSectionTransfer(userVisit, parentContentSection));
             }
+
+            result.setContentSectionCount(getTotalEntities());
+            result.setContentSections(contentControl.getContentSectionTransfers(userVisit, entities));
         }
                         
         return result;

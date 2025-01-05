@@ -1312,8 +1312,8 @@ public class ContentControl
     //   Content Sections
     // --------------------------------------------------------------------------------
     
-    public ContentSection createContentSection(ContentCollection contentCollection, String contentSectionName, ContentSection parentContentSection, Boolean isDefault, Integer sortOrder,
-            BasePK createdBy) {
+    public ContentSection createContentSection(ContentCollection contentCollection, String contentSectionName,
+            ContentSection parentContentSection, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultContentSection = getDefaultContentSection(contentCollection);
         var defaultFound = defaultContentSection != null;
         
@@ -1346,13 +1346,22 @@ public class ContentControl
         
         return contentSection;
     }
-    
+
     public long countContentSectionsByContentCollection(ContentCollection contentCollection) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM contentsectiondetails " +
-                "WHERE cntsdt_cntc_contentcollectionid = ? AND cntsdt_thrutime = ?",
-                contentCollection, Session.MAX_TIME);
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentsections, contentsectiondetails
+                        WHERE cnts_activedetailid = cntsdt_contentsectiondetailid AND cntsdt_cntc_contentcollectionid = ?
+                        """, contentCollection);
+    }
+
+    public long countContentSectionsByParentContentSection(ContentSection parentContentSection) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentsections, contentsectiondetails
+                        WHERE cnts_activedetailid = cntsdt_contentsectiondetailid
+                        AND cntsdt_parentcontentsectionid = ?
+                        """, parentContentSection);
     }
 
     private List<ContentSection> getContentSections(ContentCollection contentCollection, EntityPermission entityPermission) {
