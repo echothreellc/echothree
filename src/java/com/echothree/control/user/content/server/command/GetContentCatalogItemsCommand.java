@@ -159,11 +159,12 @@ public class GetContentCatalogItemsCommand
             var contentControl = Session.getModelController(ContentControl.class);
             var userVisit = getUserVisit();
 
+            result.setContentCatalog(contentControl.getContentCatalogTransfer(userVisit, contentCatalog));
+
             if(session.hasLimit(ContentCatalogItemFactory.class)) {
                 result.setContentCatalogItemCount(getTotalEntities());
             }
 
-            result.setContentCatalog(contentControl.getContentCatalogTransfer(userVisit, contentCatalog));
             result.setContentCatalogItems(contentControl.getContentCatalogItemTransfers(userVisit, entities));
         }
         
