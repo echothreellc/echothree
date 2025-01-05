@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetContentPageAreaTypesResult
         extends BaseResult {
-    
+
+    Long getContentPageAreaTypeCount();
+    void setContentPageAreaTypeCount(Long contentPageAreaTypeCount);
+
     List<ContentPageAreaTypeTransfer> getContentPageAreaTypes();
     void setContentPageAreaTypes(List<ContentPageAreaTypeTransfer> contentPageAreaTypes);
     
