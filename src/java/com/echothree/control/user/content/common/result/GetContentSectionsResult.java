@@ -29,7 +29,10 @@ public interface GetContentSectionsResult
     
     ContentSectionTransfer getParentContentSection();
     void setParentContentSection(ContentSectionTransfer contentSection);
-    
+
+    Long getContentSectionCount();
+    void setContentSectionCount(Long contentSectionCount);
+
     List<ContentSectionTransfer> getContentSections();
     void setContentSections(List<ContentSectionTransfer> contentSections);
     
