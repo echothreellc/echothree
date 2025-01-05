@@ -634,6 +634,7 @@ import com.echothree.model.data.content.common.ContentCatalogItemConstants;
 import com.echothree.model.data.content.common.ContentCategoryConstants;
 import com.echothree.model.data.content.common.ContentCategoryItemConstants;
 import com.echothree.model.data.content.common.ContentCollectionConstants;
+import com.echothree.model.data.content.common.ContentSectionConstants;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
 import com.echothree.model.data.content.server.entity.ContentCategory;
@@ -4979,18 +4980,20 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentSections")
-    static Collection<ContentSectionObject> contentSections(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentSectionObject> contentSections(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("parentContentSectionName") final String parentContentSectionName,
             @GraphQLName("associateProgramName") final String associateProgramName,
             @GraphQLName("associateName") final String associateName,
             @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
-        Collection<ContentSection> contentSections;
-        Collection<ContentSectionObject> contentSectionObjects;
+        CountingPaginatedData<ContentSectionObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentSectionsForm();
+            var command = new GetContentSectionsCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -4999,22 +5002,25 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentSections = new GetContentSectionsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentSectionConstants.COMPONENT_VENDOR_NAME, ContentSectionConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentSections = entities.stream()
+                            .map(ContentSectionObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentSections);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentSections == null) {
-            contentSectionObjects = emptyList();
-        } else {
-            contentSectionObjects = new ArrayList<>(contentSections.size());
-
-            contentSections.stream()
-                    .map(ContentSectionObject::new)
-                    .forEachOrdered(contentSectionObjects::add);
-        }
-
-        return contentSectionObjects;
+        return data;
     }
 
     @GraphQLField
