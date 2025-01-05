@@ -634,6 +634,7 @@ import com.echothree.model.data.content.common.ContentCatalogItemConstants;
 import com.echothree.model.data.content.common.ContentCategoryConstants;
 import com.echothree.model.data.content.common.ContentCategoryItemConstants;
 import com.echothree.model.data.content.common.ContentCollectionConstants;
+import com.echothree.model.data.content.common.ContentPageAreaConstants;
 import com.echothree.model.data.content.common.ContentPageAreaTypeConstants;
 import com.echothree.model.data.content.common.ContentPageConstants;
 import com.echothree.model.data.content.common.ContentPageLayoutAreaConstants;
@@ -5154,37 +5155,44 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentPageAreas")
-    static Collection<ContentPageAreaObject> contentPageAreas(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentPageAreaObject> contentPageAreas(final DataFetchingEnvironment env,
             @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
             @GraphQLName("contentSectionName") @GraphQLNonNull final String contentSectionName,
             @GraphQLName("contentPageName") @GraphQLNonNull final String contentPageName) {
-        Collection<ContentPageArea> contentPageAreas;
-        Collection<ContentPageAreaObject> contentPageAreaObjects;
+        CountingPaginatedData<ContentPageAreaObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentPageAreasForm();
+            var command = new GetContentPageAreasCommand(getUserVisitPK(env), commandForm);
+
 
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentSectionName(contentSectionName);
             commandForm.setContentPageName(contentPageName);
 
-            contentPageAreas = new GetContentPageAreasCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentPageAreaConstants.COMPONENT_VENDOR_NAME, ContentPageAreaConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentPageAreas = entities.stream()
+                            .map(ContentPageAreaObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentPageAreas);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentPageAreas == null) {
-            contentPageAreaObjects = emptyList();
-        } else {
-            contentPageAreaObjects = new ArrayList<>(contentPageAreas.size());
-
-            contentPageAreas.stream()
-                    .map(ContentPageAreaObject::new)
-                    .forEachOrdered(contentPageAreaObjects::add);
-        }
-
-        return contentPageAreaObjects;
+        return data;
     }
+
 
     @GraphQLField
     @GraphQLName("contentCatalog")
