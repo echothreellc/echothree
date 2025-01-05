@@ -26,6 +26,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.content.common.ContentPageConstants;
+import com.echothree.model.data.content.common.ContentSectionConstants;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentSectionDetail;
 import com.echothree.util.server.persistence.Session;
@@ -107,14 +108,6 @@ public class ContentSectionObject
 
         return contentControl.getBestContentSectionDescription(contentSection, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
-    
-    @GraphQLField
-    @GraphQLDescription("content pages count")
-    public Long getContentPagesCount(final DataFetchingEnvironment env) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        
-        return ContentSecurityUtils.getHasContentPagesAccess(env) ? contentControl.countContentPagesByContentSection(contentSection) : null;
-    }
 
     @GraphQLField
     @GraphQLDescription("contentPages")
@@ -135,5 +128,5 @@ public class ContentSectionObject
             return Connections.emptyConnection();
         }
     }
-    
+
 }

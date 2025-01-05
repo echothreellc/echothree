@@ -848,8 +848,10 @@ public class ContentControl
     //   Content Page Layout Areas
     // --------------------------------------------------------------------------------
     
-    public ContentPageLayoutArea createContentPageLayoutArea(ContentPageLayout contentPageLayout, ContentPageAreaType contentPageAreaType, Boolean showDescriptionField, Integer sortOrder) {
-        return ContentPageLayoutAreaFactory.getInstance().create(contentPageLayout, contentPageAreaType, showDescriptionField, sortOrder);
+    public ContentPageLayoutArea createContentPageLayoutArea(ContentPageLayout contentPageLayout,
+            ContentPageAreaType contentPageAreaType, Boolean showDescriptionField, Integer sortOrder) {
+        return ContentPageLayoutAreaFactory.getInstance().create(contentPageLayout, contentPageAreaType,
+                showDescriptionField, sortOrder);
     }
     
     public long countContentPageLayoutAreasByContentPageLayout(ContentPageLayout contentPageLayout) {
@@ -888,7 +890,8 @@ public class ContentControl
                     "SELECT _ALL_ " +
                     "FROM contentpagelayoutareas " +
                     "WHERE cntpla_cntpl_contentpagelayoutid = ? " +
-                    "ORDER BY cntpla_sortorder");
+                    "ORDER BY cntpla_sortorder " +
+                    "_LIMIT_");
             
             ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
             
