@@ -23,12 +23,13 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.content.server.entity.ContentSection;
+import com.echothree.model.data.content.server.factory.ContentPageFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collection;
@@ -36,7 +37,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetContentPagesCommand
-        extends BaseMultipleEntitiesCommand<ContentPage, GetContentPagesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ContentPage, GetContentPagesForm> {
     
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,13 +59,12 @@ public class GetContentPagesCommand
     }
     
     private ContentSection contentSection;
-    
+
     @Override
-    protected Collection<ContentPage> getEntities() {
+    protected void handleForm() {
         var contentWebAddressName = form.getContentWebAddressName();
         var contentCollectionName = form.getContentCollectionName();
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
-        Collection<ContentPage> contentPages = null;
 
         if(parameterCount == 1) {
             var contentControl = Session.getModelController(ContentControl.class);
@@ -88,25 +88,40 @@ public class GetContentPagesCommand
 
             if(!hasExecutionErrors()) {
                 var contentSectionName = form.getContentSectionName();
-                var partyPK = getPartyPK();
-                var userVisit = getUserVisitForUpdate();
-                
+
                 contentSection = contentSectionName == null ? contentControl.getDefaultContentSection(contentCollection)
                         : contentControl.getContentSectionByName(contentCollection, contentSectionName);
 
-                if(contentSection != null) {
-                    AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, userVisit, contentSection.getPrimaryKey(), partyPK);
-
-                    if(!hasExecutionErrors()) {
-                        contentPages = contentControl.getContentPagesByContentSection(contentSection);
-                    }
-                } else {
+                if(contentSection == null) {
                     addExecutionError(ExecutionErrors.UnknownContentSectionName.name(),
                             contentCollection.getLastDetail().getContentCollectionName(), contentSectionName);
                 }
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        if(!hasExecutionErrors()) {
+            AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, getUserVisit(),
+                    contentSection.getPrimaryKey(), getPartyPK());
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var contentControl = Session.getModelController(ContentControl.class);
+
+        return hasExecutionErrors() ? null :
+                contentControl.countContentPagesByContentSection(contentSection);
+    }
+
+    @Override
+    protected Collection<ContentPage> getEntities() {
+        var contentControl = Session.getModelController(ContentControl.class);
+        Collection<ContentPage> contentPages = null;
+        
+        if(!hasExecutionErrors()) {
+            contentPages = contentControl.getContentPagesByContentSection(contentSection);
         }
 
         return contentPages;
@@ -119,6 +134,10 @@ public class GetContentPagesCommand
         if(entities != null) {
             var contentControl = Session.getModelController(ContentControl.class);
             var userVisit = getUserVisit();
+
+            if(session.hasLimit(ContentPageFactory.class)) {
+                result.setContentPageCount(getTotalEntities());
+            }
 
             result.setContentSection(contentControl.getContentSectionTransfer(userVisit, contentSection));
             result.setContentPages(contentControl.getContentPageTransfers(userVisit, entities));

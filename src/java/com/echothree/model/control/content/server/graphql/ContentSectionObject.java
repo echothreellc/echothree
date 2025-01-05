@@ -18,8 +18,14 @@ package com.echothree.model.control.content.server.graphql;
 
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.content.common.ContentPageConstants;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentSectionDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,9 +33,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("content section object")
 @GraphQLName("ContentSection")
@@ -108,21 +115,25 @@ public class ContentSectionObject
         
         return ContentSecurityUtils.getHasContentPagesAccess(env) ? contentControl.countContentPagesByContentSection(contentSection) : null;
     }
-    
+
     @GraphQLField
-    @GraphQLDescription("content pages")
-    public List<ContentPageObject> getContentPages(final DataFetchingEnvironment env) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        var entities = ContentSecurityUtils.getHasContentPagesAccess(env) ? contentControl.getContentPagesByContentSection(contentSection) : null;
-        List<ContentPageObject> contentPages = entities == null ? null : new ArrayList<>(entities.size());
-        
-        if(entities != null) {
-            entities.forEach((entity) -> {
-                contentPages.add(new ContentPageObject(entity));
-            });
+    @GraphQLDescription("contentPages")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ContentPageObject> getContentPages(final DataFetchingEnvironment env) {
+        if(ContentSecurityUtils.getHasContentPagesAccess(env)) {
+            var contentControl = Session.getModelController(ContentControl.class);
+            var totalCount = contentControl.countContentPagesByContentSection(contentSection);
+
+            try(var objectLimiter = new ObjectLimiter(env, ContentPageConstants.COMPONENT_VENDOR_NAME, ContentPageConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = contentControl.getContentPagesByContentSection(contentSection);
+                var contentPages = entities.stream().map(ContentPageObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, contentPages);
+            }
+        } else {
+            return Connections.emptyConnection();
         }
-        
-        return contentPages;
     }
     
 }

@@ -634,6 +634,7 @@ import com.echothree.model.data.content.common.ContentCatalogItemConstants;
 import com.echothree.model.data.content.common.ContentCategoryConstants;
 import com.echothree.model.data.content.common.ContentCategoryItemConstants;
 import com.echothree.model.data.content.common.ContentCollectionConstants;
+import com.echothree.model.data.content.common.ContentPageConstants;
 import com.echothree.model.data.content.common.ContentSectionConstants;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
@@ -5056,18 +5057,20 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentPages")
-    static Collection<ContentPageObject> contentPages(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentPageObject> contentPages(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("contentSectionName") final String contentSectionName,
             @GraphQLName("associateProgramName") final String associateProgramName,
             @GraphQLName("associateName") final String associateName,
             @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
-        Collection<ContentPage> contentPages;
-        Collection<ContentPageObject> contentPageObjects;
+        CountingPaginatedData<ContentPageObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentPagesForm();
+            var command = new GetContentPagesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -5076,22 +5079,25 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentPages = new GetContentPagesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentPageConstants.COMPONENT_VENDOR_NAME, ContentPageConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentPages = entities.stream()
+                            .map(ContentPageObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentPages);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentPages == null) {
-            contentPageObjects = emptyList();
-        } else {
-            contentPageObjects = new ArrayList<>(contentPages.size());
-
-            contentPages.stream()
-                    .map(ContentPageObject::new)
-                    .forEachOrdered(contentPageObjects::add);
-        }
-
-        return contentPageObjects;
+        return data;
     }
 
     @GraphQLField
