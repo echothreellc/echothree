@@ -135,11 +135,12 @@ public class GetContentPagesCommand
             var contentControl = Session.getModelController(ContentControl.class);
             var userVisit = getUserVisit();
 
+            result.setContentSection(contentControl.getContentSectionTransfer(userVisit, contentSection));
+
             if(session.hasLimit(ContentPageFactory.class)) {
                 result.setContentPageCount(getTotalEntities());
             }
 
-            result.setContentSection(contentControl.getContentSectionTransfer(userVisit, contentSection));
             result.setContentPages(contentControl.getContentPageTransfers(userVisit, entities));
         }
 

@@ -22,7 +22,7 @@ import com.echothree.model.control.associate.server.logic.AssociateReferralLogic
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCollection;
-import com.echothree.model.data.content.server.factory.ContentCollectionFactory;
+import com.echothree.model.data.content.server.factory.ContentCatalogFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -121,7 +121,7 @@ public class GetContentCatalogsCommand
             var contentControl = Session.getModelController(ContentControl.class);
             var userVisit = getUserVisit();
 
-            if(session.hasLimit(ContentCollectionFactory.class)) {
+            if(session.hasLimit(ContentCatalogFactory.class)) {
                 result.setContentCatalogCount(getTotalEntities());
             }
 
