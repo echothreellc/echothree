@@ -56,8 +56,10 @@ import com.echothree.model.data.content.common.pk.ContentCatalogItemVariablePric
 import com.echothree.model.data.content.common.pk.ContentCatalogPK;
 import com.echothree.model.data.content.common.pk.ContentCategoryPK;
 import com.echothree.model.data.content.common.pk.ContentCollectionPK;
+import com.echothree.model.data.content.common.pk.ContentPageAreaPK;
 import com.echothree.model.data.content.common.pk.ContentPageAreaTypePK;
 import com.echothree.model.data.content.common.pk.ContentPageLayoutPK;
+import com.echothree.model.data.content.common.pk.ContentPagePK;
 import com.echothree.model.data.content.common.pk.ContentWebAddressPK;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogDescription;
@@ -1942,6 +1944,21 @@ public class ContentControl
                 contentSection, Session.MAX_TIME);
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentPage */
+    public ContentPage getContentPageByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContentPagePK(entityInstance.getEntityUniqueId());
+
+        return ContentPageFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContentPage getContentPageByEntityInstance(EntityInstance entityInstance) {
+        return getContentPageByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContentPage getContentPageByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContentPageByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<ContentPage> getContentPagesByContentSection(ContentSection contentSection, EntityPermission entityPermission) {
         List<ContentPage> contentPages;
         
@@ -2401,7 +2418,31 @@ public class ContentControl
         
         return contentPageArea;
     }
-    
+
+    public long countContentPageAreasByContentPage(ContentPage contentPage) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentpageareas
+                        JOIN contentpageareadetails ON cntpa_activedetailid = cntpad_contentpageareadetailid
+                        WHERE cntpad_cntp_contentpageid = ?
+                        """, contentPage);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentPageArea */
+    public ContentPageArea getContentPageAreaByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContentPageAreaPK(entityInstance.getEntityUniqueId());
+
+        return ContentPageAreaFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContentPageArea getContentPageAreaByEntityInstance(EntityInstance entityInstance) {
+        return getContentPageAreaByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContentPageArea getContentPageAreaByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContentPageAreaByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<ContentPageArea> getContentPageAreasByContentPage(ContentPage contentPage, EntityPermission entityPermission) {
         List<ContentPageArea> contentPageAreas;
         
@@ -2413,7 +2454,8 @@ public class ContentControl
                         "FROM contentpageareas, contentpageareadetails, contentpagelayoutareas, languages " +
                         "WHERE cntpa_contentpageareaid = cntpad_cntpa_contentpageareaid AND cntpad_cntp_contentpageid = ? AND cntpad_thrutime = ? " +
                         "AND cntpad_cntpla_contentpagelayoutareaid = cntpla_contentpagelayoutareaid AND cntpad_lang_languageid = lang_languageid " +
-                        "ORDER BY cntpla_sortorder, lang_languageisoname";
+                        "ORDER BY cntpla_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM contentpageareas, contentpageareadetails " +
