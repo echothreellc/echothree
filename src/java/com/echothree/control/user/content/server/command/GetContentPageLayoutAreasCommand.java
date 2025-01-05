@@ -22,6 +22,7 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.content.server.factory.ContentPageFactory;
+import com.echothree.model.data.content.server.factory.ContentPageLayoutAreaFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -112,7 +113,7 @@ public class GetContentPageLayoutAreasCommand
 
             result.setContentPage(contentControl.getContentPageTransfer(userVisit, contentPage));
 
-            if(session.hasLimit(ContentPageFactory.class)) {
+            if(session.hasLimit(ContentPageLayoutAreaFactory.class)) {
                 result.setContentPageLayoutAreaCount(getTotalEntities());
             }
 
