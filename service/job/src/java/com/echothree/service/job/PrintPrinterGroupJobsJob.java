@@ -108,7 +108,7 @@ public class PrintPrinterGroupJobsJob
             var result = (GetPrinterGroupsResult)executionResult.getResult();
             var printerGroups = result.getPrinterGroups();
 
-            printerGroups.stream().forEach((printerGroup) -> {
+            printerGroups.forEach((printerGroup) -> {
                 printerGroupsMap.put(printerGroup.getPrinterGroupName(), printerGroup);
             });
         }

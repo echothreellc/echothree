@@ -77,7 +77,7 @@ public abstract class HtsCountryParser<H> {
     public Map<String, HarmonizedTariffScheduleCodeTransfer> convertHtsListToMap(List<HarmonizedTariffScheduleCodeTransfer> harmonizedTariffScheduleCodes) {
         Map<String, HarmonizedTariffScheduleCodeTransfer> htsMap = new HashMap<>(harmonizedTariffScheduleCodes.size());
         
-        harmonizedTariffScheduleCodes.stream().forEach((harmonizedTariffScheduleCode) -> {
+        harmonizedTariffScheduleCodes.forEach((harmonizedTariffScheduleCode) -> {
             htsMap.put(harmonizedTariffScheduleCode.getHarmonizedTariffScheduleCodeName(), harmonizedTariffScheduleCode);
         });
         

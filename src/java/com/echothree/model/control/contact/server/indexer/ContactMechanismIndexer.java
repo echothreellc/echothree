@@ -112,12 +112,12 @@ public class ContactMechanismIndexer
         Set<PartyType> partyTypes = new HashSet<>();
         Set<ContactMechanismPurpose> contactMechanismPurposes = new HashSet<>();
         
-        contactControl.getPartyContactMechanismsByContactMechanism(contactMechanism).stream().forEach((partyContactMechanism) -> {
+        contactControl.getPartyContactMechanismsByContactMechanism(contactMechanism).forEach((partyContactMechanism) -> {
             var partyContactMechanismDetail = partyContactMechanism.getLastDetail();
             var party = partyContactMechanismDetail.getParty();
             parties.add(party);
             partyTypes.add(party.getLastDetail().getPartyType());
-            contactControl.getPartyContactMechanismPurposesByPartyContactMechanism(partyContactMechanism).stream().forEach((partyContactMechanismPurpose) -> {
+            contactControl.getPartyContactMechanismPurposesByPartyContactMechanism(partyContactMechanism).forEach((partyContactMechanismPurpose) -> {
                 contactMechanismPurposes.add(partyContactMechanismPurpose.getLastDetail().getContactMechanismPurpose());
             });
         });

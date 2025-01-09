@@ -345,7 +345,7 @@ public class ContentLogic
         var offerUseControl = Session.getModelController(OfferUseControl.class);
         Set<ContentCategory> contentCategories = new HashSet<>();
 
-        offerUseControl.getOfferUsesByOffer(offer).stream().forEach((offerUse) -> {
+        offerUseControl.getOfferUsesByOffer(offer).forEach((offerUse) -> {
             contentCategories.addAll(contentControl.getContentCategoriesByDefaultOfferUse(offerUse));
         });
         

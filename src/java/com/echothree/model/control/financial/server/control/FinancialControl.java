@@ -1856,7 +1856,7 @@ public class FinancialControl
     }
     
     public void deleteFinancialAccountRolesByFinancialAccount(FinancialAccount financialAccount, BasePK deletedBy) {
-        getFinancialAccountRolesByFinancialAccountForUpdate(financialAccount).stream().forEach((financialAccountRole) -> {
+        getFinancialAccountRolesByFinancialAccountForUpdate(financialAccount).forEach((financialAccountRole) -> {
             deleteFinancialAccountRole(financialAccountRole, deletedBy);
         });
     }

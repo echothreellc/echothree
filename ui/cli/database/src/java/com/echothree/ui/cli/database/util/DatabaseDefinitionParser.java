@@ -491,7 +491,7 @@ public class DatabaseDefinitionParser
                 Set<Column> leadingColumns = new HashSet<>();
 
                 // Create a Set that contains all the leftmost columns from the index on the table.
-                currentTable.getIndexes().stream().forEach((index) -> {
+                currentTable.getIndexes().forEach((index) -> {
                     leadingColumns.add(index.getIndexColumns().iterator().next());
                 });
 
