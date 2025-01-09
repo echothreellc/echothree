@@ -118,7 +118,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     
     /** Index an EntityInstance in all of its Workflows. */
     private void indexWorkflowEntityStatuses(final Document document, final EntityInstance entityInstance) {
-        workflowControl.getWorkflowsByEntityType(entityInstance.getEntityType()).stream().forEach((workflow) -> {
+        workflowControl.getWorkflowsByEntityType(entityInstance.getEntityType()).forEach((workflow) -> {
             var workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
 
             if (!workflowEntityStatuses.isEmpty()) {

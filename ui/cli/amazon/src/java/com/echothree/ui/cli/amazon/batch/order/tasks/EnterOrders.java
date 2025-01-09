@@ -406,7 +406,7 @@ public class EnterOrders {
                     break;
                 } else {
                     // Clear the contact mechanism name of any found addresses if the customer isn't going to be used.
-                    order.getAmazonOrderShipmentGroups().values().stream().forEach((amazonOrderShipmentGroup) -> {
+                    order.getAmazonOrderShipmentGroups().values().forEach((amazonOrderShipmentGroup) -> {
                         amazonOrderShipmentGroup.setContactMechanismName(null);
                     });
                 }

@@ -653,13 +653,13 @@ public class BillingControl
     }
     
     public void deleteBillingAccountRolesByBillingAccount(BillingAccount billingAccount, BasePK deletedBy) {
-        getBillingAccountRolesByBillingAccountForUpdate(billingAccount).stream().forEach((billingAccountRole) -> {
+        getBillingAccountRolesByBillingAccountForUpdate(billingAccount).forEach((billingAccountRole) -> {
             deleteBillingAccountRole(billingAccountRole, deletedBy);
         });
     }
     
     public void deleteBillingAccountRolesByPartyContactMechanism(PartyContactMechanism partyContactMechanism, BasePK deletedBy) {
-        getBillingAccountRolesByPartyContactMechanismForUpdate(partyContactMechanism).stream().forEach((billingAccountRole) -> {
+        getBillingAccountRolesByPartyContactMechanismForUpdate(partyContactMechanism).forEach((billingAccountRole) -> {
             deleteBillingAccountRole(billingAccountRole, deletedBy);
         });
     }

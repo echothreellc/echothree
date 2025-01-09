@@ -110,7 +110,7 @@ public class DumpOrders {
                 log.info(ItemHeader);
                 return orderShipmentGroup;
             }).map((orderShipmentGroup) -> {
-                orderShipmentGroup.getAmazonOrderLines().values().stream().forEach((orderLine) -> {
+                orderShipmentGroup.getAmazonOrderLines().values().forEach((orderLine) -> {
                     log.info(String.format("%14s %11s %-12s %-15s %-40s %8s %3s %8s %8s",
                             orderLine.getOrderItemId(), orderLine.getListingId(), orderLine.getUpc(), orderLine.getSku(), limitLength(orderLine.getItemName(), 40),
                             orderLine.getPrice(), orderLine.getQuantityPurchased(), orderLine.getShippingFee(), orderLine.getTotalPrice()));

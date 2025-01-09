@@ -2452,13 +2452,13 @@ public class InvoiceControl
     }
     
     public void deleteInvoiceRolesByInvoice(Invoice invoice, BasePK deletedBy) {
-        getInvoiceRolesByInvoiceForUpdate(invoice).stream().forEach((invoiceRole) -> {
+        getInvoiceRolesByInvoiceForUpdate(invoice).forEach((invoiceRole) -> {
             deleteInvoiceRole(invoiceRole, deletedBy);
         });
     }
     
     public void deleteInvoiceRolesByPartyContactMechanism(PartyContactMechanism partyContactMechanism, BasePK deletedBy) {
-        getInvoiceRolesByPartyContactMechanismForUpdate(partyContactMechanism).stream().forEach((invoiceRole) -> {
+        getInvoiceRolesByPartyContactMechanismForUpdate(partyContactMechanism).forEach((invoiceRole) -> {
             deleteInvoiceRole(invoiceRole, deletedBy);
         });
     }

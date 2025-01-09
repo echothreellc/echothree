@@ -50,7 +50,7 @@ public class ItemAnalyzer
     protected Map<String, Analyzer> getItemAliasTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         var itemControl = Session.getModelController(ItemControl.class);
         
-        itemControl.getItemAliasTypes().stream().forEach((itemAliasType) -> {
+        itemControl.getItemAliasTypes().forEach((itemAliasType) -> {
             fieldAnalyzers.put(itemAliasType.getLastDetail().getItemAliasTypeName(), new WhitespaceLowerCaseAnalyzer());
         });
         

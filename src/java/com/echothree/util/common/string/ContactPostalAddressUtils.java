@@ -160,7 +160,7 @@ public class ContactPostalAddressUtils {
         var postalAddressLineElements = postalAddressLine.getPostalAddressLineElements();
         var lineAddition = new StringBuilder();
         
-        postalAddressLineElements.getList().stream().forEach((postalAddressLineElement) -> {
+        postalAddressLineElements.getList().forEach((postalAddressLineElement) -> {
             var lineElement = getLineElementAddition(contactPostalAddress, postalAddressLineElement.getPostalAddressElementType().getPostalAddressElementTypeName());
             var lineElementHasLength = lineElement.length() != 0;
             boolean alwaysIncludePrefix = postalAddressLineElement.getAlwaysIncludePrefix();

@@ -179,7 +179,7 @@ public class PartySecurityRoleTemplateLogic {
             trainingClass, createdBy);
 
         // If Party does not have a PartyTrainingClass for this TrainingClass in either ASSIGNED or TRAINING, then assign it to them.
-        preparedPartySecurityRoleTemplateTrainingClass.getPreparedPartyTrainingClasses().stream().forEach((preparedPartyTrainingClass) -> {
+        preparedPartySecurityRoleTemplateTrainingClass.getPreparedPartyTrainingClasses().forEach((preparedPartyTrainingClass) -> {
             PartyTrainingClassLogic.getInstance().createPartyTrainingClass(session, preparedPartyTrainingClass, createdBy);
         });
 

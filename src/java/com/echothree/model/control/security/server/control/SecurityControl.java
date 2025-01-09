@@ -2278,7 +2278,7 @@ public class SecurityControl
         
         Set<SecurityRole> securityRolesToAdd = new HashSet<>(targetSecurityRoles);
         securityRolesToAdd.removeAll(currentSecurityRoles);
-        securityRolesToAdd.stream().forEach((securityRole) -> {
+        securityRolesToAdd.forEach((securityRole) -> {
             createPartySecurityRole(party, securityRole, syncedBy);
         });
     }

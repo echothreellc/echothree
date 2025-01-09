@@ -116,7 +116,7 @@ public class DatabaseUpdateTasks {
     
     public void addExtraTable(CurrentTable ct) {
         // Also need to treat FKs targeting columns in ct as extras.
-        ct.getColumns().values().stream().forEach((cc) -> {
+        ct.getColumns().values().forEach((cc) -> {
             extraForeignKeys.addAll(cc.getTargetForeignKeys());
         });
         
@@ -128,15 +128,15 @@ public class DatabaseUpdateTasks {
     }
     
     public void addExtraColumn(CurrentColumn cc) {
-        cc.getIndexes().stream().forEach(this::addExtraIndex);
-        cc.getForeignKeys().stream().forEach(this::addExtraForeignKey);
-        cc.getTargetForeignKeys().stream().forEach(this::addExtraForeignKey);
+        cc.getIndexes().forEach(this::addExtraIndex);
+        cc.getForeignKeys().forEach(this::addExtraForeignKey);
+        cc.getTargetForeignKeys().forEach(this::addExtraForeignKey);
         
         extraColumns.add(cc);
     }
     
     public void addExtraColumns(List<CurrentColumn> ccs) {
-        ccs.stream().forEach(this::addExtraColumn);
+        ccs.forEach(this::addExtraColumn);
     }
     
     public List<CurrentColumn> getExtraColumns() {

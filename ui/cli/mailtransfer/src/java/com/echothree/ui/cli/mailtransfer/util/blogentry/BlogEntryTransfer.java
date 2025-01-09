@@ -223,7 +223,7 @@ public class BlogEntryTransfer {
         String getCapturedHtml() {
             var capturedHtml = new StringBuilder();
 
-            capturedMessageParts.stream().forEach((capturedMessagePart) -> {
+            capturedMessageParts.forEach((capturedMessagePart) -> {
                 capturedHtml.append(capturedMessagePart.html);
             });
 

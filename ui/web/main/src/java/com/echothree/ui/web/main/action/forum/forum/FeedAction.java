@@ -209,7 +209,7 @@ public class FeedAction
         feed.setLink(urlUtils.buildUrl(request, response, "/Forum/ForumThread/Main", feedParameters));
         feed.setDescription("");
         
-        forumThreads.stream().forEach((forumThread) -> {
+        forumThreads.forEach((forumThread) -> {
             var forumMessages = forumThread.getForumMessages();
             if (forumMessages.getSize() > 0) {
                 SyndEntry entry = new SyndEntryImpl();

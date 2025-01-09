@@ -2576,19 +2576,19 @@ public class TrainingControl
     }
     
     public void clearPartyTrainingClassSessionSectionFromPartyTrainingClassSessionStatuses(PartyTrainingClassSessionSection partyTrainingClassSessionSection) {
-        getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionSectionForUpdate(partyTrainingClassSessionSection).stream().forEach((partyTrainingClassSessionStatus) -> {
+        getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionSectionForUpdate(partyTrainingClassSessionSection).forEach((partyTrainingClassSessionStatus) -> {
             partyTrainingClassSessionStatus.setLastPartyTrainingClassSessionSection(null);
         });
     }
             
     public void clearPartyTrainingClassSessionPageFromPartyTrainingClassSessionStatuses(PartyTrainingClassSessionPage partyTrainingClassSessionPage) {
-        getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionPageForUpdate(partyTrainingClassSessionPage).stream().forEach((partyTrainingClassSessionStatus) -> {
+        getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionPageForUpdate(partyTrainingClassSessionPage).forEach((partyTrainingClassSessionStatus) -> {
             partyTrainingClassSessionStatus.setLastPartyTrainingClassSessionPage(null);
         });
     }
             
     public void clearPartyTrainingClassSessionQuestionFromPartyTrainingClassSessionStatuses(PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion) {
-        getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionQuestionForUpdate(partyTrainingClassSessionQuestion).stream().forEach((partyTrainingClassSessionStatus) -> {
+        getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionQuestionForUpdate(partyTrainingClassSessionQuestion).forEach((partyTrainingClassSessionStatus) -> {
             partyTrainingClassSessionStatus.setLastPartyTrainingClassSessionQuestion(null);
         });
     }

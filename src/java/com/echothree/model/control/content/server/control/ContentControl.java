@@ -1899,7 +1899,7 @@ public class ContentControl
     }
     
     public void deleteContentSectionDescriptionsByContentSection(ContentSection contentSection, BasePK deletedBy) {
-        getContentSectionDescriptionsByContentSectionForUpdate(contentSection).stream().forEach((contentSectionDescription) -> {
+        getContentSectionDescriptionsByContentSectionForUpdate(contentSection).forEach((contentSectionDescription) -> {
             deleteContentSectionDescription(contentSectionDescription, deletedBy);
         });
     }
@@ -2225,13 +2225,13 @@ public class ContentControl
     }
     
     public void deleteContentPagesByContentSection(ContentSection contentSection, BasePK deletedBy) {
-        getContentPagesByContentSectionForUpdate(contentSection).stream().forEach((contentPage) -> {
+        getContentPagesByContentSectionForUpdate(contentSection).forEach((contentPage) -> {
             deleteContentPage(contentPage, deletedBy);
         });
     }
     
     public void deleteContentPagesByContentPageLayout(ContentPageLayout contentPageLayout, BasePK deletedBy) {
-        getContentPagesByContentPageLayoutForUpdate(contentPageLayout).stream().forEach((contentPage) -> {
+        getContentPagesByContentPageLayoutForUpdate(contentPageLayout).forEach((contentPage) -> {
             deleteContentPage(contentPage, deletedBy);
         });
     }
@@ -2394,7 +2394,7 @@ public class ContentControl
     }
     
     public void deleteContentPageDescriptionsByContentPage(ContentPage contentPage, BasePK deletedBy) {
-        getContentPageDescriptionsByContentPageForUpdate(contentPage).stream().forEach((contentPageDescription) -> {
+        getContentPageDescriptionsByContentPageForUpdate(contentPage).forEach((contentPageDescription) -> {
             deleteContentPageDescription(contentPageDescription, deletedBy);
         });
     }
@@ -2635,7 +2635,7 @@ public class ContentControl
     }
     
     public void deleteContentPageAreasByContentPage(ContentPage contentPage, BasePK deletedBy) {
-        getContentPageAreasByContentPageForUpdate(contentPage).stream().forEach((contentPageArea) -> {
+        getContentPageAreasByContentPageForUpdate(contentPage).forEach((contentPageArea) -> {
             deleteContentPageArea(contentPageArea, deletedBy);
         });
     }
@@ -3067,7 +3067,7 @@ public class ContentControl
     }
     
     public void deleteContentCatalogsByContentCollection(ContentCollection contentCollection, BasePK deletedBy) {
-        getContentCatalogsForUpdate(contentCollection).stream().forEach((contentCatalog) -> {
+        getContentCatalogsForUpdate(contentCollection).forEach((contentCatalog) -> {
             deleteContentCatalog(contentCatalog, deletedBy);
         });
     }
@@ -3231,7 +3231,7 @@ public class ContentControl
     }
     
     public void deleteContentCatalogDescriptionsByContentCatalog(ContentCatalog contentCatalog, BasePK deletedBy) {
-        getContentCatalogDescriptionsByContentCatalogForUpdate(contentCatalog).stream().forEach((contentCatalogDescription) -> {
+        getContentCatalogDescriptionsByContentCatalogForUpdate(contentCatalog).forEach((contentCatalogDescription) -> {
             deleteContentCatalogDescription(contentCatalogDescription, deletedBy);
         });
     }
@@ -4263,7 +4263,7 @@ public class ContentControl
 
     private void deleteContentCategory(ContentCategory contentCategory, BasePK deletedBy, boolean recursive) {
         if(recursive) {
-            getContentCategoriesByParentContentCategoryForUpdate(contentCategory).stream().forEach((childContentCategory) -> {
+            getContentCategoriesByParentContentCategoryForUpdate(contentCategory).forEach((childContentCategory) -> {
                 deleteContentCategory(childContentCategory, deletedBy, true);
             });
         }
@@ -4310,7 +4310,7 @@ public class ContentControl
     }
     
     public void deleteContentCategoriesByContentCatalog(ContentCatalog contentCatalog, BasePK deletedBy) {
-        getContentCategoriesForUpdate(contentCatalog).stream().forEach((contentCategory) -> {
+        getContentCategoriesForUpdate(contentCatalog).forEach((contentCategory) -> {
             deleteContentCategory(contentCategory, deletedBy, false);
         });
     }
@@ -4477,7 +4477,7 @@ public class ContentControl
     }
     
     public void deleteContentCategoryDescriptionsByContentCategory(ContentCategory contentCategory, BasePK deletedBy) {
-        getContentCategoryDescriptionsByContentCategoryForUpdate(contentCategory).stream().forEach((contentCategoryDescription) -> {
+        getContentCategoryDescriptionsByContentCategoryForUpdate(contentCategory).forEach((contentCategoryDescription) -> {
             deleteContentCategoryDescription(contentCategoryDescription, deletedBy);
         });
     }
@@ -4801,13 +4801,13 @@ public class ContentControl
     }
     
     public void deleteContentCategoryItemsByContentCategory(ContentCategory contentCategory, BasePK deletedBy) {
-        getContentCategoryItemsByContentCategoryForUpdate(contentCategory).stream().forEach((contentCategoryItem) -> {
+        getContentCategoryItemsByContentCategoryForUpdate(contentCategory).forEach((contentCategoryItem) -> {
             ContentLogic.getInstance().deleteContentCategoryItem(contentCategoryItem, deletedBy);
         });
     }
 
     private void deleteContentCategoryItemsByContentCatalogItem(ContentCatalogItem contentCatalogItem, BasePK deletedBy) {
-        getContentCategoryItemsByContentCatalogItemForUpdate(contentCatalogItem).stream().forEach((contentCategoryItem) -> {
+        getContentCategoryItemsByContentCatalogItemForUpdate(contentCatalogItem).forEach((contentCategoryItem) -> {
             deleteContentCategoryItem(contentCategoryItem, false, deletedBy);
         });
     }
@@ -5064,7 +5064,7 @@ public class ContentControl
     }
     
     public void deleteContentForumsByContentCollection(ContentCollection contentCollection, BasePK deletedBy) {
-        getContentForumsForUpdate(contentCollection).stream().forEach((contentForum) -> {
+        getContentForumsForUpdate(contentCollection).forEach((contentForum) -> {
             deleteContentForum(contentForum, deletedBy);
         });
     }
@@ -5328,7 +5328,7 @@ public class ContentControl
     }
     
     public void deleteContentWebAddressesByContentCollection(ContentCollection contentCollection, BasePK deletedBy) {
-        getContentWebAddressesByContentCollectionForUpdate(contentCollection).stream().forEach((contentWebAddress) -> {
+        getContentWebAddressesByContentCollectionForUpdate(contentCollection).forEach((contentWebAddress) -> {
             deleteContentWebAddress(contentWebAddress, deletedBy);
         });
     }
@@ -5492,7 +5492,7 @@ public class ContentControl
     }
     
     public void deleteContentWebAddressDescriptionsByContentWebAddress(ContentWebAddress contentWebAddress, BasePK deletedBy) {
-        getContentWebAddressDescriptionsByContentWebAddressForUpdate(contentWebAddress).stream().forEach((contentWebAddressDescription) -> {
+        getContentWebAddressDescriptionsByContentWebAddressForUpdate(contentWebAddress).forEach((contentWebAddressDescription) -> {
             deleteContentWebAddressDescription(contentWebAddressDescription, deletedBy);
         });
     }
@@ -5601,7 +5601,7 @@ public class ContentControl
     }
     
     public void deleteContentWebAddressServersByContentWebAddress(ContentWebAddress contentWebAddress, BasePK deletedBy) {
-        getContentWebAddressServersByContentWebAddressForUpdate(contentWebAddress).stream().forEach((contentWebAddressServer) -> {
+        getContentWebAddressServersByContentWebAddressForUpdate(contentWebAddress).forEach((contentWebAddressServer) -> {
             deleteContentWebAddressServer(contentWebAddressServer, deletedBy);
         });
     }
