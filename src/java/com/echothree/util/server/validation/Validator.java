@@ -278,7 +278,7 @@ public class Validator {
         var limits = form.getLimits();
 
         if(limits != null) {
-            limits.keySet().stream().forEach((tableNameSingular) -> {
+            limits.keySet().forEach((tableNameSingular) -> {
                 var validLimit = true;
                 var m = Patterns.TableNameSingular.matcher(tableNameSingular);
                 if(m.matches()) {

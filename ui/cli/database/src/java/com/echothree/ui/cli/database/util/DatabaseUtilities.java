@@ -566,7 +566,7 @@ public abstract class DatabaseUtilities {
         }
 
         // Check for extra columns.
-        columns.values().stream().forEach((cc) -> {
+        columns.values().forEach((cc) -> {
             var columnName = cc.getColumnName();
             if (!xmlColumns.contains(columnName) && !isHiddenColumn(theTable, columnName)) {
                 extraColumns.add(cc);

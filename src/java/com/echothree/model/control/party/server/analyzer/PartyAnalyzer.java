@@ -60,7 +60,7 @@ public class PartyAnalyzer
     protected Map<String, Analyzer> getPartyAliasTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         var partyControl = Session.getModelController(PartyControl.class);
 
-        partyControl.getPartyAliasTypes(partyType).stream().forEach((partyAliasType)->
+        partyControl.getPartyAliasTypes(partyType).forEach((partyAliasType)->
                 fieldAnalyzers.put(partyAliasType.getLastDetail().getPartyAliasTypeName(),
                         new WhitespaceLowerCaseAnalyzer()));
 

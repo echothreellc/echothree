@@ -215,7 +215,7 @@ public class DatabaseViewUtilities {
         Set<Table> tablesWithDetails = new HashSet<>();
         Set<Table> tablesWithoutDetails = new HashSet<>();
         
-        database.getTables().stream().forEach((table) -> {
+        database.getTables().forEach((table) -> {
             var tableName = table.getNameSingular();
             
             if(tableName.endsWith("Detail")) {
