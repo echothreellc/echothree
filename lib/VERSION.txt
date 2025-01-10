@@ -1,5 +1,4 @@
 Apache Ivy 2.5.2
-ASM 3.1 (used by PMD)
 Bootstrap 4.5.3
 cross-revalidator 1.0a
 displaytag 1.2
@@ -8,7 +7,7 @@ Jaxen 1.1.1 (used by PMD)
 jQuery 3.7.1
 log4j 1.2.8
 logkit 1.2
-PMD 6.39.0
+PMD 7.9.0
 Popper.js 2.6.0
 Prism 1.6.0
 Prototype 1.6.0.3
