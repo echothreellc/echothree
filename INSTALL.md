@@ -13,18 +13,18 @@ deploying these applications.
 ## Prerequisites
 
 * Rocky Linux 9
-* Amazon Corretto 17 (17.0.7.7.1)
+* Amazon Corretto 21 (21.0.5.11.1)
 * Apache Ant 1.10 (1.10.9)
 * MySQL 8.4 (8.4.0 Innovation)
 * WildFly 26 (26.1.3)
 
 The full version numbers in parentheses are the most recent versions used for testing.
 
-## Amazon Corretto 17
+## Amazon Corretto 21
 
-* [What Is Amazon Corretto 17?](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/what-is-corretto-17.html)
-* [Downloads for Amazon Corretto 17](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html)
-* [Versioned Downloads of Corretto on GitHub](https://github.com/corretto/corretto-17/releases)
+* [What Is Amazon Corretto 21?](https://docs.aws.amazon.com/corretto/latest/corretto-21-ug/what-is-corretto-21.html)
+* [Downloads for Amazon Corretto 21](https://docs.aws.amazon.com/corretto/latest/corretto-21-ug/downloads-list.html)
+* [Versioned Downloads of Corretto on GitHub](https://github.com/corretto/corretto-21/releases)
 
 ## MySQL 8.4
 
