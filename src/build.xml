@@ -432,7 +432,7 @@ ${javadoc.copyright}
         <pmd
                 shortFilenames="true"
                 noCache="true">
-            <sourceLanguage name="java" version="17" />
+            <sourceLanguage name="java" version="21" />
             <ruleset>rulesets/java/quickstart.xml</ruleset>
             <formatter
                     type="xml"
