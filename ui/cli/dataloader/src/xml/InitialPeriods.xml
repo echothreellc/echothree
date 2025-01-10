@@ -21,7 +21,7 @@
             <periodType periodTypeName="PERPETUAL" isDefault="true" sortOrder="1">
                 <periodTypeDescription languageIsoName="en" description="Perpetual" />
             </periodType>
-            <periodType periodTypeName="YEAR" parentPeriodTypeName="YEAR" isDefault="false" sortOrder="2">
+            <periodType periodTypeName="YEAR" parentPeriodTypeName="PERPETUAL" isDefault="false" sortOrder="2">
                 <periodTypeDescription languageIsoName="en" description="Year" />
             </periodType>
             <periodType periodTypeName="QUARTER" parentPeriodTypeName="YEAR" isDefault="false" sortOrder="3">
