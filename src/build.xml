@@ -430,7 +430,7 @@ ${javadoc.copyright}
                 classname="net.sourceforge.pmd.ant.PMDTask"
                 classpathref="pmd.classpath" />
         <pmd
-                shortFilenames="true"
+                threads="4"
                 noCache="true">
             <sourceLanguage name="java" version="17" />
             <ruleset>rulesets/java/quickstart.xml</ruleset>
