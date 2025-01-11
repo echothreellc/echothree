@@ -288,6 +288,7 @@ public enum SecurityRoleGroups {
     ReturnReasonType,
     ReturnType,
     ReturnTypeShippingMethod,
+    RoleType,
     SalesOrder,
     SalesOrderAlias,
     SalesOrderStatus,

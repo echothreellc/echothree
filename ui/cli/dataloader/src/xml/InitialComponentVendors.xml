@@ -1231,6 +1231,9 @@
             <entityType entityTypeName="PartyFreeOnBoard" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Party Free On Board" />
             </entityType>
+            <entityType entityTypeName="RoleType" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Role Type" />
+            </entityType>
             <entityType entityTypeName="PartyType" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Party Type" />
             </entityType>
