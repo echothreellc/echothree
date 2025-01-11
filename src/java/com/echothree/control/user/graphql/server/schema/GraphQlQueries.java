@@ -226,6 +226,8 @@ import com.echothree.control.user.party.server.command.GetPartyCommand;
 import com.echothree.control.user.party.server.command.GetPartyTypeCommand;
 import com.echothree.control.user.party.server.command.GetPartyTypesCommand;
 import com.echothree.control.user.party.server.command.GetPersonalTitlesCommand;
+import com.echothree.control.user.party.server.command.GetRoleTypeCommand;
+import com.echothree.control.user.party.server.command.GetRoleTypesCommand;
 import com.echothree.control.user.party.server.command.GetTimeZoneCommand;
 import com.echothree.control.user.party.server.command.GetTimeZonesCommand;
 import com.echothree.control.user.payment.common.PaymentUtil;
@@ -511,6 +513,7 @@ import com.echothree.model.control.party.server.graphql.PartyAliasTypeObject;
 import com.echothree.model.control.party.server.graphql.PartyObject;
 import com.echothree.model.control.party.server.graphql.PartyTypeObject;
 import com.echothree.model.control.party.server.graphql.PersonalTitleObject;
+import com.echothree.model.control.party.server.graphql.RoleTypeObject;
 import com.echothree.model.control.party.server.graphql.TimeZoneObject;
 import com.echothree.model.control.payment.server.graphql.PaymentMethodTypeObject;
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorActionTypeObject;
@@ -767,6 +770,7 @@ import com.echothree.model.data.party.common.PartyCompanyConstants;
 import com.echothree.model.data.party.common.PartyConstants;
 import com.echothree.model.data.party.common.PartyTypeConstants;
 import com.echothree.model.data.party.common.PersonalTitleConstants;
+import com.echothree.model.data.party.common.RoleTypeConstants;
 import com.echothree.model.data.party.common.TimeZoneConstants;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
@@ -777,6 +781,7 @@ import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.entity.PartyDepartment;
 import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.party.server.entity.PartyType;
+import com.echothree.model.data.party.server.entity.RoleType;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
@@ -7346,6 +7351,57 @@ public interface GraphQlQueries {
         }
 
         return vendorItemCostObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("roleType")
+    static RoleTypeObject roleType(final DataFetchingEnvironment env,
+            @GraphQLName("roleTypeName") final String roleTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        RoleType roleType;
+
+        try {
+            var commandForm = PartyUtil.getHome().getGetRoleTypeForm();
+
+            commandForm.setRoleTypeName(roleTypeName);
+            commandForm.setUuid(id);
+
+            roleType = new GetRoleTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return roleType == null ? null : new RoleTypeObject(roleType);
+    }
+
+    @GraphQLField
+    @GraphQLName("roleTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<RoleTypeObject> roleTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<RoleTypeObject> data;
+
+        try {
+            var partyControl = Session.getModelController(PartyControl.class);
+            var totalCount = partyControl.countRoleTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, RoleTypeConstants.COMPONENT_VENDOR_NAME, RoleTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = PartyUtil.getHome().getGetRoleTypesForm();
+                var entities = new GetRoleTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var roleTypes = entities.stream().map(RoleTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, roleTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField

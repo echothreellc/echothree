@@ -314,6 +314,10 @@ public interface PartyService
     // --------------------------------------------------------------------------------
     
     CommandResult createRoleType(UserVisitPK userVisitPK, CreateRoleTypeForm form);
+
+    CommandResult getRoleType(UserVisitPK userVisitPK, GetRoleTypeForm form);
+
+    CommandResult getRoleTypes(UserVisitPK userVisitPK, GetRoleTypesForm form);
     
     // --------------------------------------------------------------------------------
     //   Role Type Descriptions

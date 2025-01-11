@@ -523,7 +523,17 @@ public class PartyBean
     public CommandResult createRoleType(UserVisitPK userVisitPK, CreateRoleTypeForm form) {
         return new CreateRoleTypeCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getRoleType(UserVisitPK userVisitPK, GetRoleTypeForm form) {
+        return new GetRoleTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getRoleTypes(UserVisitPK userVisitPK, GetRoleTypesForm form) {
+        return new GetRoleTypesCommand(userVisitPK, form).run();
+    }
+
     // -------------------------------------------------------------------------
     //   Role Type Descriptions
     // -------------------------------------------------------------------------
