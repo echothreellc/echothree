@@ -45,7 +45,6 @@ public class EntityAttributeTransfer
     private SequenceTransfer entityListItemSequence;
 
     private EntityBooleanDefaultTransfer entityBooleanDefault;
-
     private EntityBooleanAttributeTransfer entityBooleanAttribute;
     private EntityNameAttributeTransfer entityNameAttribute;
     private EntityIntegerAttributeTransfer entityIntegerAttribute;
@@ -58,6 +57,7 @@ public class EntityAttributeTransfer
     private ListWrapper<EntityCollectionAttributeTransfer> entityCollectionAttributes;
     private EntityDateAttributeTransfer entityDateAttribute;
     private EntityTimeAttributeTransfer entityTimeAttribute;
+    private EntityListItemDefaultTransfer entityListItemDefault;
     private EntityListItemAttributeTransfer entityListItemAttribute;
     private ListWrapper<EntityMultipleListItemAttributeTransfer> entityMultipleListItemAttributes;
 
@@ -571,6 +571,22 @@ public class EntityAttributeTransfer
      */
     public void setEntityTimeAttribute(EntityTimeAttributeTransfer entityTimeAttribute) {
         this.entityTimeAttribute = entityTimeAttribute;
+    }
+
+    /**
+     * Returns the entityListItemDefault.
+     * @return the entityListItemDefault
+     */
+    public EntityListItemDefaultTransfer getEntityListItemDefault() {
+        return entityListItemDefault;
+    }
+
+    /**
+     * Sets the entityListItemDefault.
+     * @param entityListItemDefault the entityListItemDefault to set
+     */
+    public void setEntityListItemDefault(EntityListItemDefaultTransfer entityListItemDefault) {
+        this.entityListItemDefault = entityListItemDefault;
     }
 
     /**

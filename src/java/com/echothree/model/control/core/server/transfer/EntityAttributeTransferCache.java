@@ -276,6 +276,12 @@ public class EntityAttributeTransferCache
                         }
                     }
                     case LISTITEM -> {
+                        if(includeDefault) {
+                            var entityListItemDefault = coreControl.getEntityListItemDefault(entityAttribute);
+
+                            entityAttributeTransfer.setEntityListItemDefault(entityListItemDefault == null ? null : coreControl.getEntityListItemDefaultTransfer(userVisit, entityListItemDefault));
+                        }
+
                         if(includeValue && entityInstance != null) {
                             var entityListItemAttribute = coreControl.getEntityListItemAttribute(entityAttribute, entityInstance);
 
