@@ -96,6 +96,7 @@ import com.echothree.model.control.core.common.transfer.EntityIntegerAttributeTr
 import com.echothree.model.control.core.common.transfer.EntityIntegerRangeDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.EntityIntegerRangeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityListItemAttributeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityListItemDefaultTransfer;
 import com.echothree.model.control.core.common.transfer.EntityListItemDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.EntityListItemTransfer;
 import com.echothree.model.control.core.common.transfer.EntityLongAttributeTransfer;
@@ -240,6 +241,7 @@ import com.echothree.model.data.core.server.entity.EntityIntegerRange;
 import com.echothree.model.data.core.server.entity.EntityIntegerRangeDescription;
 import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
+import com.echothree.model.data.core.server.entity.EntityListItemDefault;
 import com.echothree.model.data.core.server.entity.EntityListItemDescription;
 import com.echothree.model.data.core.server.entity.EntityLongAttribute;
 import com.echothree.model.data.core.server.entity.EntityLongRange;
@@ -361,6 +363,7 @@ import com.echothree.model.data.core.server.factory.EntityIntegerRangeDescriptio
 import com.echothree.model.data.core.server.factory.EntityIntegerRangeDetailFactory;
 import com.echothree.model.data.core.server.factory.EntityIntegerRangeFactory;
 import com.echothree.model.data.core.server.factory.EntityListItemAttributeFactory;
+import com.echothree.model.data.core.server.factory.EntityListItemDefaultFactory;
 import com.echothree.model.data.core.server.factory.EntityListItemDescriptionFactory;
 import com.echothree.model.data.core.server.factory.EntityListItemDetailFactory;
 import com.echothree.model.data.core.server.factory.EntityListItemFactory;
@@ -469,6 +472,7 @@ import com.echothree.model.data.core.server.value.EntityIntegerAttributeValue;
 import com.echothree.model.data.core.server.value.EntityIntegerRangeDescriptionValue;
 import com.echothree.model.data.core.server.value.EntityIntegerRangeDetailValue;
 import com.echothree.model.data.core.server.value.EntityListItemAttributeValue;
+import com.echothree.model.data.core.server.value.EntityListItemDefaultValue;
 import com.echothree.model.data.core.server.value.EntityListItemDescriptionValue;
 import com.echothree.model.data.core.server.value.EntityListItemDetailValue;
 import com.echothree.model.data.core.server.value.EntityLongAttributeValue;
@@ -2328,6 +2332,12 @@ public class CoreControl
 
                 if(entityBooleanDefault != null) {
                     createEntityBooleanAttribute(entityAttribute, entityInstance, entityBooleanDefault.getBooleanAttribute(), createdBy);
+                }
+            } else if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())) {
+                var entityListItemDefault = getEntityListItemDefault(entityAttribute);
+
+                if(entityListItemDefault != null) {
+                    createEntityListItemAttribute(entityAttribute, entityInstance, entityListItemDefault.getEntityListItem(), createdBy);
                 }
             }
         });
@@ -7037,6 +7047,7 @@ public class CoreControl
         var entityAttributeTypeName = entityListItemDetail.getEntityAttribute().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
         
         if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())) {
+            deleteEntityListItemDefaultByEntityListItem(entityListItem, deletedBy);
             deleteEntityListItemAttributesByEntityListItem(entityListItem, deletedBy);
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
             deleteEntityMultipleListItemAttributesByEntityListItem(entityListItem, deletedBy);
@@ -11293,7 +11304,175 @@ public class CoreControl
     public void deleteEntityIntegerAttributesByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {
         deleteEntityIntegerAttributes(getEntityIntegerAttributesByEntityInstanceForUpdate(entityInstance), deletedBy);
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity List Item Defaults
+    // --------------------------------------------------------------------------------
+
+    public EntityListItemDefault createEntityListItemDefault(EntityAttribute entityAttribute,
+            EntityListItem entityListItem, BasePK createdBy) {
+        var entityListItemDefault = EntityListItemDefaultFactory.getInstance().create(session,
+                entityAttribute, entityListItem, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityListItemDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return entityListItemDefault;
+    }
+
+    public long countEntityListItemDefaultHistory(EntityAttribute entityAttribute) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitylistitemdefaults
+                    WHERE eladef_ena_entityattributeid = ?
+                    """, entityAttribute);
+    }
+
+    private static final Map<EntityPermission, String> getEntityListItemDefaultHistoryQueries;
+
+    static {
+        getEntityListItemDefaultHistoryQueries = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entitylistitemdefaults
+                WHERE eladef_ena_entityattributeid = ?
+                ORDER BY eladef_thrutime
+                _LIMIT_
+                """);
+    }
+
+    public List<EntityListItemDefault> getEntityListItemDefaultHistory(EntityAttribute entityAttribute) {
+        return EntityListItemDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityListItemDefaultHistoryQueries,
+                entityAttribute);
+    }
+
+    private EntityListItemDefault getEntityListItemDefault(EntityAttribute entityAttribute,
+            EntityPermission entityPermission) {
+        EntityListItemDefault entityListItemDefault;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entitylistitemdefaults " +
+                        "WHERE eladef_ena_entityattributeid = ? AND eladef_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entitylistitemdefaults " +
+                        "WHERE eladef_ena_entityattributeid = ? AND eladef_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = EntityListItemDefaultFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            entityListItemDefault = EntityListItemDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityListItemDefault;
+    }
+
+    public EntityListItemDefault getEntityListItemDefault(EntityAttribute entityAttribute) {
+        return getEntityListItemDefault(entityAttribute, EntityPermission.READ_ONLY);
+    }
+
+    public EntityListItemDefault getEntityListItemDefaultForUpdate(EntityAttribute entityAttribute) {
+        return getEntityListItemDefault(entityAttribute, EntityPermission.READ_WRITE);
+    }
+
+    public EntityListItemDefaultValue getEntityListItemDefaultValueForUpdate(EntityListItemDefault entityListItemDefault) {
+        return entityListItemDefault == null? null: entityListItemDefault.getEntityListItemDefaultValue().clone();
+    }
+
+    public EntityListItemDefaultValue getEntityListItemDefaultValueForUpdate(EntityAttribute entityAttribute) {
+        return getEntityListItemDefaultValueForUpdate(getEntityListItemDefaultForUpdate(entityAttribute));
+    }
+
+    private EntityListItemDefault getEntityListItemDefaultByEntityListItem(EntityListItem entityListItem, EntityPermission entityPermission) {
+        EntityListItemDefault entityListItemDefault;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ "
+                        + "FROM entitylistitemdefaults "
+                        + "WHERE eladef_eli_entitylistitemid = ? AND eladef_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ "
+                        + "FROM entitylistitemdefaults "
+                        + "WHERE eladef_eli_entitylistitemid = ? AND eladef_thrutime = ? "
+                        + "FOR UPDATE";
+            }
+
+            var ps = EntityListItemDefaultFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            entityListItemDefault = EntityListItemDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityListItemDefault;
+    }
+
+    public EntityListItemDefault getEntityListItemDefaultByEntityListItem(EntityListItem entityListItem) {
+        return getEntityListItemDefaultByEntityListItem(entityListItem, EntityPermission.READ_ONLY);
+    }
+
+    public EntityListItemDefault getEntityListItemDefaultByEntityListItemForUpdate(EntityListItem entityListItem) {
+        return getEntityListItemDefaultByEntityListItem(entityListItem, EntityPermission.READ_WRITE);
+    }
+
+    public EntityListItemDefaultTransfer getEntityListItemDefaultTransfer(UserVisit userVisit, EntityListItemDefault entityListItemDefault) {
+        return getCoreTransferCaches(userVisit).getEntityListItemDefaultTransferCache().getEntityListItemDefaultTransfer(entityListItemDefault);
+    }
+
+    public void updateEntityListItemDefaultFromValue(EntityListItemDefaultValue entityListItemDefaultValue, BasePK updatedBy) {
+        if(entityListItemDefaultValue.hasBeenModified()) {
+            var entityListItemDefault = EntityListItemDefaultFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityListItemDefaultValue);
+            var entityAttribute = entityListItemDefault.getEntityAttribute();
+
+            if(entityAttribute.getLastDetail().getTrackRevisions()) {
+                entityListItemDefault.setThruTime(session.START_TIME_LONG);
+                entityListItemDefault.store();
+            } else {
+                entityListItemDefault.remove();
+            }
+
+            entityListItemDefault = EntityListItemDefaultFactory.getInstance().create(entityAttribute.getPrimaryKey(),
+                    entityListItemDefaultValue.getEntityListItemPK(), session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+            sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityListItemDefault.getPrimaryKey(), EventTypes.DELETE, updatedBy);
+        }
+    }
+
+    public void deleteEntityListItemDefault(EntityListItemDefault entityListItemDefault, BasePK deletedBy) {
+        var entityAttribute = entityListItemDefault.getEntityAttribute();
+
+        if(entityAttribute.getLastDetail().getTrackRevisions()) {
+            entityListItemDefault.setThruTime(session.START_TIME_LONG);
+        } else {
+            entityListItemDefault.remove();
+        }
+
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityListItemDefault.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+    }
+
+    public void deleteEntityListItemDefaultByEntityListItem(EntityListItem entityListItem, BasePK deletedBy) {
+        var deleteEntityListItemDefault = getEntityListItemDefaultByEntityListItemForUpdate(entityListItem);
+
+        if(deleteEntityListItemDefault != null) {
+            deleteEntityListItemDefault(deleteEntityListItemDefault, deletedBy);
+        }
+    }
+
     // --------------------------------------------------------------------------------
     //   Entity List Item Attributes
     // --------------------------------------------------------------------------------
