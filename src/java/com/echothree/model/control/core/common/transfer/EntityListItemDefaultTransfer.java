@@ -18,16 +18,16 @@ package com.echothree.model.control.core.common.transfer;
 
 import com.echothree.util.common.transfer.BaseTransfer;
 
-public class EntityBooleanDefaultTransfer
+public class EntityListItemDefaultTransfer
         extends BaseTransfer {
 
     private EntityAttributeTransfer entityAttribute;
-    private Boolean booleanAttribute;
+    private EntityListItemTransfer entityListItem;
 
-    /** Creates a new instance of EntityBooleanDefaultTransfer */
-    public EntityBooleanDefaultTransfer(EntityAttributeTransfer entityAttribute, Boolean booleanAttribute) {
+    /** Creates a new instance of EntityListItemDefaultTransfer */
+    public EntityListItemDefaultTransfer(final EntityAttributeTransfer entityAttribute, final EntityListItemTransfer entityListItem) {
         this.entityAttribute = entityAttribute;
-        this.booleanAttribute = booleanAttribute;
+        this.entityListItem = entityListItem;
     }
     
     public EntityAttributeTransfer getEntityAttribute() {
@@ -37,13 +37,13 @@ public class EntityBooleanDefaultTransfer
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
         this.entityAttribute = entityAttribute;
     }
-    
-    public Boolean getBooleanAttribute() {
-        return booleanAttribute;
+
+    public EntityListItemTransfer getEntityListItem() {
+        return entityListItem;
     }
     
-    public void setBooleanAttribute(Boolean booleanAttribute) {
-        this.booleanAttribute = booleanAttribute;
+    public void setEntityListItem(EntityListItemTransfer entityListItem) {
+        this.entityListItem = entityListItem;
     }
     
 }

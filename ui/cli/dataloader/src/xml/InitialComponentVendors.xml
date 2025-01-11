@@ -181,6 +181,9 @@
             <entityType entityTypeName="EntityCollectionAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Collection Attribute" />
             </entityType>
+            <entityType entityTypeName="EntityListItemDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity List Item Default" />
+            </entityType>
             <entityType entityTypeName="EntityListItemAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity List Item Attribute" />
             </entityType>

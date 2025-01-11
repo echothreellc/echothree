@@ -71,6 +71,15 @@ public class EntityAttributeHandler
             commandForm.set(getAttrsMap(attrs));
 
             coreService.createEntityBooleanDefault(initialDataParser.getUserVisit(), commandForm);
+        } if(localName.equals("entityListItemDefault")) {
+            var commandForm = CoreFormFactory.getCreateEntityListItemDefaultForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            coreService.createEntityListItemDefault(initialDataParser.getUserVisit(), commandForm);
         } if(localName.equals("entityAttributeEntityAttributeGroup")) {
             var commandForm = CoreFormFactory.getCreateEntityAttributeEntityAttributeGroupForm();
 

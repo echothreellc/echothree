@@ -1800,6 +1800,28 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="EntityListItemDefaults" nameSingular="EntityListItemDefault" columnPrefix="eladef">
+                    <columns>
+                        <column name="EntityListItemDefaultId" type="EID" nullAllowed="false" />
+                        <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
+                        <column name="EntityListItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityListItems" destinationColumn="EntityListItemId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityListItemDefaultId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="EntityListItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="EntityListItemAttributes" nameSingular="EntityListItemAttribute" columnPrefix="ela">
                     <columns>
                         <column name="EntityListItemAttributeId" type="EID" nullAllowed="false" />

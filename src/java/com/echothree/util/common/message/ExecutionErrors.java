@@ -2304,5 +2304,7 @@ public enum ExecutionErrors {
     UnknownDefaultSearchType,
     UnknownOrderShipmentGroup,
     UnknownDefaultOrderShipmentGroup,
+    DuplicateEntityListItemDefault,
+    UnknownEntityListItemDefault,
 
 }
