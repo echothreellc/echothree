@@ -93,7 +93,7 @@ public abstract class BasePartyObject
     }
 
     @GraphQLField
-    @GraphQLDescription("preferred language")
+    @GraphQLDescription("preferred currency")
     public CurrencyObject getPreferredCurrency(final DataFetchingEnvironment env) {
         var preferredCurrency = getPartyDetail().getPreferredCurrency();
         
