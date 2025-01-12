@@ -28,6 +28,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.TopScoreDocCollectorManager;
+import org.apache.lucene.search.TotalHitCountCollectorManager;
 
 public class IndexQuery
         extends BaseIndex<EntityInstancePKHolder> {
@@ -46,7 +47,15 @@ public class IndexQuery
     }
     
     protected static final ScoreDoc[] NO_HITS = {};
-    
+
+
+    protected int getNumHits(IndexSearcher is)
+            throws IOException {
+        var totalHitCountCollectorManager = new TotalHitCountCollectorManager(is.getSlices());
+
+        return is.search(query, totalHitCountCollectorManager);
+    }
+
     @Override
     protected EntityInstancePKHolder useIndex(IndexReader ir)
             throws IOException {
@@ -54,7 +63,7 @@ public class IndexQuery
         EntityInstancePKHolder entityInstancePKHolder = null;
 
         if(!eea.hasExecutionErrors()) {
-            final var numHits = is.count(query);
+            final var numHits = getNumHits(is);
             ScoreDoc[] hits;
 
             if(numHits == 0) {
@@ -62,11 +71,9 @@ public class IndexQuery
             } else {
                 if(sort == null) {
                     var topScoreDocCollectorManager = new TopScoreDocCollectorManager(numHits, Integer.MAX_VALUE);
-                    var topScoreDocCollector = topScoreDocCollectorManager.newCollector();
+                    var topDocs = is.search(query, topScoreDocCollectorManager);
 
-                    is.search(query, topScoreDocCollectorManager);
-
-                    hits = topScoreDocCollector.topDocs().scoreDocs;
+                    hits = topDocs.scoreDocs;
                 } else {
                     final var topFieldDocs = is.search(query, numHits, sort);
 
