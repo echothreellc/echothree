@@ -77,7 +77,6 @@ public class IndexQuery
                     var topScoreDocCollector = topScoreDocCollectorManager.newCollector();
                     final Collector collector = new PositiveScoresOnlyCollector(topScoreDocCollector);
 
-//                    is.search(query, topScoreDocCollectorManager);
                     is.search(query, collector);
 
                     hits = topScoreDocCollector.topDocs().scoreDocs;
