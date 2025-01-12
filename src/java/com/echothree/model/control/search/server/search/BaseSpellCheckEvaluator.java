@@ -60,8 +60,7 @@ public abstract class BaseSpellCheckEvaluator
 
         // If it's a BoostQuery, then we'll unwrap the contained Query and mark
         // that we've been boosted if needed.
-        if(query instanceof BoostQuery) {
-            var boostQuery = (BoostQuery)query;
+        if(query instanceof BoostQuery boostQuery) {
 
             isBoosted = boostQuery.getBoost() != 1.0f;
 
@@ -76,8 +75,7 @@ public abstract class BaseSpellCheckEvaluator
             getLog().info("    is boosted: " + isBoosted);
         }
 
-        if(query instanceof TermQuery) {
-            var termQuery = (TermQuery)query;
+        if(query instanceof TermQuery termQuery) {
             var term = termQuery.getTerm();
             var text = term.text();
             
