@@ -14,11 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.core.server.graphql;
+package com.echothree.control.user.core.common.edit;
 
-import graphql.annotations.annotationTypes.GraphQLUnion;
+import com.echothree.util.common.form.BaseEdit;
 
-@GraphQLUnion(possibleTypes = {EntityBooleanDefaultObject.class, EntityIntegerDefaultObject.class, EntityListItemDefaultObject.class})
-public interface DefaultInterface {
-
+public interface EntityIntegerDefaultEdit
+        extends BaseEdit {
+    
+    String getIntegerAttribute();
+    void setIntegerAttribute(String integerAttribute);
+    
 }

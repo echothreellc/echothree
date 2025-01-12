@@ -208,6 +208,12 @@ public class EntityAttributeTransferCache
                         }
                     }
                     case INTEGER -> {
+                        if(includeDefault) {
+                            var entityIntegerDefault = coreControl.getEntityIntegerDefault(entityAttribute);
+
+                            entityAttributeTransfer.setEntityIntegerDefault(entityIntegerDefault == null ? null : coreControl.getEntityIntegerDefaultTransfer(userVisit, entityIntegerDefault));
+                        }
+
                         if(includeValue && entityInstance != null) {
                             var entityIntegerAttribute = coreControl.getEntityIntegerAttribute(entityAttribute, entityInstance);
 

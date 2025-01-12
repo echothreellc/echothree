@@ -32,6 +32,7 @@ import com.echothree.model.control.core.common.exception.DuplicateEntityBooleanD
 import com.echothree.model.control.core.common.exception.DuplicateEntityClobAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityDateAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityIntegerAttributeException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityIntegerDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityListItemAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityListItemDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityListItemNameException;
@@ -53,6 +54,7 @@ import com.echothree.model.control.core.common.exception.UnknownEntityAttributeG
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeTypeNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityBooleanDefaultException;
+import com.echothree.model.control.core.common.exception.UnknownEntityIntegerDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemNameException;
 import com.echothree.model.control.core.common.exception.UpperRangeExceededException;
@@ -92,6 +94,7 @@ import com.echothree.model.data.core.server.entity.EntityClobAttribute;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
+import com.echothree.model.data.core.server.entity.EntityIntegerDefault;
 import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
 import com.echothree.model.data.core.server.entity.EntityListItemDefault;
@@ -942,6 +945,46 @@ public class EntityAttributeLogic
         }
 
         return entityBooleanAttribute;
+    }
+
+    public EntityIntegerDefault createEntityIntegerDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final Integer integerAttribute, final BasePK createdBy) {
+        EntityIntegerDefault entityIntegerDefault = null;
+
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.INTEGER);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityIntegerDefault = coreControl.getEntityIntegerDefault(entityAttribute);
+
+            if(entityIntegerDefault == null) {
+                coreControl.createEntityIntegerDefault(entityAttribute, integerAttribute, createdBy);
+            } else {
+                handleExecutionError(DuplicateEntityIntegerDefaultException.class, eea, ExecutionErrors.DuplicateEntityIntegerDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            }
+        }
+
+        return entityIntegerDefault;
+    }
+
+    public void deleteEntityIntegerDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.INTEGER);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            var entityIntegerDefault = coreControl.getEntityIntegerDefaultForUpdate(entityAttribute);
+
+            if(entityIntegerDefault == null) {
+                handleExecutionError(UnknownEntityIntegerDefaultException.class, eea, ExecutionErrors.UnknownEntityIntegerDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            } else {
+                coreControl.deleteEntityIntegerDefault(entityIntegerDefault, deletedBy);
+            }
+        }
     }
 
     public EntityIntegerAttribute createEntityIntegerAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,

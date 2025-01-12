@@ -47,6 +47,7 @@ public class EntityAttributeTransfer
     private EntityBooleanDefaultTransfer entityBooleanDefault;
     private EntityBooleanAttributeTransfer entityBooleanAttribute;
     private EntityNameAttributeTransfer entityNameAttribute;
+    private EntityIntegerDefaultTransfer entityIntegerDefault;
     private EntityIntegerAttributeTransfer entityIntegerAttribute;
     private EntityLongAttributeTransfer entityLongAttribute;
     private EntityStringAttributeTransfer entityStringAttribute;
@@ -411,6 +412,22 @@ public class EntityAttributeTransfer
      */
     public void setEntityNameAttribute(EntityNameAttributeTransfer entityNameAttribute) {
         this.entityNameAttribute = entityNameAttribute;
+    }
+
+    /**
+     * Returns the entityIntegerDefault.
+     * @return the entityIntegerDefault
+     */
+    public EntityIntegerDefaultTransfer getEntityIntegerDefault() {
+        return entityIntegerDefault;
+    }
+
+    /**
+     * Sets the entityIntegerDefault.
+     * @param entityIntegerDefault the entityIntegerDefault to set
+     */
+    public void setEntityIntegerDefault(EntityIntegerDefaultTransfer entityIntegerDefault) {
+        this.entityIntegerDefault = entityIntegerDefault;
     }
 
     /**
