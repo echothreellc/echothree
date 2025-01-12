@@ -86,8 +86,8 @@ public class IndexQuery
         if(!eea.hasExecutionErrors()) {
             final var numHits = getNumHits(is);
             final var hits = getHits(numHits, is);
-
             final var hitCount = hits.length;
+
             if(hitCount > 0) {
                 var storedFields = is.storedFields();
 
@@ -98,7 +98,8 @@ public class IndexQuery
                 }
             }
         }
-        
+
+        // If there were Execution Errors or if there were no hits then ensure we do not return a null.
         return entityInstancePKHolder == null ? new EntityInstancePKHolder(0) : entityInstancePKHolder;
     }
 
