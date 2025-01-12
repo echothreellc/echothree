@@ -29,8 +29,7 @@ import org.apache.lucene.search.PositiveScoresOnlyCollector;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Sort;
-import org.apache.lucene.search.TopDocsCollector;
-import org.apache.lucene.search.TopScoreDocCollector;
+import org.apache.lucene.search.TopScoreDocCollectorManager;
 import org.apache.lucene.search.TotalHitCountCollector;
 
 public class IndexQuery
@@ -74,12 +73,14 @@ public class IndexQuery
                 hits = NO_HITS;
             } else {
                 if(sort == null) {
-                    final TopDocsCollector topDocsCollector = TopScoreDocCollector.create(numHits, Integer.MAX_VALUE );
-                    final Collector collector = new PositiveScoresOnlyCollector(topDocsCollector);
+                    var topScoreDocCollectorManager = new TopScoreDocCollectorManager(numHits, Integer.MAX_VALUE);
+                    var topScoreDocCollector = topScoreDocCollectorManager.newCollector();
+                    final Collector collector = new PositiveScoresOnlyCollector(topScoreDocCollector);
 
+//                    is.search(query, topScoreDocCollectorManager);
                     is.search(query, collector);
 
-                    hits = topDocsCollector.topDocs().scoreDocs;
+                    hits = topScoreDocCollector.topDocs().scoreDocs;
                 } else {
                     final var topFieldDocs = is.search(query, numHits, sort);
 
@@ -89,10 +90,12 @@ public class IndexQuery
 
             final var hitCount = hits.length;
             if(hitCount > 0) {
+                var storedFields = is.storedFields();
+
                 entityInstancePKHolder = new EntityInstancePKHolder(hitCount);
 
                 for(var i = 0; i < hitCount ; i++) {
-                    entityInstancePKHolder.add(new EntityInstancePK(is.doc(hits[i].doc).get(IndexFields.entityInstanceId.name())), i);
+                    entityInstancePKHolder.add(new EntityInstancePK(storedFields.document(hits[i].doc).get(IndexFields.entityInstanceId.name())), i);
                 }
             }
         }

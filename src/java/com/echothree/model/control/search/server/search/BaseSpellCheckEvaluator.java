@@ -120,7 +120,7 @@ public abstract class BaseSpellCheckEvaluator
         };
 
         for(var booleanClause : booleanQuery) {
-            var occur = booleanClause.getOccur();
+            var occur = booleanClause.occur();
 
             if(EvaluatorDebugFlags.LogCheckSpelling) {
                 getLog().info("booleanClause " + booleanClause);
@@ -146,7 +146,7 @@ public abstract class BaseSpellCheckEvaluator
             }
 
             if(result) {
-                var containedQuery = booleanClause.getQuery();
+                var containedQuery = booleanClause.query();
 
                 if(EvaluatorDebugFlags.LogCheckSpelling) {
                     getLog().info("  booleanClause.getQuery() " + containedQuery);
