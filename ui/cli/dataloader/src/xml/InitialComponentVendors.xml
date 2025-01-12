@@ -130,6 +130,9 @@
             <entityType entityTypeName="EntityNameAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Name Attribute" />
             </entityType>
+            <entityType entityTypeName="EntityIntegerDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Integer Default" />
+            </entityType>
             <entityType entityTypeName="EntityIntegerAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Integer Attribute" />
             </entityType>

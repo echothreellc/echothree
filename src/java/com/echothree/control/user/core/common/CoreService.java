@@ -694,6 +694,16 @@ public interface CoreService
     CommandResult deleteEntityBooleanAttribute(UserVisitPK userVisitPK, DeleteEntityBooleanAttributeForm form);
 
     // --------------------------------------------------------------------------------
+    //   Entity Integer Defaults
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityIntegerDefault(UserVisitPK userVisitPK, CreateEntityIntegerDefaultForm form);
+
+    CommandResult editEntityIntegerDefault(UserVisitPK userVisitPK, EditEntityIntegerDefaultForm form);
+
+    CommandResult deleteEntityIntegerDefault(UserVisitPK userVisitPK, DeleteEntityIntegerDefaultForm form);
+
+    // --------------------------------------------------------------------------------
     //   Entity Integer Attributes
     // --------------------------------------------------------------------------------
     
