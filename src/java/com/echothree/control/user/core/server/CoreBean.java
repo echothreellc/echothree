@@ -1386,6 +1386,25 @@ public class CoreBean
     }
 
     // --------------------------------------------------------------------------------
+    //   Entity Integer Defaults
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityIntegerDefault(UserVisitPK userVisitPK, CreateEntityIntegerDefaultForm form) {
+        return new CreateEntityIntegerDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityIntegerDefault(UserVisitPK userVisitPK, EditEntityIntegerDefaultForm form) {
+        return new EditEntityIntegerDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityIntegerDefault(UserVisitPK userVisitPK, DeleteEntityIntegerDefaultForm form) {
+        return new DeleteEntityIntegerDefaultCommand(userVisitPK, form).run();
+    }
+
+    // --------------------------------------------------------------------------------
     //   Entity Integer Attributes
     // --------------------------------------------------------------------------------
     

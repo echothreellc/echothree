@@ -14,11 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.core.server.graphql;
+package com.echothree.control.user.core.common.form;
 
-import graphql.annotations.annotationTypes.GraphQLUnion;
+import com.echothree.control.user.core.common.edit.EntityIntegerDefaultEdit;
+import com.echothree.control.user.core.common.spec.EntityIntegerDefaultSpec;
 
-@GraphQLUnion(possibleTypes = {EntityBooleanDefaultObject.class, EntityIntegerDefaultObject.class, EntityListItemDefaultObject.class})
-public interface DefaultInterface {
-
+public interface CreateEntityIntegerDefaultForm
+        extends EntityIntegerDefaultSpec, EntityIntegerDefaultEdit {
+    
+    // Nothing additional beyond EntityIntegerDefaultSpec, EntityIntegerDefaultEdit
+    
 }

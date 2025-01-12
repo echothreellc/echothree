@@ -483,6 +483,11 @@ public class EntityAttributeObject
 
                 defaultInterface = entityBooleanDefault == null ? null : new EntityBooleanDefaultObject(entityBooleanDefault);
             }
+            case INTEGER -> {
+                var entityIntegerDefault = coreControl.getEntityIntegerDefault(entityAttribute);
+
+                defaultInterface = entityIntegerDefault == null ? null : new EntityIntegerDefaultObject(entityIntegerDefault);
+            }
             case LISTITEM -> {
                 var entityListItemDefault = coreControl.getEntityListItemDefault(entityAttribute);
 

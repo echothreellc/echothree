@@ -1166,6 +1166,24 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="EntityIntegerDefaults" nameSingular="EntityIntegerDefault" columnPrefix="eniadef">
+                    <columns>
+                        <column name="EntityIntegerDefaultId" type="EID" nullAllowed="false" />
+                        <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
+                        <column name="IntegerAttribute" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityIntegerDefaultId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="EntityIntegerAttributes" nameSingular="EntityIntegerAttribute" columnPrefix="enia">
                     <columns>
                         <column name="EntityIntegerAttributeId" type="EID" nullAllowed="false" />

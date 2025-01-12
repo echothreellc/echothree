@@ -93,6 +93,7 @@ import com.echothree.model.control.core.common.transfer.EntityEntityAttributeTra
 import com.echothree.model.control.core.common.transfer.EntityGeoPointAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityIntegerAttributeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityIntegerDefaultTransfer;
 import com.echothree.model.control.core.common.transfer.EntityIntegerRangeDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.EntityIntegerRangeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityListItemAttributeTransfer;
@@ -237,6 +238,7 @@ import com.echothree.model.data.core.server.entity.EntityEntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityGeoPointAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
+import com.echothree.model.data.core.server.entity.EntityIntegerDefault;
 import com.echothree.model.data.core.server.entity.EntityIntegerRange;
 import com.echothree.model.data.core.server.entity.EntityIntegerRangeDescription;
 import com.echothree.model.data.core.server.entity.EntityListItem;
@@ -359,6 +361,7 @@ import com.echothree.model.data.core.server.factory.EntityEntityAttributeFactory
 import com.echothree.model.data.core.server.factory.EntityGeoPointAttributeFactory;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.core.server.factory.EntityIntegerAttributeFactory;
+import com.echothree.model.data.core.server.factory.EntityIntegerDefaultFactory;
 import com.echothree.model.data.core.server.factory.EntityIntegerRangeDescriptionFactory;
 import com.echothree.model.data.core.server.factory.EntityIntegerRangeDetailFactory;
 import com.echothree.model.data.core.server.factory.EntityIntegerRangeFactory;
@@ -469,6 +472,7 @@ import com.echothree.model.data.core.server.value.EntityDateAttributeValue;
 import com.echothree.model.data.core.server.value.EntityEntityAttributeValue;
 import com.echothree.model.data.core.server.value.EntityGeoPointAttributeValue;
 import com.echothree.model.data.core.server.value.EntityIntegerAttributeValue;
+import com.echothree.model.data.core.server.value.EntityIntegerDefaultValue;
 import com.echothree.model.data.core.server.value.EntityIntegerRangeDescriptionValue;
 import com.echothree.model.data.core.server.value.EntityIntegerRangeDetailValue;
 import com.echothree.model.data.core.server.value.EntityListItemAttributeValue;
@@ -2332,6 +2336,12 @@ public class CoreControl
 
                 if(entityBooleanDefault != null) {
                     createEntityBooleanAttribute(entityAttribute, entityInstance, entityBooleanDefault.getBooleanAttribute(), createdBy);
+                }
+            } else if(entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())) {
+                var entityIntegerDefault = getEntityIntegerDefault(entityAttribute);
+
+                if(entityIntegerDefault != null) {
+                    createEntityIntegerAttribute(entityAttribute, entityInstance, entityIntegerDefault.getIntegerAttribute(), createdBy);
                 }
             } else if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())) {
                 var entityListItemDefault = getEntityListItemDefault(entityAttribute);
@@ -5612,6 +5622,7 @@ public class CoreControl
 
                 switch(entityAttributeType) {
                     case INTEGER:
+                        deleteEntityIntegerDefaultByEntityAttribute(entityAttribute, deletedBy);
                         deleteEntityAttributeIntegerByEntityAttribute(entityAttribute, deletedBy);
                         deleteEntityIntegerRangesByEntityAttribute(entityAttribute, deletedBy);
                         deleteEntityIntegerAttributesByEntityAttribute(entityAttribute, deletedBy);
@@ -11123,7 +11134,137 @@ public class CoreControl
     public void deleteEntityDateAttributesByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {
         deleteEntityDateAttributes(getEntityDateAttributesByEntityInstanceForUpdate(entityInstance), deletedBy);
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Integer Defaults
+    // --------------------------------------------------------------------------------
+
+    public EntityIntegerDefault createEntityIntegerDefault(EntityAttribute entityAttribute, Integer integerAttribute,
+            BasePK createdBy) {
+        var entityIntegerDefault = EntityIntegerDefaultFactory.getInstance().create(entityAttribute,
+                integerAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityIntegerDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return entityIntegerDefault;
+    }
+
+    public long countEntityIntegerDefaultHistory(EntityAttribute entityAttribute) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entityintegerdefaults
+                    WHERE eniadef_thrutime = ?
+                    """, entityAttribute);
+    }
+
+    private static final Map<EntityPermission, String> getEntityIntegerDefaultHistoryQueries;
+
+    static {
+        getEntityIntegerDefaultHistoryQueries = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entityintegerdefaults
+                WHERE eniadef_ena_entityattributeid = ?
+                ORDER BY eniadef_thrutime
+                _LIMIT_
+                """);
+    }
+
+    public List<EntityIntegerDefault> getEntityIntegerDefaultHistory(EntityAttribute entityAttribute) {
+        return EntityIntegerDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityIntegerDefaultHistoryQueries,
+                entityAttribute);
+    }
+
+    private EntityIntegerDefault getEntityIntegerDefault(EntityAttribute entityAttribute, EntityPermission entityPermission) {
+        EntityIntegerDefault entityIntegerDefault;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityintegerdefaults " +
+                        "WHERE eniadef_ena_entityattributeid = ? AND eniadef_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityintegerdefaults " +
+                        "WHERE eniadef_ena_entityattributeid = ? AND eniadef_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = EntityIntegerDefaultFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            entityIntegerDefault = EntityIntegerDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityIntegerDefault;
+    }
+
+    public EntityIntegerDefault getEntityIntegerDefault(EntityAttribute entityAttribute) {
+        return getEntityIntegerDefault(entityAttribute, EntityPermission.READ_ONLY);
+    }
+
+    public EntityIntegerDefault getEntityIntegerDefaultForUpdate(EntityAttribute entityAttribute) {
+        return getEntityIntegerDefault(entityAttribute, EntityPermission.READ_WRITE);
+    }
+
+    public EntityIntegerDefaultValue getEntityIntegerDefaultValueForUpdate(EntityIntegerDefault entityIntegerDefault) {
+        return entityIntegerDefault == null? null: entityIntegerDefault.getEntityIntegerDefaultValue().clone();
+    }
+
+    public EntityIntegerDefaultValue getEntityIntegerDefaultValueForUpdate(EntityAttribute entityAttribute) {
+        return getEntityIntegerDefaultValueForUpdate(getEntityIntegerDefaultForUpdate(entityAttribute));
+    }
+
+    public EntityIntegerDefaultTransfer getEntityIntegerDefaultTransfer(UserVisit userVisit, EntityIntegerDefault entityIntegerDefault) {
+        return getCoreTransferCaches(userVisit).getEntityIntegerDefaultTransferCache().getEntityIntegerDefaultTransfer(entityIntegerDefault);
+    }
+
+    public void updateEntityIntegerDefaultFromValue(EntityIntegerDefaultValue entityIntegerDefaultValue, BasePK updatedBy) {
+        if(entityIntegerDefaultValue.hasBeenModified()) {
+            var entityIntegerDefault = EntityIntegerDefaultFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityIntegerDefaultValue);
+            var entityAttribute = entityIntegerDefault.getEntityAttribute();
+
+            if(entityAttribute.getLastDetail().getTrackRevisions()) {
+                entityIntegerDefault.setThruTime(session.START_TIME_LONG);
+                entityIntegerDefault.store();
+            } else {
+                entityIntegerDefault.remove();
+            }
+
+            entityIntegerDefault = EntityIntegerDefaultFactory.getInstance().create(entityAttribute,
+                    entityIntegerDefaultValue.getIntegerAttribute(), session.START_TIME_LONG,
+                    Session.MAX_TIME_LONG);
+
+            sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityIntegerDefault.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+        }
+    }
+
+    public void deleteEntityIntegerDefault(EntityIntegerDefault entityIntegerDefault, BasePK deletedBy) {
+        var entityAttribute = entityIntegerDefault.getEntityAttribute();
+
+        if(entityAttribute.getLastDetail().getTrackRevisions()) {
+            entityIntegerDefault.setThruTime(session.START_TIME_LONG);
+        } else {
+            entityIntegerDefault.remove();
+        }
+
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityIntegerDefault.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+    }
+
+    public void deleteEntityIntegerDefaultByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
+        var entityIntegerDefault = getEntityIntegerDefaultForUpdate(entityAttribute);
+
+        if(entityIntegerDefault != null) {
+            deleteEntityIntegerDefault(entityIntegerDefault, deletedBy);
+        }
+    }
+
     // --------------------------------------------------------------------------------
     //   Entity Integer Attributes
     // --------------------------------------------------------------------------------
