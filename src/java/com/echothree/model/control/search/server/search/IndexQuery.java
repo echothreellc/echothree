@@ -30,7 +30,6 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.TopScoreDocCollectorManager;
-import org.apache.lucene.search.TotalHitCountCollector;
 
 public class IndexQuery
         extends BaseIndex<EntityInstancePKHolder> {
@@ -50,15 +49,6 @@ public class IndexQuery
     
     protected static final ScoreDoc[] NO_HITS = {};
     
-    protected int getNumHits(IndexSearcher is)
-            throws IOException {
-        var collector = new TotalHitCountCollector();
-        
-        is.search(query, collector);
-        
-        return collector.getTotalHits();
-    }
-    
     @Override
     protected EntityInstancePKHolder useIndex(IndexReader ir)
             throws IOException {
@@ -66,7 +56,7 @@ public class IndexQuery
         EntityInstancePKHolder entityInstancePKHolder = null;
 
         if(!eea.hasExecutionErrors()) {
-            final var numHits = getNumHits(is);
+            final var numHits = is.count(query);
             ScoreDoc[] hits;
 
             if(numHits == 0) {
@@ -75,9 +65,8 @@ public class IndexQuery
                 if(sort == null) {
                     var topScoreDocCollectorManager = new TopScoreDocCollectorManager(numHits, Integer.MAX_VALUE);
                     var topScoreDocCollector = topScoreDocCollectorManager.newCollector();
-                    final Collector collector = new PositiveScoresOnlyCollector(topScoreDocCollector);
 
-                    is.search(query, collector);
+                    is.search(query, topScoreDocCollectorManager);
 
                     hits = topScoreDocCollector.topDocs().scoreDocs;
                 } else {
