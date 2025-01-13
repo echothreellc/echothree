@@ -37,6 +37,7 @@ import com.echothree.model.control.core.common.exception.DuplicateEntityListItem
 import com.echothree.model.control.core.common.exception.DuplicateEntityListItemDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityListItemNameException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityLongAttributeException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityLongDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityMultipleListItemAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityNameAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityStringAttributeException;
@@ -57,6 +58,7 @@ import com.echothree.model.control.core.common.exception.UnknownEntityBooleanDef
 import com.echothree.model.control.core.common.exception.UnknownEntityIntegerDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemNameException;
+import com.echothree.model.control.core.common.exception.UnknownEntityLongDefaultException;
 import com.echothree.model.control.core.common.exception.UpperRangeExceededException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.database.EntityInstanceResult;
@@ -99,6 +101,7 @@ import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
 import com.echothree.model.data.core.server.entity.EntityListItemDefault;
 import com.echothree.model.data.core.server.entity.EntityLongAttribute;
+import com.echothree.model.data.core.server.entity.EntityLongDefault;
 import com.echothree.model.data.core.server.entity.EntityMultipleListItemAttribute;
 import com.echothree.model.data.core.server.entity.EntityNameAttribute;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
@@ -1027,7 +1030,47 @@ public class EntityAttributeLogic
 
         return entityIntegerAttribute;
     }
-    
+
+    public EntityLongDefault createEntityLongDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final Long longAttribute, final BasePK createdBy) {
+        EntityLongDefault entityLongDefault = null;
+
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.LONG);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityLongDefault = coreControl.getEntityLongDefault(entityAttribute);
+
+            if(entityLongDefault == null) {
+                coreControl.createEntityLongDefault(entityAttribute, longAttribute, createdBy);
+            } else {
+                handleExecutionError(DuplicateEntityLongDefaultException.class, eea, ExecutionErrors.DuplicateEntityLongDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            }
+        }
+
+        return entityLongDefault;
+    }
+
+    public void deleteEntityLongDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.LONG);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            var entityLongDefault = coreControl.getEntityLongDefaultForUpdate(entityAttribute);
+
+            if(entityLongDefault == null) {
+                handleExecutionError(UnknownEntityLongDefaultException.class, eea, ExecutionErrors.UnknownEntityLongDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            } else {
+                coreControl.deleteEntityLongDefault(entityLongDefault, deletedBy);
+            }
+        }
+    }
+
     public EntityLongAttribute createEntityLongAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
             final EntityInstance entityInstance, final Long longAttribute, final BasePK createdBy) {
         EntityLongAttribute entityLongAttribute = null;
