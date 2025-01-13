@@ -142,6 +142,9 @@
             <entityType entityTypeName="EntityIntegerRangeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Integer Range Description" />
             </entityType>
+            <entityType entityTypeName="EntityLongDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Long Default" />
+            </entityType>
             <entityType entityTypeName="EntityLongAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Long Attribute" />
             </entityType>

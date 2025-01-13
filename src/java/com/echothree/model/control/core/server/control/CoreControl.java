@@ -101,6 +101,7 @@ import com.echothree.model.control.core.common.transfer.EntityListItemDefaultTra
 import com.echothree.model.control.core.common.transfer.EntityListItemDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.EntityListItemTransfer;
 import com.echothree.model.control.core.common.transfer.EntityLongAttributeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityLongDefaultTransfer;
 import com.echothree.model.control.core.common.transfer.EntityLongRangeDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.EntityLongRangeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityMultipleListItemAttributeTransfer;
@@ -246,6 +247,7 @@ import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
 import com.echothree.model.data.core.server.entity.EntityListItemDefault;
 import com.echothree.model.data.core.server.entity.EntityListItemDescription;
 import com.echothree.model.data.core.server.entity.EntityLongAttribute;
+import com.echothree.model.data.core.server.entity.EntityLongDefault;
 import com.echothree.model.data.core.server.entity.EntityLongRange;
 import com.echothree.model.data.core.server.entity.EntityLongRangeDescription;
 import com.echothree.model.data.core.server.entity.EntityMultipleListItemAttribute;
@@ -371,6 +373,7 @@ import com.echothree.model.data.core.server.factory.EntityListItemDescriptionFac
 import com.echothree.model.data.core.server.factory.EntityListItemDetailFactory;
 import com.echothree.model.data.core.server.factory.EntityListItemFactory;
 import com.echothree.model.data.core.server.factory.EntityLongAttributeFactory;
+import com.echothree.model.data.core.server.factory.EntityLongDefaultFactory;
 import com.echothree.model.data.core.server.factory.EntityLongRangeDescriptionFactory;
 import com.echothree.model.data.core.server.factory.EntityLongRangeDetailFactory;
 import com.echothree.model.data.core.server.factory.EntityLongRangeFactory;
@@ -480,6 +483,7 @@ import com.echothree.model.data.core.server.value.EntityListItemDefaultValue;
 import com.echothree.model.data.core.server.value.EntityListItemDescriptionValue;
 import com.echothree.model.data.core.server.value.EntityListItemDetailValue;
 import com.echothree.model.data.core.server.value.EntityLongAttributeValue;
+import com.echothree.model.data.core.server.value.EntityLongDefaultValue;
 import com.echothree.model.data.core.server.value.EntityLongRangeDescriptionValue;
 import com.echothree.model.data.core.server.value.EntityLongRangeDetailValue;
 import com.echothree.model.data.core.server.value.EntityNameAttributeValue;
@@ -2342,6 +2346,12 @@ public class CoreControl
 
                 if(entityIntegerDefault != null) {
                     createEntityIntegerAttribute(entityAttribute, entityInstance, entityIntegerDefault.getIntegerAttribute(), createdBy);
+                }
+            } else if(entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
+                var entityLongDefault = getEntityLongDefault(entityAttribute);
+
+                if(entityLongDefault != null) {
+                    createEntityLongAttribute(entityAttribute, entityInstance, entityLongDefault.getLongAttribute(), createdBy);
                 }
             } else if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())) {
                 var entityListItemDefault = getEntityListItemDefault(entityAttribute);
@@ -5628,6 +5638,7 @@ public class CoreControl
                         deleteEntityIntegerAttributesByEntityAttribute(entityAttribute, deletedBy);
                         break;
                     case LONG:
+                        deleteEntityLongDefaultByEntityAttribute(entityAttribute, deletedBy);
                         deleteEntityAttributeLongByEntityAttribute(entityAttribute, deletedBy);
                         deleteEntityLongRangesByEntityAttribute(entityAttribute, deletedBy);
                         deleteEntityLongAttributesByEntityAttribute(entityAttribute, deletedBy);
@@ -11814,7 +11825,137 @@ public class CoreControl
     public void deleteEntityListItemAttributesByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {
         deleteEntityListItemAttributes(getEntityListItemAttributesByEntityInstanceForUpdate(entityInstance), deletedBy);
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Long Defaults
+    // --------------------------------------------------------------------------------
+
+    public EntityLongDefault createEntityLongDefault(EntityAttribute entityAttribute, Long longAttribute,
+            BasePK createdBy) {
+        var entityLongDefault = EntityLongDefaultFactory.getInstance().create(entityAttribute,
+                longAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityLongDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return entityLongDefault;
+    }
+
+    public long countEntityLongDefaultHistory(EntityAttribute entityAttribute) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitylongdefaults
+                    WHERE enladef_thrutime = ?
+                    """, entityAttribute);
+    }
+
+    private static final Map<EntityPermission, String> getEntityLongDefaultHistoryQueries;
+
+    static {
+        getEntityLongDefaultHistoryQueries = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entitylongdefaults
+                WHERE enladef_ena_entityattributeid = ?
+                ORDER BY enladef_thrutime
+                _LIMIT_
+                """);
+    }
+
+    public List<EntityLongDefault> getEntityLongDefaultHistory(EntityAttribute entityAttribute) {
+        return EntityLongDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityLongDefaultHistoryQueries,
+                entityAttribute);
+    }
+
+    private EntityLongDefault getEntityLongDefault(EntityAttribute entityAttribute, EntityPermission entityPermission) {
+        EntityLongDefault entityLongDefault;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entitylongdefaults " +
+                        "WHERE enladef_ena_entityattributeid = ? AND enladef_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entitylongdefaults " +
+                        "WHERE enladef_ena_entityattributeid = ? AND enladef_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = EntityLongDefaultFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            entityLongDefault = EntityLongDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityLongDefault;
+    }
+
+    public EntityLongDefault getEntityLongDefault(EntityAttribute entityAttribute) {
+        return getEntityLongDefault(entityAttribute, EntityPermission.READ_ONLY);
+    }
+
+    public EntityLongDefault getEntityLongDefaultForUpdate(EntityAttribute entityAttribute) {
+        return getEntityLongDefault(entityAttribute, EntityPermission.READ_WRITE);
+    }
+
+    public EntityLongDefaultValue getEntityLongDefaultValueForUpdate(EntityLongDefault entityLongDefault) {
+        return entityLongDefault == null? null: entityLongDefault.getEntityLongDefaultValue().clone();
+    }
+
+    public EntityLongDefaultValue getEntityLongDefaultValueForUpdate(EntityAttribute entityAttribute) {
+        return getEntityLongDefaultValueForUpdate(getEntityLongDefaultForUpdate(entityAttribute));
+    }
+
+    public EntityLongDefaultTransfer getEntityLongDefaultTransfer(UserVisit userVisit, EntityLongDefault entityLongDefault) {
+        return getCoreTransferCaches(userVisit).getEntityLongDefaultTransferCache().getEntityLongDefaultTransfer(entityLongDefault);
+    }
+
+    public void updateEntityLongDefaultFromValue(EntityLongDefaultValue entityLongDefaultValue, BasePK updatedBy) {
+        if(entityLongDefaultValue.hasBeenModified()) {
+            var entityLongDefault = EntityLongDefaultFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityLongDefaultValue);
+            var entityAttribute = entityLongDefault.getEntityAttribute();
+
+            if(entityAttribute.getLastDetail().getTrackRevisions()) {
+                entityLongDefault.setThruTime(session.START_TIME_LONG);
+                entityLongDefault.store();
+            } else {
+                entityLongDefault.remove();
+            }
+
+            entityLongDefault = EntityLongDefaultFactory.getInstance().create(entityAttribute,
+                    entityLongDefaultValue.getLongAttribute(), session.START_TIME_LONG,
+                    Session.MAX_TIME_LONG);
+
+            sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityLongDefault.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+        }
+    }
+
+    public void deleteEntityLongDefault(EntityLongDefault entityLongDefault, BasePK deletedBy) {
+        var entityAttribute = entityLongDefault.getEntityAttribute();
+
+        if(entityAttribute.getLastDetail().getTrackRevisions()) {
+            entityLongDefault.setThruTime(session.START_TIME_LONG);
+        } else {
+            entityLongDefault.remove();
+        }
+
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityLongDefault.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+    }
+
+    public void deleteEntityLongDefaultByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
+        var entityLongDefault = getEntityLongDefaultForUpdate(entityAttribute);
+
+        if(entityLongDefault != null) {
+            deleteEntityLongDefault(entityLongDefault, deletedBy);
+        }
+    }
+
     // --------------------------------------------------------------------------------
     //   Entity Long Attributes
     // --------------------------------------------------------------------------------

@@ -2308,5 +2308,7 @@ public enum ExecutionErrors {
     UnknownEntityListItemDefault,
     DuplicateEntityIntegerDefault,
     UnknownEntityIntegerDefault,
+    DuplicateEntityLongDefault,
+    UnknownEntityLongDefault,
 
 }

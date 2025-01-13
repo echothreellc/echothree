@@ -68,6 +68,7 @@ public class CoreTransferCaches
     protected EntityIntegerAttributeTransferCache entityIntegerAttributeTransferCache;
     protected EntityListItemDefaultTransferCache entityListItemDefaultTransferCache;
     protected EntityListItemAttributeTransferCache entityListItemAttributeTransferCache;
+    protected EntityLongDefaultTransferCache entityLongDefaultTransferCache;
     protected EntityLongAttributeTransferCache entityLongAttributeTransferCache;
     protected EntityMultipleListItemAttributeTransferCache entityMultipleListItemAttributeTransferCache;
     protected EntityNameAttributeTransferCache entityNameAttributeTransferCache;
@@ -436,6 +437,13 @@ public class CoreTransferCaches
             entityListItemAttributeTransferCache = new EntityListItemAttributeTransferCache(userVisit);
 
         return entityListItemAttributeTransferCache;
+    }
+
+    public EntityLongDefaultTransferCache getEntityLongDefaultTransferCache() {
+        if(entityLongDefaultTransferCache == null)
+            entityLongDefaultTransferCache = new EntityLongDefaultTransferCache(userVisit);
+
+        return entityLongDefaultTransferCache;
     }
 
     public EntityLongAttributeTransferCache getEntityLongAttributeTransferCache() {

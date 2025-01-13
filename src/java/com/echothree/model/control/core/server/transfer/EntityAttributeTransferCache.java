@@ -221,6 +221,12 @@ public class EntityAttributeTransferCache
                         }
                     }
                     case LONG -> {
+                        if(includeDefault) {
+                            var entityLongDefault = coreControl.getEntityLongDefault(entityAttribute);
+
+                            entityAttributeTransfer.setEntityLongDefault(entityLongDefault == null ? null : coreControl.getEntityLongDefaultTransfer(userVisit, entityLongDefault));
+                        }
+
                         if(includeValue && entityInstance != null) {
                             var entityLongAttribute = coreControl.getEntityLongAttribute(entityAttribute, entityInstance);
 

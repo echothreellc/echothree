@@ -488,6 +488,11 @@ public class EntityAttributeObject
 
                 defaultInterface = entityIntegerDefault == null ? null : new EntityIntegerDefaultObject(entityIntegerDefault);
             }
+            case LONG -> {
+                var entityLongDefault = coreControl.getEntityLongDefault(entityAttribute);
+
+                defaultInterface = entityLongDefault == null ? null : new EntityLongDefaultObject(entityLongDefault);
+            }
             case LISTITEM -> {
                 var entityListItemDefault = coreControl.getEntityListItemDefault(entityAttribute);
 
