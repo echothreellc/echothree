@@ -631,7 +631,7 @@
                         <column name="EntityInstanceId" type="EID" nullAllowed="false" />
                         <column name="EntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
                         <column name="EntityUniqueId" type="Long" nullAllowed="false" />
-                        <column name="Uuid" type="Uuid" nullAllowed="true" />
+                        <column name="Uuid" type="UUID" nullAllowed="true" />
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
