@@ -1166,7 +1166,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="EntityIntegerDefaults" nameSingular="EntityIntegerDefault" columnPrefix="eniadef">
+                <table namePlural="EntityIntegerDefaults" nameSingular="EntityIntegerDefault" columnPrefix="enidef">
                     <columns>
                         <column name="EntityIntegerDefaultId" type="EID" nullAllowed="false" />
                         <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
@@ -1295,7 +1295,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="EntityLongDefaults" nameSingular="EntityLongDefault" columnPrefix="enladef">
+                <table namePlural="EntityLongDefaults" nameSingular="EntityLongDefault" columnPrefix="enldef">
                     <columns>
                         <column name="EntityLongDefaultId" type="EID" nullAllowed="false" />
                         <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
