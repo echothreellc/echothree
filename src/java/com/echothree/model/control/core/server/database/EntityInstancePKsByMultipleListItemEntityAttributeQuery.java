@@ -20,17 +20,18 @@ import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
-public class EntityInstancesByBooleanEntityAttributeQuery
-        extends BaseEntityAttributeQuery<EntityInstanceResult> {
+public class EntityInstancePKsByMultipleListItemEntityAttributeQuery
+        extends BaseEntityInstancePKQuery<EntityInstancePKResult> {
     
-    public EntityInstancesByBooleanEntityAttributeQuery() {
-        super("SELECT enbla_eni_entityinstanceid AS EntityInstancePK "
-                + "FROM entitybooleanattributes "
-                + "WHERE enbla_ena_entityattributeid = ? AND enbla_thrutime = ?");
+    public EntityInstancePKsByMultipleListItemEntityAttributeQuery() {
+        super("SELECT DISTINCT emlia_eni_entityinstanceid AS EntityInstancePK "
+                + "FROM entitylistitems, entitylistitemdetails, entitymultiplelistitemattributes "
+                + "WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_ena_entityattributeid = ? "
+                + "AND eli_entitylistitemid = emlia_eli_entitylistitemid AND emlia_thrutime = ?");
     }
     
     @Override
-    public List<EntityInstanceResult> execute(final EntityAttribute entityAttribute) {
+    public List<EntityInstancePKResult> execute(final EntityAttribute entityAttribute) {
         return super.execute(entityAttribute, Session.MAX_TIME_LONG);
     }
     

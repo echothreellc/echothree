@@ -16,24 +16,22 @@
 
 package com.echothree.model.control.core.server.database;
 
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.util.server.persistence.BaseDatabaseQuery;
-import com.echothree.util.server.persistence.EntityPermission;
+import com.echothree.model.data.core.server.entity.EntityAttribute;
+import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
-public class EntityInstancesByEntityTypeWithNullDeletedTimeQuery
-        extends BaseDatabaseQuery<EntityInstanceResult> {
-
-    public EntityInstancesByEntityTypeWithNullDeletedTimeQuery() {
-        super("SELECT eni_entityinstanceid AS EntityInstancePK "
-                        + "FROM entityinstances, entitytimes "
-                        + "WHERE eni_ent_entitytypeid = ? AND eni_entityinstanceid = etim_eni_entityinstanceid "
-                        + "AND etim_deletedtime IS NULL",
-                EntityPermission.READ_ONLY);
+public class EntityInstancePKsByTimeEntityAttributeQuery
+        extends BaseEntityInstancePKQuery<EntityInstancePKResult> {
+    
+    public EntityInstancePKsByTimeEntityAttributeQuery() {
+        super("SELECT enta_eni_entityinstanceid AS EntityInstancePK "
+                + "FROM entitytimeattributes "
+                + "WHERE enta_ena_entityattributeid = ? AND enta_thrutime = ?");
     }
-
-    public List<EntityInstanceResult> execute(final EntityType entityType) {
-        return super.execute(entityType);
+    
+    @Override
+    public List<EntityInstancePKResult> execute(final EntityAttribute entityAttribute) {
+        return super.execute(entityAttribute, Session.MAX_TIME_LONG);
     }
-
+    
 }

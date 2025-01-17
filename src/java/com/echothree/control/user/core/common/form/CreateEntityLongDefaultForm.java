@@ -21,7 +21,8 @@ import com.echothree.control.user.core.common.spec.EntityLongDefaultSpec;
 
 public interface CreateEntityLongDefaultForm
         extends EntityLongDefaultSpec, EntityLongDefaultEdit {
-    
-    // Nothing additional beyond EntityLongDefaultSpec, EntityLongDefaultEdit
-    
+
+    String getAddMissingAttributes();
+    void setAddMissingAttributes(String addMissingAttributes);
+
 }

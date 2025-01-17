@@ -20,17 +20,17 @@ import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
-public class EntityInstancesByGeoPointEntityAttributeQuery
-        extends BaseEntityAttributeQuery<EntityInstanceResult> {
+public class EntityInstancePKsByEntityEntityAttributeQuery
+        extends BaseEntityInstancePKQuery<EntityInstancePKResult> {
     
-    public EntityInstancesByGeoPointEntityAttributeQuery() {
-        super("SELECT engeopnta_eni_entityinstanceid AS EntityInstancePK "
-                + "FROM entitygeopointattributes "
-                + "WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_thrutime = ?");
+    public EntityInstancePKsByEntityEntityAttributeQuery() {
+        super("SELECT eea_eni_entityinstanceid AS EntityInstancePK "
+                + "FROM entityentityattributes "
+                + "WHERE eea_ena_entityattributeid = ? AND eea_thrutime = ?");
     }
     
     @Override
-    public List<EntityInstanceResult> execute(final EntityAttribute entityAttribute) {
+    public List<EntityInstancePKResult> execute(final EntityAttribute entityAttribute) {
         return super.execute(entityAttribute, Session.MAX_TIME_LONG);
     }
     

@@ -143,7 +143,7 @@ import static com.echothree.model.control.core.common.workflow.BaseEncryptionKey
 import static com.echothree.model.control.core.common.workflow.EventGroupStatusConstants.WorkflowStep_EVENT_GROUP_STATUS_ACTIVE;
 import static com.echothree.model.control.core.common.workflow.EventGroupStatusConstants.Workflow_EVENT_GROUP_STATUS;
 import com.echothree.model.control.core.server.CoreDebugFlags;
-import com.echothree.model.control.core.server.database.EntityInstancesByEntityTypeWithNullDeletedTimeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByEntityTypeWithNullDeletedTimeQuery;
 import com.echothree.model.control.core.server.eventbus.SentEvent;
 import com.echothree.model.control.core.server.eventbus.SentEventEventBus;
 import com.echothree.model.control.index.server.control.IndexControl;
@@ -2712,7 +2712,7 @@ public class CoreControl
     }
 
     public void deleteEntityInstancesByEntityTypeWithNullDeletedTime(final EntityType entityType, final BasePK deletedBy) {
-        for(var entityInstanceResult : new EntityInstancesByEntityTypeWithNullDeletedTimeQuery().execute(entityType)) {
+        for(var entityInstanceResult : new EntityInstancePKsByEntityTypeWithNullDeletedTimeQuery().execute(entityType)) {
             deleteEntityInstance(EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     entityInstanceResult.getEntityInstancePK()), deletedBy);
         }
@@ -11959,14 +11959,20 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Long Attributes
     // --------------------------------------------------------------------------------
-    
+
     public EntityLongAttribute createEntityLongAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Long longAttribute, BasePK createdBy) {
+        return createEntityLongAttribute(entityAttribute.getPrimaryKey(), entityInstance, longAttribute,
+                createdBy);
+    }
+
+    public EntityLongAttribute createEntityLongAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
+            Long longAttribute, BasePK createdBy) {
         var entityLongAttribute = EntityLongAttributeFactory.getInstance().create(entityAttribute,
-                entityInstance, longAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
-        
-        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
-        
+                entityInstance.getPrimaryKey(), longAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
+
         return entityLongAttribute;
     }
 

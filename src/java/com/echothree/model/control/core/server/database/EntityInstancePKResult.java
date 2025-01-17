@@ -16,22 +16,28 @@
 
 package com.echothree.model.control.core.server.database;
 
-import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.util.server.persistence.Session;
-import java.util.List;
+import com.echothree.model.data.core.common.pk.EntityInstancePK;
+import com.echothree.util.server.persistence.BaseDatabaseResult;
 
-public class EntityInstancesByClobEntityAttributeQuery
-        extends BaseEntityAttributeQuery<EntityInstanceResult> {
+public class EntityInstancePKResult
+        implements BaseDatabaseResult {
     
-    public EntityInstancesByClobEntityAttributeQuery() {
-        super("SELECT DISTINCT enca_eni_entityinstanceid AS EntityInstancePK "
-                + "FROM entityclobattributes "
-                + "WHERE enca_ena_entityattributeid = ? AND enca_thrutime = ?");
+    private EntityInstancePK entityInstancePK;
+
+    /**
+     * Returns the entityInstancePK.
+     * @return the entityInstancePK
+     */
+    public EntityInstancePK getEntityInstancePK() {
+        return entityInstancePK;
     }
-    
-    @Override
-    public List<EntityInstanceResult> execute(final EntityAttribute entityAttribute) {
-        return super.execute(entityAttribute, Session.MAX_TIME_LONG);
+
+    /**
+     * Sets the entityInstancePK.
+     * @param entityInstancePK the entityInstancePK to set
+     */
+    public void setEntityInstancePK(EntityInstancePK entityInstancePK) {
+        this.entityInstancePK = entityInstancePK;
     }
-    
+
 }

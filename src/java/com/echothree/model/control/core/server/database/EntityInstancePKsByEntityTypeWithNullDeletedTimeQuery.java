@@ -17,25 +17,23 @@
 package com.echothree.model.control.core.server.database;
 
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.util.server.persistence.BaseDatabaseQuery;
 import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 
-public class EntityInstancesByPartyTypeQuery
-        extends BaseDatabaseQuery<EntityInstanceResult> {
-    
-    public EntityInstancesByPartyTypeQuery() {
+public class EntityInstancePKsByEntityTypeWithNullDeletedTimeQuery
+        extends BaseDatabaseQuery<EntityInstancePKResult> {
+
+    public EntityInstancePKsByEntityTypeWithNullDeletedTimeQuery() {
         super("SELECT eni_entityinstanceid AS EntityInstancePK "
-                + "FROM entityinstances, parties, partydetails "
-                + "WHERE eni_ent_entitytypeid = ? "
-                + "AND eni_entityuniqueid = par_partyid AND par_activedetailid = pardt_partydetailid "
-                + "AND pardt_ptyp_partytypeid = ?",
+                        + "FROM entityinstances, entitytimes "
+                        + "WHERE eni_ent_entitytypeid = ? AND eni_entityinstanceid = etim_eni_entityinstanceid "
+                        + "AND etim_deletedtime IS NULL",
                 EntityPermission.READ_ONLY);
     }
-    
-    public List<EntityInstanceResult> execute(final EntityType entityType, final PartyType partyType) {
-        return super.execute(entityType, partyType);
+
+    public List<EntityInstancePKResult> execute(final EntityType entityType) {
+        return super.execute(entityType);
     }
-    
+
 }
