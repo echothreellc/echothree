@@ -11164,7 +11164,7 @@ public class CoreControl
         return session.queryForLong("""
                     SELECT COUNT(*)
                     FROM entityintegerdefaults
-                    WHERE eniadef_thrutime = ?
+                    WHERE enidef_thrutime = ?
                     """, entityAttribute);
     }
 
@@ -11175,8 +11175,8 @@ public class CoreControl
                 EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM entityintegerdefaults
-                WHERE eniadef_ena_entityattributeid = ?
-                ORDER BY eniadef_thrutime
+                WHERE enidef_ena_entityattributeid = ?
+                ORDER BY enidef_thrutime
                 _LIMIT_
                 """);
     }
@@ -11195,11 +11195,11 @@ public class CoreControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityintegerdefaults " +
-                        "WHERE eniadef_ena_entityattributeid = ? AND eniadef_thrutime = ?";
+                        "WHERE enidef_ena_entityattributeid = ? AND enidef_thrutime = ?";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityintegerdefaults " +
-                        "WHERE eniadef_ena_entityattributeid = ? AND eniadef_thrutime = ? " +
+                        "WHERE enidef_ena_entityattributeid = ? AND enidef_thrutime = ? " +
                         "FOR UPDATE";
             }
 
@@ -11844,7 +11844,7 @@ public class CoreControl
         return session.queryForLong("""
                     SELECT COUNT(*)
                     FROM entitylongdefaults
-                    WHERE enladef_thrutime = ?
+                    WHERE enldef_thrutime = ?
                     """, entityAttribute);
     }
 
@@ -11855,8 +11855,8 @@ public class CoreControl
                 EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM entitylongdefaults
-                WHERE enladef_ena_entityattributeid = ?
-                ORDER BY enladef_thrutime
+                WHERE enldef_ena_entityattributeid = ?
+                ORDER BY enldef_thrutime
                 _LIMIT_
                 """);
     }
@@ -11875,11 +11875,11 @@ public class CoreControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM entitylongdefaults " +
-                        "WHERE enladef_ena_entityattributeid = ? AND enladef_thrutime = ?";
+                        "WHERE enldef_ena_entityattributeid = ? AND enldef_thrutime = ?";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entitylongdefaults " +
-                        "WHERE enladef_ena_entityattributeid = ? AND enladef_thrutime = ? " +
+                        "WHERE enldef_ena_entityattributeid = ? AND enldef_thrutime = ? " +
                         "FOR UPDATE";
             }
 
