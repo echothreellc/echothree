@@ -21,7 +21,7 @@ import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
 public class EntityInstancesByListItemEntityAttributeQuery
-        extends BaseEntityAttributeQuery<EntityInstanceResult> {
+        extends BaseEntityAttributeQuery<EntityInstancePKResult> {
     
     public EntityInstancesByListItemEntityAttributeQuery() {
         super("SELECT ela_eni_entityinstanceid AS EntityInstancePK "
@@ -31,7 +31,7 @@ public class EntityInstancesByListItemEntityAttributeQuery
     }
     
     @Override
-    public List<EntityInstanceResult> execute(final EntityAttribute entityAttribute) {
+    public List<EntityInstancePKResult> execute(final EntityAttribute entityAttribute) {
         return super.execute(entityAttribute, Session.MAX_TIME_LONG);
     }
     

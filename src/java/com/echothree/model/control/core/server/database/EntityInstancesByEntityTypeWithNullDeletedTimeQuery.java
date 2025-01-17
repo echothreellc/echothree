@@ -22,7 +22,7 @@ import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 
 public class EntityInstancesByEntityTypeWithNullDeletedTimeQuery
-        extends BaseDatabaseQuery<EntityInstanceResult> {
+        extends BaseDatabaseQuery<EntityInstancePKResult> {
 
     public EntityInstancesByEntityTypeWithNullDeletedTimeQuery() {
         super("SELECT eni_entityinstanceid AS EntityInstancePK "
@@ -32,7 +32,7 @@ public class EntityInstancesByEntityTypeWithNullDeletedTimeQuery
                 EntityPermission.READ_ONLY);
     }
 
-    public List<EntityInstanceResult> execute(final EntityType entityType) {
+    public List<EntityInstancePKResult> execute(final EntityType entityType) {
         return super.execute(entityType);
     }
 

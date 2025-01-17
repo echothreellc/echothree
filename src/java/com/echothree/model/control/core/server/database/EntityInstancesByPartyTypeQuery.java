@@ -23,7 +23,7 @@ import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 
 public class EntityInstancesByPartyTypeQuery
-        extends BaseDatabaseQuery<EntityInstanceResult> {
+        extends BaseDatabaseQuery<EntityInstancePKResult> {
     
     public EntityInstancesByPartyTypeQuery() {
         super("SELECT eni_entityinstanceid AS EntityInstancePK "
@@ -34,7 +34,7 @@ public class EntityInstancesByPartyTypeQuery
                 EntityPermission.READ_ONLY);
     }
     
-    public List<EntityInstanceResult> execute(final EntityType entityType, final PartyType partyType) {
+    public List<EntityInstancePKResult> execute(final EntityType entityType, final PartyType partyType) {
         return super.execute(entityType, partyType);
     }
     

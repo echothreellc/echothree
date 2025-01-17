@@ -29,6 +29,6 @@ public abstract class BaseEntityAttributeQuery<R extends BaseDatabaseResult>
         super(sql, EntityPermission.READ_ONLY);
     }
     
-    public abstract List<EntityInstanceResult> execute(final EntityAttribute entityAttribute);
+    public abstract List<EntityInstancePKResult> execute(final EntityAttribute entityAttribute);
     
 }

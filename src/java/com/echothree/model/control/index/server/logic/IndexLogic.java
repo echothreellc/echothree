@@ -18,7 +18,7 @@ package com.echothree.model.control.index.server.logic;
 
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.core.server.database.EntityInstanceResult;
+import com.echothree.model.control.core.server.database.EntityInstancePKResult;
 import com.echothree.model.control.core.server.database.EntityInstancesByEntityTypeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesByPartyTypeQuery;
 import com.echothree.model.control.index.common.exception.UnknownIndexNameException;
@@ -68,7 +68,7 @@ public class IndexLogic
     }
     
     private void queueEntityInstances(final Session session, final QueueControl queueControl, final QueueTypePK queueTypePK,
-            final List<EntityInstanceResult> entityInstanceResults) {
+            final List<EntityInstancePKResult> entityInstanceResults) {
         List<QueuedEntityValue> queuedEntities = new ArrayList<>(entityInstanceResults.size());
 
         for(var entityInstanceResult : entityInstanceResults) {

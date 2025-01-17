@@ -11959,14 +11959,20 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Long Attributes
     // --------------------------------------------------------------------------------
-    
+
     public EntityLongAttribute createEntityLongAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Long longAttribute, BasePK createdBy) {
+        return createEntityLongAttribute(entityAttribute.getPrimaryKey(), entityInstance, longAttribute,
+                createdBy);
+    }
+
+    public EntityLongAttribute createEntityLongAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
+            Long longAttribute, BasePK createdBy) {
         var entityLongAttribute = EntityLongAttributeFactory.getInstance().create(entityAttribute,
-                entityInstance, longAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
-        
-        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
-        
+                entityInstance.getPrimaryKey(), longAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
+
         return entityLongAttribute;
     }
 

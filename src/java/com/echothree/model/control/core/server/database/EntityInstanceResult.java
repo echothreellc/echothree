@@ -16,28 +16,28 @@
 
 package com.echothree.model.control.core.server.database;
 
-import com.echothree.model.data.core.common.pk.EntityInstancePK;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.server.persistence.BaseDatabaseResult;
 
 public class EntityInstanceResult
         implements BaseDatabaseResult {
     
-    private EntityInstancePK entityInstancePK;
+    private EntityInstance entityInstance;
 
     /**
-     * Returns the entityInstancePK.
-     * @return the entityInstancePK
+     * Returns the entityInstance.
+     * @return the entityInstance
      */
-    public EntityInstancePK getEntityInstancePK() {
-        return entityInstancePK;
+    public EntityInstance getEntityInstance() {
+        return entityInstance;
     }
 
     /**
-     * Sets the entityInstancePK.
-     * @param entityInstancePK the entityInstancePK to set
+     * Sets the entityInstance.
+     * @param entityInstance the entityInstance to set
      */
-    public void setEntityInstancePK(EntityInstancePK entityInstancePK) {
-        this.entityInstancePK = entityInstancePK;
+    public void setEntityInstance(EntityInstance entityInstance) {
+        this.entityInstance = entityInstance;
     }
 
 }

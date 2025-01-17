@@ -18,11 +18,11 @@ package com.echothree.model.control.core.server.logic;
 
 import com.echothree.control.user.core.common.edit.EntityListItemAttributeEdit;
 import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
-import com.echothree.control.user.core.common.spec.EntityAttributeUuid;
 import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityAttributeUuid;
 import com.echothree.control.user.core.common.spec.EntityInstanceAttributeSpec;
-import com.echothree.control.user.core.common.spec.EntityListItemUuid;
 import com.echothree.control.user.core.common.spec.EntityListItemUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityListItemUuid;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -61,7 +61,7 @@ import com.echothree.model.control.core.common.exception.UnknownEntityListItemNa
 import com.echothree.model.control.core.common.exception.UnknownEntityLongDefaultException;
 import com.echothree.model.control.core.common.exception.UpperRangeExceededException;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.core.server.database.EntityInstanceResult;
+import com.echothree.model.control.core.server.database.EntityInstancePKResult;
 import com.echothree.model.control.core.server.database.EntityInstancesByBlobEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesByBooleanEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesByClobEntityAttributeQuery;
@@ -76,6 +76,7 @@ import com.echothree.model.control.core.server.database.EntityInstancesByMultipl
 import com.echothree.model.control.core.server.database.EntityInstancesByNameEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesByStringEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesByTimeEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancesMissingLongEntityAttributeQuery;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.queue.common.QueueTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;
@@ -525,8 +526,8 @@ public class EntityAttributeLogic
         return EntityInstanceLogic.getInstance().getEntityInstance(eea, entityRef, uuid, null);
     }
 
-    private List<EntityInstanceResult> getEntityInstanceResultsByEntityAttributeTypeName(EntityAttribute entityAttribute) {
-        List<EntityInstanceResult> entityInstanceResults = null;
+    private List<EntityInstancePKResult> getEntityInstanceResultsByEntityAttributeTypeName(EntityAttribute entityAttribute) {
+        List<EntityInstancePKResult> entityInstanceResults = null;
         var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
         
         if(entityAttributeTypeName.equals(EntityAttributeTypes.BOOLEAN.name())) {
@@ -1032,7 +1033,7 @@ public class EntityAttributeLogic
     }
 
     public EntityLongDefault createEntityLongDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Long longAttribute, final BasePK createdBy) {
+            final Long longAttribute, final boolean addMissingAttributes,  BasePK createdBy) {
         EntityLongDefault entityLongDefault = null;
 
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.LONG);
@@ -1044,6 +1045,12 @@ public class EntityAttributeLogic
 
             if(entityLongDefault == null) {
                 coreControl.createEntityLongDefault(entityAttribute, longAttribute, createdBy);
+
+                if(addMissingAttributes) {
+                    new EntityInstancesMissingLongEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
+                            coreControl.createEntityLongAttribute(entityAttribute.getPrimaryKey(),
+                                    entityInstanceResult.getEntityInstance(), longAttribute, createdBy));
+                }
             } else {
                 handleExecutionError(DuplicateEntityLongDefaultException.class, eea, ExecutionErrors.DuplicateEntityLongDefault.name(),
                         entityAttribute.getLastDetail().getEntityAttributeName());
