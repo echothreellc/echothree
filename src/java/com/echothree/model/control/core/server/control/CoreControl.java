@@ -143,7 +143,7 @@ import static com.echothree.model.control.core.common.workflow.BaseEncryptionKey
 import static com.echothree.model.control.core.common.workflow.EventGroupStatusConstants.WorkflowStep_EVENT_GROUP_STATUS_ACTIVE;
 import static com.echothree.model.control.core.common.workflow.EventGroupStatusConstants.Workflow_EVENT_GROUP_STATUS;
 import com.echothree.model.control.core.server.CoreDebugFlags;
-import com.echothree.model.control.core.server.database.EntityInstancesByEntityTypeWithNullDeletedTimeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByEntityTypeWithNullDeletedTimeQuery;
 import com.echothree.model.control.core.server.eventbus.SentEvent;
 import com.echothree.model.control.core.server.eventbus.SentEventEventBus;
 import com.echothree.model.control.index.server.control.IndexControl;
@@ -2712,7 +2712,7 @@ public class CoreControl
     }
 
     public void deleteEntityInstancesByEntityTypeWithNullDeletedTime(final EntityType entityType, final BasePK deletedBy) {
-        for(var entityInstanceResult : new EntityInstancesByEntityTypeWithNullDeletedTimeQuery().execute(entityType)) {
+        for(var entityInstanceResult : new EntityInstancePKsByEntityTypeWithNullDeletedTimeQuery().execute(entityType)) {
             deleteEntityInstance(EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     entityInstanceResult.getEntityInstancePK()), deletedBy);
         }
@@ -11164,7 +11164,7 @@ public class CoreControl
         return session.queryForLong("""
                     SELECT COUNT(*)
                     FROM entityintegerdefaults
-                    WHERE eniadef_thrutime = ?
+                    WHERE enidef_thrutime = ?
                     """, entityAttribute);
     }
 
@@ -11175,8 +11175,8 @@ public class CoreControl
                 EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM entityintegerdefaults
-                WHERE eniadef_ena_entityattributeid = ?
-                ORDER BY eniadef_thrutime
+                WHERE enidef_ena_entityattributeid = ?
+                ORDER BY enidef_thrutime
                 _LIMIT_
                 """);
     }
@@ -11195,11 +11195,11 @@ public class CoreControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityintegerdefaults " +
-                        "WHERE eniadef_ena_entityattributeid = ? AND eniadef_thrutime = ?";
+                        "WHERE enidef_ena_entityattributeid = ? AND enidef_thrutime = ?";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityintegerdefaults " +
-                        "WHERE eniadef_ena_entityattributeid = ? AND eniadef_thrutime = ? " +
+                        "WHERE enidef_ena_entityattributeid = ? AND enidef_thrutime = ? " +
                         "FOR UPDATE";
             }
 
@@ -11844,7 +11844,7 @@ public class CoreControl
         return session.queryForLong("""
                     SELECT COUNT(*)
                     FROM entitylongdefaults
-                    WHERE enladef_thrutime = ?
+                    WHERE enldef_thrutime = ?
                     """, entityAttribute);
     }
 
@@ -11855,8 +11855,8 @@ public class CoreControl
                 EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM entitylongdefaults
-                WHERE enladef_ena_entityattributeid = ?
-                ORDER BY enladef_thrutime
+                WHERE enldef_ena_entityattributeid = ?
+                ORDER BY enldef_thrutime
                 _LIMIT_
                 """);
     }
@@ -11875,11 +11875,11 @@ public class CoreControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM entitylongdefaults " +
-                        "WHERE enladef_ena_entityattributeid = ? AND enladef_thrutime = ?";
+                        "WHERE enldef_ena_entityattributeid = ? AND enldef_thrutime = ?";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entitylongdefaults " +
-                        "WHERE enladef_ena_entityattributeid = ? AND enladef_thrutime = ? " +
+                        "WHERE enldef_ena_entityattributeid = ? AND enldef_thrutime = ? " +
                         "FOR UPDATE";
             }
 
@@ -11959,14 +11959,20 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Long Attributes
     // --------------------------------------------------------------------------------
-    
+
     public EntityLongAttribute createEntityLongAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Long longAttribute, BasePK createdBy) {
+        return createEntityLongAttribute(entityAttribute.getPrimaryKey(), entityInstance, longAttribute,
+                createdBy);
+    }
+
+    public EntityLongAttribute createEntityLongAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
+            Long longAttribute, BasePK createdBy) {
         var entityLongAttribute = EntityLongAttributeFactory.getInstance().create(entityAttribute,
-                entityInstance, longAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
-        
-        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
-        
+                entityInstance.getPrimaryKey(), longAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
+
         return entityLongAttribute;
     }
 

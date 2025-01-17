@@ -16,19 +16,26 @@
 
 package com.echothree.model.control.core.server.database;
 
-import com.echothree.model.data.core.server.entity.EntityAttribute;
+import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.util.server.persistence.BaseDatabaseQuery;
-import com.echothree.util.server.persistence.BaseDatabaseResult;
 import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 
-public abstract class BaseEntityAttributeQuery<R extends BaseDatabaseResult>
-        extends BaseDatabaseQuery<R> {
+public class EntityInstancePKsByPartyTypeQuery
+        extends BaseDatabaseQuery<EntityInstancePKResult> {
     
-    protected BaseEntityAttributeQuery(final String sql) {
-        super(sql, EntityPermission.READ_ONLY);
+    public EntityInstancePKsByPartyTypeQuery() {
+        super("SELECT eni_entityinstanceid AS EntityInstancePK "
+                + "FROM entityinstances, parties, partydetails "
+                + "WHERE eni_ent_entitytypeid = ? "
+                + "AND eni_entityuniqueid = par_partyid AND par_activedetailid = pardt_partydetailid "
+                + "AND pardt_ptyp_partytypeid = ?",
+                EntityPermission.READ_ONLY);
     }
     
-    public abstract List<EntityInstanceResult> execute(final EntityAttribute entityAttribute);
+    public List<EntityInstancePKResult> execute(final EntityType entityType, final PartyType partyType) {
+        return super.execute(entityType, partyType);
+    }
     
 }

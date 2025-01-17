@@ -46,7 +46,8 @@ public class CreateEntityLongDefaultCommand
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("LongAttribute", FieldType.SIGNED_LONG, true, null, null)
+                new FieldDefinition("LongAttribute", FieldType.SIGNED_LONG, true, null, null),
+                new FieldDefinition("AddMissingAttributes", FieldType.BOOLEAN, true, null, null)
                 );
     }
 
@@ -61,9 +62,10 @@ public class CreateEntityLongDefaultCommand
 
         if(!hasExecutionErrors()) {
             var longAttribute = Long.valueOf(form.getLongAttribute());
+            var addMissingAttributes = Boolean.valueOf(form.getAddMissingAttributes());
 
             EntityAttributeLogic.getInstance().createEntityLongDefault(this, entityAttribute,
-                    longAttribute, getPartyPK());
+                    longAttribute, addMissingAttributes, getPartyPK());
         }
 
         return null;

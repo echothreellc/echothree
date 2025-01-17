@@ -16,28 +16,22 @@
 
 package com.echothree.model.control.core.server.database;
 
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.util.server.persistence.BaseDatabaseResult;
+import com.echothree.model.data.core.server.entity.EntityAttribute;
+import com.echothree.util.server.persistence.Session;
+import java.util.List;
 
-public class EntityInstanceResult
-        implements BaseDatabaseResult {
+public class EntityInstancePKsByLongEntityAttributeQuery
+        extends BaseEntityInstancePKQuery<EntityInstancePKResult> {
     
-    private EntityInstance entityInstance;
-
-    /**
-     * Returns the entityInstance.
-     * @return the entityInstance
-     */
-    public EntityInstance getEntityInstance() {
-        return entityInstance;
+    public EntityInstancePKsByLongEntityAttributeQuery() {
+        super("SELECT enla_eni_entityinstanceid AS EntityInstancePK "
+                + "FROM entitylongattributes "
+                + "WHERE enla_ena_entityattributeid = ? AND enla_thrutime = ?");
     }
-
-    /**
-     * Sets the entityInstance.
-     * @param entityInstance the entityInstance to set
-     */
-    public void setEntityInstance(EntityInstance entityInstance) {
-        this.entityInstance = entityInstance;
+    
+    @Override
+    public List<EntityInstancePKResult> execute(final EntityAttribute entityAttribute) {
+        return super.execute(entityAttribute, Session.MAX_TIME_LONG);
     }
-
+    
 }

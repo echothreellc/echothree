@@ -91,6 +91,9 @@
             <searchType searchTypeName="HUMAN_RESOURCES" isDefault="false" sortOrder="1">
                 <searchTypeDescription languageIsoName="en" description="Human Resources" />
             </searchType>
+            <searchType searchTypeName="IDENTIFY" isDefault="false" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Identify" />
+            </searchType>
             <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
                 <searchSortOrderDescription languageIsoName="en" description="Score" />
             </searchSortOrder>

@@ -5858,7 +5858,8 @@ public interface GraphQlMutations {
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
             @GraphQLName("entityAttributeName") final String entityAttributeName,
-            @GraphQLName("longAttribute") @GraphQLNonNull final String longAttribute) {
+            @GraphQLName("longAttribute") @GraphQLNonNull final String longAttribute,
+            @GraphQLName("addMissingAttributes") @GraphQLNonNull final String addMissingAttributes) {
         var mutationResultObject = new MutationResultObject();
 
         try {
@@ -5869,6 +5870,7 @@ public interface GraphQlMutations {
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeName(entityAttributeName);
             commandForm.setLongAttribute(longAttribute);
+            commandForm.setAddMissingAttributes(addMissingAttributes);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityLongDefault(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {

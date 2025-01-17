@@ -20,17 +20,17 @@ import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
-public class EntityInstancesByDateEntityAttributeQuery
-        extends BaseEntityAttributeQuery<EntityInstanceResult> {
+public class EntityInstancePKsByIntegerEntityAttributeQuery
+        extends BaseEntityInstancePKQuery<EntityInstancePKResult> {
     
-    public EntityInstancesByDateEntityAttributeQuery() {
-        super("SELECT enda_eni_entityinstanceid AS EntityInstancePK "
-                + "FROM entitydateattributes "
-                + "WHERE enda_ena_entityattributeid = ? AND enda_thrutime = ?");
+    public EntityInstancePKsByIntegerEntityAttributeQuery() {
+        super("SELECT enia_eni_entityinstanceid AS EntityInstancePK "
+                + "FROM entityintegerattributes "
+                + "WHERE enia_ena_entityattributeid = ? AND enia_thrutime = ?");
     }
     
     @Override
-    public List<EntityInstanceResult> execute(final EntityAttribute entityAttribute) {
+    public List<EntityInstancePKResult> execute(final EntityAttribute entityAttribute) {
         return super.execute(entityAttribute, Session.MAX_TIME_LONG);
     }
     

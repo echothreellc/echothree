@@ -21,17 +21,17 @@ import com.echothree.util.server.persistence.BaseDatabaseQuery;
 import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 
-public class EntityInstancesByEntityTypeQuery
-        extends BaseDatabaseQuery<EntityInstanceResult> {
+public class EntityInstancePKsByEntityTypeQuery
+        extends BaseDatabaseQuery<EntityInstancePKResult> {
     
-    public EntityInstancesByEntityTypeQuery() {
+    public EntityInstancePKsByEntityTypeQuery() {
         super("SELECT eni_entityinstanceid AS EntityInstancePK "
                 + "FROM entityinstances "
                 + "WHERE eni_ent_entitytypeid = ?",
                 EntityPermission.READ_ONLY);
     }
     
-    public List<EntityInstanceResult> execute(final EntityType entityType) {
+    public List<EntityInstancePKResult> execute(final EntityType entityType) {
         return super.execute(entityType);
     }
     
