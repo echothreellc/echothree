@@ -22,10 +22,10 @@ import com.echothree.util.server.persistence.BaseDatabaseQuery;
 import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 
-public class EntityInstancesByPartyTypeQuery
+public class EntityInstancePKsByPartyTypeQuery
         extends BaseDatabaseQuery<EntityInstancePKResult> {
     
-    public EntityInstancesByPartyTypeQuery() {
+    public EntityInstancePKsByPartyTypeQuery() {
         super("SELECT eni_entityinstanceid AS EntityInstancePK "
                 + "FROM entityinstances, parties, partydetails "
                 + "WHERE eni_ent_entitytypeid = ? "

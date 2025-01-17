@@ -17,18 +17,21 @@
 package com.echothree.model.control.core.server.database;
 
 import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.util.server.persistence.BaseDatabaseQuery;
-import com.echothree.util.server.persistence.BaseDatabaseResult;
-import com.echothree.util.server.persistence.EntityPermission;
+import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
-public abstract class BaseEntityAttributeQuery<R extends BaseDatabaseResult>
-        extends BaseDatabaseQuery<R> {
+public class EntityInstancePKsByBlobEntityAttributeQuery
+        extends BaseEntityInstancePKQuery<EntityInstancePKResult> {
     
-    protected BaseEntityAttributeQuery(final String sql) {
-        super(sql, EntityPermission.READ_ONLY);
+    public EntityInstancePKsByBlobEntityAttributeQuery() {
+        super("SELECT DISTINCT enba_eni_entityinstanceid AS EntityInstancePK "
+                + "FROM entityblobattributes "
+                + "WHERE enba_ena_entityattributeid = ? AND enba_thrutime = ?");
     }
     
-    public abstract List<EntityInstancePKResult> execute(final EntityAttribute entityAttribute);
+    @Override
+    public List<EntityInstancePKResult> execute(final EntityAttribute entityAttribute) {
+        return super.execute(entityAttribute, Session.MAX_TIME_LONG);
+    }
     
 }

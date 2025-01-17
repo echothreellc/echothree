@@ -20,13 +20,14 @@ import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
-public class EntityInstancesByIntegerEntityAttributeQuery
-        extends BaseEntityAttributeQuery<EntityInstancePKResult> {
+public class EntityInstancePKsByListItemEntityAttributeQuery
+        extends BaseEntityInstancePKQuery<EntityInstancePKResult> {
     
-    public EntityInstancesByIntegerEntityAttributeQuery() {
-        super("SELECT enia_eni_entityinstanceid AS EntityInstancePK "
-                + "FROM entityintegerattributes "
-                + "WHERE enia_ena_entityattributeid = ? AND enia_thrutime = ?");
+    public EntityInstancePKsByListItemEntityAttributeQuery() {
+        super("SELECT ela_eni_entityinstanceid AS EntityInstancePK "
+                + "FROM entitylistitems, entitylistitemdetails, entitylistitemattributes "
+                + "WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_ena_entityattributeid = ? "
+                + "AND eli_entitylistitemid = ela_eli_entitylistitemid AND ela_thrutime = ?");
     }
     
     @Override

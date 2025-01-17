@@ -20,13 +20,13 @@ import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
-public class EntityInstancesByEntityEntityAttributeQuery
-        extends BaseEntityAttributeQuery<EntityInstancePKResult> {
+public class EntityInstancePKsByGeoPointEntityAttributeQuery
+        extends BaseEntityInstancePKQuery<EntityInstancePKResult> {
     
-    public EntityInstancesByEntityEntityAttributeQuery() {
-        super("SELECT eea_eni_entityinstanceid AS EntityInstancePK "
-                + "FROM entityentityattributes "
-                + "WHERE eea_ena_entityattributeid = ? AND eea_thrutime = ?");
+    public EntityInstancePKsByGeoPointEntityAttributeQuery() {
+        super("SELECT engeopnta_eni_entityinstanceid AS EntityInstancePK "
+                + "FROM entitygeopointattributes "
+                + "WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_thrutime = ?");
     }
     
     @Override

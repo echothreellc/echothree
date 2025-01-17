@@ -16,23 +16,22 @@
 
 package com.echothree.model.control.core.server.database;
 
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.util.server.persistence.BaseDatabaseQuery;
-import com.echothree.util.server.persistence.EntityPermission;
+import com.echothree.model.data.core.server.entity.EntityAttribute;
+import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
-public class EntityInstancesByEntityTypeQuery
-        extends BaseDatabaseQuery<EntityInstancePKResult> {
+public class EntityInstancePKsByIntegerEntityAttributeQuery
+        extends BaseEntityInstancePKQuery<EntityInstancePKResult> {
     
-    public EntityInstancesByEntityTypeQuery() {
-        super("SELECT eni_entityinstanceid AS EntityInstancePK "
-                + "FROM entityinstances "
-                + "WHERE eni_ent_entitytypeid = ?",
-                EntityPermission.READ_ONLY);
+    public EntityInstancePKsByIntegerEntityAttributeQuery() {
+        super("SELECT enia_eni_entityinstanceid AS EntityInstancePK "
+                + "FROM entityintegerattributes "
+                + "WHERE enia_ena_entityattributeid = ? AND enia_thrutime = ?");
     }
     
-    public List<EntityInstancePKResult> execute(final EntityType entityType) {
-        return super.execute(entityType);
+    @Override
+    public List<EntityInstancePKResult> execute(final EntityAttribute entityAttribute) {
+        return super.execute(entityAttribute, Session.MAX_TIME_LONG);
     }
     
 }

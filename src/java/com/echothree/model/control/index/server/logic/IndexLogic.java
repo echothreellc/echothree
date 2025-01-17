@@ -19,8 +19,8 @@ package com.echothree.model.control.index.server.logic;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.database.EntityInstancePKResult;
-import com.echothree.model.control.core.server.database.EntityInstancesByEntityTypeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesByPartyTypeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByEntityTypeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByPartyTypeQuery;
 import com.echothree.model.control.index.common.exception.UnknownIndexNameException;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
@@ -92,11 +92,11 @@ public class IndexLogic
             var partyType = PartyLogic.getInstance().getPartyTypeByName(eea, indexTypeDetail.getIndexTypeName());
 
             if(eea == null || !eea.hasExecutionErrors()) {
-                queueEntityInstances(session, queueControl, queueTypePK, new EntityInstancesByPartyTypeQuery().execute(entityType, partyType));
+                queueEntityInstances(session, queueControl, queueTypePK, new EntityInstancePKsByPartyTypeQuery().execute(entityType, partyType));
             }
         } else {
             if(!queuedEntityTypes.contains(entityType)) {
-                queueEntityInstances(session, queueControl, queueTypePK, new EntityInstancesByEntityTypeQuery().execute(entityType));
+                queueEntityInstances(session, queueControl, queueTypePK, new EntityInstancePKsByEntityTypeQuery().execute(entityType));
 
                 queuedEntityTypes.add(entityType);
             }

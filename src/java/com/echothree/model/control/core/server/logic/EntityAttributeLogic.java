@@ -62,20 +62,20 @@ import com.echothree.model.control.core.common.exception.UnknownEntityLongDefaul
 import com.echothree.model.control.core.common.exception.UpperRangeExceededException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.database.EntityInstancePKResult;
-import com.echothree.model.control.core.server.database.EntityInstancesByBlobEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesByBooleanEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesByClobEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesByCollectionEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesByDateEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesByEntityEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesByGeoPointEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesByIntegerEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesByListItemEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesByLongEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesByMultipleListItemEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesByNameEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesByStringEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesByTimeEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByBlobEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByBooleanEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByClobEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByCollectionEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByDateEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByEntityEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByGeoPointEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByIntegerEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByListItemEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByLongEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByMultipleListItemEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByNameEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByStringEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancePKsByTimeEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingLongEntityAttributeQuery;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.queue.common.QueueTypes;
@@ -531,33 +531,33 @@ public class EntityAttributeLogic
         var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
         
         if(entityAttributeTypeName.equals(EntityAttributeTypes.BOOLEAN.name())) {
-            entityInstanceResults = new EntityInstancesByBooleanEntityAttributeQuery().execute(entityAttribute);
+            entityInstanceResults = new EntityInstancePKsByBooleanEntityAttributeQuery().execute(entityAttribute);
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.NAME.name())) {
-            entityInstanceResults = new EntityInstancesByNameEntityAttributeQuery().execute(entityAttribute);
+            entityInstanceResults = new EntityInstancePKsByNameEntityAttributeQuery().execute(entityAttribute);
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())) {
-            entityInstanceResults = new EntityInstancesByIntegerEntityAttributeQuery().execute(entityAttribute);
+            entityInstanceResults = new EntityInstancePKsByIntegerEntityAttributeQuery().execute(entityAttribute);
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
-            entityInstanceResults = new EntityInstancesByLongEntityAttributeQuery().execute(entityAttribute);
+            entityInstanceResults = new EntityInstancePKsByLongEntityAttributeQuery().execute(entityAttribute);
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.STRING.name())) {
-            entityInstanceResults = new EntityInstancesByStringEntityAttributeQuery().execute(entityAttribute);
+            entityInstanceResults = new EntityInstancePKsByStringEntityAttributeQuery().execute(entityAttribute);
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.GEOPOINT.name())) {
-            entityInstanceResults = new EntityInstancesByGeoPointEntityAttributeQuery().execute(entityAttribute);
+            entityInstanceResults = new EntityInstancePKsByGeoPointEntityAttributeQuery().execute(entityAttribute);
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
-            entityInstanceResults = new EntityInstancesByBlobEntityAttributeQuery().execute(entityAttribute);
+            entityInstanceResults = new EntityInstancePKsByBlobEntityAttributeQuery().execute(entityAttribute);
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-            entityInstanceResults = new EntityInstancesByClobEntityAttributeQuery().execute(entityAttribute);
+            entityInstanceResults = new EntityInstancePKsByClobEntityAttributeQuery().execute(entityAttribute);
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.DATE.name())) {
-            entityInstanceResults = new EntityInstancesByDateEntityAttributeQuery().execute(entityAttribute);
+            entityInstanceResults = new EntityInstancePKsByDateEntityAttributeQuery().execute(entityAttribute);
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.TIME.name())) {
-            entityInstanceResults = new EntityInstancesByTimeEntityAttributeQuery().execute(entityAttribute);
+            entityInstanceResults = new EntityInstancePKsByTimeEntityAttributeQuery().execute(entityAttribute);
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())) {
-            entityInstanceResults = new EntityInstancesByListItemEntityAttributeQuery().execute(entityAttribute);
+            entityInstanceResults = new EntityInstancePKsByListItemEntityAttributeQuery().execute(entityAttribute);
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
-            entityInstanceResults = new EntityInstancesByMultipleListItemEntityAttributeQuery().execute(entityAttribute);
+            entityInstanceResults = new EntityInstancePKsByMultipleListItemEntityAttributeQuery().execute(entityAttribute);
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.ENTITY.name())) {
-            entityInstanceResults = new EntityInstancesByEntityEntityAttributeQuery().execute(entityAttribute);
+            entityInstanceResults = new EntityInstancePKsByEntityEntityAttributeQuery().execute(entityAttribute);
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.COLLECTION.name())) {
-            entityInstanceResults = new EntityInstancesByCollectionEntityAttributeQuery().execute(entityAttribute);
+            entityInstanceResults = new EntityInstancePKsByCollectionEntityAttributeQuery().execute(entityAttribute);
         }
 
         return entityInstanceResults;
