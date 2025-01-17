@@ -24,7 +24,10 @@ import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.customer.server.search.CustomerSearchEvaluator;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.employee.server.search.EmployeeSearchEvaluator;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.search.ItemSearchEvaluator;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -187,6 +190,36 @@ public class IdentifyCommand
         }
     }
 
+    private void checkEmployees(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+                SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())) {
+            var employeeControl = Session.getModelController(EmployeeControl.class);
+            var partyEmployee = employeeControl.getPartyEmployeeByName(target);
+
+            if(partyEmployee != null) {
+                var entityInstance = getCoreControl().getEntityInstanceByBasePK(partyEmployee.getParty().getPrimaryKey());
+                var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
+
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            }
+        }
+    }
+
+    private void checkCustomers(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+                SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
+            var customerControl = Session.getModelController(CustomerControl.class);
+            var customer = customerControl.getCustomerByName(target);
+
+            if(customer != null) {
+                var entityInstance = getCoreControl().getEntityInstanceByBasePK(customer.getParty().getPrimaryKey());
+                var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
+
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            }
+        }
+    }
+
     private void checkVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
@@ -284,6 +317,56 @@ public class IdentifyCommand
                             nameResult.getFirstName(), nameResult.getMiddleName(), nameResult.getLastName(), null);
                     // Then attempt searching for target using it as a query string.
                     executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                            null, null, null, target);
+                }
+            }
+        }
+    }
+
+    private void executeEmployeeSearch(final UserVisit userVisit, final Set<EntityInstanceTransfer> entityInstances,
+            final SearchLogic searchLogic, final SearchKind searchKind, final SearchType searchType,
+            final String firstName, final String middleName, final String lastName, final String q) {
+        var employeeSearchEvaluator = new EmployeeSearchEvaluator(userVisit, searchType,
+                searchLogic.getDefaultSearchDefaultOperator(null),
+                searchLogic.getDefaultSearchSortOrder(null, searchKind),
+                searchLogic.getDefaultSearchSortDirection(null));
+
+        employeeSearchEvaluator.setFirstName(firstName);
+        employeeSearchEvaluator.setFirstNameSoundex(false);
+        employeeSearchEvaluator.setMiddleName(middleName);
+        employeeSearchEvaluator.setMiddleNameSoundex(false);
+        employeeSearchEvaluator.setLastName(lastName);
+        employeeSearchEvaluator.setLastNameSoundex(false);
+        employeeSearchEvaluator.setQ(null, q);
+
+        // Avoid using the real ExecutionErrorAccumulator in order to avoid either throwing an Exception or
+        // accumulating errors for this UC.
+        var dummyExecutionErrorAccumulator = new DummyExecutionErrorAccumulator();
+        employeeSearchEvaluator.execute(dummyExecutionErrorAccumulator);
+
+        if(!dummyExecutionErrorAccumulator.hasExecutionErrors()) {
+            addSearchResults(userVisit, searchType, entityInstances);
+        }
+    }
+
+    private void searchEmployees(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target,
+            final NameResult nameResult) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+                SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())) {
+            var searchLogic = SearchLogic.getInstance();
+            var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.EMPLOYEE.name());
+
+            if(!hasExecutionErrors()) {
+                var searchType = searchLogic.getSearchTypeByName(this, searchKind, SearchTypes.IDENTIFY.name());
+
+                if(!hasExecutionErrors()) {
+                    var userVisit = getUserVisit();
+
+                    // First attempt using a first and/or last name isolated from target.
+                    executeEmployeeSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                            nameResult.getFirstName(), nameResult.getMiddleName(), nameResult.getLastName(), null);
+                    // Then attempt searching for target using it as a query string.
+                    executeEmployeeSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
                             null, null, null, target);
                 }
             }
@@ -460,6 +543,12 @@ public class IdentifyCommand
             checkLocations(party, entityInstances, target); // uses EEA
         }
         if(!hasExecutionErrors()) {
+            checkEmployees(party, entityInstances, target); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
+            checkCustomers(party, entityInstances, target); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
             checkVendors(party, entityInstances, target); // uses EEA
         }
         if(!hasExecutionErrors()) {
@@ -473,6 +562,9 @@ public class IdentifyCommand
         }
 
         var nameResult = new NameCleaner().getCleansedName(target);
+        if(!hasExecutionErrors()) {
+            searchEmployees(party, entityInstances, target, nameResult); // uses EEA
+        }
         if(!hasExecutionErrors()) {
             searchCustomers(party, entityInstances, target, nameResult); // uses EEA
         }
