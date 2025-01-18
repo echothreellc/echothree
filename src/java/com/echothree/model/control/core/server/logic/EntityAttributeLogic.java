@@ -76,6 +76,7 @@ import com.echothree.model.control.core.server.database.EntityInstancePKsByMulti
 import com.echothree.model.control.core.server.database.EntityInstancePKsByNameEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByStringEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByTimeEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancesMissingIntegerEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingLongEntityAttributeQuery;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.queue.common.QueueTypes;
@@ -952,7 +953,7 @@ public class EntityAttributeLogic
     }
 
     public EntityIntegerDefault createEntityIntegerDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Integer integerAttribute, final BasePK createdBy) {
+            final Integer integerAttribute, final boolean addMissingAttributes, final BasePK createdBy) {
         EntityIntegerDefault entityIntegerDefault = null;
 
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.INTEGER);
@@ -964,6 +965,12 @@ public class EntityAttributeLogic
 
             if(entityIntegerDefault == null) {
                 coreControl.createEntityIntegerDefault(entityAttribute, integerAttribute, createdBy);
+
+                if(addMissingAttributes) {
+                    new EntityInstancesMissingIntegerEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
+                            coreControl.createEntityIntegerAttribute(entityAttribute.getPrimaryKey(),
+                                    entityInstanceResult.getEntityInstance(), integerAttribute, createdBy));
+                }
             } else {
                 handleExecutionError(DuplicateEntityIntegerDefaultException.class, eea, ExecutionErrors.DuplicateEntityIntegerDefault.name(),
                         entityAttribute.getLastDetail().getEntityAttributeName());
