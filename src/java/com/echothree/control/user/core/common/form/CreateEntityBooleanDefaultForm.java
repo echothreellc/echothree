@@ -21,7 +21,8 @@ import com.echothree.control.user.core.common.spec.EntityBooleanDefaultSpec;
 
 public interface CreateEntityBooleanDefaultForm
         extends EntityBooleanDefaultSpec, EntityBooleanDefaultEdit {
-    
-    // Nothing additional beyond EntityBooleanDefaultSpec, EntityBooleanDefaultEdit
+
+    String getAddMissingAttributes();
+    void setAddMissingAttributes(String addMissingAttributes);
     
 }
