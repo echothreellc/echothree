@@ -11279,17 +11279,23 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Integer Attributes
     // --------------------------------------------------------------------------------
-    
+
     public EntityIntegerAttribute createEntityIntegerAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Integer integerAttribute, BasePK createdBy) {
-        var entityIntegerAttribute = EntityIntegerAttributeFactory.getInstance().create(entityAttribute,
-                entityInstance, integerAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
-        
-        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
-        
-        return entityIntegerAttribute;
+        return createEntityIntegerAttribute(entityAttribute.getPrimaryKey(), entityInstance, integerAttribute,
+                createdBy);
     }
 
+    public EntityIntegerAttribute createEntityIntegerAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
+            Integer integerAttribute, BasePK createdBy) {
+        var entityIntegerAttribute = EntityIntegerAttributeFactory.getInstance().create(entityAttribute,
+                entityInstance.getPrimaryKey(), integerAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
+
+        return entityIntegerAttribute;
+    }
+    
     public long countEntityIntegerAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
         return session.queryForLong("""
                     SELECT COUNT(*)
