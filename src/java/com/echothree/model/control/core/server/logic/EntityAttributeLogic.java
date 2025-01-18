@@ -967,20 +967,38 @@ public class EntityAttributeLogic
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttributeInteger = coreControl.getEntityAttributeInteger(entityAttribute);
 
-            entityIntegerDefault = coreControl.getEntityIntegerDefault(entityAttribute);
+            if(entityAttributeInteger != null) {
+                var upperRangeIntegerValue = entityAttributeInteger.getUpperRangeIntegerValue();
+                var lowerRangeIntegerValue = entityAttributeInteger.getLowerRangeIntegerValue();
 
-            if(entityIntegerDefault == null) {
-                coreControl.createEntityIntegerDefault(entityAttribute, integerAttribute, createdBy);
-
-                if(addMissingAttributes) {
-                    new EntityInstancesMissingIntegerEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
-                            coreControl.createEntityIntegerAttribute(entityAttribute.getPrimaryKey(),
-                                    entityInstanceResult.getEntityInstance(), integerAttribute, createdBy));
+                if(upperRangeIntegerValue != null && integerAttribute > upperRangeIntegerValue){
+                    handleExecutionError(UpperRangeExceededException.class, eea, ExecutionErrors.UpperRangeExceeded.name(),
+                            upperRangeIntegerValue, integerAttribute);
                 }
-            } else {
-                handleExecutionError(DuplicateEntityIntegerDefaultException.class, eea, ExecutionErrors.DuplicateEntityIntegerDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
+
+                if(lowerRangeIntegerValue != null && integerAttribute < lowerRangeIntegerValue) {
+                    handleExecutionError(LowerRangeExceededException.class, eea, ExecutionErrors.LowerRangeExceeded.name(),
+                            lowerRangeIntegerValue, integerAttribute);
+                }
+            }
+
+            if(eea == null || !eea.hasExecutionErrors()) {
+                entityIntegerDefault = coreControl.getEntityIntegerDefault(entityAttribute);
+
+                if(entityIntegerDefault == null) {
+                    coreControl.createEntityIntegerDefault(entityAttribute, integerAttribute, createdBy);
+
+                    if(addMissingAttributes) {
+                        new EntityInstancesMissingIntegerEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
+                                coreControl.createEntityIntegerAttribute(entityAttribute.getPrimaryKey(),
+                                        entityInstanceResult.getEntityInstance(), integerAttribute, createdBy));
+                    }
+                } else {
+                    handleExecutionError(DuplicateEntityIntegerDefaultException.class, eea, ExecutionErrors.DuplicateEntityIntegerDefault.name(),
+                            entityAttribute.getLastDetail().getEntityAttributeName());
+                }
             }
         }
 
@@ -1054,20 +1072,38 @@ public class EntityAttributeLogic
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttributeLong = coreControl.getEntityAttributeLong(entityAttribute);
 
-            entityLongDefault = coreControl.getEntityLongDefault(entityAttribute);
+            if(entityAttributeLong != null) {
+                var upperRangeLongValue = entityAttributeLong.getUpperRangeLongValue();
+                var lowerRangeLongValue = entityAttributeLong.getLowerRangeLongValue();
 
-            if(entityLongDefault == null) {
-                coreControl.createEntityLongDefault(entityAttribute, longAttribute, createdBy);
-
-                if(addMissingAttributes) {
-                    new EntityInstancesMissingLongEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
-                            coreControl.createEntityLongAttribute(entityAttribute.getPrimaryKey(),
-                                    entityInstanceResult.getEntityInstance(), longAttribute, createdBy));
+                if(upperRangeLongValue != null && longAttribute > upperRangeLongValue){
+                    handleExecutionError(UpperRangeExceededException.class, eea, ExecutionErrors.UpperRangeExceeded.name(),
+                            upperRangeLongValue, longAttribute);
                 }
-            } else {
-                handleExecutionError(DuplicateEntityLongDefaultException.class, eea, ExecutionErrors.DuplicateEntityLongDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
+
+                if(lowerRangeLongValue != null && longAttribute < lowerRangeLongValue) {
+                    handleExecutionError(LowerRangeExceededException.class, eea, ExecutionErrors.LowerRangeExceeded.name(),
+                            lowerRangeLongValue, longAttribute);
+                }
+            }
+
+            if(eea == null || !eea.hasExecutionErrors()) {
+                entityLongDefault = coreControl.getEntityLongDefault(entityAttribute);
+
+                if(entityLongDefault == null) {
+                    coreControl.createEntityLongDefault(entityAttribute, longAttribute, createdBy);
+
+                    if(addMissingAttributes) {
+                        new EntityInstancesMissingLongEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
+                                coreControl.createEntityLongAttribute(entityAttribute.getPrimaryKey(),
+                                        entityInstanceResult.getEntityInstance(), longAttribute, createdBy));
+                    }
+                } else {
+                    handleExecutionError(DuplicateEntityLongDefaultException.class, eea, ExecutionErrors.DuplicateEntityLongDefault.name(),
+                            entityAttribute.getLastDetail().getEntityAttributeName());
+                }
             }
         }
 
