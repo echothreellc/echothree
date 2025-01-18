@@ -76,6 +76,7 @@ import com.echothree.model.control.core.server.database.EntityInstancePKsByMulti
 import com.echothree.model.control.core.server.database.EntityInstancePKsByNameEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByStringEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByTimeEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancesMissingBooleanEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingIntegerEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingLongEntityAttributeQuery;
 import com.echothree.model.control.index.server.control.IndexControl;
@@ -890,7 +891,7 @@ public class EntityAttributeLogic
     }
 
     public EntityBooleanDefault createEntityBooleanDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Boolean booleanAttribute, final BasePK createdBy) {
+            final Boolean booleanAttribute, final boolean addMissingAttributes, final BasePK createdBy) {
         EntityBooleanDefault entityBooleanDefault = null;
 
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.BOOLEAN);
@@ -902,6 +903,12 @@ public class EntityAttributeLogic
 
             if(entityBooleanDefault == null) {
                 coreControl.createEntityBooleanDefault(entityAttribute, booleanAttribute, createdBy);
+
+                if(addMissingAttributes) {
+                    new EntityInstancesMissingBooleanEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
+                            coreControl.createEntityBooleanAttribute(entityAttribute.getPrimaryKey(),
+                                    entityInstanceResult.getEntityInstance(), booleanAttribute, createdBy));
+                }
             } else {
                 handleExecutionError(DuplicateEntityBooleanDefaultException.class, eea, ExecutionErrors.DuplicateEntityBooleanDefault.name(),
                         entityAttribute.getLastDetail().getEntityAttributeName());
