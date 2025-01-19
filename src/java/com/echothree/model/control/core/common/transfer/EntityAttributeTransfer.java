@@ -51,6 +51,7 @@ public class EntityAttributeTransfer
     private EntityIntegerAttributeTransfer entityIntegerAttribute;
     private EntityLongDefaultTransfer entityLongDefault;
     private EntityLongAttributeTransfer entityLongAttribute;
+    private EntityStringDefaultTransfer entityStringDefault;
     private EntityStringAttributeTransfer entityStringAttribute;
     private EntityGeoPointAttributeTransfer entityGeoPointAttribute;
     private EntityBlobAttributeTransfer entityBlobAttribute;
@@ -477,6 +478,22 @@ public class EntityAttributeTransfer
      */
     public void setEntityLongAttribute(EntityLongAttributeTransfer entityLongAttribute) {
         this.entityLongAttribute = entityLongAttribute;
+    }
+
+    /**
+     * Returns the entityStringDefault.
+     * @return the entityStringDefault
+     */
+    public EntityStringDefaultTransfer getEntityStringDefault() {
+        return entityStringDefault;
+    }
+
+    /**
+     * Sets the entityStringDefault.
+     * @param entityStringDefault the entityStringDefault to set
+     */
+    public void setEntityStringDefault(EntityStringDefaultTransfer entityStringDefault) {
+        this.entityStringDefault = entityStringDefault;
     }
 
     /**

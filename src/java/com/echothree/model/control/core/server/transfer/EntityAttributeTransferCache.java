@@ -234,6 +234,12 @@ public class EntityAttributeTransferCache
                         }
                     }
                     case STRING -> {
+                        if(includeDefault) {
+                            var entityStringDefault = coreControl.getEntityStringDefault(entityAttribute, getLanguage());
+
+                            entityAttributeTransfer.setEntityStringDefault(entityStringDefault == null ? null : coreControl.getEntityStringDefaultTransfer(userVisit, entityStringDefault));
+                        }
+
                         if(includeValue && entityInstance != null) {
                             var entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, getLanguage());
 

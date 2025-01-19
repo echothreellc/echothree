@@ -405,7 +405,8 @@ public class EntityAttributeObject
                 }
                 case CLOB -> {
                     var userControl = Session.getModelController(UserControl.class);
-                    var entityClobAttribute = coreControl.getBestEntityClobAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+                    var entityClobAttribute = coreControl.getBestEntityClobAttribute(entityAttribute, entityInstance,
+                            userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
 
                     attributeInterface = entityClobAttribute == null ? null : new EntityClobAttributeObject(entityClobAttribute);
                 }
@@ -452,7 +453,8 @@ public class EntityAttributeObject
                 }
                 case STRING -> {
                     var userControl = Session.getModelController(UserControl.class);
-                    var entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+                    var entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance,
+                            userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
 
                     attributeInterface = entityStringAttribute == null ? null : new EntityStringAttributeObject(entityStringAttribute);
                 }
@@ -497,6 +499,13 @@ public class EntityAttributeObject
                 var entityListItemDefault = coreControl.getEntityListItemDefault(entityAttribute);
 
                 defaultInterface = entityListItemDefault == null ? null : new EntityListItemDefaultObject(entityListItemDefault);
+            }
+            case STRING -> {
+                var userControl = Session.getModelController(UserControl.class);
+                var entityStringDefault = coreControl.getEntityStringDefault(entityAttribute,
+                        userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+
+                defaultInterface = entityStringDefault == null ? null : new EntityStringDefaultObject(entityStringDefault);
             }
             default -> {} // Leave defaultInterface null
         }
