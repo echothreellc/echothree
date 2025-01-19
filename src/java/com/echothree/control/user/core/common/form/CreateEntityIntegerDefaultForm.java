@@ -21,7 +21,8 @@ import com.echothree.control.user.core.common.spec.EntityIntegerDefaultSpec;
 
 public interface CreateEntityIntegerDefaultForm
         extends EntityIntegerDefaultSpec, EntityIntegerDefaultEdit {
-    
-    // Nothing additional beyond EntityIntegerDefaultSpec, EntityIntegerDefaultEdit
+
+    String getAddMissingAttributes();
+    void setAddMissingAttributes(String addMissingAttributes);
     
 }

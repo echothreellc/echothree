@@ -46,7 +46,8 @@ public class CreateEntityIntegerDefaultCommand
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("IntegerAttribute", FieldType.UNSIGNED_INTEGER, true, null, null)
+                new FieldDefinition("IntegerAttribute", FieldType.UNSIGNED_INTEGER, true, null, null),
+                new FieldDefinition("AddMissingAttributes", FieldType.BOOLEAN, true, null, null)
                 );
     }
 
@@ -61,9 +62,10 @@ public class CreateEntityIntegerDefaultCommand
 
         if(!hasExecutionErrors()) {
             var integerAttribute = Integer.valueOf(form.getIntegerAttribute());
+            var addMissingAttributes = Boolean.valueOf(form.getAddMissingAttributes());
 
             EntityAttributeLogic.getInstance().createEntityIntegerDefault(this, entityAttribute,
-                    integerAttribute, getPartyPK());
+                    integerAttribute, addMissingAttributes, getPartyPK());
         }
 
         return null;

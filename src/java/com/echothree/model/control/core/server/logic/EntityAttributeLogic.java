@@ -76,6 +76,8 @@ import com.echothree.model.control.core.server.database.EntityInstancePKsByMulti
 import com.echothree.model.control.core.server.database.EntityInstancePKsByNameEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByStringEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByTimeEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancesMissingBooleanEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancesMissingIntegerEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingLongEntityAttributeQuery;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.queue.common.QueueTypes;
@@ -889,7 +891,7 @@ public class EntityAttributeLogic
     }
 
     public EntityBooleanDefault createEntityBooleanDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Boolean booleanAttribute, final BasePK createdBy) {
+            final Boolean booleanAttribute, final boolean addMissingAttributes, final BasePK createdBy) {
         EntityBooleanDefault entityBooleanDefault = null;
 
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.BOOLEAN);
@@ -901,6 +903,12 @@ public class EntityAttributeLogic
 
             if(entityBooleanDefault == null) {
                 coreControl.createEntityBooleanDefault(entityAttribute, booleanAttribute, createdBy);
+
+                if(addMissingAttributes) {
+                    new EntityInstancesMissingBooleanEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
+                            coreControl.createEntityBooleanAttribute(entityAttribute.getPrimaryKey(),
+                                    entityInstanceResult.getEntityInstance(), booleanAttribute, createdBy));
+                }
             } else {
                 handleExecutionError(DuplicateEntityBooleanDefaultException.class, eea, ExecutionErrors.DuplicateEntityBooleanDefault.name(),
                         entityAttribute.getLastDetail().getEntityAttributeName());
@@ -952,21 +960,45 @@ public class EntityAttributeLogic
     }
 
     public EntityIntegerDefault createEntityIntegerDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Integer integerAttribute, final BasePK createdBy) {
+            final Integer integerAttribute, final boolean addMissingAttributes, final BasePK createdBy) {
         EntityIntegerDefault entityIntegerDefault = null;
 
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.INTEGER);
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttributeInteger = coreControl.getEntityAttributeInteger(entityAttribute);
 
-            entityIntegerDefault = coreControl.getEntityIntegerDefault(entityAttribute);
+            if(entityAttributeInteger != null) {
+                var upperRangeIntegerValue = entityAttributeInteger.getUpperRangeIntegerValue();
+                var lowerRangeIntegerValue = entityAttributeInteger.getLowerRangeIntegerValue();
 
-            if(entityIntegerDefault == null) {
-                coreControl.createEntityIntegerDefault(entityAttribute, integerAttribute, createdBy);
-            } else {
-                handleExecutionError(DuplicateEntityIntegerDefaultException.class, eea, ExecutionErrors.DuplicateEntityIntegerDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
+                if(upperRangeIntegerValue != null && integerAttribute > upperRangeIntegerValue){
+                    handleExecutionError(UpperRangeExceededException.class, eea, ExecutionErrors.UpperRangeExceeded.name(),
+                            upperRangeIntegerValue, integerAttribute);
+                }
+
+                if(lowerRangeIntegerValue != null && integerAttribute < lowerRangeIntegerValue) {
+                    handleExecutionError(LowerRangeExceededException.class, eea, ExecutionErrors.LowerRangeExceeded.name(),
+                            lowerRangeIntegerValue, integerAttribute);
+                }
+            }
+
+            if(eea == null || !eea.hasExecutionErrors()) {
+                entityIntegerDefault = coreControl.getEntityIntegerDefault(entityAttribute);
+
+                if(entityIntegerDefault == null) {
+                    coreControl.createEntityIntegerDefault(entityAttribute, integerAttribute, createdBy);
+
+                    if(addMissingAttributes) {
+                        new EntityInstancesMissingIntegerEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
+                                coreControl.createEntityIntegerAttribute(entityAttribute.getPrimaryKey(),
+                                        entityInstanceResult.getEntityInstance(), integerAttribute, createdBy));
+                    }
+                } else {
+                    handleExecutionError(DuplicateEntityIntegerDefaultException.class, eea, ExecutionErrors.DuplicateEntityIntegerDefault.name(),
+                            entityAttribute.getLastDetail().getEntityAttributeName());
+                }
             }
         }
 
@@ -1040,20 +1072,38 @@ public class EntityAttributeLogic
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttributeLong = coreControl.getEntityAttributeLong(entityAttribute);
 
-            entityLongDefault = coreControl.getEntityLongDefault(entityAttribute);
+            if(entityAttributeLong != null) {
+                var upperRangeLongValue = entityAttributeLong.getUpperRangeLongValue();
+                var lowerRangeLongValue = entityAttributeLong.getLowerRangeLongValue();
 
-            if(entityLongDefault == null) {
-                coreControl.createEntityLongDefault(entityAttribute, longAttribute, createdBy);
-
-                if(addMissingAttributes) {
-                    new EntityInstancesMissingLongEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
-                            coreControl.createEntityLongAttribute(entityAttribute.getPrimaryKey(),
-                                    entityInstanceResult.getEntityInstance(), longAttribute, createdBy));
+                if(upperRangeLongValue != null && longAttribute > upperRangeLongValue){
+                    handleExecutionError(UpperRangeExceededException.class, eea, ExecutionErrors.UpperRangeExceeded.name(),
+                            upperRangeLongValue, longAttribute);
                 }
-            } else {
-                handleExecutionError(DuplicateEntityLongDefaultException.class, eea, ExecutionErrors.DuplicateEntityLongDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
+
+                if(lowerRangeLongValue != null && longAttribute < lowerRangeLongValue) {
+                    handleExecutionError(LowerRangeExceededException.class, eea, ExecutionErrors.LowerRangeExceeded.name(),
+                            lowerRangeLongValue, longAttribute);
+                }
+            }
+
+            if(eea == null || !eea.hasExecutionErrors()) {
+                entityLongDefault = coreControl.getEntityLongDefault(entityAttribute);
+
+                if(entityLongDefault == null) {
+                    coreControl.createEntityLongDefault(entityAttribute, longAttribute, createdBy);
+
+                    if(addMissingAttributes) {
+                        new EntityInstancesMissingLongEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
+                                coreControl.createEntityLongAttribute(entityAttribute.getPrimaryKey(),
+                                        entityInstanceResult.getEntityInstance(), longAttribute, createdBy));
+                    }
+                } else {
+                    handleExecutionError(DuplicateEntityLongDefaultException.class, eea, ExecutionErrors.DuplicateEntityLongDefault.name(),
+                            entityAttribute.getLastDetail().getEntityAttributeName());
+                }
             }
         }
 

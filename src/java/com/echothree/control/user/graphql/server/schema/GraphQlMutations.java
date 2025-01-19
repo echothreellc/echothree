@@ -5482,7 +5482,8 @@ public interface GraphQlMutations {
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
             @GraphQLName("entityAttributeName") final String entityAttributeName,
-            @GraphQLName("booleanAttribute") @GraphQLNonNull final String booleanAttribute) {
+            @GraphQLName("booleanAttribute") @GraphQLNonNull final String booleanAttribute,
+            @GraphQLName("addMissingAttributes") @GraphQLNonNull final String addMissingAttributes) {
         var mutationResultObject = new MutationResultObject();
 
         try {
@@ -5493,6 +5494,7 @@ public interface GraphQlMutations {
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeName(entityAttributeName);
             commandForm.setBooleanAttribute(booleanAttribute);
+            commandForm.setAddMissingAttributes(addMissingAttributes);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityBooleanDefault(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
@@ -5670,7 +5672,8 @@ public interface GraphQlMutations {
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
             @GraphQLName("entityAttributeName") final String entityAttributeName,
-            @GraphQLName("integerAttribute") @GraphQLNonNull final String integerAttribute) {
+            @GraphQLName("integerAttribute") @GraphQLNonNull final String integerAttribute,
+            @GraphQLName("addMissingAttributes") @GraphQLNonNull final String addMissingAttributes) {
         var mutationResultObject = new MutationResultObject();
 
         try {
@@ -5681,6 +5684,7 @@ public interface GraphQlMutations {
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeName(entityAttributeName);
             commandForm.setIntegerAttribute(integerAttribute);
+            commandForm.setAddMissingAttributes(addMissingAttributes);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityIntegerDefault(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {

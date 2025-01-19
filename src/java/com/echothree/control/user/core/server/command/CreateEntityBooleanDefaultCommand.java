@@ -46,7 +46,8 @@ public class CreateEntityBooleanDefaultCommand
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("BooleanAttribute", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("BooleanAttribute", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("AddMissingAttributes", FieldType.BOOLEAN, true, null, null)
                 );
     }
 
@@ -61,9 +62,10 @@ public class CreateEntityBooleanDefaultCommand
 
         if(!hasExecutionErrors()) {
             var booleanAttribute = Boolean.valueOf(form.getBooleanAttribute());
+            var addMissingAttributes = Boolean.valueOf(form.getAddMissingAttributes());
 
             EntityAttributeLogic.getInstance().createEntityBooleanDefault(this, entityAttribute,
-                    booleanAttribute, getPartyPK());
+                    booleanAttribute, addMissingAttributes, getPartyPK());
         }
 
         return null;
