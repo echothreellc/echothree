@@ -1,5 +1,28 @@
 # Changelog
 
+## 2025-01-19-01
+
+* Add Default Value for Integer Attributes [1458](https://gitlab.echothree.com/echothree/echothree/-/issues/1458)
+* Add Default Value for List Item Attributes [1459](https://gitlab.echothree.com/echothree/echothree/-/issues/1459)
+* Add Default Value for Long Attributes [1460](https://gitlab.echothree.com/echothree/echothree/-/issues/1460)
+* Add Default Value for String Attributes [1461](https://gitlab.echothree.com/echothree/echothree/-/issues/1461)
+* Role Type Object Not Extending BaseEntityInstanceObject [1472](https://gitlab.echothree.com/echothree/echothree/-/issues/1472)
+* Replace .stream().forEach(...) With .forEach(...) [1477](https://gitlab.echothree.com/echothree/echothree/-/issues/1477)
+* PMD 7.9.0 Upgrade [1478](https://gitlab.echothree.com/echothree/echothree/-/issues/1478)
+* jOOQ 3.19.17 Upgrade [1479](https://gitlab.echothree.com/echothree/echothree/-/issues/1479)
+* Period Type YEAR Has Incorrect parentPeriodTypeName [1480](https://gitlab.echothree.com/echothree/echothree/-/issues/1480)
+* Java 21 Upgrade [1481](https://gitlab.echothree.com/echothree/echothree/-/issues/1481)
+* Apache Lucene 10.1.0 Upgrade [1482](https://gitlab.echothree.com/echothree/echothree/-/issues/1482)
+* Correct "Initital" [1483](https://gitlab.echothree.com/echothree/echothree/-/issues/1483)
+* Add Employees to Identify Command [1484](https://gitlab.echothree.com/echothree/echothree/-/issues/1484)
+* Optionally Set Default Long Attribute Value Where Missing [1485](https://gitlab.echothree.com/echothree/echothree/-/issues/1485)
+* Optionally Set Default Integer Attribute Value Where Missing [1486](https://gitlab.echothree.com/echothree/echothree/-/issues/1486)
+* Optionally Set Default Boolean Attribute Value Where Missing [1487](https://gitlab.echothree.com/echothree/echothree/-/issues/1487)
+* Incorrect Column Prefix For EntityIntegerDefaults and EntityLongDefaults [1488](https://gitlab.echothree.com/echothree/echothree/-/issues/1488)
+* Enforce Range on Integer and Long Attribute Defaults [1490](https://gitlab.echothree.com/echothree/echothree/-/issues/1490)
+* Include Dependencies for jOOQ Code Generation [1491](https://gitlab.echothree.com/echothree/echothree/-/issues/1491)
+* jOOQ 3.19.18 Upgrade [1492](https://gitlab.echothree.com/echothree/echothree/-/issues/1492)
+
 ## 2025-01-05-01
 
 * Add Content Web Address Mutations [622](https://gitlab.echothree.com/echothree/echothree/-/issues/622)
