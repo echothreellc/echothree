@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public class ItemAnalyzer
     protected Map<String, Analyzer> getItemAliasTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         var itemControl = Session.getModelController(ItemControl.class);
         
-        itemControl.getItemAliasTypes().stream().forEach((itemAliasType) -> {
+        itemControl.getItemAliasTypes().forEach((itemAliasType) -> {
             fieldAnalyzers.put(itemAliasType.getLastDetail().getItemAliasTypeName(), new WhitespaceLowerCaseAnalyzer());
         });
         
@@ -77,8 +77,8 @@ public class ItemAnalyzer
     }
     
     @Override
-    protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
-        super.getEntityTypeAnalyzers(fieldAnalyzers);
+    protected Map<String, Analyzer> getEntityTypeFieldAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
+        super.getEntityTypeFieldAnalyzers(fieldAnalyzers);
         
         fieldAnalyzers.put(IndexFields.aliases.name(), new WhitespaceLowerCaseAnalyzer());
         fieldAnalyzers.put(IndexFields.itemName.name(), new WhitespaceLowerCaseAnalyzer());
@@ -92,7 +92,9 @@ public class ItemAnalyzer
         fieldAnalyzers.put(IndexFields.allowClubDiscounts.name(), new WhitespaceLowerCaseAnalyzer());
         fieldAnalyzers.put(IndexFields.allowCouponDiscounts.name(), new WhitespaceLowerCaseAnalyzer());
         fieldAnalyzers.put(IndexFields.allowAssociatePayments.name(), new WhitespaceLowerCaseAnalyzer());
-        
+        fieldAnalyzers.put(IndexFields.unitOfMeasureKindName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.itemPriceTypeName.name(), new WhitespaceLowerCaseAnalyzer());
+
         return getItemDescriptionAnalyzers(getItemAliasTypeAnalyzers(fieldAnalyzers));
     }
     

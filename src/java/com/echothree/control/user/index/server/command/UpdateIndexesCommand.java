@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import com.echothree.control.user.index.common.form.UpdateIndexesForm;
 import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.contact.server.indexer.ContactMechanismIndexer;
 import com.echothree.model.control.content.server.indexer.ContentCatalogIndexer;
+import com.echothree.model.control.content.server.indexer.ContentCatalogItemIndexer;
 import com.echothree.model.control.content.server.indexer.ContentCategoryIndexer;
 import com.echothree.model.control.core.server.indexer.ComponentVendorIndexer;
 import com.echothree.model.control.core.server.indexer.EntityAliasTypeIndexer;
@@ -148,6 +149,8 @@ public class UpdateIndexesCommand
                     baseIndexer = new EntityListItemIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.CONTENT_CATALOG.name())) {
                     baseIndexer = new ContentCatalogIndexer(this, index);
+                } else if(indexTypeName.equals(IndexTypes.CONTENT_CATALOG_ITEM.name())) {
+                    baseIndexer = new ContentCatalogItemIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.CONTENT_CATEGORY.name())) {
                     baseIndexer = new ContentCategoryIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.SECURITY_ROLE_GROUP.name())) {

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -60,8 +60,7 @@ public abstract class BaseSpellCheckEvaluator
 
         // If it's a BoostQuery, then we'll unwrap the contained Query and mark
         // that we've been boosted if needed.
-        if(query instanceof BoostQuery) {
-            var boostQuery = (BoostQuery)query;
+        if(query instanceof BoostQuery boostQuery) {
 
             isBoosted = boostQuery.getBoost() != 1.0f;
 
@@ -76,8 +75,7 @@ public abstract class BaseSpellCheckEvaluator
             getLog().info("    is boosted: " + isBoosted);
         }
 
-        if(query instanceof TermQuery) {
-            var termQuery = (TermQuery)query;
+        if(query instanceof TermQuery termQuery) {
             var term = termQuery.getTerm();
             var text = term.text();
             
@@ -120,7 +118,7 @@ public abstract class BaseSpellCheckEvaluator
         };
 
         for(var booleanClause : booleanQuery) {
-            var occur = booleanClause.getOccur();
+            var occur = booleanClause.occur();
 
             if(EvaluatorDebugFlags.LogCheckSpelling) {
                 getLog().info("booleanClause " + booleanClause);
@@ -146,7 +144,7 @@ public abstract class BaseSpellCheckEvaluator
             }
 
             if(result) {
-                var containedQuery = booleanClause.getQuery();
+                var containedQuery = booleanClause.query();
 
                 if(EvaluatorDebugFlags.LogCheckSpelling) {
                     getLog().info("  booleanClause.getQuery() " + containedQuery);

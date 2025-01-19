@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ public class PartyAnalyzer
     protected Map<String, Analyzer> getPartyAliasTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         var partyControl = Session.getModelController(PartyControl.class);
 
-        partyControl.getPartyAliasTypes(partyType).stream().forEach((partyAliasType)->
+        partyControl.getPartyAliasTypes(partyType).forEach((partyAliasType)->
                 fieldAnalyzers.put(partyAliasType.getLastDetail().getPartyAliasTypeName(),
                         new WhitespaceLowerCaseAnalyzer()));
 
@@ -72,8 +72,8 @@ public class PartyAnalyzer
     }
 
     @Override
-    protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
-        super.getEntityTypeAnalyzers(fieldAnalyzers);
+    protected Map<String, Analyzer> getEntityTypeFieldAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
+        super.getEntityTypeFieldAnalyzers(fieldAnalyzers);
         
         fieldAnalyzers.put(IndexFields.partyName.name(), new WhitespaceLowerCaseAnalyzer());
         fieldAnalyzers.put(entityNameIndexField, new WhitespaceLowerCaseAnalyzer());

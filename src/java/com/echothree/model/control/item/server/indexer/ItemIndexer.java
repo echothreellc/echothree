@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -141,6 +141,9 @@ public class ItemIndexer
         document.add(new Field(IndexFields.allowClubDiscounts.name(), itemDetail.getAllowClubDiscounts().toString(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new Field(IndexFields.allowCouponDiscounts.name(), itemDetail.getAllowCouponDiscounts().toString(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new Field(IndexFields.allowAssociatePayments.name(), itemDetail.getAllowAssociatePayments().toString(), FieldTypes.NOT_STORED_TOKENIZED));
+
+        document.add(new Field(IndexFields.unitOfMeasureKindName.name(), itemDetail.getUnitOfMeasureKind().getLastDetail().getUnitOfMeasureKindName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new Field(IndexFields.itemPriceTypeName.name(), itemDetail.getItemPriceType().getItemPriceTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
 
         itemDescriptionTypes.forEach((itemDescriptionType) -> {
             var itemDescription = itemControl.getBestItemDescription(itemDescriptionType, item, language);

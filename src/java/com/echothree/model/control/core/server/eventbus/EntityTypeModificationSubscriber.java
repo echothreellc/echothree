@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ public class EntityTypeModificationSubscriber
         extends BaseEventSubscriber {
 
     @Subscribe
-    public void receiveSentEventforEntityAttributes(SentEvent se) {
+    public void receiveSentEventForEntityAttributes(SentEvent se) {
         decodeEventAndApply(se, touchEntityAttributesIfEntityType);
     }
 

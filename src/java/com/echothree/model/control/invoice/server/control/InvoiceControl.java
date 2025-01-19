@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -2452,13 +2452,13 @@ public class InvoiceControl
     }
     
     public void deleteInvoiceRolesByInvoice(Invoice invoice, BasePK deletedBy) {
-        getInvoiceRolesByInvoiceForUpdate(invoice).stream().forEach((invoiceRole) -> {
+        getInvoiceRolesByInvoiceForUpdate(invoice).forEach((invoiceRole) -> {
             deleteInvoiceRole(invoiceRole, deletedBy);
         });
     }
     
     public void deleteInvoiceRolesByPartyContactMechanism(PartyContactMechanism partyContactMechanism, BasePK deletedBy) {
-        getInvoiceRolesByPartyContactMechanismForUpdate(partyContactMechanism).stream().forEach((invoiceRole) -> {
+        getInvoiceRolesByPartyContactMechanismForUpdate(partyContactMechanism).forEach((invoiceRole) -> {
             deleteInvoiceRole(invoiceRole, deletedBy);
         });
     }

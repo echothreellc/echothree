@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -56,8 +56,11 @@ import com.echothree.model.data.content.common.pk.ContentCatalogItemVariablePric
 import com.echothree.model.data.content.common.pk.ContentCatalogPK;
 import com.echothree.model.data.content.common.pk.ContentCategoryPK;
 import com.echothree.model.data.content.common.pk.ContentCollectionPK;
+import com.echothree.model.data.content.common.pk.ContentPageAreaPK;
 import com.echothree.model.data.content.common.pk.ContentPageAreaTypePK;
 import com.echothree.model.data.content.common.pk.ContentPageLayoutPK;
+import com.echothree.model.data.content.common.pk.ContentPagePK;
+import com.echothree.model.data.content.common.pk.ContentWebAddressPK;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogDescription;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
@@ -206,7 +209,14 @@ public class ContentControl
 
         return contentPageAreaType;
     }
-    
+
+    public long countContentPageAreaTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentpageareatypes
+                        """);
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentPageAreaType */
     public ContentPageAreaType getContentPageAreaTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentPageAreaTypePK(entityInstance.getEntityUniqueId());
@@ -260,7 +270,8 @@ public class ContentControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM contentpageareatypes " +
-                "ORDER BY cntpat_contentpageareatypename");
+                "ORDER BY cntpat_contentpageareatypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM contentpageareatypes " +
@@ -414,7 +425,15 @@ public class ContentControl
         
         return contentPageLayout;
     }
-    
+
+    public long countContentPageLayouts() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentpagelayouts
+                        JOIN contentpagelayoutdetails ON cntpl_activedetailid = cntpldt_contentpagelayoutdetailid
+                        """);
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentPageLayout */
     public ContentPageLayout getContentPageLayoutByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentPageLayoutPK(entityInstance.getEntityUniqueId());
@@ -511,7 +530,8 @@ public class ContentControl
                 "SELECT _ALL_ " +
                 "FROM contentpagelayouts, contentpagelayoutdetails " +
                 "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_thrutime = ? " +
-                "ORDER BY cntpldt_sortorder, cntpldt_contentpagelayoutname");
+                "ORDER BY cntpldt_sortorder, cntpldt_contentpagelayoutname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM contentpagelayouts, contentpagelayoutdetails " +
@@ -830,8 +850,10 @@ public class ContentControl
     //   Content Page Layout Areas
     // --------------------------------------------------------------------------------
     
-    public ContentPageLayoutArea createContentPageLayoutArea(ContentPageLayout contentPageLayout, ContentPageAreaType contentPageAreaType, Boolean showDescriptionField, Integer sortOrder) {
-        return ContentPageLayoutAreaFactory.getInstance().create(contentPageLayout, contentPageAreaType, showDescriptionField, sortOrder);
+    public ContentPageLayoutArea createContentPageLayoutArea(ContentPageLayout contentPageLayout,
+            ContentPageAreaType contentPageAreaType, Boolean showDescriptionField, Integer sortOrder) {
+        return ContentPageLayoutAreaFactory.getInstance().create(contentPageLayout, contentPageAreaType,
+                showDescriptionField, sortOrder);
     }
     
     public long countContentPageLayoutAreasByContentPageLayout(ContentPageLayout contentPageLayout) {
@@ -870,7 +892,8 @@ public class ContentControl
                     "SELECT _ALL_ " +
                     "FROM contentpagelayoutareas " +
                     "WHERE cntpla_cntpl_contentpagelayoutid = ? " +
-                    "ORDER BY cntpla_sortorder");
+                    "ORDER BY cntpla_sortorder " +
+                    "_LIMIT_");
             
             ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
             
@@ -966,6 +989,23 @@ public class ContentControl
         return contentCollection;
     }
 
+    public long countContentCollections() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentcollections, contentcollectiondetails
+                        WHERE cntc_activedetailid = cntcdt_contentcollectiondetailid
+                        """);
+    }
+
+    public long countContentCollectionsByDefaultOfferUse(OfferUse defaultOfferUse) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentcollections, contentcollectiondetails
+                        WHERE cntc_activedetailid = cntcdt_contentcollectiondetailid
+                        AND cntcdt_defaultofferuseid = ?
+                        """, defaultOfferUse);
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentCollection */
     public ContentCollection getContentCollectionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentCollectionPK(entityInstance.getEntityUniqueId());
@@ -981,14 +1021,6 @@ public class ContentControl
         return getContentCollectionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    public long countContentCollectionsByDefaultOfferUse(OfferUse defaultOfferUse) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM contentcollections, contentcollectiondetails " +
-                        "WHERE cntc_activedetailid = cntcdt_contentcollectiondetailid " +
-                        "AND cntcdt_defaultofferuseid = ?", defaultOfferUse);
-    }
-
     public List<ContentCollection> getContentCollections() {
         List<ContentCollection> contentCollections;
         
@@ -997,7 +1029,8 @@ public class ContentControl
                     "SELECT _ALL_ " +
                     "FROM contentcollections, contentcollectiondetails " +
                     "WHERE cntc_contentcollectionid = cntcdt_cntc_contentcollectionid AND cntcdt_thrutime = ? " +
-                    "ORDER BY cntcdt_contentcollectionname");
+                    "ORDER BY cntcdt_contentcollectionname " +
+                    "_LIMIT_");
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -1302,8 +1335,8 @@ public class ContentControl
     //   Content Sections
     // --------------------------------------------------------------------------------
     
-    public ContentSection createContentSection(ContentCollection contentCollection, String contentSectionName, ContentSection parentContentSection, Boolean isDefault, Integer sortOrder,
-            BasePK createdBy) {
+    public ContentSection createContentSection(ContentCollection contentCollection, String contentSectionName,
+            ContentSection parentContentSection, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultContentSection = getDefaultContentSection(contentCollection);
         var defaultFound = defaultContentSection != null;
         
@@ -1336,13 +1369,22 @@ public class ContentControl
         
         return contentSection;
     }
-    
+
     public long countContentSectionsByContentCollection(ContentCollection contentCollection) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM contentsectiondetails " +
-                "WHERE cntsdt_cntc_contentcollectionid = ? AND cntsdt_thrutime = ?",
-                contentCollection, Session.MAX_TIME);
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentsections, contentsectiondetails
+                        WHERE cnts_activedetailid = cntsdt_contentsectiondetailid AND cntsdt_cntc_contentcollectionid = ?
+                        """, contentCollection);
+    }
+
+    public long countContentSectionsByParentContentSection(ContentSection parentContentSection) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentsections, contentsectiondetails
+                        WHERE cnts_activedetailid = cntsdt_contentsectiondetailid
+                        AND cntsdt_parentcontentsectionid = ?
+                        """, parentContentSection);
     }
 
     private List<ContentSection> getContentSections(ContentCollection contentCollection, EntityPermission entityPermission) {
@@ -1857,7 +1899,7 @@ public class ContentControl
     }
     
     public void deleteContentSectionDescriptionsByContentSection(ContentSection contentSection, BasePK deletedBy) {
-        getContentSectionDescriptionsByContentSectionForUpdate(contentSection).stream().forEach((contentSectionDescription) -> {
+        getContentSectionDescriptionsByContentSectionForUpdate(contentSection).forEach((contentSectionDescription) -> {
             deleteContentSectionDescription(contentSectionDescription, deletedBy);
         });
     }
@@ -1900,6 +1942,21 @@ public class ContentControl
                 "FROM contentpagedetails " +
                 "WHERE cntpdt_cnts_contentsectionid = ? AND cntpdt_thrutime = ?",
                 contentSection, Session.MAX_TIME);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentPage */
+    public ContentPage getContentPageByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContentPagePK(entityInstance.getEntityUniqueId());
+
+        return ContentPageFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContentPage getContentPageByEntityInstance(EntityInstance entityInstance) {
+        return getContentPageByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContentPage getContentPageByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContentPageByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     private List<ContentPage> getContentPagesByContentSection(ContentSection contentSection, EntityPermission entityPermission) {
@@ -2168,13 +2225,13 @@ public class ContentControl
     }
     
     public void deleteContentPagesByContentSection(ContentSection contentSection, BasePK deletedBy) {
-        getContentPagesByContentSectionForUpdate(contentSection).stream().forEach((contentPage) -> {
+        getContentPagesByContentSectionForUpdate(contentSection).forEach((contentPage) -> {
             deleteContentPage(contentPage, deletedBy);
         });
     }
     
     public void deleteContentPagesByContentPageLayout(ContentPageLayout contentPageLayout, BasePK deletedBy) {
-        getContentPagesByContentPageLayoutForUpdate(contentPageLayout).stream().forEach((contentPage) -> {
+        getContentPagesByContentPageLayoutForUpdate(contentPageLayout).forEach((contentPage) -> {
             deleteContentPage(contentPage, deletedBy);
         });
     }
@@ -2337,7 +2394,7 @@ public class ContentControl
     }
     
     public void deleteContentPageDescriptionsByContentPage(ContentPage contentPage, BasePK deletedBy) {
-        getContentPageDescriptionsByContentPageForUpdate(contentPage).stream().forEach((contentPageDescription) -> {
+        getContentPageDescriptionsByContentPageForUpdate(contentPage).forEach((contentPageDescription) -> {
             deleteContentPageDescription(contentPageDescription, deletedBy);
         });
     }
@@ -2361,7 +2418,31 @@ public class ContentControl
         
         return contentPageArea;
     }
-    
+
+    public long countContentPageAreasByContentPage(ContentPage contentPage) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentpageareas
+                        JOIN contentpageareadetails ON cntpa_activedetailid = cntpad_contentpageareadetailid
+                        WHERE cntpad_cntp_contentpageid = ?
+                        """, contentPage);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentPageArea */
+    public ContentPageArea getContentPageAreaByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContentPageAreaPK(entityInstance.getEntityUniqueId());
+
+        return ContentPageAreaFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContentPageArea getContentPageAreaByEntityInstance(EntityInstance entityInstance) {
+        return getContentPageAreaByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContentPageArea getContentPageAreaByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContentPageAreaByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<ContentPageArea> getContentPageAreasByContentPage(ContentPage contentPage, EntityPermission entityPermission) {
         List<ContentPageArea> contentPageAreas;
         
@@ -2373,7 +2454,8 @@ public class ContentControl
                         "FROM contentpageareas, contentpageareadetails, contentpagelayoutareas, languages " +
                         "WHERE cntpa_contentpageareaid = cntpad_cntpa_contentpageareaid AND cntpad_cntp_contentpageid = ? AND cntpad_thrutime = ? " +
                         "AND cntpad_cntpla_contentpagelayoutareaid = cntpla_contentpagelayoutareaid AND cntpad_lang_languageid = lang_languageid " +
-                        "ORDER BY cntpla_sortorder, lang_languageisoname";
+                        "ORDER BY cntpla_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM contentpageareas, contentpageareadetails " +
@@ -2553,7 +2635,7 @@ public class ContentControl
     }
     
     public void deleteContentPageAreasByContentPage(ContentPage contentPage, BasePK deletedBy) {
-        getContentPageAreasByContentPageForUpdate(contentPage).stream().forEach((contentPageArea) -> {
+        getContentPageAreasByContentPageForUpdate(contentPage).forEach((contentPageArea) -> {
             deleteContentPageArea(contentPageArea, deletedBy);
         });
     }
@@ -2985,7 +3067,7 @@ public class ContentControl
     }
     
     public void deleteContentCatalogsByContentCollection(ContentCollection contentCollection, BasePK deletedBy) {
-        getContentCatalogsForUpdate(contentCollection).stream().forEach((contentCatalog) -> {
+        getContentCatalogsForUpdate(contentCollection).forEach((contentCatalog) -> {
             deleteContentCatalog(contentCatalog, deletedBy);
         });
     }
@@ -3149,7 +3231,7 @@ public class ContentControl
     }
     
     public void deleteContentCatalogDescriptionsByContentCatalog(ContentCatalog contentCatalog, BasePK deletedBy) {
-        getContentCatalogDescriptionsByContentCatalogForUpdate(contentCatalog).stream().forEach((contentCatalogDescription) -> {
+        getContentCatalogDescriptionsByContentCatalogForUpdate(contentCatalog).forEach((contentCatalogDescription) -> {
             deleteContentCatalogDescription(contentCatalogDescription, deletedBy);
         });
     }
@@ -3487,7 +3569,11 @@ public class ContentControl
     public List<ContentCatalogItemTransfer> getContentCatalogItemTransfers(UserVisit userVisit, ContentCatalog contentCatalog) {
         return getContentCatalogItemTransfers(userVisit, getContentCatalogItemsByContentCatalog(contentCatalog));
     }
-    
+
+    public ContentCatalogItem getContentCatalogItemByPK(ContentCatalogItemPK contentCatalogItemPK) {
+        return ContentCatalogItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, contentCatalogItemPK);
+    }
+
     public void deleteContentCatalogItem(ContentCatalogItem contentCatalogItem, BasePK deletedBy) {
         var item = contentCatalogItem.getItem();
         var itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
@@ -4177,7 +4263,7 @@ public class ContentControl
 
     private void deleteContentCategory(ContentCategory contentCategory, BasePK deletedBy, boolean recursive) {
         if(recursive) {
-            getContentCategoriesByParentContentCategoryForUpdate(contentCategory).stream().forEach((childContentCategory) -> {
+            getContentCategoriesByParentContentCategoryForUpdate(contentCategory).forEach((childContentCategory) -> {
                 deleteContentCategory(childContentCategory, deletedBy, true);
             });
         }
@@ -4224,7 +4310,7 @@ public class ContentControl
     }
     
     public void deleteContentCategoriesByContentCatalog(ContentCatalog contentCatalog, BasePK deletedBy) {
-        getContentCategoriesForUpdate(contentCatalog).stream().forEach((contentCategory) -> {
+        getContentCategoriesForUpdate(contentCatalog).forEach((contentCategory) -> {
             deleteContentCategory(contentCategory, deletedBy, false);
         });
     }
@@ -4391,7 +4477,7 @@ public class ContentControl
     }
     
     public void deleteContentCategoryDescriptionsByContentCategory(ContentCategory contentCategory, BasePK deletedBy) {
-        getContentCategoryDescriptionsByContentCategoryForUpdate(contentCategory).stream().forEach((contentCategoryDescription) -> {
+        getContentCategoryDescriptionsByContentCategoryForUpdate(contentCategory).forEach((contentCategoryDescription) -> {
             deleteContentCategoryDescription(contentCategoryDescription, deletedBy);
         });
     }
@@ -4715,13 +4801,13 @@ public class ContentControl
     }
     
     public void deleteContentCategoryItemsByContentCategory(ContentCategory contentCategory, BasePK deletedBy) {
-        getContentCategoryItemsByContentCategoryForUpdate(contentCategory).stream().forEach((contentCategoryItem) -> {
+        getContentCategoryItemsByContentCategoryForUpdate(contentCategory).forEach((contentCategoryItem) -> {
             ContentLogic.getInstance().deleteContentCategoryItem(contentCategoryItem, deletedBy);
         });
     }
 
     private void deleteContentCategoryItemsByContentCatalogItem(ContentCatalogItem contentCatalogItem, BasePK deletedBy) {
-        getContentCategoryItemsByContentCatalogItemForUpdate(contentCatalogItem).stream().forEach((contentCategoryItem) -> {
+        getContentCategoryItemsByContentCatalogItemForUpdate(contentCatalogItem).forEach((contentCategoryItem) -> {
             deleteContentCategoryItem(contentCategoryItem, false, deletedBy);
         });
     }
@@ -4978,7 +5064,7 @@ public class ContentControl
     }
     
     public void deleteContentForumsByContentCollection(ContentCollection contentCollection, BasePK deletedBy) {
-        getContentForumsForUpdate(contentCollection).stream().forEach((contentForum) -> {
+        getContentForumsForUpdate(contentCollection).forEach((contentForum) -> {
             deleteContentForum(contentForum, deletedBy);
         });
     }
@@ -4987,10 +5073,11 @@ public class ContentControl
     //   Content Web Addresses
     // --------------------------------------------------------------------------------
     
-    public ContentWebAddress createContentWebAddress(String contentWebAddressName, ContentCollection contentCollection, BasePK createdBy) {
+    public ContentWebAddress createContentWebAddress(String contentWebAddressName, ContentCollection contentCollection,
+            BasePK createdBy) {
         var contentWebAddress = ContentWebAddressFactory.getInstance().create();
-        var contentWebAddressDetail = ContentWebAddressDetailFactory.getInstance().create(contentWebAddress, contentWebAddressName, contentCollection, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var contentWebAddressDetail = ContentWebAddressDetailFactory.getInstance().create(contentWebAddress,
+                contentWebAddressName, contentCollection, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
         contentWebAddress = ContentWebAddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentWebAddress.getPrimaryKey());
@@ -5004,11 +5091,43 @@ public class ContentControl
     }
     
     public boolean validContentWebAddressName(String contentWebAddressName) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM contentwebaddresses, contentwebaddressdetails " +
-                "WHERE cntwa_activedetailid = cntwadt_contentwebaddressdetailid AND cntwadt_contentwebaddressname = ?",
-                contentWebAddressName) == 1;
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentwebaddresses, contentwebaddressdetails
+                        WHERE cntwa_activedetailid = cntwadt_contentwebaddressdetailid AND cntwadt_contentwebaddressname = ?
+                        """, contentWebAddressName) == 1;
+    }
+
+    public long countContentWebAddresses() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentwebaddresses, contentwebaddressdetails
+                        WHERE cntwa_activedetailid = cntwadt_contentwebaddressdetailid
+                        """);
+    }
+
+    public long countContentWebAddressesByContentCollection(ContentCollection contentCollection) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentwebaddresses, contentwebaddressdetails
+                        WHERE cntwa_activedetailid = cntwadt_contentwebaddressdetailid
+                        AND cntwadt_cntc_contentcollectionid = ?
+                        """, contentCollection);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentWebAddress */
+    public ContentWebAddress getContentWebAddressByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContentWebAddressPK(entityInstance.getEntityUniqueId());
+
+        return ContentWebAddressFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContentWebAddress getContentWebAddressByEntityInstance(EntityInstance entityInstance) {
+        return getContentWebAddressByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContentWebAddress getContentWebAddressByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContentWebAddressByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     private List<ContentWebAddress> getContentWebAddresses(EntityPermission entityPermission) {
@@ -5209,7 +5328,7 @@ public class ContentControl
     }
     
     public void deleteContentWebAddressesByContentCollection(ContentCollection contentCollection, BasePK deletedBy) {
-        getContentWebAddressesByContentCollectionForUpdate(contentCollection).stream().forEach((contentWebAddress) -> {
+        getContentWebAddressesByContentCollectionForUpdate(contentCollection).forEach((contentWebAddress) -> {
             deleteContentWebAddress(contentWebAddress, deletedBy);
         });
     }
@@ -5373,7 +5492,7 @@ public class ContentControl
     }
     
     public void deleteContentWebAddressDescriptionsByContentWebAddress(ContentWebAddress contentWebAddress, BasePK deletedBy) {
-        getContentWebAddressDescriptionsByContentWebAddressForUpdate(contentWebAddress).stream().forEach((contentWebAddressDescription) -> {
+        getContentWebAddressDescriptionsByContentWebAddressForUpdate(contentWebAddress).forEach((contentWebAddressDescription) -> {
             deleteContentWebAddressDescription(contentWebAddressDescription, deletedBy);
         });
     }
@@ -5482,7 +5601,7 @@ public class ContentControl
     }
     
     public void deleteContentWebAddressServersByContentWebAddress(ContentWebAddress contentWebAddress, BasePK deletedBy) {
-        getContentWebAddressServersByContentWebAddressForUpdate(contentWebAddress).stream().forEach((contentWebAddressServer) -> {
+        getContentWebAddressServersByContentWebAddressForUpdate(contentWebAddress).forEach((contentWebAddressServer) -> {
             deleteContentWebAddressServer(contentWebAddressServer, deletedBy);
         });
     }

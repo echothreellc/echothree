@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ public enum SearchKinds {
     COMPONENT_VENDOR,
     CONTACT_MECHANISM,
     CONTENT_CATALOG,
+    CONTENT_CATALOG_ITEM,
     CONTENT_CATEGORY,
     CUSTOMER,
     EMPLOYEE,

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2025 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -430,9 +430,9 @@ ${javadoc.copyright}
                 classname="net.sourceforge.pmd.ant.PMDTask"
                 classpathref="pmd.classpath" />
         <pmd
-                shortFilenames="true"
+                threads="4"
                 noCache="true">
-            <sourceLanguage name="java" version="17" />
+            <sourceLanguage name="java" version="21" />
             <ruleset>rulesets/java/quickstart.xml</ruleset>
             <formatter
                     type="xml"

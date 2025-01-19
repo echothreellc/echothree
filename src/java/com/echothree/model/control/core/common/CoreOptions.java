@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,6 +24,8 @@ public interface CoreOptions {
     String EntityClobAttributeIncludeClob = "EntityClobAttributeIncludeClob";
     String EntityClobAttributeIncludeETag = "EntityClobAttributeIncludeETag";
 
+    String EntityStringDefaultIncludeString = "EntityStringDefaultIncludeString";
+
     String EntityStringAttributeIncludeString = "EntityStringAttributeIncludeString";
     
     String EntityAttributeGroupIncludeEntityAttributes = "EntityAttributeGroupIncludeEntityAttributes";
@@ -32,6 +34,7 @@ public interface CoreOptions {
     String EntityAttributeIncludeEntityListItemsCount = "EntityAttributeIncludeEntityListItemsCount";
     String EntityAttributeIncludeEntityAttributeEntityTypes = "EntityAttributeIncludeEntityAttributeEntityTypes";
     String EntityAttributeIncludeEntityAttributeEntityTypesCount = "EntityAttributeIncludeEntityAttributeEntityTypesCount";
+    String EntityAttributeIncludeDefault = "EntityAttributeIncludeDefault";
     String EntityAttributeIncludeValue = "EntityAttributeIncludeValue";
 
     String EntityInstanceIncludeEntityAppearance = "EntityInstanceIncludeEntityAppearance";

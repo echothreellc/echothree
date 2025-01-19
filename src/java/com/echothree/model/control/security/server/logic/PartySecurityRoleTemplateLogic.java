@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -179,7 +179,7 @@ public class PartySecurityRoleTemplateLogic {
             trainingClass, createdBy);
 
         // If Party does not have a PartyTrainingClass for this TrainingClass in either ASSIGNED or TRAINING, then assign it to them.
-        preparedPartySecurityRoleTemplateTrainingClass.getPreparedPartyTrainingClasses().stream().forEach((preparedPartyTrainingClass) -> {
+        preparedPartySecurityRoleTemplateTrainingClass.getPreparedPartyTrainingClasses().forEach((preparedPartyTrainingClass) -> {
             PartyTrainingClassLogic.getInstance().createPartyTrainingClass(session, preparedPartyTrainingClass, createdBy);
         });
 

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import com.echothree.util.server.persistence.Session;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
@@ -117,15 +118,11 @@ public class BasicAnalyzer
     }
 
     @Override
-    protected TokenStreamComponents wrapComponents(String fieldName, TokenStreamComponents components) {
-        return components;
-    }
-
-    @Override
     public String toString() {
         return "BasicAnalyzer(" + cachedFieldAnalyzers + ", default=" + defaultAnalyzer + ")";
     }
 
+    @SuppressWarnings("resource") // This is taken care of in our close() method.
     private Analyzer getDefaultAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
         Analyzer selectedAnalyzer = null;
         
@@ -191,30 +188,28 @@ public class BasicAnalyzer
     }
 
     private Map<String, Analyzer> getTagScopeFieldAnalyzers(final List<TagScope> tagScopes, final Map<String, Analyzer> fieldAnalyzers) {
-        tagScopes.stream().map((tagScope) -> tagScope.getLastDetail().getTagScopeName()).map((fieldName) -> {
+        tagScopes.forEach(tagScope -> {
+            var tagScopeName = tagScope.getLastDetail().getTagScopeName();
             if(IndexerDebugFlags.LogBaseAnalyzer) {
-                log.info("--- fieldName = " + fieldName);
+                log.info("--- fieldName = " + tagScopeName);
             }
-            return fieldName;
-        }).forEach((fieldName) -> {
-            fieldAnalyzers.put(fieldName, new WhitespaceLowerCaseAnalyzer());
+            fieldAnalyzers.put(tagScopeName, new WhitespaceLowerCaseAnalyzer());
         });
-        
+
         return fieldAnalyzers;
     }
 
     private Map<String, Analyzer> getWorkflowFieldAnalyzers(final EntityType entityType, final Map<String, Analyzer> fieldAnalyzers) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
 
-        workflowControl.getWorkflowsByEntityType(entityType).stream().map((workflow) -> workflow.getLastDetail().getWorkflowName()).map((fieldName) -> {
+        workflowControl.getWorkflowsByEntityType(entityType).forEach(workflow -> {
+            var workflowName = workflow.getLastDetail().getWorkflowName();
             if(IndexerDebugFlags.LogBaseAnalyzer) {
-                log.info("--- fieldName = " + fieldName);
+                log.info("--- fieldName = " + workflowName);
             }
-            return fieldName;
-        }).forEach((fieldName) -> {
-            fieldAnalyzers.put(fieldName, new WhitespaceLowerCaseAnalyzer());
+            fieldAnalyzers.put(workflowName, new WhitespaceLowerCaseAnalyzer());
         });
-        
+
         return fieldAnalyzers;
     }
 
@@ -224,17 +219,49 @@ public class BasicAnalyzer
         return fieldAnalyzers;
     }
 
-    protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
+    protected Map<String, Analyzer> getEntityTypeFieldAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         // No additional Analyzers by default.
         
         return fieldAnalyzers;
     }
 
-    private Map<String, Analyzer> getFieldAnalyzers(final ExecutionErrorAccumulator eea, final EntityType entityType,
+    protected Map<String, Analyzer> getFieldAnalyzers(final ExecutionErrorAccumulator eea, final EntityType entityType,
             final List<EntityAttribute> entityAttributes, final List<TagScope> tagScopes) {
-        return getEntityTypeAnalyzers(getAppearanceFieldAnalyzers(getWorkflowFieldAnalyzers(entityType,
-                getTagScopeFieldAnalyzers(tagScopes, getEntityAliasesFieldAnalyzers(entityAliasTypes,
-                        getEntityAttributeFieldAnalyzers(entityAttributes, new HashMap<>()))))));
+        return getEntityTypeFieldAnalyzers(
+                getAppearanceFieldAnalyzers(
+                        getWorkflowFieldAnalyzers(entityType,
+                                getTagScopeFieldAnalyzers(tagScopes,
+                                        getEntityAliasesFieldAnalyzers(entityAliasTypes,
+                                                getEntityAttributeFieldAnalyzers(entityAttributes, new HashMap<>())
+                                        )
+                                )
+                        )
+                )
+        );
     }
-    
+
+    public Set<String> getDateFields() {
+        return null;
+    }
+
+    public Set<String> getDateTimeFields() {
+        return null;
+    }
+
+    public Set<String> getIntFields() {
+        return null;
+    }
+
+    public Set<String> getLongFields() {
+        return null;
+    }
+
+    public Set<String> getFloatFields() {
+        return null;
+    }
+
+    public Set<String> getDoubleFields() {
+        return null;
+    }
+
 }

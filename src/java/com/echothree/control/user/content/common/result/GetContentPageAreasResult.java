@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,12 +17,19 @@
 package com.echothree.control.user.content.common.result;
 
 import com.echothree.model.control.content.common.transfer.ContentPageAreaTransfer;
+import com.echothree.model.control.content.common.transfer.ContentPageTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetContentPageAreasResult
         extends BaseResult {
-    
+
+    ContentPageTransfer getContentPage();
+    void setContentPage(ContentPageTransfer contentPage);
+
+    Long getContentPageAreaCount();
+    void setContentPageAreaCount(Long contentPageAreaCount);
+
     List<ContentPageAreaTransfer> getContentPageAreas();
     void setContentPageAreas(List<ContentPageAreaTransfer> contentPageAreas);
     

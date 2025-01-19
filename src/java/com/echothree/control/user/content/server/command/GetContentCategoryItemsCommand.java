@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,11 +25,11 @@ import com.echothree.model.data.content.server.entity.ContentCategoryItem;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.factory.ContentCategoryItemFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,7 +37,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetContentCategoryItemsCommand
-        extends BaseMultipleEntitiesCommand<ContentCategoryItem, GetContentCategoryItemsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ContentCategoryItem, GetContentCategoryItemsForm> {
     
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -60,13 +60,12 @@ public class GetContentCategoryItemsCommand
     }
     
     private ContentCategory contentCategory;
-    
+
     @Override
-    protected Collection<ContentCategoryItem> getEntities() {
+    protected void handleForm() {
         var contentWebAddressName = form.getContentWebAddressName();
         var contentCollectionName = form.getContentCollectionName();
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
-        Collection<ContentCategoryItem> contentCategoryItems = null;
 
         if(parameterCount == 1) {
             var contentControl = Session.getModelController(ContentControl.class);
@@ -90,29 +89,24 @@ public class GetContentCategoryItemsCommand
 
             if(!hasExecutionErrors()) {
                 var contentCatalogName = form.getContentCatalogName();
-                var partyPK = getPartyPK();
-                var userVisit = getUserVisitForUpdate();
-
                 var contentCatalog = contentCatalogName == null ? contentControl.getDefaultContentCatalog(contentCollection)
                         : contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
 
                 if(contentCatalog != null) {
                     var contentCategoryName = form.getContentCategoryName();
-                    
-                    contentCategory = contentCategoryName == null ? contentControl.getDefaultContentCategory(contentCatalog)
-                            : contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
 
-                    if(contentCategory != null) {
-                        AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, userVisit, contentCategory.getPrimaryKey(), partyPK);
+                    if(contentCategoryName == null) {
+                        contentCategory = contentControl.getDefaultContentCategory(contentCatalog);
 
-                        if(!hasExecutionErrors()) {
-                            contentCategoryItems = contentControl.getContentCategoryItemsByContentCategory(contentCategory);
-                        }
-                    } else {
-                        if(contentCategoryName == null) {
+                        if(contentCategory == null) {
                             addExecutionError(ExecutionErrors.UnknownDefaultContentCategory.name(),
                                     contentCollection.getLastDetail().getContentCollectionName(), contentCatalogName);
-                        } else {
+                        }
+
+                    } else {
+                        contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
+
+                        if(contentCategory == null) {
                             addExecutionError(ExecutionErrors.UnknownContentCategoryName.name(),
                                     contentCollection.getLastDetail().getContentCollectionName(), contentCatalogName, contentCategoryName);
                         }
@@ -131,6 +125,30 @@ public class GetContentCategoryItemsCommand
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
 
+        if(!hasExecutionErrors()) {
+            AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, getUserVisit(),
+                    contentCategory.getPrimaryKey(), getPartyPK());
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var contentControl = Session.getModelController(ContentControl.class);
+
+        return hasExecutionErrors() ? null :
+                contentControl.countContentCategoryItemsByContentCategory(contentCategory);
+    }
+    
+    @Override
+    protected Collection<ContentCategoryItem> getEntities() {
+        Collection<ContentCategoryItem> contentCategoryItems = null;
+
+        if(!hasExecutionErrors()) {
+            var contentControl = Session.getModelController(ContentControl.class);
+
+            contentCategoryItems = contentControl.getContentCategoryItemsByContentCategory(contentCategory);
+        }
+
         return contentCategoryItems;
     }
     
@@ -143,7 +161,7 @@ public class GetContentCategoryItemsCommand
             var userVisit = getUserVisit();
 
             if(session.hasLimit(ContentCategoryItemFactory.class)) {
-                result.setContentCategoryItemCount(contentControl.countContentCategoryItemsByContentCategory(contentCategory));
+                result.setContentCategoryItemCount(getTotalEntities());
             }
 
             result.setContentCategory(contentControl.getContentCategoryTransfer(userVisit, contentCategory));

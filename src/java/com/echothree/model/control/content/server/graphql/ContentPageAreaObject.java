@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -72,11 +72,9 @@ public class ContentPageAreaObject
 
     private ContentPageAreaClob getContentPageAreaClob() {
         if(contentPageAreaClob == null) {
-            if(getContentPageAreaTypeName().equals(ContentPageAreaTypes.CLOB.name())) {
-                var contentControl = Session.getModelController(ContentControl.class);
+            var contentControl = Session.getModelController(ContentControl.class);
 
-                contentPageAreaClob = contentControl.getContentPageAreaClob(getContentPageAreaDetail());
-            }
+            contentPageAreaClob = contentControl.getContentPageAreaClob(getContentPageAreaDetail());
         }
 
         return contentPageAreaClob;
@@ -98,11 +96,9 @@ public class ContentPageAreaObject
 
     private ContentPageAreaUrl getContentPageAreaUrl() {
         if(contentPageAreaUrl == null) {
-            if(getContentPageAreaTypeName().equals(ContentPageAreaTypes.LINK.name())) {
-                var contentControl = Session.getModelController(ContentControl.class);
+            var contentControl = Session.getModelController(ContentControl.class);
 
-                contentPageAreaUrl = contentControl.getContentPageAreaUrl(getContentPageAreaDetail());
-            }
+            contentPageAreaUrl = contentControl.getContentPageAreaUrl(getContentPageAreaDetail());
         }
 
         return contentPageAreaUrl;

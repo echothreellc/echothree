@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2025 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -3670,8 +3670,17 @@
                 <securityRoleDescription languageIsoName="en" description="Entity Attribute Group Search" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="RoleType" parentSecurityRoleGroupName="PartyComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Role Type" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Role Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Role Type Review" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="PartyType" parentSecurityRoleGroupName="PartyComponent" isDefault="false" sortOrder="1">
-            <securityRoleGroupDescription languageIsoName="en" description="PartyType" />
+            <securityRoleGroupDescription languageIsoName="en" description="Party Type" />
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Party Type List" />
             </securityRole>
@@ -5069,6 +5078,12 @@
             </securityRole>
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Period Type Description" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="FiscalPeriod" parentSecurityRoleGroupName="PeriodComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Fiscal Period" />
+            <securityRole securityRoleName="Create" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Fiscal Period Create" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="FiscalPeriodStatus" parentSecurityRoleGroupName="PeriodComponent" isDefault="false" sortOrder="1">
@@ -8319,6 +8334,8 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyTrainingClassSession" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyTrainingClassSessionAnswer" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyTrainingClassSessionPage" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="RoleType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="RoleType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyType" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyTypePasswordStringPolicy" securityRoleName="List" />
@@ -9150,6 +9167,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PeriodType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PeriodType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PeriodType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FiscalPeriod" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FiscalPeriodStatus" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FiscalPeriodStatus" securityRoleName="OpenToClosed" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FiscalPeriodStatus" securityRoleName="ClosedToOpen" />

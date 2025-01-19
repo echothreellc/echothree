@@ -106,17 +106,17 @@
                 </contentPage>
                 <contentPage contentPageName="Partners" contentPageLayoutName="layout-04" isDefault="false" sortOrder="1">
                     <contentPageDescription languageIsoName="en" description="Partners" />
-                    <contentPageArea sortOrder="1" contentPageAreaURL="http://www.echothree.com/" languageIsoName="en" description="EchoThree" mimeTypeName="text/html">
+                    <contentPageArea sortOrder="1" contentPageAreaUrl="http://www.echothree.com/" languageIsoName="en" description="EchoThree" mimeTypeName="text/html">
                         <![CDATA[
                             <p>The software developers.</p>
                         ]]>
                     </contentPageArea>
-                    <contentPageArea sortOrder="2" contentPageAreaURL="http://web.echothree.com/" languageIsoName="en" mimeTypeName="text/html">
+                    <contentPageArea sortOrder="2" contentPageAreaUrl="http://web.echothree.com/" languageIsoName="en" mimeTypeName="text/html">
                         <![CDATA[
-                            <p>The test web site.</p>
+                            <p>The test website.</p>
                         ]]>
                     </contentPageArea>
-                    <contentPageArea sortOrder="3" contentPageAreaURL="http://www.darkrealms.com/" languageIsoName="en" description="DarkRealms" mimeTypeName="text/html" />
+                    <contentPageArea sortOrder="3" contentPageAreaUrl="http://www.darkrealms.com/" languageIsoName="en" description="DarkRealms" mimeTypeName="text/html" />
                 </contentPage>
             </contentSection>
             <contentSection contentSectionName="WhoWeAre" parentContentSectionName="AboutUs" isDefault="false" sortOrder="1">

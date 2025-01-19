@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -209,7 +209,7 @@ public class FeedAction
         feed.setLink(urlUtils.buildUrl(request, response, "/Forum/ForumThread/Main", feedParameters));
         feed.setDescription("");
         
-        forumThreads.stream().forEach((forumThread) -> {
+        forumThreads.forEach((forumThread) -> {
             var forumMessages = forumThread.getForumMessages();
             if (forumMessages.getSize() > 0) {
                 SyndEntry entry = new SyndEntryImpl();
