@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2025 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -458,7 +458,7 @@
         allowClubDiscounts="false" allowCouponDiscounts="false" allowAssociatePayments="false" itemStatus="NEW_ACTIVE" unitOfMeasureKindName="BASIC" itemPriceTypeName="FIXED"
         companyName="TEST_COMPANY">
             <itemUnitOfMeasureType unitOfMeasureTypeName="EACH" isDefault="true" sortOrder="1" />
-            <itemDescription itemDescriptionTypeName="DEFAULT_DESCRIPTION" languageIsoName="en" stringDescription="Club Initital Item" />
+            <itemDescription itemDescriptionTypeName="DEFAULT_DESCRIPTION" languageIsoName="en" stringDescription="Club Initial Item" />
             <itemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="9.95" />
             <relatedItem relatedItemTypeName="SALES_ORDER_CROSS_SELLS" toItemName="MINIMAL" sortOrder="1" />
         </item>

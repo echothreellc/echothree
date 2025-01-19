@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2025 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -130,6 +130,9 @@
             <entityType entityTypeName="EntityNameAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Name Attribute" />
             </entityType>
+            <entityType entityTypeName="EntityIntegerDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Integer Default" />
+            </entityType>
             <entityType entityTypeName="EntityIntegerAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Integer Attribute" />
             </entityType>
@@ -138,6 +141,9 @@
             </entityType>
             <entityType entityTypeName="EntityIntegerRangeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Integer Range Description" />
+            </entityType>
+            <entityType entityTypeName="EntityLongDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Long Default" />
             </entityType>
             <entityType entityTypeName="EntityLongAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Long Attribute" />
@@ -148,6 +154,9 @@
             <entityType entityTypeName="EntityLongRangeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Long Range Description" />
             </entityType>
+            <entityType entityTypeName="EntityBooleanDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Boolean Default" />
+            </entityType>
             <entityType entityTypeName="EntityBooleanAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Boolean Attribute" />
             </entityType>
@@ -156,6 +165,9 @@
             </entityType>
             <entityType entityTypeName="EntityTimeAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Time Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityStringDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity String Default" />
             </entityType>
             <entityType entityTypeName="EntityStringAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity String Attribute" />
@@ -177,6 +189,9 @@
             </entityType>
             <entityType entityTypeName="EntityCollectionAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Collection Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityListItemDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity List Item Default" />
             </entityType>
             <entityType entityTypeName="EntityListItemAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity List Item Attribute" />
@@ -1024,8 +1039,8 @@
             <entityType entityTypeName="InvoiceLine" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Invoice Line" />
             </entityType>
-            <entityType entityTypeName="InvoiceLineItems" keepAllHistory="false" isExtensible="false" sortOrder="1">
-                <entityTypeDescription languageIsoName="en" description="Invoice Line Items" />
+            <entityType entityTypeName="InvoiceLineItem" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice Line Item" />
             </entityType>
             <entityType entityTypeName="InvoiceLineGlAccount" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Invoice Line Gl Account" />
@@ -1227,6 +1242,9 @@
             </entityType>
             <entityType entityTypeName="PartyFreeOnBoard" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Party Free On Board" />
+            </entityType>
+            <entityType entityTypeName="RoleType" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Role Type" />
             </entityType>
             <entityType entityTypeName="PartyType" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Party Type" />

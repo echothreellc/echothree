@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -48,6 +48,8 @@ public enum ExecutionErrors {
     DuplicateEntityAttributeDescription,
     DuplicateEntityAttributeName,
     DuplicateEntityBooleanAttribute,
+    DuplicateEntityBooleanDefault,
+    UnknownEntityBooleanDefault,
     DuplicateEntityIntegerAttribute,
     DuplicateEntityGeoPointAttribute,
     MissingRequiredElevation,
@@ -270,7 +272,9 @@ public enum ExecutionErrors {
     UnknownEntityListItemDescription,
     UnknownEntityListItemName,
     UnknownEntityRef,
+    DeletedEntityRef,
     UnknownUuid,
+    DeletedUuid,
     InvalidEntityType,
     UnknownEntityTypeName,
     UnknownEntranceWorkflowName,
@@ -2298,5 +2302,15 @@ public enum ExecutionErrors {
     UnknownDefaultSearchUseType,
     UnknownDefaultSearchKind,
     UnknownDefaultSearchType,
+    UnknownOrderShipmentGroup,
+    UnknownDefaultOrderShipmentGroup,
+    DuplicateEntityListItemDefault,
+    UnknownEntityListItemDefault,
+    DuplicateEntityIntegerDefault,
+    UnknownEntityIntegerDefault,
+    DuplicateEntityLongDefault,
+    UnknownEntityLongDefault,
+    DuplicateEntityStringDefault,
+    UnknownEntityStringDefault,
 
 }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,10 +32,12 @@ public class AttributeQueryParser
     protected AttributeQueryParserUtils attributeQueryParserUtils;
 
     public AttributeQueryParser(final ExecutionErrorAccumulator eea, final Set<String> dateFields, final Set<String> dateTimeFields,
+            final Set<String> intFields, final Set<String> longFields, final Set<String> floatFields, final Set<String> doubleFields,
             final EntityType entityType, final UserVisit userVisit, final String field, final Analyzer a) {
         super(field, a);
 
-        attributeQueryParserUtils = new AttributeQueryParserUtils(eea, dateFields, dateTimeFields, entityType, userVisit);
+        attributeQueryParserUtils = new AttributeQueryParserUtils(eea, dateFields, dateTimeFields, intFields, longFields,
+                floatFields, doubleFields, entityType, userVisit);
     }
     
     @Override

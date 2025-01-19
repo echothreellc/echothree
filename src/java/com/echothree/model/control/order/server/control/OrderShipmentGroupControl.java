@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,12 +18,15 @@ package com.echothree.model.control.order.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.order.common.transfer.OrderShipmentGroupTransfer;
+import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
 import com.echothree.model.data.order.server.entity.Order;
+import com.echothree.model.data.order.server.entity.OrderBatch;
 import com.echothree.model.data.order.server.entity.OrderShipmentGroup;
 import com.echothree.model.data.order.server.factory.OrderShipmentGroupDetailFactory;
 import com.echothree.model.data.order.server.factory.OrderShipmentGroupFactory;
+import com.echothree.model.data.order.server.value.OrderBatchValue;
 import com.echothree.model.data.order.server.value.OrderShipmentGroupDetailValue;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -99,7 +102,7 @@ public class OrderShipmentGroupControl
         getOrderShipmentGroupBySequenceQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private OrderShipmentGroup getOrderShipmentGroupBySequence(Order order, Integer orderShipmentGroupSequence, EntityPermission entityPermission) {
+    public OrderShipmentGroup getOrderShipmentGroupBySequence(Order order, Integer orderShipmentGroupSequence, EntityPermission entityPermission) {
         return OrderShipmentGroupFactory.getInstance().getEntityFromQuery(entityPermission, getOrderShipmentGroupBySequenceQueries,
                 order, orderShipmentGroupSequence);
     }
@@ -139,7 +142,7 @@ public class OrderShipmentGroupControl
         getDefaultOrderShipmentGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private OrderShipmentGroup getDefaultOrderShipmentGroup(Order order, ItemDeliveryType itemDeliveryType, EntityPermission entityPermission) {
+    public OrderShipmentGroup getDefaultOrderShipmentGroup(Order order, ItemDeliveryType itemDeliveryType, EntityPermission entityPermission) {
         return OrderShipmentGroupFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultOrderShipmentGroupQueries,
                 order, itemDeliveryType);
     }

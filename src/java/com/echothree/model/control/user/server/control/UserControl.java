@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,6 +53,7 @@ import com.echothree.model.data.party.server.entity.PartyRelationship;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.common.pk.RecoveryQuestionPK;
 import com.echothree.model.data.user.common.pk.UserKeyDetailPK;
+import com.echothree.model.data.user.common.pk.UserVisitGroupPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.RecoveryAnswer;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
@@ -460,12 +461,35 @@ public class UserControl
         
         return userVisitGroup;
     }
-    
+
+    public long countUserVisitGroups() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM uservisitgroups, uservisitgroupdetails
+                WHERE uvisgrp_activedetailid = uvisgrpdt_uservisitgroupdetailid
+                """);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.UserVisitGroup */
+    public UserVisitGroup getUserVisitGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new UserVisitGroupPK(entityInstance.getEntityUniqueId());
+
+        return UserVisitGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public UserVisitGroup getUserVisitGroupByEntityInstance(EntityInstance entityInstance) {
+        return getUserVisitGroupByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public UserVisitGroup getUserVisitGroupByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getUserVisitGroupByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public UserVisitGroupDetailValue getUserVisitGroupDetailValueForUpdate(UserVisitGroup userVisitGroup) {
         return userVisitGroup.getLastDetailForUpdate().getUserVisitGroupDetailValue().clone();
     }
     
-    private UserVisitGroup getUserVisitGroupByName(String userVisitGroupName, EntityPermission entityPermission) {
+    public UserVisitGroup getUserVisitGroupByName(String userVisitGroupName, EntityPermission entityPermission) {
         UserVisitGroup userVisitGroup;
         
         try {
@@ -620,6 +644,14 @@ public class UserControl
         createUserVisitStatus(userVisit);
 
         return userVisit;
+    }
+
+    public long countUserVisitsByUserVisitGroup(UserVisitGroup userVisitGroup) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM uservisits
+                WHERE uvis_uvisgrp_uservisitgroupid = ? AND uvis_thrutime = ?
+                """, userVisitGroup, Session.MAX_TIME);
     }
 
     public long countUserVisitsByUserKey(UserKey userKey) {
@@ -951,6 +983,38 @@ public class UserControl
     public List<UserVisit> getAbandonedUserVisits(Long abandonedTime) {
         return UserVisitFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getAbandonedUserVisitsQueries,
                 Session.MAX_TIME, session.START_TIME, abandonedTime);
+    }
+
+    private static final Map<EntityPermission, String> getUserVisitsByUserVisitGroupQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ "
+                        + "FROM uservisits "
+                        + "WHERE uvis_uvisgrp_uservisitgroupid = ? AND uvis_thrutime = ? "
+                        + "ORDER BY uvis_uservisitid " +
+                        "_LIMIT_");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ "
+                        + "FROM uservisits "
+                        + "WHERE uvis_uvisgrp_uservisitgroupid = ? AND uvis_thrutime = ? "
+                        + "FOR UPDATE");
+        getUserVisitsByUserVisitGroupQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public List<UserVisit> getUserVisitsByUserVisitGroup(UserVisitGroup userVisitGroup, EntityPermission entityPermission) {
+        return UserVisitFactory.getInstance().getEntitiesFromQuery(entityPermission, getUserVisitsByUserVisitGroupQueries,
+                userVisitGroup, Session.MAX_TIME);
+    }
+
+    public List<UserVisit> getUserVisitsByUserVisitGroup(UserVisitGroup userVisitGroup) {
+        return getUserVisitsByUserVisitGroup(userVisitGroup, EntityPermission.READ_ONLY);
+    }
+
+    public List<UserVisit> getUserVisitsByUserVisitGroupForUpdate(UserVisitGroup userVisitGroup) {
+        return getUserVisitsByUserVisitGroup(userVisitGroup, EntityPermission.READ_WRITE);
     }
 
     private static final Map<EntityPermission, String> getUserVisitsByUserKeyQueries;

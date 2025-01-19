@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ public class CurrentDatabaseUtils {
     private void handleIndex(CurrentTable ct, String indexName, List<String> columnNames, boolean unique) {
         Set<CurrentColumn> columns = new LinkedHashSet<>(columnNames.size());
         
-        columnNames.stream().forEach((columnName) -> {
+        columnNames.forEach((columnName) -> {
             columns.add(ct.getColumn(columnName));
         });
         
@@ -49,7 +49,7 @@ public class CurrentDatabaseUtils {
 
         var ci = new CurrentIndex(ct, indexName, unique, columns);
         ct.addIndex(ci);
-        columns.stream().forEach((cc) -> {
+        columns.forEach((cc) -> {
             cc.addIndex(ci);
         });
     }

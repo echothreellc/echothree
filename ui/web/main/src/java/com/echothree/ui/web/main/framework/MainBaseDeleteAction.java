@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -109,20 +109,24 @@ public abstract class MainBaseDeleteAction<A extends MainBaseDeleteActionForm>
         setupParameters(actionForm, request);
 
         if(wasPost(request)) {
-            if(!wasCanceled(request)) {
-                var commandResult = doDelete(actionForm, request);
+            if(isTokenValid(request, true)) {
+                if(!wasCanceled(request)) {
+                    var commandResult = doDelete(actionForm, request);
 
-                if(commandResult.hasErrors()) {
-                    setupPartyEntityType(actionForm, request);
-                    setCommandResultAttribute(request, commandResult);
-                    forwardKey = getFormForward(actionForm);
-                } else {
-                    var confirmDelete = actionForm.getConfirmDelete();
+                    if(commandResult.hasErrors()) {
+                        setupPartyEntityType(actionForm, request);
+                        setCommandResultAttribute(request, commandResult);
+                        forwardKey = getFormForward(actionForm);
+                    } else {
+                        var confirmDelete = actionForm.getConfirmDelete();
 
-                    if(confirmDelete == null || (confirmDelete != null && !confirmDelete)) {
-                        clearConfirmDelete(request);
+                        if(confirmDelete == null || (confirmDelete != null && !confirmDelete)) {
+                            clearConfirmDelete(request);
+                        }
                     }
                 }
+            } else {
+                forwardKey = getFormForward(actionForm);
             }
         } else {
             setupPartyEntityType(actionForm, request);

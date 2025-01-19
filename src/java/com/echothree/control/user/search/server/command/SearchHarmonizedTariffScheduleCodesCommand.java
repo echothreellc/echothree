@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ public class SearchHarmonizedTariffScheduleCodesCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchHarmonizedTariffScheduleCodesResult();
         var searchLogic = SearchLogic.getInstance();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.HARMONIZED_TARIFF_SCHEDULE_CODE.name());
+        var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.HARMONIZED_TARIFF_SCHEDULE_CODE.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();

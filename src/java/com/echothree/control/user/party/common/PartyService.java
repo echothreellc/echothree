@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -314,6 +314,10 @@ public interface PartyService
     // --------------------------------------------------------------------------------
     
     CommandResult createRoleType(UserVisitPK userVisitPK, CreateRoleTypeForm form);
+
+    CommandResult getRoleType(UserVisitPK userVisitPK, GetRoleTypeForm form);
+
+    CommandResult getRoleTypes(UserVisitPK userVisitPK, GetRoleTypesForm form);
     
     // --------------------------------------------------------------------------------
     //   Role Type Descriptions

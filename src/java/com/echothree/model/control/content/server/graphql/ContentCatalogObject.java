@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,10 +18,17 @@ package com.echothree.model.control.content.server.graphql;
 
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.content.common.ContentCatalogItemConstants;
+import com.echothree.model.data.content.common.ContentCategoryConstants;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
 import com.echothree.util.server.persistence.Session;
@@ -29,9 +36,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("content catalog object")
 @GraphQLName("ContentCatalog")
@@ -102,51 +110,43 @@ public class ContentCatalogObject
     }
     
     @GraphQLField
-    @GraphQLDescription("content categories count")
-    public Long getContentCategoriesCount(final DataFetchingEnvironment env) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        
-        return ContentSecurityUtils.getHasContentCategoriesAccess(env) ? contentControl.countContentCategoriesByContentCatalog(contentCatalog) : null;
-    }
-    
-    @GraphQLField
     @GraphQLDescription("content categories")
-    public List<ContentCategoryObject> getContentCategories(final DataFetchingEnvironment env) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        var entities = ContentSecurityUtils.getHasContentCategoriesAccess(env) ? contentControl.getContentCategories(contentCatalog) : null;
-        List<ContentCategoryObject> contentCategories = entities == null ? null : new ArrayList<>(entities.size());
-        
-        if(entities != null) {
-            entities.forEach((entity) -> {
-                contentCategories.add(new ContentCategoryObject(entity));
-            });
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ContentCategoryObject> getContentCategories(final DataFetchingEnvironment env) {
+        if(ContentSecurityUtils.getHasContentCategoriesAccess(env)) {
+            var contentControl = Session.getModelController(ContentControl.class);
+            var totalCount = contentControl.countContentCategoriesByContentCatalog(contentCatalog);
+
+            try(var objectLimiter = new ObjectLimiter(env, ContentCategoryConstants.COMPONENT_VENDOR_NAME, ContentCategoryConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = contentControl.getContentCategories(contentCatalog);
+                var contentCategories = entities.stream().map(ContentCategoryObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, contentCategories);
+            }
+        } else {
+            return Connections.emptyConnection();
         }
-        
-        return contentCategories;
     }
-    
-    @GraphQLField
-    @GraphQLDescription("content catalog items count")
-    public Long getContentCatalogItemsCount(final DataFetchingEnvironment env) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        
-        return ContentSecurityUtils.getHasContentCatalogItemsAccess(env) ? contentControl.countContentCatalogItemsByContentCatalog(contentCatalog) : null;
-    }
-    
+
     @GraphQLField
     @GraphQLDescription("content catalog items")
-    public List<ContentCatalogItemObject> getContentCatalogItems(final DataFetchingEnvironment env) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        var entities = ContentSecurityUtils.getHasContentCatalogItemsAccess(env) ? contentControl.getContentCatalogItemsByContentCatalog(contentCatalog) : null;
-        List<ContentCatalogItemObject> contentCatalogItems = entities == null ? null : new ArrayList<>(entities.size());
-        
-        if(entities != null) {
-            entities.forEach((entity) -> {
-                contentCatalogItems.add(new ContentCatalogItemObject(entity));
-            });
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ContentCatalogItemObject> getContentCatalogItems(final DataFetchingEnvironment env) {
+        if(ContentSecurityUtils.getHasContentCatalogItemsAccess(env)) {
+            var contentControl = Session.getModelController(ContentControl.class);
+            var totalCount = contentControl.countContentCatalogItemsByContentCatalog(contentCatalog);
+
+            try(var objectLimiter = new ObjectLimiter(env, ContentCatalogItemConstants.COMPONENT_VENDOR_NAME, ContentCatalogItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = contentControl.getContentCatalogItemsByContentCatalog(contentCatalog);
+                var contentCatalogItems = entities.stream().map(ContentCatalogItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, contentCatalogItems);
+            }
+        } else {
+            return Connections.emptyConnection();
         }
-        
-        return contentCatalogItems;
     }
-    
+
 }

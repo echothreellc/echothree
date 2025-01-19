@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.index.server.analysis.ContactMechanismAnalyzer;
+import com.echothree.model.control.contact.server.analyzer.ContactMechanismAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
@@ -112,12 +112,12 @@ public class ContactMechanismIndexer
         Set<PartyType> partyTypes = new HashSet<>();
         Set<ContactMechanismPurpose> contactMechanismPurposes = new HashSet<>();
         
-        contactControl.getPartyContactMechanismsByContactMechanism(contactMechanism).stream().forEach((partyContactMechanism) -> {
+        contactControl.getPartyContactMechanismsByContactMechanism(contactMechanism).forEach((partyContactMechanism) -> {
             var partyContactMechanismDetail = partyContactMechanism.getLastDetail();
             var party = partyContactMechanismDetail.getParty();
             parties.add(party);
             partyTypes.add(party.getLastDetail().getPartyType());
-            contactControl.getPartyContactMechanismPurposesByPartyContactMechanism(partyContactMechanism).stream().forEach((partyContactMechanismPurpose) -> {
+            contactControl.getPartyContactMechanismPurposesByPartyContactMechanism(partyContactMechanism).forEach((partyContactMechanismPurpose) -> {
                 contactMechanismPurposes.add(partyContactMechanismPurpose.getLastDetail().getContactMechanismPurpose());
             });
         });

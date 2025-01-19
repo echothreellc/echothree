@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -653,13 +653,13 @@ public class BillingControl
     }
     
     public void deleteBillingAccountRolesByBillingAccount(BillingAccount billingAccount, BasePK deletedBy) {
-        getBillingAccountRolesByBillingAccountForUpdate(billingAccount).stream().forEach((billingAccountRole) -> {
+        getBillingAccountRolesByBillingAccountForUpdate(billingAccount).forEach((billingAccountRole) -> {
             deleteBillingAccountRole(billingAccountRole, deletedBy);
         });
     }
     
     public void deleteBillingAccountRolesByPartyContactMechanism(PartyContactMechanism partyContactMechanism, BasePK deletedBy) {
-        getBillingAccountRolesByPartyContactMechanismForUpdate(partyContactMechanism).stream().forEach((billingAccountRole) -> {
+        getBillingAccountRolesByPartyContactMechanismForUpdate(partyContactMechanism).forEach((billingAccountRole) -> {
             deleteBillingAccountRole(billingAccountRole, deletedBy);
         });
     }

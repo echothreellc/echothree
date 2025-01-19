@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -345,7 +345,7 @@ public class ContentLogic
         var offerUseControl = Session.getModelController(OfferUseControl.class);
         Set<ContentCategory> contentCategories = new HashSet<>();
 
-        offerUseControl.getOfferUsesByOffer(offer).stream().forEach((offerUse) -> {
+        offerUseControl.getOfferUsesByOffer(offer).forEach((offerUse) -> {
             contentCategories.addAll(contentControl.getContentCategoriesByDefaultOfferUse(offerUse));
         });
         

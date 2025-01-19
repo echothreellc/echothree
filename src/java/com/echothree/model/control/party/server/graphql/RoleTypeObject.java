@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.party.server.graphql;
 
+import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -30,11 +31,13 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("role type object")
 @GraphQLName("RoleType")
 public class RoleTypeObject
-        implements BaseGraphQl {
+        extends BaseEntityInstanceObject {
 
     private final RoleType roleType; // Always Present
     
     public RoleTypeObject(RoleType roleType) {
+        super(roleType.getPrimaryKey());
+
         this.roleType = roleType;
     }
     
@@ -44,11 +47,15 @@ public class RoleTypeObject
     public String getRoleTypeName() {
         return roleType.getRoleTypeName();
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("parent role type")
     public RoleTypeObject getParentRoleType() {
-        return new RoleTypeObject(roleType.getParentRoleType());
+        var parentRoleType = roleType.getParentRoleType();
+
+        return parentRoleType == null ? null : new RoleTypeObject(parentRoleType);
     }
-    
+
     @GraphQLField
     @GraphQLDescription("description")
     @GraphQLNonNull

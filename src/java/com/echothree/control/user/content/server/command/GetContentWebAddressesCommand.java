@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,10 +23,11 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
+import com.echothree.model.data.content.server.factory.ContentWebAddressFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +38,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetContentWebAddressesCommand
-        extends BaseMultipleEntitiesCommand<ContentWebAddress, GetContentWebAddressesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ContentWebAddress, GetContentWebAddressesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,23 +59,40 @@ public class GetContentWebAddressesCommand
     public GetContentWebAddressesCommand(UserVisitPK userVisitPK, GetContentWebAddressesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var contentControl = Session.getModelController(ContentControl.class);
+
+        return contentControl.countContentWebAddresses();
+    }
+
     @Override
     protected Collection<ContentWebAddress> getEntities() {
         var contentControl = Session.getModelController(ContentControl.class);
-        
+
         return contentControl.getContentWebAddresses();
     }
-    
+
     @Override
     protected BaseResult getResult(Collection<ContentWebAddress> entities) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var result = ContentResultFactory.getGetContentWebAddressesResult();
-        
+
         if(entities != null) {
+            var contentControl = Session.getModelController(ContentControl.class);
+
+            if(session.hasLimit(ContentWebAddressFactory.class)) {
+                result.setContentWebAddressCount(getTotalEntities());
+            }
+
             result.setContentWebAddresses(contentControl.getContentWebAddressTransfers(getUserVisit(), entities));
         }
-        
+
         return result;
     }
     

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -674,15 +674,35 @@ public interface CoreService
     CommandResult deleteServerService(UserVisitPK userVisitPK, DeleteServerServiceForm form);
 
     // --------------------------------------------------------------------------------
+    //   Entity Boolean Defaults
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityBooleanDefault(UserVisitPK userVisitPK, CreateEntityBooleanDefaultForm form);
+
+    CommandResult editEntityBooleanDefault(UserVisitPK userVisitPK, EditEntityBooleanDefaultForm form);
+
+    CommandResult deleteEntityBooleanDefault(UserVisitPK userVisitPK, DeleteEntityBooleanDefaultForm form);
+
+    // --------------------------------------------------------------------------------
     //   Entity Boolean Attributes
     // --------------------------------------------------------------------------------
-    
+
     CommandResult createEntityBooleanAttribute(UserVisitPK userVisitPK, CreateEntityBooleanAttributeForm form);
-    
+
     CommandResult editEntityBooleanAttribute(UserVisitPK userVisitPK, EditEntityBooleanAttributeForm form);
-    
+
     CommandResult deleteEntityBooleanAttribute(UserVisitPK userVisitPK, DeleteEntityBooleanAttributeForm form);
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Integer Defaults
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityIntegerDefault(UserVisitPK userVisitPK, CreateEntityIntegerDefaultForm form);
+
+    CommandResult editEntityIntegerDefault(UserVisitPK userVisitPK, EditEntityIntegerDefaultForm form);
+
+    CommandResult deleteEntityIntegerDefault(UserVisitPK userVisitPK, DeleteEntityIntegerDefaultForm form);
+
     // --------------------------------------------------------------------------------
     //   Entity Integer Attributes
     // --------------------------------------------------------------------------------
@@ -692,7 +712,17 @@ public interface CoreService
     CommandResult editEntityIntegerAttribute(UserVisitPK userVisitPK, EditEntityIntegerAttributeForm form);
     
     CommandResult deleteEntityIntegerAttribute(UserVisitPK userVisitPK, DeleteEntityIntegerAttributeForm form);
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity List Item Defaults
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityListItemDefault(UserVisitPK userVisitPK, CreateEntityListItemDefaultForm form);
+
+    CommandResult editEntityListItemDefault(UserVisitPK userVisitPK, EditEntityListItemDefaultForm form);
+
+    CommandResult deleteEntityListItemDefault(UserVisitPK userVisitPK, DeleteEntityListItemDefaultForm form);
+
     // --------------------------------------------------------------------------------
     //   Entity List Item Attributes
     // --------------------------------------------------------------------------------
@@ -702,7 +732,17 @@ public interface CoreService
     CommandResult editEntityListItemAttribute(UserVisitPK userVisitPK, EditEntityListItemAttributeForm form);
     
     CommandResult deleteEntityListItemAttribute(UserVisitPK userVisitPK, DeleteEntityListItemAttributeForm form);
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Long Defaults
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityLongDefault(UserVisitPK userVisitPK, CreateEntityLongDefaultForm form);
+
+    CommandResult editEntityLongDefault(UserVisitPK userVisitPK, EditEntityLongDefaultForm form);
+
+    CommandResult deleteEntityLongDefault(UserVisitPK userVisitPK, DeleteEntityLongDefaultForm form);
+
     // --------------------------------------------------------------------------------
     //   Entity Long Attributes
     // --------------------------------------------------------------------------------
@@ -730,7 +770,17 @@ public interface CoreService
     CommandResult editEntityNameAttribute(UserVisitPK userVisitPK, EditEntityNameAttributeForm form);
     
     CommandResult deleteEntityNameAttribute(UserVisitPK userVisitPK, DeleteEntityNameAttributeForm form);
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity String Defaults
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityStringDefault(UserVisitPK userVisitPK, CreateEntityStringDefaultForm form);
+
+    CommandResult editEntityStringDefault(UserVisitPK userVisitPK, EditEntityStringDefaultForm form);
+
+    CommandResult deleteEntityStringDefault(UserVisitPK userVisitPK, DeleteEntityStringDefaultForm form);
+
     // --------------------------------------------------------------------------------
     //   Entity String Attributes
     // --------------------------------------------------------------------------------

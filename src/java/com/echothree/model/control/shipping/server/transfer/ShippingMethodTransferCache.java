@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,12 +29,13 @@ public class ShippingMethodTransferCache
         extends BaseShippingTransferCache<ShippingMethod, ShippingMethodTransfer> {
     
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
-    
+    ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
+
     boolean includeComments;
     
     /** Creates a new instance of ShippingMethodTransferCache */
-    public ShippingMethodTransferCache(UserVisit userVisit, ShippingControl shippingControl) {
-        super(userVisit, shippingControl);
+    public ShippingMethodTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {

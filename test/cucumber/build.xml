@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2025 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -62,11 +62,12 @@
                     <include name="echothree-client.jar"/>
                 </fileset>
             </classpath>
-            <compilerarg value="-XDcompilePolicy=simple"/>
             <compilerarg value="-processorpath"/>
             <compilerarg pathref="processorpath.ref"/>
             <!-- Begin Error Prone -->
             <!-- fork="true" is also required for Error Prone -->
+            <compilerarg value="-XDcompilePolicy=simple"/>
+            <compilerarg value="--should-stop=ifError=FLOW" />
             <compilerarg value="-Xplugin:ErrorProne -Xep:DeadException:ERROR" />
             <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED"/>
             <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED"/>

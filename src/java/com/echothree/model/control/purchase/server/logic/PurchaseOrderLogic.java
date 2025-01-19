@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderRoleControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
+import com.echothree.model.control.order.server.logic.OrderPriorityLogic;
 import com.echothree.model.control.purchase.common.choice.PurchaseOrderStatusChoicesBean;
 import com.echothree.model.control.purchase.common.exception.DuplicateHandlingInPurchaseOrderStatusTransitionException;
 import com.echothree.model.control.purchase.common.exception.InvalidPurchaseOrderReferenceException;
@@ -239,11 +240,11 @@ public class PurchaseOrderLogic
     }
 
     public OrderPriority getOrderPriorityByName(final ExecutionErrorAccumulator eea, final String orderPriorityName) {
-        return getOrderPriorityByName(eea, OrderTypes.PURCHASE_ORDER.name(), orderPriorityName);
+        return OrderPriorityLogic.getInstance().getOrderPriorityByName(eea, OrderTypes.PURCHASE_ORDER.name(), orderPriorityName);
     }
 
     public OrderPriority getOrderPriorityByNameForUpdate(final ExecutionErrorAccumulator eea, final String orderPriorityName) {
-        return getOrderPriorityByNameForUpdate(eea, OrderTypes.PURCHASE_ORDER.name(), orderPriorityName);
+        return OrderPriorityLogic.getInstance().getOrderPriorityByNameForUpdate(eea, OrderTypes.PURCHASE_ORDER.name(), orderPriorityName);
     }
 
     public PurchaseOrderStatusChoicesBean getPurchaseOrderStatusChoices(final String defaultOrderStatusChoice, final Language language, final boolean allowNullChoice,

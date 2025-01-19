@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,9 +19,12 @@ package com.echothree.model.control.period.common;
 public interface PeriodConstants {
     
     String PeriodKind_FISCAL = "FISCAL";
-    
+
+    String PeriodType_PERPETUAL = "PERPETUAL";
     String PeriodType_YEAR = "YEAR";
     String PeriodType_QUARTER = "QUARTER";
     String PeriodType_MONTH = "MONTH";
+
+    String Period_PERPETUAL = "PERPETUAL";
     
 }

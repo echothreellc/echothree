@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,11 +25,11 @@ import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.factory.ContentCategoryFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,7 +37,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetContentCategoriesCommand
-        extends BaseMultipleEntitiesCommand<ContentCategory, GetContentCategoriesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ContentCategory, GetContentCategoriesForm> {
     
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -61,13 +61,12 @@ public class GetContentCategoriesCommand
     
     private ContentCatalog contentCatalog;
     private ContentCategory parentContentCategory;
-    
+
     @Override
-    protected Collection<ContentCategory> getEntities() {
+    protected void handleForm() {
         var contentWebAddressName = form.getContentWebAddressName();
         var contentCollectionName = form.getContentCollectionName();
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
-        Collection<ContentCategory> contentCategories = null;
 
         if(parameterCount == 1) {
             var contentControl = Session.getModelController(ContentControl.class);
@@ -90,8 +89,6 @@ public class GetContentCategoriesCommand
             }
 
             if(!hasExecutionErrors()) {
-                var partyPK = getPartyPK();
-                var userVisit = getUserVisitForUpdate();
                 var contentCatalogName = form.getContentCatalogName();
 
                 contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
@@ -103,23 +100,18 @@ public class GetContentCategoriesCommand
 
                     if(contentCatalog != null) {
                         var parentContentCategoryName = form.getParentContentCategoryName();
-                        
-                        parentContentCategory = parentContentCategoryName == null ? null : contentControl.getContentCategoryByName(contentCatalog, parentContentCategoryName);
 
-                        if(parentContentCategoryName == null || parentContentCategory != null) {
-                            AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, userVisit, contentCatalog.getPrimaryKey(), partyPK);
-
-                            if(!hasExecutionErrors()) {
-                                if(parentContentCategory == null) {
-                                    contentCategories = contentControl.getContentCategories(contentCatalog);
-                                } else {
-                                    contentCategories = contentControl.getContentCategoriesByParentContentCategory(parentContentCategory);
-                                }
-                            }
+                        if(parentContentCategoryName == null) {
+                            parentContentCategory = null;
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownParentContentCategoryName.name(),
-                                    contentCollection.getLastDetail().getContentCollectionName(), parentContentCategoryName);
+                            parentContentCategory = contentControl.getContentCategoryByName(contentCatalog, parentContentCategoryName);
+
+                            if(parentContentCategory == null) {
+                                addExecutionError(ExecutionErrors.UnknownParentContentCategoryName.name(),
+                                        contentCollection.getLastDetail().getContentCollectionName(), parentContentCategoryName);
+                            }
                         }
+
                     } else {
                         addExecutionError(ExecutionErrors.UnknownDefaultContentCatalog.name(),
                                 contentCollection.getLastDetail().getContentCollectionName());
@@ -131,6 +123,37 @@ public class GetContentCategoriesCommand
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        if(!hasExecutionErrors()) {
+            AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, getUserVisitForUpdate(),
+                    contentCatalog.getPrimaryKey(), getPartyPK());
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var contentControl = Session.getModelController(ContentControl.class);
+
+        return hasExecutionErrors() ? null :
+                parentContentCategory == null ?
+                        contentControl.countContentCategoriesByContentCatalog(contentCatalog) :
+                        contentControl.countContentCategoriesByParentContentCategory(parentContentCategory);
+    }
+
+    
+    @Override
+    protected Collection<ContentCategory> getEntities() {
+        Collection<ContentCategory> contentCategories = null;
+
+        if(!hasExecutionErrors()) {
+            var contentControl = Session.getModelController(ContentControl.class);
+
+            if(parentContentCategory == null) {
+                contentCategories = contentControl.getContentCategories(contentCatalog);
+            } else {
+                contentCategories = contentControl.getContentCategoriesByParentContentCategory(parentContentCategory);
+            }
         }
 
         return contentCategories;
@@ -146,18 +169,14 @@ public class GetContentCategoriesCommand
 
             result.setContentCatalog(contentControl.getContentCatalogTransfer(userVisit, contentCatalog));
 
-            if(parentContentCategory == null) {
-                if(session.hasLimit(ContentCategoryFactory.class)) {
-                    result.setContentCategoryCount(contentControl.countContentCategoriesByContentCatalog(contentCatalog));
-                }
-            } else {
-                if(session.hasLimit(ContentCategoryFactory.class)) {
-                    result.setContentCategoryCount(contentControl.countContentCategoriesByParentContentCategory(parentContentCategory));
-                }
-
+            if(parentContentCategory != null) {
                 result.setParentContentCategory(contentControl.getContentCategoryTransfer(userVisit, parentContentCategory));
             }
-            
+
+            if(session.hasLimit(ContentCategoryFactory.class)) {
+                result.setContentCategoryCount(getTotalEntities());
+            }
+
             result.setContentCategories(contentControl.getContentCategoryTransfers(userVisit, entities));
         }
 

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -43,7 +44,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetContentCatalogItemsCommand
-        extends BaseMultipleEntitiesCommand<ContentCatalogItem, GetContentCatalogItemsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ContentCatalogItem, GetContentCatalogItemsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -72,13 +73,12 @@ public class GetContentCatalogItemsCommand
     }
     
     private ContentCatalog contentCatalog;
-    
+
     @Override
-    protected Collection<ContentCatalogItem> getEntities() {
+    protected void handleForm() {
         var contentWebAddressName = form.getContentWebAddressName();
         var contentCollectionName = form.getContentCollectionName();
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
-        Collection<ContentCatalogItem> contentCatalogItems = null;
 
         if(parameterCount == 1) {
             var contentControl = Session.getModelController(ContentControl.class);
@@ -102,23 +102,18 @@ public class GetContentCatalogItemsCommand
 
             if(!hasExecutionErrors()) {
                 var contentCatalogName = form.getContentCatalogName();
-                var partyPK = getPartyPK();
-                var userVisit = getUserVisitForUpdate();
 
-                contentCatalog = contentCatalogName == null ? contentControl.getDefaultContentCatalog(contentCollection)
-                        : contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
+                if(contentCatalogName == null) {
+                    contentCatalog = contentControl.getDefaultContentCatalog(contentCollection);
 
-                if(contentCatalog != null) {
-                    AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, userVisit, contentCatalog.getPrimaryKey(), partyPK);
-
-                    if(!hasExecutionErrors()) {
-                        contentCatalogItems = contentControl.getContentCatalogItemsByContentCatalog(contentCatalog);
-                    }
-                } else {
-                    if(contentCatalogName == null) {
+                    if(contentCatalog == null) {
                         addExecutionError(ExecutionErrors.UnknownDefaultContentCatalog.name(),
                                 contentCollection.getLastDetail().getContentCollectionName());
-                    } else {
+                    }
+                } else {
+                    contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
+
+                    if(contentCatalog == null) {
                         addExecutionError(ExecutionErrors.UnknownContentCatalogName.name(),
                                 contentCollection.getLastDetail().getContentCollectionName(), contentCatalogName);
                     }
@@ -126,6 +121,31 @@ public class GetContentCatalogItemsCommand
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        if(!hasExecutionErrors()) {
+            AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, getUserVisitForUpdate(),
+                    contentCatalog.getPrimaryKey(), getPartyPK());
+
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var contentControl = Session.getModelController(ContentControl.class);
+
+        return hasExecutionErrors() ? null :
+                contentControl.countContentCatalogItemsByContentCatalog(contentCatalog);
+    }
+
+    @Override
+    protected Collection<ContentCatalogItem> getEntities() {
+        Collection<ContentCatalogItem> contentCatalogItems = null;
+
+        if(!hasExecutionErrors()) {
+            var contentControl = Session.getModelController(ContentControl.class);
+
+            contentCatalogItems = contentControl.getContentCatalogItemsByContentCatalog(contentCatalog);
         }
 
         return contentCatalogItems;
@@ -139,11 +159,12 @@ public class GetContentCatalogItemsCommand
             var contentControl = Session.getModelController(ContentControl.class);
             var userVisit = getUserVisit();
 
+            result.setContentCatalog(contentControl.getContentCatalogTransfer(userVisit, contentCatalog));
+
             if(session.hasLimit(ContentCatalogItemFactory.class)) {
-                result.setContentCatalogItemCount(contentControl.countContentCatalogItemsByContentCatalog(contentCatalog));
+                result.setContentCatalogItemCount(getTotalEntities());
             }
 
-            result.setContentCatalog(contentControl.getContentCatalogTransfer(userVisit, contentCatalog));
             result.setContentCatalogItems(contentControl.getContentCatalogItemTransfers(userVisit, entities));
         }
         

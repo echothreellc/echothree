@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,13 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class ShippingMethodCarrierServiceTransferCache
         extends BaseShippingTransferCache<ShippingMethodCarrierService, ShippingMethodCarrierServiceTransfer> {
     
-    CarrierControl carrierControl;
-    
+    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
+    ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
+
     /** Creates a new instance of ShippingMethodCarrierServiceTransferCache */
-    public ShippingMethodCarrierServiceTransferCache(UserVisit userVisit, ShippingControl shippingControl) {
-        super(userVisit, shippingControl);
-        
-        carrierControl = Session.getModelController(CarrierControl.class);
+    public ShippingMethodCarrierServiceTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public ShippingMethodCarrierServiceTransfer getShippingMethodCarrierServiceTransfer(ShippingMethodCarrierService shippingMethodCarrierService) {

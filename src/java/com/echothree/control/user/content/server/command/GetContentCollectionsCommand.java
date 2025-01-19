@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,64 +18,79 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentCollectionsForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCollection;
+import com.echothree.model.data.content.server.factory.ContentCollectionFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetContentCollectionsCommand
-        extends BaseMultipleEntitiesCommand<ContentCollection, GetContentCollectionsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ContentCollection, GetContentCollectionsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentCollection.name(), SecurityRoles.List.name())
-                        )))
-                )));
+                ))
+        ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     /** Creates a new instance of GetContentCollectionsCommand */
     public GetContentCollectionsCommand(UserVisitPK userVisitPK, GetContentCollectionsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var contentControl = Session.getModelController(ContentControl.class);
+
+        return contentControl.countContentCollections();
+    }
+
     @Override
     protected Collection<ContentCollection> getEntities() {
         var contentControl = Session.getModelController(ContentControl.class);
-        
+
         return contentControl.getContentCollections();
     }
-    
+
     @Override
     protected BaseResult getResult(Collection<ContentCollection> entities) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var result = ContentResultFactory.getGetContentCollectionsResult();
-        
+
         if(entities != null) {
+            var contentControl = Session.getModelController(ContentControl.class);
+
+            if(session.hasLimit(ContentCollectionFactory.class)) {
+                result.setContentCollectionCount(getTotalEntities());
+            }
+
             result.setContentCollections(contentControl.getContentCollectionTransfers(getUserVisit(), entities));
         }
-        
+
         return result;
     }
-    
+
 }

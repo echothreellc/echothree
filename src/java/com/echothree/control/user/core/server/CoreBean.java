@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -1348,24 +1348,62 @@ public class CoreBean
     }
 
     // --------------------------------------------------------------------------------
+    //   Entity Boolean Defaults
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityBooleanDefault(UserVisitPK userVisitPK, CreateEntityBooleanDefaultForm form) {
+        return new CreateEntityBooleanDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityBooleanDefault(UserVisitPK userVisitPK, EditEntityBooleanDefaultForm form) {
+        return new EditEntityBooleanDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityBooleanDefault(UserVisitPK userVisitPK, DeleteEntityBooleanDefaultForm form) {
+        return new DeleteEntityBooleanDefaultCommand(userVisitPK, form).run();
+    }
+
+    // --------------------------------------------------------------------------------
     //   Entity Boolean Attributes
     // --------------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult createEntityBooleanAttribute(UserVisitPK userVisitPK, CreateEntityBooleanAttributeForm form) {
         return new CreateEntityBooleanAttributeCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult editEntityBooleanAttribute(UserVisitPK userVisitPK, EditEntityBooleanAttributeForm form) {
         return new EditEntityBooleanAttributeCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult deleteEntityBooleanAttribute(UserVisitPK userVisitPK, DeleteEntityBooleanAttributeForm form) {
         return new DeleteEntityBooleanAttributeCommand(userVisitPK, form).run();
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Integer Defaults
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityIntegerDefault(UserVisitPK userVisitPK, CreateEntityIntegerDefaultForm form) {
+        return new CreateEntityIntegerDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityIntegerDefault(UserVisitPK userVisitPK, EditEntityIntegerDefaultForm form) {
+        return new EditEntityIntegerDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityIntegerDefault(UserVisitPK userVisitPK, DeleteEntityIntegerDefaultForm form) {
+        return new DeleteEntityIntegerDefaultCommand(userVisitPK, form).run();
+    }
+
     // --------------------------------------------------------------------------------
     //   Entity Integer Attributes
     // --------------------------------------------------------------------------------
@@ -1384,7 +1422,26 @@ public class CoreBean
     public CommandResult deleteEntityIntegerAttribute(UserVisitPK userVisitPK, DeleteEntityIntegerAttributeForm form) {
         return new DeleteEntityIntegerAttributeCommand(userVisitPK, form).run();
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity List Item Defaults
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityListItemDefault(UserVisitPK userVisitPK, CreateEntityListItemDefaultForm form) {
+        return new CreateEntityListItemDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityListItemDefault(UserVisitPK userVisitPK, EditEntityListItemDefaultForm form) {
+        return new EditEntityListItemDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityListItemDefault(UserVisitPK userVisitPK, DeleteEntityListItemDefaultForm form) {
+        return new DeleteEntityListItemDefaultCommand(userVisitPK, form).run();
+    }
+
     // --------------------------------------------------------------------------------
     //   Entity List Item Attributes
     // --------------------------------------------------------------------------------
@@ -1403,7 +1460,26 @@ public class CoreBean
     public CommandResult deleteEntityListItemAttribute(UserVisitPK userVisitPK, DeleteEntityListItemAttributeForm form) {
         return new DeleteEntityListItemAttributeCommand(userVisitPK, form).run();
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Long Defaults
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityLongDefault(UserVisitPK userVisitPK, CreateEntityLongDefaultForm form) {
+        return new CreateEntityLongDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityLongDefault(UserVisitPK userVisitPK, EditEntityLongDefaultForm form) {
+        return new EditEntityLongDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityLongDefault(UserVisitPK userVisitPK, DeleteEntityLongDefaultForm form) {
+        return new DeleteEntityLongDefaultCommand(userVisitPK, form).run();
+    }
+
     // --------------------------------------------------------------------------------
     //   Entity Long Attributes
     // --------------------------------------------------------------------------------
@@ -1455,7 +1531,26 @@ public class CoreBean
     public CommandResult deleteEntityNameAttribute(UserVisitPK userVisitPK, DeleteEntityNameAttributeForm form) {
         return new DeleteEntityNameAttributeCommand(userVisitPK, form).run();
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity String Defaults
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityStringDefault(UserVisitPK userVisitPK, CreateEntityStringDefaultForm form) {
+        return new CreateEntityStringDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityStringDefault(UserVisitPK userVisitPK, EditEntityStringDefaultForm form) {
+        return new EditEntityStringDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityStringDefault(UserVisitPK userVisitPK, DeleteEntityStringDefaultForm form) {
+        return new DeleteEntityStringDefaultCommand(userVisitPK, form).run();
+    }
+
     // --------------------------------------------------------------------------------
     //   Entity String Attributes
     // --------------------------------------------------------------------------------

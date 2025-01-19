@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,7 +36,8 @@ public class EntityAttributeTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
-    
+
+    boolean includeDefault;
     boolean includeValue;
     boolean includeEntityListItems;
     boolean includeEntityListItemsCount;
@@ -62,6 +63,7 @@ public class EntityAttributeTransferCache
         
         var options = session.getOptions();
         if(options != null) {
+            includeDefault = options.contains(CoreOptions.EntityAttributeIncludeDefault);
             includeValue = options.contains(CoreOptions.EntityAttributeIncludeValue);
             includeEntityListItems = options.contains(CoreOptions.EntityAttributeIncludeEntityListItems);
             includeEntityListItemsCount = options.contains(CoreOptions.EntityAttributeIncludeEntityListItemsCount);
@@ -180,64 +182,136 @@ public class EntityAttributeTransferCache
             } else {
                 setupEntityInstance(entityAttribute, null, entityAttributeTransfer);
             }
-            
-            if(includeValue) {
-                if(entityInstance != null) {
-                    if(entityAttributeTypeName.equals(EntityAttributeTypes.BOOLEAN.name())) {
-                        var entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance);
-                        
-                        entityAttributeTransfer.setEntityBooleanAttribute(entityBooleanAttribute == null ? null : coreControl.getEntityBooleanAttributeTransfer(userVisit, entityBooleanAttribute, entityInstance));
-                    } else if(entityAttributeTypeName.equals(EntityAttributeTypes.NAME.name())) {
-                        var entityNameAttribute = coreControl.getEntityNameAttribute(entityAttribute, entityInstance);
-                        
-                        entityAttributeTransfer.setEntityNameAttribute(entityNameAttribute == null ? null : coreControl.getEntityNameAttributeTransfer(userVisit, entityNameAttribute, entityInstance));
-                    } else if(entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())) {
-                        var entityIntegerAttribute = coreControl.getEntityIntegerAttribute(entityAttribute, entityInstance);
-                        
-                        entityAttributeTransfer.setEntityIntegerAttribute(entityIntegerAttribute == null ? null : coreControl.getEntityIntegerAttributeTransfer(userVisit, entityIntegerAttribute, entityInstance));
-                    } else if(entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
-                        var entityLongAttribute = coreControl.getEntityLongAttribute(entityAttribute, entityInstance);
-                        
-                        entityAttributeTransfer.setEntityLongAttribute(entityLongAttribute == null ? null : coreControl.getEntityLongAttributeTransfer(userVisit, entityLongAttribute, entityInstance));
-                    } else if(entityAttributeTypeName.equals(EntityAttributeTypes.STRING.name())) {
-                        var entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, getLanguage());
-                        
-                        entityAttributeTransfer.setEntityStringAttribute(entityStringAttribute == null ? null : coreControl.getEntityStringAttributeTransfer(userVisit, entityStringAttribute, entityInstance));
-                    } else if(entityAttributeTypeName.equals(EntityAttributeTypes.GEOPOINT.name())) {
-                        var entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance);
-                        
-                        entityAttributeTransfer.setEntityGeoPointAttribute(entityGeoPointAttribute == null ? null : coreControl.getEntityGeoPointAttributeTransfer(userVisit, entityGeoPointAttribute, entityInstance));
-                    } else if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
-                        var entityBlobAttribute = coreControl.getBestEntityBlobAttribute(entityAttribute, entityInstance, getLanguage());
-                        
-                        entityAttributeTransfer.setEntityBlobAttribute(entityBlobAttribute == null ? null : coreControl.getEntityBlobAttributeTransfer(userVisit, entityBlobAttribute, entityInstance));
-                    } else if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-                        var entityClobAttribute = coreControl.getBestEntityClobAttribute(entityAttribute, entityInstance, getLanguage());
-                        
-                        entityAttributeTransfer.setEntityClobAttribute(entityClobAttribute == null ? null : coreControl.getEntityClobAttributeTransfer(userVisit, entityClobAttribute, entityInstance));
-                    } else if(entityAttributeTypeName.equals(EntityAttributeTypes.ENTITY.name())) {
-                        var entityEntityAttribute = coreControl.getEntityEntityAttribute(entityAttribute, entityInstance);
-                        
-                        entityAttributeTransfer.setEntityEntityAttribute(entityEntityAttribute == null ? null : coreControl.getEntityEntityAttributeTransfer(userVisit, entityEntityAttribute, entityInstance));
-                    } else if(entityAttributeTypeName.equals(EntityAttributeTypes.COLLECTION.name())) {
-                        entityAttributeTransfer.setEntityCollectionAttributes(new ListWrapper<>(coreControl.getEntityCollectionAttributeTransfers(userVisit, entityAttribute, entityInstance)));
-                    } else if(entityAttributeTypeName.equals(EntityAttributeTypes.DATE.name())) {
-                        var entityDateAttribute = coreControl.getEntityDateAttribute(entityAttribute, entityInstance);
-                        
-                        entityAttributeTransfer.setEntityDateAttribute(entityDateAttribute == null ? null : coreControl.getEntityDateAttributeTransfer(userVisit, entityDateAttribute, entityInstance));
-                    } else if(entityAttributeTypeName.equals(EntityAttributeTypes.TIME.name())) {
-                        var entityTimeAttribute = coreControl.getEntityTimeAttribute(entityAttribute, entityInstance);
-                        
-                        entityAttributeTransfer.setEntityTimeAttribute(entityTimeAttribute == null ? null : coreControl.getEntityTimeAttributeTransfer(userVisit, entityTimeAttribute, entityInstance));
-                    } else if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())) {
-                        var entityListItemAttribute = coreControl.getEntityListItemAttribute(entityAttribute, entityInstance);
-                        
-                        entityAttributeTransfer.setEntityListItemAttribute(entityListItemAttribute == null ? null : coreControl.getEntityListItemAttributeTransfer(userVisit, entityListItemAttribute, entityInstance));
-                    } else if(entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
-                        entityAttributeTransfer.setEntityMultipleListItemAttributes(new ListWrapper<>(coreControl.getEntityMultipleListItemAttributeTransfers(userVisit, entityAttribute, entityInstance)));
+
+            if(includeDefault || (includeValue && entityInstance != null)) {
+                var entityAttributeTypeEnum = EntityAttributeTypes.valueOf(entityAttributeTypeName);
+
+                switch(entityAttributeTypeEnum) {
+                    case BOOLEAN -> {
+                        if(includeDefault) {
+                            var entityBooleanDefault = coreControl.getEntityBooleanDefault(entityAttribute);
+
+                            entityAttributeTransfer.setEntityBooleanDefault(entityBooleanDefault == null ? null : coreControl.getEntityBooleanDefaultTransfer(userVisit, entityBooleanDefault));
+                        }
+
+                        if(includeValue && entityInstance != null) {
+                            var entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance);
+
+                            entityAttributeTransfer.setEntityBooleanAttribute(entityBooleanAttribute == null ? null : coreControl.getEntityBooleanAttributeTransfer(userVisit, entityBooleanAttribute, entityInstance));
+                        }
                     }
-                } else {
-                    getLog().error("entityInstance is null");
+                    case NAME -> {
+                        if(includeValue && entityInstance != null) {
+                            var entityNameAttribute = coreControl.getEntityNameAttribute(entityAttribute, entityInstance);
+
+                            entityAttributeTransfer.setEntityNameAttribute(entityNameAttribute == null ? null : coreControl.getEntityNameAttributeTransfer(userVisit, entityNameAttribute, entityInstance));
+                        }
+                    }
+                    case INTEGER -> {
+                        if(includeDefault) {
+                            var entityIntegerDefault = coreControl.getEntityIntegerDefault(entityAttribute);
+
+                            entityAttributeTransfer.setEntityIntegerDefault(entityIntegerDefault == null ? null : coreControl.getEntityIntegerDefaultTransfer(userVisit, entityIntegerDefault));
+                        }
+
+                        if(includeValue && entityInstance != null) {
+                            var entityIntegerAttribute = coreControl.getEntityIntegerAttribute(entityAttribute, entityInstance);
+
+                            entityAttributeTransfer.setEntityIntegerAttribute(entityIntegerAttribute == null ? null : coreControl.getEntityIntegerAttributeTransfer(userVisit, entityIntegerAttribute, entityInstance));
+                        }
+                    }
+                    case LONG -> {
+                        if(includeDefault) {
+                            var entityLongDefault = coreControl.getEntityLongDefault(entityAttribute);
+
+                            entityAttributeTransfer.setEntityLongDefault(entityLongDefault == null ? null : coreControl.getEntityLongDefaultTransfer(userVisit, entityLongDefault));
+                        }
+
+                        if(includeValue && entityInstance != null) {
+                            var entityLongAttribute = coreControl.getEntityLongAttribute(entityAttribute, entityInstance);
+
+                            entityAttributeTransfer.setEntityLongAttribute(entityLongAttribute == null ? null : coreControl.getEntityLongAttributeTransfer(userVisit, entityLongAttribute, entityInstance));
+                        }
+                    }
+                    case STRING -> {
+                        if(includeDefault) {
+                            var entityStringDefault = coreControl.getEntityStringDefault(entityAttribute, getLanguage());
+
+                            entityAttributeTransfer.setEntityStringDefault(entityStringDefault == null ? null : coreControl.getEntityStringDefaultTransfer(userVisit, entityStringDefault));
+                        }
+
+                        if(includeValue && entityInstance != null) {
+                            var entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, getLanguage());
+
+                            entityAttributeTransfer.setEntityStringAttribute(entityStringAttribute == null ? null : coreControl.getEntityStringAttributeTransfer(userVisit, entityStringAttribute, entityInstance));
+                        }
+                    }
+                    case GEOPOINT -> {
+                        if(includeValue && entityInstance != null) {
+                            var entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance);
+
+                            entityAttributeTransfer.setEntityGeoPointAttribute(entityGeoPointAttribute == null ? null : coreControl.getEntityGeoPointAttributeTransfer(userVisit, entityGeoPointAttribute, entityInstance));
+                        }
+                    }
+                    case BLOB -> {
+                        if(includeValue && entityInstance != null) {
+                            var entityBlobAttribute = coreControl.getBestEntityBlobAttribute(entityAttribute, entityInstance, getLanguage());
+
+                            entityAttributeTransfer.setEntityBlobAttribute(entityBlobAttribute == null ? null : coreControl.getEntityBlobAttributeTransfer(userVisit, entityBlobAttribute, entityInstance));
+                        }
+                    }
+                    case CLOB -> {
+                        if(includeValue && entityInstance != null) {
+                            var entityClobAttribute = coreControl.getBestEntityClobAttribute(entityAttribute, entityInstance, getLanguage());
+
+                            entityAttributeTransfer.setEntityClobAttribute(entityClobAttribute == null ? null : coreControl.getEntityClobAttributeTransfer(userVisit, entityClobAttribute, entityInstance));
+                        }
+                    }
+                    case ENTITY -> {
+                        if(includeValue && entityInstance != null) {
+                            var entityEntityAttribute = coreControl.getEntityEntityAttribute(entityAttribute, entityInstance);
+
+                            entityAttributeTransfer.setEntityEntityAttribute(entityEntityAttribute == null ? null : coreControl.getEntityEntityAttributeTransfer(userVisit, entityEntityAttribute, entityInstance));
+                        }
+                    }
+                    case COLLECTION -> {
+                        if(includeValue && entityInstance != null) {
+                            entityAttributeTransfer.setEntityCollectionAttributes(new ListWrapper<>(coreControl.getEntityCollectionAttributeTransfers(userVisit, entityAttribute, entityInstance)));
+                        }
+                    }
+                    case DATE -> {
+                        if(includeValue && entityInstance != null) {
+                            var entityDateAttribute = coreControl.getEntityDateAttribute(entityAttribute, entityInstance);
+
+                            entityAttributeTransfer.setEntityDateAttribute(entityDateAttribute == null ? null : coreControl.getEntityDateAttributeTransfer(userVisit, entityDateAttribute, entityInstance));
+                        }
+                    }
+                    case TIME -> {
+                        if(includeValue && entityInstance != null) {
+                            var entityTimeAttribute = coreControl.getEntityTimeAttribute(entityAttribute, entityInstance);
+
+                            entityAttributeTransfer.setEntityTimeAttribute(entityTimeAttribute == null ? null : coreControl.getEntityTimeAttributeTransfer(userVisit, entityTimeAttribute, entityInstance));
+                        }
+                    }
+                    case LISTITEM -> {
+                        if(includeDefault) {
+                            var entityListItemDefault = coreControl.getEntityListItemDefault(entityAttribute);
+
+                            entityAttributeTransfer.setEntityListItemDefault(entityListItemDefault == null ? null : coreControl.getEntityListItemDefaultTransfer(userVisit, entityListItemDefault));
+                        }
+
+                        if(includeValue && entityInstance != null) {
+                            var entityListItemAttribute = coreControl.getEntityListItemAttribute(entityAttribute, entityInstance);
+
+                            entityAttributeTransfer.setEntityListItemAttribute(entityListItemAttribute == null ? null : coreControl.getEntityListItemAttributeTransfer(userVisit, entityListItemAttribute, entityInstance));
+                        }
+                    }
+                    case MULTIPLELISTITEM -> {
+                        if(includeValue && entityInstance != null) {
+                            entityAttributeTransfer.setEntityMultipleListItemAttributes(new ListWrapper<>(coreControl.getEntityMultipleListItemAttributeTransfers(userVisit, entityAttribute, entityInstance)));
+                        }
+                    }
+                    case WORKFLOW -> {} // Nothing
                 }
             }
 

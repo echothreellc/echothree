@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ public enum SearchSortOrders {
 
     COMPONENT_VENDOR_NAME,
     CONTACT_MECHANISM_NAME,
+    CONTENT_CATALOG_NAME,
     CONTENT_CATEGORY_NAME,
     CREATED_TIME,
     CUSTOMER_NAME,
@@ -41,9 +42,10 @@ public enum SearchSortOrders {
     POSTED_TIME,
     SALES_ORDER_NAME,
     SALES_ORDER_BATCH_NAME,
+    SCORE,
     SECURITY_ROLE_GROUP_NAME,
     SECURITY_ROLE_NAME,
-    SCORE,
+    SHIPPING_METHOD_NAME,
     TITLE,
     USE_NAME,
     USE_TYPE_NAME,

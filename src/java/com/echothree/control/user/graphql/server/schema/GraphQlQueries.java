@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -226,6 +226,8 @@ import com.echothree.control.user.party.server.command.GetPartyCommand;
 import com.echothree.control.user.party.server.command.GetPartyTypeCommand;
 import com.echothree.control.user.party.server.command.GetPartyTypesCommand;
 import com.echothree.control.user.party.server.command.GetPersonalTitlesCommand;
+import com.echothree.control.user.party.server.command.GetRoleTypeCommand;
+import com.echothree.control.user.party.server.command.GetRoleTypesCommand;
 import com.echothree.control.user.party.server.command.GetTimeZoneCommand;
 import com.echothree.control.user.party.server.command.GetTimeZonesCommand;
 import com.echothree.control.user.payment.common.PaymentUtil;
@@ -254,6 +256,8 @@ import com.echothree.control.user.returnpolicy.server.command.GetReturnPolicyCom
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.CheckItemSpellingResult;
 import com.echothree.control.user.search.server.command.GetComponentVendorResultsCommand;
+import com.echothree.control.user.search.server.command.GetContentCatalogItemResultsCommand;
+import com.echothree.control.user.search.server.command.GetContentCatalogResultsCommand;
 import com.echothree.control.user.search.server.command.GetContentCategoryResultsCommand;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
 import com.echothree.control.user.search.server.command.GetEmployeeResultsCommand;
@@ -279,6 +283,7 @@ import com.echothree.control.user.search.server.command.GetSearchTypeCommand;
 import com.echothree.control.user.search.server.command.GetSearchTypesCommand;
 import com.echothree.control.user.search.server.command.GetSearchUseTypeCommand;
 import com.echothree.control.user.search.server.command.GetSearchUseTypesCommand;
+import com.echothree.control.user.search.server.command.GetShippingMethodResultsCommand;
 import com.echothree.control.user.search.server.command.GetVendorResultsCommand;
 import com.echothree.control.user.search.server.command.GetWarehouseResultsCommand;
 import com.echothree.control.user.security.common.SecurityUtil;
@@ -305,6 +310,9 @@ import com.echothree.control.user.sequence.server.command.GetSequencesCommand;
 import com.echothree.control.user.shipment.common.ShipmentUtil;
 import com.echothree.control.user.shipment.server.command.GetFreeOnBoardCommand;
 import com.echothree.control.user.shipment.server.command.GetFreeOnBoardsCommand;
+import com.echothree.control.user.shipping.common.ShippingUtil;
+import com.echothree.control.user.shipping.server.command.GetShippingMethodCommand;
+import com.echothree.control.user.shipping.server.command.GetShippingMethodsCommand;
 import com.echothree.control.user.tag.common.TagUtil;
 import com.echothree.control.user.tag.server.command.GetEntityTagCommand;
 import com.echothree.control.user.tag.server.command.GetEntityTagsCommand;
@@ -332,6 +340,8 @@ import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.control.user.user.server.command.GetRecoveryQuestionCommand;
 import com.echothree.control.user.user.server.command.GetRecoveryQuestionsCommand;
 import com.echothree.control.user.user.server.command.GetUserLoginCommand;
+import com.echothree.control.user.user.server.command.GetUserVisitGroupCommand;
+import com.echothree.control.user.user.server.command.GetUserVisitGroupsCommand;
 import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoriesCommand;
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoryCommand;
@@ -503,6 +513,7 @@ import com.echothree.model.control.party.server.graphql.PartyAliasTypeObject;
 import com.echothree.model.control.party.server.graphql.PartyObject;
 import com.echothree.model.control.party.server.graphql.PartyTypeObject;
 import com.echothree.model.control.party.server.graphql.PersonalTitleObject;
+import com.echothree.model.control.party.server.graphql.RoleTypeObject;
 import com.echothree.model.control.party.server.graphql.TimeZoneObject;
 import com.echothree.model.control.payment.server.graphql.PaymentMethodTypeObject;
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorActionTypeObject;
@@ -519,6 +530,8 @@ import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObjec
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.graphql.CheckItemSpellingObject;
 import com.echothree.model.control.search.server.graphql.ComponentVendorResultsObject;
+import com.echothree.model.control.search.server.graphql.ContentCatalogItemResultsObject;
+import com.echothree.model.control.search.server.graphql.ContentCatalogResultsObject;
 import com.echothree.model.control.search.server.graphql.ContentCategoryResultsObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.search.server.graphql.EmployeeResultsObject;
@@ -536,6 +549,7 @@ import com.echothree.model.control.search.server.graphql.SearchSortDirectionObje
 import com.echothree.model.control.search.server.graphql.SearchSortOrderObject;
 import com.echothree.model.control.search.server.graphql.SearchTypeObject;
 import com.echothree.model.control.search.server.graphql.SearchUseTypeObject;
+import com.echothree.model.control.search.server.graphql.ShippingMethodResultsObject;
 import com.echothree.model.control.search.server.graphql.VendorResultsObject;
 import com.echothree.model.control.search.server.graphql.WarehouseResultsObject;
 import com.echothree.model.control.security.server.graphql.SecurityRoleGroupObject;
@@ -548,6 +562,8 @@ import com.echothree.model.control.sequence.server.graphql.SequenceEncoderTypeOb
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
 import com.echothree.model.control.shipment.server.graphql.FreeOnBoardObject;
+import com.echothree.model.control.shipping.server.control.ShippingControl;
+import com.echothree.model.control.shipping.server.graphql.ShippingMethodObject;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.tag.server.graphql.EntityTagObject;
 import com.echothree.model.control.tag.server.graphql.TagObject;
@@ -561,9 +577,11 @@ import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseTypeObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.graphql.RecoveryQuestionObject;
 import com.echothree.model.control.user.server.graphql.UserLoginObject;
 import com.echothree.model.control.user.server.graphql.UserSessionObject;
+import com.echothree.model.control.user.server.graphql.UserVisitGroupObject;
 import com.echothree.model.control.user.server.graphql.UserVisitObject;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.graphql.ItemPurchasingCategoryObject;
@@ -614,6 +632,18 @@ import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.model.data.cancellationpolicy.common.CancellationKindConstants;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
+import com.echothree.model.data.content.common.ContentCatalogConstants;
+import com.echothree.model.data.content.common.ContentCatalogItemConstants;
+import com.echothree.model.data.content.common.ContentCategoryConstants;
+import com.echothree.model.data.content.common.ContentCategoryItemConstants;
+import com.echothree.model.data.content.common.ContentCollectionConstants;
+import com.echothree.model.data.content.common.ContentPageAreaConstants;
+import com.echothree.model.data.content.common.ContentPageAreaTypeConstants;
+import com.echothree.model.data.content.common.ContentPageConstants;
+import com.echothree.model.data.content.common.ContentPageLayoutAreaConstants;
+import com.echothree.model.data.content.common.ContentPageLayoutConstants;
+import com.echothree.model.data.content.common.ContentSectionConstants;
+import com.echothree.model.data.content.common.ContentWebAddressConstants;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
 import com.echothree.model.data.content.server.entity.ContentCategory;
@@ -740,6 +770,7 @@ import com.echothree.model.data.party.common.PartyCompanyConstants;
 import com.echothree.model.data.party.common.PartyConstants;
 import com.echothree.model.data.party.common.PartyTypeConstants;
 import com.echothree.model.data.party.common.PersonalTitleConstants;
+import com.echothree.model.data.party.common.RoleTypeConstants;
 import com.echothree.model.data.party.common.TimeZoneConstants;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
@@ -750,6 +781,7 @@ import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.entity.PartyDepartment;
 import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.party.server.entity.PartyType;
+import com.echothree.model.data.party.server.entity.RoleType;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
@@ -796,6 +828,8 @@ import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
 import com.echothree.model.data.sequence.server.entity.SequenceEncoderType;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
+import com.echothree.model.data.shipping.common.ShippingMethodConstants;
+import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.tag.common.TagScopeConstants;
 import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.tag.server.entity.Tag;
@@ -810,8 +844,10 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
+import com.echothree.model.data.user.common.UserVisitGroupConstants;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.entity.UserLogin;
+import com.echothree.model.data.user.server.entity.UserVisitGroup;
 import com.echothree.model.data.vendor.common.ItemPurchasingCategoryConstants;
 import com.echothree.model.data.vendor.common.VendorConstants;
 import com.echothree.model.data.vendor.common.VendorTypeConstants;
@@ -4695,29 +4731,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentPageLayouts")
-    static Collection<ContentPageLayoutObject> contentPageLayouts(final DataFetchingEnvironment env) {
-        Collection<ContentPageLayout> contentPageLayouts;
-        Collection<ContentPageLayoutObject> contentPageLayoutObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentPageLayoutObject> contentPageLayouts(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ContentPageLayoutObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentPageLayoutsForm();
+            var command = new GetContentPageLayoutsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            contentPageLayouts = new GetContentPageLayoutsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentPageLayoutConstants.COMPONENT_VENDOR_NAME, ContentPageLayoutConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentPageLayouts = entities.stream()
+                            .map(ContentPageLayoutObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentPageLayouts);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentPageLayouts == null) {
-            contentPageLayoutObjects = emptyList();
-        } else {
-            contentPageLayoutObjects = new ArrayList<>(contentPageLayouts.size());
-
-            contentPageLayouts.stream()
-                    .map(ContentPageLayoutObject::new)
-                    .forEachOrdered(contentPageLayoutObjects::add);
-        }
-
-        return contentPageLayoutObjects;
+        return data;
     }
 
     @GraphQLField
@@ -4747,36 +4788,42 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentPageLayoutAreas")
-    static Collection<ContentPageLayoutAreaObject> contentPageLayoutAreas(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentPageLayoutAreaObject> contentPageLayoutAreas(final DataFetchingEnvironment env,
             @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
             @GraphQLName("contentSectionName") @GraphQLNonNull final String contentSectionName,
             @GraphQLName("contentPageName") @GraphQLNonNull final String contentPageName) {
-        Collection<ContentPageLayoutArea> contentPageLayoutAreas;
-        Collection<ContentPageLayoutAreaObject> contentPageLayoutAreaObjects;
+        CountingPaginatedData<ContentPageLayoutAreaObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentPageLayoutAreasForm();
+            var command = new GetContentPageLayoutAreasCommand(getUserVisitPK(env), commandForm);
+
 
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentSectionName(contentSectionName);
             commandForm.setContentPageName(contentPageName);
 
-            contentPageLayoutAreas = new GetContentPageLayoutAreasCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentPageLayoutAreaConstants.COMPONENT_VENDOR_NAME, ContentPageLayoutAreaConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentPageLayoutAreas = entities.stream()
+                            .map(ContentPageLayoutAreaObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentPageLayoutAreas);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentPageLayoutAreas == null) {
-            contentPageLayoutAreaObjects = emptyList();
-        } else {
-            contentPageLayoutAreaObjects = new ArrayList<>(contentPageLayoutAreas.size());
-
-            contentPageLayoutAreas.stream()
-                    .map(ContentPageLayoutAreaObject::new)
-                    .forEachOrdered(contentPageLayoutAreaObjects::add);
-        }
-
-        return contentPageLayoutAreaObjects;
+        return data;
     }
 
     @GraphQLField
@@ -4802,29 +4849,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentPageAreaTypes")
-    static Collection<ContentPageAreaTypeObject> contentPageAreaTypes(final DataFetchingEnvironment env) {
-        Collection<ContentPageAreaType> contentPageAreaTypes;
-        Collection<ContentPageAreaTypeObject> contentPageAreaTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentPageAreaTypeObject> contentPageAreaTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ContentPageAreaTypeObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentPageAreaTypesForm();
+            var command = new GetContentPageAreaTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            contentPageAreaTypes = new GetContentPageAreaTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentPageAreaTypeConstants.COMPONENT_VENDOR_NAME, ContentPageAreaTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentPageAreaTypes = entities.stream()
+                            .map(ContentPageAreaTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentPageAreaTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentPageAreaTypes == null) {
-            contentPageAreaTypeObjects = emptyList();
-        } else {
-            contentPageAreaTypeObjects = new ArrayList<>(contentPageAreaTypes.size());
-
-            contentPageAreaTypes.stream()
-                    .map(ContentPageAreaTypeObject::new)
-                    .forEachOrdered(contentPageAreaTypeObjects::add);
-        }
-
-        return contentPageAreaTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -4848,29 +4900,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentWebAddresses")
-    static Collection<ContentWebAddressObject> contentWebAddresses(final DataFetchingEnvironment env) {
-        Collection<ContentWebAddress> contentWebAddresses;
-        Collection<ContentWebAddressObject> contentWebAddressObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentWebAddressObject> contentWebAddresses(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ContentWebAddressObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentWebAddressesForm();
+            var command = new GetContentWebAddressesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            contentWebAddresses = new GetContentWebAddressesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentWebAddressConstants.COMPONENT_VENDOR_NAME, ContentWebAddressConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentWebAddresses = entities.stream()
+                            .map(ContentWebAddressObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentWebAddresses);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentWebAddresses == null) {
-            contentWebAddressObjects = emptyList();
-        } else {
-            contentWebAddressObjects = new ArrayList<>(contentWebAddresses.size());
-
-            contentWebAddresses.stream()
-                    .map(ContentWebAddressObject::new)
-                    .forEachOrdered(contentWebAddressObjects::add);
-        }
-
-        return contentWebAddressObjects;
+        return data;
     }
 
     @GraphQLField
@@ -4894,31 +4951,36 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentCollections")
-    static Collection<ContentCollectionObject> contentCollections(final DataFetchingEnvironment env) {
-        Collection<ContentCollection> contentCollections;
-        Collection<ContentCollectionObject> contentCollectionObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentCollectionObject> contentCollections(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ContentCollectionObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentCollectionsForm();
+            var command = new GetContentCollectionsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            contentCollections = new GetContentCollectionsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentCollectionConstants.COMPONENT_VENDOR_NAME, ContentCollectionConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentCollections = entities.stream()
+                            .map(ContentCollectionObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentCollections);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentCollections == null) {
-            contentCollectionObjects = emptyList();
-        } else {
-            contentCollectionObjects = new ArrayList<>(contentCollections.size());
-
-            contentCollections.stream()
-                    .map(ContentCollectionObject::new)
-                    .forEachOrdered(contentCollectionObjects::add);
-        }
-
-        return contentCollectionObjects;
+        return data;
     }
-
+    
     @GraphQLField
     @GraphQLName("contentSection")
     static ContentSectionObject contentSection(final DataFetchingEnvironment env,
@@ -4950,18 +5012,20 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentSections")
-    static Collection<ContentSectionObject> contentSections(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentSectionObject> contentSections(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("parentContentSectionName") final String parentContentSectionName,
             @GraphQLName("associateProgramName") final String associateProgramName,
             @GraphQLName("associateName") final String associateName,
             @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
-        Collection<ContentSection> contentSections;
-        Collection<ContentSectionObject> contentSectionObjects;
+        CountingPaginatedData<ContentSectionObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentSectionsForm();
+            var command = new GetContentSectionsCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -4970,22 +5034,25 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentSections = new GetContentSectionsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentSectionConstants.COMPONENT_VENDOR_NAME, ContentSectionConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentSections = entities.stream()
+                            .map(ContentSectionObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentSections);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentSections == null) {
-            contentSectionObjects = emptyList();
-        } else {
-            contentSectionObjects = new ArrayList<>(contentSections.size());
-
-            contentSections.stream()
-                    .map(ContentSectionObject::new)
-                    .forEachOrdered(contentSectionObjects::add);
-        }
-
-        return contentSectionObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5021,18 +5088,20 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentPages")
-    static Collection<ContentPageObject> contentPages(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentPageObject> contentPages(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("contentSectionName") final String contentSectionName,
             @GraphQLName("associateProgramName") final String associateProgramName,
             @GraphQLName("associateName") final String associateName,
             @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
-        Collection<ContentPage> contentPages;
-        Collection<ContentPageObject> contentPageObjects;
+        CountingPaginatedData<ContentPageObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentPagesForm();
+            var command = new GetContentPagesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -5041,22 +5110,25 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentPages = new GetContentPagesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentPageConstants.COMPONENT_VENDOR_NAME, ContentPageConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentPages = entities.stream()
+                            .map(ContentPageObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentPages);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentPages == null) {
-            contentPageObjects = emptyList();
-        } else {
-            contentPageObjects = new ArrayList<>(contentPages.size());
-
-            contentPages.stream()
-                    .map(ContentPageObject::new)
-                    .forEachOrdered(contentPageObjects::add);
-        }
-
-        return contentPageObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5088,37 +5160,44 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentPageAreas")
-    static Collection<ContentPageAreaObject> contentPageAreas(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentPageAreaObject> contentPageAreas(final DataFetchingEnvironment env,
             @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
             @GraphQLName("contentSectionName") @GraphQLNonNull final String contentSectionName,
             @GraphQLName("contentPageName") @GraphQLNonNull final String contentPageName) {
-        Collection<ContentPageArea> contentPageAreas;
-        Collection<ContentPageAreaObject> contentPageAreaObjects;
+        CountingPaginatedData<ContentPageAreaObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentPageAreasForm();
+            var command = new GetContentPageAreasCommand(getUserVisitPK(env), commandForm);
+
 
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentSectionName(contentSectionName);
             commandForm.setContentPageName(contentPageName);
 
-            contentPageAreas = new GetContentPageAreasCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentPageAreaConstants.COMPONENT_VENDOR_NAME, ContentPageAreaConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentPageAreas = entities.stream()
+                            .map(ContentPageAreaObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentPageAreas);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentPageAreas == null) {
-            contentPageAreaObjects = emptyList();
-        } else {
-            contentPageAreaObjects = new ArrayList<>(contentPageAreas.size());
-
-            contentPageAreas.stream()
-                    .map(ContentPageAreaObject::new)
-                    .forEachOrdered(contentPageAreaObjects::add);
-        }
-
-        return contentPageAreaObjects;
+        return data;
     }
+
 
     @GraphQLField
     @GraphQLName("contentCatalog")
@@ -5151,17 +5230,19 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentCatalogs")
-    static Collection<ContentCatalogObject> contentCatalogs(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentCatalogObject> contentCatalogs(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("associateProgramName") final String associateProgramName,
             @GraphQLName("associateName") final String associateName,
             @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
-        Collection<ContentCatalog> contentCatalogs;
-        Collection<ContentCatalogObject> contentCatalogObjects;
+        CountingPaginatedData<ContentCatalogObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentCatalogsForm();
+            var command = new GetContentCatalogsCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -5169,22 +5250,26 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCatalogs = new GetContentCatalogsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentCatalogConstants.COMPONENT_VENDOR_NAME, ContentCatalogConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentCatalogs = entities.stream()
+                            .map(ContentCatalogObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentCatalogs);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentCatalogs == null) {
-            contentCatalogObjects = emptyList();
-        } else {
-            contentCatalogObjects = new ArrayList<>(contentCatalogs.size());
-
-            contentCatalogs.stream()
-                    .map(ContentCatalogObject::new)
-                    .forEachOrdered(contentCatalogObjects::add);
-        }
-
-        return contentCatalogObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5226,18 +5311,20 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentCatalogItems")
-    static Collection<ContentCatalogItemObject> contentCatalogItems(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentCatalogItemObject> contentCatalogItems(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("contentCatalogName") final String contentCatalogName,
             @GraphQLName("associateProgramName") final String associateProgramName,
             @GraphQLName("associateName") final String associateName,
             @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
-        Collection<ContentCatalogItem> contentCatalogItems;
-        Collection<ContentCatalogItemObject> contentCatalogItemObjects;
+        CountingPaginatedData<ContentCatalogItemObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentCatalogItemsForm();
+            var command = new GetContentCatalogItemsCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -5246,22 +5333,26 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCatalogItems = new GetContentCatalogItemsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentCatalogItemConstants.COMPONENT_VENDOR_NAME, ContentCatalogItemConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentCatalogItems = entities.stream()
+                            .map(ContentCatalogItemObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentCatalogItems);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentCatalogItems == null) {
-            contentCatalogItemObjects = emptyList();
-        } else {
-            contentCatalogItemObjects = new ArrayList<>(contentCatalogItems.size());
-
-            contentCatalogItems.stream()
-                    .map(ContentCatalogItemObject::new)
-                    .forEachOrdered(contentCatalogItemObjects::add);
-        }
-
-        return contentCatalogItemObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5297,7 +5388,9 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentCategories")
-    static Collection<ContentCategoryObject> contentCategories(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentCategoryObject> contentCategories(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("contentCatalogName") final String contentCatalogName,
@@ -5305,11 +5398,11 @@ public interface GraphQlQueries {
             @GraphQLName("associateProgramName") final String associateProgramName,
             @GraphQLName("associateName") final String associateName,
             @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
-        Collection<ContentCategory> contentCategories;
-        Collection<ContentCategoryObject> contentCategoryObjects;
+        CountingPaginatedData<ContentCategoryObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentCategoriesForm();
+            var command = new GetContentCategoriesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -5319,22 +5412,26 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCategories = new GetContentCategoriesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentCategoryConstants.COMPONENT_VENDOR_NAME, ContentCategoryConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentCategories = entities.stream()
+                            .map(ContentCategoryObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentCategories);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentCategories == null) {
-            contentCategoryObjects = emptyList();
-        } else {
-            contentCategoryObjects = new ArrayList<>(contentCategories.size());
-
-            contentCategories.stream()
-                    .map(ContentCategoryObject::new)
-                    .forEachOrdered(contentCategoryObjects::add);
-        }
-
-        return contentCategoryObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5378,7 +5475,9 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("contentCategoryItems")
-    static Collection<ContentCategoryItemObject> contentCategoryItems(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContentCategoryItemObject> contentCategoryItems(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("contentCatalogName") final String contentCatalogName,
@@ -5386,11 +5485,11 @@ public interface GraphQlQueries {
             @GraphQLName("associateProgramName") final String associateProgramName,
             @GraphQLName("associateName") final String associateName,
             @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
-        Collection<ContentCategoryItem> contentCategoryItems;
-        Collection<ContentCategoryItemObject> contentCategoryItemObjects;
+        CountingPaginatedData<ContentCategoryItemObject> data;
 
         try {
             var commandForm = ContentUtil.getHome().getGetContentCategoryItemsForm();
+            var command = new GetContentCategoryItemsCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -5400,22 +5499,26 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCategoryItems = new GetContentCategoryItemsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContentCategoryItemConstants.COMPONENT_VENDOR_NAME, ContentCategoryItemConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var contentCategoryItems = entities.stream()
+                            .map(ContentCategoryItemObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contentCategoryItems);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(contentCategoryItems == null) {
-            contentCategoryItemObjects = emptyList();
-        } else {
-            contentCategoryItemObjects = new ArrayList<>(contentCategoryItems.size());
-
-            contentCategoryItems.stream()
-                    .map(ContentCategoryItemObject::new)
-                    .forEachOrdered(contentCategoryItemObjects::add);
-        }
-
-        return contentCategoryItemObjects;
+        return data;
     }
 
     @GraphQLField
@@ -6104,6 +6207,27 @@ public interface GraphQlQueries {
     }
 
     @GraphQLField
+    @GraphQLName("shippingMethodResults")
+    static ShippingMethodResultsObject shippingMethodResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        ShippingMethodResultsObject shippingMethodResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetShippingMethodResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetShippingMethodResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                shippingMethodResultsObject = new ShippingMethodResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return shippingMethodResultsObject;
+    }
+
+    @GraphQLField
     @GraphQLName("warehouseResults")
     static WarehouseResultsObject warehouseResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
@@ -6122,6 +6246,48 @@ public interface GraphQlQueries {
         }
 
         return warehouseResultsObject;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCatalogResults")
+    static ContentCatalogResultsObject contentCatalogResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        ContentCatalogResultsObject contentCatalogResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetContentCatalogResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetContentCatalogResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                contentCatalogResultsObject = new ContentCatalogResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return contentCatalogResultsObject;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCatalogItemResults")
+    static ContentCatalogItemResultsObject contentCatalogItemResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        ContentCatalogItemResultsObject contentCatalogItemResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetContentCatalogItemResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetContentCatalogItemResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                contentCatalogItemResultsObject = new ContentCatalogItemResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return contentCatalogItemResultsObject;
     }
 
     @GraphQLField
@@ -6490,6 +6656,57 @@ public interface GraphQlQueries {
         var userSession = BaseGraphQl.getUserSession(env);
 
         return userSession == null ? null : new UserSessionObject(userSession);
+    }
+
+    @GraphQLField
+    @GraphQLName("userVisitGroup")
+    static UserVisitGroupObject userVisitGroup(final DataFetchingEnvironment env,
+            @GraphQLName("userVisitGroupName") final String userVisitGroupName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        UserVisitGroup userVisitGroup;
+
+        try {
+            var commandForm = UserUtil.getHome().getGetUserVisitGroupForm();
+
+            commandForm.setUserVisitGroupName(userVisitGroupName);
+            commandForm.setUuid(id);
+
+            userVisitGroup = new GetUserVisitGroupCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return userVisitGroup == null ? null : new UserVisitGroupObject(userVisitGroup);
+    }
+
+    @GraphQLField
+    @GraphQLName("userVisitGroups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<UserVisitGroupObject> userVisitGroups(final DataFetchingEnvironment env) {
+        CountingPaginatedData<UserVisitGroupObject> data;
+
+        try {
+            var userControl = Session.getModelController(UserControl.class);
+            var totalCount = userControl.countUserVisitGroups();
+
+            try(var objectLimiter = new ObjectLimiter(env, UserVisitGroupConstants.COMPONENT_VENDOR_NAME, UserVisitGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = UserUtil.getHome().getGetUserVisitGroupsForm();
+                var entities = new GetUserVisitGroupsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var userVisitGroups = entities.stream().map(UserVisitGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, userVisitGroups);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField
@@ -7134,6 +7351,57 @@ public interface GraphQlQueries {
         }
 
         return vendorItemCostObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("roleType")
+    static RoleTypeObject roleType(final DataFetchingEnvironment env,
+            @GraphQLName("roleTypeName") final String roleTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        RoleType roleType;
+
+        try {
+            var commandForm = PartyUtil.getHome().getGetRoleTypeForm();
+
+            commandForm.setRoleTypeName(roleTypeName);
+            commandForm.setUuid(id);
+
+            roleType = new GetRoleTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return roleType == null ? null : new RoleTypeObject(roleType);
+    }
+
+    @GraphQLField
+    @GraphQLName("roleTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<RoleTypeObject> roleTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<RoleTypeObject> data;
+
+        try {
+            var partyControl = Session.getModelController(PartyControl.class);
+            var totalCount = partyControl.countRoleTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, RoleTypeConstants.COMPONENT_VENDOR_NAME, RoleTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = PartyUtil.getHome().getGetRoleTypesForm();
+                var entities = new GetRoleTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var roleTypes = entities.stream().map(RoleTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, roleTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField
@@ -10131,6 +10399,57 @@ public interface GraphQlQueries {
         }
 
         return geoCode == null ? null : new GeoCodeObject(geoCode);
+    }
+
+    @GraphQLField
+    @GraphQLName("shippingMethod")
+    static ShippingMethodObject shippingMethod(final DataFetchingEnvironment env,
+            @GraphQLName("shippingMethodName") final String shippingMethodName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ShippingMethod shippingMethod;
+
+        try {
+            var commandForm = ShippingUtil.getHome().getGetShippingMethodForm();
+
+            commandForm.setShippingMethodName(shippingMethodName);
+            commandForm.setUuid(id);
+
+            shippingMethod = new GetShippingMethodCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return shippingMethod == null ? null : new ShippingMethodObject(shippingMethod);
+    }
+
+    @GraphQLField
+    @GraphQLName("shippingMethods")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ShippingMethodObject> shippingMethods(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ShippingMethodObject> data;
+
+        try {
+            var shippingControl = Session.getModelController(ShippingControl.class);
+            var totalCount = shippingControl.countShippingMethods();
+
+            try(var objectLimiter = new ObjectLimiter(env, ShippingMethodConstants.COMPONENT_VENDOR_NAME, ShippingMethodConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = ShippingUtil.getHome().getGetShippingMethodsForm();
+                var entities = new GetShippingMethodsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var shippingMethods = entities.stream().map(ShippingMethodObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, shippingMethods);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
 }

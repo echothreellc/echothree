@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -229,80 +229,6 @@ public class OrderLogic
         return getOrderByName(eea, orderTypeName, orderName, EntityPermission.READ_WRITE);
     }
     
-    public OrderPriority getOrderPriorityByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderPriorityName) {
-        var orderType = getOrderTypeByName(eea, orderTypeName);
-        OrderPriority orderPriority = null;
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
-
-            orderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName);
-
-            if(orderPriority == null) {
-                handleExecutionError(UnknownOrderPriorityNameException.class, eea, ExecutionErrors.UnknownOrderPriorityName.name(), orderTypeName, orderPriorityName);
-            }
-        }
-
-        return orderPriority;
-    }
-
-    public OrderPriority getOrderPriorityByNameForUpdate(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderPriorityName) {
-        var orderType = getOrderTypeByName(eea, orderTypeName);
-        OrderPriority orderPriority = null;
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
-
-            orderPriority = orderPriorityControl.getOrderPriorityByNameForUpdate(orderType, orderPriorityName);
-
-            if(orderPriority == null) {
-                handleExecutionError(UnknownOrderPriorityNameException.class, eea, ExecutionErrors.UnknownOrderPriorityName.name(), orderTypeName, orderPriorityName);
-            }
-        }
-
-        return orderPriority;
-    }
-
-    public OrderShipmentGroup createOrderShipmentGroup(final ExecutionErrorAccumulator eea, final Order order, Integer orderShipmentGroupSequence,
-            final ItemDeliveryType itemDeliveryType, final Boolean isDefault, final PartyContactMechanism partyContactMechanism,
-            final ShippingMethod shippingMethod, final Boolean holdUntilComplete, final BasePK createdBy) {
-        var orderControl = Session.getModelController(OrderControl.class);
-        var orderShipmentGroupControl = Session.getModelController(OrderShipmentGroupControl.class);
-        var orderStatus = orderControl.getOrderStatusForUpdate(order);
-        OrderShipmentGroup orderShipmentGroup = null;
-
-        if(orderShipmentGroupSequence == null) {
-            orderShipmentGroupSequence = orderStatus.getOrderShipmentGroupSequence() + 1;
-            orderStatus.setOrderShipmentGroupSequence(orderShipmentGroupSequence);
-        } else {
-            orderShipmentGroup = orderShipmentGroupControl.getOrderShipmentGroupBySequence(order, orderShipmentGroupSequence);
-
-            if(orderShipmentGroup == null) {
-                // If the orderShipmentGroupSequence is > the last one that was recorded in the OrderStatus, jump the
-                // one in OrderStatus forward - it should always record the greatest orderShipmentGroupSequence used.
-                if(orderShipmentGroupSequence > orderStatus.getOrderShipmentGroupSequence()) {
-                    orderStatus.setOrderShipmentGroupSequence(orderShipmentGroupSequence);
-                }
-            } else {
-                handleExecutionError(DuplicateOrderShipmentGroupSequenceException.class, eea, ExecutionErrors.DuplicateOrderShipmentGroupSequence.name(),
-                        order.getLastDetail().getOrderName(), orderShipmentGroupSequence.toString());
-            }
-        }
-
-        if(orderShipmentGroup == null) {
-            orderShipmentGroup = orderShipmentGroupControl.createOrderShipmentGroup(order, orderShipmentGroupSequence, itemDeliveryType, isDefault, partyContactMechanism,
-                    shippingMethod, holdUntilComplete, createdBy);
-        }
-
-        return orderShipmentGroup;
-    }
-
-    public OrderShipmentGroup getDefaultOrderShipmentGroup(final Order order, final ItemDeliveryType itemDeliveryType) {
-        var orderShipmentGroupControl = Session.getModelController(OrderShipmentGroupControl.class);
-
-        return orderShipmentGroupControl.getDefaultOrderShipmentGroup(order, itemDeliveryType);
-    }
-
     public Set<Item> getItemsFromOrder(final Order order) {
         var orderLineControl = Session.getModelController(OrderLineControl.class);
         var orderLines = orderLineControl.getOrderLinesByOrder(order);

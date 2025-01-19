@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -474,21 +474,49 @@ public interface SearchService
     CommandResult clearEntityListItemResults(UserVisitPK userVisitPK, ClearEntityListItemResultsForm form);
 
     // -------------------------------------------------------------------------
+    //   Content Catalog Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchContentCatalogs(UserVisitPK userVisitPK, SearchContentCatalogsForm form);
+
+    CommandResult getContentCatalogResults(UserVisitPK userVisitPK, GetContentCatalogResultsForm form);
+
+    CommandResult countContentCatalogResults(UserVisitPK userVisitPK, CountContentCatalogResultsForm form);
+
+    CommandResult clearContentCatalogResults(UserVisitPK userVisitPK, ClearContentCatalogResultsForm form);
+
+    // -------------------------------------------------------------------------
+    //   Content Catalog Item Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchContentCatalogItems(UserVisitPK userVisitPK, SearchContentCatalogItemsForm form);
+
+    CommandResult getContentCatalogItemResults(UserVisitPK userVisitPK, GetContentCatalogItemResultsForm form);
+
+    CommandResult getContentCatalogItemResultsFacet(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetForm form);
+
+    CommandResult getContentCatalogItemResultsFacets(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetsForm form);
+
+    CommandResult countContentCatalogItemResults(UserVisitPK userVisitPK, CountContentCatalogItemResultsForm form);
+
+    CommandResult clearContentCatalogItemResults(UserVisitPK userVisitPK, ClearContentCatalogItemResultsForm form);
+
+    // -------------------------------------------------------------------------
     //   Content Category Search
     // -------------------------------------------------------------------------
 
     CommandResult searchContentCategories(UserVisitPK userVisitPK, SearchContentCategoriesForm form);
-    
+
     CommandResult getContentCategoryResults(UserVisitPK userVisitPK, GetContentCategoryResultsForm form);
-    
+
     CommandResult getContentCategoryResultsFacet(UserVisitPK userVisitPK, GetContentCategoryResultsFacetForm form);
-    
+
     CommandResult getContentCategoryResultsFacets(UserVisitPK userVisitPK, GetContentCategoryResultsFacetsForm form);
-    
+
     CommandResult countContentCategoryResults(UserVisitPK userVisitPK, CountContentCategoryResultsForm form);
-    
+
     CommandResult clearContentCategoryResults(UserVisitPK userVisitPK, ClearContentCategoryResultsForm form);
-    
+
     // -------------------------------------------------------------------------
     //   Security Role Group Search
     // -------------------------------------------------------------------------
@@ -600,6 +628,18 @@ public interface SearchService
     CommandResult countUseTypeResults(UserVisitPK userVisitPK, CountUseTypeResultsForm form);
     
     CommandResult clearUseTypeResults(UserVisitPK userVisitPK, ClearUseTypeResultsForm form);
+
+    // -------------------------------------------------------------------------
+    //   Shipping Method Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchShippingMethods(UserVisitPK userVisitPK, SearchShippingMethodsForm form);
+
+    CommandResult getShippingMethodResults(UserVisitPK userVisitPK, GetShippingMethodResultsForm form);
+
+    CommandResult countShippingMethodResults(UserVisitPK userVisitPK, CountShippingMethodResultsForm form);
+
+    CommandResult clearShippingMethodResults(UserVisitPK userVisitPK, ClearShippingMethodResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Warehouse Search

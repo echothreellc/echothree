@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -278,7 +278,7 @@ public class Validator {
         var limits = form.getLimits();
 
         if(limits != null) {
-            limits.keySet().stream().forEach((tableNameSingular) -> {
+            limits.keySet().forEach((tableNameSingular) -> {
                 var validLimit = true;
                 var m = Patterns.TableNameSingular.matcher(tableNameSingular);
                 if(m.matches()) {

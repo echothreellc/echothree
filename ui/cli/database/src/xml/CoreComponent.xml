@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
 <!--                                                                                  -->
-<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2025 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -1166,6 +1166,24 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="EntityIntegerDefaults" nameSingular="EntityIntegerDefault" columnPrefix="enidef">
+                    <columns>
+                        <column name="EntityIntegerDefaultId" type="EID" nullAllowed="false" />
+                        <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
+                        <column name="IntegerAttribute" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityIntegerDefaultId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="EntityIntegerAttributes" nameSingular="EntityIntegerAttribute" columnPrefix="enia">
                     <columns>
                         <column name="EntityIntegerAttributeId" type="EID" nullAllowed="false" />
@@ -1273,6 +1291,24 @@
                         </index>
                         <index type="Multiple" name="Index3">
                             <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="EntityLongDefaults" nameSingular="EntityLongDefault" columnPrefix="enldef">
+                    <columns>
+                        <column name="EntityLongDefaultId" type="EID" nullAllowed="false" />
+                        <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
+                        <column name="LongAttribute" type="Long" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityLongDefaultId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityAttributeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                     </indexes>
@@ -1388,12 +1424,30 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="EntityBooleanDefaults" nameSingular="EntityBooleanDefault" columnPrefix="enbldef">
+                    <columns>
+                        <column name="EntityBooleanDefaultId" type="EID" nullAllowed="false" />
+                        <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
+                        <column name="BooleanAttribute" type="Boolean" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityBooleanDefaultId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="EntityBooleanAttributes" nameSingular="EntityBooleanAttribute" columnPrefix="enbla">
                     <columns>
                         <column name="EntityBooleanAttributeId" type="EID" nullAllowed="false" />
                         <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
                         <column name="EntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
-                        <column name="BooleanAttribute" type="Boolean" nullAllowed="false" />                        
+                        <column name="BooleanAttribute" type="Boolean" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>
@@ -1469,6 +1523,33 @@
                         <index type="Multiple" name="Index3">
                             <indexColumn name="EntityInstanceId" />
                             <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="EntityStringDefaults" nameSingular="EntityStringDefault" columnPrefix="ensdef">
+                    <columns>
+                        <column name="EntityStringAttributeId" type="EID" nullAllowed="false" />
+                        <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="StringAttribute" type="String" maxLength="512" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityStringAttributeId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
                         </index>
                     </indexes>
                 </table>
@@ -1778,6 +1859,28 @@
                         </index>
                         <index type="Multiple" name="Index3">
                             <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="EntityListItemDefaults" nameSingular="EntityListItemDefault" columnPrefix="eladef">
+                    <columns>
+                        <column name="EntityListItemDefaultId" type="EID" nullAllowed="false" />
+                        <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
+                        <column name="EntityListItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityListItems" destinationColumn="EntityListItemId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityListItemDefaultId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="EntityListItemId" />
                             <indexColumn name="ThruTime" />
                         </index>
                     </indexes>

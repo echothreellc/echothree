@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,10 +18,11 @@ package com.echothree.model.control.warehouse.server.search;
 
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.Indexes;
+import com.echothree.model.control.index.server.analyzer.BasicAnalyzer;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.search.PartySearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
-import com.echothree.model.control.warehouse.server.analysis.WarehouseAnalyzer;
+import com.echothree.model.control.warehouse.server.analyzer.WarehouseAnalyzer;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
@@ -32,7 +33,6 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
-import org.apache.lucene.analysis.Analyzer;
 
 public class WarehouseSearchEvaluator
         extends PartySearchEvaluator {
@@ -55,7 +55,7 @@ public class WarehouseSearchEvaluator
     }
 
     @Override
-    public Analyzer getAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
+    public BasicAnalyzer getAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
         return new WarehouseAnalyzer(eea, language, entityType, partyType, entityNameIndexField);
     }
 

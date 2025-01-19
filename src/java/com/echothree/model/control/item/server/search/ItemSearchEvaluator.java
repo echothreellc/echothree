@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,8 @@ import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.IndexTypes;
-import com.echothree.model.control.index.server.analysis.ItemAnalyzer;
+import com.echothree.model.control.index.server.analyzer.BasicAnalyzer;
+import com.echothree.model.control.item.server.analyzer.ItemAnalyzer;
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
@@ -44,7 +45,6 @@ import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.search.SortField;
 
 public class ItemSearchEvaluator
@@ -204,7 +204,7 @@ public class ItemSearchEvaluator
     }
     
     @Override
-    public Analyzer getAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
+    public BasicAnalyzer getAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
         return new ItemAnalyzer(eea, language, entityType);
     }
     

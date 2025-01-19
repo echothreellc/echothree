@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,10 @@ public interface GetContentPagesResult
     
     ContentSectionTransfer getContentSection();
     void setContentSection(ContentSectionTransfer contentSection);
-    
+
+    Long getContentPageCount();
+    void setContentPageCount(Long contentPageCount);
+
     List<ContentPageTransfer> getContentPages();
     void setContentPages(List<ContentPageTransfer> contentPages);
     

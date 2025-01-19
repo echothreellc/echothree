@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,21 +44,22 @@ public class UserVisitObject
         this.userVisit = userVisit;
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("user visit group")
-//    public UserVisitGroupObject getUserVisitGroup() {
-//        UserVisitGroup userVisitGroup = userVisit.getUserVisitGroup();
-//
-//        return userVisitGroup == null ? null : new UserVisitGroupObject(userVisitGroup);
-//    }
-//
-//    @GraphQLField
-//    @GraphQLDescription("user key")
-//    public UserKeyObject getUserKey() {
-//        UserKey userKey = userVisit.getUserKey();
-//
-//        return userKey == null ? null : new UserKeyObject(userKey);
-//    }
+    @GraphQLField
+    @GraphQLDescription("user visit group")
+    public UserVisitGroupObject getUserVisitGroup(final DataFetchingEnvironment env) {
+        var userVisitGroup = userVisit.getUserVisitGroup();
+
+        return userVisitGroup != null && UserSecurityUtils.getHasUserVisitGroupAccess(env) ?
+                new UserVisitGroupObject(userVisit.getUserVisitGroup()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("user key")
+    public UserKeyObject getUserKey() {
+        var userKey = userVisit.getUserKey();
+
+        return userKey == null ? null : new UserKeyObject(userKey);
+    }
 
     @GraphQLField
     @GraphQLDescription("preferred language")

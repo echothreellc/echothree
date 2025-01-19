@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,9 +18,10 @@ package com.echothree.control.user.graphql.server.command;
 
 import com.echothree.control.user.graphql.common.form.ExecuteGraphQlForm;
 import com.echothree.control.user.graphql.common.result.GraphQlResultFactory;
+import com.echothree.control.user.graphql.server.cache.GraphQlDocumentCache;
+import com.echothree.control.user.graphql.server.schema.util.GraphQlSchemaUtils;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.GraphQlExecutionContext;
-import com.echothree.control.user.graphql.server.schema.util.GraphQlSchemaUtils;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -34,8 +35,6 @@ import graphql.ExecutionResult;
 import graphql.GraphQL;
 import graphql.GraphQLException;
 import graphql.annotations.strategies.EnhancedExecutionStrategy;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +45,7 @@ public class ExecuteGraphQlCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ReadOnly", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Query", FieldType.STRING, false, 1L, null),
                 new FieldDefinition("Variables", FieldType.STRING, false, 1L, null),
@@ -56,7 +55,7 @@ public class ExecuteGraphQlCommand
                 // to other UCs that will validate it as an IPv4 address and format as necessary
                 // for use.
                 new FieldDefinition("RemoteInet4Address", FieldType.STRING, false, 1L, null)
-                ));
+        );
     }
     
     /** Creates a new instance of ExecuteGraphQlCommand */
@@ -71,9 +70,9 @@ public class ExecuteGraphQlCommand
     public String toJson(ExecutionResult executionResult)  {
         // Contents of the GraphQL Response are specified here:
         // http://graphql.org/learn/serving-over-http/
-        Map<String, Object> executionResultMap = new LinkedHashMap<>();
+        var executionResultMap = new LinkedHashMap<String, Object>();
         
-        if (executionResult.getErrors().size() > 0) {
+        if(!executionResult.getErrors().isEmpty()) {
             executionResultMap.put("errors", executionResult.getErrors());
         }
         executionResultMap.put("data", executionResult.getData());
@@ -95,6 +94,7 @@ public class ExecuteGraphQlCommand
             var graphQL = GraphQL
                     .newGraphQL(readOnly? GraphQlSchemaUtils.getInstance().getReadOnlySchema() : GraphQlSchemaUtils.getInstance().getSchema())
                     .queryExecutionStrategy(new EnhancedExecutionStrategy())
+                    .preparsedDocumentProvider(GraphQlDocumentCache.getInstance())
                     .build();
 
             Map<String, Object> parsedVariables = null;

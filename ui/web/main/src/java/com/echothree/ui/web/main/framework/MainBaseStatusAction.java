@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,19 +52,23 @@ public abstract class MainBaseStatusAction<A extends ActionForm, R extends BaseS
         setupParameters(actionForm, request);
 
         if(wasPost(request)) {
-            if(!wasCanceled(request)) {
-                var commandResult = doStatus(actionForm, request);
-                var executionResult = commandResult.getExecutionResult();
-                var result = (R)executionResult.getResult();
+            if(isTokenValid(request, true)) {
+                if(!wasCanceled(request)) {
+                    var commandResult = doStatus(actionForm, request);
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (R)executionResult.getResult();
 
-                if(result != null) {
-                    setLockAttribute(request, result);
+                    if(result != null) {
+                        setLockAttribute(request, result);
+                    }
+
+                    if(commandResult.hasErrors()) {
+                        setCommandResultAttribute(request, commandResult);
+                        forwardKey = getFormForward(actionForm);
+                    }
                 }
-                
-                if(commandResult.hasErrors()) {
-                    setCommandResultAttribute(request, commandResult);
-                    forwardKey = getFormForward(actionForm);
-                }
+            } else {
+                forwardKey = getFormForward(actionForm);
             }
         } else {
             setupDefaults(actionForm);

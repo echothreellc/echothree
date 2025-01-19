@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -62,6 +62,51 @@ public class EntityAttributeHandler
             commandForm.set(getAttrsMap(attrs));
 
             coreService.createEntityAttributeDescription(initialDataParser.getUserVisit(), commandForm);
+        } if(localName.equals("entityBooleanDefault")) {
+            var commandForm = CoreFormFactory.getCreateEntityBooleanDefaultForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            coreService.createEntityBooleanDefault(initialDataParser.getUserVisit(), commandForm);
+        } if(localName.equals("entityIntegerDefault")) {
+            var commandForm = CoreFormFactory.getCreateEntityIntegerDefaultForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            coreService.createEntityIntegerDefault(initialDataParser.getUserVisit(), commandForm);
+        } if(localName.equals("entityListItemDefault")) {
+            var commandForm = CoreFormFactory.getCreateEntityListItemDefaultForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            coreService.createEntityListItemDefault(initialDataParser.getUserVisit(), commandForm);
+        } if(localName.equals("entityLongDefault")) {
+            var commandForm = CoreFormFactory.getCreateEntityLongDefaultForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            coreService.createEntityLongDefault(initialDataParser.getUserVisit(), commandForm);
+        } if(localName.equals("entityStringDefault")) {
+            var commandForm = CoreFormFactory.getCreateEntityStringDefaultForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            coreService.createEntityStringDefault(initialDataParser.getUserVisit(), commandForm);
         } if(localName.equals("entityAttributeEntityAttributeGroup")) {
             var commandForm = CoreFormFactory.getCreateEntityAttributeEntityAttributeGroupForm();
 

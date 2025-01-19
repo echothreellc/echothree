@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -387,7 +387,7 @@ public class EntityAttributeObject
 
         return coreControl.getBestEntityAttributeDescription(entityAttribute, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
-    
+
     @GraphQLField
     @GraphQLDescription("attribute")
     public AttributeInterface getAttribute(final DataFetchingEnvironment env) {
@@ -405,7 +405,8 @@ public class EntityAttributeObject
                 }
                 case CLOB -> {
                     var userControl = Session.getModelController(UserControl.class);
-                    var entityClobAttribute = coreControl.getBestEntityClobAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+                    var entityClobAttribute = coreControl.getBestEntityClobAttribute(entityAttribute, entityInstance,
+                            userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
 
                     attributeInterface = entityClobAttribute == null ? null : new EntityClobAttributeObject(entityClobAttribute);
                 }
@@ -452,7 +453,8 @@ public class EntityAttributeObject
                 }
                 case STRING -> {
                     var userControl = Session.getModelController(UserControl.class);
-                    var entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+                    var entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance,
+                            userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
 
                     attributeInterface = entityStringAttribute == null ? null : new EntityStringAttributeObject(entityStringAttribute);
                 }
@@ -469,6 +471,46 @@ public class EntityAttributeObject
         }
 
         return attributeInterface;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("default")
+    public DefaultInterface getDefault(final DataFetchingEnvironment env) {
+        var coreControl = Session.getModelController(CoreControl.class);
+        DefaultInterface defaultInterface = null;
+
+        switch(getEntityAttributeTypeEnum()) {
+            case BOOLEAN -> {
+                var entityBooleanDefault = coreControl.getEntityBooleanDefault(entityAttribute);
+
+                defaultInterface = entityBooleanDefault == null ? null : new EntityBooleanDefaultObject(entityBooleanDefault);
+            }
+            case INTEGER -> {
+                var entityIntegerDefault = coreControl.getEntityIntegerDefault(entityAttribute);
+
+                defaultInterface = entityIntegerDefault == null ? null : new EntityIntegerDefaultObject(entityIntegerDefault);
+            }
+            case LONG -> {
+                var entityLongDefault = coreControl.getEntityLongDefault(entityAttribute);
+
+                defaultInterface = entityLongDefault == null ? null : new EntityLongDefaultObject(entityLongDefault);
+            }
+            case LISTITEM -> {
+                var entityListItemDefault = coreControl.getEntityListItemDefault(entityAttribute);
+
+                defaultInterface = entityListItemDefault == null ? null : new EntityListItemDefaultObject(entityListItemDefault);
+            }
+            case STRING -> {
+                var userControl = Session.getModelController(UserControl.class);
+                var entityStringDefault = coreControl.getEntityStringDefault(entityAttribute,
+                        userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+
+                defaultInterface = entityStringDefault == null ? null : new EntityStringDefaultObject(entityStringDefault);
+            }
+            default -> {} // Leave defaultInterface null
+        }
+
+        return defaultInterface;
     }
 
     @GraphQLField

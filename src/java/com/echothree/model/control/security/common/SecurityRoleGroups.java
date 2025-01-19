@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -129,6 +129,7 @@ public enum SecurityRoleGroups {
     FilterKind,
     FilterType,
     FiscalPeriodStatus,
+    FiscalPeriod,
     FontStyle,
     FontWeight,
     Forum,
@@ -287,6 +288,7 @@ public enum SecurityRoleGroups {
     ReturnReasonType,
     ReturnType,
     ReturnTypeShippingMethod,
+    RoleType,
     SalesOrder,
     SalesOrderAlias,
     SalesOrderStatus,
@@ -295,6 +297,7 @@ public enum SecurityRoleGroups {
     SalesOrderBatchStatus,
     SalesOrderLine,
     SalesOrderPaymentPreference,
+    SalesOrderShipmentGroup,
     Scale,
     ScaleType,
     ScaleUseType,
@@ -356,6 +359,7 @@ public enum SecurityRoleGroups {
     UnitOfMeasureTypeWeight,
     Use,
     UseNameElement,
+    UserVisitGroup,
     UseType,
     Vendor,
     VendorAlias,

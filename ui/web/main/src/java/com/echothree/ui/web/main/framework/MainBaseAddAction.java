@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -51,15 +51,19 @@ public abstract class MainBaseAddAction<A extends ActionForm>
         setupParameters(actionForm, request);
 
         if(wasPost(request)) {
-            if(wasCanceled(request)) {
-                forwardKey = getCancelForward(actionForm);
-            } else {
-                var commandResult = doAdd(actionForm, request);
+            if(isTokenValid(request, true)) {
+                if(wasCanceled(request)) {
+                    forwardKey = getCancelForward(actionForm);
+                } else {
+                    var commandResult = doAdd(actionForm, request);
 
-                if(commandResult.hasErrors()) {
-                    setCommandResultAttribute(request, commandResult);
-                    forwardKey = getFormForward(actionForm);
+                    if(commandResult.hasErrors()) {
+                        setCommandResultAttribute(request, commandResult);
+                        forwardKey = getFormForward(actionForm);
+                    }
                 }
+            } else {
+                forwardKey = getFormForward(actionForm);
             }
         } else {
             setupDefaults(actionForm);

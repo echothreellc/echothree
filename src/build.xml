@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2025 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -223,11 +223,12 @@
             classpath="${compile.task.classpath}"
             classpathref="shared.class.path"
             includes="${compile.task.include}" >
-            <compilerarg value="-XDcompilePolicy=simple"/>
             <compilerarg value="-processorpath"/>
             <compilerarg pathref="processorpath.ref"/>
             <!-- Begin Error Prone -->
             <!-- fork="true" is also required for Error Prone -->
+            <compilerarg value="-XDcompilePolicy=simple"/>
+            <compilerarg value="--should-stop=ifError=FLOW" />
             <compilerarg value="-Xplugin:ErrorProne -Xep:DeadException:ERROR" />
             <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED"/>
             <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED"/>
@@ -339,6 +340,7 @@
             <fileset dir="${dir.home}/build/lib">
                 <include name="avro.jar" />
                 <include name="antlr4-runtime.jar" />
+                <include name="caffeine.jar" />
                 <include name="classgraph.jar" />
                 <include name="commons-codec.jar" />
                 <include name="graphql-java.jar" />
@@ -431,9 +433,9 @@ ${javadoc.copyright}
                 classname="net.sourceforge.pmd.ant.PMDTask"
                 classpathref="pmd.classpath" />
         <pmd
-                shortFilenames="true"
+                threads="4"
                 noCache="true">
-            <sourceLanguage name="java" version="17" />
+            <sourceLanguage name="java" version="21" />
             <ruleset>rulesets/java/quickstart.xml</ruleset>
             <formatter
                     type="xml"

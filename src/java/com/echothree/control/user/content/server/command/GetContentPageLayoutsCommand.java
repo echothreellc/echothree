@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,11 +22,15 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.content.server.entity.ContentPageAreaType;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
+import com.echothree.model.data.content.server.factory.ContentPageAreaTypeFactory;
+import com.echothree.model.data.content.server.factory.ContentPageLayoutFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +41,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetContentPageLayoutsCommand
-        extends BaseMultipleEntitiesCommand<ContentPageLayout, GetContentPageLayoutsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ContentPageLayout, GetContentPageLayoutsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,21 +62,40 @@ public class GetContentPageLayoutsCommand
     public GetContentPageLayoutsCommand(UserVisitPK userVisitPK, GetContentPageLayoutsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var contentControl = Session.getModelController(ContentControl.class);
+
+        return contentControl.countContentPageLayouts();
+    }
+
     @Override
     protected Collection<ContentPageLayout> getEntities() {
         var contentControl = Session.getModelController(ContentControl.class);
-        
+
         return contentControl.getContentPageLayouts();
     }
-    
+
     @Override
     protected BaseResult getResult(Collection<ContentPageLayout> entities) {
         var result = ContentResultFactory.getGetContentPageLayoutsResult();
-        var contentControl = Session.getModelController(ContentControl.class);
-        
-        result.setContentPageLayouts(contentControl.getContentPageLayoutTransfers(getUserVisit(), entities));
-        
+
+        if(entities != null) {
+            var contentControl = Session.getModelController(ContentControl.class);
+
+            if(session.hasLimit(ContentPageLayoutFactory.class)) {
+                result.setContentPageLayoutCount(getTotalEntities());
+            }
+
+            result.setContentPageLayouts(contentControl.getContentPageLayoutTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     

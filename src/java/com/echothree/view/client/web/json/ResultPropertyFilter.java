@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -107,7 +107,7 @@ public class ResultPropertyFilter
                         var variableName = simpleName.substring(0, simpleName.length() - 8);
                         Set<Object> objectsToRemove = new HashSet<>();
 
-                        collection.stream().forEach((object) -> {
+                        collection.forEach((object) -> {
                             var simpleContext = new SimpleContext();
                             simpleContext.setVariable(variableName, expressionFactory.createValueExpression(object, object.getClass()));
                             if (!(Boolean)expressionFactory.createValueExpression(simpleContext, expression, Boolean.class).getValue(simpleContext)) {

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,7 +53,11 @@ public interface SearchOptions {
     String EntityAttributeResultIncludeEntityAttribute = "EntityAttributeResultIncludeEntityAttribute";
 
     String EntityListItemResultIncludeEntityListItem = "ItemResultIncludeEntityListItem";
-    
+
+    String ContentCatalogResultIncludeContentCatalog = "ContentCatalogResultIncludeContentCatalog";
+
+    String ContentCatalogItemResultIncludeContentCatalogItem = "ContentCatalogItemResultIncludeContentCatalogItem";
+
     String ContentCategoryResultIncludeContentCategory = "ContentCategoryResultIncludeContentCategory";
     
     String SecurityRoleGroupResultIncludeSecurityRoleGroup = "SecurityRoleGroupResultIncludeSecurityRoleGroup";
@@ -71,5 +75,7 @@ public interface SearchOptions {
     String UseTypeResultIncludeUseType = "UseTypeResultIncludeUseType";
 
     String WarehouseResultIncludeWarehouse = "WarehouseResultIncludeWarehouse";
+
+    String ShippingMethodResultIncludeShippingMethod = "ShippingMethodResultIncludeShippingMethod";
 
 }

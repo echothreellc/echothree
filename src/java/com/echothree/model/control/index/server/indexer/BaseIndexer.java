@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.IndexSubfields;
 import com.echothree.model.control.index.common.exception.IndexIOErrorException;
-import com.echothree.model.control.index.server.analysis.BasicAnalyzer;
+import com.echothree.model.control.index.server.analyzer.BasicAnalyzer;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
@@ -118,7 +118,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     
     /** Index an EntityInstance in all of its Workflows. */
     private void indexWorkflowEntityStatuses(final Document document, final EntityInstance entityInstance) {
-        workflowControl.getWorkflowsByEntityType(entityInstance.getEntityType()).stream().forEach((workflow) -> {
+        workflowControl.getWorkflowsByEntityType(entityInstance.getEntityType()).forEach((workflow) -> {
             var workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
 
             if (!workflowEntityStatuses.isEmpty()) {
@@ -334,18 +334,25 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         }
     }
 
-    protected Document newDocumentWithEntityInstanceFields(final EntityInstance entityInstance, final BasePK basePK) {
-        var document = new Document();
-
+    protected void addEntityInstanceToDocument(final Document document, final EntityInstance entityInstance, final BasePK basePK) {
         document.add(new Field(IndexFields.entityRef.name(), basePK.getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
         document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+    }
 
+    protected void addEntityInstanceFieldsToDocument(final Document document, final EntityInstance entityInstance) {
         indexWorkflowEntityStatuses(document, entityInstance);
         indexEntityTimes(document, entityInstance);
         indexEntityAliases(document, entityInstance);
         indexEntityAttributes(document, entityInstance);
         indexEntityTags(document, entityInstance);
         indexEntityAppearance(document, entityInstance);
+    }
+
+    protected Document newDocumentWithEntityInstanceFields(final EntityInstance entityInstance, final BasePK basePK) {
+        final var document = new Document();
+
+        addEntityInstanceToDocument(document, entityInstance, basePK);
+        addEntityInstanceFieldsToDocument(document, entityInstance);
 
         return document;
     }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -478,11 +478,11 @@ public class SalesOrderLogic
     }
 
     public OrderPriority getOrderPriorityByName(final ExecutionErrorAccumulator eea, final String orderPriorityName) {
-        return getOrderPriorityByName(eea, OrderTypes.SALES_ORDER.name(), orderPriorityName);
+        return SalesOrderPriorityLogic.getInstance().getOrderPriorityByName(eea, OrderTypes.SALES_ORDER.name(), orderPriorityName);
     }
 
     public OrderPriority getOrderPriorityByNameForUpdate(final ExecutionErrorAccumulator eea, final String orderPriorityName) {
-        return getOrderPriorityByNameForUpdate(eea, OrderTypes.SALES_ORDER.name(), orderPriorityName);
+        return SalesOrderPriorityLogic.getInstance().getOrderPriorityByNameForUpdate(eea, OrderTypes.SALES_ORDER.name(), orderPriorityName);
     }
 
     public SalesOrderStatusChoicesBean getSalesOrderStatusChoices(final String defaultOrderStatusChoice, final Language language, final boolean allowNullChoice,

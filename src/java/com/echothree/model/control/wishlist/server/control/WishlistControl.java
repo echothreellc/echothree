@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -166,7 +166,8 @@ public class WishlistControl
             query = "SELECT _ALL_ " +
                     "FROM wishlisttypes, wishlisttypedetails " +
                     "WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid " +
-                    "ORDER BY wshltydt_sortorder, wshltydt_wishlisttypename";
+                    "ORDER BY wshltydt_sortorder, wshltydt_wishlisttypename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM wishlisttypes, wishlisttypedetails " +
@@ -636,7 +637,8 @@ public class WishlistControl
                 query = "SELECT _ALL_ " +
                         "FROM wishlistpriorities, wishlistprioritydetails " +
                         "WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid AND wshlprtydt_wshlty_wishlisttypeid = ? " +
-                        "ORDER BY wshlprtydt_sortorder, wshlprtydt_wishlistpriorityname";
+                        "ORDER BY wshlprtydt_sortorder, wshlprtydt_wishlistpriorityname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM wishlistpriorities, wishlistprioritydetails " +

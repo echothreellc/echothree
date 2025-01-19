@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,11 +23,12 @@ import com.echothree.model.control.shipping.common.choice.ShippingMethodChoicesB
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodCarrierServiceTransfer;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodDescriptionTransfer;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
-import com.echothree.model.control.shipping.server.transfer.ShippingTransferCaches;
 import com.echothree.model.data.carrier.server.entity.CarrierService;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
+import com.echothree.model.data.shipping.common.pk.ShippingMethodPK;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodCarrierService;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodDescription;
@@ -41,33 +42,19 @@ import com.echothree.model.data.shipping.server.value.ShippingMethodDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ShippingControl
-        extends BaseModelControl {
+        extends BaseShippingControl {
     
     /** Creates a new instance of ShippingControl */
     public ShippingControl() {
         super();
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Shipping Transfer Caches
-    // --------------------------------------------------------------------------------
-    
-    private ShippingTransferCaches shippingTransferCaches;
-    
-    public ShippingTransferCaches getShippingTransferCaches(UserVisit userVisit) {
-        if(shippingTransferCaches == null) {
-            shippingTransferCaches = new ShippingTransferCaches(userVisit, this);
-        }
-        
-        return shippingTransferCaches;
     }
     
     // --------------------------------------------------------------------------------
@@ -92,7 +79,30 @@ public class ShippingControl
         
         return shippingMethod;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ShippingMethod */
+    public ShippingMethod getShippingMethodByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ShippingMethodPK(entityInstance.getEntityUniqueId());
+
+        return ShippingMethodFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ShippingMethod getShippingMethodByEntityInstance(EntityInstance entityInstance) {
+        return getShippingMethodByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ShippingMethod getShippingMethodByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getShippingMethodByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countShippingMethods() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM shippingmethods
+                        JOIN shippingmethoddetails ON shm_activedetailid = shmdt_shippingmethoddetailid
+                        """);
+    }
+
     private List<ShippingMethod> getShippingMethods(EntityPermission entityPermission) {
         String query = null;
         
@@ -241,19 +251,22 @@ public class ShippingControl
     public ShippingMethodTransfer getShippingMethodTransfer(UserVisit userVisit, ShippingMethod shippingMethod) {
         return getShippingTransferCaches(userVisit).getShippingMethodTransferCache().getShippingMethodTransfer(shippingMethod);
     }
-    
-    public List<ShippingMethodTransfer> getShippingMethodTransfers(UserVisit userVisit) {
-        var carrierPartyPriorities = getShippingMethods();
-        List<ShippingMethodTransfer> shippingMethodTransfers = new ArrayList<>(carrierPartyPriorities.size());
+
+    public List<ShippingMethodTransfer> getShippingMethodTransfers(UserVisit userVisit, Collection<ShippingMethod> entities) {
+        List<ShippingMethodTransfer> shippingMethodTransfers = new ArrayList<>(entities.size());
         var shippingMethodTransferCache = getShippingTransferCaches(userVisit).getShippingMethodTransferCache();
-        
-        carrierPartyPriorities.forEach((shippingMethod) ->
+
+        entities.forEach((shippingMethod) ->
                 shippingMethodTransfers.add(shippingMethodTransferCache.getShippingMethodTransfer(shippingMethod))
         );
-        
+
         return shippingMethodTransfers;
     }
-    
+
+    public List<ShippingMethodTransfer> getShippingMethodTransfers(UserVisit userVisit) {
+        return getShippingMethodTransfers(userVisit, getShippingMethods());
+    }
+
     public void updateShippingMethodFromValue(ShippingMethodDetailValue shippingMethodDetailValue, BasePK updatedBy) {
         if(shippingMethodDetailValue.hasBeenModified()) {
             var shippingMethod = ShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -278,7 +291,11 @@ public class ShippingControl
             sendEvent(shippingMethodPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
-    
+
+    public ShippingMethod getShippingMethodByPK(ShippingMethodPK pk) {
+        return ShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
     public void deleteShippingMethod(ShippingMethod shippingMethod, BasePK deletedBy) {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var shipmentControl = Session.getModelController(ShipmentControl.class);
@@ -306,7 +323,7 @@ public class ShippingControl
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodDescription.getPrimaryKey(),
-                null, createdBy);
+                EventTypes.CREATE, createdBy);
         
         return shippingMethodDescription;
     }
@@ -446,7 +463,7 @@ public class ShippingControl
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodDescription.getPrimaryKey(),
-                    null, updatedBy);
+                    EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -454,7 +471,7 @@ public class ShippingControl
         shippingMethodDescription.setThruTime(session.START_TIME_LONG);
         
         sendEvent(shippingMethodDescription.getShippingMethodPK(), EventTypes.MODIFY,
-                shippingMethodDescription.getPrimaryKey(), null, deletedBy);
+                shippingMethodDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteShippingMethodDescriptionsByShippingMethod(ShippingMethod shippingMethod, BasePK deletedBy) {
@@ -475,7 +492,7 @@ public class ShippingControl
                 shippingMethod, carrierService, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodCarrierService.getPrimaryKey(),
-                null, createdBy);
+                EventTypes.CREATE, createdBy);
         
         return shippingMethodCarrierService;
     }
@@ -639,7 +656,7 @@ public class ShippingControl
         shippingMethodCarrierService.setThruTime(session.START_TIME_LONG);
         
         sendEvent(shippingMethodCarrierService.getShippingMethod().getPrimaryKey(), EventTypes.MODIFY,
-                shippingMethodCarrierService.getPrimaryKey(), null, deletedBy);
+                shippingMethodCarrierService.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteShippingMethodCarrierServices(List<ShippingMethodCarrierService> shippingMethodCarrierServices, BasePK deletedBy) {

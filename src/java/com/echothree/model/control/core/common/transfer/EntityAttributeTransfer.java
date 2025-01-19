@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,11 +27,11 @@ public class EntityAttributeTransfer
     private EntityTypeTransfer entityType;
     private String entityAttributeName;
     private EntityAttributeTypeTransfer entityAttributeType;
-    private boolean trackRevisions;
+    private Boolean trackRevisions;
     private Integer sortOrder;
     private String description;
     
-    private boolean checkContentWebAddress;
+    private Boolean checkContentWebAddress;
     private String validationPattern;
     private Integer upperRangeIntegerValue;
     private Integer upperLimitIntegerValue;
@@ -43,11 +43,15 @@ public class EntityAttributeTransfer
     private Long lowerRangeLongValue;
     private UnitOfMeasureTypeTransfer unitOfMeasureType;
     private SequenceTransfer entityListItemSequence;
-    
+
+    private EntityBooleanDefaultTransfer entityBooleanDefault;
     private EntityBooleanAttributeTransfer entityBooleanAttribute;
     private EntityNameAttributeTransfer entityNameAttribute;
+    private EntityIntegerDefaultTransfer entityIntegerDefault;
     private EntityIntegerAttributeTransfer entityIntegerAttribute;
+    private EntityLongDefaultTransfer entityLongDefault;
     private EntityLongAttributeTransfer entityLongAttribute;
+    private EntityStringDefaultTransfer entityStringDefault;
     private EntityStringAttributeTransfer entityStringAttribute;
     private EntityGeoPointAttributeTransfer entityGeoPointAttribute;
     private EntityBlobAttributeTransfer entityBlobAttribute;
@@ -56,6 +60,7 @@ public class EntityAttributeTransfer
     private ListWrapper<EntityCollectionAttributeTransfer> entityCollectionAttributes;
     private EntityDateAttributeTransfer entityDateAttribute;
     private EntityTimeAttributeTransfer entityTimeAttribute;
+    private EntityListItemDefaultTransfer entityListItemDefault;
     private EntityListItemAttributeTransfer entityListItemAttribute;
     private ListWrapper<EntityMultipleListItemAttributeTransfer> entityMultipleListItemAttributes;
 
@@ -66,7 +71,7 @@ public class EntityAttributeTransfer
 
     /** Creates a new instance of EntityAttributeTransfer */
     public EntityAttributeTransfer(EntityTypeTransfer entityType, EntityAttributeTypeTransfer entityAttributeType,
-            String entityAttributeName, boolean trackRevisions, Integer sortOrder, String description) {
+            String entityAttributeName, Boolean trackRevisions, Integer sortOrder, String description) {
         this.entityType = entityType;
         this.entityAttributeName = entityAttributeName;
         this.entityAttributeType = entityAttributeType;
@@ -175,7 +180,7 @@ public class EntityAttributeTransfer
      * Returns the checkContentWebAddress.
      * @return the checkContentWebAddress
      */
-    public boolean isCheckContentWebAddress() {
+    public Boolean getCheckContentWebAddress() {
         return checkContentWebAddress;
     }
 
@@ -183,7 +188,7 @@ public class EntityAttributeTransfer
      * Sets the checkContentWebAddress.
      * @param checkContentWebAddress the checkContentWebAddress to set
      */
-    public void setCheckContentWebAddress(boolean checkContentWebAddress) {
+    public void setCheckContentWebAddress(Boolean checkContentWebAddress) {
         this.checkContentWebAddress = checkContentWebAddress;
     }
 
@@ -364,6 +369,22 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityBooleanDefault.
+     * @return the entityBooleanDefault
+     */
+    public EntityBooleanDefaultTransfer getEntityBooleanDefault() {
+        return entityBooleanDefault;
+    }
+
+    /**
+     * Sets the entityBooleanDefault.
+     * @param entityBooleanDefault the entityBooleanDefault to set
+     */
+    public void setEntityBooleanDefault(EntityBooleanDefaultTransfer entityBooleanDefault) {
+        this.entityBooleanDefault = entityBooleanDefault;
+    }
+
+    /**
      * Returns the entityBooleanAttribute.
      * @return the entityBooleanAttribute
      */
@@ -396,6 +417,22 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityIntegerDefault.
+     * @return the entityIntegerDefault
+     */
+    public EntityIntegerDefaultTransfer getEntityIntegerDefault() {
+        return entityIntegerDefault;
+    }
+
+    /**
+     * Sets the entityIntegerDefault.
+     * @param entityIntegerDefault the entityIntegerDefault to set
+     */
+    public void setEntityIntegerDefault(EntityIntegerDefaultTransfer entityIntegerDefault) {
+        this.entityIntegerDefault = entityIntegerDefault;
+    }
+
+    /**
      * Returns the entityIntegerAttribute.
      * @return the entityIntegerAttribute
      */
@@ -412,6 +449,22 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityLongDefault.
+     * @return the entityLongDefault
+     */
+    public EntityLongDefaultTransfer getEntityLongDefault() {
+        return entityLongDefault;
+    }
+
+    /**
+     * Sets the entityLongDefault.
+     * @param entityLongDefault the entityLongDefault to set
+     */
+    public void setEntityLongDefault(EntityLongDefaultTransfer entityLongDefault) {
+        this.entityLongDefault = entityLongDefault;
+    }
+
+    /**
      * Returns the entityLongAttribute.
      * @return the entityLongAttribute
      */
@@ -425,6 +478,22 @@ public class EntityAttributeTransfer
      */
     public void setEntityLongAttribute(EntityLongAttributeTransfer entityLongAttribute) {
         this.entityLongAttribute = entityLongAttribute;
+    }
+
+    /**
+     * Returns the entityStringDefault.
+     * @return the entityStringDefault
+     */
+    public EntityStringDefaultTransfer getEntityStringDefault() {
+        return entityStringDefault;
+    }
+
+    /**
+     * Sets the entityStringDefault.
+     * @param entityStringDefault the entityStringDefault to set
+     */
+    public void setEntityStringDefault(EntityStringDefaultTransfer entityStringDefault) {
+        this.entityStringDefault = entityStringDefault;
     }
 
     /**
@@ -553,6 +622,22 @@ public class EntityAttributeTransfer
      */
     public void setEntityTimeAttribute(EntityTimeAttributeTransfer entityTimeAttribute) {
         this.entityTimeAttribute = entityTimeAttribute;
+    }
+
+    /**
+     * Returns the entityListItemDefault.
+     * @return the entityListItemDefault
+     */
+    public EntityListItemDefaultTransfer getEntityListItemDefault() {
+        return entityListItemDefault;
+    }
+
+    /**
+     * Sets the entityListItemDefault.
+     * @param entityListItemDefault the entityListItemDefault to set
+     */
+    public void setEntityListItemDefault(EntityListItemDefaultTransfer entityListItemDefault) {
+        this.entityListItemDefault = entityListItemDefault;
     }
 
     /**

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -60,15 +60,20 @@ public class CoreTransferCaches
     protected ServerServiceTransferCache serverServiceTransferCache;
     protected MimeTypeFileExtensionTransferCache mimeTypeFileExtensionTransferCache;
     protected EntityBlobAttributeTransferCache entityBlobAttributeTransferCache;
+    protected EntityBooleanDefaultTransferCache entityBooleanDefaultTransferCache;
     protected EntityBooleanAttributeTransferCache entityBooleanAttributeTransferCache;
     protected EntityClobAttributeTransferCache entityClobAttributeTransferCache;
     protected EntityDateAttributeTransferCache entityDateAttributeTransferCache;
+    protected EntityIntegerDefaultTransferCache entityIntegerDefaultTransferCache;
     protected EntityIntegerAttributeTransferCache entityIntegerAttributeTransferCache;
+    protected EntityListItemDefaultTransferCache entityListItemDefaultTransferCache;
     protected EntityListItemAttributeTransferCache entityListItemAttributeTransferCache;
+    protected EntityLongDefaultTransferCache entityLongDefaultTransferCache;
     protected EntityLongAttributeTransferCache entityLongAttributeTransferCache;
     protected EntityMultipleListItemAttributeTransferCache entityMultipleListItemAttributeTransferCache;
     protected EntityNameAttributeTransferCache entityNameAttributeTransferCache;
     protected EntityGeoPointAttributeTransferCache entityGeoPointAttributeTransferCache;
+    protected EntityStringDefaultTransferCache entityStringDefaultTransferCache;
     protected EntityStringAttributeTransferCache entityStringAttributeTransferCache;
     protected EntityTimeAttributeTransferCache entityTimeAttributeTransferCache;
     protected EntityAttributeEntityTypeTransferCache entityAttributeEntityTypeTransferCache;
@@ -378,14 +383,21 @@ public class CoreTransferCaches
         
         return entityBlobAttributeTransferCache;
     }
-    
+
+    public EntityBooleanDefaultTransferCache getEntityBooleanDefaultTransferCache() {
+        if(entityBooleanDefaultTransferCache == null)
+            entityBooleanDefaultTransferCache = new EntityBooleanDefaultTransferCache(userVisit);
+
+        return entityBooleanDefaultTransferCache;
+    }
+
     public EntityBooleanAttributeTransferCache getEntityBooleanAttributeTransferCache() {
         if(entityBooleanAttributeTransferCache == null)
             entityBooleanAttributeTransferCache = new EntityBooleanAttributeTransferCache(userVisit);
-        
+
         return entityBooleanAttributeTransferCache;
     }
-    
+
     public EntityClobAttributeTransferCache getEntityClobAttributeTransferCache() {
         if(entityClobAttributeTransferCache == null)
             entityClobAttributeTransferCache = new EntityClobAttributeTransferCache(userVisit);
@@ -399,21 +411,42 @@ public class CoreTransferCaches
         
         return entityDateAttributeTransferCache;
     }
-    
+
+    public EntityIntegerDefaultTransferCache getEntityIntegerDefaultTransferCache() {
+        if(entityIntegerDefaultTransferCache == null)
+            entityIntegerDefaultTransferCache = new EntityIntegerDefaultTransferCache(userVisit);
+
+        return entityIntegerDefaultTransferCache;
+    }
+
     public EntityIntegerAttributeTransferCache getEntityIntegerAttributeTransferCache() {
         if(entityIntegerAttributeTransferCache == null)
             entityIntegerAttributeTransferCache = new EntityIntegerAttributeTransferCache(userVisit);
         
         return entityIntegerAttributeTransferCache;
     }
-    
+
+    public EntityListItemDefaultTransferCache getEntityListItemDefaultTransferCache() {
+        if(entityListItemDefaultTransferCache == null)
+            entityListItemDefaultTransferCache = new EntityListItemDefaultTransferCache(userVisit);
+
+        return entityListItemDefaultTransferCache;
+    }
+
     public EntityListItemAttributeTransferCache getEntityListItemAttributeTransferCache() {
         if(entityListItemAttributeTransferCache == null)
             entityListItemAttributeTransferCache = new EntityListItemAttributeTransferCache(userVisit);
-        
+
         return entityListItemAttributeTransferCache;
     }
-    
+
+    public EntityLongDefaultTransferCache getEntityLongDefaultTransferCache() {
+        if(entityLongDefaultTransferCache == null)
+            entityLongDefaultTransferCache = new EntityLongDefaultTransferCache(userVisit);
+
+        return entityLongDefaultTransferCache;
+    }
+
     public EntityLongAttributeTransferCache getEntityLongAttributeTransferCache() {
         if(entityLongAttributeTransferCache == null)
             entityLongAttributeTransferCache = new EntityLongAttributeTransferCache(userVisit);
@@ -441,14 +474,21 @@ public class CoreTransferCaches
         
         return entityGeoPointAttributeTransferCache;
     }
-    
+
+    public EntityStringDefaultTransferCache getEntityStringDefaultTransferCache() {
+        if(entityStringDefaultTransferCache == null)
+            entityStringDefaultTransferCache = new EntityStringDefaultTransferCache(userVisit);
+
+        return entityStringDefaultTransferCache;
+    }
+
     public EntityStringAttributeTransferCache getEntityStringAttributeTransferCache() {
         if(entityStringAttributeTransferCache == null)
             entityStringAttributeTransferCache = new EntityStringAttributeTransferCache(userVisit);
-        
+
         return entityStringAttributeTransferCache;
     }
-    
+
     public EntityTimeAttributeTransferCache getEntityTimeAttributeTransferCache() {
         if(entityTimeAttributeTransferCache == null)
             entityTimeAttributeTransferCache = new EntityTimeAttributeTransferCache(userVisit);

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package com.echothree.model.control.search.server.search;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
-import com.echothree.model.control.index.server.analysis.BasicAnalyzer;
+import com.echothree.model.control.index.server.analyzer.BasicAnalyzer;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.index.server.logic.IndexLogic;
 import com.echothree.model.control.index.server.logic.IndexTypeLogic;
@@ -36,10 +36,8 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.Query;
@@ -160,8 +158,15 @@ public abstract class BaseEvaluator
     
     protected void parseQuery(final ExecutionErrorAccumulator eea, final String field, final String[] fields) {
         if(q != null) {
-            var qp = fields == null ? new AttributeQueryParser(eea, getDateFields(), getDateTimeFields(), entityType, userVisit, field, getCachedAnalyzer(null, getLanguage()))
-                    : new AttributeMultiFieldQueryParser(eea, getDateFields(), getDateTimeFields(), entityType, userVisit, fields, getCachedAnalyzer(null, getLanguage()));
+            var analyzer = getCachedAnalyzer(null, getLanguage());
+
+            var qp = fields == null ?
+                    new AttributeQueryParser(eea, analyzer.getDateFields(), analyzer.getDateTimeFields(),
+                            analyzer.getIntFields(), analyzer.getLongFields(), analyzer.getFloatFields(),
+                            analyzer.getDoubleFields(), entityType, userVisit, field, analyzer) :
+                    new AttributeMultiFieldQueryParser(eea, analyzer.getDateFields(), analyzer.getDateTimeFields(),
+                            analyzer.getIntFields(), analyzer.getLongFields(), analyzer.getFloatFields(),
+                            analyzer.getDoubleFields(), entityType, userVisit, fields, analyzer);
 
             switch(SearchDefaultOperators.valueOf(getSearchDefaultOperatorName())) {
                 case AND -> qp.setDefaultOperator(QueryParser.Operator.AND);
@@ -211,17 +216,9 @@ public abstract class BaseEvaluator
         this.fields = fields;
     }
 
-    protected Set<String> getDateFields() {
-        return null;
-    }
+    private BasicAnalyzer cachedAnalyzer = null;
     
-    protected Set<String> getDateTimeFields() {
-        return null;
-    }
-    
-    private Analyzer cachedAnalyzer = null;
-    
-    protected Analyzer getCachedAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
+    protected BasicAnalyzer getCachedAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
         // Some search evaluators will override getAnalyzer(...), so this is our private version that keeps
         // from having to run to getAnalyzer(...) multiple times (specially a problem for spelling check).
         if(cachedAnalyzer == null) {
@@ -231,7 +228,7 @@ public abstract class BaseEvaluator
         return cachedAnalyzer;
     }
     
-    protected Analyzer getAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
+    protected BasicAnalyzer getAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
         return new BasicAnalyzer(eea, language, entityType);
     }
     

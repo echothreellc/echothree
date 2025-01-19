@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -94,6 +94,7 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.common.pk.PartyTypePK;
 import com.echothree.model.data.party.common.pk.PersonalTitleDetailPK;
 import com.echothree.model.data.party.common.pk.PersonalTitlePK;
+import com.echothree.model.data.party.common.pk.RoleTypePK;
 import com.echothree.model.data.party.common.pk.TimeZonePK;
 import com.echothree.model.data.party.server.entity.BirthdayFormat;
 import com.echothree.model.data.party.server.entity.BirthdayFormatDescription;
@@ -3214,30 +3215,107 @@ public class PartyControl
     public RoleType createRoleType(String roleTypeName, RoleType parentRoleType) {
         return RoleTypeFactory.getInstance().create(roleTypeName, parentRoleType);
     }
-    
-    public RoleType getRoleTypeByName(String roleTypeName) {
-        RoleType roleType;
-        
-        try {
-            var ps = RoleTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM roletypes " +
-                    "WHERE rtyp_roletypename = ?");
-            
-            ps.setString(1, roleTypeName);
-            
-            roleType = RoleTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return roleType;
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.RoleType */
+    public RoleType getRoleTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new RoleTypePK(entityInstance.getEntityUniqueId());
+
+        return RoleTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
-    
+
+    public RoleType getRoleTypeByEntityInstance(EntityInstance entityInstance) {
+        return getRoleTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public RoleType getRoleTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getRoleTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countRoleTypes() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM roletypes
+                """);
+    }
+
+    private static final Map<EntityPermission, String> getRoleTypeByNameQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                        "FROM roletypes " +
+                        "WHERE rtyp_roletypename = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                        "FROM roletypes " +
+                        "WHERE rtyp_roletypename = ? " +
+                        "FOR UPDATE");
+        getRoleTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public RoleType getRoleTypeByName(String roleTypeName, EntityPermission entityPermission) {
+        return RoleTypeFactory.getInstance().getEntityFromQuery(entityPermission, getRoleTypeByNameQueries,
+                roleTypeName);
+    }
+
+    public RoleType getRoleTypeByName(String roleTypeName) {
+        return getRoleTypeByName(roleTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public RoleType getRoleTypeByNameForUpdate(String roleTypeName) {
+        return getRoleTypeByName(roleTypeName, EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getRoleTypesQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                        "FROM roletypes " +
+                        "ORDER BY rtyp_roletypename " +
+                        "_LIMIT_");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                        "FROM roletypes " +
+                        "FOR UPDATE");
+        getRoleTypesQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<RoleType> getRoleTypes(EntityPermission entityPermission) {
+        return RoleTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getRoleTypesQueries);
+    }
+
+    public List<RoleType> getRoleTypes() {
+        return getRoleTypes(EntityPermission.READ_ONLY);
+    }
+
+    public List<RoleType> getRoleTypesForUpdate() {
+        return getRoleTypes(EntityPermission.READ_WRITE);
+    }
+
     public RoleTypeTransfer getRoleTypeTransfer(UserVisit userVisit, RoleType roleType) {
         return getPartyTransferCaches(userVisit).getRoleTypeTransferCache().getRoleTypeTransfer(roleType);
     }
-    
+
+    public List<RoleTypeTransfer> getRoleTypeTransfers(UserVisit userVisit, Collection<RoleType> roleTypes) {
+        List<RoleTypeTransfer> roleTypeTransfers = new ArrayList<>(roleTypes.size());
+        var roleTypeTransferCache = getPartyTransferCaches(userVisit).getRoleTypeTransferCache();
+
+        roleTypes.forEach((roleType) ->
+                roleTypeTransfers.add(roleTypeTransferCache.getRoleTypeTransfer(roleType))
+        );
+
+        return roleTypeTransfers;
+    }
+
+    public List<RoleTypeTransfer> getRoleTypeTransfers(UserVisit userVisit) {
+        return getRoleTypeTransfers(userVisit, getRoleTypes());
+    }
+
     // --------------------------------------------------------------------------------
     //   Role Type Descriptions
     // --------------------------------------------------------------------------------

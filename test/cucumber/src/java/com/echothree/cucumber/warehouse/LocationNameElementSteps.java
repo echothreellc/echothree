@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -189,7 +189,7 @@ public class LocationNameElementSteps implements En {
                     if(createLocationNameElementForm != null) {
                         createLocationNameElementForm.setLocationTypeName(locationTypeName);
                     } else if(deleteLocationNameElementForm != null) {
-                        locationNameElementSpec.setLocationTypeName(locationTypeName);
+                        deleteLocationNameElementForm.setLocationTypeName(locationTypeName);
                     } else {
                         locationNameElementSpec.setLocationTypeName(locationTypeName);
                     }

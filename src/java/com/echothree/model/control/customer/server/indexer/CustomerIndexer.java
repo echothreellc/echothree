@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.customer.server.indexer;
 
-import com.echothree.model.control.customer.server.analysis.CustomerAnalyzer;
+import com.echothree.model.control.customer.server.analyzer.CustomerAnalyzer;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.indexer.FieldTypes;

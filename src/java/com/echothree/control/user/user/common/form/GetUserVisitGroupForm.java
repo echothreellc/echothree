@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.user.common.form;
 
-import com.echothree.control.user.user.common.spec.UserVisitGroupSpec;
+import com.echothree.control.user.user.common.spec.UserVisitGroupUniversalSpec;
 
 public interface GetUserVisitGroupForm
-        extends UserVisitGroupSpec {
+        extends UserVisitGroupUniversalSpec {
     
-    // Nothing additional beyond UserVisitGroupSpec
+    // Nothing additional beyond UserVisitGroupUniversalSpec
     
 }

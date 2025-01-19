@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2024 Echo Three, LLC
+// Copyright 2002-2025 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -968,6 +968,64 @@ public class SearchBean
     }
 
     // -------------------------------------------------------------------------
+    //   Content Catalog Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchContentCatalogs(UserVisitPK userVisitPK, SearchContentCatalogsForm form) {
+        return new SearchContentCatalogsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getContentCatalogResults(UserVisitPK userVisitPK, GetContentCatalogResultsForm form) {
+        return new GetContentCatalogResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countContentCatalogResults(UserVisitPK userVisitPK, CountContentCatalogResultsForm form) {
+        return new CountContentCatalogResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearContentCatalogResults(UserVisitPK userVisitPK, ClearContentCatalogResultsForm form) {
+        return new ClearContentCatalogResultsCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
+    //   Content Catalog Item Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchContentCatalogItems(UserVisitPK userVisitPK, SearchContentCatalogItemsForm form) {
+        return new SearchContentCatalogItemsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getContentCatalogItemResults(UserVisitPK userVisitPK, GetContentCatalogItemResultsForm form) {
+        return new GetContentCatalogItemResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getContentCatalogItemResultsFacet(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetForm form) {
+        return new GetContentCatalogItemResultsFacetCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getContentCatalogItemResultsFacets(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetsForm form) {
+        return new GetContentCatalogItemResultsFacetsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countContentCatalogItemResults(UserVisitPK userVisitPK, CountContentCatalogItemResultsForm form) {
+        return new CountContentCatalogItemResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearContentCatalogItemResults(UserVisitPK userVisitPK, ClearContentCatalogItemResultsForm form) {
+        return new ClearContentCatalogItemResultsCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
     //   Content Category Search
     // -------------------------------------------------------------------------
 
@@ -975,32 +1033,32 @@ public class SearchBean
     public CommandResult searchContentCategories(UserVisitPK userVisitPK, SearchContentCategoriesForm form) {
         return new SearchContentCategoriesCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult getContentCategoryResults(UserVisitPK userVisitPK, GetContentCategoryResultsForm form) {
         return new GetContentCategoryResultsCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult getContentCategoryResultsFacet(UserVisitPK userVisitPK, GetContentCategoryResultsFacetForm form) {
         return new GetContentCategoryResultsFacetCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult getContentCategoryResultsFacets(UserVisitPK userVisitPK, GetContentCategoryResultsFacetsForm form) {
         return new GetContentCategoryResultsFacetsCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult countContentCategoryResults(UserVisitPK userVisitPK, CountContentCategoryResultsForm form) {
         return new CountContentCategoryResultsCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult clearContentCategoryResults(UserVisitPK userVisitPK, ClearContentCategoryResultsForm form) {
         return new ClearContentCategoryResultsCommand(userVisitPK, form).run();
     }
-    
+
     // -------------------------------------------------------------------------
     //   Security Role Group Search
     // -------------------------------------------------------------------------
@@ -1237,6 +1295,30 @@ public class SearchBean
     @Override
     public CommandResult clearUseTypeResults(UserVisitPK userVisitPK, ClearUseTypeResultsForm form) {
         return new ClearUseTypeResultsCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
+    //   Shipping Method Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchShippingMethods(UserVisitPK userVisitPK, SearchShippingMethodsForm form) {
+        return new SearchShippingMethodsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getShippingMethodResults(UserVisitPK userVisitPK, GetShippingMethodResultsForm form) {
+        return new GetShippingMethodResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countShippingMethodResults(UserVisitPK userVisitPK, CountShippingMethodResultsForm form) {
+        return new CountShippingMethodResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearShippingMethodResults(UserVisitPK userVisitPK, ClearShippingMethodResultsForm form) {
+        return new ClearShippingMethodResultsCommand(userVisitPK, form).run();
     }
 
     // -------------------------------------------------------------------------

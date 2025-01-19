@@ -52,6 +52,7 @@ build:
       - build/lib/slf4j-api.jar
       - build/lib/slf4j-reload4j.jar
       - build/lib/avro.jar
+      - build/lib/caffeine.jar
       - build/lib/wildfly-client-all.jar
     expire_in: 1 week
 
