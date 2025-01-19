@@ -1531,7 +1531,26 @@ public class CoreBean
     public CommandResult deleteEntityNameAttribute(UserVisitPK userVisitPK, DeleteEntityNameAttributeForm form) {
         return new DeleteEntityNameAttributeCommand(userVisitPK, form).run();
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity String Defaults
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityStringDefault(UserVisitPK userVisitPK, CreateEntityStringDefaultForm form) {
+        return new CreateEntityStringDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityStringDefault(UserVisitPK userVisitPK, EditEntityStringDefaultForm form) {
+        return new EditEntityStringDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityStringDefault(UserVisitPK userVisitPK, DeleteEntityStringDefaultForm form) {
+        return new DeleteEntityStringDefaultCommand(userVisitPK, form).run();
+    }
+
     // --------------------------------------------------------------------------------
     //   Entity String Attributes
     // --------------------------------------------------------------------------------

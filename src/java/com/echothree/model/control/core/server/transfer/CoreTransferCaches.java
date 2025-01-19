@@ -73,6 +73,7 @@ public class CoreTransferCaches
     protected EntityMultipleListItemAttributeTransferCache entityMultipleListItemAttributeTransferCache;
     protected EntityNameAttributeTransferCache entityNameAttributeTransferCache;
     protected EntityGeoPointAttributeTransferCache entityGeoPointAttributeTransferCache;
+    protected EntityStringDefaultTransferCache entityStringDefaultTransferCache;
     protected EntityStringAttributeTransferCache entityStringAttributeTransferCache;
     protected EntityTimeAttributeTransferCache entityTimeAttributeTransferCache;
     protected EntityAttributeEntityTypeTransferCache entityAttributeEntityTypeTransferCache;
@@ -473,14 +474,21 @@ public class CoreTransferCaches
         
         return entityGeoPointAttributeTransferCache;
     }
-    
+
+    public EntityStringDefaultTransferCache getEntityStringDefaultTransferCache() {
+        if(entityStringDefaultTransferCache == null)
+            entityStringDefaultTransferCache = new EntityStringDefaultTransferCache(userVisit);
+
+        return entityStringDefaultTransferCache;
+    }
+
     public EntityStringAttributeTransferCache getEntityStringAttributeTransferCache() {
         if(entityStringAttributeTransferCache == null)
             entityStringAttributeTransferCache = new EntityStringAttributeTransferCache(userVisit);
-        
+
         return entityStringAttributeTransferCache;
     }
-    
+
     public EntityTimeAttributeTransferCache getEntityTimeAttributeTransferCache() {
         if(entityTimeAttributeTransferCache == null)
             entityTimeAttributeTransferCache = new EntityTimeAttributeTransferCache(userVisit);

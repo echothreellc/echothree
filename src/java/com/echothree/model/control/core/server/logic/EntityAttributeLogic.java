@@ -41,6 +41,7 @@ import com.echothree.model.control.core.common.exception.DuplicateEntityLongDefa
 import com.echothree.model.control.core.common.exception.DuplicateEntityMultipleListItemAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityNameAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityStringAttributeException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityStringDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityTimeAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateWorkflowUsageInEntityAttributeException;
 import com.echothree.model.control.core.common.exception.EntityTypeIsNotExtensibleException;
@@ -59,6 +60,7 @@ import com.echothree.model.control.core.common.exception.UnknownEntityIntegerDef
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityLongDefaultException;
+import com.echothree.model.control.core.common.exception.UnknownEntityStringDefaultException;
 import com.echothree.model.control.core.common.exception.UpperRangeExceededException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.database.EntityInstancePKResult;
@@ -79,6 +81,7 @@ import com.echothree.model.control.core.server.database.EntityInstancePKsByTimeE
 import com.echothree.model.control.core.server.database.EntityInstancesMissingBooleanEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingIntegerEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingLongEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancesMissingStringEntityAttributeQuery;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.queue.common.QueueTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;
@@ -108,6 +111,7 @@ import com.echothree.model.data.core.server.entity.EntityLongDefault;
 import com.echothree.model.data.core.server.entity.EntityMultipleListItemAttribute;
 import com.echothree.model.data.core.server.entity.EntityNameAttribute;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
+import com.echothree.model.data.core.server.entity.EntityStringDefault;
 import com.echothree.model.data.core.server.entity.EntityTimeAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.MimeType;
@@ -1167,6 +1171,53 @@ public class EntityAttributeLogic
         }
 
         return entityLongAttribute;
+    }
+
+    public EntityStringDefault createEntityStringDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final Language language, final String stringAttribute, final boolean addMissingAttributes, final BasePK createdBy) {
+        EntityStringDefault entityStringDefault = null;
+
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.STRING);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityStringDefault = coreControl.getEntityStringDefault(entityAttribute, language);
+
+            if(entityStringDefault == null) {
+                coreControl.createEntityStringDefault(entityAttribute, language, stringAttribute, createdBy);
+
+                if(addMissingAttributes) {
+                    new EntityInstancesMissingStringEntityAttributeQuery().execute(entityAttribute, language).forEach(entityInstanceResult ->
+                            coreControl.createEntityStringAttribute(entityAttribute.getPrimaryKey(),
+                                    entityInstanceResult.getEntityInstance(), language, stringAttribute, createdBy));
+                }
+            } else {
+                handleExecutionError(DuplicateEntityStringDefaultException.class, eea, ExecutionErrors.DuplicateEntityStringDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            }
+        }
+
+        return entityStringDefault;
+    }
+
+    public void deleteEntityStringDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final Language language, final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.STRING);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            var entityStringDefault = coreControl.getEntityStringDefaultForUpdate(entityAttribute, language);
+
+            if(entityStringDefault == null) {
+                handleExecutionError(UnknownEntityStringDefaultException.class, eea, ExecutionErrors.UnknownEntityStringDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName(),
+                        language.getLanguageIsoName());
+            } else {
+                coreControl.deleteEntityStringDefault(entityStringDefault, deletedBy);
+            }
+        }
     }
 
     public EntityStringAttribute createEntityStringAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,

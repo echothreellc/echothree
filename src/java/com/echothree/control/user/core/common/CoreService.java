@@ -770,7 +770,17 @@ public interface CoreService
     CommandResult editEntityNameAttribute(UserVisitPK userVisitPK, EditEntityNameAttributeForm form);
     
     CommandResult deleteEntityNameAttribute(UserVisitPK userVisitPK, DeleteEntityNameAttributeForm form);
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity String Defaults
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityStringDefault(UserVisitPK userVisitPK, CreateEntityStringDefaultForm form);
+
+    CommandResult editEntityStringDefault(UserVisitPK userVisitPK, EditEntityStringDefaultForm form);
+
+    CommandResult deleteEntityStringDefault(UserVisitPK userVisitPK, DeleteEntityStringDefaultForm form);
+
     // --------------------------------------------------------------------------------
     //   Entity String Attributes
     // --------------------------------------------------------------------------------

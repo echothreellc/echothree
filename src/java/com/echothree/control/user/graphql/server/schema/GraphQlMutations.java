@@ -64,6 +64,7 @@ import com.echothree.control.user.core.common.result.EditEntityLongAttributeResu
 import com.echothree.control.user.core.common.result.EditEntityLongDefaultResult;
 import com.echothree.control.user.core.common.result.EditEntityNameAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityStringAttributeResult;
+import com.echothree.control.user.core.common.result.EditEntityStringDefaultResult;
 import com.echothree.control.user.core.common.result.EditEntityTimeAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityTypeResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
@@ -6038,6 +6039,120 @@ public interface GraphQlMutations {
             commandForm.setEntityAttributeUuid(entityAttributeId);
 
             mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityLongAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createEntityStringDefault(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("entityAttributeName") final String entityAttributeName,
+            @GraphQLName("languageId") @GraphQLID final String languageId,
+            @GraphQLName("languageIsoName") final String languageIsoName,
+            @GraphQLName("stringAttribute") @GraphQLNonNull final String stringAttribute,
+            @GraphQLName("addMissingAttributes") @GraphQLNonNull final String addMissingAttributes) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateEntityStringDefaultForm();
+
+            commandForm.setUuid(id);
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.setStringAttribute(stringAttribute);
+            commandForm.setLanguageUuid(languageId);
+            commandForm.setLanguageIsoName(languageIsoName);
+            commandForm.setAddMissingAttributes(addMissingAttributes);
+
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityStringDefault(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editEntityStringDefault(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("entityAttributeName") final String entityAttributeName,
+            @GraphQLName("languageId") @GraphQLID final String languageId,
+            @GraphQLName("languageIsoName") final String languageIsoName,
+            @GraphQLName("stringAttribute") @GraphQLNonNull final String stringAttribute) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = CoreUtil.getHome().getEntityStringDefaultSpec();
+
+            spec.setUuid(id);
+            spec.setComponentVendorName(componentVendorName);
+            spec.setEntityTypeName(entityTypeName);
+            spec.setEntityAttributeName(entityAttributeName);
+            spec.setLanguageUuid(languageId);
+            spec.setLanguageIsoName(languageIsoName);
+
+            var commandForm = CoreUtil.getHome().getEditEntityStringDefaultForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CoreUtil.getHome().editEntityStringDefault(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditEntityStringDefaultResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("stringAttribute"))
+                    edit.setStringAttribute(stringAttribute);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CoreUtil.getHome().editEntityStringDefault(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteEntityStringDefault(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("entityAttributeName") final String entityAttributeName,
+            @GraphQLName("languageId") @GraphQLID final String languageId,
+            @GraphQLName("languageIsoName") final String languageIsoName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteEntityStringDefaultForm();
+
+            commandForm.setUuid(id);
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.setLanguageUuid(languageId);
+            commandForm.setLanguageIsoName(languageIsoName);
+
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityStringDefault(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

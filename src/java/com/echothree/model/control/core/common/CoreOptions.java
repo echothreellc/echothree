@@ -24,6 +24,8 @@ public interface CoreOptions {
     String EntityClobAttributeIncludeClob = "EntityClobAttributeIncludeClob";
     String EntityClobAttributeIncludeETag = "EntityClobAttributeIncludeETag";
 
+    String EntityStringDefaultIncludeString = "EntityStringDefaultIncludeString";
+
     String EntityStringAttributeIncludeString = "EntityStringAttributeIncludeString";
     
     String EntityAttributeGroupIncludeEntityAttributes = "EntityAttributeGroupIncludeEntityAttributes";
