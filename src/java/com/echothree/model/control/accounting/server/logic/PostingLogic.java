@@ -42,28 +42,36 @@ public class PostingLogic {
         return PostingLogicHolder.instance;
     }
     
-    private void updateGlAccountSummary(final AccountingControl accountingControl, final GlAccount glAccount, final Party groupParty, final Period period,
-            final long amount) {
+    private void updateGlAccountSummary(final AccountingControl accountingControl, final GlAccount glAccount,
+            final Party groupParty, final Period period, final Long debit, final Long credit) {
         var glAccountSummary = accountingControl.getGlAccountSummaryForUpdate(glAccount, groupParty, period);
-        
+
+        var debitAdjustment = debit == null ? 0L : debit;
+        var creditAdjustment = credit == null ? 0L : credit;
+        var balanceAdjustment = creditAdjustment - debitAdjustment;
         if(glAccountSummary == null) {
-            glAccountSummary = accountingControl.createGlAccountSummary(glAccount, groupParty, period, amount);
+            accountingControl.createGlAccountSummary(glAccount, groupParty, period, debitAdjustment, creditAdjustment,
+                    balanceAdjustment);
         } else {
-            glAccountSummary.setBalance(glAccountSummary.getBalance() + amount);
+            glAccountSummary.setDebitTotal(glAccountSummary.getDebitTotal() + debitAdjustment);
+            glAccountSummary.setCreditTotal(glAccountSummary.getCreditTotal() + creditAdjustment);
+            glAccountSummary.setBalance(glAccountSummary.getBalance() + balanceAdjustment);
         }
-        
     }
     
-    private void postTransactionGlEntry(final AccountingControl accountingControl, final PartyControl partyControl, final TransactionGlEntry transactionGlEntry,
-            final Period period) {
-        long amount = transactionGlEntry.getAmount();
-        var groupParty = transactionGlEntry.getGroupParty();
+    private void postTransactionGlEntry(final AccountingControl accountingControl, final PartyControl partyControl,
+            final TransactionGlEntry transactionGlEntry, final Period period) {
         var glAccount = transactionGlEntry.getGlAccount();
-        
+        var debit = transactionGlEntry.getDebit();
+        var credit = transactionGlEntry.getCredit();
+
+        // Go through this for each one of the COMPANY, DIVISION, and DEPARTMENT, updating the
+        // GL Account Summaries as needed.
+        var groupParty = transactionGlEntry.getGroupParty();
         for(var i = 0; i < 3; i++) {
             var partyTypeName = groupParty.getLastDetail().getPartyType().getPartyTypeName();
             
-            updateGlAccountSummary(accountingControl, glAccount, groupParty, period, amount);
+            updateGlAccountSummary(accountingControl, glAccount, groupParty, period, debit, credit);
             
             if(partyTypeName.equals(PartyTypes.COMPANY.name())) {
                 break;

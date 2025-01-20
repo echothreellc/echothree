@@ -47,18 +47,23 @@ public class TransactionGlEntryTransferCache
             var transactionGlAccountCategory = transactionGlEntry.getTransactionGlAccountCategory();
             var transactionGlAccountCategoryTransfer = transactionGlAccountCategory == null ? null : accountingControl.getTransactionGlAccountCategoryTransfer(userVisit, transactionGlEntry.getTransactionGlAccountCategory());
             var glAccount = transactionGlEntry.getGlAccount();
+            var glAccountCurrency = glAccount.getLastDetail().getCurrency();
             var glAccountTransfer = accountingControl.getGlAccountTransfer(userVisit, glAccount);
             var originalCurrency = transactionGlEntry.getOriginalCurrency();
             var originalCurrencyTransfer = originalCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, originalCurrency);
-            var unformattedOriginalAmount = transactionGlEntry.getOriginalAmount();
-            var originalDebit = unformattedOriginalAmount >= 0 ? null : AmountUtils.getInstance().formatAmount(originalCurrency, -unformattedOriginalAmount);
-            var originalCredit = originalDebit == null ? AmountUtils.getInstance().formatAmount(originalCurrency, unformattedOriginalAmount) : null;
-            var unformattedAmount = transactionGlEntry.getAmount();
-            var debit = unformattedAmount >= 0 ? null : AmountUtils.getInstance().formatAmount(originalCurrency, -unformattedAmount);
-            var credit = debit == null ? AmountUtils.getInstance().formatAmount(originalCurrency, unformattedAmount) : null;
+            var unformattedOriginalDebit = transactionGlEntry.getOriginalDebit();
+            var originalDebit = unformattedOriginalDebit == null ? null : AmountUtils.getInstance().formatAmount(originalCurrency, unformattedOriginalDebit);
+            var unformattedOriginalCredit = transactionGlEntry.getOriginalDebit();
+            var originalCredit = unformattedOriginalCredit == null ? null : AmountUtils.getInstance().formatAmount(originalCurrency, unformattedOriginalCredit);
+            var unformattedDebit = transactionGlEntry.getDebit();
+            var debit = unformattedDebit == null ? null : AmountUtils.getInstance().formatAmount(glAccountCurrency, unformattedDebit);
+            var unformattedCredit = transactionGlEntry.getCredit();
+            var credit = unformattedCredit == null ? null : AmountUtils.getInstance().formatAmount(glAccountCurrency, unformattedCredit);
 
-            transactionGlEntryTransfer = new TransactionGlEntryTransfer(transactionTransfer, transactionGlEntrySequence, parentTransactionGlEntryTransfer, groupPartyTransfer,
-                    transactionGlAccountCategoryTransfer, glAccountTransfer, originalCurrencyTransfer, unformattedOriginalAmount, originalDebit, originalCredit, unformattedAmount, debit, credit);
+            transactionGlEntryTransfer = new TransactionGlEntryTransfer(transactionTransfer, transactionGlEntrySequence,
+                    parentTransactionGlEntryTransfer, groupPartyTransfer, transactionGlAccountCategoryTransfer, glAccountTransfer,
+                    originalCurrencyTransfer, unformattedOriginalDebit, originalDebit, unformattedOriginalCredit, originalCredit,
+                    unformattedDebit, debit, unformattedCredit, credit);
 
             put(transactionGlEntry, transactionGlEntryTransfer);
         }

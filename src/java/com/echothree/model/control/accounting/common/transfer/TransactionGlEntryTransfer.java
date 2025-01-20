@@ -29,18 +29,21 @@ public class TransactionGlEntryTransfer
     private TransactionGlAccountCategoryTransfer transactionGlAccountCategory;
     private GlAccountTransfer glAccount;
     private CurrencyTransfer originalCurrency;
-    private Long unformattedOriginalAmount;
+    private Long unformattedOriginalDebit;
     private String originalDebit;
+    private Long unformattedOriginalCredit;
     private String originalCredit;
-    private Long unformattedAmount;
+    private Long unformattedDebit;
     private String debit;
+    private Long unformattedCredit;
     private String credit;
 
-    /** Creates a new instance of TransactionGlEntryTransfer */
-    public TransactionGlEntryTransfer(TransactionTransfer transaction, Integer transactionGlEntrySequence, TransactionGlEntryTransfer parentTransactionGlEntry,
-            PartyTransfer groupParty, TransactionGlAccountCategoryTransfer transactionGlAccountCategory, GlAccountTransfer glAccount,
-            CurrencyTransfer originalCurrency, Long unformattedOriginalAmount, String originalDebit, String originalCredit, Long unformattedAmount,
-            String debit, String credit) {
+    public TransactionGlEntryTransfer(final TransactionTransfer transaction, final Integer transactionGlEntrySequence,
+            final TransactionGlEntryTransfer parentTransactionGlEntry, final PartyTransfer groupParty,
+            final TransactionGlAccountCategoryTransfer transactionGlAccountCategory, final GlAccountTransfer glAccount,
+            final CurrencyTransfer originalCurrency, final Long unformattedOriginalDebit, final String originalDebit,
+            final Long unformattedOriginalCredit, final String originalCredit, final Long unformattedDebit, final String debit,
+            final Long unformattedCredit, final String credit) {
         this.transaction = transaction;
         this.transactionGlEntrySequence = transactionGlEntrySequence;
         this.parentTransactionGlEntry = parentTransactionGlEntry;
@@ -48,11 +51,13 @@ public class TransactionGlEntryTransfer
         this.transactionGlAccountCategory = transactionGlAccountCategory;
         this.glAccount = glAccount;
         this.originalCurrency = originalCurrency;
-        this.unformattedOriginalAmount = unformattedOriginalAmount;
+        this.unformattedOriginalDebit = unformattedOriginalDebit;
         this.originalDebit = originalDebit;
+        this.unformattedOriginalCredit = unformattedOriginalCredit;
         this.originalCredit = originalCredit;
-        this.unformattedAmount = unformattedAmount;
+        this.unformattedDebit = unformattedDebit;
         this.debit = debit;
+        this.unformattedCredit = unformattedCredit;
         this.credit = credit;
     }
 
@@ -60,7 +65,7 @@ public class TransactionGlEntryTransfer
         return transaction;
     }
 
-    public void setTransaction(TransactionTransfer transaction) {
+    public void setTransaction(final TransactionTransfer transaction) {
         this.transaction = transaction;
     }
 
@@ -68,7 +73,7 @@ public class TransactionGlEntryTransfer
         return transactionGlEntrySequence;
     }
 
-    public void setTransactionGlEntrySequence(Integer transactionGlEntrySequence) {
+    public void setTransactionGlEntrySequence(final Integer transactionGlEntrySequence) {
         this.transactionGlEntrySequence = transactionGlEntrySequence;
     }
 
@@ -76,7 +81,7 @@ public class TransactionGlEntryTransfer
         return parentTransactionGlEntry;
     }
 
-    public void setParentTransactionGlEntry(TransactionGlEntryTransfer parentTransactionGlEntry) {
+    public void setParentTransactionGlEntry(final TransactionGlEntryTransfer parentTransactionGlEntry) {
         this.parentTransactionGlEntry = parentTransactionGlEntry;
     }
 
@@ -84,7 +89,7 @@ public class TransactionGlEntryTransfer
         return groupParty;
     }
 
-    public void setGroupParty(PartyTransfer groupParty) {
+    public void setGroupParty(final PartyTransfer groupParty) {
         this.groupParty = groupParty;
     }
 
@@ -92,7 +97,7 @@ public class TransactionGlEntryTransfer
         return transactionGlAccountCategory;
     }
 
-    public void setTransactionGlAccountCategory(TransactionGlAccountCategoryTransfer transactionGlAccountCategory) {
+    public void setTransactionGlAccountCategory(final TransactionGlAccountCategoryTransfer transactionGlAccountCategory) {
         this.transactionGlAccountCategory = transactionGlAccountCategory;
     }
 
@@ -100,7 +105,7 @@ public class TransactionGlEntryTransfer
         return glAccount;
     }
 
-    public void setGlAccount(GlAccountTransfer glAccount) {
+    public void setGlAccount(final GlAccountTransfer glAccount) {
         this.glAccount = glAccount;
     }
 
@@ -108,55 +113,71 @@ public class TransactionGlEntryTransfer
         return originalCurrency;
     }
 
-    public void setOriginalCurrency(CurrencyTransfer originalCurrency) {
+    public void setOriginalCurrency(final CurrencyTransfer originalCurrency) {
         this.originalCurrency = originalCurrency;
     }
 
-    public Long getUnformattedOriginalAmount() {
-        return unformattedOriginalAmount;
+    public Long getUnformattedOriginalDebit() {
+        return unformattedOriginalDebit;
     }
 
-    public void setUnformattedOriginalAmount(Long unformattedOriginalAmount) {
-        this.unformattedOriginalAmount = unformattedOriginalAmount;
+    public void setUnformattedOriginalDebit(final Long unformattedOriginalDebit) {
+        this.unformattedOriginalDebit = unformattedOriginalDebit;
     }
 
     public String getOriginalDebit() {
         return originalDebit;
     }
 
-    public void setOriginalDebit(String originalDebit) {
+    public void setOriginalDebit(final String originalDebit) {
         this.originalDebit = originalDebit;
+    }
+
+    public Long getUnformattedOriginalCredit() {
+        return unformattedOriginalCredit;
+    }
+
+    public void setUnformattedOriginalCredit(final Long unformattedOriginalCredit) {
+        this.unformattedOriginalCredit = unformattedOriginalCredit;
     }
 
     public String getOriginalCredit() {
         return originalCredit;
     }
 
-    public void setOriginalCredit(String originalCredit) {
+    public void setOriginalCredit(final String originalCredit) {
         this.originalCredit = originalCredit;
     }
 
-    public Long getUnformattedAmount() {
-        return unformattedAmount;
+    public Long getUnformattedDebit() {
+        return unformattedDebit;
     }
 
-    public void setUnformattedAmount(Long unformattedAmount) {
-        this.unformattedAmount = unformattedAmount;
+    public void setUnformattedDebit(final Long unformattedDebit) {
+        this.unformattedDebit = unformattedDebit;
     }
 
     public String getDebit() {
         return debit;
     }
 
-    public void setDebit(String debit) {
+    public void setDebit(final String debit) {
         this.debit = debit;
+    }
+
+    public Long getUnformattedCredit() {
+        return unformattedCredit;
+    }
+
+    public void setUnformattedCredit(final Long unformattedCredit) {
+        this.unformattedCredit = unformattedCredit;
     }
 
     public String getCredit() {
         return credit;
     }
 
-    public void setCredit(String credit) {
+    public void setCredit(final String credit) {
         this.credit = credit;
     }
 

@@ -454,6 +454,8 @@
                         <column name="GlAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
                         <column name="GroupPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
                         <column name="PeriodId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Periods" destinationColumn="PeriodId" />
+                        <column name="DebitTotal" type="Currency" nullAllowed="false" />
+                        <column name="CreditTotal" type="Currency" nullAllowed="false" />
                         <column name="Balance" type="Currency" nullAllowed="false" />
                     </columns>
                     <indexes>
@@ -987,9 +989,11 @@
                         <column name="GroupPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
                         <column name="TransactionGlAccountCategoryId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionGlAccountCategories" destinationColumn="TransactionGlAccountCategoryId" />
                         <column name="GlAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
-                        <column name="OriginalCurrencyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
-                        <column name="OriginalAmount" type="Currency" nullAllowed="true" />
-                        <column name="Amount" type="Currency" nullAllowed="false" />
+                        <column name="OriginalCurrencyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="OriginalDebit" type="Currency" nullAllowed="true" />
+                        <column name="OriginalCredit" type="Currency" nullAllowed="true" />
+                        <column name="Debit" type="Currency" nullAllowed="true" />
+                        <column name="Credit" type="Currency" nullAllowed="true" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>
