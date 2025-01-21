@@ -45,29 +45,35 @@ public class TransactionLogic {
         return TransactionLogicHolder.instance;
     }
     
-    public Transaction createTransactionUsingNames(final Session session, final Party groupParty, final String transactionTypeName, final Long postingTime, final BasePK createdBy) {
+    public Transaction createTransactionUsingNames(final Session session, final Party groupParty, final String transactionTypeName,
+            final Long postingTime, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         
-        return createTransaction(session, groupParty, accountingControl.getTransactionTypeByName(transactionTypeName), postingTime, createdBy);
+        return createTransaction(session, groupParty, accountingControl.getTransactionTypeByName(transactionTypeName),
+                postingTime, createdBy);
     }
     
-    public Transaction createTransaction(final Session session, final Party groupParty, final TransactionType transactionType, final Long postingTime, final BasePK createdBy) {
+    public Transaction createTransaction(final Session session, final Party groupParty, final TransactionType transactionType,
+            final Long postingTime, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         
-        return accountingControl.createTransaction(groupParty, transactionType, postingTime == null? session.START_TIME_LONG: postingTime, createdBy);
-    }
-    
-    public TransactionGlEntry createTransactionGlEntryUsingNames(final Transaction transaction, final Party groupParty, final String transactionGlAccountCategoryName,
-            final GlAccount glAccount, final Currency originalCurrency, final Long originalAmount, final BasePK createdBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        var transactionDetail = transaction.getLastDetail();
-        
-        return createTransactionGlEntry(transaction, groupParty == null? transactionDetail.getGroupParty(): groupParty,
-                accountingControl.getTransactionGlAccountCategoryByName(transactionDetail.getTransactionType(), transactionGlAccountCategoryName), glAccount, originalCurrency, originalAmount,
+        return accountingControl.createTransaction(groupParty, transactionType, postingTime == null ? session.START_TIME_LONG : postingTime,
                 createdBy);
     }
     
-    private GlAccount getGlAccount(final AccountingControl accountingControl, final TransactionGlAccountCategory transactionGlAccountCategory, GlAccount glAccount) {
+    public TransactionGlEntry createTransactionGlEntryUsingNames(final Transaction transaction, final Party groupParty,
+            final String transactionGlAccountCategoryName, final GlAccount glAccount, final Currency originalCurrency,
+            final Long originalDebit, final Long originalCredit, final BasePK createdBy) {
+        var accountingControl = Session.getModelController(AccountingControl.class);
+        var transactionDetail = transaction.getLastDetail();
+        
+        return createTransactionGlEntry(transaction, groupParty == null ? transactionDetail.getGroupParty() : groupParty,
+                accountingControl.getTransactionGlAccountCategoryByName(transactionDetail.getTransactionType(), transactionGlAccountCategoryName),
+                glAccount, originalCurrency, originalDebit, originalCredit, createdBy);
+    }
+    
+    private GlAccount getGlAccount(final AccountingControl accountingControl, final TransactionGlAccountCategory transactionGlAccountCategory,
+            GlAccount glAccount) {
         if(glAccount == null) {
             var transactionGlAccount = accountingControl.getTransactionGlAccount(transactionGlAccountCategory);
             
@@ -103,20 +109,23 @@ public class TransactionLogic {
         return amount;
     }
     
-    public TransactionGlEntry createTransactionGlEntry(final Transaction transaction, final Party groupParty, final TransactionGlAccountCategory transactionGlAccountCategory,
-            GlAccount glAccount, final Currency originalCurrency, final Long originalAmount, final BasePK createdBy) {
+    public TransactionGlEntry createTransactionGlEntry(final Transaction transaction, final Party groupParty,
+            final TransactionGlAccountCategory transactionGlAccountCategory, GlAccount glAccount, final Currency originalCurrency,
+            final Long originalDebit, final Long originalCredit, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         
         glAccount = getGlAccount(accountingControl, transactionGlAccountCategory, glAccount);
 
-        var amount = getAmount(glAccount, originalCurrency, originalAmount);
-        
-        return accountingControl.createTransactionGlEntry(transaction, getTransactionGlEntrySequence(accountingControl, transaction), null, groupParty, transactionGlAccountCategory, glAccount,
-                originalCurrency, originalAmount, amount, createdBy);
+        var debit = originalDebit == null ? null : getAmount(glAccount, originalCurrency, originalDebit);
+        var credit = originalCredit == null ? null : getAmount(glAccount, originalCurrency, originalCredit);
+
+        return accountingControl.createTransactionGlEntry(transaction, getTransactionGlEntrySequence(accountingControl, transaction),
+                null, groupParty, transactionGlAccountCategory, glAccount, originalCurrency, originalDebit,
+                originalCredit, debit, credit, createdBy);
     }
     
-    public TransactionEntityRole createTransactionEntityRoleUsingNames(final Transaction transaction, final String transactionEntityRoleTypeName, final BasePK pk,
-            final BasePK createdBy) {
+    public TransactionEntityRole createTransactionEntityRoleUsingNames(final Transaction transaction,
+            final String transactionEntityRoleTypeName, final BasePK pk, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transaction.getLastDetail().getTransactionType(),
                 transactionEntityRoleTypeName);
@@ -124,8 +133,8 @@ public class TransactionLogic {
         return createTransactionEntityRole(transaction, transactionEntityRoleType, pk, createdBy);
     }
     
-    public TransactionEntityRole createTransactionEntityRole(final Transaction transaction, final TransactionEntityRoleType transactionEntityRoleType, final BasePK pk,
-            final BasePK createdBy) {
+    public TransactionEntityRole createTransactionEntityRole(final Transaction transaction,
+            final TransactionEntityRoleType transactionEntityRoleType, final BasePK pk, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var coreControl = Session.getModelController(CoreControl.class);
         var entityInstance = coreControl.getEntityInstanceByBasePK(pk);
@@ -154,8 +163,8 @@ public class TransactionLogic {
         var originalCurrency = accountingControl.getDefaultCurrency();
 
         var transaction = createTransactionUsingNames(session, departmentParty, "TEST", null, testedBy);
-        createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_A", null, originalCurrency, 1999L, testedBy);
-        createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_B", null, originalCurrency, -1999L, testedBy);
+        createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_A", null, originalCurrency, null, 1999L, testedBy);
+        createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_B", null, originalCurrency, 1999L, null, testedBy);
         createTransactionEntityRoleUsingNames(transaction, "TEST_ENTITY_INSTANCE_ROLE_TYPE", testedBy, testedBy);
         finishTransaction(transaction);
     }

@@ -3585,8 +3585,9 @@ public class AccountingControl
     //   Gl Account Summaries
     // --------------------------------------------------------------------------------
     
-    public GlAccountSummary createGlAccountSummary(GlAccount glAccount, Party groupParty, Period period, Long balance) {
-        return GlAccountSummaryFactory.getInstance().create(glAccount, groupParty, period, balance);
+    public GlAccountSummary createGlAccountSummary(GlAccount glAccount, Party groupParty, Period period, Long debitTotal,
+            Long creditTotal, Long balance) {
+        return GlAccountSummaryFactory.getInstance().create(glAccount, groupParty, period, debitTotal, creditTotal, balance);
     }
     
     private GlAccountSummary getGlAccountSummary(GlAccount glAccount, Party groupParty, Period period, EntityPermission entityPermission) {
@@ -5241,10 +5242,13 @@ public class AccountingControl
     //   Transaction Gl Account Entries
     // --------------------------------------------------------------------------------
     
-    public TransactionGlEntry createTransactionGlEntry(Transaction transaction, Integer transactionGlEntrySequence, TransactionGlEntry parentTransactionGlEntry, Party groupParty,
-            TransactionGlAccountCategory transactionGlAccountCategory, GlAccount glAccount, Currency originalCurrency, Long originalAmount, Long amount, BasePK createdBy) {
-        var transactionGlEntry = TransactionGlEntryFactory.getInstance().create(transaction, transactionGlEntrySequence, parentTransactionGlEntry, groupParty,
-                transactionGlAccountCategory, glAccount, originalCurrency, originalAmount, amount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+    public TransactionGlEntry createTransactionGlEntry(Transaction transaction, Integer transactionGlEntrySequence,
+            TransactionGlEntry parentTransactionGlEntry, Party groupParty, TransactionGlAccountCategory transactionGlAccountCategory,
+            GlAccount glAccount, Currency originalCurrency, Long originalDebit, Long originalCredit, Long debit, Long credit,
+            BasePK createdBy) {
+        var transactionGlEntry = TransactionGlEntryFactory.getInstance().create(transaction, transactionGlEntrySequence,
+                parentTransactionGlEntry, groupParty, transactionGlAccountCategory, glAccount, originalCurrency, originalDebit,
+                originalCredit, debit, credit, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(transaction.getPrimaryKey(), EventTypes.MODIFY, transactionGlEntry.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
