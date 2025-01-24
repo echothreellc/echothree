@@ -268,6 +268,18 @@
                 <securityRoleDescription languageIsoName="en" description="Transaction Group List" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="TransactionGroupStatus" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Transaction Group Status" />
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="Transaction" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Transaction" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Transaction List" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="TransactionStatus" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Transaction Status" />
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="Currency" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Currency" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -7863,6 +7875,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Term" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TransactionType" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TransactionGroup" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Transaction" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Currency" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Currency" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Currency" securityRoleName="Review" />

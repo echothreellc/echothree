@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2025 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <workflows>
+        <workflow workflowName="TRANSACTION_GROUP_STATUS" securityRoleGroupName="TransactionGroupStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Transaction Group Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowStep workflowStepName="ARCHIVED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="3">
+                <workflowStepDescription languageIsoName="en" description="Archived" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Transaction Group is Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_ARCHIVED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Transaction Group is Archived" />
+                <workflowDestinationStep destinationWorkflowStepName="ARCHIVED" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Transaction Group" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="TransactionGroup" />
+        </workflow>
+        <workflow workflowName="TRANSACTION_STATUS" securityRoleGroupName="TransactionStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Transaction Status" />
+            <workflowStep workflowStepName="ENTRY" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Entry" />
+            </workflowStep>
+            <workflowStep workflowStepName="PENDING" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Pending" />
+            </workflowStep>
+            <workflowStep workflowStepName="REJECTED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="3">
+                <workflowStepDescription languageIsoName="en" description="Rejected" />
+            </workflowStep>
+            <workflowStep workflowStepName="POSTED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="4">
+                <workflowStepDescription languageIsoName="en" description="Posted" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ENTRY" workflowDestinationName="ENTRY_TO_PENDING" isDefault="true" sortOrder="1">
+                <workflowDestinationDescription languageIsoName="en" description="Entry to Pending" />
+                <workflowDestinationStep destinationWorkflowStepName="PENDING" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ENTRY" workflowDestinationName="ENTRY_TO_POSTED" isDefault="false" sortOrder="2">
+                <workflowDestinationDescription languageIsoName="en" description="Entry to Posted" />
+                <workflowDestinationStep destinationWorkflowStepName="POSTED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="PENDING" workflowDestinationName="PENDING_TO_REJECTED" isDefault="false" sortOrder="1">
+                <workflowDestinationDescription languageIsoName="en" description="Pending to Rejected" />
+                <workflowDestinationStep destinationWorkflowStepName="REJECTED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="PENDING" workflowDestinationName="PENDING_TO_POSTED" isDefault="true" sortOrder="2">
+                <workflowDestinationDescription languageIsoName="en" description="Pending to Posted" />
+                <workflowDestinationStep destinationWorkflowStepName="POSTED" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ENTRY" isDefault="true" sortOrder="1">
+                <workflowEntranceDescription languageIsoName="en" description="New Entry Transaction" />
+                <workflowEntranceStep entranceWorkflowStepName="ENTRY" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_POSTED" isDefault="false" sortOrder="2">
+                <workflowEntranceDescription languageIsoName="en" description="New Posted Transaction" />
+                <workflowEntranceStep entranceWorkflowStepName="POSTED" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Transaction" />
+        </workflow>
+    </workflows>
+    <transactionTypes>
+        <transactionType transactionTypeName="TEST" sortOrder="1">
+            <transactionTypeDescription languageIsoName="en" description="Test Transaction" />
+            <transactionGlAccountCategory transactionGlAccountCategoryName="TEST_ACCOUNT_A" glAccountCategoryName="BALANCE_ACCOUNT" sortOrder="1" glAccountName="10010">
+                <transactionGlAccountCategoryDescription languageIsoName="en" description="Test Transaction, Account A" />
+            </transactionGlAccountCategory>
+            <transactionGlAccountCategory transactionGlAccountCategoryName="TEST_ACCOUNT_B" glAccountCategoryName="BALANCE_ACCOUNT" sortOrder="1" glAccountName="10020">
+                <transactionGlAccountCategoryDescription languageIsoName="en" description="Test Transaction, Account B" />
+            </transactionGlAccountCategory>
+            <transactionEntityRoleType transactionEntityRoleTypeName="TEST_ENTITY_INSTANCE_ROLE_TYPE" componentVendorName="ECHO_THREE" entityTypeName="Party" sortOrder="1">
+                <transactionEntityRoleTypeDescription languageIsoName="en" description="Test Transaction, Customer" />
+            </transactionEntityRoleType>
+        </transactionType>
+    </transactionTypes>
+</initialData>

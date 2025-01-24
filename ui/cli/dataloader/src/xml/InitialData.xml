@@ -44,7 +44,7 @@
         <file name="/InitialContactMechanisms.xml" />
         <file name="/InitialCurrencies.xml" />
         <file name="/InitialGlAccounts.xml" />
-        <file name="/InitialTransactionTypes.xml" />
+        <file name="/InitialTransactions.xml" />
         <file name="/InitialTaxes.xml" />
         <file name="/InitialGeoCodeTypes.xml" />
         <file name="/InitialGeoCodeScopes.xml" />

@@ -446,31 +446,6 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="UserVisitGroup" />
         </workflow>
-        <workflow workflowName="TRANSACTION_GROUP_STATUS" sortOrder="0">
-            <workflowDescription languageIsoName="en" description="Transaction Group Status" />
-            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
-                <workflowStepDescription languageIsoName="en" description="Active" />
-            </workflowStep>
-            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
-                <workflowStepDescription languageIsoName="en" description="Inactive" />
-            </workflowStep>
-            <workflowStep workflowStepName="ARCHIVED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="3">
-                <workflowStepDescription languageIsoName="en" description="Archived" />
-            </workflowStep>
-            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="true" sortOrder="0">
-                <workflowDestinationDescription languageIsoName="en" description="Transaction Group is Inactive" />
-                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
-            </workflowDestination>
-            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_ARCHIVED" isDefault="true" sortOrder="0">
-                <workflowDestinationDescription languageIsoName="en" description="Transaction Group is Archived" />
-                <workflowDestinationStep destinationWorkflowStepName="ARCHIVED" />
-            </workflowDestination>
-            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
-                <workflowEntranceDescription languageIsoName="en" description="New Transaction Group" />
-                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
-            </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="TransactionGroup" />
-        </workflow>
         <workflow workflowName="PRINTER_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Printer Status" />
             <workflowStep workflowStepName="ACCEPTING_JOBS" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
@@ -1100,44 +1075,6 @@
                 <workflowEntranceStep entranceWorkflowStepName="ENTRY" />
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Invoice" />
-        </workflow>
-        <workflow workflowName="FISCAL_PERIOD_STATUS" securityRoleGroupName="FiscalPeriodStatus" sortOrder="0">
-            <workflowDescription languageIsoName="en" description="Fiscal Period Status" />
-            <workflowStep workflowStepName="OPEN" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
-                <workflowStepDescription languageIsoName="en" description="Open" />
-            </workflowStep>
-            <workflowStep workflowStepName="CLOSED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
-                <workflowStepDescription languageIsoName="en" description="Closed" />
-            </workflowStep>
-            <workflowStep workflowStepName="FINAL" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
-                <workflowStepDescription languageIsoName="en" description="Final" />
-            </workflowStep>
-            <workflowDestination workflowStepName="OPEN" workflowDestinationName="OPEN_TO_CLOSED" isDefault="true" sortOrder="0">
-                <workflowDestinationDescription languageIsoName="en" description="Open to Closed" />
-                <workflowDestinationStep destinationWorkflowStepName="CLOSED" />
-                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
-                    <workflowDestinationSecurityRole securityRoleName="OpenToClosed" />
-                </workflowDestinationPartyType>
-            </workflowDestination>
-            <workflowDestination workflowStepName="CLOSED" workflowDestinationName="CLOSED_TO_OPEN" isDefault="true" sortOrder="0">
-                <workflowDestinationDescription languageIsoName="en" description="Closed to Open" />
-                <workflowDestinationStep destinationWorkflowStepName="OPEN" />
-                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
-                    <workflowDestinationSecurityRole securityRoleName="ClosedToOpen" />
-                </workflowDestinationPartyType>
-            </workflowDestination>
-            <workflowDestination workflowStepName="CLOSED" workflowDestinationName="CLOSED_TO_FINAL" isDefault="true" sortOrder="0">
-                <workflowDestinationDescription languageIsoName="en" description="Closed to Final" />
-                <workflowDestinationStep destinationWorkflowStepName="FINAL" />
-                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
-                    <workflowDestinationSecurityRole securityRoleName="ClosedToFinal" />
-                </workflowDestinationPartyType>
-            </workflowDestination>
-            <workflowEntrance workflowEntranceName="NEW_FISCAL_PERIOD" isDefault="true" sortOrder="0">
-                <workflowEntranceDescription languageIsoName="en" description="New Fiscal Period" />
-                <workflowEntranceStep entranceWorkflowStepName="OPEN" />
-            </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Period" />
         </workflow>
         <workflow workflowName="VENDOR_STATUS" securityRoleGroupName="VendorStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Vendor Status" />
