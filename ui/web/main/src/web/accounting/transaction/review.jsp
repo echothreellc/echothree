@@ -82,12 +82,6 @@
                     </c:url>
                     <a href="${glAccountUrl}"><c:out value="${transactionGlEntry.glAccount.description}" /></a>
                 </display:column>
-                <display:column titleKey="columnTitle.originalCurrency">
-                    <c:url var="originalCurrencyUrl" value="/action/Accounting/Currency/Review">
-                        <c:param name="CurrencyIsoName" value="${transactionGlEntry.originalCurrency.currencyIsoName}" />
-                    </c:url>
-                    <a href="${originalCurrencyUrl}"><c:out value="${transactionGlEntry.originalCurrency.currencyIsoName}" /></a>
-                </display:column>
                 <display:column titleKey="columnTitle.originalDebit" class="amount">
                     <c:if test="${transactionGlEntry.originalDebit != null}">
                         <c:out value="${transactionGlEntry.originalCurrency.symbol}" /><c:out value="${transactionGlEntry.originalDebit}" />
@@ -97,6 +91,12 @@
                     <c:if test="${transactionGlEntry.originalCredit != null}">
                         <c:out value="${transactionGlEntry.originalCurrency.symbol}" /><c:out value="${transactionGlEntry.originalCredit}" />
                     </c:if>
+                </display:column>
+                <display:column titleKey="columnTitle.originalCurrency">
+                    <c:url var="originalCurrencyUrl" value="/action/Accounting/Currency/Review">
+                        <c:param name="CurrencyIsoName" value="${transactionGlEntry.originalCurrency.currencyIsoName}" />
+                    </c:url>
+                    <a href="${originalCurrencyUrl}"><c:out value="${transactionGlEntry.originalCurrency.currencyIsoName}" /></a>
                 </display:column>
                 <display:column titleKey="columnTitle.debit" class="amount">
                     <c:if test="${transactionGlEntry.debit != null}">
@@ -108,7 +108,7 @@
                         <c:out value="${transactionGlEntry.glAccount.currency.symbol}" /><c:out value="${transactionGlEntry.credit}" />
                     </c:if>
                 </display:column>
-                <display:column>
+                <display:column titleKey="columnTitle.currency">
                     <c:url var="currencyUrl" value="/action/Accounting/Currency/Review">
                         <c:param name="CurrencyIsoName" value="${transactionGlEntry.glAccount.currency.currencyIsoName}" />
                     </c:url>
