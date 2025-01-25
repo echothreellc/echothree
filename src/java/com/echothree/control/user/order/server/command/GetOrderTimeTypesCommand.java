@@ -85,7 +85,7 @@ public class GetOrderTimeTypesCommand
             var orderTimeControl = Session.getModelController(OrderTimeControl.class);
 
             if(session.hasLimit(OrderTimeTypeFactory.class)) {
-                result.setOrderTimeTypeCount(orderTimeControl.countOrderPriorities(orderType));
+                result.setOrderTimeTypeCount(orderTimeControl.countOrderTimeTypes(orderType));
             }
 
             result.setOrderType(orderTypeControl.getOrderTypeTransfer(getUserVisit(), orderType));
