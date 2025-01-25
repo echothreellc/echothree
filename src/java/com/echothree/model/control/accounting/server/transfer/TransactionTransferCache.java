@@ -74,7 +74,6 @@ public class TransactionTransferCache
             var transactionStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     TransactionStatusConstants.Workflow_TRANSACTION_STATUS, entityInstance);
 
-
             transactionTransfer = new TransactionTransfer(transactionName, groupPartyTransfer, transactionGroupTransfer,
                     transactionTypeTransfer, transactionStatusTransfer);
             put(transaction, transactionTransfer);
