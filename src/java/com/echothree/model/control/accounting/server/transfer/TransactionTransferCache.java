@@ -16,12 +16,15 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.AccountingOptions;
+import com.echothree.model.control.accounting.common.transfer.TransactionTimeTransfer;
 import com.echothree.model.control.accounting.common.transfer.TransactionTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.control.TransactionTimeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.accounting.server.entity.Transaction;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
 
 public class TransactionTransferCache
@@ -29,10 +32,12 @@ public class TransactionTransferCache
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+    TransactionTimeControl transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
 
     boolean includeTransactionGlEntries;
     boolean includeTransactionEntityRoles;
-    
+    boolean includeTransactionTimes;
+
     /** Creates a new instance of TransactionTransferCache */
     public TransactionTransferCache(UserVisit userVisit) {
         super(userVisit);
@@ -41,6 +46,7 @@ public class TransactionTransferCache
         if(options != null) {
             includeTransactionGlEntries = options.contains(AccountingOptions.TransactionIncludeTransactionGlEntries);
             includeTransactionEntityRoles = options.contains(AccountingOptions.TransactionIncludeTransactionEntityRoles);
+            includeTransactionTimes = options.contains(AccountingOptions.TransactionIncludeTransactionTimes);
         }
         
         setIncludeEntityInstance(true);
@@ -66,9 +72,20 @@ public class TransactionTransferCache
             if(includeTransactionGlEntries) {
                 transactionTransfer.setTransactionGlEntries(new ListWrapper<>(accountingControl.getTransactionGlEntryTransfersByTransaction(userVisit, transaction)));
             }
-            
+
             if(includeTransactionEntityRoles) {
                 transactionTransfer.setTransactionEntityRoles(new ListWrapper<>(accountingControl.getTransactionEntityRoleTransfersByTransaction(userVisit, transaction)));
+            }
+
+            if(includeTransactionTimes) {
+                var transfers = transactionTimeControl.getTransactionTimeTransfersByTransaction(userVisit, transaction);
+                var mapWrapper = new MapWrapper<TransactionTimeTransfer>(transfers.size());
+
+                transfers.forEach((transfer) -> {
+                    mapWrapper.put(transfer.getTransactionTimeType().getTransactionTimeTypeName(), transfer);
+                });
+
+                transactionTransfer.setTransactionTimes(mapWrapper);
             }
         }
 

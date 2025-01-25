@@ -49,6 +49,9 @@ public class AccountingTransferCaches
     protected TransactionEntityRoleTypeDescriptionTransferCache transactionEntityRoleTypeDescriptionTransferCache;
     protected SymbolPositionDescriptionTransferCache symbolPositionDescriptionTransferCache;
     protected SymbolPositionTransferCache symbolPositionTransferCache;
+    protected TransactionTimeTypeTransferCache transactionTimeTypeTransferCache;
+    protected TransactionTimeTypeDescriptionTransferCache transactionTimeTypeDescriptionTransferCache;
+    protected TransactionTimeTransferCache transactionTimeTransferCache;
     
     /** Creates a new instance of AccountingTransferCaches */
     public AccountingTransferCaches(UserVisit userVisit) {
@@ -236,5 +239,26 @@ public class AccountingTransferCaches
         
         return symbolPositionTransferCache;
     }
-    
+
+    public TransactionTimeTypeTransferCache getTransactionTimeTypeTransferCache() {
+        if(transactionTimeTypeTransferCache == null)
+            transactionTimeTypeTransferCache = new TransactionTimeTypeTransferCache(userVisit);
+
+        return transactionTimeTypeTransferCache;
+    }
+
+    public TransactionTimeTypeDescriptionTransferCache getTransactionTimeTypeDescriptionTransferCache() {
+        if(transactionTimeTypeDescriptionTransferCache == null)
+            transactionTimeTypeDescriptionTransferCache = new TransactionTimeTypeDescriptionTransferCache(userVisit);
+
+        return transactionTimeTypeDescriptionTransferCache;
+    }
+
+    public TransactionTimeTransferCache getTransactionTimeTransferCache() {
+        if(transactionTimeTransferCache == null)
+            transactionTimeTransferCache = new TransactionTimeTransferCache(userVisit);
+
+        return transactionTimeTransferCache;
+    }
+
 }

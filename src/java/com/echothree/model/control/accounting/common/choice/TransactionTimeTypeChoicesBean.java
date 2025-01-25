@@ -14,14 +14,17 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.accounting.common;
+package com.echothree.model.control.accounting.common.choice;
 
-public interface AccountingOptions {
-    
-    String TransactionGroupIncludeTransactions = "TransactionGroupIncludeTransactions";
-    
-    String TransactionIncludeTransactionGlEntries = "TransactionIncludeTransactionGlEntries";
-    String TransactionIncludeTransactionEntityRoles = "TransactionIncludeTransactionEntityRoles";
-    String TransactionIncludeTransactionTimes = "TransactionIncludeTransactionTimes";
+import com.echothree.view.common.BaseChoicesBean;
+import java.util.List;
+
+public class TransactionTimeTypeChoicesBean
+        extends BaseChoicesBean {
+
+    /** Creates a new instance of TransactionTimeTypeChoicesBean */
+    public TransactionTimeTypeChoicesBean(List<String> labels, List<String> values, String defaultValue) {
+        super(labels, values, defaultValue);
+    }
     
 }
