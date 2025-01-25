@@ -4960,27 +4960,27 @@
                 <securityRoleDescription languageIsoName="en" description="Chain Action Description" />
             </securityRole>
         </securityRoleGroup>
-        <securityRoleGroup securityRoleGroupName="TransactionTimeType" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortTransaction="1">
+        <securityRoleGroup securityRoleGroupName="TransactionTimeType" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Transaction Time Type" />
-            <securityRole securityRoleName="Create" isDefault="false" sortTransaction="1">
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Transaction Time Type Create" />
             </securityRole>
-            <securityRole securityRoleName="Edit" isDefault="false" sortTransaction="1">
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Transaction Time Type Edit" />
             </securityRole>
-            <securityRole securityRoleName="Delete" isDefault="false" sortTransaction="1">
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Transaction Time Type Delete" />
             </securityRole>
-            <securityRole securityRoleName="List" isDefault="true" sortTransaction="1">
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Transaction Time Type List" />
             </securityRole>
-            <securityRole securityRoleName="Review" isDefault="false" sortTransaction="1">
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Transaction Time Type Review" />
             </securityRole>
-            <securityRole securityRoleName="Choices" isDefault="false" sortTransaction="1">
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Transaction Time Type Choices" />
             </securityRole>
-            <securityRole securityRoleName="Description" isDefault="false" sortTransaction="1">
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Transaction Time Type Description" />
             </securityRole>
         </securityRoleGroup>
