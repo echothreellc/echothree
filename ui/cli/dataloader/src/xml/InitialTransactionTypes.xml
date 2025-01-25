@@ -16,6 +16,9 @@
 <!--                                                                                  -->
 <initialData>
     <transactionTimeTypes>
+        <transactionTimeType transactionTimeTypeName="TRANSACTION_TIME" isDefault="true" sortOrder="0">
+            <transactionTimeTypeDescription languageIsoName="en" description="Transaction Time" />
+        </transactionTimeType>
         <transactionTimeType transactionTimeTypeName="POSTED_TIME" isDefault="true" sortOrder="0">
             <transactionTimeTypeDescription languageIsoName="en" description="Posted Time" />
         </transactionTimeType>
