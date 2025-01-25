@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
+import com.echothree.model.control.accounting.common.TransactionTimeTypes;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -30,6 +31,7 @@ import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.persistence.ThreadSession;
 
 public class TransactionLogic {
 
@@ -56,9 +58,13 @@ public class TransactionLogic {
     public Transaction createTransaction(final Session session, final Party groupParty, final TransactionType transactionType,
             final Long postingTime, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        
-        return accountingControl.createTransaction(groupParty, transactionType, postingTime == null ? session.START_TIME_LONG : postingTime,
+        var transaction = accountingControl.createTransaction(groupParty, transactionType, postingTime == null ? session.START_TIME_LONG : postingTime,
                 createdBy);
+
+        TransactionTimeLogic.getInstance().createTransactionTime(null, transaction, TransactionTimeTypes.TRANSACTION_TIME.name(),
+                postingTime == null ? session.START_TIME_LONG : postingTime, createdBy);
+
+        return transaction;
     }
     
     public TransactionGlEntry createTransactionGlEntryUsingNames(final Transaction transaction, final Party groupParty,
@@ -146,12 +152,12 @@ public class TransactionLogic {
         return accountingControl.createTransactionEntityRole(transaction, transactionEntityRoleType, entityInstance, createdBy);
     }
     
-    public void finishTransaction(final Transaction transaction) {
+    public void finishTransaction(final Session session, final Transaction transaction, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         
         accountingControl.removeTransactionStatusByTransaction(transaction);
-        
-        PostingLogic.getInstance().postTransaction(transaction);
+
+        PostingLogic.getInstance().postTransaction(transaction, session.START_TIME_LONG, createdBy);
     }
     
     public void testTransaction(final Session session, final BasePK testedBy) {
@@ -166,7 +172,7 @@ public class TransactionLogic {
         createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_A", null, originalCurrency, null, 1999L, testedBy);
         createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_B", null, originalCurrency, 1999L, null, testedBy);
         createTransactionEntityRoleUsingNames(transaction, "TEST_ENTITY_INSTANCE_ROLE_TYPE", testedBy, testedBy);
-        finishTransaction(transaction);
+        finishTransaction(session, transaction, testedBy);
     }
 
 }

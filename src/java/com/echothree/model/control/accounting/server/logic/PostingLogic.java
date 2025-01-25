@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
+import com.echothree.model.control.accounting.common.TransactionTimeTypes;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -26,6 +27,7 @@ import com.echothree.model.data.accounting.server.entity.Transaction;
 import com.echothree.model.data.accounting.server.entity.TransactionGlEntry;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.period.server.entity.Period;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 
 public class PostingLogic {
@@ -83,7 +85,7 @@ public class PostingLogic {
         }
     }
     
-    public void postTransaction(final Transaction transaction) {
+    public void postTransaction(final Transaction transaction, final Long postedTime, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var partyControl = Session.getModelController(PartyControl.class);
         var periodControl = Session.getModelController(PeriodControl.class);
@@ -96,6 +98,9 @@ public class PostingLogic {
                 postTransactionGlEntry(accountingControl, partyControl, transactionGlEntry, period);
             });
         });
+
+        TransactionTimeLogic.getInstance().createTransactionTime(null, transaction, TransactionTimeTypes.POSTED_TIME.name(),
+                postedTime, createdBy);
     }
     
 }
