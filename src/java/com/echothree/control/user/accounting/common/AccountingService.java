@@ -17,6 +17,18 @@
 package com.echothree.control.user.accounting.common;
 
 import com.echothree.control.user.accounting.common.form.*;
+import com.echothree.control.user.order.common.form.CreateOrderTimeTypeDescriptionForm;
+import com.echothree.control.user.order.common.form.CreateOrderTimeTypeForm;
+import com.echothree.control.user.order.common.form.DeleteOrderTimeTypeDescriptionForm;
+import com.echothree.control.user.order.common.form.DeleteOrderTimeTypeForm;
+import com.echothree.control.user.order.common.form.EditOrderTimeTypeDescriptionForm;
+import com.echothree.control.user.order.common.form.EditOrderTimeTypeForm;
+import com.echothree.control.user.order.common.form.GetOrderTimeTypeChoicesForm;
+import com.echothree.control.user.order.common.form.GetOrderTimeTypeDescriptionForm;
+import com.echothree.control.user.order.common.form.GetOrderTimeTypeDescriptionsForm;
+import com.echothree.control.user.order.common.form.GetOrderTimeTypeForm;
+import com.echothree.control.user.order.common.form.GetOrderTimeTypesForm;
+import com.echothree.control.user.order.common.form.SetDefaultOrderTimeTypeForm;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -228,7 +240,39 @@ public interface AccountingService
     CommandResult editGlAccountDescription(UserVisitPK userVisitPK, EditGlAccountDescriptionForm form);
     
     CommandResult deleteGlAccountDescription(UserVisitPK userVisitPK, DeleteGlAccountDescriptionForm form);
-    
+
+    // --------------------------------------------------------------------------------
+    //   Transaction Time Types
+    // --------------------------------------------------------------------------------
+
+    CommandResult createTransactionTimeType(UserVisitPK userVisitPK, CreateTransactionTimeTypeForm form);
+
+    CommandResult getTransactionTimeTypeChoices(UserVisitPK userVisitPK, GetTransactionTimeTypeChoicesForm form);
+
+    CommandResult getTransactionTimeType(UserVisitPK userVisitPK, GetTransactionTimeTypeForm form);
+
+    CommandResult getTransactionTimeTypes(UserVisitPK userVisitPK, GetTransactionTimeTypesForm form);
+
+    CommandResult setDefaultTransactionTimeType(UserVisitPK userVisitPK, SetDefaultTransactionTimeTypeForm form);
+
+    CommandResult editTransactionTimeType(UserVisitPK userVisitPK, EditTransactionTimeTypeForm form);
+
+    CommandResult deleteTransactionTimeType(UserVisitPK userVisitPK, DeleteTransactionTimeTypeForm form);
+
+    // --------------------------------------------------------------------------------
+    //   Transaction Time Type Descriptions
+    // --------------------------------------------------------------------------------
+
+    CommandResult createTransactionTimeTypeDescription(UserVisitPK userVisitPK, CreateTransactionTimeTypeDescriptionForm form);
+
+    CommandResult getTransactionTimeTypeDescription(UserVisitPK userVisitPK, GetTransactionTimeTypeDescriptionForm form);
+
+    CommandResult getTransactionTimeTypeDescriptions(UserVisitPK userVisitPK, GetTransactionTimeTypeDescriptionsForm form);
+
+    CommandResult editTransactionTimeTypeDescription(UserVisitPK userVisitPK, EditTransactionTimeTypeDescriptionForm form);
+
+    CommandResult deleteTransactionTimeTypeDescription(UserVisitPK userVisitPK, DeleteTransactionTimeTypeDescriptionForm form);
+
     // --------------------------------------------------------------------------------
     //   Transaction Types
     // --------------------------------------------------------------------------------
@@ -324,7 +368,7 @@ public interface AccountingService
     CommandResult getTransactionGroupStatusChoices(UserVisitPK userVisitPK, GetTransactionGroupStatusChoicesForm form);
     
     CommandResult setTransactionGroupStatus(UserVisitPK userVisitPK, SetTransactionGroupStatusForm form);
-    
+
     // --------------------------------------------------------------------------------
     //   Transactions
     // --------------------------------------------------------------------------------

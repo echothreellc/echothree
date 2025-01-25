@@ -19,6 +19,30 @@ package com.echothree.control.user.accounting.server;
 import com.echothree.control.user.accounting.common.AccountingRemote;
 import com.echothree.control.user.accounting.common.form.*;
 import com.echothree.control.user.accounting.server.command.*;
+import com.echothree.control.user.order.common.form.CreateOrderTimeTypeDescriptionForm;
+import com.echothree.control.user.order.common.form.CreateOrderTimeTypeForm;
+import com.echothree.control.user.order.common.form.DeleteOrderTimeTypeDescriptionForm;
+import com.echothree.control.user.order.common.form.DeleteOrderTimeTypeForm;
+import com.echothree.control.user.order.common.form.EditOrderTimeTypeDescriptionForm;
+import com.echothree.control.user.order.common.form.EditOrderTimeTypeForm;
+import com.echothree.control.user.order.common.form.GetOrderTimeTypeChoicesForm;
+import com.echothree.control.user.order.common.form.GetOrderTimeTypeDescriptionForm;
+import com.echothree.control.user.order.common.form.GetOrderTimeTypeDescriptionsForm;
+import com.echothree.control.user.order.common.form.GetOrderTimeTypeForm;
+import com.echothree.control.user.order.common.form.GetOrderTimeTypesForm;
+import com.echothree.control.user.order.common.form.SetDefaultOrderTimeTypeForm;
+import com.echothree.control.user.order.server.command.CreateOrderTimeTypeCommand;
+import com.echothree.control.user.order.server.command.CreateOrderTimeTypeDescriptionCommand;
+import com.echothree.control.user.order.server.command.DeleteOrderTimeTypeCommand;
+import com.echothree.control.user.order.server.command.DeleteOrderTimeTypeDescriptionCommand;
+import com.echothree.control.user.order.server.command.EditOrderTimeTypeCommand;
+import com.echothree.control.user.order.server.command.EditOrderTimeTypeDescriptionCommand;
+import com.echothree.control.user.order.server.command.GetOrderTimeTypeChoicesCommand;
+import com.echothree.control.user.order.server.command.GetOrderTimeTypeCommand;
+import com.echothree.control.user.order.server.command.GetOrderTimeTypeDescriptionCommand;
+import com.echothree.control.user.order.server.command.GetOrderTimeTypeDescriptionsCommand;
+import com.echothree.control.user.order.server.command.GetOrderTimeTypesCommand;
+import com.echothree.control.user.order.server.command.SetDefaultOrderTimeTypeCommand;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
@@ -452,7 +476,75 @@ public class AccountingBean
     public CommandResult deleteGlAccountDescription(UserVisitPK userVisitPK, DeleteGlAccountDescriptionForm form) {
         return new DeleteGlAccountDescriptionCommand(userVisitPK, form).run();
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Transaction Time Types
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createTransactionTimeType(UserVisitPK userVisitPK, CreateTransactionTimeTypeForm form) {
+        return new CreateTransactionTimeTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getTransactionTimeTypeChoices(UserVisitPK userVisitPK, GetTransactionTimeTypeChoicesForm form) {
+        return new GetTransactionTimeTypeChoicesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getTransactionTimeType(UserVisitPK userVisitPK, GetTransactionTimeTypeForm form) {
+        return new GetTransactionTimeTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getTransactionTimeTypes(UserVisitPK userVisitPK, GetTransactionTimeTypesForm form) {
+        return new GetTransactionTimeTypesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult setDefaultTransactionTimeType(UserVisitPK userVisitPK, SetDefaultTransactionTimeTypeForm form) {
+        return new SetDefaultTransactionTimeTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editTransactionTimeType(UserVisitPK userVisitPK, EditTransactionTimeTypeForm form) {
+        return new EditTransactionTimeTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteTransactionTimeType(UserVisitPK userVisitPK, DeleteTransactionTimeTypeForm form) {
+        return new DeleteTransactionTimeTypeCommand(userVisitPK, form).run();
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Transaction Time Type Descriptions
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createTransactionTimeTypeDescription(UserVisitPK userVisitPK, CreateTransactionTimeTypeDescriptionForm form) {
+        return new CreateTransactionTimeTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getTransactionTimeTypeDescription(UserVisitPK userVisitPK, GetTransactionTimeTypeDescriptionForm form) {
+        return new GetTransactionTimeTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getTransactionTimeTypeDescriptions(UserVisitPK userVisitPK, GetTransactionTimeTypeDescriptionsForm form) {
+        return new GetTransactionTimeTypeDescriptionsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editTransactionTimeTypeDescription(UserVisitPK userVisitPK, EditTransactionTimeTypeDescriptionForm form) {
+        return new EditTransactionTimeTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteTransactionTimeTypeDescription(UserVisitPK userVisitPK, DeleteTransactionTimeTypeDescriptionForm form) {
+        return new DeleteTransactionTimeTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
     // --------------------------------------------------------------------------------
     //   Transaction Types
     // --------------------------------------------------------------------------------
