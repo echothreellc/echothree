@@ -114,7 +114,7 @@ public class OrderTimeControl
         return OrderTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
-    public long countOrderPriorities(OrderType orderType) {
+    public long countOrderTimeTypes(OrderType orderType) {
         return session.queryForLong("""
                 SELECT COUNT(*)
                 FROM ordertimetypes, ordertimetypedetails

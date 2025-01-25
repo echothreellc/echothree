@@ -15,6 +15,14 @@
 <!-- limitations under the License.                                                   -->
 <!--                                                                                  -->
 <initialData>
+    <transactionTimeTypes>
+        <transactionTimeType transactionTimeTypeName="TRANSACTION_TIME" isDefault="true" sortOrder="0">
+            <transactionTimeTypeDescription languageIsoName="en" description="Transaction Time" />
+        </transactionTimeType>
+        <transactionTimeType transactionTimeTypeName="POSTED_TIME" isDefault="true" sortOrder="0">
+            <transactionTimeTypeDescription languageIsoName="en" description="Posted Time" />
+        </transactionTimeType>
+    </transactionTimeTypes>
     <transactionTypes>
         <transactionType transactionTypeName="TEST" sortOrder="1">
             <transactionTypeDescription languageIsoName="en" description="Test Transaction" />

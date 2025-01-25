@@ -20,13 +20,16 @@ import com.echothree.model.control.accounting.common.transfer.CurrencyDescriptio
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.CurrencyDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class CurrencyDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<CurrencyDescription, CurrencyDescriptionTransfer> {
-    
+
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+
     /** Creates a new instance of CurrencyDescriptionTransferCache */
-    public CurrencyDescriptionTransferCache(UserVisit userVisit, AccountingControl accountingControl) {
-        super(userVisit, accountingControl);
+    public CurrencyDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     @Override

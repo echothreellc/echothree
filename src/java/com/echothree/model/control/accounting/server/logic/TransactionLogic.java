@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
+import com.echothree.model.control.accounting.common.TransactionTimeTypes;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -46,19 +47,22 @@ public class TransactionLogic {
     }
     
     public Transaction createTransactionUsingNames(final Session session, final Party groupParty, final String transactionTypeName,
-            final Long postingTime, final BasePK createdBy) {
+            final Long transactionTime, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         
         return createTransaction(session, groupParty, accountingControl.getTransactionTypeByName(transactionTypeName),
-                postingTime, createdBy);
+                transactionTime, createdBy);
     }
     
     public Transaction createTransaction(final Session session, final Party groupParty, final TransactionType transactionType,
-            final Long postingTime, final BasePK createdBy) {
+            final Long transactionTime, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        
-        return accountingControl.createTransaction(groupParty, transactionType, postingTime == null ? session.START_TIME_LONG : postingTime,
-                createdBy);
+        var transaction = accountingControl.createTransaction(groupParty, transactionType, createdBy);
+
+        TransactionTimeLogic.getInstance().createTransactionTime(null, transaction, TransactionTimeTypes.TRANSACTION_TIME.name(),
+                transactionTime == null ? session.START_TIME_LONG : transactionTime, createdBy);
+
+        return transaction;
     }
     
     public TransactionGlEntry createTransactionGlEntryUsingNames(final Transaction transaction, final Party groupParty,
@@ -146,12 +150,12 @@ public class TransactionLogic {
         return accountingControl.createTransactionEntityRole(transaction, transactionEntityRoleType, entityInstance, createdBy);
     }
     
-    public void finishTransaction(final Transaction transaction) {
+    public void finishTransaction(final Session session, final Transaction transaction, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         
         accountingControl.removeTransactionStatusByTransaction(transaction);
-        
-        PostingLogic.getInstance().postTransaction(transaction);
+
+        PostingLogic.getInstance().postTransaction(session, transaction, createdBy);
     }
     
     public void testTransaction(final Session session, final BasePK testedBy) {
@@ -166,7 +170,7 @@ public class TransactionLogic {
         createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_A", null, originalCurrency, null, 1999L, testedBy);
         createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_B", null, originalCurrency, 1999L, null, testedBy);
         createTransactionEntityRoleUsingNames(transaction, "TEST_ENTITY_INSTANCE_ROLE_TYPE", testedBy, testedBy);
-        finishTransaction(transaction);
+        finishTransaction(session, transaction, testedBy);
     }
 
 }

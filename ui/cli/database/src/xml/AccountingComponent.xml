@@ -618,6 +618,80 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="TransactionTimeTypes" nameSingular="TransactionTimeType" columnPrefix="txntimtyp">
+                    <columns>
+                        <column name="TransactionTimeTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionTimeTypeDetails" destinationColumn="TransactionTimeTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionTimeTypeDetails" destinationColumn="TransactionTimeTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionTimeTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionTimeTypeDetails" nameSingular="TransactionTimeTypeDetail" columnPrefix="txntimtypdt">
+                    <columns>
+                        <column name="TransactionTimeTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="TransactionTimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionTimeTypes" destinationColumn="TransactionTimeTypeId" />
+                        <column name="TransactionTimeTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionTimeTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TransactionTimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TransactionTimeTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionTimeTypeDescriptions" nameSingular="TransactionTimeTypeDescription" columnPrefix="txntimtypd">
+                    <columns>
+                        <column name="TransactionTimeTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="TransactionTimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionTimeTypes" destinationColumn="TransactionTimeTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionTimeTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TransactionTimeTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="TransactionTimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="TransactionTypes" nameSingular="TransactionType" columnPrefix="trxtyp">
                     <columns>
                         <column name="TransactionTypeId" type="EID" nullAllowed="false" />
@@ -935,7 +1009,6 @@
                         <column name="GroupPartyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
                         <column name="TransactionGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionGroups" destinationColumn="TransactionGroupId" />
                         <column name="TransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionTypes" destinationColumn="TransactionTypeId" />
-                        <column name="PostingTime" type="Time" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>
@@ -977,6 +1050,34 @@
                         </index>
                         <index type="Unique">
                             <indexColumn name="TransactionId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionTimes" nameSingular="TransactionTime" columnPrefix="txntim">
+                    <columns>
+                        <column name="TransactionTimeId" type="EID" nullAllowed="false" />
+                        <column name="TransactionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Transactions" destinationColumn="TransactionId" />
+                        <column name="TransactionTimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionTimeTypes" destinationColumn="TransactionTimeTypeId" />
+                        <column name="Time" type="Time" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionTimeId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="TransactionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TransactionId" />
+                            <indexColumn name="TransactionTimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="TransactionTimeTypeId" />
+                            <indexColumn name="ThruTime" />
                         </index>
                     </indexes>
                 </table>

@@ -349,6 +349,7 @@ public enum SecurityRoleGroups {
     TrainingClassSection,
     TransactionEntityRoleType,
     TransactionGlAccountCategory,
+    TransactionTimeType,
     TransactionType,
     UnitOfMeasureEquivalent,
     UnitOfMeasureKind,

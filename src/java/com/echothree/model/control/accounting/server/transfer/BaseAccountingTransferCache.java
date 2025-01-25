@@ -25,13 +25,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseAccountingTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    AccountingControl accountingControl;
-    
     /** Creates a new instance of BaseAccountingTransferCache */
-    protected BaseAccountingTransferCache(UserVisit userVisit, AccountingControl accountingControl) {
+    protected BaseAccountingTransferCache(UserVisit userVisit) {
         super(userVisit);
-        
-        this.accountingControl = accountingControl;
     }
     
     protected abstract V getTransfer(K key);
