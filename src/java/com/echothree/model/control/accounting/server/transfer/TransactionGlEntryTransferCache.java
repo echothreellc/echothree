@@ -27,11 +27,12 @@ import com.echothree.util.server.string.AmountUtils;
 public class TransactionGlEntryTransferCache
         extends BaseAccountingTransferCache<TransactionGlEntry, TransactionGlEntryTransfer> {
 
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of TransactionGlEntryTransferCache */
-    public TransactionGlEntryTransferCache(UserVisit userVisit, AccountingControl accountingControl) {
-        super(userVisit, accountingControl);
+    public TransactionGlEntryTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
 
     @Override
