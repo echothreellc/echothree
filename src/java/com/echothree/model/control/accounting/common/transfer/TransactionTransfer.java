@@ -28,22 +28,17 @@ public class TransactionTransfer
     private PartyTransfer groupParty;
     private TransactionGroupTransfer transactionGroup;
     private TransactionTypeTransfer transactionType;
-    private Long unformattedPostingTime;
-    private String postingTime;
-    
+
     private ListWrapper<TransactionGlEntryTransfer> transactionGlEntries;
     private ListWrapper<TransactionEntityRoleTransfer> transactionEntityRoles;
     private MapWrapper<TransactionTimeTransfer> transactionTimes;
 
     /** Creates a new instance of TransactionTransfer */
-    public TransactionTransfer(String transactionName, PartyTransfer groupParty, TransactionGroupTransfer transactionGroup, TransactionTypeTransfer transactionType, Long unformattedPostingTime,
-            String postingTime) {
+    public TransactionTransfer(String transactionName, PartyTransfer groupParty, TransactionGroupTransfer transactionGroup, TransactionTypeTransfer transactionType) {
         this.transactionName = transactionName;
         this.groupParty = groupParty;
         this.transactionGroup = transactionGroup;
         this.transactionType = transactionType;
-        this.unformattedPostingTime = unformattedPostingTime;
-        this.postingTime = postingTime;
     }
     
     public String getTransactionName() {
@@ -78,22 +73,6 @@ public class TransactionTransfer
         this.transactionType = transactionType;
     }
 
-    public Long getUnformattedPostingTime() {
-        return unformattedPostingTime;
-    }
-
-    public void setUnformattedPostingTime(Long unformattedPostingTime) {
-        this.unformattedPostingTime = unformattedPostingTime;
-    }
-
-    public String getPostingTime() {
-        return postingTime;
-    }
-
-    public void setPostingTime(String postingTime) {
-        this.postingTime = postingTime;
-    }
-    
     public ListWrapper<TransactionGlEntryTransfer> getTransactionGlEntries() {
         return transactionGlEntries;
     }

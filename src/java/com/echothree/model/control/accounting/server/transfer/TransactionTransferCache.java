@@ -63,10 +63,8 @@ public class TransactionTransferCache
             var groupPartyTransfer = groupParty == null? null: partyControl.getPartyTransfer(userVisit, groupParty);
             var transactionGroupTransfer = accountingControl.getTransactionGroupTransfer(userVisit, transactionDetail.getTransactionGroup());
             var transactionTypeTransfer = accountingControl.getTransactionTypeTransfer(userVisit, transactionDetail.getTransactionType());
-            var unformattedPostingTime = transactionDetail.getPostingTime();
-            var postingTime = formatTypicalDateTime(unformattedPostingTime);
 
-            transactionTransfer = new TransactionTransfer(transactionName, groupPartyTransfer, transactionGroupTransfer, transactionTypeTransfer, unformattedPostingTime, postingTime);
+            transactionTransfer = new TransactionTransfer(transactionName, groupPartyTransfer, transactionGroupTransfer, transactionTypeTransfer);
             put(transaction, transactionTransfer);
             
             if(includeTransactionGlEntries) {

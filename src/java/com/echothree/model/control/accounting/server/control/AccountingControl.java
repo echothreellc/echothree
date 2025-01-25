@@ -5058,24 +5058,24 @@ public class AccountingControl
     //   Transactions
     // --------------------------------------------------------------------------------
     
-    public Transaction createTransaction(Party groupParty, TransactionType transactionType, Long postingTime, BasePK createdBy) {
-        return createTransaction(groupParty, getActiveTransactionGroup(createdBy), transactionType, postingTime, createdBy);
+    public Transaction createTransaction(Party groupParty, TransactionType transactionType, BasePK createdBy) {
+        return createTransaction(groupParty, getActiveTransactionGroup(createdBy), transactionType, createdBy);
     }
     
-    public Transaction createTransaction(Party groupParty, TransactionGroup transactionGroup, TransactionType transactionType, Long postingTime,
+    public Transaction createTransaction(Party groupParty, TransactionGroup transactionGroup, TransactionType transactionType,
             BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION.name());
         var transactionName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
-        return createTransaction(transactionName, groupParty, transactionGroup, transactionType, postingTime, createdBy);
+        return createTransaction(transactionName, groupParty, transactionGroup, transactionType, createdBy);
     }
     
     public Transaction createTransaction(String transactionName, Party groupParty, TransactionGroup transactionGroup,
-            TransactionType transactionType, Long postingTime, BasePK createdBy) {
+            TransactionType transactionType, BasePK createdBy) {
         var transaction = TransactionFactory.getInstance().create();
         var transactionDetail = TransactionDetailFactory.getInstance().create(transaction, transactionName,
-                groupParty, transactionGroup, transactionType, postingTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                groupParty, transactionGroup, transactionType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
         transaction = TransactionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,

@@ -31,7 +31,6 @@ import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.persistence.ThreadSession;
 
 public class TransactionLogic {
 
@@ -48,21 +47,20 @@ public class TransactionLogic {
     }
     
     public Transaction createTransactionUsingNames(final Session session, final Party groupParty, final String transactionTypeName,
-            final Long postingTime, final BasePK createdBy) {
+            final Long transactionTime, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         
         return createTransaction(session, groupParty, accountingControl.getTransactionTypeByName(transactionTypeName),
-                postingTime, createdBy);
+                transactionTime, createdBy);
     }
     
     public Transaction createTransaction(final Session session, final Party groupParty, final TransactionType transactionType,
-            final Long postingTime, final BasePK createdBy) {
+            final Long transactionTime, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        var transaction = accountingControl.createTransaction(groupParty, transactionType, postingTime == null ? session.START_TIME_LONG : postingTime,
-                createdBy);
+        var transaction = accountingControl.createTransaction(groupParty, transactionType, createdBy);
 
         TransactionTimeLogic.getInstance().createTransactionTime(null, transaction, TransactionTimeTypes.TRANSACTION_TIME.name(),
-                postingTime == null ? session.START_TIME_LONG : postingTime, createdBy);
+                transactionTime == null ? session.START_TIME_LONG : transactionTime, createdBy);
 
         return transaction;
     }
@@ -157,7 +155,7 @@ public class TransactionLogic {
         
         accountingControl.removeTransactionStatusByTransaction(transaction);
 
-        PostingLogic.getInstance().postTransaction(transaction, session.START_TIME_LONG, createdBy);
+        PostingLogic.getInstance().postTransaction(session, transaction, createdBy);
     }
     
     public void testTransaction(final Session session, final BasePK testedBy) {

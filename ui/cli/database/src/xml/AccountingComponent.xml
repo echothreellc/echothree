@@ -1009,7 +1009,6 @@
                         <column name="GroupPartyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
                         <column name="TransactionGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionGroups" destinationColumn="TransactionGroupId" />
                         <column name="TransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionTypes" destinationColumn="TransactionTypeId" />
-                        <column name="PostingTime" type="Time" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>
