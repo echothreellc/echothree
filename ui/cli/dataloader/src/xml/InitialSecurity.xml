@@ -5053,6 +5053,18 @@
                 <securityRoleDescription languageIsoName="en" description="Transaction Group List" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="TransactionGroupStatus" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Transaction Group Status" />
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="Transaction" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Transaction" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Transaction List" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="TransactionStatus" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Transaction Status" />
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="PeriodComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Period Component" />
         </securityRoleGroup>
@@ -9183,6 +9195,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="TransactionGlAccountCategory" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TransactionGlAccountCategory" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TransactionGroup" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Transaction" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PeriodKind" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PeriodKind" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PeriodKind" securityRoleName="Delete" />

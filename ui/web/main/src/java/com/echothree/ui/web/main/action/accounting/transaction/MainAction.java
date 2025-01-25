@@ -18,6 +18,7 @@ package com.echothree.ui.web.main.action.accounting.transaction;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.common.result.GetTransactionsResult;
+import com.echothree.model.control.accounting.common.AccountingOptions;
 import com.echothree.model.control.accounting.common.transfer.TransactionGroupTransfer;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -60,6 +61,7 @@ public class MainAction
         
         Set<String> commandFormOptions = new HashSet<>();
         commandFormOptions.add(PartyOptions.PartyIncludeDescription);
+        commandFormOptions.add(AccountingOptions.TransactionIncludeTransactionTimes);
         commandForm.setOptions(commandFormOptions);
 
         var commandResult = AccountingUtil.getHome().getTransactions(getUserVisitPK(request), commandForm);

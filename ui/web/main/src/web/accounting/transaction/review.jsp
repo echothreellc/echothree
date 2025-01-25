@@ -45,6 +45,18 @@
             </c:url>
             Transaction Type: <a href="${transactionTypeUrl}"><c:out value="${transaction.transactionType.description}" /></a><br />
             <br />
+            <c:if test="${transaction.transactionTimes.size > 0}">
+                <h2>Times</h2>
+                <display:table name="transaction.transactionTimes.list" id="transactionTime" class="displaytag">
+                    <display:column titleKey="columnTitle.transactionTimeType">
+                        <c:out value="${transactionTime.transactionTimeType.description}" />
+                    </display:column>
+                    <display:column titleKey="columnTitle.time">
+                        <c:out value="${transactionTime.time}" />
+                    </display:column>
+                </display:table>
+                <br />
+            </c:if>
             <h2>Gl Entries</h2>
             <display:table name="transaction.transactionGlEntries.list" id="transactionGlEntry" class="displaytag">
                 <display:column titleKey="columnTitle.sequence">
@@ -80,7 +92,7 @@
                         <c:out value="${transactionGlEntry.originalCurrency.symbol}" /><c:out value="${transactionGlEntry.originalCredit}" />
                     </c:if>
                 </display:column>
-                <display:column>
+                <display:column titleKey="columnTitle.originalCurrency">
                     <c:url var="originalCurrencyUrl" value="/action/Accounting/Currency/Review">
                         <c:param name="CurrencyIsoName" value="${transactionGlEntry.originalCurrency.currencyIsoName}" />
                     </c:url>
@@ -96,7 +108,7 @@
                         <c:out value="${transactionGlEntry.glAccount.currency.symbol}" /><c:out value="${transactionGlEntry.credit}" />
                     </c:if>
                 </display:column>
-                <display:column>
+                <display:column titleKey="columnTitle.currency">
                     <c:url var="currencyUrl" value="/action/Accounting/Currency/Review">
                         <c:param name="CurrencyIsoName" value="${transactionGlEntry.glAccount.currency.currencyIsoName}" />
                     </c:url>

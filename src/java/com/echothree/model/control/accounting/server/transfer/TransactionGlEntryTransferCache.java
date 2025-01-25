@@ -54,7 +54,7 @@ public class TransactionGlEntryTransferCache
             var originalCurrencyTransfer = originalCurrency == null ? null : accountingControl.getCurrencyTransfer(userVisit, originalCurrency);
             var unformattedOriginalDebit = transactionGlEntry.getOriginalDebit();
             var originalDebit = unformattedOriginalDebit == null ? null : AmountUtils.getInstance().formatAmount(originalCurrency, unformattedOriginalDebit);
-            var unformattedOriginalCredit = transactionGlEntry.getOriginalDebit();
+            var unformattedOriginalCredit = transactionGlEntry.getOriginalCredit();
             var originalCredit = unformattedOriginalCredit == null ? null : AmountUtils.getInstance().formatAmount(originalCurrency, unformattedOriginalCredit);
             var unformattedDebit = transactionGlEntry.getDebit();
             var debit = unformattedDebit == null ? null : AmountUtils.getInstance().formatAmount(glAccountCurrency, unformattedDebit);

@@ -17,9 +17,13 @@
 package com.echothree.model.control.accounting.server.logic;
 
 import com.echothree.model.control.accounting.common.TransactionTimeTypes;
+import com.echothree.model.control.accounting.common.workflow.TransactionStatusConstants;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowEntranceLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.accounting.server.entity.Transaction;
@@ -150,12 +154,25 @@ public class TransactionLogic {
         return accountingControl.createTransactionEntityRole(transaction, transactionEntityRoleType, entityInstance, createdBy);
     }
     
-    public void finishTransaction(final Session session, final Transaction transaction, final BasePK createdBy) {
+    public void postTransaction(final Session session, final Transaction transaction, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        
+        var coreControl = Session.getModelController(CoreControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+
         accountingControl.removeTransactionStatusByTransaction(transaction);
 
         PostingLogic.getInstance().postTransaction(session, transaction, createdBy);
+
+        // If it isn't in the Transaction Status workflow, assume this is a system generated transaction and
+        // we've gone directly to posting it.
+        var workflow = WorkflowLogic.getInstance().getWorkflowByName(null, TransactionStatusConstants.Workflow_TRANSACTION_STATUS);
+        var entityInstance = coreControl.getEntityInstanceByBasePK(transaction.getPrimaryKey());
+        if(!workflowControl.isEntityInWorkflow(workflow, entityInstance)) {
+            var workflowEntrance = WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(null, workflow,
+                    TransactionStatusConstants.WorkflowEntrance_TRANSACTION_STATUS_NEW_POSTED);
+
+            workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
+        }
     }
     
     public void testTransaction(final Session session, final BasePK testedBy) {
@@ -170,7 +187,7 @@ public class TransactionLogic {
         createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_A", null, originalCurrency, null, 1999L, testedBy);
         createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_B", null, originalCurrency, 1999L, null, testedBy);
         createTransactionEntityRoleUsingNames(transaction, "TEST_ENTITY_INSTANCE_ROLE_TYPE", testedBy, testedBy);
-        finishTransaction(session, transaction, testedBy);
+        postTransaction(session, transaction, testedBy);
     }
 
 }
