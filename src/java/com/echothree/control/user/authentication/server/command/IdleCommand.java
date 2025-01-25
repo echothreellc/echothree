@@ -34,7 +34,6 @@ public class IdleCommand
     
     @Override
     protected BaseResult execute() {
-        TransactionLogic.getInstance().testTransaction(getSession(), getPartyPK());
         return null;
     }
     
