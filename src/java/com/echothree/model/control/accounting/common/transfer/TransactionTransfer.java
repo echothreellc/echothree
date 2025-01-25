@@ -17,6 +17,7 @@
 package com.echothree.model.control.accounting.common.transfer;
 
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
@@ -28,17 +29,20 @@ public class TransactionTransfer
     private PartyTransfer groupParty;
     private TransactionGroupTransfer transactionGroup;
     private TransactionTypeTransfer transactionType;
+    private WorkflowEntityStatusTransfer transactionStatus;
 
     private ListWrapper<TransactionGlEntryTransfer> transactionGlEntries;
     private ListWrapper<TransactionEntityRoleTransfer> transactionEntityRoles;
     private MapWrapper<TransactionTimeTransfer> transactionTimes;
 
     /** Creates a new instance of TransactionTransfer */
-    public TransactionTransfer(String transactionName, PartyTransfer groupParty, TransactionGroupTransfer transactionGroup, TransactionTypeTransfer transactionType) {
+    public TransactionTransfer(final String transactionName, final PartyTransfer groupParty, final TransactionGroupTransfer transactionGroup,
+            final TransactionTypeTransfer transactionType, final WorkflowEntityStatusTransfer transactionStatus) {
         this.transactionName = transactionName;
         this.groupParty = groupParty;
         this.transactionGroup = transactionGroup;
         this.transactionType = transactionType;
+        this.transactionStatus = transactionStatus;
     }
     
     public String getTransactionName() {
@@ -71,6 +75,14 @@ public class TransactionTransfer
     
     public void setTransactionType(TransactionTypeTransfer transactionType) {
         this.transactionType = transactionType;
+    }
+
+    public WorkflowEntityStatusTransfer getTransactionStatus() {
+        return transactionStatus;
+    }
+
+    public void setTransactionStatus(WorkflowEntityStatusTransfer transactionStatus) {
+        this.transactionStatus = transactionStatus;
     }
 
     public ListWrapper<TransactionGlEntryTransfer> getTransactionGlEntries() {
