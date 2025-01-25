@@ -18,7 +18,7 @@ package com.echothree.model.control.accounting.common.workflow;
 
 public interface TransactionStatusConstants {
     
-    String TRANSACTION_STATUS = "TRANSACTION_STATUS";
+    String Workflow_TRANSACTION_STATUS = "TRANSACTION_STATUS";
     
     String WorkflowStep_TRANSACTION_STATUS_ENTRY   = "ENTRY";
     String WorkflowStep_TRANSACTION_STATUS_PENDING = "PENDING";
