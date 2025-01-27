@@ -69,6 +69,7 @@ import com.echothree.model.data.accounting.common.pk.GlAccountTypePK;
 import com.echothree.model.data.accounting.common.pk.GlResourceTypePK;
 import com.echothree.model.data.accounting.common.pk.ItemAccountingCategoryPK;
 import com.echothree.model.data.accounting.common.pk.SymbolPositionPK;
+import com.echothree.model.data.accounting.common.pk.TransactionGroupPK;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.CurrencyDescription;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
@@ -4927,12 +4928,35 @@ public class AccountingControl
         
         return transactionGroup;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TransactionGroup */
+    public TransactionGroup getTransactionGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TransactionGroupPK(entityInstance.getEntityUniqueId());
+
+        return TransactionGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TransactionGroup getTransactionGroupByEntityInstance(EntityInstance entityInstance) {
+        return getTransactionGroupByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TransactionGroup getTransactionGroupByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTransactionGroupByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTransactionGroups() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM transactiongroups
+                        JOIN transactiongroupdetails ON trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid
+                        """);
+    }
+
     public TransactionGroupDetailValue getTransactionGroupDetailValueForUpdate(TransactionGroup transactionGroup) {
         return transactionGroup.getLastDetailForUpdate().getTransactionGroupDetailValue().clone();
     }
     
-    private TransactionGroup getTransactionGroupByName(String transactionGroupName, EntityPermission entityPermission) {
+    public TransactionGroup getTransactionGroupByName(String transactionGroupName, EntityPermission entityPermission) {
         TransactionGroup transactionGroup;
         
         try {
@@ -4980,7 +5004,8 @@ public class AccountingControl
             query = "SELECT _ALL_ " +
                     "FROM transactiongroups, transactiongroupdetails " +
                     "WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid " +
-                    "ORDER BY trxgrpdt_transactiongroupname";
+                    "ORDER BY trxgrpdt_transactiongroupname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM transactiongroups, transactiongroupdetails " +

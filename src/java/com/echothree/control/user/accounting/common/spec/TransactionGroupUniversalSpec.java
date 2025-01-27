@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.accounting.common.form;
+package com.echothree.control.user.accounting.common.spec;
 
-import com.echothree.control.user.accounting.common.spec.TransactionGroupUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetTransactionGroupForm
-        extends TransactionGroupUniversalSpec {
+public interface TransactionGroupUniversalSpec
+        extends TransactionGroupSpec, UniversalEntitySpec {
     
-    // Nothing additional beyond TransactionGroupUniversalSpec
+    // Nothing additional beyond TransactionGroupSpec, UniversalEntitySpec
     
 }
