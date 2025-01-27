@@ -46,7 +46,7 @@ public class GetTransactionGroupCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                        new SecurityRoleDefinition(SecurityRoleGroups.UserVisitGroup.name(), SecurityRoles.Review.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.TransactionGroup.name(), SecurityRoles.Review.name())
                 ))
         ));
 
