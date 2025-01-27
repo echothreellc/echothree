@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetTransactionGroupsResult
         extends BaseResult {
-    
+
+    Long getTransactionGroupCount();
+    void setTransactionGroupCount(Long transactionGroupCount);
+
     List<TransactionGroupTransfer> getTransactionGroups();
     void setTransactionGroups(List<TransactionGroupTransfer> transactionGroups);
     
