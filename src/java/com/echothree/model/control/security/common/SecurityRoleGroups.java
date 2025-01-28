@@ -347,6 +347,7 @@ public enum SecurityRoleGroups {
     TrainingClassPage,
     TrainingClassQuestion,
     TrainingClassSection,
+    Transaction,
     TransactionEntityRoleType,
     TransactionGlAccountCategory,
     TransactionGroup,

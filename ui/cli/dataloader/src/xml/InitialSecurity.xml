@@ -5049,8 +5049,11 @@
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="TransactionGroup" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Transaction Group" />
-            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+            <securityRole securityRoleName="List" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Transaction Group List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Transaction Group Review" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="TransactionGroupStatus" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
@@ -5058,8 +5061,11 @@
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="Transaction" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Transaction" />
-            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+            <securityRole securityRoleName="List" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Transaction List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Transaction Review" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="TransactionStatus" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
@@ -9195,7 +9201,9 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="TransactionGlAccountCategory" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TransactionGlAccountCategory" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TransactionGroup" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TransactionGroup" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Transaction" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Transaction" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PeriodKind" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PeriodKind" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PeriodKind" securityRoleName="Delete" />

@@ -16,10 +16,18 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
+import com.echothree.control.user.accounting.common.spec.TransactionGroupUniversalSpec;
+import com.echothree.control.user.accounting.common.spec.TransactionUniversalSpec;
 import com.echothree.model.control.accounting.common.TransactionTimeTypes;
+import com.echothree.model.control.accounting.common.exception.UnknownTransactionGroupNameException;
+import com.echothree.model.control.accounting.common.exception.UnknownTransactionNameException;
 import com.echothree.model.control.accounting.common.workflow.TransactionStatusConstants;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowEntranceLogic;
@@ -31,12 +39,18 @@ import com.echothree.model.data.accounting.server.entity.TransactionEntityRole;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleType;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategory;
 import com.echothree.model.data.accounting.server.entity.TransactionGlEntry;
+import com.echothree.model.data.accounting.server.entity.TransactionGroup;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.control.BaseLogic;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 
-public class TransactionLogic {
+public class TransactionLogic
+        extends BaseLogic {
 
     private TransactionLogic() {
         super();
@@ -67,6 +81,64 @@ public class TransactionLogic {
                 transactionTime == null ? session.START_TIME_LONG : transactionTime, createdBy);
 
         return transaction;
+    }
+
+    public Transaction getTransactionByName(final ExecutionErrorAccumulator eea, final String transactionName,
+            final EntityPermission entityPermission) {
+        var accountingControl = Session.getModelController(AccountingControl.class);
+        var transaction = accountingControl.getTransactionByName(transactionName, entityPermission);
+
+        if(transaction == null) {
+            handleExecutionError(UnknownTransactionNameException.class, eea, ExecutionErrors.UnknownTransactionName.name(), transactionName);
+        }
+
+        return transaction;
+    }
+
+    public Transaction getTransactionByName(final ExecutionErrorAccumulator eea, final String transactionName) {
+        return getTransactionByName(eea, transactionName, EntityPermission.READ_ONLY);
+    }
+
+    public Transaction getTransactionByNameForUpdate(final ExecutionErrorAccumulator eea, final String transactionName) {
+        return getTransactionByName(eea, transactionName, EntityPermission.READ_WRITE);
+    }
+
+    public Transaction getTransactionByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final TransactionUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        Transaction transaction = null;
+        var accountingControl = Session.getModelController(AccountingControl.class);
+        var transactionName = universalSpec.getTransactionName();
+        var parameterCount = (transactionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 1:
+                if(transactionName == null) {
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Transaction.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        transaction = accountingControl.getTransactionByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    transaction = getTransactionByName(eea, transactionName, entityPermission);
+                }
+                break;
+            default:
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                break;
+        }
+
+        return transaction;
+    }
+
+    public Transaction getTransactionByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final TransactionUniversalSpec universalSpec) {
+        return getTransactionByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public Transaction getTransactionByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final TransactionUniversalSpec universalSpec) {
+        return getTransactionByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
     
     public TransactionGlEntry createTransactionGlEntryUsingNames(final Transaction transaction, final Party groupParty,
