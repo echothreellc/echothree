@@ -71,6 +71,7 @@ import com.echothree.model.data.accounting.common.pk.ItemAccountingCategoryPK;
 import com.echothree.model.data.accounting.common.pk.SymbolPositionPK;
 import com.echothree.model.data.accounting.common.pk.TransactionGroupPK;
 import com.echothree.model.data.accounting.common.pk.TransactionPK;
+import com.echothree.model.data.accounting.common.pk.TransactionTypePK;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.CurrencyDescription;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
@@ -3635,8 +3636,31 @@ public class AccountingControl
         
         return transactionType;
     }
-    
-    private TransactionType getTransactionTypeByName(String transactionTypeName, EntityPermission entityPermission) {
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TransactionType */
+    public TransactionType getTransactionTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TransactionTypePK(entityInstance.getEntityUniqueId());
+
+        return TransactionTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TransactionType getTransactionTypeByEntityInstance(EntityInstance entityInstance) {
+        return getTransactionTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TransactionType getTransactionTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTransactionTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTransactionTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM transactiontypes
+                        JOIN transactiontypedetails ON trxtyp_activedetailid = trxtypdt_transactiontypedetailid
+                        """);
+    }
+
+    public TransactionType getTransactionTypeByName(String transactionTypeName, EntityPermission entityPermission) {
         TransactionType transactionType;
         
         try {
