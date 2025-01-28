@@ -3712,7 +3712,8 @@ public class AccountingControl
             query = "SELECT _ALL_ " +
                     "FROM transactiontypes, transactiontypedetails " +
                     "WHERE trxtyp_activedetailid = trxtypdt_transactiontypedetailid " +
-                    "ORDER BY trxtypdt_transactiontypename";
+                    "ORDER BY trxtypdt_transactiontypename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM transactiontypes, transactiontypedetails " +
