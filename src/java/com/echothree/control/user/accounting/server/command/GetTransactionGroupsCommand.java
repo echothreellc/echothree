@@ -27,7 +27,7 @@ import com.echothree.model.data.accounting.server.factory.TransactionGroupFactor
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +36,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetTransactionGroupsCommand
-        extends BaseMultipleEntitiesCommand<TransactionGroup, GetTransactionGroupsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<TransactionGroup, GetTransactionGroupsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -55,6 +55,18 @@ public class GetTransactionGroupsCommand
     /** Creates a new instance of GetTransactionGroupsCommand */
     public GetTransactionGroupsCommand(UserVisitPK userVisitPK, GetTransactionGroupsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var accountingControl = Session.getModelController(AccountingControl.class);
+
+        return accountingControl.countTransactionGroups();
     }
 
     @Override
