@@ -19,50 +19,100 @@ package com.echothree.control.user.accounting.server.command;
 import com.echothree.control.user.accounting.common.form.GetTransactionsForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.TransactionGroupLogic;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.accounting.server.entity.Transaction;
+import com.echothree.model.data.accounting.server.entity.TransactionGroup;
+import com.echothree.model.data.accounting.server.factory.TransactionFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 public class GetTransactionsCommand
-        extends BaseSimpleCommand<GetTransactionsForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<Transaction, GetTransactionsForm> {
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("TransactionGroupName", FieldType.ENTITY_NAME, true, null, null)
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Transaction.name(), SecurityRoles.List.name())
+                ))
         ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("TransactionGroupName", FieldType.ENTITY_NAME, true, null, null)
+        );
     }
     
     /** Creates a new instance of GetTransactionsCommand */
-    public GetTransactionsCommand(UserVisitPK userVisitPK, GetTransactionsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetTransactionsCommand(final UserVisitPK userVisitPK, final GetTransactionsForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    TransactionGroup transactionGroup;
+
     @Override
-    protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        var result = AccountingResultFactory.getGetTransactionsResult();
-        var transactionGroupName = form.getTransactionGroupName();
-        var transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);
-        
-        if(transactionGroup != null) {
-            var userVisit = getUserVisit();
-            
-            result.setTransactionGroup(accountingControl.getTransactionGroupTransfer(userVisit, transactionGroup));
-            result.setTransactions(accountingControl.getTransactionTransfersByTransactionGroup(userVisit, transactionGroup));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownTransactionGroupName.name(), transactionGroupName);
+    protected void handleForm() {
+        final var transactionGroupName = form.getTransactionGroupName();
+
+        transactionGroup = TransactionGroupLogic.getInstance().getTransactionGroupByName(this, transactionGroupName);
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        Long totalEntities = null;
+
+        if(!hasExecutionErrors()) {
+            var accountingControl = Session.getModelController(AccountingControl.class);
+
+            totalEntities = accountingControl.countTransactionsByTransactionGroup(transactionGroup);
         }
-        
+
+        return totalEntities;
+    }
+
+    @Override
+    protected Collection<Transaction> getEntities() {
+        Collection<Transaction> entities = null;
+
+        if(!hasExecutionErrors()) {
+            final var accountingControl = Session.getModelController(AccountingControl.class);
+
+            entities = accountingControl.getTransactionsByTransactionGroup(transactionGroup);
+        }
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getResult(final Collection<Transaction> entities) {
+        final var result = AccountingResultFactory.getGetTransactionsResult();
+
+        if(entities != null) {
+            final var accountingControl = Session.getModelController(AccountingControl.class);
+            final var userVisit = getUserVisit();
+
+            if(session.hasLimit(TransactionFactory.class)) {
+                result.setTransactionCount(getTotalEntities());
+            }
+
+            result.setTransactionGroup(accountingControl.getTransactionGroupTransfer(userVisit, transactionGroup));
+            result.setTransactions(accountingControl.getTransactionTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
 }
