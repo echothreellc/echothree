@@ -2319,5 +2319,6 @@ public enum ExecutionErrors {
     UnknownTransactionTime,
     DuplicateTransactionTimeTypeDescription,
     UnknownTransactionTimeTypeDescription,
+    TransactionNotBalanced,
 
 }

@@ -16,13 +16,13 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
-import com.echothree.control.user.accounting.common.spec.TransactionGroupUniversalSpec;
 import com.echothree.control.user.accounting.common.spec.TransactionUniversalSpec;
 import com.echothree.model.control.accounting.common.TransactionTimeTypes;
-import com.echothree.model.control.accounting.common.exception.UnknownTransactionGroupNameException;
+import com.echothree.model.control.accounting.common.exception.TransactionNotBalancedException;
 import com.echothree.model.control.accounting.common.exception.UnknownTransactionNameException;
 import com.echothree.model.control.accounting.common.workflow.TransactionStatusConstants;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.database.TransactionBalancedQuery;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
@@ -39,7 +39,6 @@ import com.echothree.model.data.accounting.server.entity.TransactionEntityRole;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleType;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategory;
 import com.echothree.model.data.accounting.server.entity.TransactionGlEntry;
-import com.echothree.model.data.accounting.server.entity.TransactionGroup;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -225,29 +224,49 @@ public class TransactionLogic
         
         return accountingControl.createTransactionEntityRole(transaction, transactionEntityRoleType, entityInstance, createdBy);
     }
+
+    private void validateTransactionBalanced(final ExecutionErrorAccumulator eea, final Transaction transaction) {
+        var transactionBalancedResults = new TransactionBalancedQuery().execute(transaction);
+
+        if(!transactionBalancedResults.isEmpty()) {
+            var transactionBalancedResult = transactionBalancedResults.getFirst();
+            var originalDifference = transactionBalancedResult.getOriginalDifference();
+            var difference = transactionBalancedResult.getDifference();
+
+            if(originalDifference != 0 || difference != 0) {
+                handleExecutionError(TransactionNotBalancedException.class, eea, ExecutionErrors.TransactionNotBalanced.name(),
+                        originalDifference, difference);
+            }
+        }
+    }
     
-    public void postTransaction(final Session session, final Transaction transaction, final BasePK createdBy) {
+    public void postTransaction(final ExecutionErrorAccumulator eea, final Session session, final Transaction transaction,
+            final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var coreControl = Session.getModelController(CoreControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
 
-        accountingControl.removeTransactionStatusByTransaction(transaction);
+        validateTransactionBalanced(eea, transaction);
 
-        PostingLogic.getInstance().postTransaction(session, transaction, createdBy);
+        if(eea != null && !hasExecutionErrors(eea)) {
+            accountingControl.removeTransactionStatusByTransaction(transaction);
 
-        // If it isn't in the Transaction Status workflow, assume this is a system generated transaction and
-        // we've gone directly to posting it.
-        var workflow = WorkflowLogic.getInstance().getWorkflowByName(null, TransactionStatusConstants.Workflow_TRANSACTION_STATUS);
-        var entityInstance = coreControl.getEntityInstanceByBasePK(transaction.getPrimaryKey());
-        if(!workflowControl.isEntityInWorkflow(workflow, entityInstance)) {
-            var workflowEntrance = WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(null, workflow,
-                    TransactionStatusConstants.WorkflowEntrance_TRANSACTION_STATUS_NEW_POSTED);
+            PostingLogic.getInstance().postTransaction(session, transaction, createdBy);
 
-            workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
+            // If it isn't in the Transaction Status workflow, assume this is a system generated transaction and
+            // we've gone directly to posting it.
+            var workflow = WorkflowLogic.getInstance().getWorkflowByName(null, TransactionStatusConstants.Workflow_TRANSACTION_STATUS);
+            var entityInstance = coreControl.getEntityInstanceByBasePK(transaction.getPrimaryKey());
+            if(!workflowControl.isEntityInWorkflow(workflow, entityInstance)) {
+                var workflowEntrance = WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(null, workflow,
+                        TransactionStatusConstants.WorkflowEntrance_TRANSACTION_STATUS_NEW_POSTED);
+
+                workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
+            }
         }
     }
     
-    public void testTransaction(final Session session, final BasePK testedBy) {
+    public void testTransaction(final ExecutionErrorAccumulator eea, final Session session, final BasePK testedBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var partyControl = Session.getModelController(PartyControl.class);
         var companyParty = partyControl.getDefaultPartyCompany().getParty();
@@ -259,7 +278,7 @@ public class TransactionLogic
         createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_A", null, originalCurrency, null, 1999L, testedBy);
         createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_B", null, originalCurrency, 1999L, null, testedBy);
         createTransactionEntityRoleUsingNames(transaction, "TEST_ENTITY_INSTANCE_ROLE_TYPE", testedBy, testedBy);
-        postTransaction(session, transaction, testedBy);
+        postTransaction(eea, session, transaction, testedBy);
     }
 
 }
