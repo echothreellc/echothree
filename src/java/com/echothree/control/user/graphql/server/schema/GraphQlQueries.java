@@ -33,6 +33,8 @@ import com.echothree.control.user.accounting.server.command.GetItemAccountingCat
 import com.echothree.control.user.accounting.server.command.GetItemAccountingCategoryCommand;
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionCommand;
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionsCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionGroupCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionGroupsCommand;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindCommand;
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindsCommand;
@@ -397,6 +399,7 @@ import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypeCom
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepsCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowsCommand;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.accounting.server.graphql.GlAccountCategoryObject;
 import com.echothree.model.control.accounting.server.graphql.GlAccountClassObject;
@@ -405,6 +408,7 @@ import com.echothree.model.control.accounting.server.graphql.GlAccountTypeObject
 import com.echothree.model.control.accounting.server.graphql.GlResourceTypeObject;
 import com.echothree.model.control.accounting.server.graphql.ItemAccountingCategoryObject;
 import com.echothree.model.control.accounting.server.graphql.SymbolPositionObject;
+import com.echothree.model.control.accounting.server.graphql.TransactionGroupObject;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationKindObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
@@ -621,6 +625,7 @@ import com.echothree.model.data.accounting.common.GlAccountTypeConstants;
 import com.echothree.model.data.accounting.common.GlResourceTypeConstants;
 import com.echothree.model.data.accounting.common.ItemAccountingCategoryConstants;
 import com.echothree.model.data.accounting.common.SymbolPositionConstants;
+import com.echothree.model.data.accounting.common.TransactionGroupConstants;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
@@ -629,6 +634,7 @@ import com.echothree.model.data.accounting.server.entity.GlAccountType;
 import com.echothree.model.data.accounting.server.entity.GlResourceType;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
+import com.echothree.model.data.accounting.server.entity.TransactionGroup;
 import com.echothree.model.data.cancellationpolicy.common.CancellationKindConstants;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
@@ -10443,6 +10449,57 @@ public interface GraphQlQueries {
                     var shippingMethods = entities.stream().map(ShippingMethodObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, shippingMethods);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionGroup")
+    static TransactionGroupObject transactionGroup(final DataFetchingEnvironment env,
+            @GraphQLName("transactionGroupName") final String transactionGroupName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        TransactionGroup transactionGroup;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetTransactionGroupForm();
+
+            commandForm.setTransactionGroupName(transactionGroupName);
+            commandForm.setUuid(id);
+
+            transactionGroup = new GetTransactionGroupCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return transactionGroup == null ? null : new TransactionGroupObject(transactionGroup);
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionGroups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TransactionGroupObject> transactionGroups(final DataFetchingEnvironment env) {
+        CountingPaginatedData<TransactionGroupObject> data;
+
+        try {
+            var accountingControl = Session.getModelController(AccountingControl.class);
+            var totalCount = accountingControl.countTransactionGroups();
+
+            try(var objectLimiter = new ObjectLimiter(env, TransactionGroupConstants.COMPONENT_VENDOR_NAME, TransactionGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = AccountingUtil.getHome().getGetTransactionGroupsForm();
+                var entities = new GetTransactionGroupsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var transactionGroups = entities.stream().map(TransactionGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, transactionGroups);
                 }
             }
         } catch (NamingException ex) {
