@@ -1006,7 +1006,7 @@
                         <column name="TransactionDetailId" type="EID" nullAllowed="false" />
                         <column name="TransactionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Transactions" destinationColumn="TransactionId" />
                         <column name="TransactionName" type="Name" nullAllowed="false" />
-                        <column name="GroupPartyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="GroupPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
                         <column name="TransactionGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionGroups" destinationColumn="TransactionGroupId" />
                         <column name="TransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionTypes" destinationColumn="TransactionTypeId" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
