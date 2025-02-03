@@ -1,5 +1,19 @@
 # Changelog
 
+## 2025-02-02-01
+
+* Separate Debit and Credit Values in Transactions [1493](https://gitlab.echothree.com/echothree/echothree/-/issues/1493)
+* Add Workflow for Transactions [1494](https://gitlab.echothree.com/echothree/echothree/-/issues/1494)
+* Validate Transaction Balances Before Posting [1497](https://gitlab.echothree.com/echothree/echothree/-/issues/1497)
+* Refactor Posted Time Into Transaction Time Types and Transaction Times [1498](https://gitlab.echothree.com/echothree/echothree/-/issues/1498)
+* Convert GetTransactionGroups UC to Use BasePaginatedMultipleEntitiesCommand [1499](https://gitlab.echothree.com/echothree/echothree/-/issues/1499)
+* Convert GetTransactionGroup UC to Use BaseSingleEntityCommand [1500](https://gitlab.echothree.com/echothree/echothree/-/issues/1500)
+* Convert GetTransactions UC to Use BasePaginatedMultipleEntitiesCommand [1501](https://gitlab.echothree.com/echothree/echothree/-/issues/1501)
+* Convert GetTransaction UC to Use BaseSingleEntityCommand [1502](https://gitlab.echothree.com/echothree/echothree/-/issues/1502)
+* Convert GetTransactionTypes UC to Use BasePaginatedMultipleEntitiesCommand [1503](https://gitlab.echothree.com/echothree/echothree/-/issues/1503)
+* Convert GetTransactionType UC to Use BaseSingleEntityCommand [1504](https://gitlab.echothree.com/echothree/echothree/-/issues/1504)
+* Add Transaction Group Object and Queries [1505](https://gitlab.echothree.com/echothree/echothree/-/issues/1505)
+
 ## 2025-01-19-01
 
 * Add Default Value for Integer Attributes [1458](https://gitlab.echothree.com/echothree/echothree/-/issues/1458)
