@@ -35,6 +35,8 @@ import com.echothree.control.user.accounting.server.command.GetSymbolPositionCom
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionsCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionGroupCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionGroupsCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionTypeCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionTypesCommand;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindCommand;
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindsCommand;
@@ -409,6 +411,7 @@ import com.echothree.model.control.accounting.server.graphql.GlResourceTypeObjec
 import com.echothree.model.control.accounting.server.graphql.ItemAccountingCategoryObject;
 import com.echothree.model.control.accounting.server.graphql.SymbolPositionObject;
 import com.echothree.model.control.accounting.server.graphql.TransactionGroupObject;
+import com.echothree.model.control.accounting.server.graphql.TransactionTypeObject;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationKindObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
@@ -626,6 +629,7 @@ import com.echothree.model.data.accounting.common.GlResourceTypeConstants;
 import com.echothree.model.data.accounting.common.ItemAccountingCategoryConstants;
 import com.echothree.model.data.accounting.common.SymbolPositionConstants;
 import com.echothree.model.data.accounting.common.TransactionGroupConstants;
+import com.echothree.model.data.accounting.common.TransactionTypeConstants;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
@@ -635,6 +639,7 @@ import com.echothree.model.data.accounting.server.entity.GlResourceType;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.model.data.accounting.server.entity.TransactionGroup;
+import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.cancellationpolicy.common.CancellationKindConstants;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
@@ -10449,6 +10454,57 @@ public interface GraphQlQueries {
                     var shippingMethods = entities.stream().map(ShippingMethodObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, shippingMethods);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionType")
+    static TransactionTypeObject transactionType(final DataFetchingEnvironment env,
+            @GraphQLName("transactionTypeName") final String transactionTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        TransactionType transactionType;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetTransactionTypeForm();
+
+            commandForm.setTransactionTypeName(transactionTypeName);
+            commandForm.setUuid(id);
+
+            transactionType = new GetTransactionTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return transactionType == null ? null : new TransactionTypeObject(transactionType);
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TransactionTypeObject> transactionTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<TransactionTypeObject> data;
+
+        try {
+            var accountingControl = Session.getModelController(AccountingControl.class);
+            var totalCount = accountingControl.countTransactionTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, TransactionTypeConstants.COMPONENT_VENDOR_NAME, TransactionTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = AccountingUtil.getHome().getGetTransactionTypesForm();
+                var entities = new GetTransactionTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var transactionTypes = entities.stream().map(TransactionTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, transactionTypes);
                 }
             }
         } catch (NamingException ex) {
