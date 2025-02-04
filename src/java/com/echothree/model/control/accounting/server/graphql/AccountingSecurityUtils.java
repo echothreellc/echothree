@@ -32,6 +32,12 @@ import com.echothree.control.user.accounting.server.command.GetItemAccountingCat
 import com.echothree.control.user.accounting.server.command.GetItemAccountingCategoryCommand;
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionCommand;
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionsCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionGroupCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionGroupsCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionTypeCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionTypesCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -99,6 +105,30 @@ public interface AccountingSecurityUtils {
 
     static boolean getHasGlResourceTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGlResourceTypesCommand.class);
+    }
+
+    static boolean getHasTransactionTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTransactionTypeCommand.class);
+    }
+
+    static boolean getHasTransactionTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTransactionTypesCommand.class);
+    }
+
+    static boolean getHasTransactionAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTransactionCommand.class);
+    }
+
+    static boolean getHasTransactionsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTransactionsCommand.class);
+    }
+
+    static boolean getHasTransactionGroupAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTransactionGroupCommand.class);
+    }
+
+    static boolean getHasTransactionGroupsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTransactionGroupsCommand.class);
     }
 
 }

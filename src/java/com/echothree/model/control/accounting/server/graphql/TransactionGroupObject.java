@@ -17,15 +17,26 @@
 package com.echothree.model.control.accounting.server.graphql;
 
 import com.echothree.model.control.accounting.common.workflow.TransactionGroupStatusConstants;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
+import com.echothree.model.data.accounting.common.TransactionConstants;
 import com.echothree.model.data.accounting.server.entity.TransactionGroup;
 import com.echothree.model.data.accounting.server.entity.TransactionGroupDetail;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("transaction group object")
 @GraphQLName("TransactionGroup")
@@ -61,6 +72,26 @@ public class TransactionGroupObject
     @GraphQLDescription("transaction group status")
     public WorkflowEntityStatusObject getTransactionGroupStatus(final DataFetchingEnvironment env) {
         return getWorkflowEntityStatusObject(env, TransactionGroupStatusConstants.Workflow_TRANSACTION_GROUP_STATUS);
+    }
+
+    @GraphQLField
+    @GraphQLDescription("transactions")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<TransactionObject> getTransactions(final DataFetchingEnvironment env) {
+        if(AccountingSecurityUtils.getHasTransactionsAccess(env)) {
+            var accountingControl = Session.getModelController(AccountingControl.class);
+            var totalCount = accountingControl.countTransactionsByTransactionGroup(transactionGroup);
+    
+            try(var objectLimiter = new ObjectLimiter(env, TransactionConstants.COMPONENT_VENDOR_NAME, TransactionConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = accountingControl.getTransactionsByTransactionGroup(transactionGroup);
+                var transactions = entities.stream().map(TransactionObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+    
+                return new CountedObjects<>(objectLimiter, transactions);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }
