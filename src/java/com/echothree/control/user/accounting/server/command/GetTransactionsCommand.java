@@ -53,7 +53,7 @@ public class GetTransactionsCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("TransactionGroupName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("TransactionGroupName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
     
@@ -68,7 +68,9 @@ public class GetTransactionsCommand
     protected void handleForm() {
         final var transactionGroupName = form.getTransactionGroupName();
 
-        transactionGroup = TransactionGroupLogic.getInstance().getTransactionGroupByName(this, transactionGroupName);
+        if(transactionGroupName != null) {
+            transactionGroup = TransactionGroupLogic.getInstance().getTransactionGroupByName(this, transactionGroupName);
+        }
     }
 
     @Override
@@ -78,7 +80,9 @@ public class GetTransactionsCommand
         if(!hasExecutionErrors()) {
             var accountingControl = Session.getModelController(AccountingControl.class);
 
-            totalEntities = accountingControl.countTransactionsByTransactionGroup(transactionGroup);
+            totalEntities = transactionGroup == null ?
+                    accountingControl.countTransactions() :
+                    accountingControl.countTransactionsByTransactionGroup(transactionGroup);
         }
 
         return totalEntities;
@@ -91,7 +95,9 @@ public class GetTransactionsCommand
         if(!hasExecutionErrors()) {
             final var accountingControl = Session.getModelController(AccountingControl.class);
 
-            entities = accountingControl.getTransactionsByTransactionGroup(transactionGroup);
+            entities = transactionGroup == null ?
+                    accountingControl.getTransactions() :
+                    accountingControl.getTransactionsByTransactionGroup(transactionGroup);
         }
 
         return entities;
@@ -109,7 +115,10 @@ public class GetTransactionsCommand
                 result.setTransactionCount(getTotalEntities());
             }
 
-            result.setTransactionGroup(accountingControl.getTransactionGroupTransfer(userVisit, transactionGroup));
+            if(transactionGroup != null) {
+                result.setTransactionGroup(accountingControl.getTransactionGroupTransfer(userVisit, transactionGroup));
+            }
+
             result.setTransactions(accountingControl.getTransactionTransfers(userVisit, entities));
         }
 
