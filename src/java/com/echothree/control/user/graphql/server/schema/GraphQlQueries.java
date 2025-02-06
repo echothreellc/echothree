@@ -631,6 +631,7 @@ import com.echothree.model.data.accounting.common.GlAccountTypeConstants;
 import com.echothree.model.data.accounting.common.GlResourceTypeConstants;
 import com.echothree.model.data.accounting.common.ItemAccountingCategoryConstants;
 import com.echothree.model.data.accounting.common.SymbolPositionConstants;
+import com.echothree.model.data.accounting.common.TransactionConstants;
 import com.echothree.model.data.accounting.common.TransactionGroupConstants;
 import com.echothree.model.data.accounting.common.TransactionTypeConstants;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -10567,7 +10568,7 @@ public interface GraphQlQueries {
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     static CountingPaginatedData<TransactionObject> transactions(final DataFetchingEnvironment env,
-            @GraphQLName("transactionGroupName") @GraphQLNonNull final String transactionGroupName) {
+            @GraphQLName("transactionGroupName") final String transactionGroupName) {
         CountingPaginatedData<TransactionObject> data;
 
         try {
@@ -10580,7 +10581,7 @@ public interface GraphQlQueries {
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
-                try(var objectLimiter = new ObjectLimiter(env, SearchTypeConstants.COMPONENT_VENDOR_NAME, SearchTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                try(var objectLimiter = new ObjectLimiter(env, TransactionConstants.COMPONENT_VENDOR_NAME, TransactionConstants.ENTITY_TYPE_NAME, totalEntities)) {
                     var entities = command.getEntitiesForGraphQl();
 
                     var transactions = entities.stream()
