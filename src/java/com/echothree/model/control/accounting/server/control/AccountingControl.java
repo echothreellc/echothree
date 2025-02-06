@@ -5238,27 +5238,40 @@ public class AccountingControl
         return getTransactionDetailValueForUpdate(getTransactionByNameForUpdate(transactionName));
     }
 
+    public List<Transaction> getTransactions() {
+        var ps = TransactionFactory.getInstance().prepareStatement("""
+                        SELECT _ALL_
+                        FROM transactions, transactiondetails
+                        WHERE trx_activedetailid = trxdt_transactiondetailid
+                        ORDER BY trxdt_transactionname
+                        _LIMIT_
+                        """);
+
+        return TransactionFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+    }
+
     public List<Transaction> getTransactionsByTransactionGroup(TransactionGroup transactionGroup) {
         List<Transaction> transactions;
-        
+
         try {
-            var ps = TransactionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM transactions, transactiondetails " +
-                    "WHERE trx_activedetailid = trxdt_transactiondetailid AND trxdt_trxgrp_transactiongroupid = ? " +
-                    "ORDER BY trxdt_transactionname " +
-                    "_LIMIT_");
-            
+            var ps = TransactionFactory.getInstance().prepareStatement("""
+                            SELECT _ALL_
+                            FROM transactions, transactiondetails
+                            WHERE trx_activedetailid = trxdt_transactiondetailid AND trxdt_trxgrp_transactiongroupid = ?
+                            ORDER BY trxdt_transactionname
+                            _LIMIT_
+                            """);
+
             ps.setLong(1, transactionGroup.getPrimaryKey().getEntityId());
-            
+
             transactions = TransactionFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return transactions;
     }
-    
+
     public List<Transaction> getTransactionsByTransactionType(TransactionType transactionType) {
         List<Transaction> transactions;
         
