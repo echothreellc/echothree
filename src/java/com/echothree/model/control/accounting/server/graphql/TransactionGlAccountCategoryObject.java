@@ -18,13 +18,10 @@ package com.echothree.model.control.accounting.server.graphql;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.graphql.BaseObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategory;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategoryDetail;
-import com.echothree.model.data.accounting.server.entity.TransactionType;
-import com.echothree.model.data.accounting.server.entity.TransactionTypeDetail;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -35,11 +32,13 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("transaction GL account category object")
 @GraphQLName("TransactionGlAccountCategory")
 public class TransactionGlAccountCategoryObject
-        extends BaseObject {
+        extends BaseEntityInstanceObject {
     
     private final TransactionGlAccountCategory transactionGlAccountCategory; // Always Present
     
     public TransactionGlAccountCategoryObject(TransactionGlAccountCategory transactionGlAccountCategory) {
+        super(transactionGlAccountCategory.getPrimaryKey());
+
         this.transactionGlAccountCategory = transactionGlAccountCategory;
     }
 
