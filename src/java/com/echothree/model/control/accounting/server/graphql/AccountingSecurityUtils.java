@@ -121,7 +121,7 @@ public interface AccountingSecurityUtils {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTransactionGlAccountCategoryCommand.class);
     }
 
-    static boolean getHasTransactionGlAccountCategorysAccess(final DataFetchingEnvironment env) {
+    static boolean getHasTransactionGlAccountCategoriesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTransactionGlAccountCategoriesCommand.class);
     }
 

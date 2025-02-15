@@ -51,8 +51,8 @@ public class GetTransactionGlAccountCategoryCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("TransactionTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("TransactionGlAccountCategoryName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("TransactionTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("TransactionGlAccountCategoryName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );

@@ -84,7 +84,8 @@ public class TransactionGlAccountCategoryLogic
         return transactionGlAccountCategory;
     }
 
-    public TransactionGlAccountCategory getTransactionGlAccountCategoryByName(final ExecutionErrorAccumulator eea, final TransactionType transactionType, final String transactionGlAccountCategoryName,
+    public TransactionGlAccountCategory getTransactionGlAccountCategoryByName(final ExecutionErrorAccumulator eea,
+            final TransactionType transactionType, final String transactionGlAccountCategoryName,
             final EntityPermission entityPermission) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByName(transactionType, transactionGlAccountCategoryName, entityPermission);
@@ -97,15 +98,18 @@ public class TransactionGlAccountCategoryLogic
         return transactionGlAccountCategory;
     }
 
-    public TransactionGlAccountCategory getTransactionGlAccountCategoryByName(final ExecutionErrorAccumulator eea, final TransactionType transactionType, final String transactionGlAccountCategoryName) {
+    public TransactionGlAccountCategory getTransactionGlAccountCategoryByName(final ExecutionErrorAccumulator eea,
+            final TransactionType transactionType, final String transactionGlAccountCategoryName) {
         return getTransactionGlAccountCategoryByName(eea, transactionType, transactionGlAccountCategoryName, EntityPermission.READ_ONLY);
     }
 
-    public TransactionGlAccountCategory getTransactionGlAccountCategoryByNameForUpdate(final ExecutionErrorAccumulator eea, final TransactionType transactionType, final String transactionGlAccountCategoryName) {
+    public TransactionGlAccountCategory getTransactionGlAccountCategoryByNameForUpdate(final ExecutionErrorAccumulator eea,
+            final TransactionType transactionType, final String transactionGlAccountCategoryName) {
         return getTransactionGlAccountCategoryByName(eea, transactionType, transactionGlAccountCategoryName, EntityPermission.READ_WRITE);
     }
 
-    public TransactionGlAccountCategory getTransactionGlAccountCategoryByName(final ExecutionErrorAccumulator eea, final String transactionTypeName, final String transactionGlAccountCategoryName,
+    public TransactionGlAccountCategory getTransactionGlAccountCategoryByName(final ExecutionErrorAccumulator eea,
+            final String transactionTypeName, final String transactionGlAccountCategoryName,
             final EntityPermission entityPermission) {
         var transactionType = TransactionTypeLogic.getInstance().getTransactionTypeByName(eea, transactionTypeName);
         TransactionGlAccountCategory transactionGlAccountCategory = null;
@@ -117,16 +121,18 @@ public class TransactionGlAccountCategoryLogic
         return transactionGlAccountCategory;
     }
 
-    public TransactionGlAccountCategory getTransactionGlAccountCategoryByName(final ExecutionErrorAccumulator eea, final String transactionTypeName, final String transactionGlAccountCategoryName) {
+    public TransactionGlAccountCategory getTransactionGlAccountCategoryByName(final ExecutionErrorAccumulator eea,
+            final String transactionTypeName, final String transactionGlAccountCategoryName) {
         return getTransactionGlAccountCategoryByName(eea, transactionTypeName, transactionGlAccountCategoryName, EntityPermission.READ_ONLY);
     }
 
-    public TransactionGlAccountCategory getTransactionGlAccountCategoryByNameForUpdate(final ExecutionErrorAccumulator eea, final String transactionTypeName, final String transactionGlAccountCategoryName) {
+    public TransactionGlAccountCategory getTransactionGlAccountCategoryByNameForUpdate(final ExecutionErrorAccumulator eea,
+            final String transactionTypeName, final String transactionGlAccountCategoryName) {
         return getTransactionGlAccountCategoryByName(eea, transactionTypeName, transactionGlAccountCategoryName, EntityPermission.READ_WRITE);
     }
 
-    public TransactionGlAccountCategory getTransactionGlAccountCategoryByUniversalSpec(final ExecutionErrorAccumulator eea, final TransactionGlAccountCategoryUniversalSpec universalSpec,
-            final EntityPermission entityPermission) {
+    public TransactionGlAccountCategory getTransactionGlAccountCategoryByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final TransactionGlAccountCategoryUniversalSpec universalSpec, final EntityPermission entityPermission) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionTypeName = universalSpec.getTransactionTypeName();
         var transactionGlAccountCategoryName = universalSpec.getTransactionGlAccountCategoryName();
@@ -135,7 +141,7 @@ public class TransactionGlAccountCategoryLogic
         TransactionGlAccountCategory transactionGlAccountCategory = null;
 
         if(nameParameterCount == 2 && possibleEntitySpecs == 0) {
-            TransactionType transactionType = TransactionTypeLogic.getInstance().getTransactionTypeByName(eea, transactionTypeName);
+            var transactionType = TransactionTypeLogic.getInstance().getTransactionTypeByName(eea, transactionTypeName);
 
             if(!eea.hasExecutionErrors()) {
                 transactionGlAccountCategory = getTransactionGlAccountCategoryByName(eea, transactionType, transactionGlAccountCategoryName, entityPermission);
