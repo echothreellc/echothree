@@ -69,6 +69,7 @@ import com.echothree.model.data.accounting.common.pk.GlAccountTypePK;
 import com.echothree.model.data.accounting.common.pk.GlResourceTypePK;
 import com.echothree.model.data.accounting.common.pk.ItemAccountingCategoryPK;
 import com.echothree.model.data.accounting.common.pk.SymbolPositionPK;
+import com.echothree.model.data.accounting.common.pk.TransactionGlAccountCategoryPK;
 import com.echothree.model.data.accounting.common.pk.TransactionGroupPK;
 import com.echothree.model.data.accounting.common.pk.TransactionPK;
 import com.echothree.model.data.accounting.common.pk.TransactionTypePK;
@@ -3977,8 +3978,33 @@ public class AccountingControl
         
         return transactionGlAccountCategory;
     }
-    
-    private TransactionGlAccountCategory getTransactionGlAccountCategoryByName(TransactionType transactionType, String transactionGlAccountCategoryName, EntityPermission entityPermission) {
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TransactionGlAccountCategory */
+    public TransactionGlAccountCategory getTransactionGlAccountCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TransactionGlAccountCategoryPK(entityInstance.getEntityUniqueId());
+
+        return TransactionGlAccountCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TransactionGlAccountCategory getTransactionGlAccountCategoryByEntityInstance(EntityInstance entityInstance) {
+        return getTransactionGlAccountCategoryByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TransactionGlAccountCategory getTransactionGlAccountCategoryByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTransactionGlAccountCategoryByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTransactionGlAccountCategoriesByTransactionType(final TransactionType transactionType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM transactionglaccountcategories
+                        JOIN transactionglaccountcategorydetails ON trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid
+                        WHERE trxglacdt_trxtyp_transactiontypeid = ?
+                        """, transactionType);
+    }
+
+
+    public TransactionGlAccountCategory getTransactionGlAccountCategoryByName(TransactionType transactionType, String transactionGlAccountCategoryName, EntityPermission entityPermission) {
         TransactionGlAccountCategory transactionGlAccountCategory;
         
         try {
@@ -4022,34 +4048,6 @@ public class AccountingControl
     
     public TransactionGlAccountCategoryDetailValue getTransactionGlAccountCategoryDetailValueForUpdate(TransactionGlAccountCategory transactionGlAccountCategory) {
         return transactionGlAccountCategory == null? null: transactionGlAccountCategory.getLastDetailForUpdate().getTransactionGlAccountCategoryDetailValue().clone();
-    }
-    
-    private List<TransactionGlAccountCategory> getTransactionGlAccountCategories(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM transactionglaccountcategories, transactionglaccountcategorydetails " +
-                    "WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid " +
-                    "ORDER BY trxglacdt_sortorder, trxglacdt_transactionglaccountcategoryname";
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM transactionglaccountcategories, transactionglaccountcategorydetails " +
-                    "WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid " +
-                    "FOR UPDATE";
-        }
-
-        var ps = TransactionGlAccountCategoryFactory.getInstance().prepareStatement(query);
-        
-        return TransactionGlAccountCategoryFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
-    }
-    
-    public List<TransactionGlAccountCategory> getTransactionGlAccountCategories() {
-        return getTransactionGlAccountCategories(EntityPermission.READ_ONLY);
-    }
-    
-    public List<TransactionGlAccountCategory> getTransactionGlAccountCategoriesForUpdate() {
-        return getTransactionGlAccountCategories(EntityPermission.READ_WRITE);
     }
     
     private List<TransactionGlAccountCategory> getTransactionGlAccountCategoriesByTransactionType(TransactionType transactionType, EntityPermission entityPermission) {
@@ -4103,10 +4101,6 @@ public class AccountingControl
         );
         
         return transactionGlAccountCategoryTransfers;
-    }
-    
-    public List<TransactionGlAccountCategoryTransfer> getTransactionGlAccountCategoryTransfers(UserVisit userVisit) {
-        return getTransactionGlAccountCategoryTransfers(userVisit, getTransactionGlAccountCategories());
     }
     
     public List<TransactionGlAccountCategoryTransfer> getTransactionGlAccountCategoryTransfersByTransactionType(UserVisit userVisit, TransactionType transactionType) {
