@@ -17,11 +17,13 @@
 package com.echothree.model.control.accounting.server.graphql;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
+import com.echothree.model.control.core.server.graphql.EntityTypeObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategory;
-import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategoryDetail;
+import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleType;
+import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleTypeDetail;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -29,27 +31,27 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("transaction GL account category object")
-@GraphQLName("TransactionGlAccountCategory")
-public class TransactionGlAccountCategoryObject
+@GraphQLDescription("transaction entity role type object")
+@GraphQLName("TransactionEntityRoleType")
+public class TransactionEntityRoleTypeObject
         extends BaseEntityInstanceObject {
     
-    private final TransactionGlAccountCategory transactionGlAccountCategory; // Always Present
+    private final TransactionEntityRoleType transactionEntityRoleType; // Always Present
     
-    public TransactionGlAccountCategoryObject(TransactionGlAccountCategory transactionGlAccountCategory) {
-        super(transactionGlAccountCategory.getPrimaryKey());
+    public TransactionEntityRoleTypeObject(TransactionEntityRoleType transactionEntityRoleType) {
+        super(transactionEntityRoleType.getPrimaryKey());
 
-        this.transactionGlAccountCategory = transactionGlAccountCategory;
+        this.transactionEntityRoleType = transactionEntityRoleType;
     }
 
-    private TransactionGlAccountCategoryDetail transactionGlAccountCategoryDetail; // Optional, use getTransactionGlAccountCategoryDetail()
+    private TransactionEntityRoleTypeDetail transactionEntityRoleTypeDetail; // Optional, use getTransactionEntityRoleTypeDetail()
     
-    private TransactionGlAccountCategoryDetail getTransactionGlAccountCategoryDetail() {
-        if(transactionGlAccountCategoryDetail == null) {
-            transactionGlAccountCategoryDetail = transactionGlAccountCategory.getLastDetail();
+    private TransactionEntityRoleTypeDetail getTransactionEntityRoleTypeDetail() {
+        if(transactionEntityRoleTypeDetail == null) {
+            transactionEntityRoleTypeDetail = transactionEntityRoleType.getLastDetail();
         }
         
-        return transactionGlAccountCategoryDetail;
+        return transactionEntityRoleTypeDetail;
     }
     
     @GraphQLField
@@ -57,33 +59,30 @@ public class TransactionGlAccountCategoryObject
     @GraphQLNonNull
     public TransactionTypeObject getTransactionType(final DataFetchingEnvironment env) {
         return AccountingSecurityUtils.getHasTransactionTypeAccess(env) ?
-                new TransactionTypeObject(getTransactionGlAccountCategoryDetail().getTransactionType()) :
+                new TransactionTypeObject(getTransactionEntityRoleTypeDetail().getTransactionType()) :
                 null;
     }
 
     @GraphQLField
-    @GraphQLDescription("transaction GL account category name")
+    @GraphQLDescription("transaction entity role type name")
     @GraphQLNonNull
-    public String getTransactionGlAccountCategoryName() {
-        return getTransactionGlAccountCategoryDetail().getTransactionGlAccountCategoryName();
+    public String getTransactionEntityRoleTypeName() {
+        return getTransactionEntityRoleTypeDetail().getTransactionEntityRoleTypeName();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("entity type")
+    public EntityTypeObject getEntityType(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getHasEntityTypeAccess(env) ?
+                        new EntityTypeObject(getTransactionEntityRoleTypeDetail().getEntityType()) :
+                        null;
     }
 
     @GraphQLField
     @GraphQLDescription("sort order")
     @GraphQLNonNull
     public int getSortOrder() {
-        return getTransactionGlAccountCategoryDetail().getSortOrder();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("GL account category")
-    public GlAccountCategoryObject getGlAccountCategory(final DataFetchingEnvironment env) {
-        var glaccountCategory = getTransactionGlAccountCategoryDetail().getGlAccountCategory();
-
-        return glaccountCategory == null ? null :
-                AccountingSecurityUtils.getHasGlAccountCategoryAccess(env) ?
-                new GlAccountCategoryObject(glaccountCategory) :
-                null;
+        return getTransactionEntityRoleTypeDetail().getSortOrder();
     }
 
     @GraphQLField
@@ -93,7 +92,7 @@ public class TransactionGlAccountCategoryObject
         var accountingControl = Session.getModelController(AccountingControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return accountingControl.getBestTransactionGlAccountCategoryDescription(transactionGlAccountCategory, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        return accountingControl.getBestTransactionEntityRoleTypeDescription(transactionEntityRoleType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

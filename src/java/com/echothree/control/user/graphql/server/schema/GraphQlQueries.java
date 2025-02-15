@@ -34,6 +34,8 @@ import com.echothree.control.user.accounting.server.command.GetItemAccountingCat
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionCommand;
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionsCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionEntityRoleTypeCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionEntityRoleTypesCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionGlAccountCategoriesCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionGlAccountCategoryCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionGroupCommand;
@@ -414,6 +416,7 @@ import com.echothree.model.control.accounting.server.graphql.GlAccountTypeObject
 import com.echothree.model.control.accounting.server.graphql.GlResourceTypeObject;
 import com.echothree.model.control.accounting.server.graphql.ItemAccountingCategoryObject;
 import com.echothree.model.control.accounting.server.graphql.SymbolPositionObject;
+import com.echothree.model.control.accounting.server.graphql.TransactionEntityRoleTypeObject;
 import com.echothree.model.control.accounting.server.graphql.TransactionGlAccountCategoryObject;
 import com.echothree.model.control.accounting.server.graphql.TransactionGroupObject;
 import com.echothree.model.control.accounting.server.graphql.TransactionObject;
@@ -635,6 +638,7 @@ import com.echothree.model.data.accounting.common.GlResourceTypeConstants;
 import com.echothree.model.data.accounting.common.ItemAccountingCategoryConstants;
 import com.echothree.model.data.accounting.common.SymbolPositionConstants;
 import com.echothree.model.data.accounting.common.TransactionConstants;
+import com.echothree.model.data.accounting.common.TransactionEntityRoleTypeConstants;
 import com.echothree.model.data.accounting.common.TransactionGlAccountCategoryConstants;
 import com.echothree.model.data.accounting.common.TransactionGroupConstants;
 import com.echothree.model.data.accounting.common.TransactionTypeConstants;
@@ -647,6 +651,7 @@ import com.echothree.model.data.accounting.server.entity.GlResourceType;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.model.data.accounting.server.entity.Transaction;
+import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleType;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategory;
 import com.echothree.model.data.accounting.server.entity.TransactionGroup;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
@@ -10545,6 +10550,64 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, transactionGlAccountCategories);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionEntityRoleType")
+    static TransactionEntityRoleTypeObject transactionEntityRoleType(final DataFetchingEnvironment env,
+            @GraphQLName("transactionTypeName") final String transactionTypeName,
+            @GraphQLName("transactionEntityRoleTypeName") final String transactionEntityRoleTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        TransactionEntityRoleType transactionEntityRoleType;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypeForm();
+
+            commandForm.setTransactionTypeName(transactionTypeName);
+            commandForm.setTransactionEntityRoleTypeName(transactionEntityRoleTypeName);
+            commandForm.setUuid(id);
+
+            transactionEntityRoleType = new GetTransactionEntityRoleTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return transactionEntityRoleType == null ? null : new TransactionEntityRoleTypeObject(transactionEntityRoleType);
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionEntityRoleTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TransactionEntityRoleTypeObject> transactionEntityRoleTypes(final DataFetchingEnvironment env,
+            @GraphQLName("transactionTypeName") final String transactionTypeName) {
+        CountingPaginatedData<TransactionEntityRoleTypeObject> data;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypesForm();
+            var command = new GetTransactionEntityRoleTypesCommand(getUserVisitPK(env), commandForm);
+
+            commandForm.setTransactionTypeName(transactionTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TransactionEntityRoleTypeConstants.COMPONENT_VENDOR_NAME, TransactionEntityRoleTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var transactionEntityRoleTypes = entities.stream()
+                            .map(TransactionEntityRoleTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, transactionEntityRoleTypes);
                 }
             }
         } catch (NamingException ex) {

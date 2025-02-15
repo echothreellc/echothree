@@ -26,7 +26,10 @@ public interface GetTransactionEntityRoleTypesResult
     
     TransactionTypeTransfer getTransactionType();
     void setTransactionType(TransactionTypeTransfer transactionType);
-    
+
+    Long getTransactionEntityRoleTypeCount();
+    void setTransactionEntityRoleTypeCount(Long transactionEntityRoleTypeCount);
+
     List<TransactionEntityRoleTypeTransfer> getTransactionEntityRoleTypes();
     void setTransactionEntityRoleTypes(List<TransactionEntityRoleTypeTransfer> transactionEntityRoleTypes);
     
