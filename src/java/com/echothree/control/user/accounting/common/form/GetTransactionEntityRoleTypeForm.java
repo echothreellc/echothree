@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.accounting.common.form;
 
-import com.echothree.control.user.accounting.common.spec.TransactionEntityRoleTypeSpec;
+import com.echothree.control.user.accounting.common.spec.TransactionEntityRoleTypeUniversalSpec;
 
 public interface GetTransactionEntityRoleTypeForm
-        extends TransactionEntityRoleTypeSpec {
+        extends TransactionEntityRoleTypeUniversalSpec {
     
-    // Nothing additional beyond TransactionEntityRoleTypeSpec
+    // Nothing additional beyond TransactionEntityRoleTypeUniversalSpec
     
 }

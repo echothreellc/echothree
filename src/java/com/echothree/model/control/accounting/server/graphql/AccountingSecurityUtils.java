@@ -33,6 +33,8 @@ import com.echothree.control.user.accounting.server.command.GetItemAccountingCat
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionCommand;
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionsCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionEntityRoleTypeCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionEntityRoleTypesCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionGlAccountCategoriesCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionGlAccountCategoryCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionGroupCommand;
@@ -123,6 +125,14 @@ public interface AccountingSecurityUtils {
 
     static boolean getHasTransactionGlAccountCategoriesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTransactionGlAccountCategoriesCommand.class);
+    }
+
+    static boolean getHasTransactionEntityRoleTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTransactionEntityRoleTypeCommand.class);
+    }
+
+    static boolean getHasTransactionEntityRoleTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTransactionEntityRoleTypesCommand.class);
     }
 
     static boolean getHasTransactionAccess(final DataFetchingEnvironment env) {
