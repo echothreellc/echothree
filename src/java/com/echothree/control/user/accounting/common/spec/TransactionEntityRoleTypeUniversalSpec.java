@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.accounting.common.form;
+package com.echothree.control.user.accounting.common.spec;
 
-import com.echothree.control.user.accounting.common.spec.TransactionEntityRoleTypeUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetTransactionEntityRoleTypeForm
-        extends TransactionEntityRoleTypeUniversalSpec {
+public interface TransactionEntityRoleTypeUniversalSpec
+        extends TransactionEntityRoleTypeSpec, UniversalEntitySpec {
     
-    // Nothing additional beyond TransactionEntityRoleTypeUniversalSpec
+    // Nothing additional beyond TransactionEntityRoleTypeSpec, UniversalEntitySpec
     
 }

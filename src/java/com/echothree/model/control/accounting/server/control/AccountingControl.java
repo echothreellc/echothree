@@ -69,6 +69,7 @@ import com.echothree.model.data.accounting.common.pk.GlAccountTypePK;
 import com.echothree.model.data.accounting.common.pk.GlResourceTypePK;
 import com.echothree.model.data.accounting.common.pk.ItemAccountingCategoryPK;
 import com.echothree.model.data.accounting.common.pk.SymbolPositionPK;
+import com.echothree.model.data.accounting.common.pk.TransactionEntityRoleTypePK;
 import com.echothree.model.data.accounting.common.pk.TransactionGlAccountCategoryPK;
 import com.echothree.model.data.accounting.common.pk.TransactionGroupPK;
 import com.echothree.model.data.accounting.common.pk.TransactionPK;
@@ -4002,8 +4003,7 @@ public class AccountingControl
                         WHERE trxglacdt_trxtyp_transactiontypeid = ?
                         """, transactionType);
     }
-
-
+    
     public TransactionGlAccountCategory getTransactionGlAccountCategoryByName(TransactionType transactionType, String transactionGlAccountCategoryName, EntityPermission entityPermission) {
         TransactionGlAccountCategory transactionGlAccountCategory;
         
@@ -4338,8 +4338,32 @@ public class AccountingControl
         
         return transactionEntityRoleType;
     }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TransactionEntityRoleType */
+    public TransactionEntityRoleType getTransactionEntityRoleTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TransactionEntityRoleTypePK(entityInstance.getEntityUniqueId());
+
+        return TransactionEntityRoleTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TransactionEntityRoleType getTransactionEntityRoleTypeByEntityInstance(EntityInstance entityInstance) {
+        return getTransactionEntityRoleTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TransactionEntityRoleType getTransactionEntityRoleTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTransactionEntityRoleTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTransactionEntityRoleTypesByTransactionType(final TransactionType transactionType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM transactionentityroletypes
+                        JOIN transactionentityroletypedetails ON trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid
+                        WHERE trxertypdt_trxtyp_transactiontypeid = ?
+                        """, transactionType);
+    }
     
-    private TransactionEntityRoleType getTransactionEntityRoleTypeByName(TransactionType transactionType, String transactionEntityRoleTypeName, EntityPermission entityPermission) {
+    public TransactionEntityRoleType getTransactionEntityRoleTypeByName(TransactionType transactionType, String transactionEntityRoleTypeName, EntityPermission entityPermission) {
         TransactionEntityRoleType transactionEntityRoleType;
         
         try {
@@ -4385,34 +4409,6 @@ public class AccountingControl
         return transactionEntityRoleType == null? null: transactionEntityRoleType.getLastDetailForUpdate().getTransactionEntityRoleTypeDetailValue().clone();
     }
     
-    private List<TransactionEntityRoleType> getTransactionEntityRoleTypes(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM transactionentityroletypes, transactionentityroletypedetails " +
-                    "WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid " +
-                    "ORDER BY trxertypdt_sortorder, trxertypdt_transactionentityroletypename";
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM transactionentityroletypes, transactionentityroletypedetails " +
-                    "WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid " +
-                    "FOR UPDATE";
-        }
-
-        var ps = TransactionEntityRoleTypeFactory.getInstance().prepareStatement(query);
-        
-        return TransactionEntityRoleTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
-    }
-    
-    public List<TransactionEntityRoleType> getTransactionEntityRoleTypes() {
-        return getTransactionEntityRoleTypes(EntityPermission.READ_ONLY);
-    }
-    
-    public List<TransactionEntityRoleType> getTransactionEntityRoleTypesForUpdate() {
-        return getTransactionEntityRoleTypes(EntityPermission.READ_WRITE);
-    }
-    
     private List<TransactionEntityRoleType> getTransactionEntityRoleTypesByTransactionType(TransactionType transactionType, EntityPermission entityPermission) {
         List<TransactionEntityRoleType> transactionEntityRoleTypes;
         
@@ -4423,7 +4419,8 @@ public class AccountingControl
             query = "SELECT _ALL_ " +
                     "FROM transactionentityroletypes, transactionentityroletypedetails " +
                     "WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ? " +
-                    "ORDER BY trxertypdt_sortorder, trxertypdt_transactionentityroletypename";
+                    "ORDER BY trxertypdt_sortorder, trxertypdt_transactionentityroletypename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM transactionentityroletypes, transactionentityroletypedetails " +
@@ -4495,7 +4492,7 @@ public class AccountingControl
     }
     
     public List<TransactionEntityRoleTypeTransfer> getTransactionEntityRoleTypeTransfers(UserVisit userVisit, Collection<TransactionEntityRoleType> transactionEntityRoleTypes) {
-        List<TransactionEntityRoleTypeTransfer> transactionEntityRoleTypeTransfers = new ArrayList<>(transactionEntityRoleTypes.size());
+        var transactionEntityRoleTypeTransfers = new ArrayList<TransactionEntityRoleTypeTransfer>(transactionEntityRoleTypes.size());
         var transactionEntityRoleTypeTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeTransferCache();
         
         transactionEntityRoleTypes.forEach((transactionEntityRoleType) ->
@@ -4503,10 +4500,6 @@ public class AccountingControl
         );
         
         return transactionEntityRoleTypeTransfers;
-    }
-    
-    public List<TransactionEntityRoleTypeTransfer> getTransactionEntityRoleTypeTransfers(UserVisit userVisit) {
-        return getTransactionEntityRoleTypeTransfers(userVisit, getTransactionEntityRoleTypes());
     }
     
     public List<TransactionEntityRoleTypeTransfer> getTransactionEntityRoleTypeTransfersByTransactionType(UserVisit userVisit, TransactionType transactionType) {

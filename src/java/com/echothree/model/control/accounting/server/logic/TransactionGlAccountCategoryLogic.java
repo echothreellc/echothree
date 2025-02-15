@@ -176,4 +176,5 @@ public class TransactionGlAccountCategoryLogic
 
         accountingControl.deleteTransactionGlAccountCategory(transactionGlAccountCategory, deletedBy);
     }
+
 }

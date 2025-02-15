@@ -26,6 +26,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.accounting.common.TransactionConstants;
+import com.echothree.model.data.accounting.common.TransactionEntityRoleTypeConstants;
 import com.echothree.model.data.accounting.common.TransactionGlAccountCategoryConstants;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.accounting.server.entity.TransactionTypeDetail;
@@ -100,6 +101,26 @@ public class TransactionTypeObject
                 var transactionGlAccountCategories = entities.stream().map(TransactionGlAccountCategoryObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, transactionGlAccountCategories);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("transactionEntityRoleTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<TransactionEntityRoleTypeObject> getTransactionEntityRoleTypes(final DataFetchingEnvironment env) {
+        if(AccountingSecurityUtils.getHasTransactionEntityRoleTypesAccess(env)) {
+            var accountingControl = Session.getModelController(AccountingControl.class);
+            var totalCount = accountingControl.countTransactionEntityRoleTypesByTransactionType(transactionType);
+
+            try(var objectLimiter = new ObjectLimiter(env, TransactionEntityRoleTypeConstants.COMPONENT_VENDOR_NAME, TransactionEntityRoleTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = accountingControl.getTransactionEntityRoleTypesByTransactionType(transactionType);
+                var transactionEntityRoleTypes = entities.stream().map(TransactionEntityRoleTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, transactionEntityRoleTypes);
             }
         } else {
             return Connections.emptyConnection();
