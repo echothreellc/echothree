@@ -33,6 +33,8 @@ import com.echothree.control.user.accounting.server.command.GetItemAccountingCat
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionCommand;
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionsCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionGlAccountCategoriesCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionGlAccountCategoryCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionGroupCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionGroupsCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionTypeCommand;
@@ -113,6 +115,14 @@ public interface AccountingSecurityUtils {
 
     static boolean getHasTransactionTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTransactionTypesCommand.class);
+    }
+
+    static boolean getHasTransactionGlAccountCategoryAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTransactionGlAccountCategoryCommand.class);
+    }
+
+    static boolean getHasTransactionGlAccountCategoriesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTransactionGlAccountCategoriesCommand.class);
     }
 
     static boolean getHasTransactionAccess(final DataFetchingEnvironment env) {

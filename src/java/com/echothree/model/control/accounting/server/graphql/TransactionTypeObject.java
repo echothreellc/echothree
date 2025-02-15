@@ -18,8 +18,15 @@ package com.echothree.model.control.accounting.server.graphql;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.accounting.common.TransactionConstants;
+import com.echothree.model.data.accounting.common.TransactionGlAccountCategoryConstants;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.accounting.server.entity.TransactionTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +34,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("transaction type object")
 @GraphQLName("TransactionType")
@@ -76,4 +86,24 @@ public class TransactionTypeObject
         return accountingControl.getBestTransactionTypeDescription(transactionType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
+    @GraphQLField
+    @GraphQLDescription("transactionGlAccountCategories")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<TransactionGlAccountCategoryObject> getTransactionGlAccountCategories(final DataFetchingEnvironment env) {
+        if(AccountingSecurityUtils.getHasTransactionGlAccountCategoriesAccess(env)) {
+            var accountingControl = Session.getModelController(AccountingControl.class);
+            var totalCount = accountingControl.countTransactionGlAccountCategoriesByTransactionType(transactionType);
+
+            try(var objectLimiter = new ObjectLimiter(env, TransactionGlAccountCategoryConstants.COMPONENT_VENDOR_NAME, TransactionGlAccountCategoryConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = accountingControl.getTransactionGlAccountCategoriesByTransactionType(transactionType);
+                var transactionGlAccountCategories = entities.stream().map(TransactionGlAccountCategoryObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, transactionGlAccountCategories);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+    
 }

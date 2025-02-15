@@ -14,14 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.accounting.common.form;
+package com.echothree.control.user.accounting.common.spec;
 
-import com.echothree.control.user.accounting.common.spec.TransactionGlAccountCategorySpec;
-import com.echothree.control.user.accounting.common.spec.TransactionGlAccountCategoryUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetTransactionGlAccountCategoryForm
-        extends TransactionGlAccountCategoryUniversalSpec {
+public interface TransactionGlAccountCategoryUniversalSpec
+        extends TransactionGlAccountCategorySpec, UniversalEntitySpec {
     
-    // Nothing additional beyond TransactionGlAccountCategoryUniversalSpec
+    // Nothing additional beyond TransactionGlAccountCategorySpec, UniversalEntitySpec
     
 }

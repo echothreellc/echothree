@@ -84,7 +84,7 @@ public class GetTransactionTypesCommand
             var accountingControl = Session.getModelController(AccountingControl.class);
 
             if(session.hasLimit(TransactionTypeFactory.class)) {
-                result.setTransactionTypeCount(accountingControl.countTransactionTypes());
+                result.setTransactionTypeCount(getTotalEntities());
             }
 
             result.setTransactionTypes(accountingControl.getTransactionTypeTransfers(getUserVisit(), entities));

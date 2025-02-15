@@ -34,6 +34,8 @@ import com.echothree.control.user.accounting.server.command.GetItemAccountingCat
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionCommand;
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionsCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionGlAccountCategoriesCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionGlAccountCategoryCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionGroupCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionGroupsCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionTypeCommand;
@@ -412,6 +414,7 @@ import com.echothree.model.control.accounting.server.graphql.GlAccountTypeObject
 import com.echothree.model.control.accounting.server.graphql.GlResourceTypeObject;
 import com.echothree.model.control.accounting.server.graphql.ItemAccountingCategoryObject;
 import com.echothree.model.control.accounting.server.graphql.SymbolPositionObject;
+import com.echothree.model.control.accounting.server.graphql.TransactionGlAccountCategoryObject;
 import com.echothree.model.control.accounting.server.graphql.TransactionGroupObject;
 import com.echothree.model.control.accounting.server.graphql.TransactionObject;
 import com.echothree.model.control.accounting.server.graphql.TransactionTypeObject;
@@ -632,6 +635,7 @@ import com.echothree.model.data.accounting.common.GlResourceTypeConstants;
 import com.echothree.model.data.accounting.common.ItemAccountingCategoryConstants;
 import com.echothree.model.data.accounting.common.SymbolPositionConstants;
 import com.echothree.model.data.accounting.common.TransactionConstants;
+import com.echothree.model.data.accounting.common.TransactionGlAccountCategoryConstants;
 import com.echothree.model.data.accounting.common.TransactionGroupConstants;
 import com.echothree.model.data.accounting.common.TransactionTypeConstants;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -643,6 +647,7 @@ import com.echothree.model.data.accounting.server.entity.GlResourceType;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.model.data.accounting.server.entity.Transaction;
+import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategory;
 import com.echothree.model.data.accounting.server.entity.TransactionGroup;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.cancellationpolicy.common.CancellationKindConstants;
@@ -10482,6 +10487,64 @@ public interface GraphQlQueries {
                     var transactionTypes = entities.stream().map(TransactionTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, transactionTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionGlAccountCategory")
+    static TransactionGlAccountCategoryObject transactionGlAccountCategory(final DataFetchingEnvironment env,
+            @GraphQLName("transactionTypeName") final String transactionTypeName,
+            @GraphQLName("transactionGlAccountCategoryName") final String transactionGlAccountCategoryName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        TransactionGlAccountCategory transactionGlAccountCategory;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoryForm();
+
+            commandForm.setTransactionTypeName(transactionTypeName);
+            commandForm.setTransactionGlAccountCategoryName(transactionGlAccountCategoryName);
+            commandForm.setUuid(id);
+
+            transactionGlAccountCategory = new GetTransactionGlAccountCategoryCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return transactionGlAccountCategory == null ? null : new TransactionGlAccountCategoryObject(transactionGlAccountCategory);
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionGlAccountCategories")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TransactionGlAccountCategoryObject> transactionGlAccountCategories(final DataFetchingEnvironment env,
+            @GraphQLName("transactionTypeName") final String transactionTypeName) {
+        CountingPaginatedData<TransactionGlAccountCategoryObject> data;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoriesForm();
+            var command = new GetTransactionGlAccountCategoriesCommand(getUserVisitPK(env), commandForm);
+
+            commandForm.setTransactionTypeName(transactionTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TransactionGlAccountCategoryConstants.COMPONENT_VENDOR_NAME, TransactionGlAccountCategoryConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var transactionGlAccountCategories = entities.stream()
+                            .map(TransactionGlAccountCategoryObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, transactionGlAccountCategories);
                 }
             }
         } catch (NamingException ex) {
