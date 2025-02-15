@@ -26,7 +26,10 @@ public interface GetTransactionGlAccountCategoriesResult
     
     TransactionTypeTransfer getTransactionType();
     void setTransactionType(TransactionTypeTransfer transactionType);
-    
+
+    Long getTransactionGlAccountCategoryCount();
+    void setTransactionGlAccountCategoryCount(Long transactionGlAccountCategoryCount);
+
     List<TransactionGlAccountCategoryTransfer> getTransactionGlAccountCategories();
     void setTransactionGlAccountCategories(List<TransactionGlAccountCategoryTransfer> transactionGlAccountCategories);
     
