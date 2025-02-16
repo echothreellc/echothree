@@ -374,7 +374,11 @@ public abstract class DatabaseUtilities {
         
         return fkResult;
     }
-    
+
+    String getUUIDDefinition(String columnName, Column theColumn) {
+        return null;
+    }
+
     String getColumnDefinitionWithName(Table theTable, String columnPrefix,
             String columnName, Column theColumn, Column theFKColumn) throws Exception {
         String columnResult = null;
@@ -409,6 +413,9 @@ public abstract class DatabaseUtilities {
                 break;
             case ColumnType.columnForeignKey:
                 columnResult = getForeignKeyDefinition(theTable, columnPrefix, theColumn);
+                break;
+            case ColumnType.columnUUID:
+                columnResult = getUUIDDefinition(columnName, theColumn);
                 break;
         }
         
