@@ -1,5 +1,14 @@
 # Changelog
 
+## 2025-02-16-01
+
+* Add Transaction Type Object and Queries [1506](https://gitlab.echothree.com/echothree/echothree/-/issues/1506)
+* Add Transaction Gl Account Category Object and Queries [1507](https://gitlab.echothree.com/echothree/echothree/-/issues/1507)
+* Add Transaction Entity Role Type Object and Queries [1508](https://gitlab.echothree.com/echothree/echothree/-/issues/1508)
+* Add Transaction Object and Queries [1509](https://gitlab.echothree.com/echothree/echothree/-/issues/1509)
+* TransactionDetail's GroupPartyId Column Should Not Be Null [1513](https://gitlab.echothree.com/echothree/echothree/-/issues/1513)
+* Allow GetTransactions UC to Return All Transactions [1514](https://gitlab.echothree.com/echothree/echothree/-/issues/1514)
+
 ## 2025-02-02-01
 
 * Separate Debit and Credit Values in Transactions [1493](https://gitlab.echothree.com/echothree/echothree/-/issues/1493)
