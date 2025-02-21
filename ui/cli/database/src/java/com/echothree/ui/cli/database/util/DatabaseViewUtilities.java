@@ -117,7 +117,7 @@ public class DatabaseViewUtilities {
             var detailTable = database.getTableByPlural(table.getNameSingular() + "Details");
             var detailPrimaryKey = getTablePrimaryKey(detailTable);
             var viewColumns = new StringBuilder();
-            var detailColumns = new StringBuilder();
+            var selectColumns = new StringBuilder();
             var usedColumnCount = 0;
             
             for(var column : detailTable.getColumns()) {
@@ -127,10 +127,16 @@ public class DatabaseViewUtilities {
                     if(!(columnName.equals("FromTime") || columnName.equals("ThruTime"))) {
                         if(usedColumnCount > 0) {
                             viewColumns.append(", ");
-                            detailColumns.append(", ");
+                            selectColumns.append(", ");
                         }
+
                         viewColumns.append(column.getDbColumnName(table.getColumnPrefixLowerCase()));
-                        detailColumns.append(column.getDbColumnName());
+
+                        var selectColumnName = column.getDbColumnName();
+                        if(column.getType() == ColumnType.columnUUID)
+                            selectColumnName = "BIN_TO_UUID(" + selectColumnName + ") AS " + selectColumnName;
+                        selectColumns.append(selectColumnName);
+
                         usedColumnCount++;
                     }
                 }
@@ -145,7 +151,7 @@ public class DatabaseViewUtilities {
                     ") AS SELECT " +
                     primaryKey.getDbColumnName() +
                     ", " +
-                    detailColumns +
+                    selectColumns +
                     " FROM echothree." +
                     table.getDbTableName() +
                     ", echothree." +
@@ -169,7 +175,8 @@ public class DatabaseViewUtilities {
         
         for(var table : tablesWithoutDetails) {
             Column thruTimeColumn = null;
-            var columns = new StringBuilder();
+            var viewColumns = new StringBuilder();
+            var selectColumns = new StringBuilder();
             var usedColumnCount = 0;
             
             for(var column : table.getColumns()) {
@@ -179,9 +186,17 @@ public class DatabaseViewUtilities {
                     thruTimeColumn = column;
                 } else {
                     if(usedColumnCount > 0) {
-                        columns.append(", ");
+                        viewColumns.append(", ");
+                        selectColumns.append(", ");
                     }
-                    columns.append(column.getDbColumnName());
+
+                    viewColumns.append(column.getDbColumnName(table.getColumnPrefixLowerCase()));
+
+                    var selectColumnName = column.getDbColumnName();
+                    if(column.getType() == ColumnType.columnUUID)
+                        selectColumnName = "BIN_TO_UUID(" + selectColumnName + ") AS " + selectColumnName;
+                    selectColumns.append(selectColumnName);
+
                     usedColumnCount++;
                 }
             }
@@ -189,9 +204,9 @@ public class DatabaseViewUtilities {
             var createView = new StringBuilder("CREATE VIEW ")
                     .append(table.getDbTableName())
                     .append("(")
-                    .append(columns)
+                    .append(viewColumns)
                     .append(") AS SELECT ")
-                    .append(columns)
+                    .append(selectColumns)
                     .append(" FROM echothree.")
                     .append(table.getDbTableName());
             if(thruTimeColumn != null) {
