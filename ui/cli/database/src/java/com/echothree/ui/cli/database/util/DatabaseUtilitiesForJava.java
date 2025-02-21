@@ -1034,6 +1034,7 @@ public class DatabaseUtilitiesForJava {
         var allColumnsExceptPk = "";
         String allColumns;
         var questionMarks = "";
+        var insertAllColumns = "";
         var updateColumns = "";
         
         for(var column: columns) {
@@ -1045,9 +1046,13 @@ public class DatabaseUtilitiesForJava {
                 if(!allColumnsExceptPk.isEmpty())
                     allColumnsExceptPk += ", ";
                 if(type == ColumnType.columnUUID)
-                    allColumnsExceptPk += "BIN_TO_UUID(" + column.getDbColumnName() + ")";
+                    allColumnsExceptPk += "BIN_TO_UUID(" + column.getDbColumnName() + ") AS " + column.getDbColumnName();
                 else
                     allColumnsExceptPk += column.getDbColumnName();
+
+                if(!insertAllColumns.isEmpty())
+                    insertAllColumns += ", ";
+                insertAllColumns += column.getDbColumnName();
 
                 if(!updateColumns.isEmpty())
                     updateColumns += ", ";
@@ -1060,15 +1065,21 @@ public class DatabaseUtilitiesForJava {
             
             if(!questionMarks.isEmpty())
                 questionMarks += ", ";
-            questionMarks += "?";
+            if(type == ColumnType.columnUUID)
+                questionMarks += "UUID_TO_BIN(?)";
+            else
+                questionMarks += "?";
         }
+
+        // These two Strings need to have the PK added to the beginning of them.
         allColumns = !allColumnsExceptPk.isEmpty() ? pkColumn + ", " + allColumnsExceptPk: pkColumn;
-        
+        insertAllColumns = !insertAllColumns.isEmpty() ? pkColumn + ", " + insertAllColumns: pkColumn;
+
         pw.println("    //final private static Log log = LogFactory.getLog(" + factoryClass + ".class);");
         pw.println("    ");
         pw.println("    final private static String SQL_SELECT_READ_ONLY = \"SELECT " + allColumns + " FROM " + dbTableName + " WHERE " + pkColumn + " = ?\";");
         pw.println("    final private static String SQL_SELECT_READ_WRITE = \"SELECT " + allColumns + " FROM " + dbTableName + " WHERE " + pkColumn + " = ? FOR UPDATE\";");
-        pw.println("    final private static String SQL_INSERT = \"INSERT INTO " + dbTableName + " (" + allColumns + ") VALUES (" + questionMarks + ")\";");
+        pw.println("    final private static String SQL_INSERT = \"INSERT INTO " + dbTableName + " (" + insertAllColumns + ") VALUES (" + questionMarks + ")\";");
         if(!updateColumns.isEmpty())
             pw.println("    final private static String SQL_UPDATE = \"UPDATE " + dbTableName + " SET " + updateColumns + " WHERE " + pkColumn + " = ?\";");
         pw.println("    final private static String SQL_DELETE = \"DELETE FROM " + dbTableName + " WHERE " + pkColumn + " = ?\";");
