@@ -29,14 +29,15 @@ import com.echothree.util.server.persistence.Session;
 
 public class TransactionGroupTransferCache
         extends BaseAccountingTransferCache<TransactionGroup, TransactionGroupTransfer> {
-    
+
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     CoreControl coreControl = Session.getModelController(CoreControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeTransactions;
     
     /** Creates a new instance of TransactionGroupTransferCache */
-    public TransactionGroupTransferCache(UserVisit userVisit, AccountingControl accountingControl) {
-        super(userVisit, accountingControl);
+    public TransactionGroupTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {

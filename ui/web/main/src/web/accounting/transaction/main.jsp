@@ -42,6 +42,12 @@
                     </c:url>
                     <a href="${reviewUrl}"><c:out value="${transaction.transactionName}" /></a>
                 </display:column>
+                <display:column titleKey="columnTitle.status">
+                    <c:url var="statusUrl" value="/action/Accounting/Transaction/Status">
+                        <c:param name="TransactionName" value="${transaction.transactionName}" />
+                    </c:url>
+                    <a href="${statusUrl}"><c:out value="${transaction.transactionStatus.workflowStep.description}" /></a>
+                </display:column>
                 <display:column>
                     <c:if test="${transaction.groupParty != null}">
                         <c:choose>
@@ -70,8 +76,11 @@
                     </c:url>
                     <a href="${transactionTypeUrl}"><c:out value="${transaction.transactionType.description}" /></a>
                 </display:column>
-                <display:column titleKey="columnTitle.postingTime">
-                    <c:out value="${transaction.postingTime}" />
+                <display:column titleKey="columnTitle.transactionTime">
+                    <c:out value="${transaction.transactionTimes.map['TRANSACTION_TIME'].time}" />
+                </display:column>
+                <display:column titleKey="columnTitle.postedTime">
+                    <c:out value="${transaction.transactionTimes.map['POSTED_TIME'].time}" />
                 </display:column>
                 <display:column titleKey="columnTitle.created">
                     <c:out value="${transaction.entityInstance.entityTime.createdTime}" />

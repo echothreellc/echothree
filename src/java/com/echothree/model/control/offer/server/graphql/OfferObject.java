@@ -29,6 +29,8 @@ import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.party.server.graphql.DepartmentObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
+import com.echothree.model.control.selector.server.graphql.SelectorObject;
+import com.echothree.model.control.selector.server.graphql.SelectorSecurityUtils;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -95,7 +97,17 @@ public class OfferObject
         return PartySecurityUtils.getHasPartyAccess(env, departmentParty) ? new DepartmentObject(departmentParty) : null;
     }
 
-    // TODO: OfferItemSelector
+    @GraphQLField
+    @GraphQLDescription("offer item selector")
+    public SelectorObject getOfferItemSelector(final DataFetchingEnvironment env) {
+        if(SelectorSecurityUtils.getHasSelectorAccess(env)) {
+            var offerItemSelector = getOfferDetail().getOfferItemSelector();
+
+            return offerItemSelector == null ? null : new SelectorObject(offerItemSelector);
+        } else {
+            return null;
+        }
+    }
 
     @GraphQLField
     @GraphQLDescription("offer item price filter")
@@ -108,7 +120,7 @@ public class OfferObject
             return null;
         }
     }
-    
+
     @GraphQLField
     @GraphQLDescription("is default")
     @GraphQLNonNull

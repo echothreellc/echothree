@@ -22,5 +22,6 @@ public interface AccountingOptions {
     
     String TransactionIncludeTransactionGlEntries = "TransactionIncludeTransactionGlEntries";
     String TransactionIncludeTransactionEntityRoles = "TransactionIncludeTransactionEntityRoles";
+    String TransactionIncludeTransactionTimes = "TransactionIncludeTransactionTimes";
     
 }

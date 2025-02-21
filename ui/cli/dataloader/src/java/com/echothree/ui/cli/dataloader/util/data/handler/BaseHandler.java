@@ -91,7 +91,7 @@ public abstract class BaseHandler {
             if(attrsMap.containsKey(key)) {
                 var xmlValue = attrsMap.get(key);
 
-                if(!currentValue.equals(xmlValue)) {
+                if(!xmlValue.equals(currentValue)) {
                     getLogger().debug("Updating key: \"{}\" from value \"{}\"\" to value \"{}\"", key, currentValue, xmlValue);
                     edit.set(key, xmlValue);
                     changed = true;

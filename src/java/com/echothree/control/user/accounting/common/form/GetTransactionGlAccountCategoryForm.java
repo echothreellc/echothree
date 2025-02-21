@@ -17,10 +17,11 @@
 package com.echothree.control.user.accounting.common.form;
 
 import com.echothree.control.user.accounting.common.spec.TransactionGlAccountCategorySpec;
+import com.echothree.control.user.accounting.common.spec.TransactionGlAccountCategoryUniversalSpec;
 
 public interface GetTransactionGlAccountCategoryForm
-        extends TransactionGlAccountCategorySpec {
+        extends TransactionGlAccountCategoryUniversalSpec {
     
-    // Nothing additional beyond TransactionTypeSpec
+    // Nothing additional beyond TransactionGlAccountCategoryUniversalSpec
     
 }

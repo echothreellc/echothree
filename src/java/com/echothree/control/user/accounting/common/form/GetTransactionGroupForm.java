@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.accounting.common.form;
 
-import com.echothree.control.user.accounting.common.spec.TransactionGroupSpec;
+import com.echothree.control.user.accounting.common.spec.TransactionGroupUniversalSpec;
 
 public interface GetTransactionGroupForm
-        extends TransactionGroupSpec {
+        extends TransactionGroupUniversalSpec {
     
-    // Nothing additional beyond TransactionGroupSpec
+    // Nothing additional beyond TransactionGroupUniversalSpec
     
 }

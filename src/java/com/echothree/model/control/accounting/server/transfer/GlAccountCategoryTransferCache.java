@@ -20,13 +20,16 @@ import com.echothree.model.control.accounting.common.transfer.GlAccountCategoryT
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class GlAccountCategoryTransferCache
         extends BaseAccountingTransferCache<GlAccountCategory, GlAccountCategoryTransfer> {
 
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+
     /** Creates a new instance of GlAccountCategoryTransferCache */
-    public GlAccountCategoryTransferCache(UserVisit userVisit, AccountingControl accountingControl) {
-        super(userVisit, accountingControl);
+    public GlAccountCategoryTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }

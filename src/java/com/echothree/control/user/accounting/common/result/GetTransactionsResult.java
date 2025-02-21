@@ -26,7 +26,10 @@ public interface GetTransactionsResult
     
     TransactionGroupTransfer getTransactionGroup();
     void setTransactionGroup(TransactionGroupTransfer transactionGroup);
-    
+
+    Long getTransactionCount();
+    void setTransactionCount(Long transactionCount);
+
     List<TransactionTransfer> getTransactions();
     void setTransactions(List<TransactionTransfer> transactions);
     

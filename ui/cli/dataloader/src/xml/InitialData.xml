@@ -29,6 +29,7 @@
         <file name="/InitialMimeTypes.xml" />
         <file name="/InitialComplexEntityTypes.xml" />
         <file name="/InitialCommandMessageTypes.xml" />
+        <file name="/InitialSecurity.xml" />
         <file name="/InitialPersonalTitles.xml" />
         <file name="/InitialNameSuffixes.xml" />
         <file name="/InitialGenders.xml" />
@@ -44,7 +45,7 @@
         <file name="/InitialContactMechanisms.xml" />
         <file name="/InitialCurrencies.xml" />
         <file name="/InitialGlAccounts.xml" />
-        <file name="/InitialTransactionTypes.xml" />
+        <file name="/InitialTransactions.xml" />
         <file name="/InitialTaxes.xml" />
         <file name="/InitialGeoCodeTypes.xml" />
         <file name="/InitialGeoCodeScopes.xml" />
@@ -53,7 +54,6 @@
         <file name="/InitialRoleTypes.xml" />
         <file name="/InitialPartyRelationshipTypes.xml" />
         <file name="/InitialTrainingClasses.xml" />
-        <file name="/InitialSecurity.xml" />
         <file name="/InitialServers.xml" />
         <file name="/InitialUnitOfMeasure.xml" />
         <file name="/InitialWorkflows.xml" />

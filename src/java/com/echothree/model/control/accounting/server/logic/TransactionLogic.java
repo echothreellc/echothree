@@ -16,9 +16,22 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
+import com.echothree.control.user.accounting.common.spec.TransactionUniversalSpec;
+import com.echothree.model.control.accounting.common.TransactionTimeTypes;
+import com.echothree.model.control.accounting.common.exception.TransactionNotBalancedException;
+import com.echothree.model.control.accounting.common.exception.UnknownTransactionNameException;
+import com.echothree.model.control.accounting.common.workflow.TransactionStatusConstants;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.database.TransactionBalancedQuery;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowEntranceLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.accounting.server.entity.Transaction;
@@ -28,10 +41,15 @@ import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCat
 import com.echothree.model.data.accounting.server.entity.TransactionGlEntry;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.control.BaseLogic;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 
-public class TransactionLogic {
+public class TransactionLogic
+        extends BaseLogic {
 
     private TransactionLogic() {
         super();
@@ -45,29 +63,96 @@ public class TransactionLogic {
         return TransactionLogicHolder.instance;
     }
     
-    public Transaction createTransactionUsingNames(final Session session, final Party groupParty, final String transactionTypeName, final Long postingTime, final BasePK createdBy) {
+    public Transaction createTransactionUsingNames(final Session session, final Party groupParty, final String transactionTypeName,
+            final Long transactionTime, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         
-        return createTransaction(session, groupParty, accountingControl.getTransactionTypeByName(transactionTypeName), postingTime, createdBy);
+        return createTransaction(session, groupParty, accountingControl.getTransactionTypeByName(transactionTypeName),
+                transactionTime, createdBy);
     }
     
-    public Transaction createTransaction(final Session session, final Party groupParty, final TransactionType transactionType, final Long postingTime, final BasePK createdBy) {
+    public Transaction createTransaction(final Session session, final Party groupParty, final TransactionType transactionType,
+            final Long transactionTime, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        
-        return accountingControl.createTransaction(groupParty, transactionType, postingTime == null? session.START_TIME_LONG: postingTime, createdBy);
+        var transaction = accountingControl.createTransaction(groupParty, transactionType, createdBy);
+
+        TransactionTimeLogic.getInstance().createTransactionTime(null, transaction, TransactionTimeTypes.TRANSACTION_TIME.name(),
+                transactionTime == null ? session.START_TIME_LONG : transactionTime, createdBy);
+
+        return transaction;
+    }
+
+    public Transaction getTransactionByName(final ExecutionErrorAccumulator eea, final String transactionName,
+            final EntityPermission entityPermission) {
+        var accountingControl = Session.getModelController(AccountingControl.class);
+        var transaction = accountingControl.getTransactionByName(transactionName, entityPermission);
+
+        if(transaction == null) {
+            handleExecutionError(UnknownTransactionNameException.class, eea, ExecutionErrors.UnknownTransactionName.name(), transactionName);
+        }
+
+        return transaction;
+    }
+
+    public Transaction getTransactionByName(final ExecutionErrorAccumulator eea, final String transactionName) {
+        return getTransactionByName(eea, transactionName, EntityPermission.READ_ONLY);
+    }
+
+    public Transaction getTransactionByNameForUpdate(final ExecutionErrorAccumulator eea, final String transactionName) {
+        return getTransactionByName(eea, transactionName, EntityPermission.READ_WRITE);
+    }
+
+    public Transaction getTransactionByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final TransactionUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        Transaction transaction = null;
+        var accountingControl = Session.getModelController(AccountingControl.class);
+        var transactionName = universalSpec.getTransactionName();
+        var parameterCount = (transactionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 1:
+                if(transactionName == null) {
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Transaction.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        transaction = accountingControl.getTransactionByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    transaction = getTransactionByName(eea, transactionName, entityPermission);
+                }
+                break;
+            default:
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                break;
+        }
+
+        return transaction;
+    }
+
+    public Transaction getTransactionByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final TransactionUniversalSpec universalSpec) {
+        return getTransactionByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public Transaction getTransactionByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final TransactionUniversalSpec universalSpec) {
+        return getTransactionByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
     
-    public TransactionGlEntry createTransactionGlEntryUsingNames(final Transaction transaction, final Party groupParty, final String transactionGlAccountCategoryName,
-            final GlAccount glAccount, final Currency originalCurrency, final Long originalAmount, final BasePK createdBy) {
+    public TransactionGlEntry createTransactionGlEntryUsingNames(final Transaction transaction, final Party groupParty,
+            final String transactionGlAccountCategoryName, final GlAccount glAccount, final Currency originalCurrency,
+            final Long originalDebit, final Long originalCredit, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionDetail = transaction.getLastDetail();
         
-        return createTransactionGlEntry(transaction, groupParty == null? transactionDetail.getGroupParty(): groupParty,
-                accountingControl.getTransactionGlAccountCategoryByName(transactionDetail.getTransactionType(), transactionGlAccountCategoryName), glAccount, originalCurrency, originalAmount,
-                createdBy);
+        return createTransactionGlEntry(transaction, groupParty == null ? transactionDetail.getGroupParty() : groupParty,
+                accountingControl.getTransactionGlAccountCategoryByName(transactionDetail.getTransactionType(), transactionGlAccountCategoryName),
+                glAccount, originalCurrency, originalDebit, originalCredit, createdBy);
     }
     
-    private GlAccount getGlAccount(final AccountingControl accountingControl, final TransactionGlAccountCategory transactionGlAccountCategory, GlAccount glAccount) {
+    private GlAccount getGlAccount(final AccountingControl accountingControl, final TransactionGlAccountCategory transactionGlAccountCategory,
+            GlAccount glAccount) {
         if(glAccount == null) {
             var transactionGlAccount = accountingControl.getTransactionGlAccount(transactionGlAccountCategory);
             
@@ -103,20 +188,23 @@ public class TransactionLogic {
         return amount;
     }
     
-    public TransactionGlEntry createTransactionGlEntry(final Transaction transaction, final Party groupParty, final TransactionGlAccountCategory transactionGlAccountCategory,
-            GlAccount glAccount, final Currency originalCurrency, final Long originalAmount, final BasePK createdBy) {
+    public TransactionGlEntry createTransactionGlEntry(final Transaction transaction, final Party groupParty,
+            final TransactionGlAccountCategory transactionGlAccountCategory, GlAccount glAccount, final Currency originalCurrency,
+            final Long originalDebit, final Long originalCredit, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         
         glAccount = getGlAccount(accountingControl, transactionGlAccountCategory, glAccount);
 
-        var amount = getAmount(glAccount, originalCurrency, originalAmount);
-        
-        return accountingControl.createTransactionGlEntry(transaction, getTransactionGlEntrySequence(accountingControl, transaction), null, groupParty, transactionGlAccountCategory, glAccount,
-                originalCurrency, originalAmount, amount, createdBy);
+        var debit = originalDebit == null ? null : getAmount(glAccount, originalCurrency, originalDebit);
+        var credit = originalCredit == null ? null : getAmount(glAccount, originalCurrency, originalCredit);
+
+        return accountingControl.createTransactionGlEntry(transaction, getTransactionGlEntrySequence(accountingControl, transaction),
+                null, groupParty, transactionGlAccountCategory, glAccount, originalCurrency, originalDebit,
+                originalCredit, debit, credit, createdBy);
     }
     
-    public TransactionEntityRole createTransactionEntityRoleUsingNames(final Transaction transaction, final String transactionEntityRoleTypeName, final BasePK pk,
-            final BasePK createdBy) {
+    public TransactionEntityRole createTransactionEntityRoleUsingNames(final Transaction transaction,
+            final String transactionEntityRoleTypeName, final BasePK pk, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transaction.getLastDetail().getTransactionType(),
                 transactionEntityRoleTypeName);
@@ -124,8 +212,8 @@ public class TransactionLogic {
         return createTransactionEntityRole(transaction, transactionEntityRoleType, pk, createdBy);
     }
     
-    public TransactionEntityRole createTransactionEntityRole(final Transaction transaction, final TransactionEntityRoleType transactionEntityRoleType, final BasePK pk,
-            final BasePK createdBy) {
+    public TransactionEntityRole createTransactionEntityRole(final Transaction transaction,
+            final TransactionEntityRoleType transactionEntityRoleType, final BasePK pk, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var coreControl = Session.getModelController(CoreControl.class);
         var entityInstance = coreControl.getEntityInstanceByBasePK(pk);
@@ -136,16 +224,49 @@ public class TransactionLogic {
         
         return accountingControl.createTransactionEntityRole(transaction, transactionEntityRoleType, entityInstance, createdBy);
     }
-    
-    public void finishTransaction(final Transaction transaction) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        
-        accountingControl.removeTransactionStatusByTransaction(transaction);
-        
-        PostingLogic.getInstance().postTransaction(transaction);
+
+    private void validateTransactionBalanced(final ExecutionErrorAccumulator eea, final Transaction transaction) {
+        var transactionBalancedResults = new TransactionBalancedQuery().execute(transaction);
+
+        if(!transactionBalancedResults.isEmpty()) {
+            var transactionBalancedResult = transactionBalancedResults.getFirst();
+            var originalDifference = transactionBalancedResult.getOriginalDifference();
+            var difference = transactionBalancedResult.getDifference();
+
+            if(originalDifference != 0 || difference != 0) {
+                handleExecutionError(TransactionNotBalancedException.class, eea, ExecutionErrors.TransactionNotBalanced.name(),
+                        originalDifference, difference);
+            }
+        }
     }
     
-    public void testTransaction(final Session session, final BasePK testedBy) {
+    public void postTransaction(final ExecutionErrorAccumulator eea, final Session session, final Transaction transaction,
+            final BasePK createdBy) {
+        var accountingControl = Session.getModelController(AccountingControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+
+        validateTransactionBalanced(eea, transaction);
+
+        if(eea != null && !hasExecutionErrors(eea)) {
+            accountingControl.removeTransactionStatusByTransaction(transaction);
+
+            PostingLogic.getInstance().postTransaction(session, transaction, createdBy);
+
+            // If it isn't in the Transaction Status workflow, assume this is a system generated transaction and
+            // we've gone directly to posting it.
+            var workflow = WorkflowLogic.getInstance().getWorkflowByName(null, TransactionStatusConstants.Workflow_TRANSACTION_STATUS);
+            var entityInstance = coreControl.getEntityInstanceByBasePK(transaction.getPrimaryKey());
+            if(!workflowControl.isEntityInWorkflow(workflow, entityInstance)) {
+                var workflowEntrance = WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(null, workflow,
+                        TransactionStatusConstants.WorkflowEntrance_TRANSACTION_STATUS_NEW_POSTED);
+
+                workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
+            }
+        }
+    }
+    
+    public void testTransaction(final ExecutionErrorAccumulator eea, final Session session, final BasePK testedBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var partyControl = Session.getModelController(PartyControl.class);
         var companyParty = partyControl.getDefaultPartyCompany().getParty();
@@ -154,10 +275,10 @@ public class TransactionLogic {
         var originalCurrency = accountingControl.getDefaultCurrency();
 
         var transaction = createTransactionUsingNames(session, departmentParty, "TEST", null, testedBy);
-        createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_A", null, originalCurrency, 1999L, testedBy);
-        createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_B", null, originalCurrency, -1999L, testedBy);
+        createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_A", null, originalCurrency, null, 1999L, testedBy);
+        createTransactionGlEntryUsingNames(transaction, null, "TEST_ACCOUNT_B", null, originalCurrency, 1999L, null, testedBy);
         createTransactionEntityRoleUsingNames(transaction, "TEST_ENTITY_INSTANCE_ROLE_TYPE", testedBy, testedBy);
-        finishTransaction(transaction);
+        postTransaction(eea, session, transaction, testedBy);
     }
 
 }

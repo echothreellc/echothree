@@ -23,8 +23,6 @@ import com.echothree.util.server.transfer.BaseTransferCaches;
 public class AccountingTransferCaches
         extends BaseTransferCaches {
     
-    protected AccountingControl accountingControl;
-    
     protected CurrencyTransferCache currencyTransferCache;
     protected CurrencyDescriptionTransferCache currencyDescriptionTransferCache;
     protected GlAccountClassDescriptionTransferCache glAccountClassDescriptionTransferCache;
@@ -51,194 +49,216 @@ public class AccountingTransferCaches
     protected TransactionEntityRoleTypeDescriptionTransferCache transactionEntityRoleTypeDescriptionTransferCache;
     protected SymbolPositionDescriptionTransferCache symbolPositionDescriptionTransferCache;
     protected SymbolPositionTransferCache symbolPositionTransferCache;
+    protected TransactionTimeTypeTransferCache transactionTimeTypeTransferCache;
+    protected TransactionTimeTypeDescriptionTransferCache transactionTimeTypeDescriptionTransferCache;
+    protected TransactionTimeTransferCache transactionTimeTransferCache;
     
     /** Creates a new instance of AccountingTransferCaches */
-    public AccountingTransferCaches(UserVisit userVisit, AccountingControl accountingControl) {
+    public AccountingTransferCaches(UserVisit userVisit) {
         super(userVisit);
-        
-        this.accountingControl = accountingControl;
     }
     
     public CurrencyTransferCache getCurrencyTransferCache() {
         if(currencyTransferCache == null)
-            currencyTransferCache = new CurrencyTransferCache(userVisit, accountingControl);
+            currencyTransferCache = new CurrencyTransferCache(userVisit);
         
         return currencyTransferCache;
     }
     
     public CurrencyDescriptionTransferCache getCurrencyDescriptionTransferCache() {
         if(currencyDescriptionTransferCache == null)
-            currencyDescriptionTransferCache = new CurrencyDescriptionTransferCache(userVisit, accountingControl);
+            currencyDescriptionTransferCache = new CurrencyDescriptionTransferCache(userVisit);
         
         return currencyDescriptionTransferCache;
     }
     
     public GlAccountClassDescriptionTransferCache getGlAccountClassDescriptionTransferCache() {
         if(glAccountClassDescriptionTransferCache == null)
-            glAccountClassDescriptionTransferCache = new GlAccountClassDescriptionTransferCache(userVisit, accountingControl);
+            glAccountClassDescriptionTransferCache = new GlAccountClassDescriptionTransferCache(userVisit);
         
         return glAccountClassDescriptionTransferCache;
     }
     
     public GlAccountClassTransferCache getGlAccountClassTransferCache() {
         if(glAccountClassTransferCache == null)
-            glAccountClassTransferCache = new GlAccountClassTransferCache(userVisit, accountingControl);
+            glAccountClassTransferCache = new GlAccountClassTransferCache(userVisit);
         
         return glAccountClassTransferCache;
     }
     
     public GlAccountDescriptionTransferCache getGlAccountDescriptionTransferCache() {
         if(glAccountDescriptionTransferCache == null)
-            glAccountDescriptionTransferCache = new GlAccountDescriptionTransferCache(userVisit, accountingControl);
+            glAccountDescriptionTransferCache = new GlAccountDescriptionTransferCache(userVisit);
         
         return glAccountDescriptionTransferCache;
     }
     
     public GlAccountTransferCache getGlAccountTransferCache() {
         if(glAccountTransferCache == null)
-            glAccountTransferCache = new GlAccountTransferCache(userVisit, accountingControl);
+            glAccountTransferCache = new GlAccountTransferCache(userVisit);
         
         return glAccountTransferCache;
     }
     
     public GlAccountCategoryDescriptionTransferCache getGlAccountCategoryDescriptionTransferCache() {
         if(glAccountCategoryDescriptionTransferCache == null)
-            glAccountCategoryDescriptionTransferCache = new GlAccountCategoryDescriptionTransferCache(userVisit, accountingControl);
+            glAccountCategoryDescriptionTransferCache = new GlAccountCategoryDescriptionTransferCache(userVisit);
         
         return glAccountCategoryDescriptionTransferCache;
     }
     
     public GlAccountCategoryTransferCache getGlAccountCategoryTransferCache() {
         if(glAccountCategoryTransferCache == null)
-            glAccountCategoryTransferCache = new GlAccountCategoryTransferCache(userVisit, accountingControl);
+            glAccountCategoryTransferCache = new GlAccountCategoryTransferCache(userVisit);
         
         return glAccountCategoryTransferCache;
     }
     
     public GlResourceTypeDescriptionTransferCache getGlResourceTypeDescriptionTransferCache() {
         if(glResourceTypeDescriptionTransferCache == null)
-            glResourceTypeDescriptionTransferCache = new GlResourceTypeDescriptionTransferCache(userVisit, accountingControl);
+            glResourceTypeDescriptionTransferCache = new GlResourceTypeDescriptionTransferCache(userVisit);
         
         return glResourceTypeDescriptionTransferCache;
     }
     
     public GlResourceTypeTransferCache getGlResourceTypeTransferCache() {
         if(glResourceTypeTransferCache == null)
-            glResourceTypeTransferCache = new GlResourceTypeTransferCache(userVisit, accountingControl);
+            glResourceTypeTransferCache = new GlResourceTypeTransferCache(userVisit);
         
         return glResourceTypeTransferCache;
     }
     
     public ItemAccountingCategoryDescriptionTransferCache getItemAccountingCategoryDescriptionTransferCache() {
         if(itemAccountingCategoryDescriptionTransferCache == null)
-            itemAccountingCategoryDescriptionTransferCache = new ItemAccountingCategoryDescriptionTransferCache(userVisit, accountingControl);
+            itemAccountingCategoryDescriptionTransferCache = new ItemAccountingCategoryDescriptionTransferCache(userVisit);
         
         return itemAccountingCategoryDescriptionTransferCache;
     }
     
     public ItemAccountingCategoryTransferCache getItemAccountingCategoryTransferCache() {
         if(itemAccountingCategoryTransferCache == null)
-            itemAccountingCategoryTransferCache = new ItemAccountingCategoryTransferCache(userVisit, accountingControl);
+            itemAccountingCategoryTransferCache = new ItemAccountingCategoryTransferCache(userVisit);
         
         return itemAccountingCategoryTransferCache;
     }
     
     public TransactionEntityRoleTransferCache getTransactionEntityRoleTransferCache() {
         if(transactionEntityRoleTransferCache == null)
-            transactionEntityRoleTransferCache = new TransactionEntityRoleTransferCache(userVisit, accountingControl);
+            transactionEntityRoleTransferCache = new TransactionEntityRoleTransferCache(userVisit);
         
         return transactionEntityRoleTransferCache;
     }
     
     public TransactionEntityRoleTypeTransferCache getTransactionEntityRoleTypeTransferCache() {
         if(transactionEntityRoleTypeTransferCache == null)
-            transactionEntityRoleTypeTransferCache = new TransactionEntityRoleTypeTransferCache(userVisit, accountingControl);
+            transactionEntityRoleTypeTransferCache = new TransactionEntityRoleTypeTransferCache(userVisit);
         
         return transactionEntityRoleTypeTransferCache;
     }
     
     public TransactionGlEntryTransferCache getTransactionGlEntryTransferCache() {
         if(transactionGlEntryTransferCache == null)
-            transactionGlEntryTransferCache = new TransactionGlEntryTransferCache(userVisit, accountingControl);
+            transactionGlEntryTransferCache = new TransactionGlEntryTransferCache(userVisit);
         
         return transactionGlEntryTransferCache;
     }
     
     public TransactionGlAccountTransferCache getTransactionGlAccountTransferCache() {
         if(transactionGlAccountTransferCache == null)
-            transactionGlAccountTransferCache = new TransactionGlAccountTransferCache(userVisit, accountingControl);
+            transactionGlAccountTransferCache = new TransactionGlAccountTransferCache(userVisit);
         
         return transactionGlAccountTransferCache;
     }
     
     public TransactionGlAccountCategoryTransferCache getTransactionGlAccountCategoryTransferCache() {
         if(transactionGlAccountCategoryTransferCache == null)
-            transactionGlAccountCategoryTransferCache = new TransactionGlAccountCategoryTransferCache(userVisit, accountingControl);
+            transactionGlAccountCategoryTransferCache = new TransactionGlAccountCategoryTransferCache(userVisit);
         
         return transactionGlAccountCategoryTransferCache;
     }
     
     public TransactionGroupTransferCache getTransactionGroupTransferCache() {
         if(transactionGroupTransferCache == null)
-            transactionGroupTransferCache = new TransactionGroupTransferCache(userVisit, accountingControl);
+            transactionGroupTransferCache = new TransactionGroupTransferCache(userVisit);
         
         return transactionGroupTransferCache;
     }
     
     public TransactionTransferCache getTransactionTransferCache() {
         if(transactionTransferCache == null)
-            transactionTransferCache = new TransactionTransferCache(userVisit, accountingControl);
+            transactionTransferCache = new TransactionTransferCache(userVisit);
         
         return transactionTransferCache;
     }
     
     public TransactionTypeTransferCache getTransactionTypeTransferCache() {
         if(transactionTypeTransferCache == null)
-            transactionTypeTransferCache = new TransactionTypeTransferCache(userVisit, accountingControl);
+            transactionTypeTransferCache = new TransactionTypeTransferCache(userVisit);
         
         return transactionTypeTransferCache;
     }
     
     public GlAccountTypeTransferCache getGlAccountTypeTransferCache() {
         if(glAccountTypeTransferCache == null)
-            glAccountTypeTransferCache = new GlAccountTypeTransferCache(userVisit, accountingControl);
+            glAccountTypeTransferCache = new GlAccountTypeTransferCache(userVisit);
         
         return glAccountTypeTransferCache;
     }
     
     public TransactionTypeDescriptionTransferCache getTransactionTypeDescriptionTransferCache() {
         if(transactionTypeDescriptionTransferCache == null)
-            transactionTypeDescriptionTransferCache = new TransactionTypeDescriptionTransferCache(userVisit, accountingControl);
+            transactionTypeDescriptionTransferCache = new TransactionTypeDescriptionTransferCache(userVisit);
         
         return transactionTypeDescriptionTransferCache;
     }
     
     public TransactionGlAccountCategoryDescriptionTransferCache getTransactionGlAccountCategoryDescriptionTransferCache() {
         if(transactionGlAccountCategoryDescriptionTransferCache == null)
-            transactionGlAccountCategoryDescriptionTransferCache = new TransactionGlAccountCategoryDescriptionTransferCache(userVisit, accountingControl);
+            transactionGlAccountCategoryDescriptionTransferCache = new TransactionGlAccountCategoryDescriptionTransferCache(userVisit);
         
         return transactionGlAccountCategoryDescriptionTransferCache;
     }
     
     public TransactionEntityRoleTypeDescriptionTransferCache getTransactionEntityRoleTypeDescriptionTransferCache() {
         if(transactionEntityRoleTypeDescriptionTransferCache == null)
-            transactionEntityRoleTypeDescriptionTransferCache = new TransactionEntityRoleTypeDescriptionTransferCache(userVisit, accountingControl);
+            transactionEntityRoleTypeDescriptionTransferCache = new TransactionEntityRoleTypeDescriptionTransferCache(userVisit);
         
         return transactionEntityRoleTypeDescriptionTransferCache;
     }
     
     public SymbolPositionDescriptionTransferCache getSymbolPositionDescriptionTransferCache() {
         if(symbolPositionDescriptionTransferCache == null)
-            symbolPositionDescriptionTransferCache = new SymbolPositionDescriptionTransferCache(userVisit, accountingControl);
+            symbolPositionDescriptionTransferCache = new SymbolPositionDescriptionTransferCache(userVisit);
         
         return symbolPositionDescriptionTransferCache;
     }
     
     public SymbolPositionTransferCache getSymbolPositionTransferCache() {
         if(symbolPositionTransferCache == null)
-            symbolPositionTransferCache = new SymbolPositionTransferCache(userVisit, accountingControl);
+            symbolPositionTransferCache = new SymbolPositionTransferCache(userVisit);
         
         return symbolPositionTransferCache;
     }
-    
+
+    public TransactionTimeTypeTransferCache getTransactionTimeTypeTransferCache() {
+        if(transactionTimeTypeTransferCache == null)
+            transactionTimeTypeTransferCache = new TransactionTimeTypeTransferCache(userVisit);
+
+        return transactionTimeTypeTransferCache;
+    }
+
+    public TransactionTimeTypeDescriptionTransferCache getTransactionTimeTypeDescriptionTransferCache() {
+        if(transactionTimeTypeDescriptionTransferCache == null)
+            transactionTimeTypeDescriptionTransferCache = new TransactionTimeTypeDescriptionTransferCache(userVisit);
+
+        return transactionTimeTypeDescriptionTransferCache;
+    }
+
+    public TransactionTimeTransferCache getTransactionTimeTransferCache() {
+        if(transactionTimeTransferCache == null)
+            transactionTimeTransferCache = new TransactionTimeTransferCache(userVisit);
+
+        return transactionTimeTransferCache;
+    }
+
 }

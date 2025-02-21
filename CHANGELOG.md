@@ -1,5 +1,28 @@
 # Changelog
 
+## 2025-02-16-01
+
+* Add Transaction Type Object and Queries [1506](https://gitlab.echothree.com/echothree/echothree/-/issues/1506)
+* Add Transaction Gl Account Category Object and Queries [1507](https://gitlab.echothree.com/echothree/echothree/-/issues/1507)
+* Add Transaction Entity Role Type Object and Queries [1508](https://gitlab.echothree.com/echothree/echothree/-/issues/1508)
+* Add Transaction Object and Queries [1509](https://gitlab.echothree.com/echothree/echothree/-/issues/1509)
+* TransactionDetail's GroupPartyId Column Should Not Be Null [1513](https://gitlab.echothree.com/echothree/echothree/-/issues/1513)
+* Allow GetTransactions UC to Return All Transactions [1514](https://gitlab.echothree.com/echothree/echothree/-/issues/1514)
+
+## 2025-02-02-01
+
+* Separate Debit and Credit Values in Transactions [1493](https://gitlab.echothree.com/echothree/echothree/-/issues/1493)
+* Add Workflow for Transactions [1494](https://gitlab.echothree.com/echothree/echothree/-/issues/1494)
+* Validate Transaction Balances Before Posting [1497](https://gitlab.echothree.com/echothree/echothree/-/issues/1497)
+* Refactor Posted Time Into Transaction Time Types and Transaction Times [1498](https://gitlab.echothree.com/echothree/echothree/-/issues/1498)
+* Convert GetTransactionGroups UC to Use BasePaginatedMultipleEntitiesCommand [1499](https://gitlab.echothree.com/echothree/echothree/-/issues/1499)
+* Convert GetTransactionGroup UC to Use BaseSingleEntityCommand [1500](https://gitlab.echothree.com/echothree/echothree/-/issues/1500)
+* Convert GetTransactions UC to Use BasePaginatedMultipleEntitiesCommand [1501](https://gitlab.echothree.com/echothree/echothree/-/issues/1501)
+* Convert GetTransaction UC to Use BaseSingleEntityCommand [1502](https://gitlab.echothree.com/echothree/echothree/-/issues/1502)
+* Convert GetTransactionTypes UC to Use BasePaginatedMultipleEntitiesCommand [1503](https://gitlab.echothree.com/echothree/echothree/-/issues/1503)
+* Convert GetTransactionType UC to Use BaseSingleEntityCommand [1504](https://gitlab.echothree.com/echothree/echothree/-/issues/1504)
+* Add Transaction Group Object and Queries [1505](https://gitlab.echothree.com/echothree/echothree/-/issues/1505)
+
 ## 2025-01-19-01
 
 * Add Default Value for Integer Attributes [1458](https://gitlab.echothree.com/echothree/echothree/-/issues/1458)
