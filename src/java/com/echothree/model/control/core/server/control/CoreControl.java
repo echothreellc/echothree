@@ -2480,11 +2480,11 @@ public class CoreControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityinstances " +
-                        "WHERE eni_uuid = ?";
+                        "WHERE eni_uuid = UUID_TO_BIN(?)";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityinstances " +
-                        "WHERE eni_uuid = ? " +
+                        "WHERE eni_uuid = UUID_TO_BIN(?) " +
                         "FOR UPDATE";
             }
 

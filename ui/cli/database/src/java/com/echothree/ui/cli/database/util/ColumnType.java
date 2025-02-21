@@ -28,6 +28,7 @@ public class ColumnType {
     static final int columnCLOB = 9;
     static final int columnBLOB = 10;
     static final int columnForeignKey = 11;
+    static final int columnUUID = 12;
     
     static public String columnTypeToString(int type) {
         return switch(type) {
@@ -41,6 +42,7 @@ public class ColumnType {
             case columnCLOB -> "CLOB";
             case columnBLOB -> "BLOB";
             case columnForeignKey -> "ForeignKey";
+            case columnUUID -> "UUID";
             default -> null;
         };
     }
@@ -105,7 +107,9 @@ public class ColumnType {
             this.realType = columnForeignKey;
             if(destinationTable == null || destinationColumn == null || onParentDelete == null)
                 throw new Exception("Foreign Key missing one or more of destinationTable, destinationColumn or onParentDelete");
-        } else
+        } else if(type.equals("UUID"))
+            this.realType = columnUUID;
+        else
             throw new Exception("Illegal column type \"" + realType + "\"");
     }
     

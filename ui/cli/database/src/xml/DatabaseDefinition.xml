@@ -19,8 +19,6 @@
     <columnTypes>
         <columnType type="Name" realType="String" maxLength="40" />
         <columnType type="Key" realType="String" maxLength="80" />
-        <columnType type="Uuid" realType="String" maxLength="36" />
-        <columnType type="Ulid" realType="String" maxLength="26" />
         <columnType type="Reference" realType="String" maxLength="40" />
         <columnType type="Description" realType="String" maxLength="132" />
         <columnType type="Symbol" realType="String" maxLength="20" />
