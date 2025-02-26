@@ -280,6 +280,12 @@ public class EntityAttributeTransferCache
                         }
                     }
                     case DATE -> {
+                        if(includeDefault) {
+                            var entityDateDefault = coreControl.getEntityDateDefault(entityAttribute);
+
+                            entityAttributeTransfer.setEntityDateDefault(entityDateDefault == null ? null : coreControl.getEntityDateDefaultTransfer(userVisit, entityDateDefault));
+                        }
+
                         if(includeValue && entityInstance != null) {
                             var entityDateAttribute = coreControl.getEntityDateAttribute(entityAttribute, entityInstance);
 

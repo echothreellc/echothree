@@ -14,12 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.core.server.graphql;
+package com.echothree.control.user.core.common.edit;
 
-import graphql.annotations.annotationTypes.GraphQLUnion;
+import com.echothree.util.common.form.BaseEdit;
 
-@GraphQLUnion(possibleTypes = {EntityBooleanDefaultObject.class, EntityDateDefaultObject.class, EntityIntegerDefaultObject.class,
-        EntityLongDefaultObject.class, EntityListItemDefaultObject.class, EntityStringDefaultObject.class})
-public interface DefaultInterface {
-
+public interface EntityDateDefaultEdit
+        extends BaseEdit {
+    
+    String getDateAttribute();
+    void setDateAttribute(String dateAttribute);
+    
 }

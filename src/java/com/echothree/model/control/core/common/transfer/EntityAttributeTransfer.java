@@ -58,6 +58,7 @@ public class EntityAttributeTransfer
     private EntityClobAttributeTransfer entityClobAttribute;
     private EntityEntityAttributeTransfer entityEntityAttribute;
     private ListWrapper<EntityCollectionAttributeTransfer> entityCollectionAttributes;
+    private EntityDateDefaultTransfer entityDateDefault;
     private EntityDateAttributeTransfer entityDateAttribute;
     private EntityTimeAttributeTransfer entityTimeAttribute;
     private EntityListItemDefaultTransfer entityListItemDefault;
@@ -590,6 +591,22 @@ public class EntityAttributeTransfer
      */
     public void setEntityCollectionAttributes(ListWrapper<EntityCollectionAttributeTransfer> entityCollectionAttributes) {
         this.entityCollectionAttributes = entityCollectionAttributes;
+    }
+
+    /**
+     * Returns the entityDateDefault.
+     * @return the entityDateDefault
+     */
+    public EntityDateDefaultTransfer getEntityDateDefault() {
+        return entityDateDefault;
+    }
+
+    /**
+     * Sets the entityDateDefault.
+     * @param entityDateDefault the entityDateDefault to set
+     */
+    public void setEntityDateDefault(EntityDateDefaultTransfer entityDateDefault) {
+        this.entityDateDefault = entityDateDefault;
     }
 
     /**

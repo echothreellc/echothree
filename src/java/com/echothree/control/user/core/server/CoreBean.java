@@ -1657,6 +1657,25 @@ public class CoreBean
     }
 
     // --------------------------------------------------------------------------------
+    //   Entity Date Defaults
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityDateDefault(UserVisitPK userVisitPK, CreateEntityDateDefaultForm form) {
+        return new CreateEntityDateDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityDateDefault(UserVisitPK userVisitPK, EditEntityDateDefaultForm form) {
+        return new EditEntityDateDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityDateDefault(UserVisitPK userVisitPK, DeleteEntityDateDefaultForm form) {
+        return new DeleteEntityDateDefaultCommand(userVisitPK, form).run();
+    }
+
+    // --------------------------------------------------------------------------------
     //   Entity Date Attributes
     // --------------------------------------------------------------------------------
 

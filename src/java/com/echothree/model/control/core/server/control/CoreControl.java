@@ -89,6 +89,7 @@ import com.echothree.model.control.core.common.transfer.EntityBooleanDefaultTran
 import com.echothree.model.control.core.common.transfer.EntityClobAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityCollectionAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityDateAttributeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityDateDefaultTransfer;
 import com.echothree.model.control.core.common.transfer.EntityEntityAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityGeoPointAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
@@ -235,6 +236,7 @@ import com.echothree.model.data.core.server.entity.EntityBooleanDefault;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
 import com.echothree.model.data.core.server.entity.EntityCollectionAttribute;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
+import com.echothree.model.data.core.server.entity.EntityDateDefault;
 import com.echothree.model.data.core.server.entity.EntityEncryptionKey;
 import com.echothree.model.data.core.server.entity.EntityEntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityGeoPointAttribute;
@@ -360,6 +362,7 @@ import com.echothree.model.data.core.server.factory.EntityBooleanDefaultFactory;
 import com.echothree.model.data.core.server.factory.EntityClobAttributeFactory;
 import com.echothree.model.data.core.server.factory.EntityCollectionAttributeFactory;
 import com.echothree.model.data.core.server.factory.EntityDateAttributeFactory;
+import com.echothree.model.data.core.server.factory.EntityDateDefaultFactory;
 import com.echothree.model.data.core.server.factory.EntityEncryptionKeyFactory;
 import com.echothree.model.data.core.server.factory.EntityEntityAttributeFactory;
 import com.echothree.model.data.core.server.factory.EntityGeoPointAttributeFactory;
@@ -475,6 +478,7 @@ import com.echothree.model.data.core.server.value.EntityBooleanAttributeValue;
 import com.echothree.model.data.core.server.value.EntityBooleanDefaultValue;
 import com.echothree.model.data.core.server.value.EntityClobAttributeValue;
 import com.echothree.model.data.core.server.value.EntityDateAttributeValue;
+import com.echothree.model.data.core.server.value.EntityDateDefaultValue;
 import com.echothree.model.data.core.server.value.EntityEntityAttributeValue;
 import com.echothree.model.data.core.server.value.EntityGeoPointAttributeValue;
 import com.echothree.model.data.core.server.value.EntityIntegerAttributeValue;
@@ -2346,6 +2350,13 @@ public class CoreControl
 
                     if(entityBooleanDefault != null) {
                         createEntityBooleanAttribute(entityAttribute, entityInstance, entityBooleanDefault.getBooleanAttribute(), createdBy);
+                    }
+                }
+                case DATE -> {
+                    var entityDateDefault = getEntityDateDefault(entityAttribute);
+
+                    if(entityDateDefault != null) {
+                        createEntityDateAttribute(entityAttribute, entityInstance, entityDateDefault.getDateAttribute(), createdBy);
                     }
                 }
                 case INTEGER -> {
@@ -5676,7 +5687,10 @@ public class CoreControl
                 deleteEntityBlobAttributesByEntityAttribute(entityAttribute, deletedBy);
             }
             case CLOB -> deleteEntityClobAttributesByEntityAttribute(entityAttribute, deletedBy);
-            case DATE -> deleteEntityDateAttributesByEntityAttribute(entityAttribute, deletedBy);
+            case DATE -> {
+                deleteEntityDateDefaultByEntityAttribute(entityAttribute, deletedBy);
+                deleteEntityDateAttributesByEntityAttribute(entityAttribute, deletedBy);
+            }
             case TIME -> deleteEntityTimeAttributesByEntityAttribute(entityAttribute, deletedBy);
             case LISTITEM, MULTIPLELISTITEM -> {
                 deleteEntityAttributeListItemByEntityAttribute(entityAttribute, deletedBy);
@@ -10989,17 +11003,154 @@ public class CoreControl
     public void deleteEntityBooleanAttributesByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {
         deleteEntityBooleanAttributes(getEntityBooleanAttributesByEntityInstanceForUpdate(entityInstance), deletedBy);
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Date Defaults
+    // --------------------------------------------------------------------------------
+
+    public EntityDateDefault createEntityDateDefault(EntityAttribute entityAttribute, Integer dateAttribute,
+            BasePK createdBy) {
+        var entityDateDefault = EntityDateDefaultFactory.getInstance().create(entityAttribute,
+                dateAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityDateDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return entityDateDefault;
+    }
+
+    public long countEntityDateDefaultHistory(EntityAttribute entityAttribute) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitydatedefaults
+                    WHERE enddef_thrutime = ?
+                    """, entityAttribute);
+    }
+
+    private static final Map<EntityPermission, String> getEntityDateDefaultHistoryQueries;
+
+    static {
+        getEntityDateDefaultHistoryQueries = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entitydatedefaults
+                WHERE enddef_ena_entityattributeid = ?
+                ORDER BY enddef_thrutime
+                _LIMIT_
+                """);
+    }
+
+    public List<EntityDateDefault> getEntityDateDefaultHistory(EntityAttribute entityAttribute) {
+        return EntityDateDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityDateDefaultHistoryQueries,
+                entityAttribute);
+    }
+
+    private EntityDateDefault getEntityDateDefault(EntityAttribute entityAttribute, EntityPermission entityPermission) {
+        EntityDateDefault entityDateDefault;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entitydatedefaults " +
+                        "WHERE enddef_ena_entityattributeid = ? AND enddef_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entitydatedefaults " +
+                        "WHERE enddef_ena_entityattributeid = ? AND enddef_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = EntityDateDefaultFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            entityDateDefault = EntityDateDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityDateDefault;
+    }
+
+    public EntityDateDefault getEntityDateDefault(EntityAttribute entityAttribute) {
+        return getEntityDateDefault(entityAttribute, EntityPermission.READ_ONLY);
+    }
+
+    public EntityDateDefault getEntityDateDefaultForUpdate(EntityAttribute entityAttribute) {
+        return getEntityDateDefault(entityAttribute, EntityPermission.READ_WRITE);
+    }
+
+    public EntityDateDefaultValue getEntityDateDefaultValueForUpdate(EntityDateDefault entityDateDefault) {
+        return entityDateDefault == null? null: entityDateDefault.getEntityDateDefaultValue().clone();
+    }
+
+    public EntityDateDefaultValue getEntityDateDefaultValueForUpdate(EntityAttribute entityAttribute) {
+        return getEntityDateDefaultValueForUpdate(getEntityDateDefaultForUpdate(entityAttribute));
+    }
+
+    public EntityDateDefaultTransfer getEntityDateDefaultTransfer(UserVisit userVisit, EntityDateDefault entityDateDefault) {
+        return getCoreTransferCaches(userVisit).getEntityDateDefaultTransferCache().getEntityDateDefaultTransfer(entityDateDefault);
+    }
+
+    public void updateEntityDateDefaultFromValue(EntityDateDefaultValue entityDateDefaultValue, BasePK updatedBy) {
+        if(entityDateDefaultValue.hasBeenModified()) {
+            var entityDateDefault = EntityDateDefaultFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityDateDefaultValue);
+            var entityAttribute = entityDateDefault.getEntityAttribute();
+
+            if(entityAttribute.getLastDetail().getTrackRevisions()) {
+                entityDateDefault.setThruTime(session.START_TIME_LONG);
+                entityDateDefault.store();
+            } else {
+                entityDateDefault.remove();
+            }
+
+            entityDateDefault = EntityDateDefaultFactory.getInstance().create(entityAttribute,
+                    entityDateDefaultValue.getDateAttribute(), session.START_TIME_LONG,
+                    Session.MAX_TIME_LONG);
+
+            sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityDateDefault.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+        }
+    }
+
+    public void deleteEntityDateDefault(EntityDateDefault entityDateDefault, BasePK deletedBy) {
+        var entityAttribute = entityDateDefault.getEntityAttribute();
+
+        if(entityAttribute.getLastDetail().getTrackRevisions()) {
+            entityDateDefault.setThruTime(session.START_TIME_LONG);
+        } else {
+            entityDateDefault.remove();
+        }
+
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityDateDefault.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+    }
+
+    public void deleteEntityDateDefaultByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
+        var entityDateDefault = getEntityDateDefaultForUpdate(entityAttribute);
+
+        if(entityDateDefault != null) {
+            deleteEntityDateDefault(entityDateDefault, deletedBy);
+        }
+    }
+
     // --------------------------------------------------------------------------------
     //   Entity Date Attributes
     // --------------------------------------------------------------------------------
-    
-    public EntityDateAttribute createEntityDateAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, Integer dateAttribute, BasePK createdBy) {
-        var entityDateAttribute = EntityDateAttributeFactory.getInstance().create(entityAttribute, entityInstance, dateAttribute, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
-        
-        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
-        
+
+    public EntityDateAttribute createEntityDateAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
+            Integer dateAttribute, BasePK createdBy) {
+        return createEntityDateAttribute(entityAttribute.getPrimaryKey(), entityInstance, dateAttribute,
+                createdBy);
+    }
+
+    public EntityDateAttribute createEntityDateAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
+            Integer dateAttribute, BasePK createdBy) {
+        var entityDateAttribute = EntityDateAttributeFactory.getInstance().create(entityAttribute,
+                entityInstance.getPrimaryKey(), dateAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
+
         return entityDateAttribute;
     }
 
