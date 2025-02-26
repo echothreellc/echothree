@@ -31,6 +31,7 @@ import com.echothree.model.control.core.common.exception.DuplicateEntityBooleanA
 import com.echothree.model.control.core.common.exception.DuplicateEntityBooleanDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityClobAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityDateAttributeException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityDateDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityIntegerAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityIntegerDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityListItemAttributeException;
@@ -56,6 +57,7 @@ import com.echothree.model.control.core.common.exception.UnknownEntityAttributeG
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeTypeNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityBooleanDefaultException;
+import com.echothree.model.control.core.common.exception.UnknownEntityDateDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityIntegerDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemNameException;
@@ -79,6 +81,7 @@ import com.echothree.model.control.core.server.database.EntityInstancePKsByNameE
 import com.echothree.model.control.core.server.database.EntityInstancePKsByStringEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByTimeEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingBooleanEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancesMissingDateEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingIntegerEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingLongEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingStringEntityAttributeQuery;
@@ -100,6 +103,7 @@ import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
 import com.echothree.model.data.core.server.entity.EntityBooleanDefault;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
+import com.echothree.model.data.core.server.entity.EntityDateDefault;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
 import com.echothree.model.data.core.server.entity.EntityIntegerDefault;
@@ -1304,6 +1308,52 @@ public class EntityAttributeLogic
         }
 
         return entityNameAttribute;
+    }
+
+    public EntityDateDefault createEntityDateDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final Integer dateAttribute, final boolean addMissingAttributes,  BasePK createdBy) {
+        EntityDateDefault entityDateDefault = null;
+
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.DATE);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityDateDefault = coreControl.getEntityDateDefault(entityAttribute);
+
+            if(entityDateDefault == null) {
+                coreControl.createEntityDateDefault(entityAttribute, dateAttribute, createdBy);
+
+                if(addMissingAttributes) {
+                    new EntityInstancesMissingDateEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
+                            coreControl.createEntityDateAttribute(entityAttribute.getPrimaryKey(),
+                                    entityInstanceResult.getEntityInstance(), dateAttribute, createdBy));
+                }
+            } else {
+                handleExecutionError(DuplicateEntityDateDefaultException.class, eea, ExecutionErrors.DuplicateEntityDateDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            }
+        }
+
+        return entityDateDefault;
+    }
+
+    public void deleteEntityDateDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.DATE);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            var entityDateDefault = coreControl.getEntityDateDefaultForUpdate(entityAttribute);
+
+            if(entityDateDefault == null) {
+                handleExecutionError(UnknownEntityDateDefaultException.class, eea, ExecutionErrors.UnknownEntityDateDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            } else {
+                coreControl.deleteEntityDateDefault(entityDateDefault, deletedBy);
+            }
+        }
     }
 
     public EntityDateAttribute createEntityDateAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,

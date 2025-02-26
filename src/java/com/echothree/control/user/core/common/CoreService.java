@@ -836,6 +836,16 @@ public interface CoreService
     CommandResult deleteEntityTimeAttribute(UserVisitPK userVisitPK, DeleteEntityTimeAttributeForm form);
 
     // --------------------------------------------------------------------------------
+    //   Entity Date Defaults
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityDateDefault(UserVisitPK userVisitPK, CreateEntityDateDefaultForm form);
+
+    CommandResult editEntityDateDefault(UserVisitPK userVisitPK, EditEntityDateDefaultForm form);
+
+    CommandResult deleteEntityDateDefault(UserVisitPK userVisitPK, DeleteEntityDateDefaultForm form);
+
+    // --------------------------------------------------------------------------------
     //   Entity Date Attributes
     // --------------------------------------------------------------------------------
 

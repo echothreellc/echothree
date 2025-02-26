@@ -1470,12 +1470,30 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="EntityDateDefaults" nameSingular="EntityDateDefault" columnPrefix="enddef">
+                    <columns>
+                        <column name="EntityDateDefaultId" type="EID" nullAllowed="false" />
+                        <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
+                        <column name="DateAttribute" type="Date" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityDateDefaultId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="EntityDateAttributes" nameSingular="EntityDateAttribute" columnPrefix="enda">
                     <columns>
                         <column name="EntityDateAttributeId" type="EID" nullAllowed="false" />
                         <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
                         <column name="EntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
-                        <column name="DateAttribute" type="Date" nullAllowed="false" />                        
+                        <column name="DateAttribute" type="Date" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>

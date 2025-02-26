@@ -160,6 +160,9 @@
             <entityType entityTypeName="EntityBooleanAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Boolean Attribute" />
             </entityType>
+            <entityType entityTypeName="EntityDateDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Date Default" />
+            </entityType>
             <entityType entityTypeName="EntityDateAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Date Attribute" />
             </entityType>
