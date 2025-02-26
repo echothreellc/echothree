@@ -2310,6 +2310,8 @@ public enum ExecutionErrors {
     UnknownEntityIntegerDefault,
     DuplicateEntityLongDefault,
     UnknownEntityLongDefault,
+    DuplicateEntityDateDefault,
+    UnknownEntityDateDefault,
     DuplicateEntityStringDefault,
     UnknownEntityStringDefault,
     DuplicateTransactionTimeTypeName,

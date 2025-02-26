@@ -485,6 +485,11 @@ public class EntityAttributeObject
 
                 defaultInterface = entityBooleanDefault == null ? null : new EntityBooleanDefaultObject(entityBooleanDefault);
             }
+            case DATE -> {
+                var entityDateDefault = coreControl.getEntityDateDefault(entityAttribute);
+
+                defaultInterface = entityDateDefault == null ? null : new EntityDateDefaultObject(entityDateDefault);
+            }
             case INTEGER -> {
                 var entityIntegerDefault = coreControl.getEntityIntegerDefault(entityAttribute);
 
