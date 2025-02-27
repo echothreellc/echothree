@@ -1636,7 +1636,26 @@ public class CoreBean
     public CommandResult deleteEntityClobAttribute(UserVisitPK userVisitPK, DeleteEntityClobAttributeForm form) {
         return new DeleteEntityClobAttributeCommand(userVisitPK, form).run();
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Time Defaults
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityTimeDefault(UserVisitPK userVisitPK, CreateEntityTimeDefaultForm form) {
+        return new CreateEntityTimeDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityTimeDefault(UserVisitPK userVisitPK, EditEntityTimeDefaultForm form) {
+        return new EditEntityTimeDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityTimeDefault(UserVisitPK userVisitPK, DeleteEntityTimeDefaultForm form) {
+        return new DeleteEntityTimeDefaultCommand(userVisitPK, form).run();
+    }
+
     // --------------------------------------------------------------------------------
     //   Entity Time Attributes
     // --------------------------------------------------------------------------------

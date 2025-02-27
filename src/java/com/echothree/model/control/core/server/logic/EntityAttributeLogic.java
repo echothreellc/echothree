@@ -44,6 +44,7 @@ import com.echothree.model.control.core.common.exception.DuplicateEntityNameAttr
 import com.echothree.model.control.core.common.exception.DuplicateEntityStringAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityStringDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityTimeAttributeException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityTimeDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateWorkflowUsageInEntityAttributeException;
 import com.echothree.model.control.core.common.exception.EntityTypeIsNotExtensibleException;
 import com.echothree.model.control.core.common.exception.InvalidEntityAttributeTypeException;
@@ -63,6 +64,7 @@ import com.echothree.model.control.core.common.exception.UnknownEntityListItemDe
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityLongDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityStringDefaultException;
+import com.echothree.model.control.core.common.exception.UnknownEntityTimeDefaultException;
 import com.echothree.model.control.core.common.exception.UpperRangeExceededException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.database.EntityInstancePKResult;
@@ -85,6 +87,7 @@ import com.echothree.model.control.core.server.database.EntityInstancesMissingDa
 import com.echothree.model.control.core.server.database.EntityInstancesMissingIntegerEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingLongEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingStringEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancesMissingTimeEntityAttributeQuery;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.queue.common.QueueTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;
@@ -117,6 +120,7 @@ import com.echothree.model.data.core.server.entity.EntityNameAttribute;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
 import com.echothree.model.data.core.server.entity.EntityStringDefault;
 import com.echothree.model.data.core.server.entity.EntityTimeAttribute;
+import com.echothree.model.data.core.server.entity.EntityTimeDefault;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.value.EntityAttributeDetailValue;
@@ -1073,7 +1077,7 @@ public class EntityAttributeLogic
     }
 
     public EntityLongDefault createEntityLongDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Long longAttribute, final boolean addMissingAttributes,  BasePK createdBy) {
+            final Long longAttribute, final boolean addMissingAttributes, BasePK createdBy) {
         EntityLongDefault entityLongDefault = null;
 
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.LONG);
@@ -1311,7 +1315,7 @@ public class EntityAttributeLogic
     }
 
     public EntityDateDefault createEntityDateDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Integer dateAttribute, final boolean addMissingAttributes,  BasePK createdBy) {
+            final Integer dateAttribute, final boolean addMissingAttributes, BasePK createdBy) {
         EntityDateDefault entityDateDefault = null;
 
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.DATE);
@@ -1377,6 +1381,52 @@ public class EntityAttributeLogic
         }
 
         return entityDateAttribute;
+    }
+
+    public EntityTimeDefault createEntityTimeDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final Long timeAttribute, final boolean addMissingAttributes, BasePK createdBy) {
+        EntityTimeDefault entityTimeDefault = null;
+
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.TIME);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityTimeDefault = coreControl.getEntityTimeDefault(entityAttribute);
+
+            if(entityTimeDefault == null) {
+                coreControl.createEntityTimeDefault(entityAttribute, timeAttribute, createdBy);
+
+                if(addMissingAttributes) {
+                    new EntityInstancesMissingTimeEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
+                            coreControl.createEntityTimeAttribute(entityAttribute.getPrimaryKey(),
+                                    entityInstanceResult.getEntityInstance(), timeAttribute, createdBy));
+                }
+            } else {
+                handleExecutionError(DuplicateEntityTimeDefaultException.class, eea, ExecutionErrors.DuplicateEntityTimeDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            }
+        }
+
+        return entityTimeDefault;
+    }
+
+    public void deleteEntityTimeDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.TIME);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            var entityTimeDefault = coreControl.getEntityTimeDefaultForUptime(entityAttribute);
+
+            if(entityTimeDefault == null) {
+                handleExecutionError(UnknownEntityTimeDefaultException.class, eea, ExecutionErrors.UnknownEntityTimeDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            } else {
+                coreControl.deleteEntityTimeDefault(entityTimeDefault, deletedBy);
+            }
+        }
     }
 
     public EntityTimeAttribute createEntityTimeAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,

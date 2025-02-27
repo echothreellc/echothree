@@ -166,6 +166,9 @@
             <entityType entityTypeName="EntityDateAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Date Attribute" />
             </entityType>
+            <entityType entityTypeName="EntityTimeDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Time Default" />
+            </entityType>
             <entityType entityTypeName="EntityTimeAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Time Attribute" />
             </entityType>

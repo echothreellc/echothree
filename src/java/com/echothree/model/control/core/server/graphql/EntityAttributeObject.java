@@ -512,6 +512,11 @@ public class EntityAttributeObject
 
                 defaultInterface = entityStringDefault == null ? null : new EntityStringDefaultObject(entityStringDefault);
             }
+            case TIME -> {
+                var entityTimeDefault = coreControl.getEntityTimeDefault(entityAttribute);
+
+                defaultInterface = entityTimeDefault == null ? null : new EntityTimeDefaultObject(entityTimeDefault);
+            }
             default -> {} // Leave defaultInterface null
         }
 
