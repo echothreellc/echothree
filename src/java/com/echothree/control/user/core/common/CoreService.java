@@ -824,7 +824,17 @@ public interface CoreService
     CommandResult getEntityClobAttribute(UserVisitPK userVisitPK, GetEntityClobAttributeForm form);
 
     CommandResult deleteEntityClobAttribute(UserVisitPK userVisitPK, DeleteEntityClobAttributeForm form);
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Time Defaults
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityTimeDefault(UserVisitPK userVisitPK, CreateEntityTimeDefaultForm form);
+
+    CommandResult editEntityTimeDefault(UserVisitPK userVisitPK, EditEntityTimeDefaultForm form);
+
+    CommandResult deleteEntityTimeDefault(UserVisitPK userVisitPK, DeleteEntityTimeDefaultForm form);
+
     // --------------------------------------------------------------------------------
     //   Entity Time Attributes
     // --------------------------------------------------------------------------------

@@ -110,6 +110,7 @@ import com.echothree.model.control.core.common.transfer.EntityNameAttributeTrans
 import com.echothree.model.control.core.common.transfer.EntityStringAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityStringDefaultTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTimeAttributeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityTimeDefaultTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTimeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
@@ -259,6 +260,7 @@ import com.echothree.model.data.core.server.entity.EntityStringAttribute;
 import com.echothree.model.data.core.server.entity.EntityStringDefault;
 import com.echothree.model.data.core.server.entity.EntityTime;
 import com.echothree.model.data.core.server.entity.EntityTimeAttribute;
+import com.echothree.model.data.core.server.entity.EntityTimeDefault;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.EntityTypeDescription;
 import com.echothree.model.data.core.server.entity.EntityVisit;
@@ -387,6 +389,7 @@ import com.echothree.model.data.core.server.factory.EntityNameAttributeFactory;
 import com.echothree.model.data.core.server.factory.EntityStringAttributeFactory;
 import com.echothree.model.data.core.server.factory.EntityStringDefaultFactory;
 import com.echothree.model.data.core.server.factory.EntityTimeAttributeFactory;
+import com.echothree.model.data.core.server.factory.EntityTimeDefaultFactory;
 import com.echothree.model.data.core.server.factory.EntityTimeFactory;
 import com.echothree.model.data.core.server.factory.EntityTypeDescriptionFactory;
 import com.echothree.model.data.core.server.factory.EntityTypeDetailFactory;
@@ -497,6 +500,7 @@ import com.echothree.model.data.core.server.value.EntityNameAttributeValue;
 import com.echothree.model.data.core.server.value.EntityStringAttributeValue;
 import com.echothree.model.data.core.server.value.EntityStringDefaultValue;
 import com.echothree.model.data.core.server.value.EntityTimeAttributeValue;
+import com.echothree.model.data.core.server.value.EntityTimeDefaultValue;
 import com.echothree.model.data.core.server.value.EntityTypeDescriptionValue;
 import com.echothree.model.data.core.server.value.EntityTypeDetailValue;
 import com.echothree.model.data.core.server.value.EventGroupDetailValue;
@@ -2386,6 +2390,13 @@ public class CoreControl
                     entityStringDefaults.forEach(entityStringDefault ->
                             createEntityStringAttribute(entityAttribute, entityInstance, entityStringDefault.getLanguage(),
                                     entityStringDefault.getStringAttribute(), createdBy));
+                }
+                case TIME -> {
+                    var entityTimeDefault = getEntityTimeDefault(entityAttribute);
+
+                    if(entityTimeDefault != null) {
+                        createEntityTimeAttribute(entityAttribute, entityInstance, entityTimeDefault.getTimeAttribute(), createdBy);
+                    }
                 }
                 default -> {}
             }
@@ -5691,7 +5702,10 @@ public class CoreControl
                 deleteEntityDateDefaultByEntityAttribute(entityAttribute, deletedBy);
                 deleteEntityDateAttributesByEntityAttribute(entityAttribute, deletedBy);
             }
-            case TIME -> deleteEntityTimeAttributesByEntityAttribute(entityAttribute, deletedBy);
+            case TIME -> {
+                deleteEntityTimeDefaultByEntityAttribute(entityAttribute, deletedBy);
+                deleteEntityTimeAttributesByEntityAttribute(entityAttribute, deletedBy);
+            }
             case LISTITEM, MULTIPLELISTITEM -> {
                 deleteEntityAttributeListItemByEntityAttribute(entityAttribute, deletedBy);
                 deleteEntityListItemsByEntityAttribute(entityAttribute, deletedBy);
@@ -13286,17 +13300,154 @@ public class CoreControl
     public void deleteEntityGeoPointAttributesByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {
         deleteEntityGeoPointAttributes(getEntityGeoPointAttributesByEntityInstanceForUpdate(entityInstance), deletedBy);
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Time Defaults
+    // --------------------------------------------------------------------------------
+
+    public EntityTimeDefault createEntityTimeDefault(EntityAttribute entityAttribute, Long timeAttribute,
+            BasePK createdBy) {
+        var entityTimeDefault = EntityTimeDefaultFactory.getInstance().create(entityAttribute,
+                timeAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityTimeDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return entityTimeDefault;
+    }
+
+    public long countEntityTimeDefaultHistory(EntityAttribute entityAttribute) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitytimedefaults
+                    WHERE entdef_thrutime = ?
+                    """, entityAttribute);
+    }
+
+    private static final Map<EntityPermission, String> getEntityTimeDefaultHistoryQueries;
+
+    static {
+        getEntityTimeDefaultHistoryQueries = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entitytimedefaults
+                WHERE entdef_ena_entityattributeid = ?
+                ORDER BY entdef_thrutime
+                _LIMIT_
+                """);
+    }
+
+    public List<EntityTimeDefault> getEntityTimeDefaultHistory(EntityAttribute entityAttribute) {
+        return EntityTimeDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityTimeDefaultHistoryQueries,
+                entityAttribute);
+    }
+
+    private EntityTimeDefault getEntityTimeDefault(EntityAttribute entityAttribute, EntityPermission entityPermission) {
+        EntityTimeDefault entityTimeDefault;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entitytimedefaults " +
+                        "WHERE entdef_ena_entityattributeid = ? AND entdef_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entitytimedefaults " +
+                        "WHERE entdef_ena_entityattributeid = ? AND entdef_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = EntityTimeDefaultFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            entityTimeDefault = EntityTimeDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityTimeDefault;
+    }
+
+    public EntityTimeDefault getEntityTimeDefault(EntityAttribute entityAttribute) {
+        return getEntityTimeDefault(entityAttribute, EntityPermission.READ_ONLY);
+    }
+
+    public EntityTimeDefault getEntityTimeDefaultForUptime(EntityAttribute entityAttribute) {
+        return getEntityTimeDefault(entityAttribute, EntityPermission.READ_WRITE);
+    }
+
+    public EntityTimeDefaultValue getEntityTimeDefaultValueForUptime(EntityTimeDefault entityTimeDefault) {
+        return entityTimeDefault == null? null: entityTimeDefault.getEntityTimeDefaultValue().clone();
+    }
+
+    public EntityTimeDefaultValue getEntityTimeDefaultValueForUptime(EntityAttribute entityAttribute) {
+        return getEntityTimeDefaultValueForUptime(getEntityTimeDefaultForUptime(entityAttribute));
+    }
+
+    public EntityTimeDefaultTransfer getEntityTimeDefaultTransfer(UserVisit userVisit, EntityTimeDefault entityTimeDefault) {
+        return getCoreTransferCaches(userVisit).getEntityTimeDefaultTransferCache().getEntityTimeDefaultTransfer(entityTimeDefault);
+    }
+
+    public void updateEntityTimeDefaultFromValue(EntityTimeDefaultValue entityTimeDefaultValue, BasePK updatedBy) {
+        if(entityTimeDefaultValue.hasBeenModified()) {
+            var entityTimeDefault = EntityTimeDefaultFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityTimeDefaultValue);
+            var entityAttribute = entityTimeDefault.getEntityAttribute();
+
+            if(entityAttribute.getLastDetail().getTrackRevisions()) {
+                entityTimeDefault.setThruTime(session.START_TIME_LONG);
+                entityTimeDefault.store();
+            } else {
+                entityTimeDefault.remove();
+            }
+
+            entityTimeDefault = EntityTimeDefaultFactory.getInstance().create(entityAttribute,
+                    entityTimeDefaultValue.getTimeAttribute(), session.START_TIME_LONG,
+                    Session.MAX_TIME_LONG);
+
+            sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityTimeDefault.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+        }
+    }
+
+    public void deleteEntityTimeDefault(EntityTimeDefault entityTimeDefault, BasePK deletedBy) {
+        var entityAttribute = entityTimeDefault.getEntityAttribute();
+
+        if(entityAttribute.getLastDetail().getTrackRevisions()) {
+            entityTimeDefault.setThruTime(session.START_TIME_LONG);
+        } else {
+            entityTimeDefault.remove();
+        }
+
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityTimeDefault.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+    }
+
+    public void deleteEntityTimeDefaultByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
+        var entityTimeDefault = getEntityTimeDefaultForUptime(entityAttribute);
+
+        if(entityTimeDefault != null) {
+            deleteEntityTimeDefault(entityTimeDefault, deletedBy);
+        }
+    }
+
     // --------------------------------------------------------------------------------
     //   Entity Time Attributes
     // --------------------------------------------------------------------------------
-    
-    public EntityTimeAttribute createEntityTimeAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, Long timeAttribute, BasePK createdBy) {
-        var entityTimeAttribute = EntityTimeAttributeFactory.getInstance().create(entityAttribute, entityInstance, timeAttribute, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
-        
-        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
-        
+
+    public EntityTimeAttribute createEntityTimeAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
+            Long timeAttribute, BasePK createdBy) {
+        return createEntityTimeAttribute(entityAttribute.getPrimaryKey(), entityInstance, timeAttribute,
+                createdBy);
+    }
+
+    public EntityTimeAttribute createEntityTimeAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
+            Long timeAttribute, BasePK createdBy) {
+        var entityTimeAttribute = EntityTimeAttributeFactory.getInstance().create(entityAttribute,
+                entityInstance.getPrimaryKey(), timeAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
+
         return entityTimeAttribute;
     }
 

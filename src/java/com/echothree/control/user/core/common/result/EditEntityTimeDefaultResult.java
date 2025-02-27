@@ -14,12 +14,16 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.core.server.graphql;
+package com.echothree.control.user.core.common.result;
 
-import graphql.annotations.annotationTypes.GraphQLUnion;
+import com.echothree.control.user.core.common.edit.EntityTimeDefaultEdit;
+import com.echothree.model.control.core.common.transfer.EntityTimeDefaultTransfer;
+import com.echothree.util.common.command.BaseEditResult;
 
-@GraphQLUnion(possibleTypes = {EntityBooleanDefaultObject.class, EntityDateDefaultObject.class, EntityIntegerDefaultObject.class,
-        EntityLongDefaultObject.class, EntityListItemDefaultObject.class, EntityStringDefaultObject.class, EntityTimeDefaultObject.class})
-public interface DefaultInterface {
-
+public interface EditEntityTimeDefaultResult
+        extends BaseEditResult<EntityTimeDefaultEdit> {
+    
+    EntityTimeDefaultTransfer getEntityTimeDefault();
+    void setEntityTimeDefault(EntityTimeDefaultTransfer entityTimeDefault);
+    
 }

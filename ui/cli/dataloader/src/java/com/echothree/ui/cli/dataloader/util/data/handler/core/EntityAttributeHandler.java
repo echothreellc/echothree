@@ -116,6 +116,15 @@ public class EntityAttributeHandler
             commandForm.set(getAttrsMap(attrs));
 
             coreService.createEntityStringDefault(initialDataParser.getUserVisit(), commandForm);
+        } if(localName.equals("entityTimeDefault")) {
+            var commandForm = CoreFormFactory.getCreateEntityTimeDefaultForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            coreService.createEntityTimeDefault(initialDataParser.getUserVisit(), commandForm);
         } if(localName.equals("entityAttributeEntityAttributeGroup")) {
             var commandForm = CoreFormFactory.getCreateEntityAttributeEntityAttributeGroupForm();
 
