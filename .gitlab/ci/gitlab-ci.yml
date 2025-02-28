@@ -1,4 +1,4 @@
-image: echothree/ant:latest
+image: gitlab.echothree.com:5050/containers/jdk-build-tools:latest
 
 cache:
   paths:
